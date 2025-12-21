@@ -1,2 +1,8 @@
 **/.env
 *.tfstate
+*.out
+*.txt
+*.lock
+*.lock
+*.terraform
+*/*/.terraform.lock.hcl

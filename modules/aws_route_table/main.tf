@@ -1,3 +1,10 @@
+locals {
+  subnet_map = {
+    for idx, subnet_id in var.subnet_ids :
+    idx => subnet_id
+  }
+}
+
 resource "aws_route_table" "this" {
   vpc_id = var.vpc_id
 
@@ -18,7 +25,7 @@ resource "aws_route_table" "this" {
 }
 
 resource "aws_route_table_association" "this" {
-  for_each = toset(var.subnet_ids)
+  for_each = local.subnet_map
 
   route_table_id = aws_route_table.this.id
   subnet_id      = each.value
