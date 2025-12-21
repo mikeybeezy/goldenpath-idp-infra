@@ -55,3 +55,17 @@ module "web_security_group" {
   ingress_ipv6_cidr_blocks = ["::/0"]
   tags                     = local.common_tags
 }
+
+/*module "eks" {
+  source = "../../modules/aws_eks"
+  count  = var.eks_config.enabled ? 1 : 0
+
+  cluster_name       = var.eks_config.cluster_name
+  kubernetes_version = var.eks_config.version
+  vpc_id             = module.vpc.vpc_id
+  subnet_ids         = module.subnets.private_subnet_ids
+  node_group_config  = var.eks_config.node_group
+  tags               = local.common_tags
+
+  depends_on = [module.public_route_table]
+}*/

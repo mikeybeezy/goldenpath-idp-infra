@@ -73,6 +73,7 @@ Each environment composes the shared modules so you can deploy the same architec
 - **Tags**: add any key/value pairs under `common_tags` in the same `tfvars`; they merge with defaults so all resources stay labeled.
 - **Name prefix & environment label**: set `name_prefix` and `environment` fields if you want different naming (e.g., `goldenpath-prod`).
 - **Compute module**: when you add `modules/aws_compute` to an environment, pass `subnet_id`, `security_group_ids`, `ami_id`, etc., via that environment’s `terraform.tfvars` so each stack can pick its own instance settings.
+- **EKS (optional)**: the repo already contains an `aws_eks` module and wiring in every environment, but those blocks are commented out by default. To spin up a cluster for a specific env, remove the comment markers around the `module "eks"` block in `envs/<env>/main.tf`, the `variable "eks_config"` block in `envs/<env>/variables.tf`, and the `eks_config` object in `envs/<env>/terraform.tfvars`. Update the config (cluster name, version, node-group sizes/types), run `terraform plan`, and apply. Comment them back out whenever you want to pause or remove EKS.
 
 ## Tips
 

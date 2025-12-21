@@ -32,3 +32,18 @@ common_tags = {
   Project = "goldenpath-idp"
   Owner   = "platform-team"
 }
+
+# eks_config = {
+#   enabled      = true
+#   cluster_name = "goldenpath-test-eks"
+#   version      = "1.29"
+#   node_group = {
+#     name           = "test-default"
+#     min_size       = 1
+#     max_size       = 2
+#     desired_size   = 1
+#     instance_types = ["t3.medium"]
+#     disk_size      = 20
+#     capacity_type  = "ON_DEMAND"
+#   }
+# }
