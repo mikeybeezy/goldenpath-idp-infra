@@ -1,1 +1,0 @@
-# goldenpath-idp-infra
