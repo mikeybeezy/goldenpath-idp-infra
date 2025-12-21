@@ -3,47 +3,25 @@ terraform {
 }
 
 locals {
-  environment = "prod"
-  name_prefix = "goldenpath-${local.environment}"
-  azs         = ["us-east-1a", "us-east-1b"]
+  environment    = var.environment
+  name_prefix    = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
+  public_subnets = var.public_subnets
+  private_subnets = var.private_subnets
 
-  public_subnets = [
+  common_tags = merge(
     {
-      name              = "${local.name_prefix}-public-a"
-      cidr_block        = "10.3.1.0/24"
-      availability_zone = local.azs[0]
+      Environment = local.environment
+      Project     = "goldenpath-idp"
+      ManagedBy   = "terraform"
     },
-    {
-      name              = "${local.name_prefix}-public-b"
-      cidr_block        = "10.3.2.0/24"
-      availability_zone = local.azs[1]
-    }
-  ]
-
-  private_subnets = [
-    {
-      name              = "${local.name_prefix}-private-a"
-      cidr_block        = "10.3.11.0/24"
-      availability_zone = local.azs[0]
-    },
-    {
-      name              = "${local.name_prefix}-private-b"
-      cidr_block        = "10.3.12.0/24"
-      availability_zone = local.azs[1]
-    }
-  ]
-
-  common_tags = {
-    Environment = local.environment
-    Project     = "goldenpath-idp"
-    ManagedBy   = "terraform"
-  }
+    var.common_tags,
+  )
 }
 
 module "vpc" {
   source = "../../modules/vpc"
 
-  vpc_cidr = "10.3.0.0/16"
+  vpc_cidr = var.vpc_cidr
   vpc_tag  = "${local.name_prefix}-vpc"
   tags     = local.common_tags
 }
