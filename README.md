@@ -38,8 +38,9 @@ Each environment composes the shared modules so you can deploy the same architec
    ```sh
    cd envs/dev   # replace dev with test/staging/prod if needed
    ```
-   - `main.tf` already wires the shared modules with sensible defaults.
-   - `terraform.tfvars` can override values (e.g., AMI IDs, instance types).
+   - `main.tf` wires the shared modules but now reads everything from variables, so you rarely edit this file.
+   - `terraform.tfvars` is where you define the CIDR blocks, subnet objects, tags, and naming prefix for that environment.
+   - `variables.tf` documents the inputs Terraform expects, making it easy to see what goes in the `tfvars`.
    - `backend.tf` is where you point to your remote state bucket/table.
 
 4. **Initialize Terraform for that environment**
@@ -68,9 +69,10 @@ Each environment composes the shared modules so you can deploy the same architec
 
 ## Customizing the Infrastructure
 
-- **CIDR ranges & AZs**: Adjust the `local.public_subnets` and `local.private_subnets` blocks inside each `envs/<env>/main.tf`.
-- **Tags**: Edit `local.common_tags` per environment so resources include organizational metadata.
-- **Compute module**: Instantiate `modules/aws_compute` inside an environment if you need EC2 instances. Pass in `subnet_id`, `security_group_ids`, `ami_id`, etc., to match the environment’s resources.
+- **CIDR ranges & AZs**: edit `public_subnets` / `private_subnets` lists in `envs/<env>/terraform.tfvars`. Each item needs a `name`, `cidr_block`, and `availability_zone`.
+- **Tags**: add any key/value pairs under `common_tags` in the same `tfvars`; they merge with defaults so all resources stay labeled.
+- **Name prefix & environment label**: set `name_prefix` and `environment` fields if you want different naming (e.g., `goldenpath-prod`).
+- **Compute module**: when you add `modules/aws_compute` to an environment, pass `subnet_id`, `security_group_ids`, `ami_id`, etc., via that environment’s `terraform.tfvars` so each stack can pick its own instance settings.
 
 ## Tips
 
