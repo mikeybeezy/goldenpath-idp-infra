@@ -44,7 +44,5 @@ It is meant to be consumed by higher-level stacks (e.g., `envs/*/main.tf`) that 
 - **CIDR conflicts**: Supplying a CIDR that overlaps with an existing VPC in the same region will cause AWS API errors.
 - **IGW reuse mismatch**: Providing an `existing_internet_gateway_id` that doesn’t belong to the target VPC will prevent the route table from referencing it and may leave the VPC without internet access.
 - **Quota limits**: Hitting AWS limits for VPCs, IGWs, or route tables will cause the module to fail during creation.
+- **Missing IAM permissions**: Lack of `ec2:CreateVpc`, `ec2:CreateInternetGateway`, `ec2:AttachInternetGateway`, or `ec2:CreateRouteTable` permissions will result in access denied errors.
 - **Partial creation**: If the VPC is created but IGW/route table creation fails, a partial infrastructure may remain; re-running `terraform apply` usually completes once the underlying issue is fixed (e.g., quota, permissions).
-
-
-

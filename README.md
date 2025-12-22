@@ -80,11 +80,12 @@ make apply ENV=dev
 Each target runs the corresponding `terraform -chdir=envs/$ENV <command>` under the hood, so swap `dev` for `test`, `staging`, or `prod` as needed.
 
 Step-by-step with the Makefile:
-1. `cd` into the repo root (`goldenpath-idp-infra`).
-2. Pick an environment name (e.g., `dev`, `test`, `staging`, `prod`).
-3. Run `make init ENV=<env>` to download providers and set up state.
-4. Run `make plan ENV=<env>` to preview changes.
-5. Run `make apply ENV=<env>` to deploy (confirm when prompted).
+1. Open a terminal and `cd` into the repo root (`goldenpath-idp-infra`).
+2. Pick an environment name (`dev`, `test`, `staging`, `prod`). Example uses `dev`.
+3. Run `make init ENV=dev` to execute `terraform -chdir=envs/dev init` (downloads providers/state).
+4. Run `make plan ENV=dev` to execute `terraform -chdir=envs/dev plan` and preview changes.
+5. Run `make apply ENV=dev` to execute `terraform -chdir=envs/dev apply` and deploy (confirm when prompted).
+6. Swap `ENV=dev` for `ENV=test`, `staging`, or `prod` to repeat; the Makefile just saves you from typing the `-chdir` commands manually.
 
 ## Customizing the Infrastructure
 
