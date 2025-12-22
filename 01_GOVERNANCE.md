@@ -170,7 +170,7 @@ These introduce opinionated workflows and repo coupling that are deferred until 
 Governance is enforced through process, not just policy.
 
 **Change Flow**
-
+```
 Developer
 
 |
@@ -216,7 +216,7 @@ v
 Environment Promotion
 
 (dev → test → staging → prod)
-
+```
 **Key Rules**
 
 - All infrastructure and platform changes flow through Git
