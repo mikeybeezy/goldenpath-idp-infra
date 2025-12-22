@@ -83,8 +83,6 @@ Governance and capability documentation ordered numerically for easy navigation.
 
 ## Workflow Summary
 
-Let’s break down the suggested workflow into a clear, step-by-step picture:
-
 1. **Infrastructure (VPC, cluster, etc.)** – Terraform modules in `modules/` + `envs/<env>` provision AWS networking, EKS clusters, IAM roles.
 2. **Tooling Deployments (Kong, Grafana, Loki, Fluent Bit, Keycloak, Backstage)** – Helm charts/Kustomize manifests under `gitops/` deploy the actual workloads via Argo CD/Flux.
 3. **Tooling Configuration (Kong APIs, Grafana dashboards, Keycloak realms)** – Terraform provider modules in `idp-tooling/` manage API-level config so changes are versioned and promoted top-to-bottom.
