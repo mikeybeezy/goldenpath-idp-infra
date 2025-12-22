@@ -18,7 +18,7 @@
 | **Secrets Management** | HashiCorp Vault (primary) or AWS Secrets Manager (fallback) via External Secrets. | Vault / AWS Secrets Manager, External Secrets | ⚙️ Planned | Pick Vault for rich policy; use Secrets Manager when Vault unavailable. |
 | **Policy Enforcement** | OPA/Kyverno guardrails for clusters + workloads. | Policy engine (future) | 🚧 V2 | Add after core identity/secrets land. |
 | **Observability** | Prometheus, Loki/ELK, Tempo/Jaeger, basic SLO templates. | Observability stack (planned) | ⚙️ Planned | Metrics/logs/traces on by default; custom frameworks deferred. |
-| **Automation & Quality Gates** | Makefile wrappers, fmt/validate/tflint/tfsec, Atlantis workflows. | `Makefile`, CI pipeline, Atlantis (planned) | ⚙️ In progress | Makefile live; linting + PR-driven plan/apply next. |
+| **Automation & Quality Gates** | Makefile wrappers, fmt/validate/tflint/tfsec, Datree, Atlantis workflows. | `Makefile`, CI pipeline, Datree, Atlantis (planned) | ⚙️ In progress | Makefile + linting live; Datree catches K8s manifest issues upstream; Atlantis + remaining gates next. |
 | **Documentation & Onboarding** | Root README, module-level docs, capability overview. | `README.md`, `modules/*/README.md`, `CAPABILITY_MATRIX.md` | 🚧 In progress | VPC module doc complete; remaining modules next. |
 
 ### Legend
