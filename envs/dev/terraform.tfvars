@@ -35,7 +35,7 @@ common_tags = {
 
 # Base EC2 compute (disabled by default; set enabled = true to provision)
 compute_config = {
-  enabled                       = false
+  enabled                       = true
   name                          = "goldenpath-dev-app"
   ami_id                        = "ami-0a0ff88d0f3f85a14"
   instance_type                 = "t3.micro"
