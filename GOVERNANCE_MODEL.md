@@ -15,17 +15,28 @@ This document captures the initial operating model for the Golden Path Internal 
 
 ## 2. Observability & SLO Governance
 
-| Layer | Signals | Tooling | Governance Notes |
-|-------|---------|---------|------------------|
-| **Platform (EKS, networking, control plane)** | Four golden signals (latency, traffic, errors, saturation), plus health checks on cluster components. | Prometheus, Loki, Fluent Bit, Tempo/Jaeger, Grafana dashboards. | Platform team owns dashboards + alerting rules. Targets: 99.5% control plane availability, GitOps sync latency < 5 minutes, cluster node health SLOs per environment. |
-| **Shared services (Ingress, GitOps, Backstage)** | Availability, request rate, error rate, queue depth. | Prometheus + Loki + synthetic checks. | Service owners define SLOs (e.g., Backstage 99.0% availability) and publish runbooks linked from the catalog. |
-| **Application tier** | Golden signals instrumented via OpenTelemetry SDKs/shims. | Developers emit traces/logs/metrics; platform ships Fluent Bit DaemonSet to forward logs. | Platform enforces instrumentation defaults (Helm chart values) so new services emit metrics/logs/traces automatically. Teams define app-specific SLOs but must register them in Backstage. |
+### Ownership Split
+
+| Layer | Owner (RACI) | Required Signals | Tooling | Notes |
+|-------|--------------|------------------|---------|-------|
+| **Platform (EKS, networking, GitOps, Backstage)** | Platform Team **(R/A)**, Security **(C)**, App Teams **(I)** | Latency, traffic, errors, saturation (Golden Signals) + control-plane health | Prometheus, Loki, Fluent Bit, Tempo/Jaeger, Grafana | Platform maintains dashboards/alerts and publishes platform SLOs (e.g., ingress availability ≥ 99.99%). |
+| **Shared Services (Ingress, IdP, CI)** | Service Owner **(R)**, Platform **(A)** | Availability, throughput, error rate, queue depth | Prometheus, synthetic checks | Service owner documents SLO + runbooks in Backstage; platform ensures telemetry plumbing. |
+| **Applications / Workloads** | App Team **(R/A)**, Platform **(C)**, Security **(I)** | Golden signals + business SLOs (availability, latency, error budget) | OpenTelemetry SDKs, platform-provided log/trace exporters | Apps must register SLOs in Backstage, wire alerts to their on-call rotation, and honor error budgets. |
+
+### Enforcement Rules
+
+1. All workloads emit the four golden signals through platform-provided exporters.
+2. Grafana dashboards and Prometheus alert rules for platform SLOs are centrally managed; app teams inherit templates but tune thresholds.
+3. Fluent Bit ships logs to Loki; required labels: `environment`, `namespace`, `application`, `service`.
+4. Tempo/Jaeger collects traces tagged with service + environment; new templates include tracing instrumentation by default.
+5. SLOs: Platform owns platform-grade SLOs (ingress, cluster health, GitOps latency). App teams own their service SLOs and error budgets.
 
 ### Log & Metric Pipeline
-- **Metrics**: Prometheus scrapes cluster + workload metrics; Grafana dashboards provided for platform and app teams.
-- **Logs**: Fluent Bit ships logs to Loki (or ELK if required). Default retention 14 days; longer retention optional via centralized bucket/archive.
-- **Traces**: Tempo/Jaeger stack collects distributed traces tagged by service/environment.
-- **SLO Management**: Basic SLO templates provided (e.g., availability/error budget). Teams document SLO targets in Backstage.
+
+- **Metrics**: Prometheus scrapes clusters + workloads; dashboards shipped in Grafana per environment.
+- **Logs**: Fluent Bit → Loki (default 14-day retention; archival optional).
+- **Traces**: Tempo/Jaeger for distributed traces; mandatory instrumentation baked into templates.
+- **SLO Registry**: Backstage stores links to service SLO docs and current targets.
 
 ---
 
@@ -59,16 +70,20 @@ This document captures the initial operating model for the Golden Path Internal 
 
 ---
 
-## 5. Change Management
+## 5. Change Management & Release Workflow
 
-| Change Type | Process | Approvers |
-|-------------|---------|-----------|
-| **Infrastructure (Terraform)** | PR with plan screenshot or Atlantis comment; requires one platform engineer approval. | Platform team (at least 1 reviewer). |
-| **GitOps Manifests** | PR to GitOps repo; requires service owner + platform review for prod. | Service owner + platform (prod only). |
-| **Backstage Templates** | PR to template repo; test scaffold locally. | DX/Platform duo. |
-| **Observability/SLO tweaks** | Update dashboards/SLO docs; note change in Backstage entity. | Service owner; platform review for global dashboards. |
+| Step | Description | Approvers (RACI) |
+|------|-------------|------------------|
+| **Infrastructure (Terraform)** | PR raised against env modules; `make plan ENV=<env>` output (or Atlantis plan) attached. | Platform **R/A**, App Teams **C**, Security **I** |
+| **GitOps Manifests** | PR into GitOps repo’s env folder; Argo/Flux applies post-merge. | Service Owner **R/A**, Platform **C** (prod), Security **I** |
+| **Backstage Templates** | PR to template repo; scaffold tested locally. | Platform DX **R/A**, App Teams **C**, Security **I** |
+| **Observability/SLO updates** | Update dashboards, Prometheus rules, and Backstage SLO docs. | Platform **R/A** for platform signals; App Teams **R/A** for app signals |
 
-Release cadence: weekly for non-prod, twice monthly for prod. Emergency fixes go through accelerated review but must be post-reviewed.
+Cadence expectations:
+
+- Non-prod: weekly release window (auto-approved if CI passes).
+- Prod: twice monthly; prod merges require both service owner and platform sign-off.
+- Emergency fixes: allowed with fast-track approval but must undergo post-incident review within 24 hours.
 
 ---
 
@@ -89,4 +104,14 @@ Release cadence: weekly for non-prod, twice monthly for prod. Emergency fixes go
 - **V1**: Deliver core networking, GitOps pipeline, optional compute module, Backstage basics, observability stack with golden signals, secrets via Vault/ASM, CI/CD templates.
 - **V2**: Add service mesh, OPA/Kyverno policies, advanced scorecards, multi-cluster management, automated governance metrics.
 
-This governance README will evolve as each capability graduates from planned to in-place. Use it as the source of truth for expectations around platform adoption and operations.***
+This governance README will evolve as each capability graduates from planned to in-place. Use it as the source of truth for expectations around platform adoption and operations.
+
+---
+
+## 8. In-Progress Governance Items
+
+| Area | Focus | Status | Notes |
+|------|-------|--------|-------|
+| **Incident Response & Runbooks** | Define incident commander roles, communication channels (Slack/Teams), escalation matrix, and postmortem SLAs. | 🚧 In progress | Platform team drafting runbook templates; app teams will link service runbooks via Backstage. Target: 24h postmortem policy. |
+| **Secret Rotation & Key Management** | Document how AWS Secrets Manager entries are rotated (automation vs manual), trigger ownership, and notification paths. | 🚧 In progress | Evaluating EventBridge/Lambda rotation hooks; rotation cadence per secret class (DB creds monthly, API keys quarterly). Ownership split between platform (infra secrets) and app teams (app secrets). |
+| **Compliance & Audit Logging** | Specify where platform decisions (approvals, infra changes) are logged, retention, and access controls. | 🚧 In progress | Plan: rely on Git history + Atlantis logs + centralized logging. Define retention (e.g., ≥12 months) and audit access policies per org requirements. |
