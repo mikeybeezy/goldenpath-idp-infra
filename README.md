@@ -79,6 +79,13 @@ make apply ENV=dev
 
 Each target runs the corresponding `terraform -chdir=envs/$ENV <command>` under the hood, so swap `dev` for `test`, `staging`, or `prod` as needed.
 
+Step-by-step with the Makefile:
+1. `cd` into the repo root (`goldenpath-idp-infra`).
+2. Pick an environment name (e.g., `dev`, `test`, `staging`, `prod`).
+3. Run `make init ENV=<env>` to download providers and set up state.
+4. Run `make plan ENV=<env>` to preview changes.
+5. Run `make apply ENV=<env>` to deploy (confirm when prompted).
+
 ## Customizing the Infrastructure
 
 - **CIDR ranges & AZs**: edit `public_subnets` / `private_subnets` lists in `envs/<env>/terraform.tfvars`. Each item needs a `name`, `cidr_block`, and `availability_zone`, and you can add as many entries as you need (one per subnet/AZ pair). The subnet module automatically creates one subnet per object in the list. If your AWS account is limited to specific AZs (e.g., `eu-west-2a/b/c`), make sure the `availability_zone` fields match the zones that AWS allows in that region; otherwise Terraform will fail with “InvalidParameterValue” errors.
