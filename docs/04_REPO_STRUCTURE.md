@@ -6,12 +6,47 @@ This document explains how the Golden Path IDP repository is organized and why e
 
 ```
 goldenpath-idp-infra/
+├── bootstrap-scripts/
+│   └── helm-bootstrap.sh
+├── compliance/
+│   └── datree/
+├── docs/
+│   ├── 01_GOVERNANCE.md
+│   ├── 02_GOVERNANCE_MODEL.md
+│   ├── 03_GOVERNANCE_BACKSTAGE.md
+│   ├── 04_REPO_STRUCTURE.md
+│   └── 05_OBSERVABILITY_DECISIONS.md
 ├── envs/
 │   ├── dev/
 │   ├── test/
 │   ├── staging/
 │   └── prod/
-├── modules/
+├── gitops/
+│   ├── helm/
+│   │   ├── kong/
+│   │   │   ├── helmrepository.yaml
+│   │   │   ├── helmrelease.yaml
+│   │   │   └── values/
+│   │   │       ├── dev.yaml
+│   │   │       ├── test.yaml
+│   │   │       ├── staging.yaml
+│   │   │       └── prod.yaml
+│   │   ├── grafana/
+│   │   ├── loki/
+│   │   ├── alertmanager/
+│   │   ├── fluent-bit/
+│   │   ├── keycloak/
+│   │   └── backstage/
+│   └── kustomize/
+│       ├── bases/
+│       │   ├── kustomization.yaml
+│       │   └── namespaces.yaml
+│       └── overlays/
+│           ├── dev/
+│           │   └── kustomization.yaml
+│           ├── test/
+│           ├── staging/
+│           └── prod/
 ├── idp-tooling/
 │   ├── kong/
 │   ├── grafana-config/
@@ -22,31 +57,9 @@ goldenpath-idp-infra/
 │   │   └── fluent-bit/
 │   ├── backstage-config/
 │   └── aws-secrets-manager/
-├── gitops/
-│   ├── helm/
-│   │   ├── kong/
-│   │   ├── grafana/
-│   │   ├── loki/
-│   │   ├── alertmanager/
-│   │   ├── fluent-bit/
-│   │   ├── keycloak/
-│   │   └── backstage/
-│   └── kustomize/
-│       ├── bases/
-│       └── overlays/
-│           ├── dev/
-│           ├── test/
-│           ├── staging/
-│           └── prod/
-├── compliance/
-│   └── datree/
-├── docs/
-│   ├── 01_GOVERNANCE.md
-│   ├── 02_GOVERNANCE_MODEL.md
-│   ├── 03_GOVERNANCE_BACKSTAGE.md
-│   └── 04_REPO_STRUCTURE.md
-├── eksctl-template.yaml
-└── Makefile
+├── modules/
+├── Makefile
+└── eksctl-template.yaml
 ```
 
 ## Folder Details
@@ -88,3 +101,14 @@ Governance and capability documentation ordered numerically for easy navigation.
 3. **Tooling Configuration (Kong APIs, Grafana dashboards, Keycloak realms)** – Terraform provider modules in `idp-tooling/` manage API-level config so changes are versioned and promoted top-to-bottom.
 
 This separation keeps infrastructure, workloads, and configuration decoupled but fully code-driven, enabling safe promotions across environments.
+
+## Application vs Tooling Layout
+
+- **Kustomize (cluster plumbing)** – `gitops/kustomize/bases` defines shared namespaces/cluster objects; `gitops/kustomize/overlays/<env>` layers environment-specific tweaks. Used for base cluster resources.
+
+- **Helm (platform tooling & apps)** – `gitops/helm/<component>/` contains:
+  - `helmrepository.yaml`: source chart repo.
+  - `helmrelease.yaml`: deployment spec consumed by GitOps controller.
+  - `values/<env>.yaml`: environment-specific overrides (dev/test/staging/prod). Reference these from HelmRelease (Flux `valuesFrom` or Argo `valueFiles`) so each env gets tailored settings (URLs, replicas, secrets, etc.).
+
+This separation keeps cluster scaffolding (namespaces, CRDs) in Kustomize while Helm handles workloads (Kong, Grafana, Loki, Keycloak, Backstage). GitOps controllers reconcile both trees so every environment stays consistent.

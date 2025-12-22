@@ -1,0 +1,22 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: datree-admission-webhook
+  namespace: datree-system
+spec:
+  releaseName: datree-admission-webhook
+  chart:
+    spec:
+      chart: admission-webhook
+      version: "1.0.12"
+      sourceRef:
+        kind: HelmRepository
+        name: datree
+        namespace: flux-system
+  interval: 10m
+  values:
+    datreeToken: "${DATREE_TOKEN:=replace-me}"
+    admissionWebhooks:
+      failurePolicy: Fail
+    cluster:
+      skipKubeSystem: true
