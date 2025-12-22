@@ -36,7 +36,8 @@ goldenpath-idp-infra/
 │   │   ├── alertmanager/
 │   │   ├── fluent-bit/
 │   │   ├── keycloak/
-│   │   └── backstage/
+│   │   ├── backstage/
+│   │   └── datree/
 │   └── kustomize/
 │       ├── bases/
 │       │   ├── kustomization.yaml
@@ -81,7 +82,7 @@ Terraform provider modules that configure platform tooling **after** it is deplo
 
 ### `gitops/`
 GitOps workloads that install tooling inside the cluster:
-- `helm/`: chart releases (or HelmRelease manifests) for Kong, Grafana, Loki, Alertmanager, Fluent Bit, Keycloak, Backstage. These define the workloads and namespaces.
+- `helm/`: chart releases (or HelmRelease manifests) for Kong, Grafana, Loki, Alertmanager, Fluent Bit, Keycloak, Backstage, Datree. These define the workloads and namespaces.
 - `kustomize/`: base manifests plus environment-specific overlays so Argo CD/Flux can reconcile per environment.
 
 ### `compliance/datree/`
