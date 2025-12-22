@@ -16,10 +16,6 @@ terraform.tfvars.json
 *.auto.tfvars
 *.auto.tfvars.json
 
-# Backend configuration files (per-environment)
-backend.tf
-**/backend.tf
-
 # Terraform lockfiles and backend configs
 .terraform.lock.hcl
 **/.terraform.lock.hcl

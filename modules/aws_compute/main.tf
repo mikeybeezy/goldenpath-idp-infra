@@ -18,10 +18,7 @@ resource "aws_instance" "app" {
   user_data     = var.user_data
   iam_instance_profile = var.iam_instance_profile
 
-  network_interface {
-    network_interface_id = aws_network_interface.instance.id
-    device_index         = 0
-  }
+  primary_network_interface_id = aws_network_interface.instance.id
 
   root_block_device {
     volume_size = var.root_volume_size
