@@ -1,8 +1,35 @@
+# Environment files
 **/.env
+
+# Terraform state & plan artifacts
+.terraform/
+**/.terraform/*
 *.tfstate
+*.tfstate.*
+*.tfplan
+*.tfplan.*
+terraform.tfstate.backup
+
+# Terraform variable files (often contain secrets)
+terraform.tfvars
+terraform.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Backend configuration files (per-environment)
+backend.tf
+**/backend.tf
+
+# Terraform lockfiles and backend configs
+.terraform.lock.hcl
+**/.terraform.lock.hcl
+*.backend.t
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Misc
 *.out
-*.txt
-*.lock
-*.lock
-*.terraform
-*/*/.terraform.lock.hcl
+
+.txt

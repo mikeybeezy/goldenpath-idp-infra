@@ -56,6 +56,25 @@ module "web_security_group" {
   tags                     = local.common_tags
 }
 
+module "compute" {
+  source = "../../modules/aws_compute"
+  count  = var.compute_config.enabled ? 1 : 0
+
+  name                 = var.compute_config.name
+  ami_id               = var.compute_config.ami_id
+  instance_type        = var.compute_config.instance_type
+  subnet_id            = var.compute_config.subnet_type == "public" ? element(module.subnets.public_subnet_ids, 0) : element(module.subnets.private_subnet_ids, 0)
+  security_group_ids   = concat([module.web_security_group.security_group_id], var.compute_config.additional_security_group_ids)
+  ssh_key_name         = var.compute_config.ssh_key_name
+  user_data            = var.compute_config.user_data
+  iam_instance_profile = var.compute_config.iam_instance_profile
+  network_interface_description = var.compute_config.network_interface_description
+  root_volume_size     = var.compute_config.root_volume_size
+  root_volume_type     = var.compute_config.root_volume_type
+  root_volume_encrypted = var.compute_config.root_volume_encrypted
+  tags                 = local.common_tags
+}
+
 /*module "eks" {
   source = "../../modules/aws_eks"
   count  = var.eks_config.enabled ? 1 : 0

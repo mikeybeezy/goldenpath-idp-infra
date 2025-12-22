@@ -40,6 +40,40 @@ variable "common_tags" {
   default     = {}
 }
 
+variable "compute_config" {
+  description = "Configuration for the optional EC2 instance."
+  type = object({
+    enabled                       = bool
+    name                          = string
+    ami_id                        = string
+    instance_type                 = string
+    subnet_type                   = string
+    additional_security_group_ids = list(string)
+    ssh_key_name                  = string
+    user_data                     = string
+    iam_instance_profile          = string
+    network_interface_description = string
+    root_volume_size              = number
+    root_volume_type              = string
+    root_volume_encrypted         = bool
+  })
+  default = {
+    enabled                       = false
+    name                          = ""
+    ami_id                        = ""
+    instance_type                 = "t3.micro"
+    subnet_type                   = "private"
+    additional_security_group_ids = []
+    ssh_key_name                  = null
+    user_data                     = null
+    iam_instance_profile          = null
+    network_interface_description = "Managed by Terraform"
+    root_volume_size              = 20
+    root_volume_type              = "gp3"
+    root_volume_encrypted         = true
+  }
+}
+
 /*variable "eks_config" {
   description = "Configuration for the optional EKS cluster."
   type = object({

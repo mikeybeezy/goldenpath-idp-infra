@@ -69,10 +69,10 @@ Each environment composes the shared modules so you can deploy the same architec
 
 ## Customizing the Infrastructure
 
-- **CIDR ranges & AZs**: edit `public_subnets` / `private_subnets` lists in `envs/<env>/terraform.tfvars`. Each item needs a `name`, `cidr_block`, and `availability_zone`.
+- **CIDR ranges & AZs**: edit `public_subnets` / `private_subnets` lists in `envs/<env>/terraform.tfvars`. Each item needs a `name`, `cidr_block`, and `availability_zone`, and you can add as many entries as you need (one per subnet/AZ pair). The subnet module automatically creates one subnet per object in the list. If your AWS account is limited to specific AZs (e.g., `eu-west-2a/b/c`), make sure the `availability_zone` fields match the zones that AWS allows in that region; otherwise Terraform will fail with “InvalidParameterValue” errors.
 - **Tags**: add any key/value pairs under `common_tags` in the same `tfvars`; they merge with defaults so all resources stay labeled.
 - **Name prefix & environment label**: set `name_prefix` and `environment` fields if you want different naming (e.g., `goldenpath-prod`).
-- **Compute module**: when you add `modules/aws_compute` to an environment, pass `subnet_id`, `security_group_ids`, `ami_id`, etc., via that environment’s `terraform.tfvars` so each stack can pick its own instance settings.
+- **Compute module**: every environment already includes the `aws_compute` module, but it’s disabled by default. Edit `compute_config` inside `envs/<env>/terraform.tfvars` (set `enabled = true`, choose an AMI, instance type, subnet type, etc.) to spin up a single EC2 instance. Leave `enabled = false` to skip it.
 - **EKS (optional)**: the repo already contains an `aws_eks` module and wiring in every environment, but those blocks are commented out by default. To spin up a cluster for a specific env, remove the comment markers around the `module "eks"` block in `envs/<env>/main.tf`, the `variable "eks_config"` block in `envs/<env>/variables.tf`, and the `eks_config` object in `envs/<env>/terraform.tfvars`. Update the config (cluster name, version, node-group sizes/types), run `terraform plan`, and apply. Comment them back out whenever you want to pause or remove EKS.
 
 ## Tips
