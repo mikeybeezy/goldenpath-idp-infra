@@ -15,3 +15,212 @@
 - ✅ In place – capability is implemented and active.
 - ⚙️ Disabled / staged – capability exists but requires toggling or is not active by default.
 - 🚧 In progress – documentation or automation partially complete.
+
+
+Synthasise  calibrate what we've done alraedy, your awarness of what the big picture vision is and use the below information to propose how the points captured can be embeded into the Cabibility Matrix for V1 with out duplicatiion or repition  point out what should stay in V1 and what can be moved into v2 or if eeverything listed deserves to be in V1 that is ok 
+
+-------
+
+Golden Path Architecture (High Level)
+Developer Experience
+
+Backstage Portal as the primary UX
+Golden Path templates for service creation
+Self-service onboarding with guardrails
+CI Optionality (Convergent Optionality)
+
+Teams may choose:
+
+GitHub + GitHub Actions
+GitLab + GitLab CI
+Tekton (Kubernetes-native)
+All paths converge on the same platform contracts.
+
+Delivery & Runtime
+
+GitOps via Argo CD / Flux
+Kubernetes as the runtime substrate
+Ingress / API Gateway for north-south traffic
+Service Mesh for east-west traffic (where needed)
+Security & Identity
+
+Central identity via OIDC (Keycloak/Auth0/Ory)
+Secrets managed via Vault / External Secrets
+Policy enforcement via OPA/Kyverno
+Observability
+
+Metrics: Prometheus
+Logs: Loki / ELK
+Traces: Tempo / Jaeger
+SLOs as first-class citizens
+
+
+Ingress / API Gateway 
+- Kong 
+- Gateway api with bolt on's like traefik
+
+
+# **V1 Scope (What’s IN)**
+
+**1.**
+
+**Golden Path (Very Narrow)**
+
+- 1–2 service types max
+    - Stateless web service
+    - API service
+- Opinionated structure
+- Clear contracts
+
+V1 golden path should feel boring — and relieving.
+
+**2.**
+
+**Single Runtime**
+
+- Kubernetes (one cluster type)
+- One deployment model
+- One GitOps flow
+
+No:
+
+- multi-cluster routing
+- multi-cloud abstraction
+- custom per-team logic
+
+**3.**
+
+**CI/CD (Choice, Not Chaos)**
+
+- Support existing muscle memory
+    - GitHub Actions or
+    - GitLab CI or
+    - Tekton
+- 
+- Same outcome, different entry points
+
+V1 respects familiarity.
+
+**4.**
+
+**Identity & Security (Invisible)**
+
+- SSO via Keycloak/Auth0
+- Namespace RBAC
+- Secrets via External Secrets/Vault
+- Image scanning (baseline)
+
+Security exists, but never asks devs to think about it.
+
+**5.**
+
+**Observability (Default, Not Custom)**
+
+- Pre-wired dashboards
+- Open telementry
+- Logs, metrics, traces ON by default
+- Basic SLO templates
+
+No custom observability frameworks yet.
+
+**6.**
+
+**Backstage (Minimal)**
+
+- Service catalog
+- Scaffolding
+- Docs
+- Scorecards (optional, gentle)
+
+Backstage is a doorway, not a control center in V1.
+
+
+**Golden Path (Very Narrow)**
+
+- 1–2 service types max
+    - Stateless web service
+    - API service
+- Opinionated structure
+- Clear contracts
+
+V1 golden path should feel boring — and relieving.
+
+**2.**
+
+**Single Runtime**
+
+- Kubernetes (one cluster type)
+- One deployment model
+- One GitOps flow
+
+No:
+
+- multi-cluster routing
+- multi-cloud abstraction
+- custom per-team logic
+
+**3.**
+
+**CI/CD (Choice, Not Chaos)**
+
+- Support existing muscle memory
+    - GitHub Actions or
+    - GitLab CI or
+    - Tekton
+- 
+- Same outcome, different entry points
+
+V1 respects familiarity.
+
+**4.**
+
+**Identity & Security (Invisible)**
+
+- SSO via Keycloak/Auth0
+- Namespace RBAC
+- Secrets via External Secrets/Vault
+- Image scanning (baseline)
+
+Security exists, but never asks devs to think about it.
+
+**5.**
+
+**Observability (Default, Not Custom)**
+
+- Pre-wired dashboards
+- Open telementry
+- Logs, metrics, traces ON by default
+- Basic SLO templates
+
+No custom observability frameworks yet.
+
+**6.**
+
+**Backstage (Minimal)**
+
+- Service catalog
+- Scaffolding
+- Docs
+- Scorecards (optional, gentle)
+
+Backstage is a doorway, not a control center in V1.
+
+Recommended MVP Tool Stack (Optimised)
+
+Core
+•	Terraform
+•	Terragrunt (env + state only)
+•	GitHub Actions (validation)
+•	AWS (single provider)
+
+Workflow
+•	Atlantis (PR-driven plan/apply)
+•	Manual approval via PR review
+
+Quality Gates
+•	terraform fmt / validate
+•	tflint
+•	tfsec / checkov
+•	1–2 Terratest examples (optional but powerful)
+
+Ci pipeline for infra and testing
