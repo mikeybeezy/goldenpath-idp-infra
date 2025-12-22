@@ -8,8 +8,18 @@
 | **Compute (EC2)** | Optional EC2 instance template with managed ENI. | `modules/aws_compute`, `modules/aws_nic` | ⚙️ Disabled by default | Toggle via `compute_config.enabled` in each env’s tfvars. Handles ENI + root volume config. |
 | **EKS Control Plane** | Managed Kubernetes cluster + node group. | `modules/aws_eks` | ⚙️ Staged (commented) | Module exists but env usage is commented out. Enable by uncommenting `eks_config` blocks. |
 | **Environment Overlays** | Per-environment Terraform stacks controlling providers/backends. | `envs/dev`, `envs/test`, `envs/staging`, `envs/prod` | ✅ In place | Each env has `main.tf`, `variables.tf`, `terraform.tfvars`, `backend.tf`. |
-| **Automation Wrapper** | Makefile wrappers for init/plan/apply per environment. | `Makefile` | ✅ In place | `make init ENV=dev` etc. simplifies Terraform invocation. |
-| **Documentation & Onboarding** | Root README, module-level READMEs, capability overview. | `README.md`, `modules/*/README.md`, `CAPABILITY_MATRIX.md` | 🚧 In progress | VPC module doc complete; other modules pending the same format. |
+| **Developer Experience (Backstage)** | Minimal Backstage portal for catalog, scaffolds, docs. | Backstage stack (planned) | ⚙️ Planned | V1: 1–2 service templates, doc links, gentle scorecards. |
+| **Golden Path Templates** | Narrow set of service archetypes (stateless web/API) with contracts. | Template repos (planned) | ⚙️ Planned | Keeps onboarding boring + predictable; expands later. |
+| **CI/CD Optionality** | GitHub Actions, GitLab CI, or Tekton feeding same contracts. | CI templates/pipelines (planned) | ⚙️ Planned | Leverages existing muscle memory while converging on GitOps outputs. |
+| **GitOps Delivery** | Argo CD / Flux applying manifests to Kubernetes. | GitOps controller + repos (planned) | ⚙️ Planned | Single runtime, single delivery path per env. |
+| **Ingress / API Gateway** | North-south entry via Kong or Gateway API + Traefik. | Ingress controller stack (planned) | ⚙️ Planned | Provides baseline routing; extensible per tenant. |
+| **Service Mesh** | East-west security/observability via Istio/Linkerd (when needed). | Mesh stack (future) | 🚧 V2 | Defer until workloads justify mTLS/policy overhead. |
+| **Identity & Security** | OIDC (Keycloak/Auth0/Ory), namespace RBAC, image scanning. | IdP, RBAC templates, scanning pipeline | ⚙️ Planned | Security is invisible to devs; enforcement centralised. |
+| **Secrets Management** | HashiCorp Vault (primary) or AWS Secrets Manager (fallback) via External Secrets. | Vault / AWS Secrets Manager, External Secrets | ⚙️ Planned | Pick Vault for rich policy; use Secrets Manager when Vault unavailable. |
+| **Policy Enforcement** | OPA/Kyverno guardrails for clusters + workloads. | Policy engine (future) | 🚧 V2 | Add after core identity/secrets land. |
+| **Observability** | Prometheus, Loki/ELK, Tempo/Jaeger, basic SLO templates. | Observability stack (planned) | ⚙️ Planned | Metrics/logs/traces on by default; custom frameworks deferred. |
+| **Automation & Quality Gates** | Makefile wrappers, fmt/validate/tflint/tfsec, Atlantis workflows. | `Makefile`, CI pipeline, Atlantis (planned) | ⚙️ In progress | Makefile live; linting + PR-driven plan/apply next. |
+| **Documentation & Onboarding** | Root README, module-level docs, capability overview. | `README.md`, `modules/*/README.md`, `CAPABILITY_MATRIX.md` | 🚧 In progress | VPC module doc complete; remaining modules next. |
 
 ### Legend
 - ✅ In place – capability is implemented and active.
