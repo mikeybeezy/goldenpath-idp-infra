@@ -67,6 +67,12 @@ bootstrap/40_smoke-tests/10_kubeconfig.sh <cluster> <region>
 This script installs Metrics Server and runs `kubectl top nodes` as a quick
 health check.
 
+For a phased audit report after add-ons are installed:
+
+```
+bootstrap/40_smoke-tests/20_audit.sh <cluster> <region>
+```
+
 ## Bootstrap components (mandatory vs optional)
 
 Mandatory (baseline cluster functionality):
