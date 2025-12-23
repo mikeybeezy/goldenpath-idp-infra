@@ -149,6 +149,8 @@ resource "aws_eks_addon" "ebs_csi_driver" {
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "aws-ebs-csi-driver"
   addon_version = lookup(var.addon_versions, "aws-ebs-csi-driver", null)
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
 
   depends_on = [aws_eks_node_group.this]
 }
@@ -157,6 +159,8 @@ resource "aws_eks_addon" "efs_csi_driver" {
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "aws-efs-csi-driver"
   addon_version = lookup(var.addon_versions, "aws-efs-csi-driver", null)
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
 
   depends_on = [aws_eks_node_group.this]
 }
@@ -165,6 +169,8 @@ resource "aws_eks_addon" "snapshot_controller" {
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "snapshot-controller"
   addon_version = lookup(var.addon_versions, "snapshot-controller", null)
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
 
   depends_on = [aws_eks_node_group.this]
 }
@@ -173,6 +179,8 @@ resource "aws_eks_addon" "coredns" {
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "coredns"
   addon_version = lookup(var.addon_versions, "coredns", null)
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
 
   depends_on = [aws_eks_cluster.this]
 }
@@ -181,6 +189,18 @@ resource "aws_eks_addon" "kube_proxy" {
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "kube-proxy"
   addon_version = lookup(var.addon_versions, "kube-proxy", null)
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
+
+  depends_on = [aws_eks_cluster.this]
+}
+
+resource "aws_eks_addon" "vpc_cni" {
+  cluster_name = aws_eks_cluster.this.name
+  addon_name   = "vpc-cni"
+  addon_version = lookup(var.addon_versions, "vpc-cni", null)
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
 
   depends_on = [aws_eks_cluster.this]
 }
