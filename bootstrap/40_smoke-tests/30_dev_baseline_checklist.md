@@ -11,6 +11,7 @@ Use this as a living checklist to validate the dev environment after bootstrap.
 
 - `coredns`, `kube-proxy`, `vpc-cni` are `Active`.
 - `aws-ebs-csi-driver`, `aws-efs-csi-driver`, `snapshot-controller` are `Active`.
+- Argo CD Applications include `cert-manager` and it is `Healthy` / `Synced`.
 
 ## Metrics
 

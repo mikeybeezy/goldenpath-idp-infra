@@ -15,7 +15,7 @@ bootstrap/
 
 1) 00_prereqs: verify required tools are installed.
 2) 10_gitops-controller: install Argo CD via Helm.
-3) 20_core-addons: install the AWS Load Balancer Controller.
+3) 20_core-addons: install the AWS Load Balancer Controller and cert-manager.
 4) 30_platform-tooling: apply Argo CD apps and install Kong ingress.
 5) 40_smoke-tests: validate kubeconfig, metrics, and run the audit report.
 
@@ -143,6 +143,7 @@ Core add-ons (load balancer controller):
 
 ```
 bootstrap/20_core-addons/10_aws_lb_controller.sh <cluster> <region> <vpc_id> [service_account_name] [service_account_namespace]
+bootstrap/20_core-addons/20_cert_manager.sh <cluster> <region> [namespace]
 ```
 
 Platform tooling (apps + ingress):
@@ -151,6 +152,17 @@ Platform tooling (apps + ingress):
 bootstrap/30_platform-tooling/10_argocd_apps.sh <env>
 bootstrap/30_platform-tooling/20_kong_ingress.sh <cluster> <region> [namespace]
 ```
+
+## Kong requirements (Helm/Argo CD)
+
+Kong requires:
+- AWS Load Balancer Controller (for ALB/NLB provisioning).
+- RBAC and service accounts (provided by the chart/manifest).
+- Optional CRDs for Kong plugins and custom resources.
+- Optional Postgres (if not running DB-less).
+
+We install Kong through Argo CD so the cluster reconciles with Git state.
+cert-manager is also installed through Argo CD and validated by the script.
 
 ## Keycloak SSO follow-up
 
