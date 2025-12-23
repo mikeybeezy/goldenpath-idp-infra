@@ -4,8 +4,6 @@ Fluent Bit is the DaemonSet that ships logs from every node/pod to Loki (and opt
 
 ```
 gitops/helm/fluent-bit/
-├── helmrepository.yaml
-├── helmrelease.yaml
 └── values/
     ├── dev.yaml
     ├── test.yaml
@@ -13,6 +11,4 @@ gitops/helm/fluent-bit/
     └── prod.yaml
 ```
 
-- `helmrepository.yaml`: references the Fluent Helm repo.
-- `helmrelease.yaml`: deploys Fluent Bit into the `monitoring` namespace.
-- `values/<env>.yaml`: set log outputs and filters per environment (Loki URL, extra outputs).
+Argo CD Applications load these value files via `$values/gitops/helm/fluent-bit/values/<env>.yaml`.

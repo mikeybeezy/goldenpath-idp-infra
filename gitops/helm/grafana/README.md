@@ -4,8 +4,6 @@ Grafana provides dashboards and alert visualization for the platform. This chart
 
 ```
 gitops/helm/grafana/
-├── helmrepository.yaml
-├── helmrelease.yaml
 └── values/
     ├── dev.yaml
     ├── test.yaml
@@ -13,6 +11,4 @@ gitops/helm/grafana/
     └── prod.yaml
 ```
 
-- `helmrepository.yaml`: references the official Grafana Helm repository.
-- `helmrelease.yaml`: defines how Argo CD (or Flux) deploys the chart.
-- `values/<env>.yaml`: per-environment overrides (admin password, datasources, ingress).
+Referenced from `gitops/argocd/apps/<env>/grafana.yaml` using `$values/gitops/helm/grafana/values/<env>.yaml`.

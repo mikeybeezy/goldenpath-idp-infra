@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-fluent-bit
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://fluent.github.io/helm-charts
+      chart: fluent-bit
+      targetRevision: 0.47.0
+      helm:
+        valueFiles:
+          - $values/gitops/helm/fluent-bit/values/prod.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

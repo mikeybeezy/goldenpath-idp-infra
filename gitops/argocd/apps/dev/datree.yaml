@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dev-datree
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: datree-system
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://charts.datree.io
+      chart: datree-admission-webhook
+      targetRevision: 1.0.12
+      helm:
+        valueFiles:
+          - $values/gitops/helm/datree/values/dev.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

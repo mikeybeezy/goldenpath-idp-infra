@@ -4,8 +4,6 @@ Kong acts as the platform’s ingress/API gateway, handling routing, auth, and p
 
 ```
 gitops/helm/kong/
-├── helmrepository.yaml
-├── helmrelease.yaml
 └── values/
     ├── dev.yaml
     ├── test.yaml
@@ -13,6 +11,4 @@ gitops/helm/kong/
     └── prod.yaml
 ```
 
-- `helmrepository.yaml`: references the Kong Helm repo (`charts.konghq.com`).
-- `helmrelease.yaml`: workload definition reconciled by GitOps (Argo/Flux).
-- `values/<env>.yaml`: override proxy type, plugins, ingress settings per environment.
+Argo CD Applications under `gitops/argocd/apps/<env>/kong.yaml` reference these value files via `$values/gitops/helm/kong/values/<env>.yaml`.

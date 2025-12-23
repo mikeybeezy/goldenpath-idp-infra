@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dev-cert-manager
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: cert-manager
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://charts.jetstack.io
+      chart: cert-manager
+      targetRevision: v1.14.4
+      helm:
+        valueFiles:
+          - $values/gitops/helm/cert-manager/values/dev.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

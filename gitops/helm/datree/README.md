@@ -4,8 +4,6 @@ Datree enforces Kubernetes policies at admission time to catch any manifests tha
 
 ```
 gitops/helm/datree/
-├── helmrepository.yaml
-├── helmrelease.yaml
 └── values/
     ├── dev.yaml
     ├── test.yaml
@@ -13,6 +11,4 @@ gitops/helm/datree/
     └── prod.yaml
 ```
 
-- `helmrepository.yaml`: points to Datree’s chart repo.
-- `helmrelease.yaml`: deploys the admission webhook with failurePolicy=Fail by default.
-- `values/<env>.yaml`: set `datreeToken` and environment-specific behavior (namespaces to skip, policy bundles, etc.).
+Argo CD Applications reference these files when installing the Datree admission webhook.

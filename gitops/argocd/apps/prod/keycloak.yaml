@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-keycloak
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: keycloak
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: keycloak
+      targetRevision: 22.1.6
+      helm:
+        valueFiles:
+          - $values/gitops/helm/keycloak/values/prod.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
