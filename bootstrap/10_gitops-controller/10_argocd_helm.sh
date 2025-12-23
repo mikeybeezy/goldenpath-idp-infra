@@ -10,6 +10,13 @@ if [[ -z "${cluster_name}" || -z "${region}" ]]; then
   exit 1
 fi
 
+script_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd "${script_root}/../.." && pwd)"
+
+if [[ "${values_file}" != /* ]]; then
+  values_file="${repo_root}/${values_file}"
+fi
+
 # Ensure kubeconfig is pointed at the target cluster.
 aws eks update-kubeconfig --region "${region}" --name "${cluster_name}"
 

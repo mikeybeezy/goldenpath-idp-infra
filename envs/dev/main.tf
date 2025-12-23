@@ -4,7 +4,7 @@ terraform {
 
 locals {
   environment     = var.environment
-  name_prefix     = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
+  name_prefix     = var.name_prefix
   public_subnets  = var.public_subnets
   private_subnets = var.private_subnets
 
@@ -13,6 +13,7 @@ locals {
       Environment = local.environment
       Project     = "goldenpath-idp"
       ManagedBy   = "terraform"
+      BuildId     = var.build_id
     },
     var.common_tags,
   )
@@ -149,6 +150,7 @@ module "eks" {
   vpc_id                        = module.vpc.vpc_id
   subnet_ids                    = module.subnets.private_subnet_ids
   node_group_config             = var.eks_config.node_group
+  addon_replica_counts          = var.addon_replica_counts
   enable_ssh_break_glass        = var.enable_ssh_break_glass
   ssh_key_name                  = var.ssh_key_name
   ssh_source_security_group_ids = var.ssh_source_security_group_ids

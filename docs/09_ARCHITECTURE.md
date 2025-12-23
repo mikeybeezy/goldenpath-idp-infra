@@ -67,3 +67,12 @@ flowchart TD
   IAM[IAM (Terraform-managed)<br/>Cluster Role<br/>Node Role<br/>IRSA Roles] --> EKS
   IAM --> NG
 ```
+1.Add BuildId to tags everywhere.
+2.Create a cleanup script that finds and deletes tagged orphaned resources.
+3.Make name_prefix required and CLI‑driven.
+
+- Create a doc for for Handling falure modes  tthis context is infre build, enter the options surfaced  ptions, the  choice we made and  othre options that could be adopted down the line 
+
+- and add to the govnece doc's failure modes look like and how we treat fiald cluster builds 
+
+

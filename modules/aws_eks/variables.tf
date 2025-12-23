@@ -82,3 +82,9 @@ variable "addon_versions" {
   type        = map(string)
   default     = {}
 }
+
+variable "addon_replica_counts" {
+  description = "Optional map of addon replica counts by addon name."
+  type        = map(number)
+  default     = {}
+}

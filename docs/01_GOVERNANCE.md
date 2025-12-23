@@ -201,6 +201,16 @@ Governance is enforced through process, not just policy.
 See also: `docs/07_REPO_DECOUPLING_OPTIONS.md` for planned repository split options.
 See also: `docs/08_INGRESS_STRATEGY.md` for the front door decision (Kong+NLB vs ALB).
 
+# **Failure Modes & Recovery**
+
+We treat failed cluster builds as recoverable events. The default response is:
+
+- Use a unique `name_prefix` per build.
+- Tag all resources with a `BuildId`.
+- Clean up orphans using `bootstrap-scripts/cleanup-orphans.sh`.
+
+Details: `docs/10_INFRA_FAILURE_MODES.md`.
+
 **Change Flow**
 ```
 Developer

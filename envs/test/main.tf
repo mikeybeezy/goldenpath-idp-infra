@@ -4,7 +4,7 @@ terraform {
 
 locals {
   environment     = var.environment
-  name_prefix     = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
+  name_prefix     = var.name_prefix
   public_subnets  = var.public_subnets
   private_subnets = var.private_subnets
 
@@ -13,6 +13,7 @@ locals {
       Environment = local.environment
       Project     = "goldenpath-idp"
       ManagedBy   = "terraform"
+      BuildId     = var.build_id
     },
     var.common_tags,
   )
@@ -94,5 +95,4 @@ module "compute" {
 
   depends_on = [module.public_route_table]
 }*/
-
 

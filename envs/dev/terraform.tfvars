@@ -1,5 +1,4 @@
 environment = "dev"
-name_prefix = "goldenpath-dev"
 vpc_cidr    = "10.0.0.0/16"
 
 public_subnets = [
@@ -69,6 +68,12 @@ iam_config = {
   lb_controller_service_account_name = "aws-load-balancer-controller"
 }
 
+addon_replica_counts = {
+  aws-ebs-csi-driver  = 1
+  aws-efs-csi-driver  = 1
+  snapshot-controller = 1
+}
+
 eks_config = {
   enabled      = true
   cluster_name = "goldenpath-dev-eks"
@@ -81,7 +86,7 @@ eks_config = {
     min_size       = 2
     max_size       = 4
     desired_size   = 2
-    instance_types = ["t3.small"]
+    instance_types = ["t2.small"]
     disk_size      = 20
     capacity_type  = "ON_DEMAND"
     update_config = {

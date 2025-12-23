@@ -30,6 +30,13 @@ Prereqs:
 bootstrap/00_prereqs/00_check_tools.sh
 ```
 
+Required inputs (CLI or env vars):
+
+```
+TF_VAR_name_prefix=goldenpath-dev-<id>
+TF_VAR_build_id=<build-id>
+```
+
 Bootstrap sequence:
 
 ```
@@ -139,7 +146,11 @@ terraform import 'module.eks[0].aws_eks_addon.kube_proxy' <cluster>:kube-proxy
 terraform import 'module.eks[0].aws_eks_addon.ebs_csi_driver' <cluster>:aws-ebs-csi-driver
 terraform import 'module.eks[0].aws_eks_addon.efs_csi_driver' <cluster>:aws-efs-csi-driver
 terraform import 'module.eks[0].aws_eks_addon.snapshot_controller' <cluster>:snapshot-controller
+terraform import 'module.iam[0].aws_iam_role.eks_cluster' <cluster-role-name>
+terraform import 'module.iam[0].aws_iam_role.eks_node_group' <node-role-name>
 ```
+
+If IAM roles already exist (EntityAlreadyExists), import them instead of recreating.
 
 ## Connect to the cluster
 

@@ -5,8 +5,12 @@ variable "environment" {
 
 variable "name_prefix" {
   type        = string
-  description = "Prefix applied to resource names."
-  default     = ""
+  description = "Prefix applied to resource names. Set via CLI or TF_VAR_name_prefix."
+}
+
+variable "build_id" {
+  type        = string
+  description = "Unique build identifier for tagging and cleanup. Set via CLI or TF_VAR_build_id."
 }
 
 variable "vpc_cidr" {

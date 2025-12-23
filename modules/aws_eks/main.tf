@@ -1,6 +1,10 @@
 locals {
   node_group = var.node_group_config
   environment_tags = var.environment != "" ? { Environment = var.environment } : {}
+  addon_replica_counts = var.addon_replica_counts
+  ebs_replica_count = lookup(var.addon_replica_counts, "aws-ebs-csi-driver", null)
+  efs_replica_count = lookup(var.addon_replica_counts, "aws-efs-csi-driver", null)
+  snapshot_replica_count = lookup(var.addon_replica_counts, "snapshot-controller", null)
 }
 
 resource "aws_iam_role" "cluster" {
@@ -169,6 +173,11 @@ resource "aws_eks_addon" "ebs_csi_driver" {
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "aws-ebs-csi-driver"
   addon_version = lookup(var.addon_versions, "aws-ebs-csi-driver", null)
+  configuration_values = local.ebs_replica_count != null ? jsonencode({
+    controller = {
+      replicaCount = local.ebs_replica_count
+    }
+  }) : null
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
@@ -179,6 +188,11 @@ resource "aws_eks_addon" "efs_csi_driver" {
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "aws-efs-csi-driver"
   addon_version = lookup(var.addon_versions, "aws-efs-csi-driver", null)
+  configuration_values = local.efs_replica_count != null ? jsonencode({
+    controller = {
+      replicaCount = local.efs_replica_count
+    }
+  }) : null
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
@@ -189,6 +203,11 @@ resource "aws_eks_addon" "snapshot_controller" {
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "snapshot-controller"
   addon_version = lookup(var.addon_versions, "snapshot-controller", null)
+  configuration_values = local.snapshot_replica_count != null ? jsonencode({
+    controller = {
+      replicaCount = local.snapshot_replica_count
+    }
+  }) : null
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 

@@ -5,6 +5,9 @@ set -euo pipefail
 # This orchestrates the repo bootstrap scripts in a safe, deterministic order.
 # Usage:
 #   bootstrap-scripts/helm-bootstrap.sh <cluster-name> <region> [kong-namespace]
+#
+# Optional cleanup mode:
+#   CLEANUP_ON_FAILURE=true BUILD_ID=<id> DRY_RUN=false bootstrap-scripts/cleanup-orphans.sh <build-id> <region>
 
 cluster_name="${1:-}"
 region="${2:-}"
@@ -39,11 +42,12 @@ aws eks update-kubeconfig --name "${cluster_name}" --region "${region}"
 bash "${repo_root}/bootstrap/00_prereqs/00_check_tools.sh"
 
 # Install Argo CD and (optionally) show admin access helper instructions.
-bash "${repo_root}/bootstrap/10_gitops-controller/10_argocd_helm.sh" "${cluster_name}" "${region}"
+bash "${repo_root}/bootstrap/10_gitops-controller/10_argocd_helm.sh" "${cluster_name}" "${region}" "${repo_root}/gitops/helm/argocd/values/dev.yaml"
 
 # Validate core add-ons that are expected to exist.
-bash "${repo_root}/bootstrap/20_core-addons/10_aws_lb_controller.sh" "${cluster_name}" "${region}"
-bash "${repo_root}/bootstrap/20_core-addons/20_cert_manager.sh"
+vpc_id="$(aws eks describe-cluster --name "${cluster_name}" --region "${region}" --query 'cluster.resourcesVpcConfig.vpcId' --output text)"
+bash "${repo_root}/bootstrap/20_core-addons/10_aws_lb_controller.sh" "${cluster_name}" "${region}" "${vpc_id}"
+bash "${repo_root}/bootstrap/20_core-addons/20_cert_manager.sh" "${cluster_name}" "${region}"
 
 # Apply platform tooling via Argo CD.
 bash "${repo_root}/bootstrap/30_platform-tooling/10_argocd_apps.sh"
