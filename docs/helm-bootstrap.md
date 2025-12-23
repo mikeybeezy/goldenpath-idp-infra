@@ -1,10 +1,10 @@
-# Helm Bootstrap Script # NON production Only for testin 
+# Helm Bootstrap Runner (Non-Production)
 
-This document explains what `bootstrap-scripts/helm-bootstrap.sh` does, when to run it, and options for extending or replacing it.
+This document explains what `bootstrap-scripts/helm-bootstrap.sh` does and when to run it.
 
 ## Purpose
 
-The script installs Argo CD (default GitOps engine) on a fresh EKS cluster and points it at this repo’s `gitops/` folder so all Helm/Kustomize workloads sync automatically. It is intended for:
+The runner orchestrates the full bootstrap flow against a fresh EKS cluster. It is intended for:
 
 - Ephemeral eksctl clusters (daily teardown) so tooling comes online immediately.
 - Terraform-managed clusters after provisioning completes.
@@ -12,36 +12,35 @@ The script installs Argo CD (default GitOps engine) on a fresh EKS cluster and p
 
 ## What the Script Does
 
-1. Validates that `kubectl` and `helm` are installed and that your kubeconfig points at the target cluster.
-2. Creates an `argocd` namespace (configurable via `ARGO_NAMESPACE`).
-3. Installs Argo CD via Helm (`server.service.type=LoadBalancer` so you can reach the UI quickly).
-4. Applies an Argo CD `Application` resource that syncs the repository and path specified by:
-   - `REPO_URL` (defaults to `git@github.com:your-org/goldenpath-idp-infra.git`)
-   - `GIT_PATH` (defaults to `gitops`)
-5. Enables automated sync (prune + self-heal) so workloads stay in the desired state.
+1. Ensures the AWS, kubectl, and helm CLIs are installed.
+2. Updates kubeconfig for the target cluster.
+3. Runs the prereq checks.
+4. Installs Argo CD via Helm.
+5. Validates core add-ons (AWS Load Balancer Controller, cert-manager).
+6. Applies Argo CD apps (platform tooling and Kong).
+7. Runs smoke tests and the audit report.
 
-After the script finishes, retrieve the Argo CD admin password:
-```sh
-kubectl -n $ARGO_NAMESPACE get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d
-```
+Argo CD admin access is handled via the dedicated helper script:
+`bootstrap/10_gitops-controller/20_argocd_admin_access.sh`.
 
 ## Usage
 
 ```sh
-export REPO_URL=git@github.com:your-org/goldenpath-idp-infra.git
-export GIT_PATH=gitops
-export ARGO_NAMESPACE=argocd
-./bootstrap-scripts/helm-bootstrap.sh
+./bootstrap-scripts/helm-bootstrap.sh <cluster-name> <region> [kong-namespace]
 ```
 
 Run this once per cluster after it becomes reachable by kubectl.
 
+## Runner vs individual scripts
+
+Use the runner when you want a clean, repeatable one-shot bootstrap for a new
+cluster. It enforces the full sequence and runs the standard checks.
+
+Use individual scripts when you need to rerun or debug a specific step, or
+when you are customizing the sequence (for example, skipping Kong until later).
+
 ## Suggested Enhancements / Alternatives
 
-- **Argo CD only**: this repo standardizes on Argo CD; Flux is not used.
-- **Terraform integration**: wrap the script in a Terraform `null_resource` or use EKS `terraform` outputs (cluster endpoint/role) to automate bootstrap immediately after `terraform apply`.
-- **Parameterize chart values**: pass Helm values file via `--values` to customize ingress, SSO, etc., or manage the Argo CD installation itself via GitOps.
-- **Use AWS Load Balancer Controller ingress**: change `server.service.type` to `ClusterIP` and expose Argo CD through Kong/ALB for tighter control once the platform is stable.
-- **Secrets management**: store `REPO_URL` credentials (SSH deploy key/token) in AWS Secrets Manager and inject via CI/CD instead of exporting locally.
-
-For long-term production, you may prefer to manage Argo CD via Terraform Helm provider or GitOps (self-managing) so even Argo’s installation is declarative. The bootstrap script then becomes a one-time helper rather than a required step.
+- **Terraform integration**: run this after `terraform apply` to standardize platform bring-up.
+- **Secrets management**: store Git credentials in a secret manager and inject via CI/CD.
+- **Runner hardening**: move to a CI pipeline once the flow is stable.

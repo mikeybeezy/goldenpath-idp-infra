@@ -74,6 +74,25 @@ variable "compute_config" {
   }
 }
 
+// SSM is the default node access path; SSH is break-glass and should be time-boxed and IP-restricted.
+variable "enable_ssh_break_glass" {
+  type        = bool
+  description = "Enable SSH break-glass access to worker nodes."
+  default     = false
+}
+
+variable "ssh_key_name" {
+  type        = string
+  description = "EC2 key pair name for SSH break-glass access."
+  default     = null
+}
+
+variable "ssh_source_security_group_ids" {
+  type        = list(string)
+  description = "Security group IDs allowed to SSH into worker nodes."
+  default     = []
+}
+
 variable "iam_config" {
   description = "Configuration for optional EKS IAM roles and OIDC assume role."
   type = object({
@@ -85,7 +104,19 @@ variable "iam_config" {
     oidc_provider_arn   = string
     oidc_audience       = string
     oidc_subject        = string
+    enable_autoscaler_role           = bool
+    autoscaler_role_name             = string
+    autoscaler_service_account_namespace = string
+    autoscaler_service_account_name  = string
+    enable_lb_controller_role        = bool
+    lb_controller_role_name          = string
+    lb_controller_service_account_namespace = string
+    lb_controller_service_account_name = string
   })
+  validation {
+    condition     = var.iam_config.enabled == false || var.eks_config.enabled == true
+    error_message = "iam_config.enabled requires eks_config.enabled to be true."
+  }
   default = {
     enabled              = false
     cluster_role_name    = ""
@@ -95,6 +126,14 @@ variable "iam_config" {
     oidc_provider_arn    = ""
     oidc_audience        = "sts.amazonaws.com"
     oidc_subject         = ""
+    enable_autoscaler_role           = false
+    autoscaler_role_name             = "goldenpath-idp-cluster-autoscaler"
+    autoscaler_service_account_namespace = "kube-system"
+    autoscaler_service_account_name  = "cluster-autoscaler"
+    enable_lb_controller_role        = false
+    lb_controller_role_name          = "goldenpath-idp-aws-load-balancer-controller"
+    lb_controller_service_account_namespace = "kube-system"
+    lb_controller_service_account_name = "aws-load-balancer-controller"
   }
 }
 
@@ -104,6 +143,9 @@ variable "eks_config" {
     enabled      = bool
     cluster_name = string
     version      = string
+    enable_ssh_break_glass = bool
+    ssh_key_name           = string
+    ssh_source_security_group_ids = list(string)
     node_group = object({
       name           = string
       min_size       = number
@@ -122,6 +164,9 @@ variable "eks_config" {
     enabled      = false
     cluster_name = ""
     version      = "1.29"
+    enable_ssh_break_glass = false
+    ssh_key_name           = null
+    ssh_source_security_group_ids = []
     node_group = {
       name           = "default"
       min_size       = 1

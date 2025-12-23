@@ -44,12 +44,22 @@ module "iam" {
   cluster_role_name    = var.iam_config.cluster_role_name != "" ? var.iam_config.cluster_role_name : "${local.name_prefix}-eks-cluster-role"
   node_group_role_name = var.iam_config.node_group_role_name != "" ? var.iam_config.node_group_role_name : "${local.name_prefix}-eks-node-role"
   oidc_role_name       = var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.name_prefix}-eks-oidc-role"
-  oidc_issuer_url      = var.iam_config.oidc_issuer_url
-  oidc_provider_arn    = var.iam_config.oidc_provider_arn
+  oidc_issuer_url      = module.eks[0].oidc_issuer_url
+  oidc_provider_arn    = module.eks[0].oidc_provider_arn
   oidc_audience        = var.iam_config.oidc_audience
   oidc_subject         = var.iam_config.oidc_subject
-  // environment          = local.environment
-  tags = local.common_tags
+  enable_autoscaler_role          = var.iam_config.enable_autoscaler_role
+  autoscaler_role_name            = var.iam_config.autoscaler_role_name
+  autoscaler_service_account_namespace = var.iam_config.autoscaler_service_account_namespace
+  autoscaler_service_account_name = var.iam_config.autoscaler_service_account_name
+  enable_lb_controller_role       = var.iam_config.enable_lb_controller_role
+  lb_controller_role_name          = var.iam_config.lb_controller_role_name
+  lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
+  lb_controller_service_account_name = var.iam_config.lb_controller_service_account_name
+  environment                     = local.environment
+  tags                            = local.common_tags
+
+  depends_on = [module.eks]
 }
 
 module "public_route_table" {
@@ -104,8 +114,49 @@ module "eks" {
   vpc_id             = module.vpc.vpc_id
   subnet_ids         = module.subnets.private_subnet_ids
   node_group_config  = var.eks_config.node_group
+  enable_ssh_break_glass      = var.enable_ssh_break_glass
+  ssh_key_name                = var.ssh_key_name
+  ssh_source_security_group_ids = var.ssh_source_security_group_ids
   environment        = local.environment
   tags               = local.common_tags
 
   depends_on = [module.public_route_table]
+}
+
+data "aws_eks_cluster_auth" "this" {
+  name = module.eks[0].cluster_name
+}
+
+provider "kubernetes" {
+  host                   = module.eks[0].cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
+  token                  = data.aws_eks_cluster_auth.this.token
+}
+
+resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
+  count = var.iam_config.enabled && var.iam_config.enable_lb_controller_role ? 1 : 0
+
+  metadata {
+    name      = var.iam_config.lb_controller_service_account_name
+    namespace = var.iam_config.lb_controller_service_account_namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].lb_controller_role_arn
+    }
+  }
+
+  depends_on = [module.eks, module.iam]
+}
+
+resource "kubernetes_service_account_v1" "cluster_autoscaler" {
+  count = var.iam_config.enabled && var.iam_config.enable_autoscaler_role ? 1 : 0
+
+  metadata {
+    name      = var.iam_config.autoscaler_service_account_name
+    namespace = var.iam_config.autoscaler_service_account_namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].cluster_autoscaler_role_arn
+    }
+  }
+
+  depends_on = [module.eks, module.iam]
 }

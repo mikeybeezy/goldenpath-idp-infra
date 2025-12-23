@@ -79,6 +79,17 @@ resource "aws_eks_cluster" "this" {
   depends_on = [aws_iam_role_policy_attachment.cluster]
 }
 
+data "tls_certificate" "oidc" {
+  url = aws_eks_cluster.this.identity[0].oidc[0].issuer
+}
+
+resource "aws_iam_openid_connect_provider" "this" {
+  url = aws_eks_cluster.this.identity[0].oidc[0].issuer
+
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.oidc.certificates[0].sha1_fingerprint]
+}
+
 resource "aws_iam_role" "node_group" {
   name = "${var.cluster_name}-node-role"
 
@@ -124,6 +135,15 @@ resource "aws_eks_node_group" "this" {
   capacity_type   = local.node_group.capacity_type
   disk_size       = local.node_group.disk_size
   instance_types  = local.node_group.instance_types
+
+  dynamic "remote_access" {
+    for_each = var.enable_ssh_break_glass ? [1] : []
+
+    content {
+      ec2_ssh_key               = var.ssh_key_name
+      source_security_group_ids = var.ssh_source_security_group_ids
+    }
+  }
 
   dynamic "update_config" {
     for_each = [local.node_group.update_config == null ? { max_unavailable = 1 } : local.node_group.update_config]

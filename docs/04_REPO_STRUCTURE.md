@@ -15,7 +15,8 @@ goldenpath-idp-infra/
 │   ├── 02_GOVERNANCE_MODEL.md
 │   ├── 03_GOVERNANCE_BACKSTAGE.md
 │   ├── 04_REPO_STRUCTURE.md
-│   └── 05_OBSERVABILITY_DECISIONS.md
+│   ├── 05_OBSERVABILITY_DECISIONS.md
+│   └── 07_REPO_DECOUPLING_OPTIONS.md
 ├── envs/
 │   ├── dev/
 │   ├── test/

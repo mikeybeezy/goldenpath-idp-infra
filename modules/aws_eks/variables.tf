@@ -59,6 +59,24 @@ variable "access_config" {
   }
 }
 
+variable "enable_ssh_break_glass" {
+  type        = bool
+  description = "Whether to enable SSH break-glass access to worker nodes."
+  default     = false
+}
+
+variable "ssh_key_name" {
+  type        = string
+  description = "EC2 key pair name for SSH break-glass access."
+  default     = null
+}
+
+variable "ssh_source_security_group_ids" {
+  type        = list(string)
+  description = "Security group IDs allowed to SSH into worker nodes."
+  default     = []
+}
+
 variable "addon_versions" {
   description = "Optional map of EKS addon versions to pin by addon name."
   type        = map(string)

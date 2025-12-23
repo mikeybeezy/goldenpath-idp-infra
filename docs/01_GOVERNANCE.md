@@ -179,12 +179,27 @@ Trade-off:
 V1 Guidance:
 - Use Terraform to create IAM roles and service accounts for controllers (e.g., AWS Load Balancer Controller).
 - Use SSM for node access; SSH is break-glass only and must be documented.
+- When SSH break-glass is enabled, pass the AWS EC2 key pair name via CLI vars or `TF_VAR_ssh_key_name` in CI (never commit `.pem` paths).
 - Standardize the AWS Load Balancer Controller service account as `aws-load-balancer-controller`
   in the `kube-system` namespace.
+- Create the EKS IAM OIDC provider in Terraform so IRSA works without manual inputs.
+- When SSH break-glass is enabled, pass the AWS EC2 key pair name via CLI vars or `TF_VAR_ssh_key_name` in CI (never commit `.pem` paths).
+
+**Drift Remediation**
+
+Terraform state is the source of truth. If a resource exists in AWS but is not in state, decide:
+
+- Import when the resource matches the desired config and you want Terraform to manage it going forward.
+- Delete manually when the resource is an orphan or was created by a different workflow/environment.
+
+After resolving drift, run `terraform plan` to confirm no unexpected changes remain.
 
 # **Change Management & Release Workflow**
 
 Governance is enforced through process, not just policy.
+
+See also: `docs/07_REPO_DECOUPLING_OPTIONS.md` for planned repository split options.
+See also: `docs/08_INGRESS_STRATEGY.md` for the front door decision (Kong+NLB vs ALB).
 
 **Change Flow**
 ```

@@ -31,6 +31,54 @@ variable "enable_oidc_role" {
   default     = false
 }
 
+variable "enable_autoscaler_role" {
+  type        = bool
+  description = "Whether to create the cluster autoscaler IRSA role."
+  default     = false
+}
+
+variable "autoscaler_role_name" {
+  type        = string
+  description = "Name for the cluster autoscaler IAM role."
+  default     = "goldenpath-idp-cluster-autoscaler"
+}
+
+variable "autoscaler_service_account_namespace" {
+  type        = string
+  description = "Namespace for the cluster autoscaler service account."
+  default     = "kube-system"
+}
+
+variable "autoscaler_service_account_name" {
+  type        = string
+  description = "Name of the cluster autoscaler service account."
+  default     = "cluster-autoscaler"
+}
+
+variable "enable_lb_controller_role" {
+  type        = bool
+  description = "Whether to create the AWS Load Balancer Controller IRSA role."
+  default     = false
+}
+
+variable "lb_controller_role_name" {
+  type        = string
+  description = "Name for the AWS Load Balancer Controller IAM role."
+  default     = "goldenpath-idp-aws-load-balancer-controller"
+}
+
+variable "lb_controller_service_account_namespace" {
+  type        = string
+  description = "Namespace for the AWS Load Balancer Controller service account."
+  default     = "kube-system"
+}
+
+variable "lb_controller_service_account_name" {
+  type        = string
+  description = "Name of the AWS Load Balancer Controller service account."
+  default     = "aws-load-balancer-controller"
+}
+
 variable "oidc_issuer_url" {
   type        = string
   description = "OIDC issuer URL for the EKS cluster."

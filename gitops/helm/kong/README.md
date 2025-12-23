@@ -2,6 +2,22 @@
 
 Kong acts as the platform's ingress/API gateway, handling routing, auth, and policies for north-south traffic.
 
+## Kong Manager UI
+
+Kong Manager is the web UI for managing services, routes, plugins, and
+certificates. It is powerful and should be treated as admin access.
+
+We enabled Kong Manager for demo and validation. It is kept private (ClusterIP)
+and should be exposed only through an authenticated ingress.
+
+Temporary basic auth approach:
+- Keep the Manager service as ClusterIP.
+- Expose it via a Kong Ingress and attach a `basic-auth` plugin.
+- Create a KongConsumer with basic auth credentials for limited access.
+
+Backstage integration is possible later via a catalog link or a custom plugin,
+so users can discover the UI without exposing it publicly.
+
 ```
 gitops/helm/kong/
 └── values/

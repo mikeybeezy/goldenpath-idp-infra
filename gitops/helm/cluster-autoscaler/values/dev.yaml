@@ -1,0 +1,15 @@
+autoDiscovery:
+  clusterName: goldenpath-dev-eks
+
+awsRegion: eu-west-2
+
+rbac:
+  serviceAccount:
+    create: false
+    name: cluster-autoscaler
+    annotations: {}
+
+extraArgs:
+  balance-similar-node-groups: "true"
+  skip-nodes-with-local-storage: "false"
+  expander: "least-waste"

@@ -50,16 +50,38 @@ compute_config = {
   root_volume_encrypted         = true
 }
 
+iam_config = {
+  enabled                            = true
+  cluster_role_name                  = ""
+  node_group_role_name               = ""
+  oidc_role_name                     = ""
+  oidc_issuer_url                    = ""
+  oidc_provider_arn                  = ""
+  oidc_audience                      = "sts.amazonaws.com"
+  oidc_subject                       = ""
+  enable_autoscaler_role             = true
+  autoscaler_role_name               = "goldenpath-idp-cluster-autoscaler"
+  autoscaler_service_account_namespace = "kube-system"
+  autoscaler_service_account_name    = "cluster-autoscaler"
+  enable_lb_controller_role          = true
+  lb_controller_role_name            = "goldenpath-idp-aws-load-balancer-controller"
+  lb_controller_service_account_namespace = "kube-system"
+  lb_controller_service_account_name = "aws-load-balancer-controller"
+}
+
 eks_config = {
   enabled      = true
   cluster_name = "goldenpath-dev-eks"
   version      = "1.29"
+  enable_ssh_break_glass = true
+  ssh_key_name           = null
+  ssh_source_security_group_ids = []
   node_group = {
     name           = "dev-default"
-    min_size       = 1
-    max_size       = 2
-    desired_size   = 1
-    instance_types = ["t3.micro"]
+    min_size       = 2
+    max_size       = 4
+    desired_size   = 2
+    instance_types = ["t3.small"]
     disk_size      = 20
     capacity_type  = "ON_DEMAND"
     update_config = {
@@ -67,6 +89,11 @@ eks_config = {
     }
   }
 }
+
+# SSH break-glass (pass ssh_key_name via CLI or TF_VAR_ssh_key_name)
+enable_ssh_break_glass = true
+ssh_key_name           = null
+ssh_source_security_group_ids = []
 
 
 

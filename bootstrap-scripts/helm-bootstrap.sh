@@ -1,59 +1,63 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# bootstrap Helm-based GitOps tooling onto a new EKS cluster.
-# Assumes kubectl context is already pointing at the target cluster.
-# 1. installs Argo CD (default) and
-# 2. configures Argo CD to sync the gitops/ directory in this repo.
-# Argo CD is the GitOps controller; this script installs it via Helm.
+# Full bootstrap runner for a new EKS cluster.
+# This orchestrates the repo bootstrap scripts in a safe, deterministic order.
+# Usage:
+#   bootstrap-scripts/helm-bootstrap.sh <cluster-name> <region> [kong-namespace]
 
-REPO_URL="${REPO_URL:-git@github.com:your-org/goldenpath-idp-infra.git}"
-GIT_PATH="${GIT_PATH:-gitops}"
-ARGO_NAMESPACE="${ARGO_NAMESPACE:-argocd}"
+cluster_name="${1:-}"
+region="${2:-}"
+kong_namespace="${3:-kong}"
 
-if ! command -v kubectl >/dev/null; then
-  echo "kubectl is required" >&2
-  exit 1
-fi
-if ! command -v helm >/dev/null; then
-  echo "helm is required" >&2
+if [[ -z "${cluster_name}" || -z "${region}" ]]; then
+  echo "Usage: $0 <cluster-name> <region> [kong-namespace]" >&2
   exit 1
 fi
 
-kubectl create namespace "$ARGO_NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
+script_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd "${script_root}/.." && pwd)"
 
-helm repo add argo https://argoproj.github.io/argo-helm >/dev/null
-helm upgrade --install argocd argo/argo-cd \
-  --namespace "$ARGO_NAMESPACE" \
-  --set server.service.type=LoadBalancer \
-  --set configs.params."server\.insecure"=true
+require_cmd() {
+  if ! command -v "$1" >/dev/null; then
+    echo "Missing required command: $1" >&2
+    exit 1
+  fi
+}
 
-cat <<APP | kubectl apply -f -
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: idp-gitops
-  namespace: $ARGO_NAMESPACE
-spec:
-  destination:
-    namespace: default
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    repoURL: $REPO_URL
-    targetRevision: HEAD
-    path: $GIT_PATH
-    directory:
-      recurse: true
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-APP
+# Preflight checks for required CLIs.
+require_cmd aws
+require_cmd kubectl
+require_cmd helm
 
-cat <<'NOTE'
-Helm bootstrap finished. Grab the Argo CD admin password with:
-  kubectl -n $ARGO_NAMESPACE get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d
+echo "Bootstrap starting for cluster ${cluster_name} in ${region}"
+
+# Ensure kubeconfig is set for the target cluster.
+aws eks update-kubeconfig --name "${cluster_name}" --region "${region}"
+
+# Verify tools and basic access.
+bash "${repo_root}/bootstrap/00_prereqs/00_check_tools.sh"
+
+# Install Argo CD and (optionally) show admin access helper instructions.
+bash "${repo_root}/bootstrap/10_gitops-controller/10_argocd_helm.sh" "${cluster_name}" "${region}"
+
+# Validate core add-ons that are expected to exist.
+bash "${repo_root}/bootstrap/20_core-addons/10_aws_lb_controller.sh" "${cluster_name}" "${region}"
+bash "${repo_root}/bootstrap/20_core-addons/20_cert_manager.sh"
+
+# Apply platform tooling via Argo CD.
+bash "${repo_root}/bootstrap/30_platform-tooling/10_argocd_apps.sh"
+bash "${repo_root}/bootstrap/30_platform-tooling/20_kong_ingress.sh" "${cluster_name}" "${region}" "${kong_namespace}"
+
+# Post-bootstrap sanity checks and audit output.
+bash "${repo_root}/bootstrap/40_smoke-tests/10_kubeconfig.sh" "${cluster_name}" "${region}"
+bash "${repo_root}/bootstrap/40_smoke-tests/20_audit.sh"
+
+cat <<NOTE
+Bootstrap complete.
+Sanity checks:
+  kubectl get nodes
+  kubectl top nodes
+  kubectl -n argocd get applications
+  kubectl -n ${kong_namespace} get svc
 NOTE

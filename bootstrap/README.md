@@ -22,6 +22,73 @@ bootstrap/
 Argo CD is where the cluster reconciles against the desired state in this repo.
 Once Applications are created, Argo CD keeps them in sync with Git.
 
+## Bootstrap Steps (Full)
+
+Prereqs:
+
+```
+bootstrap/00_prereqs/00_check_tools.sh
+```
+
+Bootstrap sequence:
+
+```
+bootstrap/10_gitops-controller/10_argocd_helm.sh <cluster> <region> [values_file]
+bootstrap/20_core-addons/10_aws_lb_controller.sh <cluster> <region> <vpc_id> [service_account_name] [service_account_namespace]
+bootstrap/20_core-addons/20_cert_manager.sh <cluster> <region> [namespace]
+bootstrap/30_platform-tooling/10_argocd_apps.sh dev
+bootstrap/30_platform-tooling/20_kong_ingress.sh <cluster> <region> [namespace]
+bootstrap/40_smoke-tests/10_kubeconfig.sh <cluster> <region>
+bootstrap/40_smoke-tests/20_audit.sh <cluster> <region>
+```
+
+Bootstrap runner (recommended):
+
+```
+bootstrap-scripts/helm-bootstrap.sh <cluster> <region> [kong-namespace]
+```
+
+Post-build sanity checks:
+
+```
+kubectl get nodes
+kubectl top nodes
+kubectl -n argocd get applications
+kubectl -n kong get svc
+```
+
+Post-bootstrap actions:
+
+- IRSA annotations for cluster-autoscaler and the AWS Load Balancer Controller are created by Terraform service accounts.
+- Node access uses SSM by default; enable SSH break-glass only via `enable_ssh_break_glass`.
+
+SSH break-glass example (CLI):
+
+```
+terraform -chdir=envs/dev apply -var="enable_ssh_break_glass=true" -var="ssh_key_name=mikeybeezy" -var='ssh_source_security_group_ids=["sg-..."]'
+```
+
+CI example (env var):
+
+```
+TF_VAR_enable_ssh_break_glass=true TF_VAR_ssh_key_name=mikeybeezy TF_VAR_ssh_source_security_group_ids='["sg-..."]' terraform -chdir=envs/dev apply
+```
+
+Note: `ssh_key_name` is the AWS EC2 key pair name (not the local `.pem` file) and is only required when `enable_ssh_break_glass=true`.
+
+Review the dev baseline checklist:
+
+```
+bootstrap/40_smoke-tests/30_dev_baseline_checklist.md
+```
+
+## Determinism
+
+Bootstrap should be deterministic: with the same Terraform inputs and Git
+manifests, the cluster should converge to the same state every time. This is
+why Argo CD is the source of truth for apps and versions are pinned where
+possible.
+
 ## Dev-first standardization
 
 We will standardize dev first: a boilerplate cluster, one stateless app, one
@@ -146,6 +213,16 @@ bootstrap/20_core-addons/10_aws_lb_controller.sh <cluster> <region> <vpc_id> [se
 bootstrap/20_core-addons/20_cert_manager.sh <cluster> <region> [namespace]
 ```
 
+Autoscaler (Argo CD):
+
+```
+gitops/argocd/apps/dev/cluster-autoscaler.yaml
+```
+
+Terraform creates the IRSA service accounts for autoscaler and the AWS Load Balancer Controller.
+
+Autoscaler IRSA annotation is applied via Terraform-managed service accounts, so no manual injection is required.
+
 Platform tooling (apps + ingress):
 
 ```
@@ -162,7 +239,14 @@ Kong requires:
 - Optional Postgres (if not running DB-less).
 
 We install Kong through Argo CD so the cluster reconciles with Git state.
+Ingress strategy decision (Kong+NLB vs ALB): `docs/08_INGRESS_STRATEGY.md`.
 cert-manager is also installed through Argo CD and validated by the script.
+
+## Kong Manager access (temporary)
+
+Kong Manager is enabled for validation but kept private (ClusterIP). For
+temporary access, expose it with a Kong Ingress using basic auth, then remove
+basic auth once SSO (Keycloak) is in place.
 
 ## Keycloak SSO follow-up
 
@@ -181,12 +265,9 @@ Mandatory (baseline cluster functionality):
 - aws-load-balancer-controller: provisions ALB/NLB for Services/Ingress in AWS.
 - cert-manager: automates TLS certificates (e.g., Let's Encrypt).
 - kong-ingress-api-gateway: API gateway and ingress controller for north-south traffic.
+- cluster-autoscaler: keeps node groups sized for pending workload demand.
 
 Optional (platform capabilities):
-- cluster-autoscaler or Karpenter: scales node groups or provisions nodes for pending pods.
 - external-dns: automates DNS records (e.g., Route53) for Services/Ingress.
 - node-local-dns: per-node DNS cache to reduce CoreDNS load and speed lookups.
 - calico: consider in v2 if we need NetworkPolicy enforcement or advanced networking features.
-
-
-

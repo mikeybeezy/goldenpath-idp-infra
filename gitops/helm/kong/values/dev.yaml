@@ -1,1 +1,7 @@
 # Values overrides for kong in dev environment
+
+proxy:
+  service:
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
