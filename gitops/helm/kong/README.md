@@ -1,6 +1,6 @@
 # Kong Helm Deployment
 
-Kong acts as the platform’s ingress/API gateway, handling routing, auth, and policies for north-south traffic.
+Kong acts as the platform's ingress/API gateway, handling routing, auth, and policies for north-south traffic.
 
 ```
 gitops/helm/kong/

@@ -165,6 +165,23 @@ Out of Scope (V1):
 
 These introduce opinionated workflows and repo coupling that are deferred until patterns stabilize.
 
+**Infrastructure Access & IAM**
+
+Decision: IRSA for controller access (Terraform-managed), SSM for node access.
+
+Why:
+- IRSA via Terraform keeps IAM bindings auditable and consistent across environments.
+- SSM avoids inbound SSH, centralizes access control, and provides session logs.
+
+Trade-off:
+- Slightly more setup up front (OIDC provider, IAM roles, SSM agent/permissions).
+
+V1 Guidance:
+- Use Terraform to create IAM roles and service accounts for controllers (e.g., AWS Load Balancer Controller).
+- Use SSM for node access; SSH is break-glass only and must be documented.
+- Standardize the AWS Load Balancer Controller service account as `aws-load-balancer-controller`
+  in the `kube-system` namespace.
+
 # **Change Management & Release Workflow**
 
 Governance is enforced through process, not just policy.

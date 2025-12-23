@@ -9,7 +9,7 @@ For the broader bootstrap flow and directory layout, see `bootstrap/README.md`.
 We plan to make Argo CD part of every cluster launch, but we’re still deciding **how** to install it by default:
 
 1. **Bootstrap Script** – `helm-bootstrap.sh` installs Argo CD via Helm and seeds a GitOps Application. This is great for ephemeral clusters (e.g., eksctl) where you need the controller up immediately.
-2. **Declarative Helm deployment** – `gitops/helm/argocd/` already contains HelmRepository/HelmRelease manifests. We can let Argo CD (or Flux) manage itself by applying those manifests after kubeconfig is ready.
+2. **Declarative Helm deployment** – `gitops/helm/argocd/` contains Argo CD Helm values consumed by Argo CD Applications. Once Argo CD is running, it manages itself via Git.
 
 We’ll pick one path (or support both) once the platform matures a bit more. Until then:
 - Use the script for quick tests or the daily tear-down cluster.

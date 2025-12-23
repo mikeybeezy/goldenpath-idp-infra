@@ -187,3 +187,6 @@ Optional (platform capabilities):
 - external-dns: automates DNS records (e.g., Route53) for Services/Ingress.
 - node-local-dns: per-node DNS cache to reduce CoreDNS load and speed lookups.
 - calico: consider in v2 if we need NetworkPolicy enforcement or advanced networking features.
+
+
+

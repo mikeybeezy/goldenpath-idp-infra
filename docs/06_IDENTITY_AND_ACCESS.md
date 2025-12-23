@@ -19,6 +19,9 @@ Keycloak is the authoritative source of user identity (groups, SSO), while AWS I
 - IAM roles are defined/deployed via Terraform; changes require PR review.
 - `aws-auth` ConfigMap mappings are codified (no manual edits) so RBAC stays auditable.
 - Onboarding/offboarding is handled by Keycloak group membership, which drives IAM role assignments.
+- Controller access uses IRSA with Terraform-managed IAM roles and service accounts.
+- Node access uses SSM Session Manager by default; SSH is break-glass only and must be documented.
+- AWS Load Balancer Controller uses the `aws-load-balancer-controller` service account in `kube-system`.
 
 ## Roadmap
 - Automate group→IAM role sync to reduce manual mapping.

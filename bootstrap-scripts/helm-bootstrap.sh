@@ -5,7 +5,7 @@ set -euo pipefail
 # Assumes kubectl context is already pointing at the target cluster.
 # 1. installs Argo CD (default) and
 # 2. configures Argo CD to sync the gitops/ directory in this repo.
-# For Flux, swap out the installation block below.
+# Argo CD is the GitOps controller; this script installs it via Helm.
 
 REPO_URL="${REPO_URL:-git@github.com:your-org/goldenpath-idp-infra.git}"
 GIT_PATH="${GIT_PATH:-gitops}"
@@ -57,4 +57,3 @@ cat <<'NOTE'
 Helm bootstrap finished. Grab the Argo CD admin password with:
   kubectl -n $ARGO_NAMESPACE get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d
 NOTE
-

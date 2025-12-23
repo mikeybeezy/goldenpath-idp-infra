@@ -24,13 +24,11 @@ goldenpath-idp-infra/
 ├── gitops/
 │   ├── helm/
 │   │   ├── kong/
-│   │   │   ├── helmrepository.yaml
-│   │   │   ├── helmrelease.yaml
-│   │   │   └── values/
-│   │   │       ├── dev.yaml
-│   │   │       ├── test.yaml
-│   │   │       ├── staging.yaml
-│   │   │       └── prod.yaml
+│   │   │   ├── values/
+│   │   │   │   ├── dev.yaml
+│   │   │   │   ├── test.yaml
+│   │   │   │   ├── staging.yaml
+│   │   │   │   └── prod.yaml
 │   │   ├── grafana/
 │   │   ├── loki/
 │   │   ├── alertmanager/
@@ -83,8 +81,8 @@ Terraform provider modules that configure platform tooling **after** it is deplo
 
 ### `gitops/`
 GitOps workloads that install tooling inside the cluster:
-- `helm/`: chart releases (or HelmRelease manifests) for Kong, Grafana, Loki, Alertmanager, Fluent Bit, Keycloak, Backstage, Datree, Argo CD. These define the workloads and namespaces.
-- `kustomize/`: base manifests plus environment-specific overlays so Argo CD/Flux can reconcile per environment.
+- `helm/`: Helm values for Kong, Grafana, Loki, Alertmanager, Fluent Bit, Keycloak, Backstage, Datree, Argo CD. These define workload configuration consumed by Argo CD Applications.
+- `kustomize/`: base manifests plus environment-specific overlays so Argo CD can reconcile per environment.
 
 ### `compliance/datree/`
 Datree policies and documentation describing how Kubernetes manifest checks run in CI. Keeps policy-as-code colocated with repo.
@@ -99,7 +97,7 @@ Governance and capability documentation ordered numerically for easy navigation.
 ## Workflow Summary
 
 1. **Infrastructure (VPC, cluster, etc.)** – Terraform modules in `modules/` + `envs/<env>` provision AWS networking, EKS clusters, IAM roles.
-2. **Tooling Deployments (Kong, Grafana, Loki, Fluent Bit, Keycloak, Backstage)** – Helm charts/Kustomize manifests under `gitops/` deploy the actual workloads via Argo CD/Flux.
+2. **Tooling Deployments (Kong, Grafana, Loki, Fluent Bit, Keycloak, Backstage)** – Helm charts/Kustomize manifests under `gitops/` deploy the actual workloads via Argo CD.
 3. **Tooling Configuration (Kong APIs, Grafana dashboards, Keycloak realms)** – Terraform provider modules in `idp-tooling/` manage API-level config so changes are versioned and promoted top-to-bottom.
 
 This separation keeps infrastructure, workloads, and configuration decoupled but fully code-driven, enabling safe promotions across environments.
@@ -109,8 +107,7 @@ This separation keeps infrastructure, workloads, and configuration decoupled but
 - **Kustomize (cluster plumbing)** – `gitops/kustomize/bases` defines shared namespaces/cluster objects; `gitops/kustomize/overlays/<env>` layers environment-specific tweaks. Used for base cluster resources.
 
 - **Helm (platform tooling & apps)** – `gitops/helm/<component>/` contains:
-  - `helmrepository.yaml`: source chart repo.
-  - `helmrelease.yaml`: deployment spec consumed by GitOps controller.
-  - `values/<env>.yaml`: environment-specific overrides (dev/test/staging/prod). Reference these from HelmRelease (Flux `valuesFrom` or Argo `valueFiles`) so each env gets tailored settings (URLs, replicas, secrets, etc.).
+  - `values/`: environment-specific Helm values consumed by Argo CD Applications.
+  - `values/<env>.yaml`: environment-specific overrides (dev/test/staging/prod). Reference these from Argo `valueFiles` so each env gets tailored settings (URLs, replicas, secrets, etc.).
 
 This separation keeps cluster scaffolding (namespaces, CRDs) in Kustomize while Helm handles workloads (Kong, Grafana, Loki, Keycloak, Backstage). GitOps controllers reconcile both trees so every environment stays consistent.

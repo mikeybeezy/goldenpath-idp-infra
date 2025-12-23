@@ -19,5 +19,5 @@
 - Teams still own downstream log analysis tooling (Datadog dashboards, alerts, etc.).
 
 **Next Steps**:
-- Finalize Fluent Bit values in `gitops/helm/fluent-bit/helmrelease.yaml` with modular output sections.
+- Finalize Fluent Bit values in `gitops/helm/fluent-bit/values/<env>.yaml` with modular output sections.
 - Document the request process for enabling new outputs (e.g., Datadog API key storage, secret names).

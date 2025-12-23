@@ -38,7 +38,7 @@ Run this once per cluster after it becomes reachable by kubectl.
 
 ## Suggested Enhancements / Alternatives
 
-- **Flux instead of Argo CD**: swap the installation block to install Flux CLI and create `GitRepository + Kustomization` objects. The rest of the workflow stays identical.
+- **Argo CD only**: this repo standardizes on Argo CD; Flux is not used.
 - **Terraform integration**: wrap the script in a Terraform `null_resource` or use EKS `terraform` outputs (cluster endpoint/role) to automate bootstrap immediately after `terraform apply`.
 - **Parameterize chart values**: pass Helm values file via `--values` to customize ingress, SSO, etc., or manage the Argo CD installation itself via GitOps.
 - **Use AWS Load Balancer Controller ingress**: change `server.service.type` to `ClusterIP` and expose Argo CD through Kong/ALB for tighter control once the platform is stable.

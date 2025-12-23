@@ -60,7 +60,7 @@ This document captures the initial operating model for the Golden Path Internal 
    - Successful CI publishes signed container images/artefacts referenced in GitOps manifests.
 
 2. **GitOps Stage**
-   - Argo CD / Flux watches a dedicated GitOps repo per environment.
+   - Argo CD watches a dedicated GitOps repo per environment.
    - Promotion via PR merge into target environment folder (`envs/{dev|staging|prod}`).
    - No direct `kubectl apply`; drift is reconciled by the GitOps controller.
 
@@ -75,7 +75,7 @@ This document captures the initial operating model for the Golden Path Internal 
 | Step | Description | Approvers (RACI) |
 |------|-------------|------------------|
 | **Infrastructure (Terraform)** | PR raised against env modules; `make plan ENV=<env>` output (or Atlantis plan) attached. | Platform **R/A**, App Teams **C**, Security **I** |
-| **GitOps Manifests** | PR into GitOps repo’s env folder; Argo/Flux applies post-merge. | Service Owner **R/A**, Platform **C** (prod), Security **I** |
+| **GitOps Manifests** | PR into GitOps repo’s env folder; Argo CD applies post-merge. | Service Owner **R/A**, Platform **C** (prod), Security **I** |
 | **Backstage Templates** | PR to template repo; scaffold tested locally. | Platform DX **R/A**, App Teams **C**, Security **I** |
 | **Observability/SLO updates** | Update dashboards, Prometheus rules, and Backstage SLO docs. | Platform **R/A** for platform signals; App Teams **R/A** for app signals |
 
