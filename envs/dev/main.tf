@@ -74,6 +74,41 @@ module "public_route_table" {
   tags                   = local.common_tags
 }
 
+resource "aws_eip" "nat" {
+  domain = "vpc"
+
+  tags = merge(
+    {
+      Name = "${local.name_prefix}-nat-eip"
+    },
+    local.common_tags,
+  )
+}
+
+resource "aws_nat_gateway" "this" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = element(module.subnets.public_subnet_ids, 0)
+
+  tags = merge(
+    {
+      Name = "${local.name_prefix}-nat"
+    },
+    local.common_tags,
+  )
+}
+
+module "private_route_table" {
+  source = "../../modules/aws_route_table"
+
+  vpc_id                 = module.vpc.vpc_id
+  name                   = "${local.name_prefix}-private-rt"
+  nat_gateway_id         = aws_nat_gateway.this.id
+  subnet_ids             = module.subnets.private_subnet_ids
+  destination_cidr_block = "0.0.0.0/0"
+  environment            = local.environment
+  tags                   = local.common_tags
+}
+
 module "web_security_group" {
   source = "../../modules/aws_sg"
 

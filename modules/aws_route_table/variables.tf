@@ -15,6 +15,12 @@ variable "gateway_id" {
   default     = ""
 }
 
+variable "nat_gateway_id" {
+  type        = string
+  description = "NAT gateway ID used for the default route. Leave empty to skip default routing."
+  default     = ""
+}
+
 variable "destination_cidr_block" {
   type        = string
   description = "CIDR block for the default route."
@@ -31,6 +37,19 @@ variable "tags" {
   type        = map(string)
   description = "Additional tags to apply to the route table."
   default     = {}
+}
+
+variable "route_target" {
+  type        = string
+  description = "Internal validation placeholder."
+  default     = ""
+  validation {
+    condition = (
+      (var.gateway_id != "" && var.nat_gateway_id == "") ||
+      (var.gateway_id == "" && var.nat_gateway_id != "")
+    )
+    error_message = "Set exactly one of gateway_id or nat_gateway_id."
+  }
 }
 
 variable "environment" {

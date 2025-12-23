@@ -114,6 +114,14 @@ Longer term, once GitOps is the default, we will shift add-on ownership into
 pinning and configuration overrides. Terraform will keep cluster and node
 infrastructure concerns only, while GitOps will manage add-on lifecycle.
 
+## Private subnets and NAT requirement
+
+EKS nodes run in private subnets. They must be able to reach the public AWS
+endpoints (EKS API, STS, ECR) to join the cluster. For this, private subnets
+need a route to a NAT gateway placed in a public subnet. Without NAT (or VPC
+endpoints), node groups will fail to join and add-ons like CoreDNS will stay
+degraded.
+
 ## First-run note for existing clusters
 
 If a cluster already exists (created outside this Terraform state), import the
