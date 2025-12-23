@@ -41,23 +41,23 @@ module "iam" {
   source = "../../modules/aws_iam"
   count  = var.iam_config.enabled ? 1 : 0
 
-  cluster_role_name    = var.iam_config.cluster_role_name != "" ? var.iam_config.cluster_role_name : "${local.name_prefix}-eks-cluster-role"
-  node_group_role_name = var.iam_config.node_group_role_name != "" ? var.iam_config.node_group_role_name : "${local.name_prefix}-eks-node-role"
-  oidc_role_name       = var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.name_prefix}-eks-oidc-role"
-  oidc_issuer_url      = module.eks[0].oidc_issuer_url
-  oidc_provider_arn    = module.eks[0].oidc_provider_arn
-  oidc_audience        = var.iam_config.oidc_audience
-  oidc_subject         = var.iam_config.oidc_subject
-  enable_autoscaler_role          = var.iam_config.enable_autoscaler_role
-  autoscaler_role_name            = var.iam_config.autoscaler_role_name
-  autoscaler_service_account_namespace = var.iam_config.autoscaler_service_account_namespace
-  autoscaler_service_account_name = var.iam_config.autoscaler_service_account_name
-  enable_lb_controller_role       = var.iam_config.enable_lb_controller_role
-  lb_controller_role_name          = var.iam_config.lb_controller_role_name
+  cluster_role_name                       = var.iam_config.cluster_role_name != "" ? var.iam_config.cluster_role_name : "${local.name_prefix}-eks-cluster-role"
+  node_group_role_name                    = var.iam_config.node_group_role_name != "" ? var.iam_config.node_group_role_name : "${local.name_prefix}-eks-node-role"
+  oidc_role_name                          = var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.name_prefix}-eks-oidc-role"
+  oidc_issuer_url                         = module.eks[0].oidc_issuer_url
+  oidc_provider_arn                       = module.eks[0].oidc_provider_arn
+  oidc_audience                           = var.iam_config.oidc_audience
+  oidc_subject                            = var.iam_config.oidc_subject
+  enable_autoscaler_role                  = var.iam_config.enable_autoscaler_role
+  autoscaler_role_name                    = var.iam_config.autoscaler_role_name
+  autoscaler_service_account_namespace    = var.iam_config.autoscaler_service_account_namespace
+  autoscaler_service_account_name         = var.iam_config.autoscaler_service_account_name
+  enable_lb_controller_role               = var.iam_config.enable_lb_controller_role
+  lb_controller_role_name                 = var.iam_config.lb_controller_role_name
   lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
-  lb_controller_service_account_name = var.iam_config.lb_controller_service_account_name
-  environment                     = local.environment
-  tags                            = local.common_tags
+  lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
+  environment                             = local.environment
+  tags                                    = local.common_tags
 
   depends_on = [module.eks]
 }
@@ -109,16 +109,16 @@ module "eks" {
   source = "../../modules/aws_eks"
   count  = var.eks_config.enabled ? 1 : 0
 
-  cluster_name       = var.eks_config.cluster_name
-  kubernetes_version = var.eks_config.version
-  vpc_id             = module.vpc.vpc_id
-  subnet_ids         = module.subnets.private_subnet_ids
-  node_group_config  = var.eks_config.node_group
-  enable_ssh_break_glass      = var.enable_ssh_break_glass
-  ssh_key_name                = var.ssh_key_name
+  cluster_name                  = var.eks_config.cluster_name
+  kubernetes_version            = var.eks_config.version
+  vpc_id                        = module.vpc.vpc_id
+  subnet_ids                    = module.subnets.private_subnet_ids
+  node_group_config             = var.eks_config.node_group
+  enable_ssh_break_glass        = var.enable_ssh_break_glass
+  ssh_key_name                  = var.ssh_key_name
   ssh_source_security_group_ids = var.ssh_source_security_group_ids
-  environment        = local.environment
-  tags               = local.common_tags
+  environment                   = local.environment
+  tags                          = local.common_tags
 
   depends_on = [module.public_route_table]
 }
