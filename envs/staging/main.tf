@@ -23,6 +23,7 @@ module "vpc" {
 
   vpc_cidr = var.vpc_cidr
   vpc_tag  = "${local.name_prefix}-vpc"
+  environment = local.environment
   tags     = local.common_tags
 }
 
@@ -32,6 +33,7 @@ module "subnets" {
   vpc_id          = module.vpc.vpc_id
   public_subnets  = local.public_subnets
   private_subnets = local.private_subnets
+  environment     = local.environment
   tags            = local.common_tags
 }
 
@@ -43,6 +45,7 @@ module "public_route_table" {
   gateway_id             = module.vpc.internet_gateway_id
   subnet_ids             = module.subnets.public_subnet_ids
   destination_cidr_block = "0.0.0.0/0"
+  environment            = local.environment
   tags                   = local.common_tags
 }
 
@@ -53,6 +56,7 @@ module "web_security_group" {
   vpc_id                   = module.vpc.vpc_id
   ingress_cidr_blocks      = ["0.0.0.0/0"]
   ingress_ipv6_cidr_blocks = ["::/0"]
+  environment              = local.environment
   tags                     = local.common_tags
 }
 
@@ -72,6 +76,7 @@ module "compute" {
   root_volume_size     = var.compute_config.root_volume_size
   root_volume_type     = var.compute_config.root_volume_type
   root_volume_encrypted = var.compute_config.root_volume_encrypted
+  environment           = local.environment
   tags                 = local.common_tags
 }
 
@@ -84,6 +89,7 @@ module "compute" {
   vpc_id             = module.vpc.vpc_id
   subnet_ids         = module.subnets.private_subnet_ids
   node_group_config  = var.eks_config.node_group
+  environment        = local.environment
   tags               = local.common_tags
 
   depends_on = [module.public_route_table]

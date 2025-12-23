@@ -74,7 +74,31 @@ variable "compute_config" {
   }
 }
 
-/*variable "eks_config" {
+variable "iam_config" {
+  description = "Configuration for optional EKS IAM roles and OIDC assume role."
+  type = object({
+    enabled             = bool
+    cluster_role_name   = string
+    node_group_role_name = string
+    oidc_role_name      = string
+    oidc_issuer_url     = string
+    oidc_provider_arn   = string
+    oidc_audience       = string
+    oidc_subject        = string
+  })
+  default = {
+    enabled              = false
+    cluster_role_name    = ""
+    node_group_role_name = ""
+    oidc_role_name       = ""
+    oidc_issuer_url      = ""
+    oidc_provider_arn    = ""
+    oidc_audience        = "sts.amazonaws.com"
+    oidc_subject         = ""
+  }
+}
+
+variable "eks_config" {
   description = "Configuration for the optional EKS cluster."
   type = object({
     enabled      = bool
@@ -88,6 +112,10 @@ variable "compute_config" {
       instance_types = list(string)
       disk_size      = number
       capacity_type  = string
+      update_config = optional(object({
+        max_unavailable            = optional(number)
+        max_unavailable_percentage = optional(number)
+      }))
     })
   })
   default = {
@@ -102,6 +130,9 @@ variable "compute_config" {
       instance_types = ["t3.medium"]
       disk_size      = 20
       capacity_type  = "ON_DEMAND"
+      update_config = {
+        max_unavailable = 1
+      }
     }
   }
-}*/
+}

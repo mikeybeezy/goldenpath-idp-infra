@@ -6,6 +6,8 @@ locals {
   private_subnets_map = {
     for subnet in var.private_subnets : subnet.name => subnet
   }
+
+  environment_tags = var.environment != "" ? { Environment = var.environment } : {}
 }
 
 resource "aws_subnet" "public" {
@@ -23,6 +25,7 @@ resource "aws_subnet" "public" {
       Tier = "public"
     },
     try(each.value.tags, {}),
+    local.environment_tags,
   )
 }
 
@@ -41,5 +44,6 @@ resource "aws_subnet" "private" {
       Tier = "private"
     },
     try(each.value.tags, {}),
+    local.environment_tags,
   )
 }

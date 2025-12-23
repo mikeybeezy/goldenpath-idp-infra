@@ -87,6 +87,8 @@ Step-by-step with the Makefile:
 5. Run `make apply ENV=dev` to execute `terraform -chdir=envs/dev apply` and deploy (confirm when prompted).
 6. Swap `ENV=dev` for `ENV=test`, `staging`, or `prod` to repeat; the Makefile just saves you from typing the `-chdir` commands manually.
 
+
+
 ## Customizing the Infrastructure
 
 - **CIDR ranges & AZs**: edit `public_subnets` / `private_subnets` lists in `envs/<env>/terraform.tfvars`. Each item needs a `name`, `cidr_block`, and `availability_zone`, and you can add as many entries as you need (one per subnet/AZ pair). The subnet module automatically creates one subnet per object in the list. If your AWS account is limited to specific AZs (e.g., `eu-west-2a/b/c`), make sure the `availability_zone` fields match the zones that AWS allows in that region; otherwise Terraform will fail with “InvalidParameterValue” errors.

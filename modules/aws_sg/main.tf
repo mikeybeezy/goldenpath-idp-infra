@@ -1,3 +1,7 @@
+locals {
+  environment_tags = var.environment != "" ? { Environment = var.environment } : {}
+}
+
 resource "aws_security_group" "this" {
   name        = var.name
   description = var.description
@@ -26,5 +30,6 @@ resource "aws_security_group" "this" {
       Name = var.name
     },
     var.tags,
+    local.environment_tags,
   )
 }

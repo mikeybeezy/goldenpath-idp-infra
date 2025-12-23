@@ -50,20 +50,23 @@ compute_config = {
   root_volume_encrypted         = true
 }
 
-# eks_config = {
-#   enabled      = true
-#   cluster_name = "goldenpath-dev-eks"
-#   version      = "1.29"
-#   node_group = {
-#     name           = "dev-default"
-#     min_size       = 1
-#     max_size       = 2
-#     desired_size   = 1
-#     instance_types = ["t3.medium"]
-#     disk_size      = 20
-#     capacity_type  = "ON_DEMAND"
-#   }
-# }
+eks_config = {
+  enabled      = true
+  cluster_name = "goldenpath-dev-eks"
+  version      = "1.29"
+  node_group = {
+    name           = "dev-default"
+    min_size       = 1
+    max_size       = 2
+    desired_size   = 1
+    instance_types = ["t3.medium"]
+    disk_size      = 20
+    capacity_type  = "ON_DEMAND"
+    update_config = {
+      max_unavailable = 1
+    }
+  }
+}
 
 
 

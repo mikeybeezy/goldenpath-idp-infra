@@ -1,9 +1,14 @@
+
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
+  instance_tenancy = "default"
+  enable_dns_hostnames = true
+  enable_dns_support = true
 
   tags = merge(
     {
       Name = var.vpc_tag
+      Environment = var.environment
     },
     var.tags,
   )
@@ -18,6 +23,7 @@ resource "aws_internet_gateway" "this" {
     var.tags,
     {
       Name = "${var.vpc_tag}-igw"
+      Environment = var.environment
     },
   )
 }
@@ -44,6 +50,7 @@ resource "aws_route_table" "public" {
     var.tags,
     {
       Name = var.public_route_table_name
+      Environment = var.environment
     },
   )
 }

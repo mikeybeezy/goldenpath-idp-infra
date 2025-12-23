@@ -30,3 +30,9 @@ variable "tags" {
   description = "Common tags applied to every subnet."
   default     = {}
 }
+
+variable "environment" {
+  type        = string
+  description = "Environment name for tagging."
+  default     = ""
+}

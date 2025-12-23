@@ -1,5 +1,6 @@
 locals {
   node_group = var.node_group_config
+  environment_tags = var.environment != "" ? { Environment = var.environment } : {}
 }
 
 resource "aws_iam_role" "cluster" {
@@ -23,6 +24,7 @@ resource "aws_iam_role" "cluster" {
       Name = "${var.cluster_name}-cluster-role"
     },
     var.tags,
+    local.environment_tags,
   )
 }
 
@@ -53,6 +55,7 @@ resource "aws_security_group" "cluster" {
     {
       Name = "${var.cluster_name}-cluster-sg"
     },
+    local.environment_tags,
   )
 }
 
@@ -61,12 +64,17 @@ resource "aws_eks_cluster" "this" {
   version  = var.kubernetes_version
   role_arn = aws_iam_role.cluster.arn
 
+  access_config {
+    authentication_mode                         = var.access_config.authentication_mode
+    bootstrap_cluster_creator_admin_permissions = var.access_config.bootstrap_cluster_creator_admin_permissions
+  }
+
   vpc_config {
     subnet_ids         = var.subnet_ids
     security_group_ids = [aws_security_group.cluster.id]
   }
 
-  tags = var.tags
+  tags = merge(var.tags, local.environment_tags)
 
   depends_on = [aws_iam_role_policy_attachment.cluster]
 }
@@ -92,6 +100,7 @@ resource "aws_iam_role" "node_group" {
     {
       Name = "${var.cluster_name}-node-role"
     },
+    local.environment_tags,
   )
 }
 
@@ -100,6 +109,7 @@ resource "aws_iam_role_policy_attachment" "node_group" {
     "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
     "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+    "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy",
   ])
 
   policy_arn = each.value
@@ -115,13 +125,62 @@ resource "aws_eks_node_group" "this" {
   disk_size       = local.node_group.disk_size
   instance_types  = local.node_group.instance_types
 
+  dynamic "update_config" {
+    for_each = [local.node_group.update_config == null ? { max_unavailable = 1 } : local.node_group.update_config]
+
+    content {
+      max_unavailable            = try(update_config.value.max_unavailable, null)
+      max_unavailable_percentage = try(update_config.value.max_unavailable_percentage, null)
+    }
+  }
+
   scaling_config {
     desired_size = local.node_group.desired_size
     max_size     = local.node_group.max_size
     min_size     = local.node_group.min_size
   }
 
-  tags = var.tags
+  tags = merge(var.tags, local.environment_tags)
 
   depends_on = [aws_iam_role_policy_attachment.node_group]
+}
+
+resource "aws_eks_addon" "ebs_csi_driver" {
+  cluster_name = aws_eks_cluster.this.name
+  addon_name   = "aws-ebs-csi-driver"
+  addon_version = lookup(var.addon_versions, "aws-ebs-csi-driver", null)
+
+  depends_on = [aws_eks_node_group.this]
+}
+
+resource "aws_eks_addon" "efs_csi_driver" {
+  cluster_name = aws_eks_cluster.this.name
+  addon_name   = "aws-efs-csi-driver"
+  addon_version = lookup(var.addon_versions, "aws-efs-csi-driver", null)
+
+  depends_on = [aws_eks_node_group.this]
+}
+
+resource "aws_eks_addon" "snapshot_controller" {
+  cluster_name = aws_eks_cluster.this.name
+  addon_name   = "snapshot-controller"
+  addon_version = lookup(var.addon_versions, "snapshot-controller", null)
+
+  depends_on = [aws_eks_node_group.this]
+}
+
+resource "aws_eks_addon" "coredns" {
+  cluster_name = aws_eks_cluster.this.name
+  addon_name   = "coredns"
+  addon_version = lookup(var.addon_versions, "coredns", null)
+
+  depends_on = [aws_eks_cluster.this]
+}
+
+resource "aws_eks_addon" "kube_proxy" {
+  cluster_name = aws_eks_cluster.this.name
+  addon_name   = "kube-proxy"
+  addon_version = lookup(var.addon_versions, "kube-proxy", null)
+
+  depends_on = [aws_eks_cluster.this]
 }

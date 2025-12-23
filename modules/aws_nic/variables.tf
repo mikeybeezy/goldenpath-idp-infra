@@ -31,3 +31,9 @@ variable "tags" {
   description = "Additional tags to merge onto the network interface."
   default     = {}
 }
+
+variable "environment" {
+  type        = string
+  description = "Environment name for tagging."
+  default     = ""
+}

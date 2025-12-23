@@ -2,6 +2,8 @@
 
 This folder contains scripts used to bring a fresh cluster to a “GitOps-ready” state. Right now we provide `helm-bootstrap.sh`, which installs Argo CD and points it at this repo’s `gitops/` directory.
 
+For the broader bootstrap flow and directory layout, see `bootstrap/README.md`.
+
 ## Argo CD Installation Options (TBD)
 
 We plan to make Argo CD part of every cluster launch, but we’re still deciding **how** to install it by default:

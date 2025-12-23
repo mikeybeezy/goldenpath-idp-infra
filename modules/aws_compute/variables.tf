@@ -71,3 +71,9 @@ variable "tags" {
   description = "Additional tags to apply to the instance and ENI."
   default     = {}
 }
+
+variable "environment" {
+  type        = string
+  description = "Environment name for tagging."
+  default     = ""
+}

@@ -1,3 +1,7 @@
+locals {
+  environment_tags = var.environment != "" ? { Environment = var.environment } : {}
+}
+
 resource "aws_network_interface" "this" {
   subnet_id       = var.subnet_id
   private_ips     = var.private_ips
@@ -9,5 +13,6 @@ resource "aws_network_interface" "this" {
       Name = var.name
     },
     var.tags,
+    local.environment_tags,
   )
 }

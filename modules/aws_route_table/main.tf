@@ -3,6 +3,8 @@ locals {
     for idx, subnet_id in var.subnet_ids :
     idx => subnet_id
   }
+
+  environment_tags = var.environment != "" ? { Environment = var.environment } : {}
 }
 
 resource "aws_route_table" "this" {
@@ -21,6 +23,7 @@ resource "aws_route_table" "this" {
       Name = var.name
     },
     var.tags,
+    local.environment_tags,
   )
 }
 

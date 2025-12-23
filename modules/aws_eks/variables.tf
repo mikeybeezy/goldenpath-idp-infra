@@ -28,11 +28,39 @@ variable "node_group_config" {
     instance_types = list(string)
     disk_size      = number
     capacity_type  = string
+    update_config = optional(object({
+      max_unavailable            = optional(number)
+      max_unavailable_percentage = optional(number)
+    }))
   })
 }
 
 variable "tags" {
   type        = map(string)
   description = "Tags applied to EKS resources."
+  default     = {}
+}
+
+variable "environment" {
+  type        = string
+  description = "Environment name for tagging."
+  default     = ""
+}
+
+variable "access_config" {
+  description = "EKS access configuration for the cluster."
+  type = object({
+    authentication_mode                         = string
+    bootstrap_cluster_creator_admin_permissions = bool
+  })
+  default = {
+    authentication_mode                         = "API_AND_CONFIG_MAP"
+    bootstrap_cluster_creator_admin_permissions = true
+  }
+}
+
+variable "addon_versions" {
+  description = "Optional map of EKS addon versions to pin by addon name."
+  type        = map(string)
   default     = {}
 }

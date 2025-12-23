@@ -1,0 +1,106 @@
+
+
+The error messag we get below is a blocker. We get it when we run terrform init
+from /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra/envs/dev
+review the error, elimate the error by simulatiannt a terrafom init  within your process and propose the best way forward 
+
+│ Error: Invalid for_each argument
+│
+│   on ../../modules/aws_route_table/main.tf line 21, in resource "aws_route_table_association" "this":
+│   21:   for_each = toset(var.subnet_ids)
+│     ├────────────────
+│     │ var.subnet_ids is list of string with 2 elements
+│
+│ The "for_each" set includes values derived from resource attributes that cannot be determined until
+│ apply, and so Terraform cannot determine the full set of keys that will identify the instances of
+│ this resource.
+│
+│ When working with unknown values in for_each, it's better to use a map value where the keys are
+│ defined statically in your configuration and where only the values contain apply-time results.
+│
+│ Alternatively, you could use the -target planning option to first apply only the resources that the
+│ for_each value depends on, and then apply a second time to fully converge.
+╵
+
+
+update the readme to include the latest compuete additions
+explain whatthe meaning of  count  = var.compute_config.enabled ? 1 : 0 
+explain what needs to be 
+
+
+
+this is the error we get after an apply. all defult AZ values to the ones presente in replacement for the us AZ's, replicate this across all environments 
+
+╷
+│ Error: creating EC2 Subnet: operation error EC2: CreateSubnet, https response error StatusCode: 400, RequestID: 87462915-80a3-4f64-89a1-7b80d398208f, api error InvalidParameterValue: Value (us-east-1a) for parameter availabilityZone is invalid. Subnets can currently only be created in the following availability zones: eu-west-2a, eu-west-2b, eu-west-2c.
+│
+│   with module.subnets.aws_subnet.public["goldenpath-prod-public-a"],
+│   on ../../modules/aws_subnet/main.tf line 11, in resource "aws_subnet" "public":
+│   11: resource "aws_subnet" "public" {
+│
+╵
+╷
+│ Error: creating EC2 Subnet: operation error EC2: CreateSubnet, https response error StatusCode: 400, RequestID: bc24bef8-c1ff-4aaf-92c5-461aa57876c8, api error InvalidParameterValue: Value (us-east-1b) for parameter availabilityZone is invalid. Subnets can currently only be created in the following availability zones: eu-west-2a, eu-west-2b, eu-west-2c.
+│
+│   with module.subnets.aws_subnet.public["goldenpath-prod-public-b"],
+│   on ../../modules/aws_subnet/main.tf line 11, in resource "aws_subnet" "public":
+│   11: resource "aws_subnet" "public" {
+│
+╵
+╷
+│ Error: creating EC2 Subnet: operation error EC2: CreateSubnet, https response error StatusCode: 400, RequestID: 011ce568-0a1f-4245-8e3b-90c4248d8b9e, api error InvalidParameterValue: Value (us-east-1a) for parameter availabilityZone is invalid. Subnets can currently only be created in the following availability zones: eu-west-2a, eu-west-2b, eu-west-2c.
+│
+│   with module.subnets.aws_subnet.private["goldenpath-prod-private-a"],
+│   on ../../modules/aws_subnet/main.tf line 29, in resource "aws_subnet" "private":
+│   29: resource "aws_subnet" "private" {
+│
+╵
+╷
+│ Error: creating EC2 Subnet: operation error EC2: CreateSubnet, https response error StatusCode: 400, RequestID: a5e8bd9a-0b30-46af-bc26-d9a3a3965b9d, api error InvalidParameterValue: Value (us-east-1b) for parameter availabilityZone is invalid. Subnets can currently only be created in the following availability zones: eu-west-2a, eu-west-2b, eu-west-2c.
+│
+│   with module.subnets.aws_subnet.private["goldenpath-prod-private-b"],
+│   on ../../modules/aws_subnet/main.tf line 29, in resource "aws_subnet" "private":
+│   29: resource "aws_subnet" "private" {
+
+
+from this directory a git add . adds all the fles below to the staging are 
+some of them include extensions we have in .gitignore
+    modified:   .gitignore
+	modified:   README.md
+	new file:   chat_fil.txt
+	modified:   envs/dev/backend.tf
+	modified:   envs/dev/main.tf
+	modified:   envs/dev/terraform.tfvars
+	modified:   envs/dev/variables.tf
+	modified:   envs/prod/main.tf
+	modified:   envs/prod/terraform.tfvars
+	modified:   envs/prod/variables.tf
+	modified:   envs/staging/main.tf
+	modified:   envs/staging/terraform.tfvars
+	modified:   envs/staging/variables.tf
+	modified:   envs/test/main.tf
+	modified:   envs/test/terraform.tfvars
+	modified:   envs/test/variables.tf
+
+
+review the below explain what the issues and explain the changes you need to make 
+│ Warning: Argument is deprecated
+│
+│   with module.compute[0].aws_instance.app,
+│   on ../../modules/aws_compute/main.tf line 14, in resource "aws_instance" "app":
+│   14: resource "aws_instance" "app" {
+│
+│ network_interface is deprecated. To specify the primary network interface, use
+│ primary_network_interface instead. To attach additional network interfaces, use the
+│ aws_network_interface_attachment resource.
+
+
+create a README.md for every Module and explain the purpose of the module
+include 
+- purpose 
+- inputs/outputs
+- Trade offs
+- assumptions 
+- Failure modes 
+
+writ it for the VPC firts ffor me to review then we can populate the rest once we get the firts one correct 

@@ -10,6 +10,12 @@ variable "vpc_tag" {
   default     = "goldenpath-vpc"
 }
 
+variable "environment" {
+  type        = string
+  description = "Environment name for tagging."
+  default     = ""
+}
+
 variable "tags" {
   type        = map(string)
   description = "Additional tags merged onto all resources."
