@@ -3,10 +3,10 @@ set -euo pipefail
 
 cluster_name="${1:-}"
 region="${2:-}"
-values_file="${3:-}"
+namespace="${3:-kong-system}"
 
 if [[ -z "${cluster_name}" || -z "${region}" ]]; then
-  echo "Usage: $0 <cluster_name> <region> [values_file]" >&2
+  echo "Usage: $0 <cluster_name> <region> [namespace]" >&2
   exit 1
 fi
 
@@ -18,23 +18,12 @@ if ! kubectl -n kube-system get deployment aws-load-balancer-controller >/dev/nu
   echo "Warning: aws-load-balancer-controller not detected. Kong LoadBalancer services may not provision as expected." >&2
 fi
 
-# Add and update the Kong Helm repo.
-helm repo add kong https://charts.konghq.com
-helm repo update
-
-# Create the namespace if it does not exist.
-kubectl create namespace kong --dry-run=client -o yaml | kubectl apply -f -
-
-# Install or upgrade Kong, using a values file if provided.
-if [[ -n "${values_file}" ]]; then
-  helm upgrade --install kong kong/kong \
-    --namespace kong \
-    --values "${values_file}"
-else
-  helm upgrade --install kong kong/kong \
-    --namespace kong
+# Validate that Argo CD has reconciled Kong into the cluster.
+if ! kubectl -n "${namespace}" get deployment kong-controller >/dev/null 2>&1; then
+  echo "Kong deployment not found in ${namespace}. Ensure the Argo CD app has synced." >&2
+  exit 1
 fi
 
 # Wait for the controller deployment to be ready and print services.
-kubectl -n kong rollout status deployment/kong-controller --timeout=180s
-kubectl -n kong get svc
+kubectl -n "${namespace}" rollout status deployment/kong-controller --timeout=180s
+kubectl -n "${namespace}" get svc

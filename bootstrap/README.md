@@ -149,7 +149,7 @@ Platform tooling (apps + ingress):
 
 ```
 bootstrap/30_platform-tooling/10_argocd_apps.sh <env>
-bootstrap/30_platform-tooling/20_kong_ingress.sh <cluster> <region> [values_file]
+bootstrap/30_platform-tooling/20_kong_ingress.sh <cluster> <region> [namespace]
 ```
 
 ## Keycloak SSO follow-up
@@ -166,12 +166,12 @@ Mandatory (baseline cluster functionality):
 - vpc-cni: pod networking in the VPC (ENI/IP assignment).
 - coredns: cluster DNS for service discovery.
 - kube-proxy: Kubernetes service networking on each node.
+- aws-load-balancer-controller: provisions ALB/NLB for Services/Ingress in AWS.
+- cert-manager: automates TLS certificates (e.g., Let's Encrypt).
+- kong-ingress-api-gateway: API gateway and ingress controller for north-south traffic.
 
 Optional (platform capabilities):
 - cluster-autoscaler or Karpenter: scales node groups or provisions nodes for pending pods.
-- aws-load-balancer-controller: provisions ALB/NLB for Services/Ingress in AWS.
 - external-dns: automates DNS records (e.g., Route53) for Services/Ingress.
-- cert-manager: automates TLS certificates (e.g., Let’s Encrypt).
-- ingress-nginx: NGINX Ingress controller; we plan to use Kong but keep nginx/traefik as alternatives.
 - node-local-dns: per-node DNS cache to reduce CoreDNS load and speed lookups.
 - calico: consider in v2 if we need NetworkPolicy enforcement or advanced networking features.
