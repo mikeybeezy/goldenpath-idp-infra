@@ -5,12 +5,8 @@ variable "environment" {
 
 variable "name_prefix" {
   type        = string
-  description = "Prefix applied to resource names. Set via CLI or TF_VAR_name_prefix."
-}
-
-variable "build_id" {
-  type        = string
-  description = "Unique build identifier for tagging and cleanup. Set via CLI or TF_VAR_build_id."
+  description = "Prefix applied to resource names."
+  default     = ""
 }
 
 variable "vpc_cidr" {
@@ -42,6 +38,26 @@ variable "common_tags" {
   type        = map(string)
   description = "Additional tags applied to resources."
   default     = {}
+}
+
+variable "bootstrap_mode" {
+  description = "When true, use bootstrap-safe node sizing."
+  type        = bool
+  default     = false
+}
+
+variable "bootstrap_node_group" {
+  description = "Node group sizing used during bootstrap mode."
+  type = object({
+    min_size     = number
+    desired_size = number
+    max_size     = number
+  })
+  default = {
+    min_size     = 3
+    desired_size = 3
+    max_size     = 5
+  }
 }
 
 variable "compute_config" {

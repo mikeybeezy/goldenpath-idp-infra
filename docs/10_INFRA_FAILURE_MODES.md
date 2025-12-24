@@ -12,9 +12,7 @@ and the options we considered.
 
 ## Chosen approach (V1)
 
-1) Require a unique `name_prefix` per build (CLI-driven).
-2) Tag all resources with a unique `BuildId`.
-3) Use a cleanup script to delete orphaned resources by `BuildId`.
+1) Use a cleanup script to delete orphaned resources by `BuildId`.
 
 This combination avoids name collisions, makes cleanup deterministic, and
 reduces manual imports.
@@ -23,7 +21,7 @@ reduces manual imports.
 
 1) Stop the failed apply.
 2) Run the cleanup script for that `BuildId` (dry-run first).
-3) Re-run `terraform apply` with a new `BuildId` if needed.
+3) Re-run `terraform apply` once cleanup is complete.
 4) Import resources only if you intend to keep them.
 
 ## Automation note
@@ -39,21 +37,6 @@ bootstrap-scripts/cleanup-orphans.sh <build-id> <region>
 ```
 
 Set `DRY_RUN=false` to execute deletions.
-
-## Example CLI invocation (recommended)
-
-```
-TF_VAR_name_prefix=goldenpath-dev-20240115-abc123 \
-TF_VAR_build_id=dev-20240115-abc123 \
-terraform -chdir=envs/dev apply
-```
-
-## BuildId format (recommended)
-
-Use a consistent BuildId format so cleanup is predictable:
-
-- `<env>-<YYYYMMDD>-<shortid>` (example: `dev-20240115-abc123`)
-- `name_prefix` should include the same suffix to avoid collisions.
 
 ## Other options we can adopt later
 

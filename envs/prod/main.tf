@@ -4,16 +4,24 @@ terraform {
 
 locals {
   environment    = var.environment
-  name_prefix    = var.name_prefix
+  name_prefix    = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
   public_subnets = var.public_subnets
   private_subnets = var.private_subnets
+  # Use a larger node group during bootstrap to avoid capacity bottlenecks.
+  effective_node_group = var.bootstrap_mode ? merge(
+    var.eks_config.node_group,
+    {
+      min_size     = var.bootstrap_node_group.min_size
+      desired_size = var.bootstrap_node_group.desired_size
+      max_size     = var.bootstrap_node_group.max_size
+    }
+  ) : var.eks_config.node_group
 
   common_tags = merge(
     {
       Environment = local.environment
       Project     = "goldenpath-idp"
       ManagedBy   = "terraform"
-      BuildId     = var.build_id
     },
     var.common_tags,
   )
@@ -89,7 +97,7 @@ module "compute" {
   kubernetes_version = var.eks_config.version
   vpc_id             = module.vpc.vpc_id
   subnet_ids         = module.subnets.private_subnet_ids
-  node_group_config  = var.eks_config.node_group
+  node_group_config  = local.effective_node_group
   environment        = local.environment
   tags               = local.common_tags
 

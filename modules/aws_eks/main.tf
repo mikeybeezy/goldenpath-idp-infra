@@ -203,11 +203,6 @@ resource "aws_eks_addon" "snapshot_controller" {
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "snapshot-controller"
   addon_version = lookup(var.addon_versions, "snapshot-controller", null)
-  configuration_values = local.snapshot_replica_count != null ? jsonencode({
-    controller = {
-      replicaCount = local.snapshot_replica_count
-    }
-  }) : null
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 

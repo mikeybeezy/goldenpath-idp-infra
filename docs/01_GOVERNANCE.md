@@ -211,6 +211,10 @@ We treat failed cluster builds as recoverable events. The default response is:
 
 Details: `docs/10_INFRA_FAILURE_MODES.md`.
 
+Preflight checks are mandatory before bootstrap, especially for higher
+environments. This prevents predictable failures (routing, IAM, capacity) and
+reduces fire-fighting later. See `bootstrap/00_prereqs/10_eks_preflight.sh`.
+
 **Change Flow**
 ```
 Developer

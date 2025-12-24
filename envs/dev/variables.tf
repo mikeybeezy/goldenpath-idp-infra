@@ -5,12 +5,8 @@ variable "environment" {
 
 variable "name_prefix" {
   type        = string
-  description = "Prefix applied to resource names. Set via CLI or TF_VAR_name_prefix."
-}
-
-variable "build_id" {
-  type        = string
-  description = "Unique build identifier for tagging and cleanup. Set via CLI or TF_VAR_build_id."
+  description = "Prefix applied to resource names."
+  default     = ""
 }
 
 variable "vpc_cidr" {
@@ -82,6 +78,26 @@ variable "addon_replica_counts" {
   description = "Optional map of addon replica counts by addon name."
   type        = map(number)
   default     = {}
+}
+
+variable "bootstrap_mode" {
+  description = "When true, use bootstrap-safe node sizing."
+  type        = bool
+  default     = false
+}
+
+variable "bootstrap_node_group" {
+  description = "Node group sizing used during bootstrap mode."
+  type = object({
+    min_size     = number
+    desired_size = number
+    max_size     = number
+  })
+  default = {
+    min_size     = 3
+    desired_size = 3
+    max_size     = 5
+  }
 }
 
 // SSM is the default node access path; SSH is break-glass and should be time-boxed and IP-restricted.
