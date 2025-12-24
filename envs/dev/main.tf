@@ -159,6 +159,7 @@ module "eks" {
   subnet_ids                    = module.subnets.private_subnet_ids
   node_group_config             = local.effective_node_group
   addon_replica_counts          = var.addon_replica_counts
+  enable_storage_addons         = var.enable_storage_addons
   enable_ssh_break_glass        = var.enable_ssh_break_glass
   ssh_key_name                  = var.ssh_key_name
   ssh_source_security_group_ids = var.ssh_source_security_group_ids

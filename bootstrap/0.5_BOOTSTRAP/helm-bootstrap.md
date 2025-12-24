@@ -15,10 +15,11 @@ The runner orchestrates the full bootstrap flow against a fresh EKS cluster. It 
 1. Ensures the AWS, kubectl, and helm CLIs are installed.
 2. Updates kubeconfig for the target cluster.
 3. Runs the prereq checks.
-4. Installs Argo CD via Helm.
-5. Validates core add-ons (AWS Load Balancer Controller, cert-manager).
-6. Applies Argo CD apps (platform tooling and Kong).
-7. Runs smoke tests and the audit report.
+4. Installs Metrics Server early for scheduling sanity checks.
+5. Installs Argo CD via Helm.
+6. Validates core add-ons (AWS Load Balancer Controller, cert-manager).
+7. Applies Argo CD apps, optionally waits for Cluster Autoscaler, then validates Kong.
+8. Runs the audit report.
 
 Argo CD admin access is handled via the dedicated helper script:
 `bootstrap/0.5_bootstrap/10_gitops-controller/20_argocd_admin_access.sh`.
@@ -26,7 +27,7 @@ Argo CD admin access is handled via the dedicated helper script:
 ## Usage
 
 ```sh
-./bootstrap-scripts/helm-bootstrap.sh <cluster-name> <region> [kong-namespace]
+./bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster-name> <region> [kong-namespace]
 ```
 
 Run this once per cluster after it becomes reachable by kubectl.
@@ -38,6 +39,18 @@ cluster. It enforces the full sequence and runs the standard checks.
 
 Use individual scripts when you need to rerun or debug a specific step, or
 when you are customizing the sequence (for example, skipping Kong until later).
+
+## Current bootstrap defaults
+
+These defaults keep the node group stable and reduce early pressure:
+
+- `bootstrap_mode` = `true`
+- `min_size` = 3
+- `desired_size` = 3
+- `max_size` = 5
+- `enable_ssh_break_glass` = `false`
+- `enable_storage_addons` = `false` (EBS/EFS/snapshot deferred)
+- `SKIP_ARGO_SYNC_WAIT` = `true` (default, skips Argo app sync waits)
 
 ## Suggested Enhancements / Alternatives
 

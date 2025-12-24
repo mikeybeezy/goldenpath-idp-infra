@@ -156,6 +156,8 @@ Why:
 - Clear audit trail
 - Faster onboarding
 
+Reference: `docs/12_GITOPS_AND_CICD.md`.
+
 Out of Scope (V1):
 
 - Atlantis
@@ -184,6 +186,33 @@ V1 Guidance:
   in the `kube-system` namespace.
 - Create the EKS IAM OIDC provider in Terraform so IRSA works without manual inputs.
 - When SSH break-glass is enabled, pass the AWS EC2 key pair name via CLI vars or `TF_VAR_ssh_key_name` in CI (never commit `.pem` paths).
+
+**Network Exposure**
+
+Decision: Platform tooling is internal-only in higher environments, while client
+applications may be externally exposed through the approved ingress path.
+
+Why:
+- Protects internal services and reduces attack surface.
+- Enforces least privilege and auditable access.
+- Keeps production changes predictable and reviewed.
+
+Access expectations:
+- Dev can be public for speed.
+- Staging/Prod require controlled access (VPN, bastion, or SSM-forwarded tunnels).
+- As the platform matures, all environments move to internal-facing ingress.
+
+Implementation detail:
+- Kong exposure is controlled via Service annotations in per-environment values.
+- Networking rationale and options live in `docs/11_NETWORKING.md`.
+
+**VPN Access**
+
+Decision: Start with Pritunl (self-hosted) as the default VPN for controlled
+access to internal environments, with an upgrade path to Pritunl Enterprise or
+AWS Client VPN as teams scale.
+
+Details: `docs/11_NETWORKING.md`.
 
 **Drift Remediation**
 

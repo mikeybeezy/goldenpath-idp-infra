@@ -1,5 +1,7 @@
 # Ingress Front Door Strategy
 
+See also: `docs/11_NETWORKING.md` for environment exposure and access model.
+
 ## Decision
 Default to Kong as the single front door and expose it via an NLB. Use an ALB
 only when AWS-native L7 features (WAF, OIDC auth, listener rules) are a hard

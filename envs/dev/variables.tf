@@ -80,6 +80,12 @@ variable "addon_replica_counts" {
   default     = {}
 }
 
+variable "enable_storage_addons" {
+  description = "Whether to install EBS/EFS/snapshot managed add-ons."
+  type        = bool
+  default     = true
+}
+
 variable "bootstrap_mode" {
   description = "When true, use bootstrap-safe node sizing."
   type        = bool

@@ -44,3 +44,11 @@ Set `DRY_RUN=false` to execute deletions.
 - Workspace-per-build for state isolation (does not prevent name collisions).
 - Random suffixes for all names (prevents collisions, harder to read).
 - Scheduled sweeper job to purge expired BuildIds.
+
+## GitOps OutOfSync noise (to revisit)
+
+Some apps (e.g., Kong) generate runtime certificates and webhook `caBundle`
+values. Argo CD will report these as OutOfSync even when the app is healthy.
+This creates alert fatigue and can hide real drift. We should add explicit
+`ignoreDifferences` rules for these known dynamic fields and keep the list
+under review.

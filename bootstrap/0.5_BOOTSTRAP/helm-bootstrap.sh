@@ -14,7 +14,7 @@ set -euo pipefail
 
 cluster_name="${1:-}"
 region="${2:-}"
-kong_namespace="${3:-kong}"
+kong_namespace="${3:-kong-system}"
 
 if [[ -z "${cluster_name}" || -z "${region}" ]]; then
   echo "Usage: $0 <cluster-name> <region> [kong-namespace]" >&2
@@ -65,6 +65,9 @@ if [[ "${ready_nodes}" -lt 3 ]]; then
   exit 1
 fi
 
+# Install Metrics Server early so autoscaler and scheduling checks work.
+bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh" "${cluster_name}" "${region}"
+
 # Install Argo CD and (optionally) show admin access helper instructions.
 bash "${repo_root}/bootstrap/0.5_bootstrap/10_gitops-controller/10_argocd_helm.sh" "${cluster_name}" "${region}" "${repo_root}/gitops/helm/argocd/values/dev.yaml"
 
@@ -79,11 +82,30 @@ fi
 # Apply platform tooling via Argo CD.
 env_name="${ENV_NAME:-dev}"
 bash "${repo_root}/bootstrap/0.5_bootstrap/30_platform-tooling/10_argocd_apps.sh" "${env_name}"
+
+# Optionally wait for the Cluster Autoscaler Argo app to sync before installing Kong.
+autoscaler_app="${env_name}-cluster-autoscaler"
+if [[ "${SKIP_ARGO_SYNC_WAIT:-true}" == "true" ]]; then
+  echo "Skipping Argo CD sync wait (SKIP_ARGO_SYNC_WAIT=true)."
+else
+  if kubectl -n argocd get application "${autoscaler_app}" >/dev/null 2>&1; then
+    echo "Waiting for Argo CD app ${autoscaler_app} to sync..."
+    kubectl -n argocd wait --for=condition=Synced "application/${autoscaler_app}" --timeout=300s
+    kubectl -n argocd wait --for=condition=Healthy "application/${autoscaler_app}" --timeout=300s
+  else
+    echo "Cluster Autoscaler app ${autoscaler_app} not found in Argo CD. Ensure the app manifests are applied." >&2
+    exit 1
+  fi
+fi
+
+# Ensure Cluster Autoscaler is running before installing Kong.
+kubectl -n kube-system rollout status deployment/cluster-autoscaler --timeout=180s || \
+  echo "Warning: cluster-autoscaler deployment not ready yet."
+
 bash "${repo_root}/bootstrap/0.5_bootstrap/30_platform-tooling/20_kong_ingress.sh" "${cluster_name}" "${region}" "${kong_namespace}"
 
 # Post-bootstrap sanity checks and audit output.
-bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh" "${cluster_name}" "${region}"
-bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh"
+bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh" "${cluster_name}" "${region}"
 
 # Optional: scale down after bootstrap by re-applying Terraform with bootstrap_mode=false.
 if [[ "${SCALE_DOWN_AFTER_BOOTSTRAP:-false}" == "true" ]]; then
@@ -103,3 +125,14 @@ Sanity checks:
   kubectl -n argocd get applications
   kubectl -n ${kong_namespace} get svc
 NOTE
+
+# Surface Argo CD app status at the end for manual review.
+kubectl -n argocd get applications \
+  -o custom-columns=NAME:.metadata.name,SYNC:.status.sync.status,HEALTH:.status.health.status,MESSAGE:.status.health.message
+
+# Flag apps with unknown health to reduce ambiguity.
+if kubectl -n argocd get applications \
+  -o custom-columns=NAME:.metadata.name,HEALTH:.status.health.status --no-headers | \
+  awk '$2 == "Unknown" {print}' | grep -q .; then
+  echo "Warning: Some Argo CD apps report HEALTH=Unknown. Review the status above." >&2
+fi

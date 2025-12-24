@@ -20,13 +20,27 @@ bootstrap/0.5_bootstrap/
 ## Recommended sequence
 
 1) 00_prereqs: verify required tools are installed and run EKS preflight.
-2) 10_gitops-controller: install Argo CD via Helm.
-3) 20_core-addons: validate AWS LB Controller and cert-manager.
-4) 30_platform-tooling: apply Argo CD apps and validate Kong ingress.
-5) 40_smoke-tests: validate kubeconfig, metrics, and run the audit report.
+2) 40_smoke-tests: install Metrics Server and validate node metrics.
+3) 10_gitops-controller: install Argo CD via Helm.
+4) 20_core-addons: validate AWS LB Controller and cert-manager.
+5) 30_platform-tooling: apply Argo CD apps, optionally wait for autoscaler, then validate Kong ingress.
+6) 40_smoke-tests: run the audit report.
 
 Argo CD is where the cluster reconciles against the desired state in this repo.
 Once Applications are created, Argo CD keeps them in sync with Git.
+GitOps details live in `docs/12_GITOPS_AND_CICD.md`.
+
+## Flow diagram (quick view)
+
+```
+Prereqs
+  -> Metrics Server
+  -> Argo CD
+  -> Core add-ons (LB controller, cert-manager)
+  -> Argo apps (autoscaler + tooling)
+  -> Kong validation
+  -> Audit report
+```
 
 ## One-stage vs multi-stage
 
@@ -46,6 +60,14 @@ bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-i
 NODE_INSTANCE_TYPE=t3.small bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region> [kong-namespace]
 ```
 
+Bootstrap mode defaults for this environment:
+
+- `bootstrap_mode` = `true`
+- `min_size` = 3
+- `desired_size` = 3
+- `max_size` = 5
+- `enable_ssh_break_glass` = `false`
+
 Optional scale-down after bootstrap:
 
 ```
@@ -57,6 +79,13 @@ Skip cert-manager validation (default behavior):
 
 ```
 SKIP_CERT_MANAGER_VALIDATION=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
+  bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region>
+```
+
+Skip waiting for Argo CD apps to sync (default behavior):
+
+```
+SKIP_ARGO_SYNC_WAIT=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
   bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region>
 ```
 
@@ -73,15 +102,18 @@ SKIP_CERT_MANAGER_VALIDATION=false NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
 bash bootstrap/0.5_bootstrap/00_prereqs/00_check_tools.sh
 bash bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
 
+bash bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh <cluster> <region>
+
 bash bootstrap/0.5_bootstrap/10_gitops-controller/10_argocd_helm.sh <cluster> <region> [values_file]
 
 bash bootstrap/0.5_bootstrap/20_core-addons/10_aws_lb_controller.sh <cluster> <region> <vpc_id> [service_account_name] [service_account_namespace]
 bash bootstrap/0.5_bootstrap/20_core-addons/20_cert_manager.sh <cluster> <region> [namespace]  # Optional until Argo apps are synced
 
 bash bootstrap/0.5_bootstrap/30_platform-tooling/10_argocd_apps.sh <env>
+# Ensure cluster-autoscaler is running before Kong.
+kubectl -n kube-system rollout status deployment/cluster-autoscaler --timeout=180s
 bash bootstrap/0.5_bootstrap/30_platform-tooling/20_kong_ingress.sh <cluster> <region> [namespace]
 
-bash bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh <cluster> <region>
 bash bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh <cluster> <region>
 ```
 
@@ -91,7 +123,7 @@ bash bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh <cluster> <region>
 kubectl get nodes
 kubectl top nodes
 kubectl -n argocd get applications
-kubectl -n kong get svc
+kubectl -n kong-system get svc
 ```
 
 ## SSH break-glass
@@ -114,6 +146,9 @@ Installed as EKS managed add-ons during cluster provisioning:
 - aws-ebs-csi-driver: block storage for persistent volumes.
 - aws-efs-csi-driver: shared file storage for persistent volumes.
 - snapshot-controller: CSI volume snapshot APIs.
+
+Note: EBS/EFS/snapshot add-ons can be disabled via `enable_storage_addons=false`
+and enabled later once the cluster is stable.
 
 ## Private subnets and NAT requirement
 

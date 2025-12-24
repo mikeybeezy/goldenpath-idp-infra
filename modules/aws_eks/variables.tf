@@ -88,3 +88,9 @@ variable "addon_replica_counts" {
   type        = map(number)
   default     = {}
 }
+
+variable "enable_storage_addons" {
+  description = "Whether to install storage-related EKS managed add-ons (EBS, EFS, snapshot)."
+  type        = bool
+  default     = true
+}

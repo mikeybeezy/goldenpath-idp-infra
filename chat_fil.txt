@@ -63,3 +63,46 @@ Kong as the single front door → NLB
 AWS-managed L7 routing/WAF as the front door → ALB
 
 Don’t run both by default in V1 unless you have a specific reason (it creates ambiguity/support load)
+
+
+
+bash goldenpath-idp-infra/bootstrap-scripts/helm-bootstrap.sh goldenpath-dev-eks eu-west-2
+
+
+
+ebs-csi-controller
+
+ kubectl -n kube-system scale deployment/efs-csi-controller --replicas=1
+
+ efs-csi-controller
+
+we need to set their default replicas to 1 for now becaause they are consumng too many resources 
+ebs-csi-controller  
+efs-csi-controller   
+snapshot-controller
+
+
+
+why does this keep happening when we try to add new nodes
+
+deleting Security Group (sg-0b3b2dd5ec0907fa9): operation error EC2: DeleteSecurityGroup, https response error StatusCode: 400, RequestID: 45bfc729-0085-4c1a-8bde-4f8d76d3edc9, api error DependencyViolation: resource sg-0b3b2dd5ec0907fa9 has a dependent object
+│ 
+
+aws ec2 terminatchdir=goldenpath-idp-infra/envs/deve-instances --instance-ids i-0ac1abfea0242ef9e --region eu-west-2
+terraform  apply -target=module.eks
+
+
+
+NODE_INSTANCE_TYPE=t3.small bash goldenpath-idp-infra/bootstrap-scripts/helm-bootstrap.sh goldenpath-dev-eks eu-west-2
+
+TF_VAR_bootstrap_mode=true terraform -chdir=goldenpath-idp-infra/envs/dev apply
+
+
+I've now moved  all things relating to bootstraping to this directory /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra/bootstrap/0.5_BOOTSTRAP
+scan the directory files and ensure corhearance with contnet
+
+I have moved all the  boostrap related read me to one file /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra/bootstrap/0.5_BOOTSTRAP/README.md
+ensure that the content flows well and it is up to day and accurate. Make sure that all retition is removed. ensure that it can be read by a college student
+
+review and propose any refinement. let me know the changes yoi plan to make befor youb make them
+

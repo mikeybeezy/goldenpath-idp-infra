@@ -170,6 +170,7 @@ resource "aws_eks_node_group" "this" {
 }
 
 resource "aws_eks_addon" "ebs_csi_driver" {
+  count = var.enable_storage_addons ? 1 : 0
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "aws-ebs-csi-driver"
   addon_version = lookup(var.addon_versions, "aws-ebs-csi-driver", null)
@@ -185,6 +186,7 @@ resource "aws_eks_addon" "ebs_csi_driver" {
 }
 
 resource "aws_eks_addon" "efs_csi_driver" {
+  count = var.enable_storage_addons ? 1 : 0
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "aws-efs-csi-driver"
   addon_version = lookup(var.addon_versions, "aws-efs-csi-driver", null)
@@ -200,6 +202,7 @@ resource "aws_eks_addon" "efs_csi_driver" {
 }
 
 resource "aws_eks_addon" "snapshot_controller" {
+  count = var.enable_storage_addons ? 1 : 0
   cluster_name = aws_eks_cluster.this.name
   addon_name   = "snapshot-controller"
   addon_version = lookup(var.addon_versions, "snapshot-controller", null)

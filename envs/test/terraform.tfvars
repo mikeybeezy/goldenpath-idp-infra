@@ -64,3 +64,7 @@ compute_config = {
 #     capacity_type  = "ON_DEMAND"
 #   }
 # }
+
+# Bootstrap defaults (used when EKS is enabled).
+bootstrap_mode = true
+enable_ssh_break_glass = false

@@ -74,18 +74,20 @@ addon_replica_counts = {
   snapshot-controller = 1
 }
 
+enable_storage_addons = false
+
 eks_config = {
   enabled      = true
   cluster_name = "goldenpath-dev-eks"
   version      = "1.29"
-  enable_ssh_break_glass = true
+  enable_ssh_break_glass = false
   ssh_key_name           = null
   ssh_source_security_group_ids = []
   node_group = {
     name           = "dev-default"
-    min_size       = 2
-    max_size       = 4
-    desired_size   = 2
+    min_size       = 3
+    max_size       = 5
+    desired_size   = 3
     instance_types = ["t3.small"]
     disk_size      = 20
     capacity_type  = "ON_DEMAND"
@@ -96,9 +98,17 @@ eks_config = {
 }
 
 # SSH break-glass (pass ssh_key_name via CLI or TF_VAR_ssh_key_name)
-enable_ssh_break_glass = true
+enable_ssh_break_glass = false
 ssh_key_name           = null
 ssh_source_security_group_ids = []
+
+# Bootstrap mode keeps node sizing stable during bring-up.
+bootstrap_mode = true
+bootstrap_node_group = {
+  min_size     = 3
+  desired_size = 3
+  max_size     = 5
+}
 
 
 

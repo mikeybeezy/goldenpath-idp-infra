@@ -60,6 +60,12 @@ variable "bootstrap_node_group" {
   }
 }
 
+variable "enable_storage_addons" {
+  description = "Whether to install EBS/EFS/snapshot managed add-ons."
+  type        = bool
+  default     = true
+}
+
 variable "compute_config" {
   description = "Configuration for the optional EC2 instance."
   type = object({

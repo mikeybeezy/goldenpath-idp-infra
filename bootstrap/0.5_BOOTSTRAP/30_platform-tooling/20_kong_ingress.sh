@@ -19,11 +19,11 @@ if ! kubectl -n kube-system get deployment aws-load-balancer-controller >/dev/nu
 fi
 
 # Validate that Argo CD has reconciled Kong into the cluster.
-if ! kubectl -n "${namespace}" get deployment kong-controller >/dev/null 2>&1; then
+if ! kubectl -n "${namespace}" get deployment -l app.kubernetes.io/name=kong >/dev/null 2>&1; then
   echo "Kong deployment not found in ${namespace}. Ensure the Argo CD app has synced." >&2
   exit 1
 fi
 
-# Wait for the controller deployment to be ready and print services.
-kubectl -n "${namespace}" rollout status deployment/kong-controller --timeout=180s
+# Wait for Kong deployments to be ready and print services.
+kubectl -n "${namespace}" rollout status deployment -l app.kubernetes.io/name=kong --timeout=180s
 kubectl -n "${namespace}" get svc
