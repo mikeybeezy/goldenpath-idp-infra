@@ -30,6 +30,9 @@ Argo CD is where the cluster reconciles against the desired state in this repo.
 Once Applications are created, Argo CD keeps them in sync with Git.
 GitOps details live in `docs/12_GITOPS_AND_CICD.md`.
 
+At the end of the runner, we print an Argo status summary. If any app reports
+`HEALTH=Unknown`, the runner prints a warning so you can review it manually.
+
 ## Flow diagram (quick view)
 
 ```

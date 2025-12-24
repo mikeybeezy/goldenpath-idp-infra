@@ -52,6 +52,9 @@ These defaults keep the node group stable and reduce early pressure:
 - `enable_storage_addons` = `false` (EBS/EFS/snapshot deferred)
 - `SKIP_ARGO_SYNC_WAIT` = `true` (default, skips Argo app sync waits)
 
+The runner prints an Argo status summary at the end and warns if any app shows
+`HEALTH=Unknown`.
+
 ## Suggested Enhancements / Alternatives
 
 - **Terraform integration**: run this after `terraform apply` to standardize platform bring-up.
