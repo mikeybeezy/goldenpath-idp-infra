@@ -55,7 +55,7 @@ aws eks list-nodegroups --cluster-name goldenpath-dev-eks --region eu-west-2
 aws eks delete-nodegroup --cluster-name goldenpath-dev-eks --nodegroup-name dev-default --region eu-west-2
 
 
-NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev SKIP_CERT_MANAGER_VALIDATION=true bash helm-bootstrap.sh goldenpath-dev-eks eu-west-2
+NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev SKIP_CERT_MANAGER_VALIDATION=true bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks eu-west-2
 
 
 terraform import 'module.iam[0].aws_iam_role.eks_cluster' goldenpath-dev-eks-cluster-role

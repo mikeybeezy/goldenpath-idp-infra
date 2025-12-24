@@ -17,7 +17,7 @@ bootstrap, and how to run each without confusion.
 **Commands**
 ```
 TF_VAR_bootstrap_mode=true terraform -chdir=envs/dev apply
-bash bootstrap-scripts/helm-bootstrap.sh goldenpath-dev-eks eu-west-2
+bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks eu-west-2
 TF_VAR_bootstrap_mode=false terraform -chdir=envs/dev apply
 ```
 

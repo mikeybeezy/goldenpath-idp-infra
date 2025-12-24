@@ -236,7 +236,7 @@ We treat failed cluster builds as recoverable events. The default response is:
 
 - Use a unique `name_prefix` per build.
 - Tag all resources with a `BuildId`.
-- Clean up orphans using `bootstrap-scripts/cleanup-orphans.sh`.
+- Clean up orphans using `bootstrap/0.5_bootstrap/50_tear_down_clean_up/cleanup-orphans.sh`.
 
 Details: `docs/10_INFRA_FAILURE_MODES.md`.
 

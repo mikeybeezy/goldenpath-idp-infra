@@ -4,13 +4,13 @@ set -euo pipefail
 # Full bootstrap runner for a new EKS cluster.
 # This orchestrates the repo bootstrap scripts in a safe, deterministic order.
 # Usage:
-#   bootstrap-scripts/helm-bootstrap.sh <cluster-name> <region> [kong-namespace]
+#   bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster-name> <region> [kong-namespace]
 #
 # Optional cleanup mode:
-#   CLEANUP_ON_FAILURE=true BUILD_ID=<id> DRY_RUN=false bootstrap-scripts/cleanup-orphans.sh <build-id> <region>
+#   CLEANUP_ON_FAILURE=true BUILD_ID=<id> DRY_RUN=false bootstrap/0.5_bootstrap/50_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
 #
 # Optional scale-down after bootstrap (Terraform required):
-#   SCALE_DOWN_AFTER_BOOTSTRAP=true TF_DIR=goldenpath-idp-infra/envs/dev bash bootstrap-scripts/helm-bootstrap.sh <cluster> <region>
+#   SCALE_DOWN_AFTER_BOOTSTRAP=true TF_DIR=goldenpath-idp-infra/envs/dev bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 
 cluster_name="${1:-}"
 region="${2:-}"

@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Drain nodes in a specific EKS node group before resizing or replacement.
 # Usage:
-#   bootstrap-scripts/drain-nodegroup.sh <nodegroup-name>
+#   bootstrap/0.5_bootstrap/50_tear_down_clean_up/drain-nodegroup.sh <nodegroup-name>
 
 nodegroup="${1:-}"
 

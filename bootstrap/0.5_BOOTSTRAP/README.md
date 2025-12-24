@@ -11,10 +11,10 @@ bootstrap/0.5_bootstrap/
   20_core-addons/
   30_platform-tooling/
   40_smoke-tests/
-  helm-bootstrap.sh
-  cleanup-orphans.sh
-  pre-destroy-cleanup.sh
-  drain-nodegroup.sh
+  goldenpath-idp-bootstrap.sh
+  50_tear_down_clean_up/cleanup-orphans.sh
+  50_tear_down_clean_up/pre-destroy-cleanup.sh
+  50_tear_down_clean_up/drain-nodegroup.sh
   11_ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP.md
 
 ## Recommended sequence
@@ -65,7 +65,7 @@ bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-i
 ## Bootstrap runner (recommended)
 
 ```
-NODE_INSTANCE_TYPE=t3.small bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region> [kong-namespace]
+NODE_INSTANCE_TYPE=t3.small bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region> [kong-namespace]
 ```
 
 Bootstrap mode defaults for this environment:
@@ -80,28 +80,28 @@ Optional scale-down after bootstrap:
 
 ```
 NODE_INSTANCE_TYPE=t3.small SCALE_DOWN_AFTER_BOOTSTRAP=true TF_DIR=goldenpath-idp-infra/envs/dev \
-  bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region>
+  bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
 
 Skip cert-manager validation (default behavior):
 
 ```
 SKIP_CERT_MANAGER_VALIDATION=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
-  bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region>
+  bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
 
 Skip waiting for Argo CD apps to sync (default behavior):
 
 ```
 SKIP_ARGO_SYNC_WAIT=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
-  bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region>
+  bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
 
 Enable compact output (reduces noisy command output, keeps stage banners and warnings):
 
 ```
 COMPACT_OUTPUT=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
-  bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region>
+  bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
 
 ### Example: compact output (`COMPACT_OUTPUT=true`)
@@ -351,7 +351,7 @@ Enforce cert-manager validation after Argo apps sync:
 
 ```
 SKIP_CERT_MANAGER_VALIDATION=false NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
-  bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region>
+  bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
 
 ## Full manual sequence (multi-stage)
@@ -444,9 +444,10 @@ kubectl get nodes
 
 ## Script references
 
-- `cleanup-orphans.sh`: cleanup tagged orphaned resources (manual, dry-run default).
-- `pre-destroy-cleanup.sh`: delete LoadBalancer services before teardown.
-- `drain-nodegroup.sh`: cordon and drain nodes for safe node group updates.
+- `50_tear_down_clean_up/cleanup-orphans.sh`: cleanup tagged orphaned resources (manual, dry-run default).
+- `50_tear_down_clean_up/pre-destroy-cleanup.sh`: delete LoadBalancer services before teardown.
+- `50_tear_down_clean_up/drain-nodegroup.sh`: cordon and drain nodes for safe node group updates.
+- Manual teardown commands: `docs/15_TEARDOWN_AND_CLEANUP.md`.
 
 ## Kong notes
 

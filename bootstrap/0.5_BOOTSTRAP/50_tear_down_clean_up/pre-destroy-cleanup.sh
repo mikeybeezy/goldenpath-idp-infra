@@ -4,7 +4,7 @@ set -euo pipefail
 # Pre-destroy cleanup for Kubernetes LoadBalancer services.
 # This prevents AWS from keeping ELB/NLB resources (and SGs) attached during teardown.
 # Usage:
-#   bootstrap-scripts/pre-destroy-cleanup.sh <cluster-name> <region> [--yes]
+#   bootstrap/0.5_bootstrap/50_tear_down_clean_up/pre-destroy-cleanup.sh <cluster-name> <region> [--yes]
 
 cluster_name="${1:-}"
 region="${2:-}"

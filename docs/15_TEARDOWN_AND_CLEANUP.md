@@ -1,0 +1,123 @@
+# Teardown and Cleanup Commands
+
+This page lists manual AWS CLI commands to find and remove lingering
+resources that block teardown. Use the cleanup scripts first; use these
+commands when Terraform or the scripts cannot finish the job.
+
+Replace values in angle brackets and set the region:
+
+```bash
+export AWS_REGION=eu-west-2
+export VPC_ID=vpc-xxxxxxxxxxxxxxxxx
+```
+
+## Load balancers (ALB/NLB)
+
+List:
+
+```bash
+aws elbv2 describe-load-balancers --region "$AWS_REGION" \
+  --query 'LoadBalancers[?VpcId==`'"$VPC_ID"'`].[LoadBalancerArn,DNSName]' \
+  --output table
+```
+
+Delete:
+
+```bash
+aws elbv2 delete-load-balancer --load-balancer-arn <lb-arn> --region "$AWS_REGION"
+```
+
+Classic ELB (if any):
+
+```bash
+aws elb describe-load-balancers --region "$AWS_REGION" \
+  --query 'LoadBalancerDescriptions[?VPCId==`'"$VPC_ID"'`].[LoadBalancerName,DNSName]' \
+  --output table
+aws elb delete-load-balancer --load-balancer-name <elb-name> --region "$AWS_REGION"
+```
+
+## Target groups, listeners, rules
+
+List target groups:
+
+```bash
+aws elbv2 describe-target-groups --region "$AWS_REGION" \
+  --query 'TargetGroups[?VpcId==`'"$VPC_ID"'`].[TargetGroupArn,TargetGroupName]' \
+  --output table
+```
+
+## NAT gateways and EIPs
+
+```bash
+aws ec2 describe-nat-gateways --region "$AWS_REGION" \
+  --filter Name=vpc-id,Values="$VPC_ID" \
+  --query 'NatGateways[].NatGatewayId' --output text
+aws ec2 delete-nat-gateway --nat-gateway-id <nat-id> --region "$AWS_REGION"
+```
+
+Release EIPs after NAT is gone:
+
+```bash
+aws ec2 describe-addresses --region "$AWS_REGION" \
+  --query 'Addresses[?AssociationId!=null].[AllocationId,PublicIp]' \
+  --output table
+aws ec2 release-address --allocation-id <alloc-id> --region "$AWS_REGION"
+```
+
+## VPC endpoints
+
+```bash
+aws ec2 describe-vpc-endpoints --region "$AWS_REGION" \
+  --filters Name=vpc-id,Values="$VPC_ID" \
+  --query 'VpcEndpoints[].VpcEndpointId' --output text
+aws ec2 delete-vpc-endpoints --vpc-endpoint-ids <vpce-id> --region "$AWS_REGION"
+```
+
+## Network interfaces (ENIs)
+
+```bash
+aws ec2 describe-network-interfaces --region "$AWS_REGION" \
+  --filters Name=vpc-id,Values="$VPC_ID" \
+  --query 'NetworkInterfaces[].{Id:NetworkInterfaceId,Desc:Description,Status:Status,Attachment:Attachment.InstanceId}' \
+  --output table
+```
+
+If ENIs remain, delete the owning service (LB, NAT, endpoint, or instance)
+before retrying.
+
+## Subnets, route tables, and gateways
+
+Once dependencies are gone:
+
+```bash
+aws ec2 describe-subnets --region "$AWS_REGION" \
+  --filters Name=vpc-id,Values="$VPC_ID" \
+  --query 'Subnets[].SubnetId' --output text
+aws ec2 delete-subnet --subnet-id <subnet-id> --region "$AWS_REGION"
+```
+
+```bash
+aws ec2 describe-route-tables --region "$AWS_REGION" \
+  --filters Name=vpc-id,Values="$VPC_ID" \
+  --query 'RouteTables[].RouteTableId' --output text
+aws ec2 delete-route-table --route-table-id <rtb-id> --region "$AWS_REGION"
+```
+
+```bash
+aws ec2 describe-internet-gateways --region "$AWS_REGION" \
+  --filters Name=attachment.vpc-id,Values="$VPC_ID" \
+  --query 'InternetGateways[].InternetGatewayId' --output text
+aws ec2 detach-internet-gateway --internet-gateway-id <igw-id> --vpc-id "$VPC_ID" --region "$AWS_REGION"
+aws ec2 delete-internet-gateway --internet-gateway-id <igw-id> --region "$AWS_REGION"
+```
+
+## Final VPC delete
+
+```bash
+aws ec2 delete-vpc --vpc-id "$VPC_ID" --region "$AWS_REGION"
+```
+
+## Notes
+
+- Always delete Kubernetes LoadBalancer services first to avoid dangling LBs.
+- Some resources take several minutes to fully release.

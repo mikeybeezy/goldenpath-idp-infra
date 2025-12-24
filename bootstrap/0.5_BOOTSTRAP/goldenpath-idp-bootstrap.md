@@ -1,6 +1,6 @@
 # Helm Bootstrap Runner (Non-Production)
 
-This document explains what `bootstrap-scripts/helm-bootstrap.sh` does and when to run it.
+This document explains what `bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh` does and when to run it.
 
 ## Purpose
 
@@ -27,7 +27,7 @@ Argo CD admin access is handled via the dedicated helper script:
 ## Usage
 
 ```sh
-./bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster-name> <region> [kong-namespace]
+./bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster-name> <region> [kong-namespace]
 ```
 
 Run this once per cluster after it becomes reachable by kubectl.

@@ -27,16 +27,17 @@ reduces manual imports.
 ## Automation note
 
 We do not auto-run cleanup on failure because it can break Terraform
-idempotency. If you want automation, wire `cleanup-orphans.sh` behind an
+idempotency. If you want automation, wire `bootstrap/0.5_bootstrap/50_tear_down_clean_up/cleanup-orphans.sh` behind an
 explicit flag in CI (e.g., only when you intend to abandon a build).
 
 Cleanup script:
 
 ```
-bootstrap-scripts/cleanup-orphans.sh <build-id> <region>
+bootstrap/0.5_bootstrap/50_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
 ```
 
-Set `DRY_RUN=false` to execute deletions.
+Set `DRY_RUN=false` to execute deletions. For manual AWS cleanup, see
+`docs/15_TEARDOWN_AND_CLEANUP.md`.
 
 ## Other options we can adopt later
 
