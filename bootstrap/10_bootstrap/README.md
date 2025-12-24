@@ -4,29 +4,29 @@ This directory is the single entrypoint that answers: how does a blank cluster
 become a platform? It captures the intended bootstrap flow and the boundary
 between cluster creation and platform rollout.
 
-bootstrap/0.5_bootstrap/
+bootstrap/10_bootstrap/
   README.md
   00_prereqs/
   10_gitops-controller/
-  20_core-addons/
-  30_platform-tooling/
-  40_smoke-tests/
+  30_core-addons/
+  40_platform-tooling/
+  50_smoke-tests/
   goldenpath-idp-bootstrap.sh
-  50_tear_down_clean_up/cleanup-orphans.sh
-  50_tear_down_clean_up/pre-destroy-cleanup.sh
-  50_tear_down_clean_up/drain-nodegroup.sh
-  11_ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP.md
+  60_tear_down_clean_up/cleanup-orphans.sh
+  60_tear_down_clean_up/pre-destroy-cleanup.sh
+  60_tear_down_clean_up/drain-nodegroup.sh
+  one_stage_vs_multistage_bootstrap.md
 
 ## Recommended sequence
 
 1) 00_prereqs: verify required tools are installed and run EKS preflight.
-2) 40_smoke-tests: install Metrics Server and validate node metrics.
+2) 50_smoke-tests: install Metrics Server and validate node metrics.
 3) 10_gitops-controller: install Argo CD via Helm.
-4) 20_core-addons: validate AWS LB Controller and cert-manager.
-5) 30_platform-tooling: apply Argo CD apps, optionally wait for autoscaler, then validate Kong ingress.
-6) 40_smoke-tests: run the audit report.
+4) 30_core-addons: validate AWS LB Controller and cert-manager.
+5) 40_platform-tooling: apply Argo CD apps, optionally wait for autoscaler, then validate Kong ingress.
+6) 50_smoke-tests: run the audit report.
 7) Optional: scale down after bootstrap.
-8) 40_smoke-tests: sanity checklist and final status summary.
+8) 50_smoke-tests: sanity checklist and final status summary.
 
 Argo CD is where the cluster reconciles against the desired state in this repo.
 Once Applications are created, Argo CD keeps them in sync with Git.
@@ -53,19 +53,19 @@ Prereqs
 ## One-stage vs multi-stage
 
 Guidance and use cases are in:
-`bootstrap/0.5_bootstrap/11_ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP.md`
+`bootstrap/10_bootstrap/one_stage_vs_multistage_bootstrap.md`
 
 ## Prereqs (mandatory)
 
 ```
-bootstrap/0.5_bootstrap/00_prereqs/00_check_tools.sh
-bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
+bootstrap/00_prereqs/00_check_tools.sh
+bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
 ```
 
 ## Bootstrap runner (recommended)
 
 ```
-NODE_INSTANCE_TYPE=t3.small bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region> [kong-namespace]
+NODE_INSTANCE_TYPE=t3.small bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region> [kong-namespace]
 ```
 
 Bootstrap mode defaults for this environment:
@@ -80,28 +80,28 @@ Optional scale-down after bootstrap:
 
 ```
 NODE_INSTANCE_TYPE=t3.small SCALE_DOWN_AFTER_BOOTSTRAP=true TF_DIR=goldenpath-idp-infra/envs/dev \
-  bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
+  bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
 
 Skip cert-manager validation (default behavior):
 
 ```
 SKIP_CERT_MANAGER_VALIDATION=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
-  bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
+  bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
 
 Skip waiting for Argo CD apps to sync (default behavior):
 
 ```
 SKIP_ARGO_SYNC_WAIT=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
-  bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
+  bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
 
 Enable compact output (reduces noisy command output, keeps stage banners and warnings):
 
 ```
 COMPACT_OUTPUT=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
-  bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
+  bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
 
 ### Example: compact output (`COMPACT_OUTPUT=true`)
@@ -322,7 +322,7 @@ dev-kong-kong-manager              NodePort       172.20.219.171   <none>       
 dev-kong-kong-metrics              ClusterIP      172.20.124.230   <none>                                                                          10255/TCP,10254/TCP             64m
 dev-kong-kong-proxy                LoadBalancer   172.20.244.13    k8s-kongsyst-devkongk-bbc576901d-bed406492f6151bf.elb.eu-west-2.amazonaws.com   80:32090/TCP,443:30845/TCP      64m
 dev-kong-kong-validation-webhook   ClusterIP      172.20.147.77    <none>                                                                          443/TCP                         64m
-Audit written to bootstrap/0.5_bootstrap/40_smoke-tests/audit/goldenpath-dev-eks-20251224T121735Z.md
+Audit written to bootstrap/50_smoke-tests/audit/goldenpath-dev-eks-20251224T121735Z.md
 Bootstrap complete.
 Sanity checks:
   kubectl get nodes
@@ -351,28 +351,28 @@ Enforce cert-manager validation after Argo apps sync:
 
 ```
 SKIP_CERT_MANAGER_VALIDATION=false NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
-  bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
+  bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
 
 ## Full manual sequence (multi-stage)
 
 ```
-bash bootstrap/0.5_bootstrap/00_prereqs/00_check_tools.sh
-bash bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
+bash bootstrap/00_prereqs/00_check_tools.sh
+bash bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
 
-bash bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh <cluster> <region>
+bash bootstrap/50_smoke-tests/10_kubeconfig.sh <cluster> <region>
 
-bash bootstrap/0.5_bootstrap/10_gitops-controller/10_argocd_helm.sh <cluster> <region> [values_file]
+bash bootstrap/10_gitops-controller/10_argocd_helm.sh <cluster> <region> [values_file]
 
-bash bootstrap/0.5_bootstrap/20_core-addons/10_aws_lb_controller.sh <cluster> <region> <vpc_id> [service_account_name] [service_account_namespace]
-bash bootstrap/0.5_bootstrap/20_core-addons/20_cert_manager.sh <cluster> <region> [namespace]  # Optional until Argo apps are synced
+bash bootstrap/30_core-addons/10_aws_lb_controller.sh <cluster> <region> <vpc_id> [service_account_name] [service_account_namespace]
+bash bootstrap/30_core-addons/20_cert_manager.sh <cluster> <region> [namespace]  # Optional until Argo apps are synced
 
-bash bootstrap/0.5_bootstrap/30_platform-tooling/10_argocd_apps.sh <env>
+bash bootstrap/40_platform-tooling/10_argocd_apps.sh <env>
 # Ensure cluster-autoscaler is running before Kong.
 kubectl -n kube-system rollout status deployment/cluster-autoscaler --timeout=180s
-bash bootstrap/0.5_bootstrap/30_platform-tooling/20_kong_ingress.sh <cluster> <region> [namespace]
+bash bootstrap/40_platform-tooling/20_kong_ingress.sh <cluster> <region> [namespace]
 
-bash bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh <cluster> <region>
+bash bootstrap/50_smoke-tests/20_audit.sh <cluster> <region>
 ```
 
 ## Post-build sanity checks
@@ -444,9 +444,9 @@ kubectl get nodes
 
 ## Script references
 
-- `50_tear_down_clean_up/cleanup-orphans.sh`: cleanup tagged orphaned resources (manual, dry-run default).
-- `50_tear_down_clean_up/pre-destroy-cleanup.sh`: delete LoadBalancer services before teardown.
-- `50_tear_down_clean_up/drain-nodegroup.sh`: cordon and drain nodes for safe node group updates.
+- `60_tear_down_clean_up/cleanup-orphans.sh`: cleanup tagged orphaned resources (manual, dry-run default).
+- `60_tear_down_clean_up/pre-destroy-cleanup.sh`: delete LoadBalancer services before teardown.
+- `60_tear_down_clean_up/drain-nodegroup.sh`: cordon and drain nodes for safe node group updates.
 - Manual teardown commands: `docs/15_TEARDOWN_AND_CLEANUP.md`.
 
 ## Kong notes
@@ -473,6 +473,6 @@ Argo CD admin access is for bootstrap only and should be disabled once SSO is
 working. Use the helper script:
 
 ```
-bootstrap/0.5_bootstrap/10_gitops-controller/20_argocd_admin_access.sh disable
-bootstrap/0.5_bootstrap/10_gitops-controller/20_argocd_admin_access.sh enable
+bootstrap/10_gitops-controller/20_argocd_admin_access.sh disable
+bootstrap/10_gitops-controller/20_argocd_admin_access.sh enable
 ```

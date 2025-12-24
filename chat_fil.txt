@@ -66,7 +66,7 @@ Don’t run both by default in V1 unless you have a specific reason (it creates 
 
 
 
-bash goldenpath-idp-infra/bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks eu-west-2
+bash goldenpath-idp-infra/bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks eu-west-2
 
 
 
@@ -93,7 +93,7 @@ terraform  apply -target=module.eks
 
 
 
-NODE_INSTANCE_TYPE=t3.small bash goldenpath-idp-infra/bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks eu-west-2
+NODE_INSTANCE_TYPE=t3.small bash goldenpath-idp-infra/bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks eu-west-2
 
 TF_VAR_bootstrap_mode=true terraform -chdir=goldenpath-idp-infra/envs/dev apply
 

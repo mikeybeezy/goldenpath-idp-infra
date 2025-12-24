@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Preflight checks for EKS node group creation.
 # Usage:
-#   bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh <cluster-name> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
+#   bootstrap/00_prereqs/10_eks_preflight.sh <cluster-name> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
 
 cluster_name="${1:-}"
 region="${2:-}"

@@ -7,7 +7,7 @@ This document explains how the Golden Path IDP repository is organized and why e
 ```
 goldenpath-idp-infra/
 ├── bootstrap/
-│   └── 0.5_bootstrap/
+│   └── 10_bootstrap/
 │       └── goldenpath-idp-bootstrap.sh
 ├── compliance/
 │   └── datree/

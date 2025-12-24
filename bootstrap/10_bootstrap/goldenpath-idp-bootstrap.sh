@@ -4,13 +4,13 @@ set -euo pipefail
 # Full bootstrap runner for a new EKS cluster.
 # This orchestrates the repo bootstrap scripts in a safe, deterministic order.
 # Usage:
-#   bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster-name> <region> [kong-namespace]
+#   bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster-name> <region> [kong-namespace]
 #
 # Optional cleanup mode:
-#   CLEANUP_ON_FAILURE=true BUILD_ID=<id> DRY_RUN=false bootstrap/0.5_bootstrap/50_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
+#   CLEANUP_ON_FAILURE=true BUILD_ID=<id> DRY_RUN=false bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
 #
 # Optional scale-down after bootstrap (Terraform required):
-#   SCALE_DOWN_AFTER_BOOTSTRAP=true TF_DIR=goldenpath-idp-infra/envs/dev bash bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
+#   SCALE_DOWN_AFTER_BOOTSTRAP=true TF_DIR=goldenpath-idp-infra/envs/dev bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 
 cluster_name="${1:-}"
 region="${2:-}"
@@ -71,7 +71,7 @@ stage_done "STAGE 1"
 # Verify tools and basic access.
 stage_banner "STAGE 2: TOOL CHECKS"
 echo "Checking required tools..."
-run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/00_prereqs/00_check_tools.sh"
+run_cmd bash "${repo_root}/bootstrap/00_prereqs/00_check_tools.sh"
 stage_done "STAGE 2"
 
 # Preflight for node group creation (mandatory).
@@ -85,7 +85,7 @@ if [[ -z "${instance_type}" ]]; then
   echo "NODE_INSTANCE_TYPE is required for preflight (example: NODE_INSTANCE_TYPE=t2.small)." >&2
   exit 1
 fi
-run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh" "${cluster_name}" "${region}" "${vpc_id}" "${private_subnets}" "${node_role_arn}" "${instance_type}"
+run_cmd bash "${repo_root}/bootstrap/00_prereqs/10_eks_preflight.sh" "${cluster_name}" "${region}" "${vpc_id}" "${private_subnets}" "${node_role_arn}" "${instance_type}"
 stage_done "STAGE 3"
 
 # Preflight: ensure enough Ready nodes for a full bootstrap.
@@ -101,24 +101,24 @@ stage_done "STAGE 4"
 # Install Metrics Server early so autoscaler and scheduling checks work.
 stage_banner "STAGE 5: METRICS SERVER"
 echo "Installing Metrics Server..."
-run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh" "${cluster_name}" "${region}"
+run_cmd bash "${repo_root}/bootstrap/50_smoke-tests/10_kubeconfig.sh" "${cluster_name}" "${region}"
 stage_done "STAGE 5"
 
 # Install Argo CD and (optionally) show admin access helper instructions.
 stage_banner "STAGE 6: ARGO CD"
 echo "INSTALLING Argo CD..."
-run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/10_gitops-controller/10_argocd_helm.sh" "${cluster_name}" "${region}" "${repo_root}/gitops/helm/argocd/values/dev.yaml"
+run_cmd bash "${repo_root}/bootstrap/10_gitops-controller/10_argocd_helm.sh" "${cluster_name}" "${region}" "${repo_root}/gitops/helm/argocd/values/dev.yaml"
 stage_done "STAGE 6"
 
 # Validate core add-ons that are expected to exist.
 stage_banner "STAGE 7: CORE ADD-ONS"
 echo "INSTALLING AWS Load Balancer Controller..."
-run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/20_core-addons/10_aws_lb_controller.sh" "${cluster_name}" "${region}" "${vpc_id}"
+run_cmd bash "${repo_root}/bootstrap/30_core-addons/10_aws_lb_controller.sh" "${cluster_name}" "${region}" "${vpc_id}"
 if [[ "${SKIP_CERT_MANAGER_VALIDATION:-true}" == "true" ]]; then
   echo "Skipping cert-manager validation; Argo apps may not be synced yet."
 else
   echo "VALIDATING cert-manager..."
-  run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/20_core-addons/20_cert_manager.sh" "${cluster_name}" "${region}"
+  run_cmd bash "${repo_root}/bootstrap/30_core-addons/20_cert_manager.sh" "${cluster_name}" "${region}"
 fi
 stage_done "STAGE 7"
 
@@ -126,7 +126,7 @@ stage_done "STAGE 7"
 stage_banner "STAGE 8: PLATFORM APPS"
 env_name="${ENV_NAME:-dev}"
 echo "INSTALLING Argo apps for ${env_name}..."
-run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/30_platform-tooling/10_argocd_apps.sh" "${env_name}"
+run_cmd bash "${repo_root}/bootstrap/40_platform-tooling/10_argocd_apps.sh" "${env_name}"
 stage_done "STAGE 8"
 
 # Optionally wait for the Cluster Autoscaler Argo app to sync before installing Kong.
@@ -154,13 +154,13 @@ stage_done "STAGE 9"
 # Validate Kong ingress.
 stage_banner "STAGE 10: KONG"
 echo "VALIDATING Kong ingress..."
-run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/30_platform-tooling/20_kong_ingress.sh" "${cluster_name}" "${region}" "${kong_namespace}"
+run_cmd bash "${repo_root}/bootstrap/40_platform-tooling/20_kong_ingress.sh" "${cluster_name}" "${region}" "${kong_namespace}"
 stage_done "STAGE 10"
 
 # Post-bootstrap audit output.
 stage_banner "STAGE 11: AUDIT"
 echo "Running audit checks..."
-run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh" "${cluster_name}" "${region}"
+run_cmd bash "${repo_root}/bootstrap/50_smoke-tests/20_audit.sh" "${cluster_name}" "${region}"
 stage_done "STAGE 11"
 
 # Optional: scale down after bootstrap by re-applying Terraform with bootstrap_mode=false.
@@ -214,7 +214,7 @@ kubectl -n "${kong_namespace}" get svc
 stage_done "STAGE 13"
 
 stage_banner "STAGE 14: SANITY CHECKS"
-cat "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/30_dev_baseline_checklist.md"
+cat "${repo_root}/bootstrap/50_smoke-tests/30_dev_baseline_checklist.md"
 stage_done "STAGE 14"
 
 # Surface Argo CD app status at the end for manual review.

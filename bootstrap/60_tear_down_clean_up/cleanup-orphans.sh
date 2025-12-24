@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Cleanup tagged orphaned AWS resources created by a failed build.
 # Usage:
-#   bootstrap/0.5_bootstrap/50_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
+#   bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
 #
 # Dry-run by default. Set DRY_RUN=false to execute deletions.
 

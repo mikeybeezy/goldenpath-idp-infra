@@ -1,6 +1,6 @@
 # Helm Bootstrap Runner (Non-Production)
 
-This document explains what `bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh` does and when to run it.
+This document explains what `bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh` does and when to run it.
 
 ## Purpose
 
@@ -22,12 +22,12 @@ The runner orchestrates the full bootstrap flow against a fresh EKS cluster. It 
 8. Runs the audit report.
 
 Argo CD admin access is handled via the dedicated helper script:
-`bootstrap/0.5_bootstrap/10_gitops-controller/20_argocd_admin_access.sh`.
+`bootstrap/10_gitops-controller/20_argocd_admin_access.sh`.
 
 ## Usage
 
 ```sh
-./bootstrap/0.5_bootstrap/goldenpath-idp-bootstrap.sh <cluster-name> <region> [kong-namespace]
+./bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster-name> <region> [kong-namespace]
 ```
 
 Run this once per cluster after it becomes reachable by kubectl.
