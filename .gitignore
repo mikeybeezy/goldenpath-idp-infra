@@ -28,4 +28,7 @@ crash.*.log
 # Misc
 *.out
 
+# Bootstrap audit reports
+bootstrap/0.5_bootstrap/40_smoke-tests/audit/
+
 .txt

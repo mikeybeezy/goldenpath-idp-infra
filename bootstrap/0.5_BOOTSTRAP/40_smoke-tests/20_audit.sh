@@ -9,9 +9,15 @@ if [[ -z "${cluster_name}" || -z "${region}" ]]; then
   exit 1
 fi
 
+script_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(git -C "${script_root}" rev-parse --show-toplevel 2>/dev/null || true)"
+if [[ -z "${repo_root}" ]]; then
+  repo_root="$(cd "${script_root}/../.." && pwd)"
+fi
+
 # Create a timestamped report file for audits.
 timestamp="$(date -u +"%Y%m%dT%H%M%SZ")"
-out_dir="bootstrap/0.5_bootstrap/40_smoke-tests/audit"
+out_dir="${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/audit"
 mkdir -p "${out_dir}"
 report_md="${out_dir}/${cluster_name}-${timestamp}.md"
 
@@ -50,4 +56,4 @@ report_md="${out_dir}/${cluster_name}-${timestamp}.md"
 } > "${report_md}"
 
 # Print the report location for easy discovery.
-echo "Audit written to ${report_md}"
+echo "Audit saved to ${report_md}"

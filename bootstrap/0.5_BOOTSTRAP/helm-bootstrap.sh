@@ -43,10 +43,12 @@ stage_banner() {
   local title="$1"
   echo ""
   echo "##### ${title} #####"
+  echo ""
 }
 
 stage_done() {
   local title="$1"
+  echo ""
   echo "----- ${title} DONE -----"
 }
 
@@ -62,16 +64,19 @@ echo "Bootstrap starting for cluster ${cluster_name} in ${region}"
 
 # Ensure kubeconfig is set for the target cluster.
 stage_banner "STAGE 1: CLUSTER CONTEXT"
+echo "Updating kubeconfig for ${cluster_name} (${region})..."
 run_cmd aws eks update-kubeconfig --name "${cluster_name}" --region "${region}"
 stage_done "STAGE 1"
 
 # Verify tools and basic access.
 stage_banner "STAGE 2: TOOL CHECKS"
+echo "Checking required tools..."
 run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/00_prereqs/00_check_tools.sh"
 stage_done "STAGE 2"
 
 # Preflight for node group creation (mandatory).
 stage_banner "STAGE 3: EKS PREFLIGHT"
+echo "Running EKS preflight..."
 vpc_id="$(aws eks describe-cluster --name "${cluster_name}" --region "${region}" --query 'cluster.resourcesVpcConfig.vpcId' --output text)"
 node_role_arn="$(aws iam get-role --role-name "${cluster_name}-node-role" --query 'Role.Arn' --output text)"
 private_subnets="$(aws eks describe-cluster --name "${cluster_name}" --region "${region}" --query 'cluster.resourcesVpcConfig.subnetIds' --output text | tr '\t' ',')"
@@ -85,6 +90,7 @@ stage_done "STAGE 3"
 
 # Preflight: ensure enough Ready nodes for a full bootstrap.
 stage_banner "STAGE 4: CAPACITY CHECK"
+echo "Checking Ready node count..."
 ready_nodes="$(kubectl get nodes --no-headers 2>/dev/null | awk '$2 == "Ready" {count++} END {print count+0}')"
 if [[ "${ready_nodes}" -lt 3 ]]; then
   echo "Insufficient node capacity (${ready_nodes} Ready). Enable bootstrap_mode or scale nodes before running full bootstrap." >&2
@@ -94,20 +100,24 @@ stage_done "STAGE 4"
 
 # Install Metrics Server early so autoscaler and scheduling checks work.
 stage_banner "STAGE 5: METRICS SERVER"
+echo "Installing Metrics Server..."
 run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh" "${cluster_name}" "${region}"
 stage_done "STAGE 5"
 
 # Install Argo CD and (optionally) show admin access helper instructions.
 stage_banner "STAGE 6: ARGO CD"
+echo "INSTALLING Argo CD..."
 run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/10_gitops-controller/10_argocd_helm.sh" "${cluster_name}" "${region}" "${repo_root}/gitops/helm/argocd/values/dev.yaml"
 stage_done "STAGE 6"
 
 # Validate core add-ons that are expected to exist.
 stage_banner "STAGE 7: CORE ADD-ONS"
+echo "INSTALLING AWS Load Balancer Controller..."
 run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/20_core-addons/10_aws_lb_controller.sh" "${cluster_name}" "${region}" "${vpc_id}"
 if [[ "${SKIP_CERT_MANAGER_VALIDATION:-true}" == "true" ]]; then
   echo "Skipping cert-manager validation; Argo apps may not be synced yet."
 else
+  echo "VALIDATING cert-manager..."
   run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/20_core-addons/20_cert_manager.sh" "${cluster_name}" "${region}"
 fi
 stage_done "STAGE 7"
@@ -115,6 +125,7 @@ stage_done "STAGE 7"
 # Apply platform tooling via Argo CD.
 stage_banner "STAGE 8: PLATFORM APPS"
 env_name="${ENV_NAME:-dev}"
+echo "INSTALLING Argo apps for ${env_name}..."
 run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/30_platform-tooling/10_argocd_apps.sh" "${env_name}"
 stage_done "STAGE 8"
 
@@ -135,17 +146,20 @@ fi
 
 # Ensure Cluster Autoscaler is running before installing Kong.
 stage_banner "STAGE 9: AUTOSCALER"
+echo "Checking Cluster Autoscaler rollout..."
 run_cmd kubectl -n kube-system rollout status deployment/cluster-autoscaler --timeout=180s || \
   echo "Warning: cluster-autoscaler deployment not ready yet."
 stage_done "STAGE 9"
 
 # Validate Kong ingress.
 stage_banner "STAGE 10: KONG"
+echo "VALIDATING Kong ingress..."
 run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/30_platform-tooling/20_kong_ingress.sh" "${cluster_name}" "${region}" "${kong_namespace}"
 stage_done "STAGE 10"
 
-# Post-bootstrap sanity checks and audit output.
+# Post-bootstrap audit output.
 stage_banner "STAGE 11: AUDIT"
+echo "Running audit checks..."
 run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh" "${cluster_name}" "${region}"
 stage_done "STAGE 11"
 
@@ -164,6 +178,7 @@ else
   stage_done "STAGE 12"
 fi
 
+stage_banner "STAGE 13: BOOTSTRAP COMPLETE"
 cat <<NOTE
 Bootstrap complete.
 Sanity checks:
@@ -173,9 +188,43 @@ Sanity checks:
   kubectl -n ${kong_namespace} get svc
 NOTE
 
+cat <<EXPLAIN
+What these checks mean:
+  - kubectl get nodes: all nodes should be Ready (cluster can schedule).
+  - kubectl top nodes: metrics-server is working and reporting usage.
+  - argocd applications: apps show Synced/Healthy (GitOps reconciled).
+  - kong-system services: Kong has a LoadBalancer hostname/EXTERNAL-IP.
+
+If any check fails, the platform is not fully ready yet.
+EXPLAIN
+
+echo "kubectl get nodes"
+kubectl get nodes
+echo ""
+echo "kubectl top nodes"
+kubectl top nodes
+echo ""
+echo "kubectl -n argocd get applications"
+kubectl -n argocd get applications
+echo ""
+echo "kubectl -n ${kong_namespace} get svc"
+kubectl -n "${kong_namespace}" get svc
+
+# Checklist to confirm the platform is usable.
+stage_done "STAGE 13"
+
+stage_banner "STAGE 14: SANITY CHECKS"
+cat "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/30_dev_baseline_checklist.md"
+stage_done "STAGE 14"
+
 # Surface Argo CD app status at the end for manual review.
 kubectl -n argocd get applications \
   -o custom-columns=NAME:.metadata.name,SYNC:.status.sync.status,HEALTH:.status.health.status,MESSAGE:.status.health.message
+
+# Remind users to validate app behavior independently.
+echo ""
+echo ""
+echo "NOTE: Argo CD status is not a full validation. Check critical apps independently."
 
 # Flag apps with unknown health to reduce ambiguity.
 if kubectl -n argocd get applications \
