@@ -39,15 +39,39 @@ require_cmd aws
 require_cmd kubectl
 require_cmd helm
 
+stage_banner() {
+  local title="$1"
+  echo ""
+  echo "##### ${title} #####"
+}
+
+stage_done() {
+  local title="$1"
+  echo "----- ${title} DONE -----"
+}
+
+run_cmd() {
+  if [[ "${COMPACT_OUTPUT:-false}" == "true" ]]; then
+    "$@" >/dev/null
+  else
+    "$@"
+  fi
+}
+
 echo "Bootstrap starting for cluster ${cluster_name} in ${region}"
 
 # Ensure kubeconfig is set for the target cluster.
-aws eks update-kubeconfig --name "${cluster_name}" --region "${region}"
+stage_banner "STAGE 1: CLUSTER CONTEXT"
+run_cmd aws eks update-kubeconfig --name "${cluster_name}" --region "${region}"
+stage_done "STAGE 1"
 
 # Verify tools and basic access.
-bash "${repo_root}/bootstrap/0.5_bootstrap/00_prereqs/00_check_tools.sh"
+stage_banner "STAGE 2: TOOL CHECKS"
+run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/00_prereqs/00_check_tools.sh"
+stage_done "STAGE 2"
 
 # Preflight for node group creation (mandatory).
+stage_banner "STAGE 3: EKS PREFLIGHT"
 vpc_id="$(aws eks describe-cluster --name "${cluster_name}" --region "${region}" --query 'cluster.resourcesVpcConfig.vpcId' --output text)"
 node_role_arn="$(aws iam get-role --role-name "${cluster_name}-node-role" --query 'Role.Arn' --output text)"
 private_subnets="$(aws eks describe-cluster --name "${cluster_name}" --region "${region}" --query 'cluster.resourcesVpcConfig.subnetIds' --output text | tr '\t' ',')"
@@ -56,32 +80,43 @@ if [[ -z "${instance_type}" ]]; then
   echo "NODE_INSTANCE_TYPE is required for preflight (example: NODE_INSTANCE_TYPE=t2.small)." >&2
   exit 1
 fi
-bash "${repo_root}/bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh" "${cluster_name}" "${region}" "${vpc_id}" "${private_subnets}" "${node_role_arn}" "${instance_type}"
+run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh" "${cluster_name}" "${region}" "${vpc_id}" "${private_subnets}" "${node_role_arn}" "${instance_type}"
+stage_done "STAGE 3"
 
 # Preflight: ensure enough Ready nodes for a full bootstrap.
+stage_banner "STAGE 4: CAPACITY CHECK"
 ready_nodes="$(kubectl get nodes --no-headers 2>/dev/null | awk '$2 == "Ready" {count++} END {print count+0}')"
 if [[ "${ready_nodes}" -lt 3 ]]; then
   echo "Insufficient node capacity (${ready_nodes} Ready). Enable bootstrap_mode or scale nodes before running full bootstrap." >&2
   exit 1
 fi
+stage_done "STAGE 4"
 
 # Install Metrics Server early so autoscaler and scheduling checks work.
-bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh" "${cluster_name}" "${region}"
+stage_banner "STAGE 5: METRICS SERVER"
+run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh" "${cluster_name}" "${region}"
+stage_done "STAGE 5"
 
 # Install Argo CD and (optionally) show admin access helper instructions.
-bash "${repo_root}/bootstrap/0.5_bootstrap/10_gitops-controller/10_argocd_helm.sh" "${cluster_name}" "${region}" "${repo_root}/gitops/helm/argocd/values/dev.yaml"
+stage_banner "STAGE 6: ARGO CD"
+run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/10_gitops-controller/10_argocd_helm.sh" "${cluster_name}" "${region}" "${repo_root}/gitops/helm/argocd/values/dev.yaml"
+stage_done "STAGE 6"
 
 # Validate core add-ons that are expected to exist.
-bash "${repo_root}/bootstrap/0.5_bootstrap/20_core-addons/10_aws_lb_controller.sh" "${cluster_name}" "${region}" "${vpc_id}"
+stage_banner "STAGE 7: CORE ADD-ONS"
+run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/20_core-addons/10_aws_lb_controller.sh" "${cluster_name}" "${region}" "${vpc_id}"
 if [[ "${SKIP_CERT_MANAGER_VALIDATION:-true}" == "true" ]]; then
   echo "Skipping cert-manager validation; Argo apps may not be synced yet."
 else
-  bash "${repo_root}/bootstrap/0.5_bootstrap/20_core-addons/20_cert_manager.sh" "${cluster_name}" "${region}"
+  run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/20_core-addons/20_cert_manager.sh" "${cluster_name}" "${region}"
 fi
+stage_done "STAGE 7"
 
 # Apply platform tooling via Argo CD.
+stage_banner "STAGE 8: PLATFORM APPS"
 env_name="${ENV_NAME:-dev}"
-bash "${repo_root}/bootstrap/0.5_bootstrap/30_platform-tooling/10_argocd_apps.sh" "${env_name}"
+run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/30_platform-tooling/10_argocd_apps.sh" "${env_name}"
+stage_done "STAGE 8"
 
 # Optionally wait for the Cluster Autoscaler Argo app to sync before installing Kong.
 autoscaler_app="${env_name}-cluster-autoscaler"
@@ -90,8 +125,8 @@ if [[ "${SKIP_ARGO_SYNC_WAIT:-true}" == "true" ]]; then
 else
   if kubectl -n argocd get application "${autoscaler_app}" >/dev/null 2>&1; then
     echo "Waiting for Argo CD app ${autoscaler_app} to sync..."
-    kubectl -n argocd wait --for=condition=Synced "application/${autoscaler_app}" --timeout=300s
-    kubectl -n argocd wait --for=condition=Healthy "application/${autoscaler_app}" --timeout=300s
+    run_cmd kubectl -n argocd wait --for=condition=Synced "application/${autoscaler_app}" --timeout=300s
+    run_cmd kubectl -n argocd wait --for=condition=Healthy "application/${autoscaler_app}" --timeout=300s
   else
     echo "Cluster Autoscaler app ${autoscaler_app} not found in Argo CD. Ensure the app manifests are applied." >&2
     exit 1
@@ -99,22 +134,34 @@ else
 fi
 
 # Ensure Cluster Autoscaler is running before installing Kong.
-kubectl -n kube-system rollout status deployment/cluster-autoscaler --timeout=180s || \
+stage_banner "STAGE 9: AUTOSCALER"
+run_cmd kubectl -n kube-system rollout status deployment/cluster-autoscaler --timeout=180s || \
   echo "Warning: cluster-autoscaler deployment not ready yet."
+stage_done "STAGE 9"
 
-bash "${repo_root}/bootstrap/0.5_bootstrap/30_platform-tooling/20_kong_ingress.sh" "${cluster_name}" "${region}" "${kong_namespace}"
+# Validate Kong ingress.
+stage_banner "STAGE 10: KONG"
+run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/30_platform-tooling/20_kong_ingress.sh" "${cluster_name}" "${region}" "${kong_namespace}"
+stage_done "STAGE 10"
 
 # Post-bootstrap sanity checks and audit output.
-bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh" "${cluster_name}" "${region}"
+stage_banner "STAGE 11: AUDIT"
+run_cmd bash "${repo_root}/bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh" "${cluster_name}" "${region}"
+stage_done "STAGE 11"
 
 # Optional: scale down after bootstrap by re-applying Terraform with bootstrap_mode=false.
+stage_banner "STAGE 12: OPTIONAL SCALE DOWN"
 if [[ "${SCALE_DOWN_AFTER_BOOTSTRAP:-false}" == "true" ]]; then
   if [[ -z "${TF_DIR:-}" ]]; then
     echo "SCALE_DOWN_AFTER_BOOTSTRAP is true but TF_DIR is not set." >&2
     exit 1
   fi
   echo "Scaling down via Terraform (bootstrap_mode=false) in ${TF_DIR}"
-  terraform -chdir="${TF_DIR}" apply -var="bootstrap_mode=false"
+  run_cmd terraform -chdir="${TF_DIR}" apply -var="bootstrap_mode=false"
+  stage_done "STAGE 12"
+else
+  echo "Skipping scale down (SCALE_DOWN_AFTER_BOOTSTRAP=false)."
+  stage_done "STAGE 12"
 fi
 
 cat <<NOTE
