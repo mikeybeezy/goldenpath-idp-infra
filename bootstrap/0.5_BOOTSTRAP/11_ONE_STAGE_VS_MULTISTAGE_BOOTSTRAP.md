@@ -36,14 +36,14 @@ TF_VAR_bootstrap_mode=false terraform -chdir=envs/dev apply
 ```
 TF_VAR_bootstrap_mode=true terraform -chdir=envs/dev apply
 
-bash bootstrap/00_prereqs/00_check_tools.sh
-bash bootstrap/10_gitops-controller/10_argocd_helm.sh goldenpath-dev-eks eu-west-2
-bash bootstrap/20_core-addons/10_aws_lb_controller.sh goldenpath-dev-eks eu-west-2 <vpc-id>
-bash bootstrap/20_core-addons/20_cert_manager.sh goldenpath-dev-eks eu-west-2
-bash bootstrap/30_platform-tooling/10_argocd_apps.sh dev
-bash bootstrap/30_platform-tooling/20_kong_ingress.sh goldenpath-dev-eks eu-west-2
-bash bootstrap/40_smoke-tests/10_kubeconfig.sh goldenpath-dev-eks eu-west-2
-bash bootstrap/40_smoke-tests/20_audit.sh goldenpath-dev-eks eu-west-2
+bash bootstrap/0.5_bootstrap/00_prereqs/00_check_tools.sh
+bash bootstrap/0.5_bootstrap/10_gitops-controller/10_argocd_helm.sh goldenpath-dev-eks eu-west-2
+bash bootstrap/0.5_bootstrap/20_core-addons/10_aws_lb_controller.sh goldenpath-dev-eks eu-west-2 <vpc-id>
+bash bootstrap/0.5_bootstrap/20_core-addons/20_cert_manager.sh goldenpath-dev-eks eu-west-2
+bash bootstrap/0.5_bootstrap/30_platform-tooling/10_argocd_apps.sh dev
+bash bootstrap/0.5_bootstrap/30_platform-tooling/20_kong_ingress.sh goldenpath-dev-eks eu-west-2
+bash bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh goldenpath-dev-eks eu-west-2
+bash bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh goldenpath-dev-eks eu-west-2
 
 TF_VAR_bootstrap_mode=false terraform -chdir=envs/dev apply
 ```

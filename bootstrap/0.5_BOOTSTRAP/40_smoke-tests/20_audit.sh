@@ -11,7 +11,7 @@ fi
 
 # Create a timestamped report file for audits.
 timestamp="$(date -u +"%Y%m%dT%H%M%SZ")"
-out_dir="bootstrap/40_smoke-tests/audit"
+out_dir="bootstrap/0.5_bootstrap/40_smoke-tests/audit"
 mkdir -p "${out_dir}"
 report_md="${out_dir}/${cluster_name}-${timestamp}.md"
 

@@ -21,7 +21,7 @@ The runner orchestrates the full bootstrap flow against a fresh EKS cluster. It 
 7. Runs smoke tests and the audit report.
 
 Argo CD admin access is handled via the dedicated helper script:
-`bootstrap/10_gitops-controller/20_argocd_admin_access.sh`.
+`bootstrap/0.5_bootstrap/10_gitops-controller/20_argocd_admin_access.sh`.
 
 ## Usage
 

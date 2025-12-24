@@ -12,7 +12,7 @@ fi
 
 # Write a small audit log alongside other smoke-test artifacts.
 timestamp="$(date -u +"%Y%m%dT%H%M%SZ")"
-out_dir="bootstrap/40_smoke-tests/audit"
+out_dir="bootstrap/0.5_bootstrap/40_smoke-tests/audit"
 mkdir -p "${out_dir}"
 log_file="${out_dir}/argocd-admin-${timestamp}.log"
 

@@ -47,4 +47,4 @@ Use this as a living checklist to validate the dev environment after bootstrap.
 
 ## Audit
 
-- `bootstrap/40_smoke-tests/20_audit.sh <cluster> <region>` report saved.
+- `bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh <cluster> <region>` report saved.

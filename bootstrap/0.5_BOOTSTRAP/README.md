@@ -4,7 +4,7 @@ This directory is the single entrypoint that answers: how does a blank cluster
 become a platform? It captures the intended bootstrap flow and the boundary
 between cluster creation and platform rollout.
 
-bootstrap/0.5_BOOTSTRAP/
+bootstrap/0.5_bootstrap/
   README.md
   00_prereqs/
   10_gitops-controller/
@@ -31,44 +31,58 @@ Once Applications are created, Argo CD keeps them in sync with Git.
 ## One-stage vs multi-stage
 
 Guidance and use cases are in:
-`bootstrap/0.5_BOOTSTRAP/11_ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP.md`
+`bootstrap/0.5_bootstrap/11_ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP.md`
 
 ## Prereqs (mandatory)
 
 ```
-bootstrap/0.5_BOOTSTRAP/00_prereqs/00_check_tools.sh
-bootstrap/0.5_BOOTSTRAP/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
+bootstrap/0.5_bootstrap/00_prereqs/00_check_tools.sh
+bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
 ```
 
 ## Bootstrap runner (recommended)
 
 ```
-NODE_INSTANCE_TYPE=t3.small bash bootstrap/0.5_BOOTSTRAP/helm-bootstrap.sh <cluster> <region> [kong-namespace]
+NODE_INSTANCE_TYPE=t3.small bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region> [kong-namespace]
 ```
 
 Optional scale-down after bootstrap:
 
 ```
 NODE_INSTANCE_TYPE=t3.small SCALE_DOWN_AFTER_BOOTSTRAP=true TF_DIR=goldenpath-idp-infra/envs/dev \
-  bash bootstrap/0.5_BOOTSTRAP/helm-bootstrap.sh <cluster> <region>
+  bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region>
+```
+
+Skip cert-manager validation (default behavior):
+
+```
+SKIP_CERT_MANAGER_VALIDATION=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
+  bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region>
+```
+
+Enforce cert-manager validation after Argo apps sync:
+
+```
+SKIP_CERT_MANAGER_VALIDATION=false NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
+  bash bootstrap/0.5_bootstrap/helm-bootstrap.sh <cluster> <region>
 ```
 
 ## Full manual sequence (multi-stage)
 
 ```
-bash bootstrap/0.5_BOOTSTRAP/00_prereqs/00_check_tools.sh
-bash bootstrap/0.5_BOOTSTRAP/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
+bash bootstrap/0.5_bootstrap/00_prereqs/00_check_tools.sh
+bash bootstrap/0.5_bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
 
-bash bootstrap/0.5_BOOTSTRAP/10_gitops-controller/10_argocd_helm.sh <cluster> <region> [values_file]
+bash bootstrap/0.5_bootstrap/10_gitops-controller/10_argocd_helm.sh <cluster> <region> [values_file]
 
-bash bootstrap/0.5_BOOTSTRAP/20_core-addons/10_aws_lb_controller.sh <cluster> <region> <vpc_id> [service_account_name] [service_account_namespace]
-bash bootstrap/0.5_BOOTSTRAP/20_core-addons/20_cert_manager.sh <cluster> <region> [namespace]
+bash bootstrap/0.5_bootstrap/20_core-addons/10_aws_lb_controller.sh <cluster> <region> <vpc_id> [service_account_name] [service_account_namespace]
+bash bootstrap/0.5_bootstrap/20_core-addons/20_cert_manager.sh <cluster> <region> [namespace]  # Optional until Argo apps are synced
 
-bash bootstrap/0.5_BOOTSTRAP/30_platform-tooling/10_argocd_apps.sh <env>
-bash bootstrap/0.5_BOOTSTRAP/30_platform-tooling/20_kong_ingress.sh <cluster> <region> [namespace]
+bash bootstrap/0.5_bootstrap/30_platform-tooling/10_argocd_apps.sh <env>
+bash bootstrap/0.5_bootstrap/30_platform-tooling/20_kong_ingress.sh <cluster> <region> [namespace]
 
-bash bootstrap/0.5_BOOTSTRAP/40_smoke-tests/10_kubeconfig.sh <cluster> <region>
-bash bootstrap/0.5_BOOTSTRAP/40_smoke-tests/20_audit.sh <cluster> <region>
+bash bootstrap/0.5_bootstrap/40_smoke-tests/10_kubeconfig.sh <cluster> <region>
+bash bootstrap/0.5_bootstrap/40_smoke-tests/20_audit.sh <cluster> <region>
 ```
 
 ## Post-build sanity checks
@@ -145,6 +159,19 @@ kubectl get nodes
 
 Kong is installed through Argo CD so the cluster reconciles with Git state.
 Ingress strategy (Kong+NLB vs ALB): `docs/08_INGRESS_STRATEGY.md`.
+cert-manager is also installed through Argo CD. If Argo apps have not synced
+yet, skip the cert-manager validation and re-run it after the apps are applied.
+
+## Troubleshooting: Kong LoadBalancer pending
+
+If `kubectl -n kong get svc` shows a `LoadBalancer` stuck in `pending`, the
+AWS Load Balancer Controller likely lacks permissions. A common error is:
+`UnauthorizedOperation: ec2:DescribeRouteTables`. Ensure the controller IAM
+role includes `ec2:DescribeRouteTables`, then restart the deployment:
+
+```
+kubectl -n kube-system rollout restart deploy/aws-load-balancer-controller
+```
 
 ## Argo CD access (Keycloak + admin bootstrap)
 
@@ -152,6 +179,6 @@ Argo CD admin access is for bootstrap only and should be disabled once SSO is
 working. Use the helper script:
 
 ```
-bootstrap/0.5_BOOTSTRAP/10_gitops-controller/20_argocd_admin_access.sh disable
-bootstrap/0.5_BOOTSTRAP/10_gitops-controller/20_argocd_admin_access.sh enable
+bootstrap/0.5_bootstrap/10_gitops-controller/20_argocd_admin_access.sh disable
+bootstrap/0.5_bootstrap/10_gitops-controller/20_argocd_admin_access.sh enable
 ```

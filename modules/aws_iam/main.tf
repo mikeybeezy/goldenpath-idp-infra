@@ -206,6 +206,7 @@ data "aws_iam_policy_document" "lb_controller" {
       "ec2:DescribeAddresses",
       "ec2:DescribeAvailabilityZones",
       "ec2:DescribeInternetGateways",
+      "ec2:DescribeRouteTables",
       "ec2:DescribeVpcs",
       "ec2:DescribeVpcPeeringConnections",
       "ec2:DescribeSubnets",
