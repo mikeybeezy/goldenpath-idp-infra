@@ -9,6 +9,26 @@ variable "name_prefix" {
   default     = ""
 }
 
+variable "lifecycle" {
+  type        = string
+  description = "Lifecycle for the environment: ephemeral or persistent."
+  default     = "persistent"
+  validation {
+    condition     = contains(["ephemeral", "persistent"], var.lifecycle)
+    error_message = "lifecycle must be one of: ephemeral, persistent."
+  }
+}
+
+variable "build_id" {
+  type        = string
+  description = "Build ID used to suffix ephemeral resources."
+  default     = ""
+  validation {
+    condition     = var.lifecycle == "persistent" || trim(var.build_id) != ""
+    error_message = "build_id must be set when lifecycle is ephemeral."
+  }
+}
+
 variable "vpc_cidr" {
   type        = string
   description = "CIDR block for the VPC."
@@ -100,12 +120,15 @@ variable "compute_config" {
   }
 }
 
-/*variable "eks_config" {
+variable "eks_config" {
   description = "Configuration for the optional EKS cluster."
   type = object({
     enabled      = bool
     cluster_name = string
     version      = string
+    enable_ssh_break_glass = bool
+    ssh_key_name           = string
+    ssh_source_security_group_ids = list(string)
     node_group = object({
       name           = string
       min_size       = number
@@ -114,12 +137,23 @@ variable "compute_config" {
       instance_types = list(string)
       disk_size      = number
       capacity_type  = string
+      update_config = optional(object({
+        max_unavailable            = optional(number)
+        max_unavailable_percentage = optional(number)
+      }))
     })
   })
+  validation {
+    condition     = !var.eks_config.enabled || trim(var.eks_config.cluster_name) != ""
+    error_message = "eks_config.cluster_name must be set when eks_config.enabled is true."
+  }
   default = {
     enabled      = false
     cluster_name = ""
     version      = "1.29"
+    enable_ssh_break_glass = false
+    ssh_key_name           = null
+    ssh_source_security_group_ids = []
     node_group = {
       name           = "default"
       min_size       = 1
@@ -128,6 +162,9 @@ variable "compute_config" {
       instance_types = ["t3.medium"]
       disk_size      = 20
       capacity_type  = "ON_DEMAND"
+      update_config = {
+        max_unavailable = 1
+      }
     }
   }
-}*/
+}

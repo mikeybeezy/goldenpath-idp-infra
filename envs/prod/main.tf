@@ -3,10 +3,15 @@ terraform {
 }
 
 locals {
-  environment    = var.environment
-  name_prefix    = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
-  public_subnets = var.public_subnets
-  private_subnets = var.private_subnets
+  environment      = var.environment
+  lifecycle        = var.lifecycle
+  build_id         = var.build_id
+  base_name_prefix = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
+  name_prefix      = local.lifecycle == "ephemeral" && local.build_id != "" ? "${local.base_name_prefix}-${local.build_id}" : local.base_name_prefix
+  cluster_name     = var.eks_config.cluster_name != "" ? var.eks_config.cluster_name : "${local.base_name_prefix}-eks"
+  cluster_name_effective = local.lifecycle == "ephemeral" && local.build_id != "" ? "${local.cluster_name}-${local.build_id}" : local.cluster_name
+  public_subnets   = var.public_subnets
+  private_subnets  = var.private_subnets
   # Use a larger node group during bootstrap to avoid capacity bottlenecks.
   effective_node_group = var.bootstrap_mode ? merge(
     var.eks_config.node_group,
@@ -22,7 +27,10 @@ locals {
       Environment = local.environment
       Project     = "goldenpath-idp"
       ManagedBy   = "terraform"
+      Owner       = "platform-team"
+      Lifecycle   = local.lifecycle
     },
+    local.build_id != "" ? { BuildId = local.build_id } : {},
     var.common_tags,
   )
 }

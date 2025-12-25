@@ -85,6 +85,9 @@ Cadence expectations:
 - Prod: twice monthly; prod merges require both service owner and platform sign-off.
 - Emergency fixes: allowed with fast-track approval but must undergo post-incident review within 24 hours.
 
+Build naming and teardown discipline are defined in
+`docs/16_INFRA_Build_ID_Strategy_Decision.md`.
+
 ---
 
 ## 6. Responsibilities

@@ -4,6 +4,9 @@ This page lists manual AWS CLI commands to find and remove lingering
 resources that block teardown. Use the cleanup scripts first; use these
 commands when Terraform or the scripts cannot finish the job.
 
+For the naming/tagging approach that makes teardown deterministic, see
+`docs/16_INFRA_Build_ID_Strategy_Decision.md`.
+
 Replace values in angle brackets and set the region. You can also export IDs as
 environment variables to reuse them across commands:
 

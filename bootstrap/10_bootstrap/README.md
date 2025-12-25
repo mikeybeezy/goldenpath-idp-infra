@@ -68,6 +68,27 @@ bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-su
 NODE_INSTANCE_TYPE=t3.small bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region> [kong-namespace]
 ```
 
+## Cluster name (set once)
+
+Store `cluster_name` in `envs/<env>/terraform.tfvars` before the first build.
+Updates will reuse the value and will not prompt again.
+
+Optional helper:
+
+```
+make set-cluster-name ENV=dev
+```
+
+## Makefile shortcuts
+
+If you prefer one-line commands, use the Makefile:
+
+```
+make help
+make bootstrap ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2
+make destroy ENV=dev
+```
+
 Bootstrap mode defaults for this environment:
 
 - `bootstrap_mode` = `true`
@@ -103,6 +124,17 @@ Enable compact output (reduces noisy command output, keeps stage banners and war
 COMPACT_OUTPUT=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
   bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 ```
+
+## Runner toggles
+
+- `NODE_INSTANCE_TYPE` (required): instance type for preflight capacity checks.
+- `ENV_NAME` (default `dev`): which Argo app set to apply.
+- `SKIP_CERT_MANAGER_VALIDATION` (default `true`): skip cert-manager validation.
+- `SKIP_ARGO_SYNC_WAIT` (default `true`): skip Argo sync wait for autoscaler.
+- `COMPACT_OUTPUT` (default `false`): suppress most command output.
+- `SCALE_DOWN_AFTER_BOOTSTRAP` (default `false`): run Terraform scale-down.
+- `TF_DIR` (required when scale-down enabled): Terraform directory to apply.
+- `kong_namespace` (optional arg 3, default `kong-system`): Kong namespace.
 
 ### Example: compact output (`COMPACT_OUTPUT=true`)
 

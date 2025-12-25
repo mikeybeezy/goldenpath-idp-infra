@@ -3,10 +3,36 @@ variable "environment" {
   description = "Environment identifier (dev/test/staging/prod)."
 }
 
+variable "aws_region" {
+  type        = string
+  description = "AWS region for this environment."
+  default     = "eu-west-2"
+}
+
 variable "name_prefix" {
   type        = string
   description = "Prefix applied to resource names."
   default     = ""
+}
+
+variable "lifecycle" {
+  type        = string
+  description = "Lifecycle for the environment: ephemeral or persistent."
+  default     = "persistent"
+  validation {
+    condition     = contains(["ephemeral", "persistent"], var.lifecycle)
+    error_message = "lifecycle must be one of: ephemeral, persistent."
+  }
+}
+
+variable "build_id" {
+  type        = string
+  description = "Build ID used to suffix ephemeral resources."
+  default     = ""
+  validation {
+    condition     = var.lifecycle == "persistent" || trim(var.build_id) != ""
+    error_message = "build_id must be set when lifecycle is ephemeral."
+  }
 }
 
 variable "vpc_cidr" {
@@ -57,6 +83,10 @@ variable "compute_config" {
     root_volume_type              = string
     root_volume_encrypted         = bool
   })
+  validation {
+    condition     = !var.eks_config.enabled || trim(var.eks_config.cluster_name) != ""
+    error_message = "eks_config.cluster_name must be set when eks_config.enabled is true."
+  }
   default = {
     enabled                       = false
     name                          = ""
