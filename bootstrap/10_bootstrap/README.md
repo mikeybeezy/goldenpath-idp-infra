@@ -36,6 +36,12 @@ GitOps details live in `docs/12_GITOPS_AND_CICD.md`.
 At the end of the runner, we print an Argo status summary. If any app reports
 `HEALTH=Unknown`, the runner prints a warning so you can review it manually.
 
+## Reference build timing
+
+In recent runs, a clean dev environment build (Terraform apply + bootstrap)
+completed in ~15 minutes. Use this as a baseline for CI expectations; real
+times vary based on AWS capacity and regional load.
+
 ## Flow diagram (quick view)
 
 ```

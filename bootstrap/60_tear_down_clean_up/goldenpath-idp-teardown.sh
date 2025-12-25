@@ -13,8 +13,11 @@ set -euo pipefail
 #   DELETE_NODEGROUPS=true|false (default true)
 #   WAIT_FOR_NODEGROUP_DELETE=true|false (default true)
 #   DELETE_CLUSTER=true|false (default true, ignored when TF_DIR is set)
+#   LB_CLEANUP_ATTEMPTS=<count> (default 5)
+#   LB_CLEANUP_INTERVAL=<seconds> (default 20)
 #   TF_DIR=<path> (if set, run terraform destroy instead of aws eks delete-cluster)
 #   TF_AUTO_APPROVE=true (use -auto-approve with terraform destroy)
+#   REMOVE_K8S_SA_FROM_STATE=true|false (default true)
 #   CLEANUP_ORPHANS=true BUILD_ID=<id> (run cleanup-orphans after teardown)
 
 cluster_name="${1:-}"
@@ -81,6 +84,24 @@ run_with_heartbeat() {
   wait "${cmd_pid}"
 }
 
+ensure_kube_access() {
+  if ! kubectl get ns >/dev/null 2>&1; then
+    echo "Kubernetes API is not reachable. Terraform destroy needs a live cluster for k8s resources." >&2
+    echo "Re-run after restoring kubeconfig or remove k8s resources from state." >&2
+    return 1
+  fi
+  return 0
+}
+
+remove_k8s_service_accounts_from_state() {
+  if [[ -z "${TF_DIR:-}" ]]; then
+    return 0
+  fi
+
+  echo "Removing Kubernetes service accounts from Terraform state..."
+  run_cmd bash "${repo_root}/bootstrap/60_tear_down_clean_up/remove-k8s-service-accounts-from-state.sh" "${TF_DIR}"
+}
+
 wait_with_heartbeat() {
   local label="$1"
   local check_cmd="$2"
@@ -96,6 +117,35 @@ wait_with_heartbeat() {
   done
 }
 
+cleanup_loadbalancer_services() {
+  local attempt=1
+  local max_attempts="${LB_CLEANUP_ATTEMPTS:-5}"
+
+  while [[ "${attempt}" -le "${max_attempts}" ]]; do
+    services="$(kubectl get svc -A -o jsonpath='{range .items[?(@.spec.type=="LoadBalancer")]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}' 2>/dev/null)"
+    if [[ -z "${services}" ]]; then
+      echo "No LoadBalancer services remain."
+      return 0
+    fi
+
+    echo "LoadBalancer services still present (attempt ${attempt}/${max_attempts}):"
+    echo "${services}"
+    while read -r svc; do
+      ns="${svc%%/*}"
+      name="${svc##*/}"
+      echo "Deleting ${ns}/${name}"
+      kubectl -n "${ns}" delete svc "${name}" || true
+    done <<< "${services}"
+
+    echo "Waiting for LoadBalancer services to be removed..."
+    sleep "${LB_CLEANUP_INTERVAL:-20}"
+    attempt=$((attempt + 1))
+  done
+
+  echo "LoadBalancer services still present after ${max_attempts} attempts." >&2
+  return 1
+}
+
 echo "Teardown starting for cluster ${cluster_name} in ${region}"
 
 stage_banner "STAGE 1: CLUSTER CONTEXT"
@@ -106,6 +156,7 @@ stage_done "STAGE 1"
 stage_banner "STAGE 2: PRE-DESTROY CLEANUP"
 echo "Removing LoadBalancer services to release AWS resources..."
 run_cmd bash "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh" "${cluster_name}" "${region}" --yes
+cleanup_loadbalancer_services || true
 wait_with_heartbeat \
   "Waiting for LoadBalancer services to be removed" \
   "test -z \"\$(kubectl get svc -A -o jsonpath='{range .items[?(@.spec.type==\"LoadBalancer\")]}{.metadata.namespace}/{.metadata.name}{\"\\n\"}{end}' 2>/dev/null)\""
@@ -137,10 +188,9 @@ if [[ "${DELETE_NODEGROUPS:-true}" == "true" ]]; then
       echo "Deleting nodegroup ${ng}..."
       run_cmd aws eks delete-nodegroup --cluster-name "${cluster_name}" --nodegroup-name "${ng}" --region "${region}"
       if [[ "${WAIT_FOR_NODEGROUP_DELETE:-true}" == "true" ]]; then
-        wait_with_heartbeat \
+        run_with_heartbeat \
           "Waiting for nodegroup ${ng} to delete" \
-          "aws eks describe-nodegroup --cluster-name \"${cluster_name}\" --nodegroup-name \"${ng}\" --region \"${region}\" --query 'nodegroup.status' --output text 2>/dev/null | grep -q 'DELETING' && false || true"
-        run_cmd aws eks wait nodegroup-deleted --cluster-name "${cluster_name}" --nodegroup-name "${ng}" --region "${region}"
+          aws eks wait nodegroup-deleted --cluster-name "${cluster_name}" --nodegroup-name "${ng}" --region "${region}"
       fi
     done
   fi
@@ -152,23 +202,41 @@ stage_done "STAGE 4"
 stage_banner "STAGE 5: DESTROY CLUSTER"
 if [[ -n "${TF_DIR:-}" ]]; then
   require_cmd terraform
-  echo "Destroying via Terraform in ${TF_DIR}..."
-  if [[ "${TF_AUTO_APPROVE:-false}" == "true" ]]; then
-    run_with_heartbeat "Terraform destroy in ${TF_DIR}" terraform -chdir="${TF_DIR}" destroy -auto-approve
-  else
-    run_with_heartbeat "Terraform destroy in ${TF_DIR}" terraform -chdir="${TF_DIR}" destroy
+  tf_failed=false
+  if [[ "${REQUIRE_KUBE_FOR_TF_DESTROY:-true}" == "true" ]]; then
+    echo "Validating Kubernetes access before terraform destroy..."
+    if ! ensure_kube_access; then
+      if [[ "${REMOVE_K8S_SA_FROM_STATE:-true}" == "true" ]]; then
+        remove_k8s_service_accounts_from_state || true
+      else
+        tf_failed=true
+      fi
+    fi
   fi
+
+  if [[ "${tf_failed}" == "false" ]]; then
+    echo "Destroying via Terraform in ${TF_DIR}..."
+    if [[ "${TF_AUTO_APPROVE:-false}" == "true" ]]; then
+      run_with_heartbeat "Terraform destroy in ${TF_DIR}" terraform -chdir="${TF_DIR}" destroy -auto-approve || tf_failed=true
+    else
+      run_with_heartbeat "Terraform destroy in ${TF_DIR}" terraform -chdir="${TF_DIR}" destroy || tf_failed=true
+    fi
+  fi
+
+  if [[ "${tf_failed}" == "true" && "${TF_DESTROY_FALLBACK_AWS:-false}" == "true" ]]; then
+    echo "Terraform destroy failed or was skipped. Falling back to AWS cluster deletion..." >&2
+    DELETE_CLUSTER=true
+  fi
+fi
+
+if [[ "${TF_DESTROY_FALLBACK_AWS:-false}" == "true" && "${DELETE_CLUSTER:-true}" == "true" ]]; then
+  echo "Deleting EKS cluster ${cluster_name}..."
+  run_cmd aws eks delete-cluster --name "${cluster_name}" --region "${region}"
+  run_with_heartbeat \
+    "Waiting for cluster ${cluster_name} to delete" \
+    aws eks wait cluster-deleted --name "${cluster_name}" --region "${region}"
 else
-  if [[ "${DELETE_CLUSTER:-true}" == "true" ]]; then
-    echo "Deleting EKS cluster ${cluster_name}..."
-    run_cmd aws eks delete-cluster --name "${cluster_name}" --region "${region}"
-    wait_with_heartbeat \
-      "Waiting for cluster ${cluster_name} to delete" \
-      "aws eks describe-cluster --name \"${cluster_name}\" --region \"${region}\" --query 'cluster.status' --output text 2>/dev/null | grep -q 'DELETING' && false || true"
-    run_cmd aws eks wait cluster-deleted --name "${cluster_name}" --region "${region}"
-  else
-    echo "Skipping cluster deletion (DELETE_CLUSTER=false)."
-  fi
+  echo "Skipping cluster deletion (DELETE_CLUSTER=false)."
 fi
 stage_done "STAGE 5"
 

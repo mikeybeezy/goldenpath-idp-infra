@@ -10,6 +10,7 @@ This document captures the initial operating model for the Golden Path Internal 
 2. **Golden paths before options** – V1 supports a narrow set of service archetypes (stateless web/API) plus a single runtime (Kubernetes via EKS).
 3. **Familiar tools, convergent outcomes** – developers can use GitHub Actions, GitLab CI, or Tekton pipelines, provided they adhere to the platform contracts (artifact signing, manifests in GitOps repos, tests passing).
 4. **Security & observability are invisible** – baseline guardrails (SSO, RBAC, secrets, logging) come preconfigured; developers shouldn’t have to wire them manually.
+5. **Deterministic teardown** – cleanup paths are non-interactive and CI-safe, favoring Kubernetes-native deletion over session-based auth to prevent drift and reduce teardown failures.
 
 ---
 

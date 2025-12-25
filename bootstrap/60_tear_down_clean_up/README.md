@@ -53,6 +53,30 @@ Progress heartbeats:
 
 Set `HEARTBEAT_INTERVAL` to change the cadence (default `30` seconds).
 
+LoadBalancer cleanup retries:
+
+- The runner re-attempts LoadBalancer Service deletion in case the controller
+  or AWS is slow to reconcile.
+- `LB_CLEANUP_ATTEMPTS` controls how many retry loops run (default `5`).
+- `LB_CLEANUP_INTERVAL` controls the delay between loops (default `20` seconds).
+
+Example:
+
+```bash
+TEARDOWN_CONFIRM=true LB_CLEANUP_ATTEMPTS=8 LB_CLEANUP_INTERVAL=30 \
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+```
+
+Terraform destroy guard:
+
+- `REQUIRE_KUBE_FOR_TF_DESTROY` (default `true`) verifies kube access before
+  Terraform destroy to avoid localhost Kubernetes provider errors.
+- `REMOVE_K8S_SA_FROM_STATE` (default `true`) removes Kubernetes service
+  accounts from state when kube access is missing so Terraform destroy can
+  continue.
+- If Terraform destroy fails or is skipped, the script can fall back to AWS
+  cluster deletion when `TF_DESTROY_FALLBACK_AWS=true` (default: false).
+
 Terraform destroy instead of aws eks delete:
 
 ```bash
@@ -65,6 +89,18 @@ Optional cleanup by BuildId:
 ```bash
 TEARDOWN_CONFIRM=true CLEANUP_ORPHANS=true BUILD_ID=20250115-01 \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+```
+
+## remove-k8s-service-accounts-from-state.sh
+
+What it does:
+- Removes `kubernetes_service_account_v1` entries from Terraform state.
+- Useful when the cluster is already gone and Terraform would otherwise fail.
+
+Examples:
+
+```bash
+bootstrap/60_tear_down_clean_up/remove-k8s-service-accounts-from-state.sh envs/dev
 ```
 
 ## cleanup-iam.sh

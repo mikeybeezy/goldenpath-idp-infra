@@ -35,6 +35,9 @@ jobs:
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
       CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
+      LB_CLEANUP_ATTEMPTS: "5"
+      LB_CLEANUP_INTERVAL: "20"
+      REMOVE_K8S_SA_FROM_STATE: "true"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -49,6 +52,14 @@ jobs:
           echo "CLUSTER_NAME=${CLUSTER_NAME}"
           echo "CLUSTER_LIFECYCLE=${CLUSTER_LIFECYCLE}"
           echo "BUILD_ID=${BUILD_ID}"
+
+      # Timing note (baseline, non-blocking)
+      - name: Timing log (stub)
+        run: |
+          echo "CI timing log"
+          echo "Start: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          echo "End:   $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          echo "Capture timestamps around real apply/bootstrap steps once wired."
 
       # Phase 2: Terraform init/plan/apply
       # Goal: provision or update infra deterministically.
@@ -78,5 +89,8 @@ jobs:
         if: ${{ inputs.lifecycle == 'ephemeral' }}
         run: |
           echo "Phase 5: teardown runner goes here"
+          echo "LB_CLEANUP_ATTEMPTS=${LB_CLEANUP_ATTEMPTS}"
+          echo "LB_CLEANUP_INTERVAL=${LB_CLEANUP_INTERVAL}"
+          echo "REMOVE_K8S_SA_FROM_STATE=${REMOVE_K8S_SA_FROM_STATE}"
           echo "TEARDOWN_CONFIRM=true RELAX_PDB=true DRAIN_TIMEOUT=300s HEARTBEAT_INTERVAL=30 \\"
           echo "  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh ${CLUSTER_NAME} ${AWS_REGION}"

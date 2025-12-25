@@ -15,6 +15,32 @@ Why this order matters:
 - LoadBalancer Services keep AWS LBs and SGs attached.
 - Removing those first prevents dependency errors during VPC/subnet deletes.
 
+Argo CD cleanup options (for deleting apps like Kong that recreate LBs):
+
+- **Option 1: Argo API token** (CI secret)
+  - Pros: non-interactive, stable, least brittle; good for syncs/ops.
+  - Cons: token lifecycle management and secret storage.
+- **Option 2: pull admin password from Kubernetes**
+  - Pros: simple; no token setup.
+  - Cons: depends on secret existence; less secure; can break if rotated/deleted.
+- **Option 3: delete Application CR via kubectl**
+  - Pros: avoids Argo auth entirely; best for teardown/CI cleanup.
+  - Cons: bypasses Argo workflows/audit trail; it is a hard delete.
+
+Decision:
+- For teardown/CI cleanup, we use **Option 3** to avoid auth failures and keep teardown deterministic.
+
+Teardown strategy decision:
+
+- **Default**: try Terraform destroy when `TF_DIR` is set.
+- **Fallback**: if Terraform cannot run (no kube access) or fails, you can
+  enable AWS deletion with `TF_DESTROY_FALLBACK_AWS=true` (default: false).
+
+Tradeoffs:
+
+- Terraform keeps state clean but requires a live cluster for k8s resources.
+- AWS fallback is more reliable for cleanup but can leave Terraform state stale.
+
 ```bash
 TEARDOWN_CONFIRM=true \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
@@ -42,11 +68,34 @@ Progress heartbeats:
 - The teardown runner prints a heartbeat every 30s while:
   - LoadBalancer services are deleting.
   - Node groups are deleting.
+  - Nodegroup/cluster waits are running (`aws eks wait`).
   - The cluster is deleting.
   - Terraform destroy is running (when TF_DIR is set).
   - Orphan cleanup is running (when CLEANUP_ORPHANS=true).
 
 Set `HEARTBEAT_INTERVAL` to change the cadence (default `30` seconds).
+
+LoadBalancer cleanup retries:
+
+- The runner re-attempts LoadBalancer Service deletion in case AWS is slow to
+  reconcile.
+- `LB_CLEANUP_ATTEMPTS` controls how many retry loops run (default `5`).
+- `LB_CLEANUP_INTERVAL` controls the delay between loops (default `20` seconds).
+
+```bash
+TEARDOWN_CONFIRM=true LB_CLEANUP_ATTEMPTS=8 LB_CLEANUP_INTERVAL=30 \
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+```
+
+Terraform destroy guard:
+
+- `REQUIRE_KUBE_FOR_TF_DESTROY` (default `true`) verifies kube access before
+  Terraform destroy to avoid localhost Kubernetes provider errors.
+- `REMOVE_K8S_SA_FROM_STATE` (default `true`) removes Kubernetes service
+  accounts from state when kube access is missing so Terraform destroy can
+  continue.
+- If Terraform destroy fails or is skipped, the runner falls back to AWS
+  cluster deletion when `TF_DESTROY_FALLBACK_AWS=true` (default).
 
 Makefile shortcut:
 

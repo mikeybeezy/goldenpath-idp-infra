@@ -1,108 +1,57 @@
-terraform -chdir=envs/dev apply -var="ssh_key_name=mikeybeezy"
+Step 1
+terraform -chdir=envs/dev init
 
-TF_VAR_ssh_key_name=mikeybeezy terraform -chdir=envs/dev apply
+step 2
+terraform -chdir=envs/dev apply \
+  -var='cluster_lifecycle=ephemeral' \
+  -var='build_id=20250115-02' \
+  -var='owner_team=platform-team'
+
+step 3
+time \
+SKIP_ARGO_SYNC_WAIT=false \
+NODE_INSTANCE_TYPE=t3.small \
+ENV_NAME=dev \
+SKIP_CERT_MANAGER_VALIDATION=true \
+COMPACT_OUTPUT=false \
+SCALE_DOWN_AFTER_BOOTSTRAP=false \
+bash goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250115-02 eu-west-2
+
+Here’s what that command does, line by line:
+
+time → measures how long the whole command takes.
+SKIP_ARGO_SYNC_WAIT=false → wait for the autoscaler Argo app to sync.
+NODE_INSTANCE_TYPE=t3.small → required for preflight capacity checks.
+ENV_NAME=dev → use gitops/argocd/apps/dev.
+SKIP_CERT_MANAGER_VALIDATION=true → skip cert-manager validation.
+COMPACT_OUTPUT=false → show full command output.
+SCALE_DOWN_AFTER_BOOTSTRAP=false → don’t run Terraform scale-down at the end.
+bash goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250115-02 eu-west-2 → run the bootstrap runner against that cluster name + region.
+
+If you want to run it from envs/dev, use the relative path:
+time \
+SKIP_ARGO_SYNC_WAIT=false \
+NODE_INSTANCE_TYPE=t3.small \
+ENV_NAME=dev \
+SKIP_CERT_MANAGER_VALIDATION=true \
+COMPACT_OUTPUT=false \
+SCALE_DOWN_AFTER_BOOTSTRAP=false \
+bash ../bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250115-02 eu-west-2
 
 
-
-{
-    "nodegroups": [
-        "dev-default"
-    ]
-}
-
-
-ran command below targeting node grop above and got a no matches found: response 
-
-terraform -chdir=envs/dev destroy -target=module.eks[0].aws_eks_node_group.dev-default
-
-no matches found: -target=module.eks[0].aws_eks_node_group.dev-defaultno matches found: -target=module.eks[0].aws_eks_node_group.this
-
-
-
-no matches found: -target=module.eks[0].aws_eks_node_group.this
-
-
-The Kubernetes provider service accounts use deprecated kubernetes_service_account; fractor to adopt kubernetes_service_account_v1.
-
-
-Destroy/recreate workflows should include explicit steps for unmanaged resources (node groups, load balancers, EKS add‑ons). = provide suggestions
-
-
-basd on the below. provide feedback 
-
-If Kong is your ingress/API gateway (recommended default)
-
-Use an NLB in front of Kong.
-
-Why:
-
-NLB is simple, fast, and stable for exposing a single entrypoint (Kong)
-
-Works well for TCP + HTTP(S), gRPC, WebSockets
-
-You let Kong own L7 routing/policies (auth, rate limits, routes), not AWS
-
-Typical pattern: Service type=LoadBalancer for Kong → NLB → Kong routes to services.
-
-If you want AWS-native L7 ingress (without Kong doing the L7 heavy lifting)
-
-Use an ALB.
-
-Why:
-
-Best for HTTP/HTTPS host/path routing at the AWS edge
-
-Easy integration with AWS WAF, redirects, listener rules, OIDC auth (AWS-native)
-
-Clean “Ingress resource → ALB” flow
-
-Quick decision rule
-
-Kong as the single front door → NLB
-
-AWS-managed L7 routing/WAF as the front door → ALB
-
-Don’t run both by default in V1 unless you have a specific reason (it creates ambiguity/support load)
+step 4
+TTEARDOWN_CONFIRM=true RELAX_PDB=true DRAIN_TIMEOUT=300s HEARTBEAT_INTERVAL=30 \
+  TF_DIR=envs/dev REQUIRE_KUBE_FOR_TF_DESTROY=true TF_DESTROY_FALLBACK_AWS=true \
+  bash goldenpath-idp-teardown.sh goldenpath-dev-eks-20250115-01 eu-west-2
 
 
 
-bash goldenpath-idp-infra/bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks eu-west-2
 
-
-
-ebs-csi-controller
-
- kubectl -n kube-system scale deployment/efs-csi-controller --replicas=1
-
- efs-csi-controller
-
-we need to set their default replicas to 1 for now becaause they are consumng too many resources 
-ebs-csi-controller  
-efs-csi-controller   
-snapshot-controller
-
-
-
-why does this keep happening when we try to add new nodes
-
-deleting Security Group (sg-0b3b2dd5ec0907fa9): operation error EC2: DeleteSecurityGroup, https response error StatusCode: 400, RequestID: 45bfc729-0085-4c1a-8bde-4f8d76d3edc9, api error DependencyViolation: resource sg-0b3b2dd5ec0907fa9 has a dependent object
-│ 
-
-aws ec2 terminatchdir=goldenpath-idp-infra/envs/deve-instances --instance-ids i-0ac1abfea0242ef9e --region eu-west-2
-terraform  apply -target=module.eks
-
-
-
-NODE_INSTANCE_TYPE=t3.small bash goldenpath-idp-infra/bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks eu-west-2
-
-TF_VAR_bootstrap_mode=true terraform -chdir=goldenpath-idp-infra/envs/dev apply
-
-
-I've now moved  all things relating to bootstraping to this directory /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra/bootstrap/0.5_BOOTSTRAP
-scan the directory files and ensure corhearance with contnet
-
-I have moved all the  boostrap related read me to one file /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra/bootstrap/0.5_BOOTSTRAP/README.md
-ensure that the content flows well and it is up to day and accurate. Make sure that all retition is removed. ensure that it can be read by a college student
-
-review and propose any refinement. let me know the changes yoi plan to make befor youb make them
-
+time \
+SKIP_ARGO_SYNC_WAIT=true \
+NODE_INSTANCE_TYPE=t3.small \
+ENV_NAME=dev \
+SKIP_CERT_MANAGER_VALIDATION=true \
+COMPACT_OUTPUT=false \
+SCALE_DOWN_AFTER_BOOTSTRAP=false \
+goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250115-02 eu-west-2

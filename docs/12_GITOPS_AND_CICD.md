@@ -86,6 +86,11 @@ export TF_VAR_build_id=$GITHUB_RUN_NUMBER
 export TF_VAR_owner_team=platform-team
 ```
 
+## Reference build timing
+
+A clean dev build (Terraform apply + bootstrap) has recently completed in
+~15 minutes. Treat this as a baseline and update as we gather more CI data.
+
 ## CI bootstrap workflow (stub)
 
 We keep a staged GitHub Actions workflow that mirrors the bootstrap flow and
