@@ -73,6 +73,9 @@ bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-su
 
 ## Bootstrap runner (recommended)
 
+For a complete list of runtime flags used by build, bootstrap, and teardown,
+see `docs/17_BUILD_RUN_FLAGS.md`.
+
 ```
 NODE_INSTANCE_TYPE=t3.small bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region> [kong-namespace]
 ```
@@ -162,8 +165,9 @@ COMPACT_OUTPUT=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
 - `SKIP_CERT_MANAGER_VALIDATION` (default `true`): skip cert-manager validation.
 - `SKIP_ARGO_SYNC_WAIT` (default `true`): skip Argo sync wait for autoscaler.
 - `COMPACT_OUTPUT` (default `false`): suppress most command output.
+- `ENABLE_TF_K8S_RESOURCES` (default `true`): run the Terraform K8s-resources phase.
 - `SCALE_DOWN_AFTER_BOOTSTRAP` (default `false`): run Terraform scale-down.
-- `TF_DIR` (required when scale-down enabled): Terraform directory to apply.
+- `TF_DIR` (required when scale-down or Terraform K8s phase is enabled): Terraform directory to apply.
 - `kong_namespace` (optional arg 3, default `kong-system`): Kong namespace.
 
 ### Example: compact output (`COMPACT_OUTPUT=true`)
@@ -182,6 +186,10 @@ Checking required tools...
 ##### STAGE 3: EKS PREFLIGHT #####
 Running EKS preflight...
 ----- STAGE 3 DONE -----
+
+##### STAGE 3B: TERRAFORM K8S RESOURCES #####
+Applying Terraform Kubernetes resources in envs/dev (enable_k8s_resources=true)...
+----- STAGE 3B DONE -----
 
 ##### STAGE 4: CAPACITY CHECK #####
 Checking Ready node count...

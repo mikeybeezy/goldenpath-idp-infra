@@ -15,13 +15,14 @@ The runner orchestrates the full bootstrap flow against a fresh EKS cluster. It 
 1. Ensures the AWS, kubectl, and helm CLIs are installed.
 2. Updates kubeconfig for the target cluster.
 3. Runs the prereq checks.
-4. Installs Metrics Server early for scheduling sanity checks.
-5. Installs Argo CD via Helm.
-6. Validates core add-ons (AWS Load Balancer Controller, cert-manager).
-7. Applies the Cluster Autoscaler app first and waits for it to be ready.
-8. Applies the remaining Argo CD apps (excluding Kong).
-9. Installs and validates Kong.
-10. Runs the audit report.
+4. Optionally applies Terraform-managed Kubernetes resources (service accounts) once kubeconfig is ready.
+5. Installs Metrics Server early for scheduling sanity checks.
+6. Installs Argo CD via Helm.
+7. Validates core add-ons (AWS Load Balancer Controller, cert-manager).
+8. Applies the Cluster Autoscaler app first and waits for it to be ready.
+9. Applies the remaining Argo CD apps (excluding Kong).
+10. Installs and validates Kong.
+11. Runs the audit report.
 
 Argo CD admin access is handled via the dedicated helper script:
 `bootstrap/10_gitops-controller/20_argocd_admin_access.sh`.
@@ -57,6 +58,10 @@ These defaults keep the node group stable and reduce early pressure:
 
 The runner prints an Argo status summary at the end and warns if any app shows
 `HEALTH=Unknown`.
+
+If `ENABLE_TF_K8S_RESOURCES=true` and `TF_DIR` is set, the runner performs a
+second Terraform apply with `enable_k8s_resources=true` to create the
+service accounts once the cluster is reachable.
 
 ## Suggested Enhancements / Alternatives
 

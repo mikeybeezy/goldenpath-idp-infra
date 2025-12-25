@@ -50,22 +50,22 @@ compute_config = {
 }
 
 iam_config = {
-  enabled                            = true
-  cluster_role_name                  = ""
-  node_group_role_name               = ""
-  oidc_role_name                     = ""
-  oidc_issuer_url                    = ""
-  oidc_provider_arn                  = ""
-  oidc_audience                      = "sts.amazonaws.com"
-  oidc_subject                       = ""
-  enable_autoscaler_role             = true
-  autoscaler_role_name               = "goldenpath-idp-cluster-autoscaler"
-  autoscaler_service_account_namespace = "kube-system"
-  autoscaler_service_account_name    = "cluster-autoscaler"
-  enable_lb_controller_role          = true
-  lb_controller_role_name            = "goldenpath-idp-aws-load-balancer-controller"
+  enabled                                 = true
+  cluster_role_name                       = ""
+  node_group_role_name                    = ""
+  oidc_role_name                          = ""
+  oidc_issuer_url                         = ""
+  oidc_provider_arn                       = ""
+  oidc_audience                           = "sts.amazonaws.com"
+  oidc_subject                            = ""
+  enable_autoscaler_role                  = true
+  autoscaler_role_name                    = "goldenpath-idp-cluster-autoscaler"
+  autoscaler_service_account_namespace    = "kube-system"
+  autoscaler_service_account_name         = "cluster-autoscaler"
+  enable_lb_controller_role               = true
+  lb_controller_role_name                 = "goldenpath-idp-aws-load-balancer-controller"
   lb_controller_service_account_namespace = "kube-system"
-  lb_controller_service_account_name = "aws-load-balancer-controller"
+  lb_controller_service_account_name      = "aws-load-balancer-controller"
 }
 
 addon_replica_counts = {
@@ -77,17 +77,17 @@ addon_replica_counts = {
 enable_storage_addons = false
 
 eks_config = {
-  enabled      = true
-  cluster_name = "goldenpath-dev-eks"
-  version      = "1.29"
-  enable_ssh_break_glass = false
-  ssh_key_name           = null
+  enabled                       = true
+  cluster_name                  = "goldenpath-dev-eks"
+  version                       = "1.29"
+  enable_ssh_break_glass        = false
+  ssh_key_name                  = null
   ssh_source_security_group_ids = []
   node_group = {
     name           = "dev-default"
-    min_size       = 3
-    max_size       = 5
-    desired_size   = 3
+    min_size       = 4
+    max_size       = 8
+    desired_size   = 4
     instance_types = ["t3.small"]
     disk_size      = 20
     capacity_type  = "ON_DEMAND"
@@ -98,16 +98,16 @@ eks_config = {
 }
 
 # SSH break-glass (pass ssh_key_name via CLI or TF_VAR_ssh_key_name)
-enable_ssh_break_glass = false
-ssh_key_name           = null
+enable_ssh_break_glass        = false
+ssh_key_name                  = null
 ssh_source_security_group_ids = []
 
 # Bootstrap mode keeps node sizing stable during bring-up.
 bootstrap_mode = true
 bootstrap_node_group = {
-  min_size     = 3
-  desired_size = 3
-  max_size     = 5
+  min_size     = 4
+  desired_size = 4
+  max_size     = 7
 }
 
 

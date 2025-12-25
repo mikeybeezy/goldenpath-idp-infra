@@ -189,7 +189,7 @@ provider "kubernetes" {
 }
 
 resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
-  count = var.iam_config.enabled && var.iam_config.enable_lb_controller_role ? 1 : 0
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_lb_controller_role ? 1 : 0
 
   metadata {
     name      = var.iam_config.lb_controller_service_account_name
@@ -203,7 +203,7 @@ resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
 }
 
 resource "kubernetes_service_account_v1" "cluster_autoscaler" {
-  count = var.iam_config.enabled && var.iam_config.enable_autoscaler_role ? 1 : 0
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_autoscaler_role ? 1 : 0
 
   metadata {
     name      = var.iam_config.autoscaler_service_account_name

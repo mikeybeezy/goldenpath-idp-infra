@@ -72,8 +72,10 @@ Terraform destroy guard:
 - `REQUIRE_KUBE_FOR_TF_DESTROY` (default `true`) verifies kube access before
   Terraform destroy to avoid localhost Kubernetes provider errors.
 - `REMOVE_K8S_SA_FROM_STATE` (default `true`) removes Kubernetes service
-  accounts from state when kube access is missing so Terraform destroy can
-  continue.
+  accounts from state before Terraform destroy to avoid kube access failures.
+  The script will attempt a lightweight `terraform init` if state access fails.
+- `TF_AUTO_APPROVE` (default `false`) uses `-auto-approve` for Terraform
+  destroy. The Makefile teardown targets set this to `true`.
 - If Terraform destroy fails or is skipped, the script can fall back to AWS
   cluster deletion when `TF_DESTROY_FALLBACK_AWS=true` (default: false).
 

@@ -201,6 +201,12 @@ variable "iam_config" {
   }
 }
 
+variable "enable_k8s_resources" {
+  type        = bool
+  description = "Enable Kubernetes resources managed by Terraform (service accounts). Set true only after kubeconfig is available."
+  default     = false
+}
+
 variable "eks_config" {
   description = "Configuration for the optional EKS cluster."
   type = object({

@@ -46,6 +46,30 @@ Build ID decision:
 docs/16_INFRA_Build_ID_Strategy_Decision.md
 ```
 
+## Terraform Kubernetes resources (decision)
+
+**Problem:** Terraform fails when Kubernetes API access is unavailable
+(`connect: connection refused`) while trying to manage service accounts.
+
+**Options considered:**
+
+1) **Single Terraform apply** that includes Kubernetes resources.
+   - Pros: one command.
+   - Cons: brittle when kubeconfig or cluster readiness is missing.
+
+2) **Split into phases**: AWS/EKS first, then Kubernetes resources.
+   - Pros: reliable and CI-friendly; avoids kube-provider failures.
+   - Cons: requires a second apply (unless automated).
+
+3) **Conditional Kubernetes resources** behind a flag.
+   - Pros: avoids failure until kube access exists.
+   - Cons: needs a second apply to enable later.
+
+**Decision (V1):** Use **phase 2 via the bootstrap runner**. The runner
+applies `enable_k8s_resources=true` after kubeconfig is set, so users still
+run a single command while CI remains reliable. Trade-off is an extra apply
+under the hood, which is acceptable for stability.
+
 ## Other options we can adopt later
 
 - Separate AWS accounts per environment (best isolation, higher overhead).

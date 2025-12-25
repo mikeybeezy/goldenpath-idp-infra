@@ -27,6 +27,46 @@ Keycloak is the authoritative source of user identity (groups, SSO), while AWS I
 - Cluster Autoscaler IRSA role and service account are created by Terraform with the annotation applied in-cluster.
 - EKS OIDC provider is created by Terraform to enable IRSA for controllers.
 
+## Service Accounts in Use (V1)
+
+These service accounts are created by Terraform and annotated for IRSA.
+
+| Service | Namespace | Service Account | IAM Role | Purpose |
+| --- | --- | --- | --- | --- |
+| AWS Load Balancer Controller | `kube-system` | `aws-load-balancer-controller` | `goldenpath-idp-aws-load-balancer-controller` | Creates/updates AWS load balancers and target groups. |
+| Cluster Autoscaler | `kube-system` | `cluster-autoscaler` | `goldenpath-idp-cluster-autoscaler` | Scales node groups based on pending pods. |
+
+## Storage add-ons (when enabled)
+
+When EBS/EFS/snapshot add-ons are enabled, each controller gets its own service
+account and (where required) its own IRSA role. We do not share controller
+roles across add-ons.
+
+Expected service accounts:
+
+- **EBS CSI** controller (IRSA required)
+- **EFS CSI** controller (IRSA required)
+- **Snapshot controller** (typically no AWS API access; IRSA only if needed)
+
+## Why Terraform needs a Kubernetes provider
+
+We use the Kubernetes provider to create in‑cluster resources (service accounts)
+that must be tightly coupled to AWS IAM roles created by Terraform. This keeps
+IRSA bindings auditable and prevents drift between IAM and Kubernetes objects.
+
+## Third‑party app access model
+
+Every third‑party app that needs AWS access must have its own service account
+and least‑privilege IAM role. We do not share controller roles across apps.
+
+Creation flow (V1):
+
+1. Create IAM role + policy in Terraform.
+2. Create Kubernetes service account with the IRSA annotation.
+3. Deploy the app via Argo CD using that service account.
+
+This keeps access scoped, reviewable, and repeatable across environments.
+
 ## SSM Session Manager (node access)
 SSM Session Manager provides shell access to instances without SSH keys or inbound
 port 22. Access is controlled by IAM policies and session activity can be logged.

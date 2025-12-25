@@ -15,6 +15,12 @@ This repository contains Terraform modules and environment definitions that prov
 
 Each environment composes the shared modules so you can deploy the same architecture with different CIDRs or tags.
 
+## Backstage MVP
+
+When you are ready to validate the platform end-to-end, start with Backstage as
+the first app through CI/CD. See `docs/18_BACKSTAGE_MVP.md` for the checklist
+and file touchpoints.
+
 ## Prerequisites
 
 1. **Terraform 1.5+** – install from <https://developer.hashicorp.com/terraform/downloads>.
@@ -87,6 +93,8 @@ Step-by-step with the Makefile:
 5. Run `make apply ENV=dev` to execute `terraform -chdir=envs/dev apply` and deploy (confirm when prompted).
 6. Swap `ENV=dev` for `ENV=test`, `staging`, or `prod` to repeat; the Makefile just saves you from typing the `-chdir` commands manually.
 
+Timing runs:
+- `make timed-apply`, `make timed-bootstrap`, and `make timed-teardown` write full output to `logs/build-timings/*.log` and append timing rows to `docs/build-timings.csv`.
 
 
 ## Customizing the Infrastructure

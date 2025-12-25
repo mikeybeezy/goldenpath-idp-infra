@@ -92,8 +92,11 @@ Terraform destroy guard:
 - `REQUIRE_KUBE_FOR_TF_DESTROY` (default `true`) verifies kube access before
   Terraform destroy to avoid localhost Kubernetes provider errors.
 - `REMOVE_K8S_SA_FROM_STATE` (default `true`) removes Kubernetes service
-  accounts from state when kube access is missing so Terraform destroy can
-  continue.
+  accounts from state before Terraform destroy, preventing teardown from
+  failing when kube access is missing or unstable. The teardown runner will
+  attempt a lightweight `terraform init` if state access fails.
+- `TF_AUTO_APPROVE` (default `false`) uses `-auto-approve` for Terraform
+  destroy. The Makefile teardown targets set this to `true` by default.
 - If Terraform destroy fails or is skipped, the runner falls back to AWS
   cluster deletion when `TF_DESTROY_FALLBACK_AWS=true` (default).
 
@@ -103,12 +106,20 @@ Makefile shortcut:
 make teardown ENV=dev CLUSTER=<cluster> REGION=<region>
 ```
 
+Timed teardown (logs to `logs/build-timings/` and writes to `docs/build-timings.csv`):
+
+```bash
+make timed-teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
+```
+
 Terraform destroy instead of `aws eks delete-cluster`:
 
 ```bash
 TEARDOWN_CONFIRM=true TF_DIR=envs/dev \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
 ```
+
+`TF_DIR` can be relative; the teardown script resolves it from the repo root.
 
 For the naming/tagging approach that makes teardown deterministic, see
 `docs/16_INFRA_Build_ID_Strategy_Decision.md`.

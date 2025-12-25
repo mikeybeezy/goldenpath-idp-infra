@@ -50,6 +50,10 @@ if [[ -z "${repo_root}" ]]; then
   repo_root="$(cd "${script_root}/../.." && pwd)"
 fi
 
+if [[ -n "${TF_DIR:-}" && "${TF_DIR}" != /* ]]; then
+  TF_DIR="${repo_root}/${TF_DIR}"
+fi
+
 stage_banner() {
   local title="$1"
   echo ""
@@ -203,12 +207,21 @@ stage_banner "STAGE 5: DESTROY CLUSTER"
 if [[ -n "${TF_DIR:-}" ]]; then
   require_cmd terraform
   tf_failed=false
+  if [[ "${REMOVE_K8S_SA_FROM_STATE:-true}" == "true" ]]; then
+    if ensure_kube_access; then
+      echo "Kubernetes API reachable; removing TF-managed service accounts to avoid destroy failures."
+    else
+      echo "Kubernetes API not reachable; removing TF-managed service accounts before destroy."
+    fi
+    if ! remove_k8s_service_accounts_from_state; then
+      echo "Failed to remove Kubernetes service accounts from state." >&2
+      tf_failed=true
+    fi
+  fi
   if [[ "${REQUIRE_KUBE_FOR_TF_DESTROY:-true}" == "true" ]]; then
     echo "Validating Kubernetes access before terraform destroy..."
     if ! ensure_kube_access; then
-      if [[ "${REMOVE_K8S_SA_FROM_STATE:-true}" == "true" ]]; then
-        remove_k8s_service_accounts_from_state || true
-      else
+      if [[ "${REMOVE_K8S_SA_FROM_STATE:-true}" != "true" ]]; then
         tf_failed=true
       fi
     fi

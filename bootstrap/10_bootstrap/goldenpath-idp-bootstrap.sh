@@ -11,6 +11,9 @@ set -euo pipefail
 #
 # Optional scale-down after bootstrap (Terraform required):
 #   SCALE_DOWN_AFTER_BOOTSTRAP=true TF_DIR=goldenpath-idp-infra/envs/dev bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
+#
+# Optional Terraform Kubernetes resources phase (Terraform required):
+#   ENABLE_TF_K8S_RESOURCES=true TF_DIR=goldenpath-idp-infra/envs/dev bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
 
 cluster_name="${1:-}"
 region="${2:-}"
@@ -87,6 +90,21 @@ if [[ -z "${instance_type}" ]]; then
 fi
 run_cmd bash "${repo_root}/bootstrap/00_prereqs/10_eks_preflight.sh" "${cluster_name}" "${region}" "${vpc_id}" "${private_subnets}" "${node_role_arn}" "${instance_type}"
 stage_done "STAGE 3"
+
+# Ensure Terraform-managed Kubernetes resources only apply after kubeconfig is ready.
+stage_banner "STAGE 3B: TERRAFORM K8S RESOURCES"
+enable_tf_k8s_resources="${ENABLE_TF_K8S_RESOURCES:-true}"
+if [[ "${enable_tf_k8s_resources}" == "true" ]]; then
+  if [[ -z "${TF_DIR:-}" ]]; then
+    echo "ENABLE_TF_K8S_RESOURCES is true but TF_DIR is not set; skipping Terraform Kubernetes resources." >&2
+  else
+    echo "Applying Terraform Kubernetes resources in ${TF_DIR} (enable_k8s_resources=true)..."
+    run_cmd terraform -chdir="${TF_DIR}" apply -var="enable_k8s_resources=true"
+  fi
+else
+  echo "Skipping Terraform Kubernetes resources (ENABLE_TF_K8S_RESOURCES=${enable_tf_k8s_resources})."
+fi
+stage_done "STAGE 3B"
 
 # Preflight: ensure enough Ready nodes for a full bootstrap.
 stage_banner "STAGE 4: CAPACITY CHECK"

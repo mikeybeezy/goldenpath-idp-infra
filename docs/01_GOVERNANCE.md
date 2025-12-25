@@ -186,6 +186,7 @@ V1 Guidance:
   in the `kube-system` namespace.
 - Create the EKS IAM OIDC provider in Terraform so IRSA works without manual inputs.
 - When SSH break-glass is enabled, pass the AWS EC2 key pair name via CLI vars or `TF_VAR_ssh_key_name` in CI (never commit `.pem` paths).
+- Third‑party apps get dedicated service accounts and least‑privilege IAM roles (no shared controller roles).
 
 **Network Exposure**
 

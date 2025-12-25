@@ -92,6 +92,9 @@ Datree policies and documentation describing how Kubernetes manifest checks run 
 ### `docs/`
 Governance and capability documentation ordered numerically for easy navigation. This file (`04_REPO_STRUCTURE.md`) documents layout and workflow.
 
+Notable docs:
+- `docs/18_BACKSTAGE_MVP.md` – first‑app checklist to validate CI → GitOps → Kong.
+
 ### Root Files
 - `eksctl-template.yaml`: starter config for creating EKS clusters via eksctl.
 - `Makefile`: wraps Terraform commands (`make init/plan/apply ENV=<env>`).

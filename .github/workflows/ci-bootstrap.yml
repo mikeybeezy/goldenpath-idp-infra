@@ -38,6 +38,8 @@ jobs:
       LB_CLEANUP_ATTEMPTS: "5"
       LB_CLEANUP_INTERVAL: "20"
       REMOVE_K8S_SA_FROM_STATE: "true"
+      ENABLE_TF_K8S_RESOURCES: "true"
+      TF_AUTO_APPROVE: "true"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -73,6 +75,7 @@ jobs:
       - name: Phase 3 - Bootstrap runner (stub)
         run: |
           echo "Phase 3: bootstrap runner goes here"
+          echo "ENABLE_TF_K8S_RESOURCES=${ENABLE_TF_K8S_RESOURCES}"
           echo "bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh ${CLUSTER_NAME} ${AWS_REGION}"
 
       # Phase 4: Post-bootstrap validation

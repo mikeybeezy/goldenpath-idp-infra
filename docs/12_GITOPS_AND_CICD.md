@@ -38,6 +38,10 @@ CI/CD. It keeps Argo CD details in one place.
 - Use port-forward for Argo CD if there is no external Service.
 - Tighten RBAC after bootstrap and route access through SSO.
 
+Service account access and IRSA bindings are governed in:
+
+`docs/06_IDENTITY_AND_ACCESS.md`
+
 ## Drift handling
 
 Some apps generate runtime state (e.g., webhook certificates). These should be
@@ -78,6 +82,9 @@ For ephemeral runs, CI should pass build metadata into Terraform so tags and
 names are deterministic. This keeps cleanup predictable and avoids IAM role
 collisions. See `docs/16_INFRA_Build_ID_Strategy_Decision.md`.
 
+For the full list of build/bootstrap/teardown flags used in CI, see
+`docs/17_BUILD_RUN_FLAGS.md`.
+
 Example:
 
 ```bash
@@ -98,6 +105,13 @@ teardown guardrails. It is intentionally stubbed so each phase can be wired in
 incrementally without changing the order.
 
 `/.github/workflows/ci-bootstrap.yml`
+
+## CI Backstage workflow (stub)
+
+We keep a minimal Backstage CI workflow stub that mirrors the first‑app flow
+and can be wired in phase by phase.
+
+`/.github/workflows/ci-backstage.yml`
 
 Phases:
 
