@@ -19,6 +19,7 @@ NODEGROUP ?=
 #   make plan ENV=staging # terraform -chdir=envs/staging plan
 #   make apply ENV=prod   # terraform -chdir=envs/prod apply
 #   make destroy ENV=dev
+#   TF_VAR_owner_team=platform-team make plan ENV=dev
 #   make bootstrap CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 #   make pre-destroy-cleanup CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 #   make cleanup-orphans BUILD_ID=<id> REGION=eu-west-2
@@ -89,6 +90,7 @@ help:
 	@echo "  make plan ENV=dev"
 	@echo "  make apply ENV=dev"
 	@echo "  make destroy ENV=dev"
+	@echo "  TF_VAR_owner_team=platform-team make plan ENV=dev"
 	@echo "  make fmt"
 	@echo "  make validate ENV=dev"
 	@echo "  make bootstrap CLUSTER=goldenpath-dev-eks REGION=eu-west-2"

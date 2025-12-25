@@ -37,6 +37,24 @@ terraform -chdir=envs/test apply \
   -var='enable_storage_addons=false'
 ```
 
+## Build ID mode (ephemeral vs persistent)
+
+Ephemeral build (suffixes names/tags):
+
+```bash
+terraform -chdir=envs/test plan \
+  -var='lifecycle=ephemeral' \
+  -var='build_id=20250115-01' \
+  -var='owner_team=platform-team'
+```
+
+Persistent build (stable names):
+
+```bash
+terraform -chdir=envs/test plan \
+  -var='lifecycle=persistent'
+```
+
 ## SSH break-glass example
 
 ```bash

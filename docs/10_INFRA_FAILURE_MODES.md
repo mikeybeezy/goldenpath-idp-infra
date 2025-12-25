@@ -12,7 +12,8 @@ and the options we considered.
 
 ## Chosen approach (V1)
 
-1) Use a cleanup script to delete orphaned resources by `BuildId`.
+1) Use a build ID and lifecycle tagging strategy to prevent collisions.
+2) Use a cleanup script to delete orphaned resources by `BuildId`.
 
 This combination avoids name collisions, makes cleanup deterministic, and
 reduces manual imports.
@@ -38,6 +39,12 @@ bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
 
 Set `DRY_RUN=false` to execute deletions. For manual AWS cleanup, see
 `docs/15_TEARDOWN_AND_CLEANUP.md`.
+
+Build ID decision:
+
+```
+docs/16_INFRA_Build_ID_Strategy_Decision.md
+```
 
 ## Other options we can adopt later
 

@@ -27,7 +27,7 @@ locals {
       Environment = local.environment
       Project     = "goldenpath-idp"
       ManagedBy   = "terraform"
-      Owner       = "platform-team"
+      Owner       = var.owner_team
       Lifecycle   = local.lifecycle
     },
     local.build_id != "" ? { BuildId = local.build_id } : {},

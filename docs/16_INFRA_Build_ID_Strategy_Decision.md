@@ -71,12 +71,46 @@ Adopt **Option C: Dual mode**.
 - Use a single `name_prefix` input and pass it consistently.
 - Require `BUILD_ID` (or generated suffix) for `Lifecycle=ephemeral`.
 - Reject suffix changes for `Lifecycle=persistent`.
+- Owner tagging is configured via `owner_team` and injected into `default_tags`.
+  In CI, set it with `TF_VAR_owner_team`.
+
+## Inputs and examples
+
+Ephemeral build (dev):
+
+```bash
+terraform -chdir=envs/dev plan \
+  -var='lifecycle=ephemeral' \
+  -var='build_id=20250115-01' \
+  -var='owner_team=platform-team'
+```
+
+Persistent build (staging/prod):
+
+```bash
+terraform -chdir=envs/staging plan \
+  -var='lifecycle=persistent'
+```
+
+## Recommended defaults
+
+- Dev/manual: use a timestamp Build ID, run `plan` before `apply`.
+- CI: use a git SHA (or hybrid) Build ID and run `apply` directly.
 
 ## Consequences
 
 - Ephemeral teardown becomes deterministic: “delete by BuildId tag.”
 - Persistent environments remain stable and safe.
 - CI can safely spin up multiple ephemeral builds in parallel.
+
+## How this prevents collisions and leftovers
+
+- **Unique IAM role names in ephemeral runs**: role names get a `-<build_id>`
+  suffix, so new runs never collide with existing roles.
+- **Stable names in persistent runs**: staging/prod keep fixed names, so updates
+  don’t churn resources.
+- **Tags on every resource**: `Lifecycle` + `BuildId` make cleanup a targeted
+  “find and delete” instead of a manual hunt.
 
 ## Follow‑ups
 

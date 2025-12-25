@@ -10,6 +10,7 @@ locals {
   name_prefix      = local.lifecycle == "ephemeral" && local.build_id != "" ? "${local.base_name_prefix}-${local.build_id}" : local.base_name_prefix
   cluster_name     = var.eks_config.cluster_name != "" ? var.eks_config.cluster_name : "${local.base_name_prefix}-eks"
   cluster_name_effective = local.lifecycle == "ephemeral" && local.build_id != "" ? "${local.cluster_name}-${local.build_id}" : local.cluster_name
+  role_suffix      = local.lifecycle == "ephemeral" && local.build_id != "" ? "-${local.build_id}" : ""
   public_subnets   = var.public_subnets
   private_subnets  = var.private_subnets
   # Use a larger node group during bootstrap to avoid capacity bottlenecks.
@@ -27,7 +28,7 @@ locals {
       Environment = local.environment
       Project     = "goldenpath-idp"
       ManagedBy   = "terraform"
-      Owner       = "platform-team"
+      Owner       = var.owner_team
       Lifecycle   = local.lifecycle
     },
     local.build_id != "" ? { BuildId = local.build_id } : {},
@@ -58,19 +59,19 @@ module "iam" {
   source = "../../modules/aws_iam"
   count  = var.iam_config.enabled ? 1 : 0
 
-  cluster_role_name                       = var.iam_config.cluster_role_name != "" ? var.iam_config.cluster_role_name : "${local.name_prefix}-eks-cluster-role"
-  node_group_role_name                    = var.iam_config.node_group_role_name != "" ? var.iam_config.node_group_role_name : "${local.name_prefix}-eks-node-role"
-  oidc_role_name                          = var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.name_prefix}-eks-oidc-role"
+  cluster_role_name                       = "${var.iam_config.cluster_role_name != "" ? var.iam_config.cluster_role_name : "${local.base_name_prefix}-eks-cluster-role"}${local.role_suffix}"
+  node_group_role_name                    = "${var.iam_config.node_group_role_name != "" ? var.iam_config.node_group_role_name : "${local.base_name_prefix}-eks-node-role"}${local.role_suffix}"
+  oidc_role_name                          = "${var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.base_name_prefix}-eks-oidc-role"}${local.role_suffix}"
   oidc_issuer_url                         = module.eks[0].oidc_issuer_url
   oidc_provider_arn                       = module.eks[0].oidc_provider_arn
   oidc_audience                           = var.iam_config.oidc_audience
   oidc_subject                            = var.iam_config.oidc_subject
   enable_autoscaler_role                  = var.iam_config.enable_autoscaler_role
-  autoscaler_role_name                    = var.iam_config.autoscaler_role_name
+  autoscaler_role_name                    = "${var.iam_config.autoscaler_role_name}${local.role_suffix}"
   autoscaler_service_account_namespace    = var.iam_config.autoscaler_service_account_namespace
   autoscaler_service_account_name         = var.iam_config.autoscaler_service_account_name
   enable_lb_controller_role               = var.iam_config.enable_lb_controller_role
-  lb_controller_role_name                 = var.iam_config.lb_controller_role_name
+  lb_controller_role_name                 = "${var.iam_config.lb_controller_role_name}${local.role_suffix}"
   lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
   lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
   environment                             = local.environment

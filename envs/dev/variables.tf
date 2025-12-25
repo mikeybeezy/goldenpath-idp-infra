@@ -15,6 +15,12 @@ variable "name_prefix" {
   default     = ""
 }
 
+variable "owner_team" {
+  type        = string
+  description = "Owning team for audit tags."
+  default     = "platform-team"
+}
+
 variable "lifecycle" {
   type        = string
   description = "Lifecycle for the environment: ephemeral or persistent."
@@ -83,10 +89,6 @@ variable "compute_config" {
     root_volume_type              = string
     root_volume_encrypted         = bool
   })
-  validation {
-    condition     = !var.eks_config.enabled || trim(var.eks_config.cluster_name) != ""
-    error_message = "eks_config.cluster_name must be set when eks_config.enabled is true."
-  }
   default = {
     enabled                       = false
     name                          = ""

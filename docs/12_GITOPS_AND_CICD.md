@@ -43,8 +43,33 @@ CI/CD. It keeps Argo CD details in one place.
 Some apps generate runtime state (e.g., webhook certificates). These should be
 ignored via `ignoreDifferences` rules to prevent persistent OutOfSync noise.
 
+## ignoreDifferences (noise reduction)
+
+We apply `ignoreDifferences` only to controller‑managed fields so Argo “OutOfSync”
+remains meaningful. Current scope:
+
+- **Kong**: webhook CA bundles and webhook‑managed secrets.
+- **cert‑manager**: webhook CA bundles.
+
+Rules live in the per‑env Argo Application manifests under
+`gitops/argocd/apps/<env>/`.
+
 ## CI/CD integration (future)
 
 - Pipeline creates or updates Argo CD Application manifests.
 - Sync gates include preflight checks and environment approvals.
 - Promotion is a Git change, not a manual kubectl step.
+
+## CI build metadata (ephemeral runs)
+
+For ephemeral runs, CI should pass build metadata into Terraform so tags and
+names are deterministic. This keeps cleanup predictable and avoids IAM role
+collisions. See `docs/16_INFRA_Build_ID_Strategy_Decision.md`.
+
+Example:
+
+```bash
+export TF_VAR_lifecycle=ephemeral
+export TF_VAR_build_id=$GITHUB_RUN_NUMBER
+export TF_VAR_owner_team=platform-team
+```

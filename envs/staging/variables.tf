@@ -3,10 +3,22 @@ variable "environment" {
   description = "Environment identifier (dev/test/staging/prod)."
 }
 
+variable "aws_region" {
+  type        = string
+  description = "AWS region for this environment."
+  default     = "eu-west-2"
+}
+
 variable "name_prefix" {
   type        = string
   description = "Prefix applied to resource names."
   default     = ""
+}
+
+variable "owner_team" {
+  type        = string
+  description = "Owning team for audit tags."
+  default     = "platform-team"
 }
 
 variable "lifecycle" {

@@ -15,6 +15,12 @@ variable "name_prefix" {
   default     = ""
 }
 
+variable "owner_team" {
+  type        = string
+  description = "Owning team for audit tags."
+  default     = "platform-team"
+}
+
 variable "lifecycle" {
   type        = string
   description = "Lifecycle for the environment: ephemeral or persistent."
