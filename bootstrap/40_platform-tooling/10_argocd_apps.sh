@@ -15,7 +15,29 @@ if [[ -z "${repo_root}" ]]; then
 fi
 
 # Apply Argo CD Application manifests for the chosen environment.
-kubectl apply -f "${repo_root}/gitops/argocd/apps/${env_name}"
+# Use EXCLUDE_APPS (comma-separated basenames) to skip specific apps.
+apps_dir="${repo_root}/gitops/argocd/apps/${env_name}"
+exclude_apps="${EXCLUDE_APPS:-}"
+
+if [[ -z "${exclude_apps}" ]]; then
+  kubectl apply -f "${apps_dir}"
+else
+  IFS=',' read -r -a exclude_list <<< "${exclude_apps}"
+  for app_file in "${apps_dir}"/*.yaml; do
+    app_name="$(basename "${app_file}" .yaml)"
+    skip=false
+    for exclude in "${exclude_list[@]}"; do
+      if [[ "${app_name}" == "${exclude}" ]]; then
+        skip=true
+        break
+      fi
+    done
+    if [[ "${skip}" == "true" ]]; then
+      continue
+    fi
+    kubectl apply -f "${app_file}"
+  done
+fi
 
 # Show the created Application resources for quick confirmation.
 kubectl -n argocd get applications

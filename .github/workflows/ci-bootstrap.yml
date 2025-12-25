@@ -1,0 +1,82 @@
+name: CI Bootstrap (Stub)
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment to target (dev/test/staging/prod)"
+        required: true
+        default: "dev"
+      region:
+        description: "AWS region"
+        required: true
+        default: "eu-west-2"
+      cluster_name:
+        description: "EKS cluster name"
+        required: true
+        default: "goldenpath-dev-eks"
+      build_id:
+        description: "Build ID for ephemeral runs"
+        required: false
+        default: ""
+      lifecycle:
+        description: "Lifecycle (ephemeral or persistent)"
+        required: true
+        default: "ephemeral"
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ENV: ${{ inputs.env }}
+      AWS_REGION: ${{ inputs.region }}
+      CLUSTER_NAME: ${{ inputs.cluster_name }}
+      BUILD_ID: ${{ inputs.build_id }}
+      CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Phase 1: Preflight + tooling
+      # Goal: ensure CLI tools are available and inputs are valid before any changes.
+      - name: Phase 1 - Preflight checks (stub)
+        run: |
+          echo "Phase 1: validate inputs and tools"
+          echo "ENV=${ENV}"
+          echo "AWS_REGION=${AWS_REGION}"
+          echo "CLUSTER_NAME=${CLUSTER_NAME}"
+          echo "CLUSTER_LIFECYCLE=${CLUSTER_LIFECYCLE}"
+          echo "BUILD_ID=${BUILD_ID}"
+
+      # Phase 2: Terraform init/plan/apply
+      # Goal: provision or update infra deterministically.
+      - name: Phase 2 - Terraform (stub)
+        run: |
+          echo "Phase 2: terraform init/plan/apply goes here"
+          echo "Use TF_VAR_cluster_lifecycle, TF_VAR_build_id, TF_VAR_owner_team"
+
+      # Phase 3: Bootstrap runner
+      # Goal: install core platform tooling in the enforced order.
+      - name: Phase 3 - Bootstrap runner (stub)
+        run: |
+          echo "Phase 3: bootstrap runner goes here"
+          echo "bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh ${CLUSTER_NAME} ${AWS_REGION}"
+
+      # Phase 4: Post-bootstrap validation
+      # Goal: capture a deterministic status summary for CI logs.
+      - name: Phase 4 - Post-bootstrap checks (stub)
+        run: |
+          echo "Phase 4: sanity checks and Argo status summary go here"
+          echo "kubectl get nodes"
+          echo "kubectl -n argocd get applications"
+
+      # Phase 5: Optional teardown (ephemeral only)
+      # Goal: tear down safely when requested or scheduled.
+      - name: Phase 5 - Teardown (stub)
+        if: ${{ inputs.lifecycle == 'ephemeral' }}
+        run: |
+          echo "Phase 5: teardown runner goes here"
+          echo "TEARDOWN_CONFIRM=true RELAX_PDB=true DRAIN_TIMEOUT=300s HEARTBEAT_INTERVAL=30 \\"
+          echo "  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh ${CLUSTER_NAME} ${AWS_REGION}"

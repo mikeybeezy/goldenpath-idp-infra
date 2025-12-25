@@ -80,7 +80,7 @@ Ephemeral build (dev):
 
 ```bash
 terraform -chdir=envs/dev plan \
-  -var='lifecycle=ephemeral' \
+  -var='cluster_lifecycle=ephemeral' \
   -var='build_id=20250115-01' \
   -var='owner_team=platform-team'
 ```
@@ -89,7 +89,7 @@ Persistent build (staging/prod):
 
 ```bash
 terraform -chdir=envs/staging plan \
-  -var='lifecycle=persistent'
+  -var='cluster_lifecycle=persistent'
 ```
 
 ## Recommended defaults

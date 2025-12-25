@@ -18,8 +18,10 @@ The runner orchestrates the full bootstrap flow against a fresh EKS cluster. It 
 4. Installs Metrics Server early for scheduling sanity checks.
 5. Installs Argo CD via Helm.
 6. Validates core add-ons (AWS Load Balancer Controller, cert-manager).
-7. Applies Argo CD apps, optionally waits for Cluster Autoscaler, then validates Kong.
-8. Runs the audit report.
+7. Applies the Cluster Autoscaler app first and waits for it to be ready.
+8. Applies the remaining Argo CD apps (excluding Kong).
+9. Installs and validates Kong.
+10. Runs the audit report.
 
 Argo CD admin access is handled via the dedicated helper script:
 `bootstrap/10_gitops-controller/20_argocd_admin_access.sh`.

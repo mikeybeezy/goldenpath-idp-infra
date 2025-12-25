@@ -23,10 +23,11 @@ bootstrap/10_bootstrap/
 2) 50_smoke-tests: install Metrics Server and validate node metrics.
 3) 10_gitops-controller: install Argo CD via Helm.
 4) 30_core-addons: validate AWS LB Controller and cert-manager.
-5) 40_platform-tooling: apply Argo CD apps, optionally wait for autoscaler, then validate Kong ingress.
-6) 50_smoke-tests: run the audit report.
-7) Optional: scale down after bootstrap.
-8) 50_smoke-tests: sanity checklist and final status summary.
+5) 40_platform-tooling: apply autoscaler app, wait for it, then apply remaining apps.
+6) 40_platform-tooling: install and validate Kong ingress.
+7) 50_smoke-tests: run the audit report.
+8) Optional: scale down after bootstrap.
+9) 50_smoke-tests: sanity checklist and final status summary.
 
 Argo CD is where the cluster reconciles against the desired state in this repo.
 Once Applications are created, Argo CD keeps them in sync with Git.
@@ -42,8 +43,10 @@ Prereqs
   -> Metrics Server
   -> Argo CD
   -> Core add-ons (LB controller, cert-manager)
-  -> Argo apps (autoscaler + tooling)
-  -> Kong validation
+  -> Autoscaler app
+  -> Autoscaler ready
+  -> Remaining Argo apps
+  -> Kong install + validation
   -> Audit report
   -> Optional scale down
   -> Sanity checklist
@@ -68,6 +71,18 @@ bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-su
 NODE_INSTANCE_TYPE=t3.small bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region> [kong-namespace]
 ```
 
+## Happy path (bootstrap + teardown)
+
+```
+# Bootstrap
+NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev SKIP_CERT_MANAGER_VALIDATION=true \
+  bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
+
+# Teardown
+TEARDOWN_CONFIRM=true \
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+```
+
 ## Cluster name (set once)
 
 Store `cluster_name` in `envs/<env>/terraform.tfvars` before the first build.
@@ -87,6 +102,15 @@ If you prefer one-line commands, use the Makefile:
 make help
 make bootstrap ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 make destroy ENV=dev
+```
+
+## Teardown runner
+
+Use the teardown runner for a clean, ordered teardown:
+
+```
+TEARDOWN_CONFIRM=true \
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
 ```
 
 Bootstrap mode defaults for this environment:
@@ -170,28 +194,35 @@ INSTALLING AWS Load Balancer Controller...
 Skipping cert-manager validation; Argo apps may not be synced yet.
 ----- STAGE 7 DONE -----
 
-##### STAGE 8: PLATFORM APPS #####
-INSTALLING Argo apps for dev...
+##### STAGE 8: AUTOSCALER APP #####
+INSTALLING Cluster Autoscaler app for dev...
 ----- STAGE 8 DONE -----
 Skipping Argo CD sync wait (SKIP_ARGO_SYNC_WAIT=true).
 
-##### STAGE 9: AUTOSCALER #####
+##### STAGE 9: AUTOSCALER READY #####
 Checking Cluster Autoscaler rollout...
 Error from server (NotFound): deployments.apps "cluster-autoscaler" not found
 Warning: cluster-autoscaler deployment not ready yet.
 ----- STAGE 9 DONE -----
 
-##### STAGE 10: KONG #####
-VALIDATING Kong ingress...
+##### STAGE 10: PLATFORM APPS #####
+INSTALLING remaining Argo apps for dev...
 ----- STAGE 10 DONE -----
 
-##### STAGE 11: AUDIT #####
-Running audit checks...
+##### STAGE 11: KONG #####
+INSTALLING Kong app for dev...
+VALIDATING Kong ingress...
 ----- STAGE 11 DONE -----
 
-##### STAGE 12: OPTIONAL SCALE DOWN #####
-Skipping scale down (SCALE_DOWN_AFTER_BOOTSTRAP=false).
+##### STAGE 12: AUDIT #####
+Running audit checks...
 ----- STAGE 12 DONE -----
+
+##### STAGE 13: OPTIONAL SCALE DOWN #####
+Skipping scale down (SCALE_DOWN_AFTER_BOOTSTRAP=false).
+----- STAGE 13 DONE -----
+
+##### STAGE 14: BOOTSTRAP COMPLETE #####
 Bootstrap complete.
 Sanity checks:
   kubectl get nodes
@@ -211,6 +242,9 @@ dev-keycloak             Unknown     Healthy       <none>
 dev-kong                 OutOfSync   Healthy       <none>
 dev-loki                 Synced      Healthy       <none>
 dev-prometheus           Synced      Degraded      <none>
+
+##### STAGE 15: SANITY CHECKS #####
+... (see 50_smoke-tests checklist)
 ```
 
 ### Example: full output (`COMPACT_OUTPUT=false`)

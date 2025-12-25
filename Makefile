@@ -1,7 +1,7 @@
 TF_BIN ?= terraform
 ENV ?= dev
 ENV_DIR := envs/$(ENV)
-CLUSTER ?= goldenpath-dev-eks
+CLUSTER ?= goldenpath-dev-eks-dec
 REGION ?= eu-west-2
 KONG_NAMESPACE ?= kong-system
 NODE_INSTANCE_TYPE ?= t3.small
@@ -25,8 +25,9 @@ NODEGROUP ?=
 #   make cleanup-orphans BUILD_ID=<id> REGION=eu-west-2
 #   make cleanup-iam
 #   make drain-nodegroup NODEGROUP=dev-default
+#   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 
-.PHONY: init plan apply destroy fmt validate bootstrap pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup set-cluster-name help
+.PHONY: init plan apply destroy fmt validate bootstrap pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown set-cluster-name help
 
 init:
 	$(TF_BIN) -chdir=$(ENV_DIR) init
@@ -68,6 +69,12 @@ cleanup-iam:
 drain-nodegroup:
 	bash bootstrap/60_tear_down_clean_up/drain-nodegroup.sh $(NODEGROUP)
 
+teardown:
+	TEARDOWN_CONFIRM=true \
+	TF_DIR=$(TF_DIR) \
+	CLEANUP_ORPHANS=false \
+	bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh $(CLUSTER) $(REGION)
+
 set-cluster-name:
 	@bash -c '\
 	tfvars="$(ENV_DIR)/terraform.tfvars"; \
@@ -98,6 +105,7 @@ help:
 	@echo "  make cleanup-orphans BUILD_ID=<id> REGION=eu-west-2"
 	@echo "  make cleanup-iam"
 	@echo "  make drain-nodegroup NODEGROUP=dev-default"
+	@echo "  make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2"
 	@echo "  make set-cluster-name ENV=dev"
 	@echo ""
 	@echo "Bootstrap flags:"

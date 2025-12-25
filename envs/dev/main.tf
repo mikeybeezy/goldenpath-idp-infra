@@ -4,13 +4,13 @@ terraform {
 
 locals {
   environment      = var.environment
-  lifecycle        = var.lifecycle
+  cluster_lifecycle = var.cluster_lifecycle
   build_id         = var.build_id
   base_name_prefix = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
-  name_prefix      = local.lifecycle == "ephemeral" && local.build_id != "" ? "${local.base_name_prefix}-${local.build_id}" : local.base_name_prefix
+  name_prefix      = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.base_name_prefix}-${local.build_id}" : local.base_name_prefix
   cluster_name     = var.eks_config.cluster_name != "" ? var.eks_config.cluster_name : "${local.base_name_prefix}-eks"
-  cluster_name_effective = local.lifecycle == "ephemeral" && local.build_id != "" ? "${local.cluster_name}-${local.build_id}" : local.cluster_name
-  role_suffix      = local.lifecycle == "ephemeral" && local.build_id != "" ? "-${local.build_id}" : ""
+  cluster_name_effective = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.cluster_name}-${local.build_id}" : local.cluster_name
+  role_suffix      = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "-${local.build_id}" : ""
   public_subnets   = var.public_subnets
   private_subnets  = var.private_subnets
   # Use a larger node group during bootstrap to avoid capacity bottlenecks.
@@ -29,7 +29,7 @@ locals {
       Project     = "goldenpath-idp"
       ManagedBy   = "terraform"
       Owner       = var.owner_team
-      Lifecycle   = local.lifecycle
+      Lifecycle   = local.cluster_lifecycle
     },
     local.build_id != "" ? { BuildId = local.build_id } : {},
     var.common_tags,

@@ -54,6 +54,18 @@ remains meaningful. Current scope:
 Rules live in the per‑env Argo Application manifests under
 `gitops/argocd/apps/<env>/`.
 
+## Custom health checks for CRDs
+
+We define custom health checks for noisy CRDs so “Unknown” becomes actionable.
+These checks are configured in Argo CD values under:
+
+`gitops/helm/argocd/values/<env>.yaml`
+
+Current coverage:
+
+- **cert‑manager**: `Certificate`, `ClusterIssuer`
+- **Kong**: `KongPlugin`, `KongIngress`, `KongConsumer`, `KongClusterPlugin`
+
 ## CI/CD integration (future)
 
 - Pipeline creates or updates Argo CD Application manifests.
@@ -69,7 +81,25 @@ collisions. See `docs/16_INFRA_Build_ID_Strategy_Decision.md`.
 Example:
 
 ```bash
-export TF_VAR_lifecycle=ephemeral
+export TF_VAR_cluster_lifecycle=ephemeral
 export TF_VAR_build_id=$GITHUB_RUN_NUMBER
 export TF_VAR_owner_team=platform-team
 ```
+
+## CI bootstrap workflow (stub)
+
+We keep a staged GitHub Actions workflow that mirrors the bootstrap flow and
+teardown guardrails. It is intentionally stubbed so each phase can be wired in
+incrementally without changing the order.
+
+`/.github/workflows/ci-bootstrap.yml`
+
+Phases:
+
+1) Preflight checks
+2) Terraform init/plan/apply
+3) Bootstrap runner
+4) Post-bootstrap validation
+5) Optional teardown (ephemeral only)
+
+Trigger it manually from GitHub Actions using workflow dispatch inputs.

@@ -43,7 +43,7 @@ Ephemeral build (suffixes names/tags):
 
 ```bash
 terraform -chdir=envs/dev plan \
-  -var='lifecycle=ephemeral' \
+  -var='cluster_lifecycle=ephemeral' \
   -var='build_id=20250115-01' \
   -var='owner_team=platform-team'
 ```
@@ -52,7 +52,7 @@ Persistent build (stable names):
 
 ```bash
 terraform -chdir=envs/dev plan \
-  -var='lifecycle=persistent'
+  -var='cluster_lifecycle=persistent'
 ```
 
 ## SSH break-glass example

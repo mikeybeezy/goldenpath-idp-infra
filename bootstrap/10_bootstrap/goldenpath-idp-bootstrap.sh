@@ -122,15 +122,15 @@ else
 fi
 stage_done "STAGE 7"
 
-# Apply platform tooling via Argo CD.
-stage_banner "STAGE 8: PLATFORM APPS"
+# Apply Cluster Autoscaler first so capacity is stable before Kong.
+stage_banner "STAGE 8: AUTOSCALER APP"
 env_name="${ENV_NAME:-dev}"
-echo "INSTALLING Argo apps for ${env_name}..."
-run_cmd bash "${repo_root}/bootstrap/40_platform-tooling/10_argocd_apps.sh" "${env_name}"
+autoscaler_app="${env_name}-cluster-autoscaler"
+echo "INSTALLING Cluster Autoscaler app for ${env_name}..."
+run_cmd kubectl apply -f "${repo_root}/gitops/argocd/apps/${env_name}/cluster-autoscaler.yaml"
 stage_done "STAGE 8"
 
 # Optionally wait for the Cluster Autoscaler Argo app to sync before installing Kong.
-autoscaler_app="${env_name}-cluster-autoscaler"
 if [[ "${SKIP_ARGO_SYNC_WAIT:-true}" == "true" ]]; then
   echo "Skipping Argo CD sync wait (SKIP_ARGO_SYNC_WAIT=true)."
 else
@@ -145,26 +145,34 @@ else
 fi
 
 # Ensure Cluster Autoscaler is running before installing Kong.
-stage_banner "STAGE 9: AUTOSCALER"
+stage_banner "STAGE 9: AUTOSCALER READY"
 echo "Checking Cluster Autoscaler rollout..."
 run_cmd kubectl -n kube-system rollout status deployment/cluster-autoscaler --timeout=180s || \
   echo "Warning: cluster-autoscaler deployment not ready yet."
 stage_done "STAGE 9"
 
-# Validate Kong ingress.
-stage_banner "STAGE 10: KONG"
-echo "VALIDATING Kong ingress..."
-run_cmd bash "${repo_root}/bootstrap/40_platform-tooling/20_kong_ingress.sh" "${cluster_name}" "${region}" "${kong_namespace}"
+# Apply remaining platform apps (excluding Kong and Autoscaler).
+stage_banner "STAGE 10: PLATFORM APPS"
+echo "INSTALLING remaining Argo apps for ${env_name}..."
+EXCLUDE_APPS="cluster-autoscaler,kong" run_cmd bash "${repo_root}/bootstrap/40_platform-tooling/10_argocd_apps.sh" "${env_name}"
 stage_done "STAGE 10"
 
-# Post-bootstrap audit output.
-stage_banner "STAGE 11: AUDIT"
-echo "Running audit checks..."
-run_cmd bash "${repo_root}/bootstrap/50_smoke-tests/20_audit.sh" "${cluster_name}" "${region}"
+# Validate Kong ingress after autoscaler and core apps are in place.
+stage_banner "STAGE 11: KONG"
+echo "INSTALLING Kong app for ${env_name}..."
+run_cmd kubectl apply -f "${repo_root}/gitops/argocd/apps/${env_name}/kong.yaml"
+echo "VALIDATING Kong ingress..."
+run_cmd bash "${repo_root}/bootstrap/40_platform-tooling/20_kong_ingress.sh" "${cluster_name}" "${region}" "${kong_namespace}"
 stage_done "STAGE 11"
 
+# Post-bootstrap audit output.
+stage_banner "STAGE 12: AUDIT"
+echo "Running audit checks..."
+run_cmd bash "${repo_root}/bootstrap/50_smoke-tests/20_audit.sh" "${cluster_name}" "${region}"
+stage_done "STAGE 12"
+
 # Optional: scale down after bootstrap by re-applying Terraform with bootstrap_mode=false.
-stage_banner "STAGE 12: OPTIONAL SCALE DOWN"
+stage_banner "STAGE 13: OPTIONAL SCALE DOWN"
 if [[ "${SCALE_DOWN_AFTER_BOOTSTRAP:-false}" == "true" ]]; then
   if [[ -z "${TF_DIR:-}" ]]; then
     echo "SCALE_DOWN_AFTER_BOOTSTRAP is true but TF_DIR is not set." >&2
@@ -172,13 +180,13 @@ if [[ "${SCALE_DOWN_AFTER_BOOTSTRAP:-false}" == "true" ]]; then
   fi
   echo "Scaling down via Terraform (bootstrap_mode=false) in ${TF_DIR}"
   run_cmd terraform -chdir="${TF_DIR}" apply -var="bootstrap_mode=false"
-  stage_done "STAGE 12"
+  stage_done "STAGE 13"
 else
   echo "Skipping scale down (SCALE_DOWN_AFTER_BOOTSTRAP=false)."
-  stage_done "STAGE 12"
+  stage_done "STAGE 13"
 fi
 
-stage_banner "STAGE 13: BOOTSTRAP COMPLETE"
+stage_banner "STAGE 14: BOOTSTRAP COMPLETE"
 cat <<NOTE
 Bootstrap complete.
 Sanity checks:
@@ -211,11 +219,11 @@ echo "kubectl -n ${kong_namespace} get svc"
 kubectl -n "${kong_namespace}" get svc
 
 # Checklist to confirm the platform is usable.
-stage_done "STAGE 13"
-
-stage_banner "STAGE 14: SANITY CHECKS"
-cat "${repo_root}/bootstrap/50_smoke-tests/30_dev_baseline_checklist.md"
 stage_done "STAGE 14"
+
+stage_banner "STAGE 15: SANITY CHECKS"
+cat "${repo_root}/bootstrap/50_smoke-tests/30_dev_baseline_checklist.md"
+stage_done "STAGE 15"
 
 # Surface Argo CD app status at the end for manual review.
 kubectl -n argocd get applications \

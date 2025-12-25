@@ -21,13 +21,13 @@ variable "owner_team" {
   default     = "platform-team"
 }
 
-variable "lifecycle" {
+variable "cluster_lifecycle" {
   type        = string
   description = "Lifecycle for the environment: ephemeral or persistent."
   default     = "persistent"
   validation {
-    condition     = contains(["ephemeral", "persistent"], var.lifecycle)
-    error_message = "lifecycle must be one of: ephemeral, persistent."
+    condition     = contains(["ephemeral", "persistent"], var.cluster_lifecycle)
+    error_message = "cluster_lifecycle must be one of: ephemeral, persistent."
   }
 }
 
@@ -36,8 +36,8 @@ variable "build_id" {
   description = "Build ID used to suffix ephemeral resources."
   default     = ""
   validation {
-    condition     = var.lifecycle == "persistent" || trim(var.build_id) != ""
-    error_message = "build_id must be set when lifecycle is ephemeral."
+    condition     = var.cluster_lifecycle == "persistent" || trimspace(var.build_id) != ""
+    error_message = "build_id must be set when cluster_lifecycle is ephemeral."
   }
 }
 

@@ -1,1 +1,77 @@
 # Argo CD overrides for prod
+configs:
+  cm:
+    resource.customizations: |
+      cert-manager.io/Certificate:
+        health.lua: |
+          hs = {}
+          if obj.status ~= nil and obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "Ready" and condition.status == "True" then
+                hs.status = "Healthy"
+                hs.message = condition.message or "Ready"
+                return hs
+              end
+              if condition.type == "Ready" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message or "Not Ready"
+                return hs
+              end
+            end
+          end
+          hs.status = "Progressing"
+          hs.message = "Waiting for Ready condition"
+          return hs
+      cert-manager.io/ClusterIssuer:
+        health.lua: |
+          hs = {}
+          if obj.status ~= nil and obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "Ready" and condition.status == "True" then
+                hs.status = "Healthy"
+                hs.message = condition.message or "Ready"
+                return hs
+              end
+              if condition.type == "Ready" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message or "Not Ready"
+                return hs
+              end
+            end
+          end
+          hs.status = "Progressing"
+          hs.message = "Waiting for Ready condition"
+          return hs
+      configuration.konghq.com/KongPlugin:
+        health.lua: |
+          hs = {}
+          if obj.status ~= nil and obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "Accepted" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message or "Not accepted"
+                return hs
+              end
+            end
+          end
+          hs.status = "Healthy"
+          hs.message = "Assumed healthy"
+          return hs
+      configuration.konghq.com/KongIngress:
+        health.lua: |
+          hs = {}
+          hs.status = "Healthy"
+          hs.message = "Assumed healthy"
+          return hs
+      configuration.konghq.com/KongConsumer:
+        health.lua: |
+          hs = {}
+          hs.status = "Healthy"
+          hs.message = "Assumed healthy"
+          return hs
+      configuration.konghq.com/KongClusterPlugin:
+        health.lua: |
+          hs = {}
+          hs.status = "Healthy"
+          hs.message = "Assumed healthy"
+          return hs
