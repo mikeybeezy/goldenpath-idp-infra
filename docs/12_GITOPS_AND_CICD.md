@@ -76,6 +76,37 @@ Current coverage:
 - Sync gates include preflight checks and environment approvals.
 - Promotion is a Git change, not a manual kubectl step.
 
+## CI runner CLI requirements
+
+These tools are referenced by the Makefile and bootstrap/teardown scripts in
+this repo, so CI/CD agents should have them installed:
+
+- `aws` (AWS CLI)
+- `terraform`
+- `kubectl`
+- `helm`
+- `awk`
+- `sed`
+- `bash`
+
+Notes:
+
+- `rg` (ripgrep) appears only in notes (`chat_fil.txt`), not required for CI.
+- No `jq`/`json` CLI usage found in repo scripts.
+- Standard shell utilities like `grep`, `tr`, `sort`, `head`, and `date` are
+  used by scripts and are expected to be available in the runner image.
+
+### Version guidance (observed)
+
+The bootstrap README includes an example run with these tool versions. Use
+these as a starting point if you want to pin CI images:
+
+- AWS CLI: 1.33.35
+- kubectl: v1.32.3
+- Helm: v3.10.3
+
+Source: `bootstrap/10_bootstrap/README.md`.
+
 ## CI build metadata (ephemeral runs)
 
 For ephemeral runs, CI should pass build metadata into Terraform so tags and
@@ -92,6 +123,15 @@ export TF_VAR_cluster_lifecycle=ephemeral
 export TF_VAR_build_id=$GITHUB_RUN_NUMBER
 export TF_VAR_owner_team=platform-team
 ```
+
+Bootstrap runner note:
+
+- If `TF_DIR` is set, the runner reads `cluster_name` and `region` from
+  `TF_DIR/terraform.tfvars` when positional args are omitted.
+- If `SCALE_DOWN_AFTER_BOOTSTRAP=true`, set `TF_AUTO_APPROVE=true` to avoid
+  interactive approval during the scale-down apply.
+- Recommended default is `SCALE_DOWN_AFTER_BOOTSTRAP=false` until Argo apps
+  and add-ons converge; scale down after verifying health and capacity.
 
 ## Reference build timing
 

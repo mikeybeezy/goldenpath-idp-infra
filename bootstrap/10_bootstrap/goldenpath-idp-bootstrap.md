@@ -30,7 +30,14 @@ Argo CD admin access is handled via the dedicated helper script:
 ## Usage
 
 ```sh
-./bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster-name> <region> [kong-namespace]
+./bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh [<cluster-name> <region> [kong-namespace]]
+```
+
+If you omit `<cluster-name>` and `<region>`, the runner will try to read
+`cluster_name` and `region` from `TF_DIR/terraform.tfvars`:
+
+```sh
+TF_DIR=envs/dev ./bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
 ```
 
 Run this once per cluster after it becomes reachable by kubectl.
@@ -62,6 +69,15 @@ The runner prints an Argo status summary at the end and warns if any app shows
 If `ENABLE_TF_K8S_RESOURCES=true` and `TF_DIR` is set, the runner performs a
 second Terraform apply with `enable_k8s_resources=true` to create the
 service accounts once the cluster is reachable.
+The runner will fail if `BUILD_ID` and the Terraform `build_id` do not match.
+
+If `SCALE_DOWN_AFTER_BOOTSTRAP=true`, the runner applies
+`bootstrap_mode=false`. Set `TF_AUTO_APPROVE=true` to avoid the manual
+Terraform approval prompt.
+
+Recommendation: default `SCALE_DOWN_AFTER_BOOTSTRAP=false` so the initial
+bootstrap has stable capacity while Argo apps and add-ons converge. Scale down
+after verifying key pods are healthy.
 
 ## Suggested Enhancements / Alternatives
 

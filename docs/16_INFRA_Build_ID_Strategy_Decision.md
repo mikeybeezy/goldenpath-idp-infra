@@ -73,6 +73,8 @@ Adopt **Option C: Dual mode**.
 - Reject suffix changes for `Lifecycle=persistent`.
 - Owner tagging is configured via `owner_team` and injected into `default_tags`.
   In CI, set it with `TF_VAR_owner_team`.
+- For local runs, `build_id` should be set once in `envs/<env>/terraform.tfvars`.
+  The Makefile reads from there by default; CI can override with `TF_VAR_build_id`.
 
 ## Inputs and examples
 

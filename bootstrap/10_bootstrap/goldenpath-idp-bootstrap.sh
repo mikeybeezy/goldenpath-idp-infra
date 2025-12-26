@@ -4,7 +4,8 @@ set -euo pipefail
 # Full bootstrap runner for a new EKS cluster.
 # This orchestrates the repo bootstrap scripts in a safe, deterministic order.
 # Usage:
-#   bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster-name> <region> [kong-namespace]
+#   bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh [<cluster-name> <region> [kong-namespace]]
+#   If cluster/region are omitted, the script will try TF_DIR/terraform.tfvars.
 #
 # Optional cleanup mode:
 #   CLEANUP_ON_FAILURE=true BUILD_ID=<id> DRY_RUN=false bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
@@ -19,11 +20,6 @@ cluster_name="${1:-}"
 region="${2:-}"
 kong_namespace="${3:-kong-system}"
 
-if [[ -z "${cluster_name}" || -z "${region}" ]]; then
-  echo "Usage: $0 <cluster-name> <region> [kong-namespace]" >&2
-  exit 1
-fi
-
 script_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(git -C "${script_root}" rev-parse --show-toplevel 2>/dev/null || true)"
 if [[ -z "${repo_root}" ]]; then
@@ -36,6 +32,32 @@ require_cmd() {
     exit 1
   fi
 }
+
+read_tfvars_var() {
+  local tfvars_path="$1"
+  local key="$2"
+  if [[ -f "${tfvars_path}" ]]; then
+    awk -F'=' -v k="${key}" '{
+      key=$1; gsub(/[[:space:]]/,"",key);
+      if (key == k) { val=$2; gsub(/"/,"",val); gsub(/[[:space:]]/,"",val); print val; exit }
+    }' "${tfvars_path}"
+  fi
+}
+
+if [[ -z "${cluster_name}" || -z "${region}" ]]; then
+  if [[ -n "${TF_DIR:-}" ]]; then
+    tfvars_path="${TF_DIR}/terraform.tfvars"
+    cluster_name="${cluster_name:-$(read_tfvars_var "${tfvars_path}" "cluster_name")}"
+    region="${region:-$(read_tfvars_var "${tfvars_path}" "aws_region")}"
+    region="${region:-$(read_tfvars_var "${tfvars_path}" "region")}"
+  fi
+fi
+
+if [[ -z "${cluster_name}" || -z "${region}" ]]; then
+  echo "Usage: $0 <cluster-name> <region> [kong-namespace]" >&2
+  echo "Missing cluster_name/region and unable to read them from TF_DIR/terraform.tfvars." >&2
+  exit 1
+fi
 
 # Preflight checks for required CLIs.
 require_cmd aws
@@ -91,18 +113,79 @@ fi
 run_cmd bash "${repo_root}/bootstrap/00_prereqs/10_eks_preflight.sh" "${cluster_name}" "${region}" "${vpc_id}" "${private_subnets}" "${node_role_arn}" "${instance_type}"
 stage_done "STAGE 3"
 
+# Ensure build_id is consistent between Makefile and Terraform inputs.
+read_tfvars_build_id() {
+  local tfvars_path="$1"
+  if [[ -f "${tfvars_path}" ]]; then
+    awk -F'=' '/^[[:space:]]*build_id[[:space:]]*=/{
+      gsub(/"/,"",$2); gsub(/[[:space:]]/,"",$2); print $2; exit
+    }' "${tfvars_path}"
+  fi
+}
+
+effective_build_id() {
+  if [[ -n "${TF_VAR_build_id:-}" ]]; then
+    echo "${TF_VAR_build_id}"
+    return
+  fi
+  if [[ -n "${TF_DIR:-}" ]]; then
+    read_tfvars_build_id "${TF_DIR}/terraform.tfvars"
+    return
+  fi
+}
+
+check_build_id_match() {
+  local tf_build_id
+  local make_build_id="${BUILD_ID:-}"
+  tf_build_id="$(effective_build_id)"
+  if [[ -n "${make_build_id}" && -z "${tf_build_id}" ]]; then
+    echo "BUILD_ID mismatch detected." >&2
+    echo "Make/ENV BUILD_ID: ${make_build_id}" >&2
+    echo "Terraform build_id: <empty>" >&2
+    echo "Set TF_VAR_build_id or terraform.tfvars to match BUILD_ID before running bootstrap." >&2
+    exit 1
+  fi
+  if [[ -z "${make_build_id}" && -n "${tf_build_id}" ]]; then
+    echo "BUILD_ID mismatch detected." >&2
+    echo "Make/ENV BUILD_ID: <empty>" >&2
+    echo "Terraform build_id: ${tf_build_id}" >&2
+    echo "Set BUILD_ID to match TF_VAR_build_id/terraform.tfvars before running bootstrap." >&2
+    exit 1
+  fi
+  if [[ -n "${make_build_id}" && -n "${tf_build_id}" && "${make_build_id}" != "${tf_build_id}" ]]; then
+    echo "BUILD_ID mismatch detected." >&2
+    echo "Make/ENV BUILD_ID: ${make_build_id}" >&2
+    echo "Terraform build_id: ${tf_build_id}" >&2
+    echo "Set TF_VAR_build_id or terraform.tfvars to match BUILD_ID before running bootstrap." >&2
+    exit 1
+  fi
+}
+
 # Ensure Terraform-managed Kubernetes resources only apply after kubeconfig is ready.
-stage_banner "STAGE 3B: TERRAFORM K8S RESOURCES"
+# Service accounts must exist before installing AWS LB Controller or Cluster Autoscaler.
+stage_banner "STAGE 3B: SERVICE ACCOUNTS (IRSA)"
 enable_tf_k8s_resources="${ENABLE_TF_K8S_RESOURCES:-true}"
 if [[ "${enable_tf_k8s_resources}" == "true" ]]; then
   if [[ -z "${TF_DIR:-}" ]]; then
     echo "ENABLE_TF_K8S_RESOURCES is true but TF_DIR is not set; skipping Terraform Kubernetes resources." >&2
   else
-    echo "Applying Terraform Kubernetes resources in ${TF_DIR} (enable_k8s_resources=true)..."
-    run_cmd terraform -chdir="${TF_DIR}" apply -var="enable_k8s_resources=true"
+    check_build_id_match
+    echo "Applying Terraform Kubernetes service accounts in ${TF_DIR} (enable_k8s_resources=true)..."
+    run_cmd terraform -chdir="${TF_DIR}" apply -auto-approve \
+      -var="enable_k8s_resources=true" \
+      -target="kubernetes_service_account_v1.aws_load_balancer_controller[0]" \
+      -target="kubernetes_service_account_v1.cluster_autoscaler[0]"
   fi
 else
   echo "Skipping Terraform Kubernetes resources (ENABLE_TF_K8S_RESOURCES=${enable_tf_k8s_resources})."
+  if ! kubectl -n kube-system get serviceaccount aws-load-balancer-controller >/dev/null 2>&1; then
+    echo "ServiceAccount kube-system/aws-load-balancer-controller not found. Create it before installing the AWS Load Balancer Controller." >&2
+    exit 1
+  fi
+  if ! kubectl -n kube-system get serviceaccount cluster-autoscaler >/dev/null 2>&1; then
+    echo "ServiceAccount kube-system/cluster-autoscaler not found. Create it before installing Cluster Autoscaler." >&2
+    exit 1
+  fi
 fi
 stage_done "STAGE 3B"
 
@@ -197,7 +280,11 @@ if [[ "${SCALE_DOWN_AFTER_BOOTSTRAP:-false}" == "true" ]]; then
     exit 1
   fi
   echo "Scaling down via Terraform (bootstrap_mode=false) in ${TF_DIR}"
-  run_cmd terraform -chdir="${TF_DIR}" apply -var="bootstrap_mode=false"
+  tf_auto_approve_flag=""
+  if [[ "${TF_AUTO_APPROVE:-false}" == "true" ]]; then
+    tf_auto_approve_flag="-auto-approve"
+  fi
+  run_cmd terraform -chdir="${TF_DIR}" apply ${tf_auto_approve_flag} -var="bootstrap_mode=false"
   stage_done "STAGE 13"
 else
   echo "Skipping scale down (SCALE_DOWN_AFTER_BOOTSTRAP=false)."

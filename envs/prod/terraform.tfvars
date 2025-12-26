@@ -1,4 +1,5 @@
 environment = "prod"
+aws_region  = "eu-west-2"
 name_prefix = "goldenpath-prod"
 vpc_cidr    = "10.3.0.0/16"
 

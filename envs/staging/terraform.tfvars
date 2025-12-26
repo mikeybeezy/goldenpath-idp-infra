@@ -1,4 +1,5 @@
 environment = "staging"
+aws_region  = "eu-west-2"
 name_prefix = "goldenpath-staging"
 vpc_cidr    = "10.2.0.0/16"
 

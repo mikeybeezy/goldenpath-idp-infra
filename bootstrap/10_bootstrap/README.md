@@ -80,6 +80,14 @@ see `docs/17_BUILD_RUN_FLAGS.md`.
 NODE_INSTANCE_TYPE=t3.small bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region> [kong-namespace]
 ```
 
+If you omit `<cluster>` and `<region>`, the runner will read them from
+`TF_DIR/terraform.tfvars`:
+
+```
+TF_DIR=envs/dev NODE_INSTANCE_TYPE=t3.small \
+  bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
+```
+
 ## Happy path (bootstrap + teardown)
 
 ```
@@ -109,9 +117,17 @@ If you prefer one-line commands, use the Makefile:
 
 ```
 make help
+make build ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2
+make timed-build ENV=dev BUILD_ID=20250115-02 CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 make bootstrap ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2
+make bootstrap-only ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 make destroy ENV=dev
 ```
+
+`BUILD_ID` is required for timed targets and defaults to the `build_id` value in
+`envs/<env>/terraform.tfvars`. If that value is empty, the Makefile exits with
+a clear error. You can still override `BUILD_ID` on the command line when
+needed, but it is optional if your env file already defines it.
 
 ## Teardown runner
 
@@ -165,10 +181,14 @@ COMPACT_OUTPUT=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
 - `SKIP_CERT_MANAGER_VALIDATION` (default `true`): skip cert-manager validation.
 - `SKIP_ARGO_SYNC_WAIT` (default `true`): skip Argo sync wait for autoscaler.
 - `COMPACT_OUTPUT` (default `false`): suppress most command output.
-- `ENABLE_TF_K8S_RESOURCES` (default `true`): run the Terraform K8s-resources phase.
+- `ENABLE_TF_K8S_RESOURCES` (default `true`): run the Terraform K8s service-account apply (targeted).
 - `SCALE_DOWN_AFTER_BOOTSTRAP` (default `false`): run Terraform scale-down.
 - `TF_DIR` (required when scale-down or Terraform K8s phase is enabled): Terraform directory to apply.
 - `kong_namespace` (optional arg 3, default `kong-system`): Kong namespace.
+
+Ordering note: the AWS LB Controller and Cluster Autoscaler service accounts must
+exist before installing those controllers. If `ENABLE_TF_K8S_RESOURCES=false`,
+create the service accounts manually (or via Terraform) first, then run bootstrap.
 
 ### Example: compact output (`COMPACT_OUTPUT=true`)
 
@@ -187,8 +207,8 @@ Checking required tools...
 Running EKS preflight...
 ----- STAGE 3 DONE -----
 
-##### STAGE 3B: TERRAFORM K8S RESOURCES #####
-Applying Terraform Kubernetes resources in envs/dev (enable_k8s_resources=true)...
+##### STAGE 3B: SERVICE ACCOUNTS (IRSA) #####
+Applying Terraform Kubernetes service accounts in envs/dev (enable_k8s_resources=true)...
 ----- STAGE 3B DONE -----
 
 ##### STAGE 4: CAPACITY CHECK #####

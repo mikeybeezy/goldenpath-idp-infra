@@ -1,5 +1,11 @@
-environment = "dev"
-vpc_cidr    = "10.0.0.0/16"
+environment       = "dev"
+aws_region        = "eu-west-2"
+vpc_cidr          = "10.0.0.0/16"
+owner_team        = "platform-team"
+cluster_lifecycle = "ephemeral"
+# NEED TO UPDATE persistent or ephemeral
+build_id = "26-12-25-03"
+
 
 public_subnets = [
   {
@@ -68,6 +74,7 @@ iam_config = {
   lb_controller_service_account_name      = "aws-load-balancer-controller"
 }
 
+
 addon_replica_counts = {
   aws-ebs-csi-driver  = 1
   aws-efs-csi-driver  = 1
@@ -109,36 +116,3 @@ bootstrap_node_group = {
   desired_size = 4
   max_size     = 7
 }
-
-
-
-# terraform {
-#   # Assumes s3 bucket and dynamo DB table already set up
-#   # See /code/03-basics/aws-backend
-#   backend "s3" {
-#     bucket         = "devops-initiative-state"
-#     key            = "devops-initiatve/web-app/terraform.tfstate"
-#     region         = "eu-west-2"
-#     dynamodb_table = "state-lock"
-#     encrypt        = true
-#   }
-
-#   required_providers {
-#     aws = {
-#       source  = "hashicorp/aws"
-#       version = "~> 3.0"
-#     }
-#   }
-# }
-
-# provider "aws" {
-#   region = "eu-west-2"
-# }
-
-# resource "aws_instance" "instance_1" {
-#   ami           = "ami-0a0ff88d0f3f85a14" # Ubuntu 20.04 LTS // eu-west-2
-#   instance_type = var.instance_type
-#   subnet_id     = data.aws_subnet.subnet_id_b.id
-#   depends_on = [
-#     aws_s3_bucket.bucket_blaster2caletifc
-#   ]

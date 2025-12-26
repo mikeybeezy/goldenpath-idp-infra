@@ -11,6 +11,9 @@ These are passed to `terraform apply` or `terraform destroy`.
 - `build_id` – build identifier for ephemeral runs
 - `owner_team` – owning team tag (e.g., `platform-team`)
 
+If you do not pass these on the CLI, Terraform will read them from
+`envs/<env>/terraform.tfvars`. For ephemeral runs, `build_id` must be set.
+
 Example:
 
 ```bash
@@ -26,12 +29,22 @@ These targets stream to the terminal, log full output to `logs/build-timings/*.l
 and append a row to `docs/build-timings.csv`.
 
 - `make timed-apply ENV=dev BUILD_ID=20250115-02`
+- `make build ENV=dev CLUSTER=... REGION=...`
+- `make timed-build ENV=dev BUILD_ID=20250115-02 CLUSTER=... REGION=...`
 - `make timed-bootstrap ENV=dev BUILD_ID=20250115-02 CLUSTER=... REGION=...`
 - `make timed-teardown ENV=dev BUILD_ID=20250115-02 CLUSTER=... REGION=...`
+
+`BUILD_ID` is required for timed targets. If you omit it, the Makefile will
+read `build_id` from `envs/<env>/terraform.tfvars` and fail if it is empty.
 
 Output logs are written to `logs/build-timings/*.log` and include the cluster
 name in the filename. The non‑timed `make apply`, `make bootstrap`, and
 `make teardown` targets also stream and write logs, but they do not add CSV rows.
+
+Use `make build`/`make timed-build` when you want Terraform apply and the
+bootstrap runner in a single step.
+
+Use `make bootstrap-only` when you want the runner without Terraform apply.
 
 ## Bootstrap runner (goldenpath-idp-bootstrap.sh)
 
@@ -40,8 +53,18 @@ name in the filename. The non‑timed `make apply`, `make bootstrap`, and
 - `SKIP_ARGO_SYNC_WAIT` – do not wait for Argo apps to sync
 - `SKIP_CERT_MANAGER_VALIDATION` – skip cert‑manager rollout check
 - `COMPACT_OUTPUT` – reduce output noise
-- `ENABLE_TF_K8S_RESOURCES` – run the Terraform K8s resources phase
+- `ENABLE_TF_K8S_RESOURCES` – run the targeted Terraform K8s service-account apply (auto‑approved)
 - `SCALE_DOWN_AFTER_BOOTSTRAP` – scale nodegroup down after bootstrap
+- `TF_DIR` – when set, the runner reads `cluster_name` and `region` from
+  `TF_DIR/terraform.tfvars` if positional args are omitted
+- `TF_AUTO_APPROVE` – when `true`, pass `-auto-approve` during the optional
+  scale-down Terraform apply
+
+Helper:
+
+- `scripts/resolve-cluster-name.sh` prints the effective cluster name that
+  Terraform will use (adds `-<build_id>` for ephemeral runs).
+  It honors `BUILD_ID` and `CLUSTER_LIFECYCLE` env overrides if set.
 
 Example:
 
@@ -55,6 +78,27 @@ ENABLE_TF_K8S_RESOURCES=true \
 SCALE_DOWN_AFTER_BOOTSTRAP=false \
 bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250115-02 eu-west-2
 ```
+
+TF_DIR-only usage (omit positional args):
+
+```bash
+TF_DIR=envs/dev \
+NODE_INSTANCE_TYPE=t3.small \
+ENABLE_TF_K8S_RESOURCES=true \
+bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
+```
+
+Resolve the effective cluster name:
+
+```bash
+ENV=dev scripts/resolve-cluster-name.sh
+```
+
+Recommendation:
+
+- Default `SCALE_DOWN_AFTER_BOOTSTRAP=false` so bootstrap can finish syncing
+  platform apps before you reduce capacity. Scale down only after confirming
+  pods are stable and observability checks are green.
 
 ## Teardown runner (goldenpath-idp-teardown.sh)
 

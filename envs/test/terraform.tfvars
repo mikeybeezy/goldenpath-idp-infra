@@ -1,4 +1,5 @@
 environment = "test"
+aws_region  = "eu-west-2"
 name_prefix = "goldenpath-test"
 vpc_cidr    = "10.1.0.0/16"
 

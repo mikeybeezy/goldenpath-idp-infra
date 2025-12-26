@@ -100,6 +100,16 @@ Terraform destroy guard:
 - If Terraform destroy fails or is skipped, the runner falls back to AWS
   cluster deletion when `TF_DESTROY_FALLBACK_AWS=true` (default).
 
+Service-account-only changes vs full apply:
+
+- If you only need Kubernetes service accounts (LB controller/autoscaler), use
+  the targeted apply path (`ENABLE_TF_K8S_RESOURCES=true`) to avoid touching
+  compute/VPC resources.
+- Running a full apply/destroy can cascade into EC2/SG changes; if a standalone
+  instance is still attached to a security group, SG deletion will fail.
+  This is the most common reason teardown appears “stuck” even though you only
+  intended to adjust service accounts.
+
 Makefile shortcut:
 
 ```bash
@@ -151,7 +161,7 @@ List:
 aws elbv2 describe-load-balancers --region "$AWS_REGION" \
   --query 'LoadBalancers[?VpcId==`'"$VPC_ID"'`].[LoadBalancerArn,DNSName]' \
   --output table
-```
+w```
 
 Delete:
 

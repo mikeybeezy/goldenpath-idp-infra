@@ -3,6 +3,8 @@
 
 # Terraform state & plan artifacts
 .terraform/
+.terraform-*/
+terraform.tfstate.*
 **/.terraform/*
 *.tfstate
 *.tfstate.*

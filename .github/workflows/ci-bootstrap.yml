@@ -13,8 +13,8 @@ on:
         default: "eu-west-2"
       cluster_name:
         description: "EKS cluster name"
-        required: true
-        default: "goldenpath-dev-eks"
+        required: false
+        default: ""
       build_id:
         description: "Build ID for ephemeral runs"
         required: false
@@ -35,6 +35,7 @@ jobs:
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
       CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
+      TF_DIR: envs/${{ inputs.env }}
       LB_CLEANUP_ATTEMPTS: "5"
       LB_CLEANUP_INTERVAL: "20"
       REMOVE_K8S_SA_FROM_STATE: "true"
@@ -51,9 +52,16 @@ jobs:
           echo "Phase 1: validate inputs and tools"
           echo "ENV=${ENV}"
           echo "AWS_REGION=${AWS_REGION}"
-          echo "CLUSTER_NAME=${CLUSTER_NAME}"
           echo "CLUSTER_LIFECYCLE=${CLUSTER_LIFECYCLE}"
           echo "BUILD_ID=${BUILD_ID}"
+
+      - name: Resolve cluster name
+        run: |
+          if [[ -z "${CLUSTER_NAME}" ]]; then
+            CLUSTER_NAME="$(ENV=${ENV} TF_DIR=${TF_DIR} BUILD_ID=${BUILD_ID} CLUSTER_LIFECYCLE=${CLUSTER_LIFECYCLE} bash scripts/resolve-cluster-name.sh)"
+          fi
+          echo "CLUSTER_NAME=${CLUSTER_NAME}" >> "${GITHUB_ENV}"
+          echo "Resolved CLUSTER_NAME=${CLUSTER_NAME}"
 
       # Timing note (baseline, non-blocking)
       - name: Timing log (stub)
@@ -67,16 +75,26 @@ jobs:
       # Goal: provision or update infra deterministically.
       - name: Phase 2 - Terraform (stub)
         run: |
-          echo "Phase 2: terraform init/plan/apply goes here"
-          echo "Use TF_VAR_cluster_lifecycle, TF_VAR_build_id, TF_VAR_owner_team"
+          TF_VAR_cluster_lifecycle="${CLUSTER_LIFECYCLE}" \
+          TF_VAR_build_id="${BUILD_ID}" \
+          TF_VAR_owner_team="platform-team" \
+          make apply ENV="${ENV}" BUILD_ID="${BUILD_ID}"
 
       # Phase 3: Bootstrap runner
       # Goal: install core platform tooling in the enforced order.
       - name: Phase 3 - Bootstrap runner (stub)
         run: |
-          echo "Phase 3: bootstrap runner goes here"
-          echo "ENABLE_TF_K8S_RESOURCES=${ENABLE_TF_K8S_RESOURCES}"
-          echo "bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh ${CLUSTER_NAME} ${AWS_REGION}"
+          ENV_NAME="${ENV}" \
+          NODE_INSTANCE_TYPE="t3.small" \
+          SKIP_ARGO_SYNC_WAIT="true" \
+          SKIP_CERT_MANAGER_VALIDATION="true" \
+          COMPACT_OUTPUT="false" \
+          ENABLE_TF_K8S_RESOURCES="${ENABLE_TF_K8S_RESOURCES}" \
+          SCALE_DOWN_AFTER_BOOTSTRAP="false" \
+          TF_DIR="${TF_DIR}" \
+          CLUSTER="${CLUSTER_NAME}" \
+          REGION="${AWS_REGION}" \
+          make bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}"
 
       # Phase 4: Post-bootstrap validation
       # Goal: capture a deterministic status summary for CI logs.
@@ -91,9 +109,11 @@ jobs:
       - name: Phase 5 - Teardown (stub)
         if: ${{ inputs.lifecycle == 'ephemeral' }}
         run: |
-          echo "Phase 5: teardown runner goes here"
-          echo "LB_CLEANUP_ATTEMPTS=${LB_CLEANUP_ATTEMPTS}"
-          echo "LB_CLEANUP_INTERVAL=${LB_CLEANUP_INTERVAL}"
-          echo "REMOVE_K8S_SA_FROM_STATE=${REMOVE_K8S_SA_FROM_STATE}"
-          echo "TEARDOWN_CONFIRM=true RELAX_PDB=true DRAIN_TIMEOUT=300s HEARTBEAT_INTERVAL=30 \\"
-          echo "  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh ${CLUSTER_NAME} ${AWS_REGION}"
+          TEARDOWN_CONFIRM="true" \
+          RELAX_PDB="true" \
+          DRAIN_TIMEOUT="300s" \
+          HEARTBEAT_INTERVAL="30" \
+          TF_DIR="${TF_DIR}" \
+          CLUSTER="${CLUSTER_NAME}" \
+          REGION="${AWS_REGION}" \
+          make teardown ENV="${ENV}" BUILD_ID="${BUILD_ID}"

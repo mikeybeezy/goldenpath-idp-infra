@@ -1,57 +1,157 @@
+
+aws eks list-clusters --region eu-west-2 --output table
+
+ENV=dev scripts/resolve-cluster-name.sh
+
+
+For EKS clusters (list then filter by tag on the cluster ARN):
+aws ec2 describe-instances --region eu-west-2 \
+  --filters "Name=tag:BuildId,Values=20250115-06"
+
+##################
+
 Step 1
 terraform -chdir=envs/dev init
 
-step 2
-terraform -chdir=envs/dev apply \
-  -var='cluster_lifecycle=ephemeral' \
-  -var='build_id=20250115-02' \
-  -var='owner_team=platform-team'
+##################
 
-step 3
-time \
-SKIP_ARGO_SYNC_WAIT=false \
+TF_VAR_cluster_lifecycle=ephemeral 
+TF_VAR_build_id=YYYYMMDD-01 
+TF_VAR_owner_team=platform-team
+make timed-apply ENV=dev
+
+INFRA BUILD OPTION A: Timed infra build (streams + logs timing):
+
+make timed-apply ENV=dev
+
+make apply ENV=dev BUILD_ID=<build-id>
+
+-----------
+INFRA BUILD OPTION B: Non‑timed infra build:
+
+terraform -chdir=envs/dev apply
+
+-----------
+INFRA BUILD OPTION C: If you need to override from CI, add:
+
+TF_VAR_cluster_lifecycle=ephemeral TF_VAR_build_id=YYYYMMDD-01 TF_VAR_owner_team=platform-team make timed-apply ENV=dev
+
+
+
+Terraform builds the final name from eks_config.cluster_name + build_id (when ephemeral).
+aws eks list-clusters is only a snapshot and can return multiple clusters; it’s not deterministic for automation.
+Recommended approach (deterministic):
+
+Always compute the effective name from tfvars:
+If cluster_lifecycle = "ephemeral" and build_id is set:
+cluster_name_effective = eks_config.cluster_name + "-" + build_id
+Otherwise:
+cluster_name_effective = eks_config.cluster_name
+##################
+Phase 2
+
+2.A Step 1: create the IRSA service accounts (targeted, auto‑approve)
+
+
+make bootstrap ENV=dev BUILD_ID=<build-id>
+
+##################
+
+Step 2.B: run bootstrap with all flags explicitly set to defaults
+(Here I set ENABLE_TF_K8S_RESOURCES=false so it won’t re‑apply SAs you already created.)
+
+make bootstrap ENV=dev BUILD_ID=<build-id>
+
+make bootstrap ENV_NAME=dev \
 NODE_INSTANCE_TYPE=t3.small \
-ENV_NAME=dev \
+SKIP_ARGO_SYNC_WAIT=true \
 SKIP_CERT_MANAGER_VALIDATION=true \
 COMPACT_OUTPUT=false \
-SCALE_DOWN_AFTER_BOOTSTRAP=false \
-bash goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250115-02 eu-west-2
+ENABLE_TF_K8S_RESOURCES=true \
+SCALE_DOWN_AFTER_BOOTSTRAP=true \
+TF_DIR=envs/dev \
+bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh 
 
-Here’s what that command does, line by line:
 
-time → measures how long the whole command takes.
-SKIP_ARGO_SYNC_WAIT=false → wait for the autoscaler Argo app to sync.
-NODE_INSTANCE_TYPE=t3.small → required for preflight capacity checks.
-ENV_NAME=dev → use gitops/argocd/apps/dev.
-SKIP_CERT_MANAGER_VALIDATION=true → skip cert-manager validation.
-COMPACT_OUTPUT=false → show full command output.
-SCALE_DOWN_AFTER_BOOTSTRAP=false → don’t run Terraform scale-down at the end.
-bash goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250115-02 eu-west-2 → run the bootstrap runner against that cluster name + region.
-
-If you want to run it from envs/dev, use the relative path:
-time \
-SKIP_ARGO_SYNC_WAIT=false \
+make bootstrap ENV_NAME=dev \
 NODE_INSTANCE_TYPE=t3.small \
-ENV_NAME=dev \
+SKIP_ARGO_SYNC_WAIT=true \
 SKIP_CERT_MANAGER_VALIDATION=true \
 COMPACT_OUTPUT=false \
-SCALE_DOWN_AFTER_BOOTSTRAP=false \
-bash ../bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250115-02 eu-west-2
+ENABLE_TF_K8S_RESOURCES=true \
+SCALE_DOWN_AFTER_BOOTSTRAP=true \
+TF_DIR=envs/dev \
+bash goldenpath-idp-bootstrap.sh 
+
+Notes:
+
+BUILD_ID is required by both targets.
+ENV defaults to dev if omitted.
+CLUSTER/REGION are read from terraform.tfvars unless you override them (e.g., CLUSTER=... REGION=...).
+
+ENV_NAME: env name used for Argo app files (default: dev)
+NODE_INSTANCE_TYPE: required for preflight capacity checks
+SKIP_ARGO_SYNC_WAIT: skip waiting for autoscaler app sync (default: true)
+SKIP_CERT_MANAGER_VALIDATION: skip cert-manager validation (default: true)
+COMPACT_OUTPUT: suppress command output when true (default: false)
+ENABLE_TF_K8S_RESOURCES: when true, run Terraform to apply service accounts (default: true)
+SCALE_DOWN_AFTER_BOOTSTRAP: when true, re-apply Terraform with bootstrap_mode=false (default: false)
+TF_DIR: Terraform directory (required when ENABLE_TF_K8S_RESOURCES=true or SCALE_DOWN_AFTER_BOOTSTRAP=true)
+Positional args:
+
+<cluster-name> (required)
+<region> (required)
+[kong-namespace] (optional, default: kong-system)
+##################
 
 
 step 4
-TTEARDOWN_CONFIRM=true RELAX_PDB=true DRAIN_TIMEOUT=300s HEARTBEAT_INTERVAL=30 \
-  TF_DIR=envs/dev REQUIRE_KUBE_FOR_TF_DESTROY=true TF_DESTROY_FALLBACK_AWS=true \
-  bash goldenpath-idp-teardown.sh goldenpath-dev-eks-20250115-01 eu-west-2
+
+timed
+make timed-teardown ENV=dev BUILD_ID=20250115-04 CLUSTER=goldenpath-dev-eks-20250115-04 REGION=eu-west-2
+
+non timed
+make teardown ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2
+
+make timed-teardown ENV=dev BUILD_ID=20250115-04 \
+  CLUSTER=goldenpath-dev-eks-20250115-04 REGION=eu-west-2
+
+TF_DIR=envs/dev make timed-teardown ENV=dev BUILD_ID=20250115-067 \
+  CLUSTER=goldenpath-dev- REGION=eu-west-2
 
 
 
+make teardown ENV=dev BUILD_ID=20250115-06 \
+  CLUSTER=goldenpath-dev-eks-08-20250115-06 REGION=eu-west-2 \
+  TF_DIR=envs/dev
 
-time \
-SKIP_ARGO_SYNC_WAIT=true \
-NODE_INSTANCE_TYPE=t3.small \
-ENV_NAME=dev \
-SKIP_CERT_MANAGER_VALIDATION=true \
-COMPACT_OUTPUT=false \
-SCALE_DOWN_AFTER_BOOTSTRAP=false \
-goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250115-02 eu-west-2
+Ok so the cluster can fully come up and down without breaking the flow; only
+human intervention required:
+
+1. Trigger the build stage
+2. Chain build stage to bootstrap
+3. Populate the BUILD_ID parameter
+4. Populate the CLUSTER parameter
+5. Trigger the bootstrap stage
+
+Infra build stage:
+make timed-apply ENV=dev BUILD_ID=26-12-25-03
+
+Bootstrap:
+make bootstrap ENV=dev BUILD_ID=26-12-25-03 \
+  ENV_NAME=dev \
+  NODE_INSTANCE_TYPE=t3.small \
+  SKIP_ARGO_SYNC_WAIT=true \
+  SKIP_CERT_MANAGER_VALIDATION=true \
+  COMPACT_OUTPUT=false \
+  ENABLE_TF_K8S_RESOURCES=true \
+  SCALE_DOWN_AFTER_BOOTSTRAP=false \
+  TF_DIR=envs/dev \
+  CLUSTER=goldenpath-dev-eks-26-12-25-03 \
+  REGION=eu-west-2
+
+Teardown:
+TF_DIR=envs/dev \
+make timed-teardown ENV=dev BUILD_ID=26-12-25-03 \
+  CLUSTER=goldenpath-dev-eks-26-12-25-03 \
+  REGION=eu-west-2
