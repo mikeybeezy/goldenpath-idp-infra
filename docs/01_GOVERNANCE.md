@@ -466,7 +466,53 @@ Explicitly excluded:
 - Custom plugins
 - Bespoke pipelines
 
+# **Delivery Insights (CI/CD Observability)**
+
+Delivery Insights provide visibility into the delivery system itself (build,
+package, promotion) to help teams understand where time, risk, and cost
+accumulate during deployment. This is an opt-in, V2 capability and does not
+mandate tooling or enforce performance targets.
+
+See `docs/19_DELIVERY_INSIGHTS.md` for scope, principles, and architectural
+approach.
+
 These are revisited only after patterns are proven and demand is validated.
+
+# **Architecture Decision Records (ADRs)**
+
+ADRs capture important decisions and their reasoning so context is not lost
+over time.
+
+## When to write an ADR
+
+Write an ADR when a decision:
+
+- Changes a default or baseline
+- Affects multiple teams, services, or environments
+- Has security, cost, or governance implications
+- Would be expensive or risky to reverse
+- Resolves recurring debate or ambiguity
+
+## What ADRs are not
+
+- Not required for every change
+- Not a ticketing system
+- Not a replacement for code review
+
+## How decisions evolve
+
+- Do not edit accepted ADRs to change history
+- Create a new ADR that supersedes the old one
+
+## ADR status values
+
+- Proposed
+- Accepted
+- Deprecated
+- Superseded
+
+See `docs/adrs/README.md` for the template and `docs/adrs/01_adr_index.md` for the
+current ADR list.
 
 # **Final Statement**
 

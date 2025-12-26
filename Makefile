@@ -16,6 +16,7 @@ SCALE_DOWN_AFTER_BOOTSTRAP ?= false
 TF_DIR ?= $(ENV_DIR)
 BUILD_ID ?= $(shell awk -F'=' '/^build_id[[:space:]]*=/{gsub(/"/,"",$$2);gsub(/[[:space:]]/,"",$$2);print $$2;exit}' $(ENV_DIR)/terraform.tfvars 2>/dev/null)
 NODEGROUP ?=
+CLEANUP_ORPHANS ?= false
 
 define require_build_id
 	@if [ -z "$(BUILD_ID)" ]; then \
@@ -177,7 +178,7 @@ teardown:
 	TF_DIR=$(TF_DIR) \
 	TF_AUTO_APPROVE=true \
 	REMOVE_K8S_SA_FROM_STATE=true \
-	CLEANUP_ORPHANS=false \
+	CLEANUP_ORPHANS=$(CLEANUP_ORPHANS) \
 	bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh $(CLUSTER) $(REGION) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
@@ -196,7 +197,7 @@ timed-teardown:
 	  TF_DIR=$(TF_DIR) \
 	  TF_AUTO_APPROVE=true \
 	  REMOVE_K8S_SA_FROM_STATE=true \
-	  CLEANUP_ORPHANS=false \
+	  CLEANUP_ORPHANS=$(CLEANUP_ORPHANS) \
 	  bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh $(CLUSTER) $(REGION) ) 2>&1 | tee "$$log"; \
 	status=$${PIPESTATUS[0]}; \
 	end_epoch=$$(date -u +%s); \
