@@ -60,7 +60,10 @@ goldenpath-idp-infra/
 │   ├── backstage-config/
 │   └── aws-secrets-manager/
 ├── modules/
+├── scripts/
+│   └── resolve-cluster-name.sh
 ├── Makefile
+├── CONTRIBUTING.md
 └── eksctl-template.yaml
 ```
 
@@ -94,16 +97,31 @@ Governance and capability documentation ordered numerically for easy navigation.
 
 Notable docs:
 - `docs/18_BACKSTAGE_MVP.md` – first‑app checklist to validate CI → GitOps → Kong.
+- `docs/12_GITOPS_AND_CICD.md` – CI/CD overview, runner requirements, and bootstrap notes.
+- `docs/17_BUILD_RUN_FLAGS.md` – canonical list of runtime flags for build/bootstrap/teardown.
 
 ### Root Files
 - `eksctl-template.yaml`: starter config for creating EKS clusters via eksctl.
 - `Makefile`: wraps Terraform commands (`make init/plan/apply ENV=<env>`).
+- `CONTRIBUTING.md`: branch strategy and branch protection checklist.
+
+### `scripts/`
+Helper scripts used by CI and local runs.
+
+- `scripts/resolve-cluster-name.sh`: computes the effective EKS cluster name
+  from `terraform.tfvars` (adds `-<build_id>` for ephemeral runs).
 
 ## Workflow Summary
 
 1. **Infrastructure (VPC, cluster, etc.)** – Terraform modules in `modules/` + `envs/<env>` provision AWS networking, EKS clusters, IAM roles.
-2. **Tooling Deployments (Kong, Grafana, Loki, Fluent Bit, Keycloak, Backstage)** – Helm charts/Kustomize manifests under `gitops/` deploy the actual workloads via Argo CD.
-3. **Tooling Configuration (Kong APIs, Grafana dashboards, Keycloak realms)** – Terraform provider modules in `idp-tooling/` manage API-level config so changes are versioned and promoted top-to-bottom.
+2. **Bootstrap (cluster bring-up)** – `bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh` installs Argo CD, core add-ons, and platform apps in a deterministic order.
+3. **Tooling Deployments (Kong, Grafana, Loki, Fluent Bit, Keycloak, Backstage)** – Helm charts/Kustomize manifests under `gitops/` deploy the actual workloads via Argo CD.
+4. **Tooling Configuration (Kong APIs, Grafana dashboards, Keycloak realms)** – Terraform provider modules in `idp-tooling/` manage API-level config so changes are versioned and promoted top-to-bottom.
+
+CI workflow stub:
+
+- `/.github/workflows/ci-bootstrap.yml` stages infra apply, bootstrap, and teardown
+  for ephemeral runs. It resolves the effective cluster name when not provided.
 
 This separation keeps infrastructure, workloads, and configuration decoupled but fully code-driven, enabling safe promotions across environments.
 

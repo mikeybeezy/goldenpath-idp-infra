@@ -1,4 +1,4 @@
-# Collaboration Guide
+# Contributing
 
 ## Branch Strategy
 
