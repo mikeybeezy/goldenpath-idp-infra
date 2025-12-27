@@ -4,6 +4,7 @@
 - **Status:** Accepted
 - **Date:** 2025-12-26
 - **Owners:** Platform (GoldenPath IDP)
+- **Domain:** Application
 - **Decision type:** Security / Identity / UX
 - **Related docs:** docs/01_GOVERNANCE.md, docs/06_REBUILD_SEQUENCE.md, ADR-0003-iam-irsa-ssm.md
 

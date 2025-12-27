@@ -3,6 +3,7 @@
 - **Status:** Accepted
 - **Date:** 2025-12-26
 - **Owners:** Platform (GoldenPath IDP)
+- **Domain:** Platform
 - **Decision type:** Architecture / Security
 - **Related docs:** docs/05_OBSERVABILITY_DECISIONS.md, docs/06_REBUILD_SEQUENCE.md, docs/01_GOVERNANCE.md
 

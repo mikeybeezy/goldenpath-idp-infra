@@ -3,8 +3,9 @@
 - **Status:** Accepted
 - **Date:** 2025-12-26
 - **Owners:** Platform (GoldenPath IDP)
+- **Domain:** Application
 - **Decision type:** Architecture | Observability | Delivery
-- **Related:** docs/01_GOVERNANCE.md, docs/19_DELIVERY_INSIGHTS.md, docs/adrs/ADR-0008-backstage-portal.md
+- **Related:** docs/01_GOVERNANCE.md, docs/19_DELIVERY_INSIGHTS.md, docs/adrs/ADR-0008-app-backstage-portal.md
 
 ## Context
 

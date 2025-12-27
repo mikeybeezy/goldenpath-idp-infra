@@ -3,6 +3,7 @@
 - **Status:** Accepted
 - **Date:** 2025-12-26
 - **Owners:** Platform (GoldenPath IDP)
+- **Domain:** Platform
 - **Decision type:** Security / Operations / Governance
 - **Related docs:** docs/06_REBUILD_SEQUENCE.md, docs/08_SOURCE_OF_TRUTH.md, docs/01_GOVERNANCE.md
 

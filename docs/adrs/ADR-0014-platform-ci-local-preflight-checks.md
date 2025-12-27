@@ -3,6 +3,7 @@
 - **Status:** Proposed
 - **Date:** 2025-12-26
 - **Owners:** platform team
+- **Domain:** Platform
 - **Decision type:** Governance
 - **Related:** `.github/workflows/infra-terraform.yml`
 - --

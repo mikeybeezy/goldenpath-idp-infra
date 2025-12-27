@@ -4,6 +4,7 @@
 - **Status:** Accepted
 - **Date:** 2025-12-26
 - **Owners:** Platform (GoldenPath IDP)
+- **Domain:** Platform
 - **Decision type:** Security / Operations / Governance
 - **Related docs:** docs/08_SOURCE_OF_TRUTH.md, docs/06_REBUILD_SEQUENCE.md, ADR-0003-iam-irsa-ssm.md
 
@@ -79,5 +80,5 @@ We want a secure, auditable, and repeatable secrets workflow:
 
 If you want one more “glue” piece, I can draft:
 
-- docs/adrs/ADR-0007-environment-model.md (1 cluster vs 2 clusters vs 4 clusters) with the cost/time/credibility tradeoffs you’ve already reasoned through.
+- docs/adrs/ADR-0007-platform-environment-model.md (1 cluster vs 2 clusters vs 4 clusters) with the cost/time/credibility tradeoffs you’ve already reasoned through.
 ```

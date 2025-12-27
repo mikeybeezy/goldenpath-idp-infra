@@ -3,6 +3,7 @@
 - **Status:** Accepted
 - **Date:** 2025-12-26
 - **Owners:** Platform (GoldenPath IDP)
+- **Domain:** Application
 - **Decision type:** Architecture | UX | Product
 - **Related:** docs/01_GOVERNANCE.md, docs/18_BACKSTAGE_MVP.md
 

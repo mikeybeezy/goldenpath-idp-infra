@@ -3,6 +3,7 @@
 - **Status:** Proposed
 - **Date:** 2025-12-23
 - **Owners:** platform team
+- **Domain:** Platform
 - **Decision type:** Operations
 - **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`
 - --

@@ -3,6 +3,7 @@
 - **Status:** Accepted
 - **Date:** 2025-12-26
 - **Owners:** platform team
+- **Domain:** Platform
 - **Decision type:** Operations
 - **Related:** `.github/workflows/infra-terraform.yml`, `CONTRIBUTING.md`
 - --

@@ -3,6 +3,7 @@
 - **Status:** Proposed
 - **Date:** 2025-12-26
 - **Owners:** platform team
+- **Domain:** Platform
 - **Decision type:** Security
 - **Related:** `.github/workflows/infra-terraform.yml`, https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws, https://www.youtube.com/watch?v=Sdzd4N6L5Hg
 - --

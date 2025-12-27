@@ -3,6 +3,7 @@
 - **Status:** Accepted
 - **Date:** 2025-12-26
 - **Owners:** Platform (GoldenPath IDP)
+- **Domain:** Platform
 - **Decision type:** Architecture | Operations | Cost
 - **Related:** docs/01_GOVERNANCE.md, docs/02_GOVERNANCE_MODEL.md
 

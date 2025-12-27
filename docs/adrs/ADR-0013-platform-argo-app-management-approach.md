@@ -3,6 +3,7 @@
 - **Status:** Accepted
 - **Date:** 2025-12-26
 - **Owners:** platform team
+- **Domain:** Application
 - **Decision type:** Operations
 - **Related:** `docs/07_REPO_DECOUPLING_OPTIONS.md`
 - --

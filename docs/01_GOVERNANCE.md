@@ -158,6 +158,11 @@ Why:
 
 Reference: `docs/12_GITOPS_AND_CICD.md`.
 
+Principle: CI workflows must enforce environment separation and controlled promotion. Apply or
+deployment steps are gated by explicit human approval for higher environments, and access is scoped
+per environment to limit blast radius. The exact tooling can vary, but the separation and manual
+gates are non-negotiable.
+
 Out of Scope (V1):
 
 - Atlantis
@@ -492,6 +497,16 @@ Write an ADR when a decision:
 - Has security, cost, or governance implications
 - Would be expensive or risky to reverse
 - Resolves recurring debate or ambiguity
+
+## Decision artifacts (ADR + Governance + Living doc)
+
+For decisions that affect workflow, security, or platform operations:
+
+- **ADR:** capture the decision, scope, and tradeoffs.
+- **Governance update:** codify the rule or expectation for teams.
+- **Living doc:** document the current implementation at the time.
+
+This trio keeps decisions, rules, and reality aligned as the platform evolves.
 
 ## What ADRs are not
 
