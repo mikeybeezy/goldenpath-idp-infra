@@ -59,6 +59,7 @@ the platform loop is CI-ready.
 - One cluster provides logical separation, not full physical separation.
 - Blast radius is larger in single-cluster model (cluster outage affects all envs).
 - Requires discipline: strong Argo/RBAC boundaries and clear “source of truth”
+
   to avoid cross-env drift.
 
 ### Operational impact
@@ -74,9 +75,13 @@ the platform loop is CI-ready.
 ## Alternatives considered
 
 - **Four clusters immediately**: rejected for V1 due to cost/time multiplication
+
   and increased failure surface.
+
 - **Two clusters immediately**: viable, but deferred until the single-cluster
+
   loop is stable and CI-ready.
+
 - **Single env only**: rejected; we need a credible promotion story.
 
 ## Follow-ups

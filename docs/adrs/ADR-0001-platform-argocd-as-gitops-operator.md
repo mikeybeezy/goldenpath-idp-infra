@@ -1,4 +1,3 @@
-```markdown
 # ADR-0001: Adopt Argo CD as GitOps controller for platform deployments
 
 - **Status:** Accepted
@@ -59,4 +58,3 @@ Platform apps are expressed as Argo CD Applications (app-of-apps pattern) and re
 ## Notes
 
 If multi-cluster is introduced (dev/test vs stage/prod), Argo remains the deployment mechanism; only destinations change.
-```

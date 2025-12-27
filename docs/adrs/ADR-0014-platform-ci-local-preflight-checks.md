@@ -6,7 +6,8 @@
 - **Domain:** Platform
 - **Decision type:** Governance
 - **Related:** `.github/workflows/infra-terraform.yml`
-- --
+
+---
 
 ## Context
 
@@ -14,7 +15,7 @@ We want consistent, low-friction quality gates while avoiding false confidence f
 that does not perfectly match CI. Teams should run fast, local checks before opening PRs, but CI
 remains the source of truth for merge decisions.
 
-- --
+---
 
 ## Decision
 
@@ -22,22 +23,24 @@ remains the source of truth for merge decisions.
 > authoritative gate. `act` is recommended for workflow changes, not required.
 
 Local preflight baseline (as applicable):
+
 - Lint/format (e.g., pre-commit hooks or project lint scripts).
 - Unit tests where available.
 - Terraform `fmt` and `validate` for infra changes.
 
 `act` guidance:
+
 - Recommended when editing GitHub Actions workflows.
 - Not a merge gate; differences from GitHub runners are expected.
 
-- --
+---
 
 ## Scope
 
 Applies to contributors and PRs in this repository. Does not require perfect parity between local
 and CI execution environments.
 
-- --
+---
 
 ## Consequences
 
@@ -56,21 +59,21 @@ and CI execution environments.
 - Document recommended local checks in contributor guidance.
 - Maintain small, stable local scripts to keep friction low.
 
-- --
+---
 
 ## Alternatives considered
 
 - Mandate `act` as a hard gate (rejected: mismatch with CI can create false positives).
 - CI-only checks (rejected: slower feedback loop and more churn).
 
-- --
+---
 
 ## Follow-ups
 
 - Add a short checklist in `CONTRIBUTING.md`.
 - Consider a lightweight pre-commit configuration for lint/format checks.
 
-- --
+---
 
 ## Notes
 

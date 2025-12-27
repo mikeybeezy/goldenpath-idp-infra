@@ -6,7 +6,8 @@
 - **Domain:** Platform
 - **Decision type:** Operations
 - **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`
-- --
+
+---
 
 ## Context
 
@@ -14,7 +15,7 @@ Production needs consistent visibility into the golden signals: latency, traffic
 saturation. The platform should provide an opinionated baseline that is production-grade but not
 overkill, while still allowing teams to extend or integrate with managed services when needed.
 
-- --
+---
 
 ## Decision
 
@@ -22,12 +23,13 @@ overkill, while still allowing teams to extend or integrate with managed service
 > golden signals with low operational overhead.
 
 Baseline components:
+
 - Metrics: Prometheus + Grafana, with `kube-state-metrics` and `node_exporter`.
 - Logs: Fluent Bit for collection, default backend Loki.
 - Traces: OpenTelemetry SDKs in apps, collected via OTel Collector and stored in Tempo.
 - Alerts: Prometheus Alertmanager with a small SLO-aligned ruleset.
 
-- --
+---
 
 ## Scope
 
@@ -35,7 +37,7 @@ Applies to production environments and the platform-provided observability stack
 service-specific dashboards, alerts, or exporters, but should not replace the baseline without a
 documented exception.
 
-- --
+---
 
 ## Consequences
 
@@ -54,7 +56,7 @@ documented exception.
 - Platform team maintains the baseline stack and default dashboards.
 - Teams use the standard logging and tracing pipelines unless exceptions are approved.
 
-- --
+---
 
 ## Alternatives considered
 
@@ -62,14 +64,14 @@ documented exception.
 - Vendor-only managed observability (rejected: cost and lock-in).
 - Metrics-only baseline (rejected: insufficient for golden signals).
 
-- --
+---
 
 ## Follow-ups
 
 - Align `docs/05_OBSERVABILITY_DECISIONS.md` with this baseline.
 - Publish a short golden-signal dashboard pack and alert rules.
 
-- --
+---
 
 ## Notes
 

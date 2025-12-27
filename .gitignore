@@ -29,6 +29,9 @@ crash.*.log
 
 # Misc
 *.out
+node_modules/
+package.json
+package-lock.json
 
 # Bootstrap audit reports
 bootstrap/50_smoke-tests/audit/
