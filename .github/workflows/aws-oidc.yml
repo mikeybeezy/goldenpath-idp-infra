@@ -1,5 +1,5 @@
 name: GitHub AWS OIDC
-
+##
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   oidc-test:
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest]
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
@@ -20,5 +20,5 @@ jobs:
         with:
           aws-region: eu-west-2
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
-      - name: Test AWS Credentials
+      - name: super-linter
         run: aws sts get-caller-identity
