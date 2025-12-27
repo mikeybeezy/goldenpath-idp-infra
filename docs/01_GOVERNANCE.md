@@ -163,6 +163,12 @@ deployment steps are gated by explicit human approval for higher environments, a
 per environment to limit blast radius. The exact tooling can vary, but the separation and manual
 gates are non-negotiable.
 
+Principle: Contributors must use local pre-commit hooks as the default preflight gate. CI remains
+the source of truth, and hooks exist to reduce avoidable failures and shorten feedback loops.
+
+Principle: Pull requests should surface Terraform plan output automatically to avoid manual
+copy/paste and to improve review quality.
+
 Out of Scope (V1):
 
 - Atlantis

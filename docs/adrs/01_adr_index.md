@@ -33,6 +33,9 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0016](ADR-0016-platform-ci-environment-separation.md) | Platform | CI environment separation and manual promotion gates | Proposed | 2025-12-26 | Single workflow; environment approvals; per-env roles and backends. |
 | [ADR-0017](ADR-0017-platform-policy-as-code.md) | Platform | Policy as code for infrastructure changes | Proposed | 2025-12-26 | Enforce Terraform guardrails in CI with a minimal policy set. |
 | [ADR-0018](ADR-0018-platform-container-registry-standard.md) | Platform | Container registry standard — ECR default, GHCR supported, Docker Hub discouraged | Proposed | 2025-12-27 | Opinionated default registry for AWS/EKS with supported alternatives. |
+| [ADR-0019](ADR-0019-platform-pre-commit-hooks.md) | Platform | Pre-commit hooks as local quality gates | Proposed | 2025-12-27 | Require local hooks; CI remains authoritative. |
+| [ADR-0020](ADR-0020-platform-helm-kustomize-hybrid.md) | Platform | Hybrid GitOps approach with Helm and Kustomize | Proposed | 2025-12-27 | Use Helm for packaged apps and Kustomize for env overlays. |
+| [ADR-0021](ADR-0021-platform-pr-terraform-plan.md) | Platform | PR Terraform plan with automated comments | Proposed | 2025-12-27 | PR plan output posted as a comment; no apply. |
 
 ---
 

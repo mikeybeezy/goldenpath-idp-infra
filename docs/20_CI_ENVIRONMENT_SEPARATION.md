@@ -9,6 +9,7 @@ reference and should evolve as the platform grows.
 - Environment separation: GitHub Environments named `dev`, `test`, `staging`, `prod`.
 - Manual gates: apply steps run only when `apply=true` is set at workflow dispatch.
 - Access model: GitHub Actions uses AWS OIDC and environment-scoped IAM roles.
+- PR workflow: `pr-terraform-plan.yml` posts plan output as a PR comment (dev only).
 
 ## Current dev implementation
 
@@ -26,6 +27,7 @@ reference and should evolve as the platform grows.
 - Add `test`, `staging`, `prod` roles, buckets, and lock tables.
 - Map workflow inputs to the correct environment-specific secrets and backends.
 - Optionally split workflows per environment for teams needing stricter boundaries.
+- Consider GitHub Environments as a future manual-approval gate if licensing allows.
 
 ## Change process
 
