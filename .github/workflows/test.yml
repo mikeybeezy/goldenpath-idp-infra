@@ -1,17 +1,24 @@
-name: Super-Linter
+name: GitHub AWS OIDC
+###
+on:
+  push:
+    branches:
+      - superlint
 
-on: push
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
-  super-lint:
-    name: lint code base
-    runs-on: ubuntu-latest
+  oidc-test:
+    runs-on: [ubuntu-latest]
     steps:
-      - name: Checkout code
+      - name: Checkout Source
         uses: actions/checkout@v4
-
-      - name: Run Super-linter
-        uses: github/super-linter@v7
-        env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure AWS Credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
+      - name: Test AWS credentials
+        run: aws sts get-caller-identity
