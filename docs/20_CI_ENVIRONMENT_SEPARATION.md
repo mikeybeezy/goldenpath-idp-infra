@@ -7,13 +7,13 @@ reference and should evolve as the platform grows.
 
 - Single workflow: `infra-terraform.yml` handles plan/apply via `workflow_dispatch`.
 - Environment separation: GitHub Environments named `dev`, `test`, `staging`, `prod`.
-- Manual gates: apply steps are protected by Environment approvals.
+- Manual gates: apply steps run only when `apply=true` is set at workflow dispatch.
 - Access model: GitHub Actions uses AWS OIDC and environment-scoped IAM roles.
 
 ## Current dev implementation
 
 - Workflow input: `env=dev`.
-- GitHub Environment: `dev` (used for manual approval of apply).
+- Manual apply toggle: `apply=true` at workflow dispatch.
 - Role secret: `secrets.TF_AWS_IAM_ROLE_DEV`.
 - Region: `eu-west-2`.
 - Backend:

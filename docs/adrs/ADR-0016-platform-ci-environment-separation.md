@@ -25,7 +25,7 @@ Core rules:
 
 - One workflow handles all environments via inputs.
 - Each environment uses a dedicated GitHub Environment name (`dev`, `test`, `staging`, `prod`).
-- Apply steps are gated by Environment approvals.
+- Apply steps are gated by an explicit workflow input (`apply=true`) at dispatch time.
 - IAM roles and state backends are environment-scoped.
 
 ---
@@ -51,8 +51,8 @@ Applies to infrastructure workflows and environment separation in this repositor
 
 ### Operational impact
 
-- Create GitHub Environments for each stage with required reviewers.
 - Maintain per-environment IAM roles and backend resources.
+- Require explicit operator intent by using a manual apply toggle at workflow dispatch.
 
 ---
 

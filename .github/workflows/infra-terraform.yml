@@ -10,6 +10,17 @@ on:
         type: choice
         options:
           - dev
+          - test
+          - staging
+          - prod
+      apply:
+        description: "Run terraform apply (manual approval gate)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
 
 jobs:
   terraform-fmt:
@@ -91,15 +102,45 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4.1.0
         with:
           aws-region: eu-west-2
-          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
+          role-to-assume: ${{ steps.backend.outputs.role }}
+
+      - name: Resolve backend config
+        id: backend
+        run: |
+          case "${{ inputs.env }}" in
+            dev)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_DEV }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-dev-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-dev-db-key" >> "$GITHUB_OUTPUT"
+              ;;
+            test)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_TEST }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-test-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-test-db" >> "$GITHUB_OUTPUT"
+              ;;
+            staging)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_STAGING }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-staging-db" >> "$GITHUB_OUTPUT"
+              ;;
+            prod)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_PROD }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-prod-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-prod-db" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported env: ${{ inputs.env }}" >&2
+              exit 1
+              ;;
+          esac
 
       - name: Terraform init (backend)
         run: |
           terraform -chdir=envs/${{ inputs.env }} init \
-            -backend-config="bucket=goldenpath-idp-dev-bucket" \
+            -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
             -backend-config="key=envs/${{ inputs.env }}/terraform.tfstate" \
             -backend-config="region=eu-west-2" \
-            -backend-config="dynamodb_table=goldenpath-idp-dev-db-key" \
+            -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
 
       - name: Terraform plan
@@ -113,7 +154,7 @@ jobs:
       id-token: write
     needs:
       - terraform-plan
-    environment: dev
+    if: ${{ inputs.apply == 'true' }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -125,15 +166,45 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4.1.0
         with:
           aws-region: eu-west-2
-          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
+          role-to-assume: ${{ steps.backend.outputs.role }}
+
+      - name: Resolve backend config
+        id: backend
+        run: |
+          case "${{ inputs.env }}" in
+            dev)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_DEV }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-dev-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-dev-db-key" >> "$GITHUB_OUTPUT"
+              ;;
+            test)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_TEST }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-test-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-test-db" >> "$GITHUB_OUTPUT"
+              ;;
+            staging)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_STAGING }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-staging-db" >> "$GITHUB_OUTPUT"
+              ;;
+            prod)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_PROD }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-prod-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-prod-db" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported env: ${{ inputs.env }}" >&2
+              exit 1
+              ;;
+          esac
 
       - name: Terraform init (backend)
         run: |
           terraform -chdir=envs/${{ inputs.env }} init \
-            -backend-config="bucket=goldenpath-idp-dev-bucket" \
+            -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
             -backend-config="key=envs/${{ inputs.env }}/terraform.tfstate" \
             -backend-config="region=eu-west-2" \
-            -backend-config="dynamodb_table=goldenpath-idp-dev-db-key" \
+            -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
 
       - name: Terraform apply

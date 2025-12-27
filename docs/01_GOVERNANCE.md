@@ -400,6 +400,10 @@ The platform enables capability; teams own outcomes.
 - AWS ECR
 - Docker Hub (restricted: official images or approved org namespaces)
 
+Default registry is ECR for platform and reference workloads to minimize egress and align with
+IAM. GHCR is supported as an alternative, and Docker Hub is permitted for public base images; teams
+may choose another registry with justification.
+
 ## Controls by Stage
 
 ## 1. Pre-Build (Docker Scout)

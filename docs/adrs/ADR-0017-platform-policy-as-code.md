@@ -1,11 +1,11 @@
-# ADR-0017: Policy as code for infrastructure changes
+# ADR-0017: Policy as code for infrastructure and application changes
 
 - **Status:** Proposed
 - **Date:** 2025-12-26
 - **Owners:** platform team
 - **Domain:** Platform
 - **Decision type:** Governance
-- **Related:** `docs/20_CI_ENVIRONMENT_SEPARATION.md`, `.github/workflows/infra-terraform.yml`
+- **Related:** `docs/20_CI_ENVIRONMENT_SEPARATION.md`, `docs/21_CI_ENVIRONMENT_CONTRACT.md`, `.github/workflows/infra-terraform.yml`
 
 ---
 
