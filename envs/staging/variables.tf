@@ -141,11 +141,11 @@ variable "compute_config" {
 variable "eks_config" {
   description = "Configuration for the optional EKS cluster."
   type = object({
-    enabled      = bool
-    cluster_name = string
-    version      = string
-    enable_ssh_break_glass = bool
-    ssh_key_name           = string
+    enabled                       = bool
+    cluster_name                  = string
+    version                       = string
+    enable_ssh_break_glass        = bool
+    ssh_key_name                  = string
     ssh_source_security_group_ids = list(string)
     node_group = object({
       name           = string
@@ -166,11 +166,11 @@ variable "eks_config" {
     error_message = "eks_config.cluster_name must be set when eks_config.enabled is true."
   }
   default = {
-    enabled      = false
-    cluster_name = ""
-    version      = "1.29"
-    enable_ssh_break_glass = false
-    ssh_key_name           = null
+    enabled                       = false
+    cluster_name                  = ""
+    version                       = "1.29"
+    enable_ssh_break_glass        = false
+    ssh_key_name                  = null
     ssh_source_security_group_ids = []
     node_group = {
       name           = "default"

@@ -3,15 +3,15 @@ terraform {
 }
 
 locals {
-  environment      = var.environment
-  cluster_lifecycle = var.cluster_lifecycle
-  build_id         = var.build_id
-  base_name_prefix = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
-  name_prefix      = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.base_name_prefix}-${local.build_id}" : local.base_name_prefix
-  cluster_name     = var.eks_config.cluster_name != "" ? var.eks_config.cluster_name : "${local.base_name_prefix}-eks"
+  environment            = var.environment
+  cluster_lifecycle      = var.cluster_lifecycle
+  build_id               = var.build_id
+  base_name_prefix       = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
+  name_prefix            = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.base_name_prefix}-${local.build_id}" : local.base_name_prefix
+  cluster_name           = var.eks_config.cluster_name != "" ? var.eks_config.cluster_name : "${local.base_name_prefix}-eks"
   cluster_name_effective = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.cluster_name}-${local.build_id}" : local.cluster_name
-  public_subnets   = var.public_subnets
-  private_subnets  = var.private_subnets
+  public_subnets         = var.public_subnets
+  private_subnets        = var.private_subnets
   # Use a larger node group during bootstrap to avoid capacity bottlenecks.
   effective_node_group = var.bootstrap_mode ? merge(
     var.eks_config.node_group,
@@ -38,10 +38,10 @@ locals {
 module "vpc" {
   source = "../../modules/vpc"
 
-  vpc_cidr = var.vpc_cidr
-  vpc_tag  = "${local.name_prefix}-vpc"
+  vpc_cidr    = var.vpc_cidr
+  vpc_tag     = "${local.name_prefix}-vpc"
   environment = local.environment
-  tags     = local.common_tags
+  tags        = local.common_tags
 }
 
 module "subnets" {
@@ -81,20 +81,20 @@ module "compute" {
   source = "../../modules/aws_compute"
   count  = var.compute_config.enabled ? 1 : 0
 
-  name                 = var.compute_config.name
-  ami_id               = var.compute_config.ami_id
-  instance_type        = var.compute_config.instance_type
-  subnet_id            = var.compute_config.subnet_type == "public" ? element(module.subnets.public_subnet_ids, 0) : element(module.subnets.private_subnet_ids, 0)
-  security_group_ids   = concat([module.web_security_group.security_group_id], var.compute_config.additional_security_group_ids)
-  ssh_key_name         = var.compute_config.ssh_key_name
-  user_data            = var.compute_config.user_data
-  iam_instance_profile = var.compute_config.iam_instance_profile
+  name                          = var.compute_config.name
+  ami_id                        = var.compute_config.ami_id
+  instance_type                 = var.compute_config.instance_type
+  subnet_id                     = var.compute_config.subnet_type == "public" ? element(module.subnets.public_subnet_ids, 0) : element(module.subnets.private_subnet_ids, 0)
+  security_group_ids            = concat([module.web_security_group.security_group_id], var.compute_config.additional_security_group_ids)
+  ssh_key_name                  = var.compute_config.ssh_key_name
+  user_data                     = var.compute_config.user_data
+  iam_instance_profile          = var.compute_config.iam_instance_profile
   network_interface_description = var.compute_config.network_interface_description
-  root_volume_size     = var.compute_config.root_volume_size
-  root_volume_type     = var.compute_config.root_volume_type
-  root_volume_encrypted = var.compute_config.root_volume_encrypted
-  environment           = local.environment
-  tags                 = local.common_tags
+  root_volume_size              = var.compute_config.root_volume_size
+  root_volume_type              = var.compute_config.root_volume_type
+  root_volume_encrypted         = var.compute_config.root_volume_encrypted
+  environment                   = local.environment
+  tags                          = local.common_tags
 }
 
 /*module "eks" {
