@@ -2,7 +2,7 @@
 
 ## Boxed diagram (ASCII)
 
-```text
+```
 
 ┌───────────────────────────────────────────────┐
 │ AWS Account (eu-west-2)                       │
@@ -53,11 +53,11 @@
 │ - IRSA Roles (LB Controller, Autoscaler)      │
 └───────────────────────────────────────────────┘
 
-```text
+```
 
 ## Mermaid diagram (renderable)
 
-```mermaid
+```
 
 flowchart TD
   A[AWS Account<br/>eu-west-2] --> VPC[VPC 10.0.0.0/16<br/>goldenpath-dev-vpc]
@@ -70,7 +70,7 @@ flowchart TD
   IAM[IAM (Terraform-managed)<br/>Cluster Role<br/>Node Role<br/>IRSA Roles] --> EKS
   IAM --> NG
 
-```text
+```
 
 1.Add BuildId to tags everywhere.
 2.Create a cleanup script that finds and deletes tagged orphaned resources.
