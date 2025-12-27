@@ -9,6 +9,11 @@ permissions:
   id-token: write
   contents: read
 
+TF_AWS_IAM_ROLE_DEV = both scoped to just dev
+ region = eu-west-2
+ DynamoDB lock table name = goldenpath-idp-dev-db-key
+
+  Repo secret and Repo variable s TF_AWS_IAM_ROLE, scopped to dev test and staging,  s3 bucket goldenpath-idp-dev-bucket
 jobs:
   oidc-test:
     runs-on: [ubuntu-latest]

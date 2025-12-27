@@ -7,6 +7,9 @@ on:
         description: "Environment to plan (dev/test/staging/prod)"
         required: true
         default: "dev"
+        type: choice
+        options:
+          - dev
 
 jobs:
   terraform-fmt:
@@ -73,6 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
     needs:
       - terraform-fmt
       - terraform-validate
@@ -83,8 +87,20 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform init (no backend)
-        run: terraform -chdir=envs/${{ inputs.env }} init -backend=false
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
+
+      - name: Terraform init (backend)
+        run: |
+          terraform -chdir=envs/${{ inputs.env }} init \
+            -backend-config="bucket=goldenpath-idp-dev-bucket" \
+            -backend-config="key=envs/${{ inputs.env }}/terraform.tfstate" \
+            -backend-config="region=eu-west-2" \
+            -backend-config="dynamodb_table=goldenpath-idp-dev-db-key" \
+            -backend-config="encrypt=true"
 
       - name: Terraform plan
-        run: terraform -chdir=envs/${{ inputs.env }} plan -input=false -lock=false -no-color
+        run: terraform -chdir=envs/${{ inputs.env }} plan -input=false -no-color
