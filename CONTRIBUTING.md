@@ -34,3 +34,9 @@ Recommended settings for `main`:
 - Require linear history (no merge commits).
 - Dismiss stale approvals when new commits are pushed.
 - Enforce code owner reviews (if `CODEOWNERS` exists).
+
+## Terraform lockfile policy
+
+CI must not upgrade Terraform providers or modules. Use `terraform init` locally for upgrades and
+commit the resulting `.terraform.lock.hcl` changes. If CI reports lockfile drift, update the
+lockfile in a dedicated change and rerun the checks.
