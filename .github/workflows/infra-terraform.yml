@@ -1,0 +1,90 @@
+name: Infra Terraform Checks
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment to plan (dev/test/staging/prod)"
+        required: true
+        default: "dev"
+
+jobs:
+  terraform-fmt:
+    name: Terraform fmt (check)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive
+
+  terraform-validate:
+    name: Terraform validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        dir:
+          - .
+          - envs/dev
+          - envs/test
+          - envs/staging
+          - envs/prod
+          - modules/aws_compute
+          - modules/aws_eks
+          - modules/aws_iam
+          - modules/aws_nic
+          - modules/aws_route_table
+          - modules/aws_sg
+          - modules/aws_subnet
+          - modules/vpc
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init (no backend)
+        run: terraform -chdir=${{ matrix.dir }} init -backend=false
+
+      - name: Enforce lockfile stability
+        run: |
+          LOCKFILE="${{ matrix.dir }}/.terraform.lock.hcl"
+          if git ls-files --error-unmatch "${LOCKFILE}" >/dev/null 2>&1; then
+            if ! git diff --exit-code -- "${LOCKFILE}"; then
+              echo "Terraform lockfile drift detected in ${LOCKFILE}. Run init/upgrade locally and commit the lockfile."
+              exit 1
+            fi
+          fi
+
+      - name: Terraform validate
+        run: terraform -chdir=${{ matrix.dir }} validate
+
+  terraform-plan:
+    name: Terraform plan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    needs:
+      - terraform-fmt
+      - terraform-validate
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init (no backend)
+        run: terraform -chdir=envs/${{ inputs.env }} init -backend=false
+
+      - name: Terraform plan
+        run: terraform -chdir=envs/${{ inputs.env }} plan -input=false -lock=false -no-color

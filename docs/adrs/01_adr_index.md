@@ -23,6 +23,12 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0007](ADR-0007-environment-model.md) | Environment model balances cost, speed, and credible separation | Accepted | 2025-12-26 | V1 starts single-cluster/4 namespaces; upgrade path to 2 clusters; 4 clusters deferred. |
 | [ADR-0008](ADR-0008-backstage-portal.md) | Use Backstage as developer portal and V1 demo app for promotion | Accepted | 2025-12-26 | Backstage deployed via GitOps; used to prove CI→GitOps→promotion loop. |
 | [ADR-0009](ADR-0009-delivery-insights.md) | CI/CD observability via OpenTelemetry (“Delivery Insights”) | Accepted | 2025-12-26 | Optional OTel-based delivery insights for CI pipelines. |
+| [ADR-0010](ADR-0010-terraform-lockfile-stability.md) | Enforce Terraform lockfile stability in CI | Accepted | 2025-12-26 | CI validates against committed lockfiles; upgrades are manual and reviewed. |
+| [ADR-0011](ADR-0011-observability-baseline-golden-signals.md) | Observability baseline for golden signals in production | Proposed | 2025-12-23 | Minimal stack for golden signals: metrics, logs, traces, alerts. |
+| [ADR-0012](ADR-0012-repo-decoupling-options.md) | Repo decoupling options for infra and platform tooling | Accepted | 2025-12-26 | Monorepo now; move to two-repo split when dev baseline is stable. |
+| [ADR-0013](ADR-0013-argo-app-management-approach.md) | Argo CD app management approach for current scale | Accepted | 2025-12-26 | Use app-of-apps now; defer ApplicationSet until scale demands it. |
+| [ADR-0014](ADR-0014-ci-local-preflight-checks.md) | Local preflight checks before PRs | Proposed | 2025-12-26 | Baseline local checks; CI remains authoritative; `act` is recommended. |
+| [ADR-0015](ADR-0015-aws-oidc-for-github-actions.md) | Use AWS OIDC for GitHub Actions authentication | Proposed | 2025-12-26 | Replace long-lived AWS keys with short-lived OIDC role assumption. |
 
 - --
 
