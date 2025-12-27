@@ -2,8 +2,7 @@ name: GitHub AWS OIDC
 ##
 on:
   push:
-    branches:
-      - super-linter
+    branches: [super-linter]
 
 permissions:
   id-token: write

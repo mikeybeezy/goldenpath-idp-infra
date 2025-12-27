@@ -3,7 +3,7 @@
 - **Status:** Proposed | Accepted | Deprecated | Superseded
 - **Date:** YYYY-MM-DD
 - **Owners:** <team / role>
-- **Decision type:** Architecture | Security | Operations | Governance
+- **Decision type:** Architecture | Security | Operations | Governance | 
 - **Related:** <links to docs, PRs, tickets>
 - --
 
