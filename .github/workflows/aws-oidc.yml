@@ -1,8 +1,9 @@
 name: GitHub AWS OIDC
-##
+###
 on:
   push:
-    branches: [super-linter]
+    branches:
+      - superlint
 
 permissions:
   id-token: write
@@ -19,5 +20,5 @@ jobs:
         with:
           aws-region: eu-west-2
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
-      - name: super-linter
+      - name: Test AWS credentials
         run: aws sts get-caller-identity
