@@ -5,9 +5,8 @@
 - **Owners:** platform team
 - **Domain:** Platform
 - **Decision type:** Security
-- **Related:** `.github/workflows/infra-terraform.yml`, [GitHub OIDC in AWS](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws), [Authenticate GitHub Actions with AWS Using OIDC — No Secrets Needed](https://www.youtube.com/watch?v=Sdzd4N6L5Hg)
-
----
+- **Related:** `.github/workflows/infra-terraform.yml`, https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws, https://www.youtube.com/watch?v=Sdzd4N6L5Hg
+- --
 
 ## Context
 
@@ -15,7 +14,7 @@ GitHub Actions currently needs AWS credentials to run infrastructure workflows. 
 keys stored as GitHub secrets increase the risk of leakage and require rotation. We want a safer,
 auditable, short-lived authentication mechanism aligned with least-privilege access.
 
----
+- --
 
 ## Decision
 
@@ -25,13 +24,13 @@ auditable, short-lived authentication mechanism aligned with least-privilege acc
 Workflows will request a short-lived OIDC token from GitHub and assume a dedicated IAM role via
 `sts:AssumeRoleWithWebIdentity`.
 
----
+- --
 
 ## Scope
 
 Applies to all GitHub Actions workflows that interact with AWS resources in this repository.
 
----
+- --
 
 ## Consequences
 
@@ -53,14 +52,14 @@ Applies to all GitHub Actions workflows that interact with AWS resources in this
 - Platform team owns OIDC provider and IAM role configuration.
 - Workflows must be updated to use OIDC-based AWS authentication.
 
----
+- --
 
 ## Alternatives considered
 
 - Long-lived access keys in GitHub secrets (rejected: higher leak/rotation risk).
 - Self-hosted runners with instance profiles (rejected for now: higher ops overhead).
 
----
+- --
 
 ## Follow-ups
 
@@ -68,7 +67,7 @@ Applies to all GitHub Actions workflows that interact with AWS resources in this
 - Define IAM roles and least-privilege policies per environment.
 - Update workflows to use `aws-actions/configure-aws-credentials` with OIDC.
 
----
+- --
 
 ## Notes
 

@@ -1,3 +1,4 @@
+```markdown
 # ADR-0005: Adopt Keycloak for platform SSO (humans) and keep IRSA for pod-to-AWS auth
 
 - **Status:** Accepted
@@ -77,3 +78,4 @@ Workload AWS API access remains:
 - backstage
 
 - Document migration from initial local auth to SSO to avoid lockouts.
+```

@@ -1,4 +1,4 @@
-# ADR-0002: Use Kong as the primary ingress/API gateway behind an internal NLB
+ ADR-0002: Use Kong as the primary ingress/API gateway behind an internal NLB
 
 - **Status:** Accepted
 - **Date:** 2025-12-26

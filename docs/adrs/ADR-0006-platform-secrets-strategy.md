@@ -1,3 +1,4 @@
+```markdown
 # ADR-0006: Use AWS Secrets Manager/SSM as system of record for secrets and External Secrets to hydrate Kubernetes
 
 - **Status:** Accepted
@@ -80,3 +81,4 @@ We want a secure, auditable, and repeatable secrets workflow:
 If you want one more “glue” piece, I can draft:
 
 - docs/adrs/ADR-0007-platform-environment-model.md (1 cluster vs 2 clusters vs 4 clusters) with the cost/time/credibility tradeoffs you’ve already reasoned through.
+```

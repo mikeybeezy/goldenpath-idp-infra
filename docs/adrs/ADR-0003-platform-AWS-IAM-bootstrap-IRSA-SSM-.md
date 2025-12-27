@@ -1,4 +1,4 @@
-# ADR-0003: Use AWS IAM for bootstrap access, IRSA for pod-to-AWS access, and SSM for node break-glass
+ ADR-0003: Use AWS IAM for bootstrap access, IRSA for pod-to-AWS access, and SSM for node break-glass
 
 - **Status:** Accepted
 - **Date:** 2025-12-26
@@ -17,21 +17,19 @@ We need secure and deterministic access patterns:
 
 ## Decision
 
-1. **Bootstrap human access** uses AWS IAM authentication to EKS:
+1) **Bootstrap human access** uses AWS IAM authentication to EKS:
 
 - `aws eks update-kubeconfig` + Kubernetes RBAC mappings.
 
-1. **Workload access to AWS APIs** uses **IRSA** (IAM Roles for Service Accounts):
+2) **Workload access to AWS APIs** uses **IRSA** (IAM Roles for Service Accounts):
 
 - enable EKS OIDC issuer usage and create IAM OIDC provider
 
 - create least-privilege IAM roles bound to specific Kubernetes service accounts.
 
-1. **Node “break-glass” access** uses **AWS SSM Session Manager** as the default.
+3) **Node “break-glass” access** uses **AWS SSM Session Manager** as the default.
 
-1. **SSH** is not enabled by default; it can be turned on only as an explicit, time-bound
-
-   exception (Terraform flag) if SSM is insufficient.
+4) **SSH** is not enabled by default; it can be turned on only as an explicit, time-bound exception (Terraform flag) if SSM is insufficient.
 
 ## Scope
 

@@ -46,21 +46,15 @@ are deferred until the promotion loop is stable.
 ### Positive
 
 - Strong, visible proof of platform capability (promotion, ingress, secrets,
-
   rollback).
-
 - Portal becomes a natural home for Golden Path docs, runbooks, and later
-
   templates.
-
 - Improves portfolio narrative and product credibility.
 
 ### Tradeoffs / Risks
 
 - Backstage adds operational surface area (Node app lifecycle, config,
-
   dependencies).
-
 - Without discipline, Backstage work can become a distraction (UX rabbit hole).
 - Requires careful config/secrets separation per environment.
 
@@ -76,26 +70,20 @@ are deferred until the promotion loop is stable.
   - open PRs to bump image tag in env values
   - promote tags dev → test → stage → prod via PR workflow
 - SSO integration with Keycloak is planned but not required for initial
-
   bootstrap.
 
 ## Alternatives considered
 
 - **Hello-world sample app**: rejected as insufficient proof and too contrived.
 - **Backstage later**: rejected because it is a strong “demo app” and should be
-
   installed early (even if minimally configured).
-
 - **Use a managed portal**: rejected due to desire for portability and
-
   customization.
 
 ## Follow-ups
 
 - Create a minimal Backstage app repo (or folder) and a production-grade Docker
-
   build.
-
 - Add Backstage Helm values/manifests for each environment.
 - Define and implement the promotion workflow (PR-based tag bumps).
 - Add smoke tests: health endpoint + Argo health + ingress reachability.

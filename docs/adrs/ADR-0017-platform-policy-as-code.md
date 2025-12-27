@@ -6,8 +6,7 @@
 - **Domain:** Platform
 - **Decision type:** Governance
 - **Related:** `docs/20_CI_ENVIRONMENT_SEPARATION.md`, `.github/workflows/infra-terraform.yml`
-
----
+- --
 
 ## Context
 
@@ -16,26 +15,25 @@ application changes without relying solely on manual review. With Backstage as o
 we must apply policy as code to both infrastructure and application delivery so the platform is
 safe by default and the developer experience reflects our own standards.
 
----
+- --
 
 ## Decision
 
 > We will enforce policy as code for infrastructure and application changes in CI.
 
 Baseline requirements:
-
 - Evaluate Terraform plans against a small, maintained policy set.
 - Block applies when policies fail.
 - Keep policies minimal and focused on high-impact risks.
 
----
+- --
 
 ## Scope
 
 Applies to infrastructure and application changes in this repository, including Terraform and
 application delivery workflows.
 
----
+- --
 
 ## Consequences
 
@@ -55,14 +53,14 @@ application delivery workflows.
 - Platform team maintains policy rules and updates them as requirements evolve.
 - CI workflows incorporate policy checks before apply.
 
----
+- --
 
 ## Alternatives considered
 
 - Manual reviews only (rejected: inconsistent and non-scalable).
 - Environment-specific ad hoc checks (rejected: duplication and drift).
 
----
+- --
 
 ## Follow-ups
 
@@ -70,7 +68,7 @@ application delivery workflows.
 - Define the initial policy set for infrastructure and applications.
 - Wire the checks into `infra-terraform.yml` and relevant application workflows.
 
----
+- --
 
 ## Notes
 

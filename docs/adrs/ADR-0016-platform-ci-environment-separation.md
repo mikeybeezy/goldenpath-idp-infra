@@ -6,8 +6,7 @@
 - **Domain:** Platform
 - **Decision type:** Governance
 - **Related:** `.github/workflows/infra-terraform.yml`, `docs/01_GOVERNANCE.md`
-
----
+- --
 
 ## Context
 
@@ -15,26 +14,25 @@ We need a CI/CD model that scales safely from early-stage usage to later growth 
 rework. Infrastructure changes must be reviewed, environment-scoped, and applied with explicit
 human control while still keeping a single, consistent workflow for contributors.
 
----
+- --
 
 ## Decision
 
 > We will separate CI environments by name and enforce manual apply gates per environment.
 
 Core rules:
-
 - One workflow handles all environments via inputs.
 - Each environment uses a dedicated GitHub Environment name (`dev`, `test`, `staging`, `prod`).
 - Apply steps are gated by Environment approvals.
 - IAM roles and state backends are environment-scoped.
 
----
+- --
 
 ## Scope
 
 Applies to infrastructure workflows and environment separation in this repository.
 
----
+- --
 
 ## Consequences
 
@@ -54,21 +52,21 @@ Applies to infrastructure workflows and environment separation in this repositor
 - Create GitHub Environments for each stage with required reviewers.
 - Maintain per-environment IAM roles and backend resources.
 
----
+- --
 
 ## Alternatives considered
 
 - Separate workflows per environment (rejected as primary path; allowed for stricter separation).
 - CI-only applies without manual gates (rejected for production safety).
 
----
+- --
 
 ## Follow-ups
 
 - Document the current CI environment separation implementation.
 - Add environment-specific role and backend mappings for test/staging/prod.
 
----
+- --
 
 ## Notes
 

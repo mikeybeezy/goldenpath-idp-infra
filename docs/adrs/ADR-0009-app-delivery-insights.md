@@ -39,9 +39,7 @@ mandatory platform requirement.
 ## Scope
 
 - Applies to: CI pipelines that choose to adopt it (initially Backstage
-
   reference app).
-
 - Out of scope:
   - mandatory instrumentation
   - log or command output capture
@@ -54,9 +52,7 @@ mandatory platform requirement.
 - Makes delivery performance measurable and explainable.
 - Enables trend analysis (build time, step regressions, cache efficiency).
 - Aligns CI/CD observability with runtime observability via shared OTel
-
   semantics.
-
 - Differentiates the platform without increasing baseline complexity.
 
 ### Tradeoffs / Risks

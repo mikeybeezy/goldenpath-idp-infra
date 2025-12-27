@@ -2,19 +2,18 @@
 
 This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 
-## How to use this
-
+**How to use this**
 - ADRs document **what we decided**, **why**, and **tradeoffs**.
 - Decisions should be changed by **superseding** an ADR (create a new one), not rewriting history.
 
 > Location: `docs/adrs/`
 
----
+- --
 
 ## Active ADRs
 
 | ADR | Domain | Title | Status | Date | Summary |
-| --- | --- | --- | --- | --- | --- |
+|---|---|---|---|---|---|
 | [ADR-0001](ADR-0001-platform-argocd-as-gitops-operator.md) | Platform | Adopt Argo CD as GitOps controller for platform deployments | Accepted | 2025-12-26 | Argo CD is the source of truth for in-cluster platform apps and reconciliation. |
 | [ADR-0002](ADR-0002-platform-Kong-as-ingress-API-gateway.md) | Platform | Use Kong as the primary ingress/API gateway behind an internal NLB | Accepted | 2025-12-26 | Kong is the front door; internal NLB is the secure-by-default entrypoint. |
 | [ADR-0003](ADR-0003-platform-AWS-IAM-bootstrap-IRSA-SSM-.md) | Platform | Use AWS IAM bootstrap, IRSA for pod-to-AWS, and SSM for node break-glass | Accepted | 2025-12-26 | IAM for bootstrap, IRSA for least-privilege controllers, SSM replaces SSH by default. |
@@ -33,13 +32,13 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0016](ADR-0016-platform-ci-environment-separation.md) | Platform | CI environment separation and manual promotion gates | Proposed | 2025-12-26 | Single workflow; environment approvals; per-env roles and backends. |
 | [ADR-0017](ADR-0017-platform-policy-as-code.md) | Platform | Policy as code for infrastructure changes | Proposed | 2025-12-26 | Enforce Terraform guardrails in CI with a minimal policy set. |
 
----
+- --
 
 ## Superseded ADRs
 
 _None yet._
 
----
+- --
 
 ## New ADRs
 
@@ -49,7 +48,7 @@ When introducing a new ADR:
 - Use the filename pattern: `ADR-XXXX-(platform|app)-short-title.md`.
 - Add the entry to the Active ADRs table with its Domain.
 
----
+- --
 
 ## Conventions
 
@@ -58,8 +57,7 @@ When introducing a new ADR:
 - **Domain:** `Platform` or `Application`
 - **Status values:** `Proposed`, `Accepted`, `Deprecated`, `Superseded`
 - **Changing a decision:** write a new ADR that **supersedes** the old one and link both.
-
----
+- --
 
 ## Adding a new ADR
 

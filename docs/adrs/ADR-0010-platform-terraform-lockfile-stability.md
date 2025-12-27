@@ -6,8 +6,7 @@
 - **Domain:** Platform
 - **Decision type:** Operations
 - **Related:** `.github/workflows/infra-terraform.yml`, `CONTRIBUTING.md`
-
----
+- --
 
 ## Context
 
@@ -16,7 +15,7 @@ providers or modules introduces drift and can cause changes in behavior that wer
 approved by the team. The Terraform lockfile is the source of truth for provider versions and must
 remain stable between local development and CI.
 
----
+- --
 
 ## Decision
 
@@ -25,7 +24,7 @@ remain stable between local development and CI.
 CI will run `terraform init` without `-upgrade` and will fail if a tracked `.terraform.lock.hcl`
 would change.
 
----
+- --
 
 ## Scope
 
@@ -33,7 +32,7 @@ Applies to Terraform validation workflows in this repository (root and environme
 track `.terraform.lock.hcl`). Module directories are validated but do not require a lockfile unless
 one is explicitly added.
 
----
+- --
 
 ## Consequences
 
@@ -52,7 +51,7 @@ one is explicitly added.
 - Teams must run upgrades locally and commit updated lockfiles.
 - CI failures should be resolved by updating lockfiles in a dedicated change.
 
----
+- --
 
 ## Alternatives considered
 
@@ -60,14 +59,14 @@ one is explicitly added.
 - Let CI update lockfiles automatically (rejected: hides changes in PRs).
 - Rely only on `required_providers` pins without lockfiles (rejected: weaker guarantees).
 
----
+- --
 
 ## Follow-ups
 
 - Keep CI checks enforcing lockfile stability.
 - Document the workflow in contributor guidance.
 
----
+- --
 
 ## Notes
 
