@@ -1,9 +1,9 @@
 locals {
-  node_group = var.node_group_config
-  environment_tags = var.environment != "" ? { Environment = var.environment } : {}
-  addon_replica_counts = var.addon_replica_counts
-  ebs_replica_count = lookup(var.addon_replica_counts, "aws-ebs-csi-driver", null)
-  efs_replica_count = lookup(var.addon_replica_counts, "aws-efs-csi-driver", null)
+  node_group             = var.node_group_config
+  environment_tags       = var.environment != "" ? { Environment = var.environment } : {}
+  addon_replica_counts   = var.addon_replica_counts
+  ebs_replica_count      = lookup(var.addon_replica_counts, "aws-ebs-csi-driver", null)
+  efs_replica_count      = lookup(var.addon_replica_counts, "aws-efs-csi-driver", null)
   snapshot_replica_count = lookup(var.addon_replica_counts, "snapshot-controller", null)
 }
 
@@ -170,9 +170,9 @@ resource "aws_eks_node_group" "this" {
 }
 
 resource "aws_eks_addon" "ebs_csi_driver" {
-  count = var.enable_storage_addons ? 1 : 0
-  cluster_name = aws_eks_cluster.this.name
-  addon_name   = "aws-ebs-csi-driver"
+  count         = var.enable_storage_addons ? 1 : 0
+  cluster_name  = aws_eks_cluster.this.name
+  addon_name    = "aws-ebs-csi-driver"
   addon_version = lookup(var.addon_versions, "aws-ebs-csi-driver", null)
   configuration_values = local.ebs_replica_count != null ? jsonencode({
     controller = {
@@ -186,9 +186,9 @@ resource "aws_eks_addon" "ebs_csi_driver" {
 }
 
 resource "aws_eks_addon" "efs_csi_driver" {
-  count = var.enable_storage_addons ? 1 : 0
-  cluster_name = aws_eks_cluster.this.name
-  addon_name   = "aws-efs-csi-driver"
+  count         = var.enable_storage_addons ? 1 : 0
+  cluster_name  = aws_eks_cluster.this.name
+  addon_name    = "aws-efs-csi-driver"
   addon_version = lookup(var.addon_versions, "aws-efs-csi-driver", null)
   configuration_values = local.efs_replica_count != null ? jsonencode({
     controller = {
@@ -202,10 +202,10 @@ resource "aws_eks_addon" "efs_csi_driver" {
 }
 
 resource "aws_eks_addon" "snapshot_controller" {
-  count = var.enable_storage_addons ? 1 : 0
-  cluster_name = aws_eks_cluster.this.name
-  addon_name   = "snapshot-controller"
-  addon_version = lookup(var.addon_versions, "snapshot-controller", null)
+  count                       = var.enable_storage_addons ? 1 : 0
+  cluster_name                = aws_eks_cluster.this.name
+  addon_name                  = "snapshot-controller"
+  addon_version               = lookup(var.addon_versions, "snapshot-controller", null)
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
@@ -213,9 +213,9 @@ resource "aws_eks_addon" "snapshot_controller" {
 }
 
 resource "aws_eks_addon" "coredns" {
-  cluster_name = aws_eks_cluster.this.name
-  addon_name   = "coredns"
-  addon_version = lookup(var.addon_versions, "coredns", null)
+  cluster_name                = aws_eks_cluster.this.name
+  addon_name                  = "coredns"
+  addon_version               = lookup(var.addon_versions, "coredns", null)
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
@@ -223,9 +223,9 @@ resource "aws_eks_addon" "coredns" {
 }
 
 resource "aws_eks_addon" "kube_proxy" {
-  cluster_name = aws_eks_cluster.this.name
-  addon_name   = "kube-proxy"
-  addon_version = lookup(var.addon_versions, "kube-proxy", null)
+  cluster_name                = aws_eks_cluster.this.name
+  addon_name                  = "kube-proxy"
+  addon_version               = lookup(var.addon_versions, "kube-proxy", null)
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
@@ -233,9 +233,9 @@ resource "aws_eks_addon" "kube_proxy" {
 }
 
 resource "aws_eks_addon" "vpc_cni" {
-  cluster_name = aws_eks_cluster.this.name
-  addon_name   = "vpc-cni"
-  addon_version = lookup(var.addon_versions, "vpc-cni", null)
+  cluster_name                = aws_eks_cluster.this.name
+  addon_name                  = "vpc-cni"
+  addon_version               = lookup(var.addon_versions, "vpc-cni", null)
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 

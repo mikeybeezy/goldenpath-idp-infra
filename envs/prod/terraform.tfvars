@@ -67,5 +67,5 @@ compute_config = {
 # }
 
 # Bootstrap defaults (used when EKS is enabled).
-bootstrap_mode = true
+bootstrap_mode         = true
 enable_ssh_break_glass = false

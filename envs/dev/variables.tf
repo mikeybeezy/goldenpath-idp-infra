@@ -160,44 +160,44 @@ variable "ssh_source_security_group_ids" {
 variable "iam_config" {
   description = "Configuration for optional EKS IAM roles and OIDC assume role."
   type = object({
-    enabled             = bool
-    cluster_role_name   = string
-    node_group_role_name = string
-    oidc_role_name      = string
-    oidc_issuer_url     = string
-    oidc_provider_arn   = string
-    oidc_audience       = string
-    oidc_subject        = string
-    enable_autoscaler_role           = bool
-    autoscaler_role_name             = string
-    autoscaler_service_account_namespace = string
-    autoscaler_service_account_name  = string
-    enable_lb_controller_role        = bool
-    lb_controller_role_name          = string
+    enabled                                 = bool
+    cluster_role_name                       = string
+    node_group_role_name                    = string
+    oidc_role_name                          = string
+    oidc_issuer_url                         = string
+    oidc_provider_arn                       = string
+    oidc_audience                           = string
+    oidc_subject                            = string
+    enable_autoscaler_role                  = bool
+    autoscaler_role_name                    = string
+    autoscaler_service_account_namespace    = string
+    autoscaler_service_account_name         = string
+    enable_lb_controller_role               = bool
+    lb_controller_role_name                 = string
     lb_controller_service_account_namespace = string
-    lb_controller_service_account_name = string
+    lb_controller_service_account_name      = string
   })
   validation {
     condition     = var.iam_config.enabled == false || var.eks_config.enabled == true
     error_message = "iam_config.enabled requires eks_config.enabled to be true."
   }
   default = {
-    enabled              = false
-    cluster_role_name    = ""
-    node_group_role_name = ""
-    oidc_role_name       = ""
-    oidc_issuer_url      = ""
-    oidc_provider_arn    = ""
-    oidc_audience        = "sts.amazonaws.com"
-    oidc_subject         = ""
-    enable_autoscaler_role           = false
-    autoscaler_role_name             = "goldenpath-idp-cluster-autoscaler"
-    autoscaler_service_account_namespace = "kube-system"
-    autoscaler_service_account_name  = "cluster-autoscaler"
-    enable_lb_controller_role        = false
-    lb_controller_role_name          = "goldenpath-idp-aws-load-balancer-controller"
+    enabled                                 = false
+    cluster_role_name                       = ""
+    node_group_role_name                    = ""
+    oidc_role_name                          = ""
+    oidc_issuer_url                         = ""
+    oidc_provider_arn                       = ""
+    oidc_audience                           = "sts.amazonaws.com"
+    oidc_subject                            = ""
+    enable_autoscaler_role                  = false
+    autoscaler_role_name                    = "goldenpath-idp-cluster-autoscaler"
+    autoscaler_service_account_namespace    = "kube-system"
+    autoscaler_service_account_name         = "cluster-autoscaler"
+    enable_lb_controller_role               = false
+    lb_controller_role_name                 = "goldenpath-idp-aws-load-balancer-controller"
     lb_controller_service_account_namespace = "kube-system"
-    lb_controller_service_account_name = "aws-load-balancer-controller"
+    lb_controller_service_account_name      = "aws-load-balancer-controller"
   }
 }
 
@@ -210,11 +210,11 @@ variable "enable_k8s_resources" {
 variable "eks_config" {
   description = "Configuration for the optional EKS cluster."
   type = object({
-    enabled      = bool
-    cluster_name = string
-    version      = string
-    enable_ssh_break_glass = bool
-    ssh_key_name           = string
+    enabled                       = bool
+    cluster_name                  = string
+    version                       = string
+    enable_ssh_break_glass        = bool
+    ssh_key_name                  = string
     ssh_source_security_group_ids = list(string)
     node_group = object({
       name           = string
@@ -231,11 +231,11 @@ variable "eks_config" {
     })
   })
   default = {
-    enabled      = false
-    cluster_name = ""
-    version      = "1.29"
-    enable_ssh_break_glass = false
-    ssh_key_name           = null
+    enabled                       = false
+    cluster_name                  = ""
+    version                       = "1.29"
+    enable_ssh_break_glass        = false
+    ssh_key_name                  = null
     ssh_source_security_group_ids = []
     node_group = {
       name           = "default"

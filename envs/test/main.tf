@@ -3,15 +3,15 @@ terraform {
 }
 
 locals {
-  environment      = var.environment
-  cluster_lifecycle = var.cluster_lifecycle
-  build_id         = var.build_id
-  base_name_prefix = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
-  name_prefix      = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.base_name_prefix}-${local.build_id}" : local.base_name_prefix
-  cluster_name     = var.eks_config.cluster_name != "" ? var.eks_config.cluster_name : "${local.base_name_prefix}-eks"
+  environment            = var.environment
+  cluster_lifecycle      = var.cluster_lifecycle
+  build_id               = var.build_id
+  base_name_prefix       = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
+  name_prefix            = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.base_name_prefix}-${local.build_id}" : local.base_name_prefix
+  cluster_name           = var.eks_config.cluster_name != "" ? var.eks_config.cluster_name : "${local.base_name_prefix}-eks"
   cluster_name_effective = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.cluster_name}-${local.build_id}" : local.cluster_name
-  public_subnets   = var.public_subnets
-  private_subnets  = var.private_subnets
+  public_subnets         = var.public_subnets
+  private_subnets        = var.private_subnets
   # Use a larger node group during bootstrap to avoid capacity bottlenecks.
   effective_node_group = var.bootstrap_mode ? merge(
     var.eks_config.node_group,
@@ -38,10 +38,10 @@ locals {
 module "vpc" {
   source = "../../modules/vpc"
 
-  vpc_cidr = var.vpc_cidr
-  vpc_tag  = "${local.name_prefix}-vpc"
+  vpc_cidr    = var.vpc_cidr
+  vpc_tag     = "${local.name_prefix}-vpc"
   environment = local.environment
-  tags     = local.common_tags
+  tags        = local.common_tags
 }
 
 module "subnets" {
