@@ -1,5 +1,5 @@
 
-# **Platform Governance Purpose**
+# Platform Governance Purpose
 
 This document defines how the Internal Developer Platform (IDP) is governed.
 
@@ -13,9 +13,9 @@ Governance is not about restriction.
 
 It is about removing unnecessary decisions so teams can focus on delivering value.
 
-# **Governance Principles**
+## Governance Principles
 
-**1. Opinionated by Default**
+## 1. Opinionated by Default
 
 V1 provides one recommended way to solve common problems.
 
@@ -29,7 +29,7 @@ Opinionation applies to:
 
 Choice is introduced only when the cost of not offering it exceeds the cost of supporting it.
 
-**2. Golden Path First**
+## 2. Golden Path First
 
 All platform tooling is optimized for the Golden Path:
 
@@ -47,7 +47,7 @@ Teams may deviate, but deviations:
 
 Freedom exists — with ownership.
 
-**3. Contracts Over Customization**
+## 3. Contracts Over Customization
 
 The platform exposes stable contracts, not unlimited configuration.
 
@@ -62,7 +62,7 @@ Contracts scale.
 
 Snowflakes do not.
 
-**4. Preventative Governance**
+## 4. Preventative Governance
 
 Governance is enforced:
 
@@ -78,9 +78,9 @@ Not through:
 
 If engineers must repeatedly ask “how do I do this?”, governance has failed.
 
-# **V1 Governance Scope & Decisions**
+## V1 Governance Scope & Decisions
 
-**Cloud Provider**
+## Cloud Provider
 
 Decision: AWS-first
 
@@ -99,7 +99,7 @@ Future:
 
 - Multi-cloud and bare metal are V2+ considerations once contracts are proven
 
-**Ingress & API Gateway**
+## Ingress & API Gateway
 
 Decision: Kong
 
@@ -121,7 +121,7 @@ Trade-off:
 - Stronger opinionation
 - Gateway API compatibility can be layered later
 
-**Secrets Management**
+## Secrets Management
 
 Decision: AWS Secrets Manager via External Secrets Operator
 
@@ -145,7 +145,7 @@ Future:
 
 - Vault is a V2 extension when maturity and demand justify it
 
-**CI/CD & GitOps**
+## CI/CD & GitOps
 
 Decision: GitHub + GitHub Actions + Argo CD
 
@@ -172,47 +172,55 @@ Out of Scope (V1):
 
 These introduce opinionated workflows and repo coupling that are deferred until patterns stabilize.
 
-**Infrastructure Access & IAM**
+## Infrastructure Access & IAM
 
 Decision: IRSA for controller access (Terraform-managed), SSM for node access.
 
 Why:
+
 - IRSA via Terraform keeps IAM bindings auditable and consistent across environments.
 - SSM avoids inbound SSH, centralizes access control, and provides session logs.
 
 Trade-off:
+
 - Slightly more setup up front (OIDC provider, IAM roles, SSM agent/permissions).
 
 V1 Guidance:
+
 - Use Terraform to create IAM roles and service accounts for controllers (e.g., AWS Load Balancer Controller).
 - Use SSM for node access; SSH is break-glass only and must be documented.
 - When SSH break-glass is enabled, pass the AWS EC2 key pair name via CLI vars or `TF_VAR_ssh_key_name` in CI (never commit `.pem` paths).
 - Standardize the AWS Load Balancer Controller service account as `aws-load-balancer-controller`
+
   in the `kube-system` namespace.
+
 - Create the EKS IAM OIDC provider in Terraform so IRSA works without manual inputs.
 - When SSH break-glass is enabled, pass the AWS EC2 key pair name via CLI vars or `TF_VAR_ssh_key_name` in CI (never commit `.pem` paths).
 - Third‑party apps get dedicated service accounts and least‑privilege IAM roles (no shared controller roles).
 
-**Network Exposure**
+## Network Exposure
 
 Decision: Platform tooling is internal-only in higher environments, while client
 applications may be externally exposed through the approved ingress path.
 
 Why:
+
 - Protects internal services and reduces attack surface.
 - Enforces least privilege and auditable access.
 - Keeps production changes predictable and reviewed.
 
 Access expectations:
+
 - Dev can be public for speed.
 - Staging/Prod require controlled access (VPN, bastion, or SSM-forwarded tunnels).
 - As the platform matures, all environments move to internal-facing ingress.
 
 Implementation detail:
+
 - Kong exposure is controlled via Service annotations in per-environment values.
 - Networking rationale and options live in `docs/11_NETWORKING.md`.
 
-**VPN Access**
+## VPN Access
 
 Decision: Start with Pritunl (self-hosted) as the default VPN for controlled
 access to internal environments, with an upgrade path to Pritunl Enterprise or
@@ -220,7 +228,7 @@ AWS Client VPN as teams scale.
 
 Details: `docs/11_NETWORKING.md`.
 
-**Drift Remediation**
+## Drift Remediation
 
 Terraform state is the source of truth. If a resource exists in AWS but is not in state, decide:
 
@@ -229,14 +237,14 @@ Terraform state is the source of truth. If a resource exists in AWS but is not i
 
 After resolving drift, run `terraform plan` to confirm no unexpected changes remain.
 
-# **Change Management & Release Workflow**
+## Change Management & Release Workflow
 
 Governance is enforced through process, not just policy.
 
 See also: `docs/07_REPO_DECOUPLING_OPTIONS.md` for planned repository split options.
 See also: `docs/08_INGRESS_STRATEGY.md` for the front door decision (Kong+NLB vs ALB).
 
-# **Failure Modes & Recovery**
+## Failure Modes & Recovery
 
 We treat failed cluster builds as recoverable events. The default response is:
 
@@ -250,8 +258,10 @@ Preflight checks are mandatory before bootstrap, especially for higher
 environments. This prevents predictable failures (routing, IAM, capacity) and
 reduces fire-fighting later. See `bootstrap/00_prereqs/10_eks_preflight.sh`.
 
-**Change Flow**
-```
+## Change Flow
+
+```text
+
 Developer
 
 |
@@ -297,17 +307,19 @@ v
 Environment Promotion
 
 (dev → test → staging → prod)
-```
-**Key Rules**
+
+```text
+
+## Key Rules
 
 - All infrastructure and platform changes flow through Git
 - No manual changes to live environments
 - Drift is detected and reconciled automatically
 - Promotion is explicit and auditable
 
-# **Golden Path Enforcement**
+## Golden Path Enforcement
 
-**What Is Enforced**
+## What Is Enforced
 
 - Approved templates
 - Standard pipelines
@@ -315,26 +327,27 @@ Environment Promotion
 - Default observability
 - Namespace and RBAC conventions
 
-**Enforcement Model**
+## Enforcement Model
 
 - Golden Path is opt-out
 - Deviations require:
     - Explicit documentation
     - Ownership acknowledgement
     - Acceptance of operational burden
-- 
+
+-
 
 This keeps flexibility without chaos.
 
-# **Observability & Reliability Governance**
+## Observability & Reliability Governance
 
-**Core Principle**
+## Core Principle
 
 The platform owns reliability of the path.
 
 Applications own reliability of behavior.
 
-**Platform-Owned Golden Signals**
+## Platform-Owned Golden Signals
 
 These answer: “Is the platform safe to deploy into?”
 
@@ -356,7 +369,7 @@ If breached:
 - Platform changes may freeze
 - Platform team owns remediation
 
-**Application-Owned Golden Signals**
+## Application-Owned Golden Signals
 
 These answer: “Does the service meet its user contract?”
 
@@ -369,7 +382,7 @@ These answer: “Does the service meet its user contract?”
 
 Application teams define and own SLOs using platform-provided templates.
 
-**Shared Signals (Explicit Ownership)**
+## Shared Signals (Explicit Ownership)
 
 | **Component** | **Platform Owns** | **Application Owns** |
 | --- | --- | --- |
@@ -379,44 +392,44 @@ Application teams define and own SLOs using platform-provided templates.
 
 The platform enables capability; teams own outcomes.
 
-# **Container Supply Chain Governance**
+## Container Supply Chain Governance
 
-**Supported Registries (V1)**
+## Supported Registries (V1)
 
 - GitHub Container Registry (GHCR)
 - AWS ECR
 - Docker Hub (restricted: official images or approved org namespaces)
 
-**Controls by Stage**
+## Controls by Stage
 
-**1. Pre-Build (Docker Scout)**
+## 1. Pre-Build (Docker Scout)
 
 - Approved base images
 - Pinned digests for production
 - Block critical vulnerabilities
 - Enforce supported OS versions
 
-**2. CI Gate (Trivy)**
+## 2. CI Gate (Trivy)
 
 - Image vulnerability scanning
 - Optional Dockerfile/IaC checks
 - Block on critical vulns
 - Warn on high vulns (waiver required)
 
-**3. Runtime (Snyk)**
+## 3. Runtime (Snyk)
 
 - Continuous monitoring of deployed images
 - Alerts on newly disclosed vulnerabilities
 - Defined patch SLAs
 
-**Admission Policy (Cluster)**
+## Admission Policy (Cluster)
 
 - Only approved registries allowed
 - :latest tag blocked
 - Immutable references preferred
 - Future: signed images (Cosign)
 
-**Exceptions & Waivers**
+## Exceptions & Waivers
 
 Waivers must include:
 
@@ -425,15 +438,15 @@ Waivers must include:
 - Expiry date
 - Owner
 
-# **Deprecation Policy**
+## Deprecation Policy
 
-**Principles**
+## Principles
 
 - No breaking changes without notice
 - Deprecation before removal
 - Predictable timelines
 
-**Process**
+## Process
 
 1. Deprecation announced (docs + release notes)
 2. Minimum 90-day compatibility window
@@ -442,7 +455,7 @@ Waivers must include:
 
 This prevents legacy accumulation and platform entropy.
 
-# **Ownership Model**
+## Ownership Model
 
 | **Area** | **Owner** |
 | --- | --- |
@@ -454,13 +467,13 @@ This prevents legacy accumulation and platform entropy.
 
 Ownership is explicit so responsibility is never ambiguous.
 
-# **Golden Path Enforcement**
+## Golden Path Enforcement
 
 Backstage acts as the platform’s governance interface — surfacing golden paths, ownership, compliance signals, and documentation — while enforcement occurs through CI, admission control, and runtime policy.
 
 That single sentence makes your intent unambiguous.
 
-# **Out of Scope (V1)**
+## Out of Scope (V1)
 
 Explicitly excluded:
 
@@ -471,7 +484,7 @@ Explicitly excluded:
 - Custom plugins
 - Bespoke pipelines
 
-# **Delivery Insights (CI/CD Observability)**
+## Delivery Insights (CI/CD Observability)
 
 Delivery Insights provide visibility into the delivery system itself (build,
 package, promotion) to help teams understand where time, risk, and cost
@@ -483,7 +496,7 @@ approach.
 
 These are revisited only after patterns are proven and demand is validated.
 
-# **Architecture Decision Records (ADRs)**
+## Architecture Decision Records (ADRs)
 
 ADRs capture important decisions and their reasoning so context is not lost
 over time.
@@ -529,7 +542,7 @@ This trio keeps decisions, rules, and reality aligned as the platform evolves.
 See `docs/adrs/README.md` for the template and `docs/adrs/01_adr_index.md` for the
 current ADR list.
 
-# **Final Statement**
+## Final Statement
 
 This platform optimizes for:
 

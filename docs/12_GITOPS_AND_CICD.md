@@ -94,6 +94,7 @@ Notes:
 - `rg` (ripgrep) appears only in notes (`chat_fil.txt`), not required for CI.
 - No `jq`/`json` CLI usage found in repo scripts.
 - Standard shell utilities like `grep`, `tr`, `sort`, `head`, and `date` are
+
   used by scripts and are expected to be available in the runner image.
 
 ### Version guidance (observed)
@@ -119,18 +120,25 @@ For the full list of build/bootstrap/teardown flags used in CI, see
 Example:
 
 ```bash
+
 export TF_VAR_cluster_lifecycle=ephemeral
 export TF_VAR_build_id=$GITHUB_RUN_NUMBER
 export TF_VAR_owner_team=platform-team
-```
+
+```text
 
 Bootstrap runner note:
 
 - If `TF_DIR` is set, the runner reads `cluster_name` and `region` from
+
   `TF_DIR/terraform.tfvars` when positional args are omitted.
+
 - If `SCALE_DOWN_AFTER_BOOTSTRAP=true`, set `TF_AUTO_APPROVE=true` to avoid
+
   interactive approval during the scale-down apply.
+
 - Recommended default is `SCALE_DOWN_AFTER_BOOTSTRAP=false` until Argo apps
+
   and add-ons converge; scale down after verifying health and capacity.
 
 ## Reference build timing

@@ -30,6 +30,7 @@ reference and should evolve as the platform grows.
 ## Change process
 
 For material changes:
+
 1. Create or update an ADR.
 2. Update governance guidance.
 3. Refresh this living document to reflect current implementation.
