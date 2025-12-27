@@ -84,11 +84,11 @@ Why we use it:
 
 Example:
 
-```text
+```
 
 aws ssm start-session --target <instance-id>
 
-```text
+```
 
 ## Roadmap
 

@@ -260,7 +260,7 @@ reduces fire-fighting later. See `bootstrap/00_prereqs/10_eks_preflight.sh`.
 
 ## Change Flow
 
-```text
+```
 
 Developer
 
@@ -308,7 +308,7 @@ Environment Promotion
 
 (dev → test → staging → prod)
 
-```text
+```
 
 ## Key Rules
 

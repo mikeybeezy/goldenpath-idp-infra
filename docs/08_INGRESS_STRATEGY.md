@@ -49,7 +49,7 @@ slows troubleshooting. V1 should pick one front door unless explicitly required.
 Kong is configured to create an NLB by annotating the proxy Service in the
 Helm values:
 
-```text
+```
 
 proxy:
   service:
@@ -57,7 +57,7 @@ proxy:
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
 
-```text
+```
 
 aws elbv2 describe-load-balancers --region eu-west-2 --query 'LoadBalancers[*].{Name:LoadBalancerName,Arn:LoadBalancerArn,Scheme:Scheme}'
 

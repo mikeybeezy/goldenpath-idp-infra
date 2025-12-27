@@ -16,14 +16,14 @@ If you do not pass these on the CLI, Terraform will read them from
 
 Example:
 
-```bash
+```
 
 terraform -chdir=envs/dev apply \
   -var='cluster_lifecycle=ephemeral' \
   -var='build_id=20250115-02' \
   -var='owner_team=platform-team'
 
-```text
+```
 
 ## Timing helpers (Makefile)
 
@@ -74,7 +74,7 @@ Helper:
 
 Example:
 
-```bash
+```
 
 SKIP_ARGO_SYNC_WAIT=false \
 NODE_INSTANCE_TYPE=t3.small \
@@ -85,26 +85,26 @@ ENABLE_TF_K8S_RESOURCES=true \
 SCALE_DOWN_AFTER_BOOTSTRAP=false \
 bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250115-02 eu-west-2
 
-```text
+```
 
 TF_DIR-only usage (omit positional args):
 
-```bash
+```
 
 TF_DIR=envs/dev \
 NODE_INSTANCE_TYPE=t3.small \
 ENABLE_TF_K8S_RESOURCES=true \
 bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
 
-```text
+```
 
 Resolve the effective cluster name:
 
-```bash
+```
 
 ENV=dev scripts/resolve-cluster-name.sh
 
-```text
+```
 
 Recommendation:
 
@@ -147,11 +147,11 @@ Optional cleanup:
 
 Example:
 
-```bash
+```
 
 TEARDOWN_CONFIRM=true RELAX_PDB=true DRAIN_TIMEOUT=300s HEARTBEAT_INTERVAL=30 \
   TF_DIR=envs/dev REQUIRE_KUBE_FOR_TF_DESTROY=true REMOVE_K8S_SA_FROM_STATE=true \
   TF_DESTROY_FALLBACK_AWS=false CLEANUP_ORPHANS=true BUILD_ID=20250115-02 \
   bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh goldenpath-dev-eks-20250115-02 eu-west-2
 
-```text
+```
