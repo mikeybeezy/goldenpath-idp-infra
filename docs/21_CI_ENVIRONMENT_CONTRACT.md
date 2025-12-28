@@ -237,6 +237,41 @@ To enforce the dev gate:
 
 ---
 
+## Dev plan gate (apply safety)
+
+Dev apply must only proceed after a **dev plan** has succeeded on the same SHA.
+
+```
+Current (problem):
++------------------+     plan (any env)     +-------------------+
+|  Commit (SHA)    |  ------------------>  |  Plan Success?     |
++------------------+                        +-------------------+
+                                               |
+                                               | (no env check)
+                                               v
+                                        +------------------+
+                                        | Apply DEV        |
+                                        | (allowed)        |
+                                        +------------------+
+
+Risk: a plan for staging/prod can unlock dev apply.
+
+------------------------------------------------------------
+
+Recommended (fix):
++------------------+     plan (DEV only)    +-------------------+
+|  Commit (SHA)    |  ------------------>  | Plan Success?      |
++------------------+                        | env == dev        |
+                                            +-------------------+
+                                               |
+                                               | only if dev plan
+                                               v
+                                        +------------------+
+                                        | Apply DEV        |
+                                        | (allowed)        |
+                                        +------------------+
+```
+
 ## Ownership
 
 This contract is owned by the platform.

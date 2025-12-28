@@ -43,6 +43,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0026](ADR-0026-platform-cd-deployment-contract.md) | Platform | CD deployment contract | Proposed | 2025-12-27 | Formal deployment semantics for GitOps. |
 | [ADR-0027](ADR-0027-platform-design-philosophy.md) | Platform | Platform design philosophy and reference implementation | Proposed | 2025-12-27 | Preserve the founding philosophy and treat the platform as the reference path. |
 | [ADR-0028](ADR-0028-platform-dev-branch-gate.md) | Platform | Dev branch gate before main | Proposed | 2025-12-27 | Require dev branch apply success before promotion to main. |
+| [ADR-0029](ADR-0029-platform-dev-plan-gate.md) | Platform | Dev plan gate before dev apply | Accepted | 2025-12-27 | Require a dev plan before any dev apply on the same SHA. |
 
 ---
 
