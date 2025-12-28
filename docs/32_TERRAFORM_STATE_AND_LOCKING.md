@@ -74,4 +74,5 @@ Plans will fail to lock until the state object exists.
 ## References
 
 - `docs/21_CI_ENVIRONMENT_CONTRACT.md`
+- `docs/33_IAM_ROLES_AND_POLICIES.md`
 - `.github/workflows/infra-terraform.yml`

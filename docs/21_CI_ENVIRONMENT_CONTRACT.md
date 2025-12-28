@@ -72,9 +72,19 @@ The CI bootstrap workflow supports explicit modes to reduce operator error:
 
 - **build + bootstrap**: apply infra, then bootstrap tooling (default).
 - **bootstrap-only**: skip apply, reuse existing cluster/build.
-- **teardown**: destroy the environment.
+- **teardown**: run the dedicated teardown workflow to destroy the environment.
 
 See `docs/adrs/ADR-0033-platform-ci-orchestrated-modes.md` for the decision and tradeoffs.
+
+### CI Teardown (`ci-teardown.yml`)
+
+This workflow is manual and separate from bootstrap to avoid automatic destroy
+immediately after bootstrap. It uses the same build ID and cluster naming
+resolution to target the correct environment.
+
+**Default cleanup behavior**
+- `CLEANUP_ORPHANS=true` by default.
+- Cleanup targets resources tagged for the platform; untagged resources are out of scope.
 
 ### CI Backstage (Stub) (`ci-backstage.yml`)
 
@@ -163,6 +173,10 @@ See `docs/adrs/ADR-0030-platform-precreated-iam-policies.md` for rationale and f
 - Pipelines must behave deterministically given the same inputs.
 - No variable should change behavior silently.
 - Defaults must be explicit and documented.
+
+## Related docs
+
+- `docs/33_IAM_ROLES_AND_POLICIES.md`
 
 ---
 

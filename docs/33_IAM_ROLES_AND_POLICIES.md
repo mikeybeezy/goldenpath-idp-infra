@@ -1,0 +1,56 @@
+# IAM Roles and Policies Index (Living)
+
+This is the single index of IAM roles and policies used by GoldenPath.
+Use this to understand **who assumes what**, **where it is used**, and **why**.
+
+## CI roles (GitHub Actions)
+
+### `terraform_plan_read_only`
+
+- **Purpose:** read-only Terraform plan against remote state.
+- **Assumed by:** GitHub Actions (OIDC).
+- **Used in:** `infra-terraform.yml`, `pr-terraform-plan.yml`.
+- **Scope:** S3 state read + DynamoDB lock.
+
+### `github-actions-terraform` (apply)
+
+- **Purpose:** apply infrastructure changes.
+- **Assumed by:** GitHub Actions (OIDC).
+- **Used in:** `infra-terraform-apply-dev.yml`.
+- **Scope:** S3/DynamoDB state + AWS infra create/update.
+
+## Cluster roles (IRSA)
+
+These roles are assumed by Kubernetes service accounts via IRSA.
+
+### Cluster Autoscaler role
+
+- **Purpose:** autoscaling node groups.
+- **Assumed by:** service account `kube-system/cluster-autoscaler`.
+- **Used in:** bootstrap (IRSA stage).
+- **Policy ARN:** `arn:aws:iam::593517239005:policy/golden-path-cluster-autoscaler-policy`.
+
+### AWS Load Balancer Controller role
+
+- **Purpose:** provision/load balance AWS ELB resources.
+- **Assumed by:** service account `kube-system/aws-load-balancer-controller`.
+- **Used in:** bootstrap (IRSA stage).
+- **Policy ARN:** `arn:aws:iam::593517239005:policy/goldenpath-load-balancer-controller-policy`.
+
+## State and locking (dev)
+
+- **S3 bucket:** `goldenpath-idp-dev-bucket`
+- **State key:** `envs/dev/terraform.tfstate`
+- **DynamoDB lock table:** `goldenpath-idp-dev-db-key`
+
+## Where roles are configured
+
+- **GitHub Secrets:** role ARNs referenced in workflows.
+- **Terraform variables:** IRSA policy ARNs set in `envs/dev/terraform.tfvars`.
+- **Bootstrap:** IRSA service accounts created during bootstrap stage.
+
+## Related docs
+
+- `docs/21_CI_ENVIRONMENT_CONTRACT.md`
+- `docs/31_EKS_ACCESS_MODEL.md`
+- `docs/32_TERRAFORM_STATE_AND_LOCKING.md`

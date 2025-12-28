@@ -87,3 +87,7 @@ aws eks describe-cluster \
 - Bootstrap access is granted to the IAM principal that creates the cluster.
 - Human access is explicit via access entries and policies.
 - Workload access uses IRSA and is separate from human access.
+
+## Related docs
+
+- `docs/33_IAM_ROLES_AND_POLICIES.md`
