@@ -31,6 +31,19 @@ This is the single rolling backlog. Add items here before starting work.
 | 016 | P1 | CI | Allow both BUILD_ID formats (dd-mm-yy-NN and YYYYMMDD-NN) | platform | Open | S |  | Update regex and/or docs to match | Makefile, .github/workflows/ci-bootstrap.yml | Avoid regressions vs documented examples |
 | 017 | P2 | CI | Re-enable Super Linter when CI stabilizes | platform | Open | S |  | Restore workflow to reduce doc regressions | .github/workflows/super-linter.yml | Disabled temporarily because it slowed the workflow |
 | 018 | P2 | CI | Add stricter linting gate for merges to dev | platform | Open | M |  | Define required lint checks for dev gate | .github/workflows/yamllint.yml | Catch workflow YAML issues before merge |
+| 019 | P2 | Security | Tighten teardown permissions after higher envs stabilize | platform | Open | M |  | Scope teardown IAM actions by tags | IAM apply role policy | Start broad to unblock CI, restrict once stable |
+| 020 | P2 | Docs | Create infrastructure architecture diagram | platform | Open | M |  | Define scope and system boundaries | docs/09_ARCHITECTURE.md | Consolidate platform topology for onboarding and reviews |
+| 021 | P2 | Docs | Create infra networking diagram | platform | Open | M |  | Capture VPC, subnets, routes, NAT/IGW | docs/11_NETWORKING.md | Make network flows and boundaries explicit |
+| 022 | P2 | Docs | Create bootstrap process flow diagram | platform | Open | M |  | Map bootstrap stages + dependencies | docs/17_BUILD_RUN_FLAGS.md | Visualize bootstrap sequence and gates |
+| 023 | P2 | Docs | Create CI/CD stages diagram | platform | Open | M |  | Show PR → plan → apply → bootstrap → teardown | docs/12_GITOPS_AND_CICD.md | Clarify pipeline stages and handoffs |
+| 024 | P2 | Docs | Create CD steps diagram | platform | Open | M |  | Show GitOps sync + rollout steps | docs/29_CD_DEPLOYMENT_CONTRACT.md | Make CD path explicit for operators |
+| 025 | P2 | Docs | Create teardown process diagram | platform | Open | M |  | Show cleanup and destroy steps | docs/17_BUILD_RUN_FLAGS.md | Reduce teardown ambiguity and failure modes |
+| 026 | P2 | Docs | Create CI workflow relationship diagram | platform | Open | M |  | Show workflows and triggers | docs/21_CI_ENVIRONMENT_CONTRACT.md | Map CI flow across workflows |
+| 027 | P2 | Docs | Create environment promotion flow diagram | platform | Open | M |  | Show dev → test → staging → prod flow | docs/20_CI_ENVIRONMENT_SEPARATION.md | Make promotion path and gates explicit |
+| 028 | P2 | Docs | Create IAM role assumption diagram | platform | Open | M |  | Show CI and IRSA role assumptions | docs/33_IAM_ROLES_AND_POLICIES.md | Clarify access boundaries and trust chains |
+| 029 | P2 | Docs | Create Terraform state + lock flow diagram | platform | Open | M |  | Show S3 state + DynamoDB lock usage | docs/32_TERRAFORM_STATE_AND_LOCKING.md | Prevent state confusion and lock errors |
+| 030 | P2 | Docs | Create rollback/incident flow diagram | platform | Open | M |  | Show GitOps revert + recovery steps | docs/29_CD_DEPLOYMENT_CONTRACT.md | Standardize rollback expectations |
+| 031 | P2 | Docs | Create cost + lifecycle overview diagram | platform | Open | M |  | Compare ephemeral vs persistent lifecycles | docs/07_REPO_DECOUPLING_OPTIONS.md | Set expectations for cost and uptime |
 
 ## Rules
 

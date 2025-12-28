@@ -191,16 +191,4 @@ jobs:
           echo "kubectl get nodes"
           echo "kubectl -n argocd get applications"
 
-      # Phase 5: Optional teardown (ephemeral only)
-      # Goal: tear down safely when requested or scheduled.
-      - name: Phase 5 - Teardown (stub)
-        if: ${{ inputs.lifecycle == 'ephemeral' }}
-        run: |
-          TEARDOWN_CONFIRM="true" \
-          RELAX_PDB="true" \
-          DRAIN_TIMEOUT="300s" \
-          HEARTBEAT_INTERVAL="30" \
-          TF_DIR="${TF_DIR}" \
-          CLUSTER="${CLUSTER_NAME}" \
-          REGION="${AWS_REGION}" \
-          make teardown ENV="${ENV}" BUILD_ID="${BUILD_ID}"
+      # Teardown runs in a separate workflow to avoid auto-destroy after bootstrap.

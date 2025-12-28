@@ -72,9 +72,19 @@ The CI bootstrap workflow supports explicit modes to reduce operator error:
 
 - **build + bootstrap**: apply infra, then bootstrap tooling (default).
 - **bootstrap-only**: skip apply, reuse existing cluster/build.
-- **teardown**: destroy the environment.
+- **teardown**: run the dedicated teardown workflow to destroy the environment.
 
 See `docs/adrs/ADR-0033-platform-ci-orchestrated-modes.md` for the decision and tradeoffs.
+
+### CI Teardown (`ci-teardown.yml`)
+
+This workflow is manual and separate from bootstrap to avoid automatic destroy
+immediately after bootstrap. It uses the same build ID and cluster naming
+resolution to target the correct environment.
+
+**Default cleanup behavior**
+- `CLEANUP_ORPHANS=true` by default.
+- Cleanup targets resources tagged for the platform; untagged resources are out of scope.
 
 ### CI Backstage (Stub) (`ci-backstage.yml`)
 
@@ -100,6 +110,51 @@ They are provided via:
 
 ---
 
+## Terraform state and locking (dev)
+
+State is stored in S3 and locked via DynamoDB. The plan role must be able to read
+the state object and acquire a lock, even though it does not write infra.
+
+**Dev backend**
+- S3 bucket: `goldenpath-idp-dev-bucket`
+- State key: `envs/dev/terraform.tfstate`
+- Lock table: `goldenpath-idp-dev-db-key`
+
+**Plan role policy (dev)**
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "TerraformStateRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::goldenpath-idp-dev-bucket",
+        "arn:aws:s3:::goldenpath-idp-dev-bucket/envs/dev/terraform.tfstate"
+      ]
+    },
+    {
+      "Sid": "TerraformStateLock",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:DeleteItem"
+      ],
+      "Resource": "arn:aws:dynamodb:eu-west-2:593517239005:table/goldenpath-idp-dev-db-key"
+    }
+  ]
+}
+```
+
+---
+
 ## Pre-created IAM policy ARNs (V1)
 
 To keep the apply role least-privilege, the Cluster Autoscaler and AWS Load Balancer Controller
@@ -118,6 +173,10 @@ See `docs/adrs/ADR-0030-platform-precreated-iam-policies.md` for rationale and f
 - Pipelines must behave deterministically given the same inputs.
 - No variable should change behavior silently.
 - Defaults must be explicit and documented.
+
+## Related docs
+
+- `docs/33_IAM_ROLES_AND_POLICIES.md`
 
 ---
 
