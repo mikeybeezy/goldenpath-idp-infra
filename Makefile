@@ -36,6 +36,17 @@ define require_build_id
 	fi
 endef
 
+define require_build_id_allow_reuse
+	@if [ -z "$(BUILD_ID)" ]; then \
+	  echo "BUILD_ID is required. Set build_id in $(ENV_DIR)/terraform.tfvars or pass BUILD_ID=..."; \
+	  exit 1; \
+	fi
+	@if ! echo "$(BUILD_ID)" | grep -Eq '^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$$'; then \
+	  echo "BUILD_ID must match dd-mm-yy-NN (example: 28-12-25-01)."; \
+	  exit 1; \
+	fi
+endef
+
 # Usage:
 #   make init ENV=dev     # terraform -chdir=envs/dev init
 #   make plan ENV=staging # terraform -chdir=envs/staging plan
@@ -147,7 +158,7 @@ validate:
 	$(TF_BIN) -chdir=$(ENV_DIR) validate
 
 bootstrap:
-	$(call require_build_id)
+	$(call require_build_id_allow_reuse)
 	@mkdir -p logs/build-timings
 	@bash -c '\
 	build_id=$(BUILD_ID); \
@@ -219,7 +230,7 @@ timed-teardown:
 	'
 
 timed-bootstrap:
-	$(call require_build_id)
+	$(call require_build_id_allow_reuse)
 	@mkdir -p logs/build-timings
 	@bash -c '\
 	set -e; \
