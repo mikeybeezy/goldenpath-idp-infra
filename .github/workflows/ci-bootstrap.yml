@@ -131,6 +131,15 @@ jobs:
               ;;
           esac
 
+      - name: Guard: backend state must exist
+        run: |
+          STATE_KEY="envs/${ENV}/terraform.tfstate"
+          echo "Checking state: s3://${{ steps.backend.outputs.bucket }}/${STATE_KEY}"
+          if ! aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1; then
+            echo "Missing state file in backend. Run infra apply first or migrate local state." >&2
+            exit 1
+          fi
+
       - name: Terraform init (backend)
         run: |
           terraform -chdir="${TF_DIR}" init \
