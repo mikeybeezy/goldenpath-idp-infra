@@ -85,6 +85,7 @@ resolution to target the correct environment.
 **Default cleanup behavior**
 - `CLEANUP_ORPHANS=true` by default.
 - Cleanup targets resources tagged for the platform; untagged resources are out of scope.
+- Teardown role must allow `tag:GetResources` for orphan discovery.
 
 ### CI Backstage (Stub) (`ci-backstage.yml`)
 
