@@ -279,7 +279,7 @@ To enforce the dev gate:
 
 ## Dev plan gate (apply safety)
 
-Dev apply must only proceed after a **dev plan** has succeeded on the same SHA.
+Dev apply must only proceed after the **latest successful dev plan**.
 
 ```text
 Current (problem):
@@ -300,7 +300,7 @@ Risk: a plan for staging/prod can unlock dev apply.
 
 Recommended (fix):
 +------------------+     plan (DEV only)    +-------------------+
-|  Commit (SHA)    |  ------------------>  | Plan Success?      |
+|  Latest dev plan |  ------------------>  | Plan Success?      |
 +------------------+                        | env == dev        |
                                             +-------------------+
                                                |
