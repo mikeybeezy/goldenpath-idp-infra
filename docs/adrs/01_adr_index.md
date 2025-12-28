@@ -36,6 +36,12 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0019](ADR-0019-platform-pre-commit-hooks.md) | Platform | Pre-commit hooks as local quality gates | Proposed | 2025-12-27 | Require local hooks; CI remains authoritative. |
 | [ADR-0020](ADR-0020-platform-helm-kustomize-hybrid.md) | Platform | Hybrid GitOps approach with Helm and Kustomize | Proposed | 2025-12-27 | Use Helm for packaged apps and Kustomize for env overlays. |
 | [ADR-0021](ADR-0021-platform-pr-terraform-plan.md) | Platform | PR Terraform plan with automated comments | Proposed | 2025-12-27 | PR plan output posted as a comment; no apply. |
+| [ADR-0022](ADR-0022-platform-post-apply-health-checks.md) | Platform | Post-apply health checks for platform readiness | Proposed | 2025-12-27 | Health checks gate apply success. |
+| [ADR-0023](ADR-0023-platform-ci-image-scanning.md) | Platform | CI image scanning standard | Proposed | 2025-12-27 | Trivy default gate; optional layers. |
+| [ADR-0024](ADR-0024-platform-security-floor-v1.md) | Platform | Security floor for V1 | Proposed | 2025-12-27 | Minimal security baseline for V1. |
+| [ADR-0025](ADR-0025-platform-boundaries-contract.md) | Platform | Platform boundaries and contract | Proposed | 2025-12-27 | Single boundary contract referenced by governance and onboarding. |
+| [ADR-0026](ADR-0026-platform-cd-deployment-contract.md) | Platform | CD deployment contract | Proposed | 2025-12-27 | Formal deployment semantics for GitOps. |
+| [ADR-0027](ADR-0027-platform-design-philosophy.md) | Platform | Platform design philosophy and reference implementation | Proposed | 2025-12-27 | Preserve the founding philosophy and treat the platform as the reference path. |
 
 ---
 

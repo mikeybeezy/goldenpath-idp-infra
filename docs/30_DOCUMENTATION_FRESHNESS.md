@@ -1,0 +1,74 @@
+# Documentation Freshness Mechanism
+
+This is a living document that defines how GoldenPath keeps critical docs
+current, human-friendly, and machine-readable.
+
+## Purpose
+
+- Prevent silent doc drift.
+- Keep core platform rules trustworthy.
+- Make docs usable by humans and future AI tooling.
+
+## What counts as a living doc
+
+Living docs are the minimal set of documents that must stay accurate to
+operate the platform safely. The canonical list is:
+
+`docs/00_DOC_INDEX.md`
+
+## How freshness is tracked
+
+Each living doc is listed in the index with:
+
+- Owner
+- Review cycle (in days)
+- Last reviewed date
+
+The index is the single source of truth.
+
+## Validator (mechanism)
+
+A lightweight validator scans the index and reports:
+
+- Missing docs
+- Missing metadata
+- Overdue reviews
+
+Script:
+
+`scripts/check-doc-freshness.py`
+
+Usage:
+
+```bash
+python3 scripts/check-doc-freshness.py
+```
+
+Optional strict mode:
+
+```bash
+python3 scripts/check-doc-freshness.py --fail
+```
+
+Optional test override:
+
+```bash
+python3 scripts/check-doc-freshness.py --today 2026-01-01
+```
+
+## When to update the date
+
+Update `Last reviewed` when a human review confirms the doc is still correct.
+This may coincide with edits or be a separate review pass.
+
+## Non-goals (V1)
+
+- No auto-reset of dates.
+- No blocking gates in CI by default.
+- No forced review for every PR.
+
+## Future options
+
+- Add a CI warning job that runs the validator.
+- Add a required review when platform rail changes occur.
+- Add machine-readable tags for AI assistants.

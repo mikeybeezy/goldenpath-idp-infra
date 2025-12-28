@@ -58,7 +58,6 @@
 ## Mermaid diagram (renderable)
 
 ```
-
 flowchart TD
   A[AWS Account<br/>eu-west-2] --> VPC[VPC 10.0.0.0/16<br/>goldenpath-dev-vpc]
   VPC --> IGW[Internet Gateway]
@@ -79,4 +78,3 @@ flowchart TD
 - Create a doc for for Handling falure modes  tthis context is infre build, enter the options surfaced  ptions, the  choice we made and  othre options that could be adopted down the line
 
 - and add to the govnece doc's failure modes look like and how we treat fiald cluster builds
-

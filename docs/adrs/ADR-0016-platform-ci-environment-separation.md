@@ -74,3 +74,6 @@ Applies to infrastructure workflows and environment separation in this repositor
 
 Option 3 (separate workflows per environment) remains an approved alternative for teams that
 prioritize stronger boundaries or simpler per-env readability.
+
+GitHub Environments remain a future option for manual approval gates if licensing and repo
+requirements make it viable.

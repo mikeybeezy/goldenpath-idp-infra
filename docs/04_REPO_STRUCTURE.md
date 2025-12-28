@@ -94,7 +94,7 @@ Terraform provider modules that configure platform tooling **after** it is deplo
 
 GitOps workloads that install tooling inside the cluster:
 
-- `helm/`: Helm values for Kong, Grafana, Loki, Alertmanager, Fluent Bit, Keycloak, Backstage, Datree, Argo CD. These define workload configuration consumed by Argo CD Applications.
+- `helm/`: Helm values for Kong, Grafana, Loki, Alertmanager, Fluent Bit, Keycloak, Backstage, Datree, Argo CD, Argo Rollouts. These define workload configuration consumed by Argo CD Applications.
 - `kustomize/`: base manifests plus environment-specific overlays so Argo CD can reconcile per environment.
 
 ### `compliance/datree/`

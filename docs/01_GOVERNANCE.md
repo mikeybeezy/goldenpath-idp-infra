@@ -13,6 +13,8 @@ Governance is not about restriction.
 
 It is about removing unnecessary decisions so teams can focus on delivering value.
 
+The platform/team boundary is defined in `docs/02_PLATFORM_BOUNDARIES.md`.
+
 ## Governance Principles
 
 ## 1. Opinionated by Default
@@ -36,6 +38,10 @@ All platform tooling is optimized for the Golden Path:
 - Templates
 - Pipelines
 - Documentation
+
+The platform is the reference implementation for its own delivery rails. The
+design philosophy is maintained as a living document, and core docs are tracked
+in `docs/00_DOC_INDEX.md` with a defined review cadence.
 - Automation
 - Support
 
@@ -168,6 +174,22 @@ the source of truth, and hooks exist to reduce avoidable failures and shorten fe
 
 Principle: Pull requests should surface Terraform plan output automatically to avoid manual
 copy/paste and to improve review quality.
+
+Principle: Apply workflows must include a post-apply health check that proves platform readiness
+(EKS reachable, Argo synced/healthy, ingress health endpoint). A successful apply without health
+verification is incomplete.
+
+Principle: CI image scanning uses Trivy as the default gate. Prod fails on HIGH/CRITICAL;
+dev/test warn unless explicitly tightened.
+
+Principle: No manual `kubectl apply` in steady state. GitOps is the default deployment path;
+break-glass changes must be captured in Git immediately after.
+
+Principle: GoldenPath V1 enforces a minimal security floor (documented in the V1 checklist).
+Advanced DevSecOps controls are intentionally deferred to V2 to preserve delivery speed.
+
+Principle: GoldenPath defines a CD deployment contract to make promotion and rollback deterministic,
+auditable, and consistent across environments.
 
 Out of Scope (V1):
 

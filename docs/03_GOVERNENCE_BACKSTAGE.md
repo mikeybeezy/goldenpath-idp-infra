@@ -84,3 +84,24 @@ This is intentional.
 - Makes governance visible without being oppressive
 - Scales with teams instead of fighting them
 - Signals staff-level platform judgment
+
+## Backstage as the reference product
+
+Backstage is treated as the reference product for GoldenPath.
+
+This means:
+
+- Backstage is built, tested, packaged, deployed, and promoted using the same pipelines and
+  governance as any other workload.
+- Platform delivery patterns are validated first against Backstage.
+- Any friction encountered while operating Backstage is considered a platform issue, not a product
+  issue.
+
+Backstage serves as:
+
+- A concrete example of the Golden Path.
+- A proving ground for delivery, promotion, and rollback.
+- A living demonstration of platform standards in practice.
+
+GoldenPath will not require teams to adopt patterns or constraints that are not already exercised
+by the platform’s own workloads.
