@@ -131,7 +131,7 @@ jobs:
               ;;
           esac
 
-      - name: Guard: backend state must exist
+      - name: Guard - backend state must exist
         run: |
           STATE_KEY="envs/${ENV}/terraform.tfstate"
           echo "Checking state: s3://${{ steps.backend.outputs.bucket }}/${STATE_KEY}"

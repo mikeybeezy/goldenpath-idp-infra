@@ -141,7 +141,7 @@ jobs:
             -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
 
-      - name: Guard: backend state must exist
+      - name: Guard - backend state must exist
         if: ${{ inputs.require_state }}
         run: |
           STATE_KEY="envs/${{ inputs.env }}/terraform.tfstate"
