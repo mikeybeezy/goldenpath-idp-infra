@@ -64,7 +64,7 @@ minimum promotion path for changes that affect delivery rails or infrastructure.
 
 ## Diagram
 
-```
+```text
 Legend:
 [PLAN] = terraform plan workflow (read-only role)
 [APPLY] = terraform apply workflow (write role)

@@ -6,6 +6,7 @@
 - **Domain:** Platform
 - **Decision type:** Governance | Operations
 - **Related:** docs/02_PLATFORM_BOUNDARIES.md, docs/01_GOVERNANCE.md, docs/23_NEW_JOINERS.md
+
 ---
 
 ## Context

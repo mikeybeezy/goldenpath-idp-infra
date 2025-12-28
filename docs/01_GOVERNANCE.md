@@ -28,6 +28,8 @@ Opinionation applies to:
 - Secrets management
 - CI/CD and GitOps
 - Observability standards
+- Automation
+- Support
 
 Choice is introduced only when the cost of not offering it exceeds the cost of supporting it.
 
@@ -42,8 +44,6 @@ All platform tooling is optimized for the Golden Path:
 The platform is the reference implementation for its own delivery rails. The
 design philosophy is maintained as a living document, and core docs are tracked
 in `docs/00_DOC_INDEX.md` with a defined review cadence.
-- Automation
-- Support
 
 Teams may deviate, but deviations:
 
@@ -297,7 +297,7 @@ reduces fire-fighting later. See `bootstrap/00_prereqs/10_eks_preflight.sh`.
 
 ## Change Flow
 
-```
+```text
 
 Developer
 
@@ -354,7 +354,7 @@ Environment Promotion
 - Drift is detected and reconciled automatically
 - Promotion is explicit and auditable
 
-## Golden Path Enforcement
+## Golden Path Interface
 
 ## What Is Enforced
 
@@ -368,11 +368,9 @@ Environment Promotion
 
 - Golden Path is opt-out
 - Deviations require:
-    - Explicit documentation
-    - Ownership acknowledgement
-    - Acceptance of operational burden
-
--
+  - Explicit documentation
+  - Ownership acknowledgement
+  - Acceptance of operational burden
 
 This keeps flexibility without chaos.
 
@@ -510,7 +508,9 @@ Ownership is explicit so responsibility is never ambiguous.
 
 ## Golden Path Enforcement
 
-Backstage acts as the platform’s governance interface — surfacing golden paths, ownership, compliance signals, and documentation — while enforcement occurs through CI, admission control, and runtime policy.
+Backstage acts as the platform’s governance interface — surfacing golden paths, ownership,
+compliance signals, and documentation — while enforcement occurs through CI, admission control,
+and runtime policy.
 
 That single sentence makes your intent unambiguous.
 

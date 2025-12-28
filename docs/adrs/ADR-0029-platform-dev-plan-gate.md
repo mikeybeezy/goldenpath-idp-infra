@@ -49,7 +49,7 @@ Applies to dev apply in CI. This does not change non-dev plan behavior.
 
 ## Diagram
 
-```
+```text
 Current (problem):
 +------------------+     plan (any env)     +-------------------+
 |  Commit (SHA)    |  ------------------>  |  Plan Success?     |

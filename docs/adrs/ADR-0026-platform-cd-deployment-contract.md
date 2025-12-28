@@ -6,6 +6,7 @@
 - **Domain:** Platform
 - **Decision type:** Governance | Delivery
 - **Related:** docs/01_GOVERNANCE.md, docs/29_CD_DEPLOYMENT_CONTRACT.md, docs/21_CI_ENVIRONMENT_CONTRACT.md, docs/02_PLATFORM_BOUNDARIES.md
+
 ---
 
 ## Context

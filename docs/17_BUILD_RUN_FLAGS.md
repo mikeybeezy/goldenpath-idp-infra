@@ -16,8 +16,7 @@ If you do not pass these on the CLI, Terraform will read them from
 
 Example:
 
-```
-
+```bash
 terraform -chdir=envs/dev apply \
   -var='cluster_lifecycle=ephemeral' \
   -var='build_id=20250115-02' \
@@ -74,8 +73,7 @@ Helper:
 
 Example:
 
-```
-
+```bash
 SKIP_ARGO_SYNC_WAIT=false \
 NODE_INSTANCE_TYPE=t3.small \
 ENV_NAME=dev \
@@ -89,8 +87,7 @@ bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks-20250
 
 TF_DIR-only usage (omit positional args):
 
-```
-
+```bash
 TF_DIR=envs/dev \
 NODE_INSTANCE_TYPE=t3.small \
 ENABLE_TF_K8S_RESOURCES=true \
@@ -100,8 +97,7 @@ bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
 
 Resolve the effective cluster name:
 
-```
-
+```bash
 ENV=dev scripts/resolve-cluster-name.sh
 
 ```
@@ -147,8 +143,7 @@ Optional cleanup:
 
 Example:
 
-```
-
+```bash
 TEARDOWN_CONFIRM=true RELAX_PDB=true DRAIN_TIMEOUT=300s HEARTBEAT_INTERVAL=30 \
   TF_DIR=envs/dev REQUIRE_KUBE_FOR_TF_DESTROY=true REMOVE_K8S_SA_FROM_STATE=true \
   TF_DESTROY_FALLBACK_AWS=false CLEANUP_ORPHANS=true BUILD_ID=20250115-02 \

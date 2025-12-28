@@ -6,6 +6,7 @@
 - **Domain:** Platform
 - **Decision type:** Operations | Reliability
 - **Related:** docs/20_CI_ENVIRONMENT_SEPARATION.md, docs/21_CI_ENVIRONMENT_CONTRACT.md, .github/workflows/infra-terraform.yml
+
 ---
 
 ## Context
