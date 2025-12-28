@@ -49,6 +49,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0032](ADR-0032-platform-eks-access-model.md) | Platform | EKS access model (bootstrap admin vs steady-state access) | Accepted | 2025-12-28 | Use access entries for humans; split CI bootstrap vs steady-state access. |
 | [ADR-0033](ADR-0033-platform-ci-orchestrated-modes.md) | Platform | CI orchestrated modes for infra lifecycle | Accepted | 2025-12-28 | Explicit build+bootstrap, bootstrap-only, teardown modes. |
 | [ADR-0034](ADR-0034-platform-ci-environment-contract.md) | Platform | CI environment contract | Accepted | 2025-12-27 | Formalize CI environment variables as a governed interface. |
+| [ADR-0035](ADR-0035-platform-iam-audit-cadence.md) | Platform | IAM audit cadence for CI roles | Proposed | 2025-12-28 | Periodic IAM audits to tighten CI roles based on actual usage. |
 
 ---
 

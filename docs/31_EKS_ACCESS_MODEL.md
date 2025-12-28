@@ -6,6 +6,16 @@ matures.
 
 ---
 
+## Quick reference
+
+### Get your IAM user ARN
+
+```sh
+aws sts get-caller-identity --query "Arn" --output text
+```
+
+---
+
 ## Model overview
 
 ```text
@@ -79,8 +89,6 @@ aws eks describe-cluster \
   --region <AWS_REGION> \
   --query "cluster"
 ```
-
----
 
 ## Notes
 

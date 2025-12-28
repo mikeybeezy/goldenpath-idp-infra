@@ -159,7 +159,9 @@ TF_DIR=envs/dev \
 make timed-teardown ENV=dev BUILD_ID=26-12-25-03 \
   CLUSTER=goldenpath-dev-eks-26-12-25-03 \
   REGION=eu-west-2
+  
 
+  ===========
 
 TF_DIR=envs/dev \
 BUILD_ID=26-12-25-03 \
@@ -168,20 +170,43 @@ REGION=eu-west-2 \
 make timed-teardown ENV=dev
 
 
+
+
+------
+
+STEP 1 
+aws eks list-clusters --region eu-west-2 --output table
+
+
+STEP 2
 aws eks create-access-entry \
-  --cluster-name goldenpath-dev-eks-26-12-28-02 \
+  --cluster-name goldenpath-dev-eks-26-12-28-05 \
   --principal-arn "arn:aws:iam::593517239005:user/michaelnouriel" \
   --region eu-west-2
 
 
-aws eks create-access-entry \
-  --cluster-name goldenpath-dev-eks-26-12-28-02 \
-  --principal-arn "arn:aws:iam::593517239005:user/michaelnouriel" \
-  --region eu-west-2
-
-aws eks associate-access-policy \
-  --cluster-name goldenpath-dev-eks-26-12-28-02 \
+STEP 3
+  aws eks associate-access-policy \
+  --cluster-name goldenpath-dev-eks-26-12-28-05 \
   --principal-arn "arn:aws:iam::593517239005:user/michaelnouriel" \
   --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
   --access-scope type=cluster \
   --region eu-west-2
+
+
+STEP 4
+aws eks update-kubeconfig --name goldenpath-dev-eks-26-12-28-05 --region eu-west-2
+kubectl get ns
+
+
+STEP 5 
+Kubectl get pods -A
+
+Notes:
+- Autoscaling worked after bootstrap.
+- Apps were reachable via port-forward (ArgoCD + Grafana) only after the cluster autoscaled.
+- May need larger initial node groups to accommodate bootstrap.
+- Next stage: tighten baseline features.
+
+
+
