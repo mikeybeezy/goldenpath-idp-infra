@@ -22,6 +22,12 @@ This is the single rolling backlog. Add items here before starting work.
 | 007 | P1 | Governance | Switch on dev-branch gate in GitHub rulesets | platform | Open | S |  | Configure `dev` and `main` rulesets | docs/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0028-platform-dev-branch-gate.md | Enforce value-preserving promotion path |
 | 008 | P2 | Security | Tighten dev apply IAM policy after successful apply | platform | Open | M |  | Reduce broad permissions to least privilege | docs/21_CI_ENVIRONMENT_CONTRACT.md | Start broad, then restrict once stable |
 | 009 | P2 | CI | Add PR build_id validation (fail fast before merge) | platform | Open | S |  | Add PR workflow check for build_id format | .github/workflows/infra-terraform-apply-dev.yml | Catch missing/invalid build IDs earlier |
+| 010 | P3 | Repo | Remove duplicate CLUSTER/REGION defaults in Makefile | platform | Open | S |  | Keep a single source of truth for defaults | Makefile | Reduce confusion about which defaults are used |
+| 011 | P3 | Infra | Clarify cluster_lifecycle default in dev tfvars | platform | Open | S |  | Replace TODO comment with explicit guidance | envs/dev/terraform.tfvars | Avoid accidental lifecycle mismatch |
+| 012 | P2 | Infra | Make compute_config.enabled opt-in in dev | platform | Open | S |  | Set default to false in dev tfvars | envs/dev/terraform.tfvars | Prevent accidental EC2 spend |
+| 013 | P3 | Tooling | Standardize cluster name resolution via script | platform | Open | S |  | Use scripts/resolve-cluster-name.sh consistently | Makefile, scripts/resolve-cluster-name.sh | Align local and CI naming |
+| 014 | P3 | CI | Upload plan output as an artifact | platform | Open | S |  | Add artifact upload step | .github/workflows/infra-terraform.yml | Improve traceability |
+| 015 | P2 | CI | Harden plan gate env matching | platform | Open | S |  | Check workflow input env in gate | .github/workflows/infra-terraform-apply-dev.yml | Prevent mismatched plan/apply |
 
 ## Rules
 
