@@ -14,6 +14,10 @@ on:
           - test
           - staging
           - prod
+      require_state:
+        description: "Fail if remote state object is missing"
+        required: true
+        default: "false"
 
 jobs:
   terraform-fmt:
@@ -129,12 +133,22 @@ jobs:
 
       - name: Terraform init (backend)
         run: |
-          terraform -chdir=envs/${{ inputs.env }} init \
+          terraform -chdir=envs/${{ inputs.env }} init -reconfigure \
             -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
             -backend-config="key=envs/${{ inputs.env }}/terraform.tfstate" \
             -backend-config="region=eu-west-2" \
             -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
+
+      - name: Guard: backend state must exist
+        if: ${{ inputs.require_state == 'true' }}
+        run: |
+          STATE_KEY="envs/${{ inputs.env }}/terraform.tfstate"
+          echo "Checking state: s3://${{ steps.backend.outputs.bucket }}/${STATE_KEY}"
+          if ! aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1; then
+            echo "Missing state file in backend. Run infra apply first or migrate local state." >&2
+            exit 1
+          fi
 
       - name: Terraform plan
         run: terraform -chdir=envs/${{ inputs.env }} plan -input=false -no-color
