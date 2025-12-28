@@ -13,9 +13,16 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      id-token: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Configure AWS credentials using OIDC (read-only)
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
