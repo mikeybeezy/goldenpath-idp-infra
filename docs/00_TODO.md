@@ -19,6 +19,7 @@ This is the single rolling backlog. Add items here before starting work.
 | 004 | P2 | GitOps | Configure Argo Rollouts in bootstrap (install + health checks) | platform | Open | M |  | Decide install path and add Argo health checks | docs/29_CD_DEPLOYMENT_CONTRACT.md | Optional rollout safety for V1+ |
 | 005 | P2 | Docs | Test doc freshness validator with overdue and missing metadata cases | platform | Open | S |  | Run validator with `--today` and confirm warnings | docs/30_DOCUMENTATION_FRESHNESS.md | Validate mechanism before enforcement |
 | 006 | P3 | Docs | Decide if doc freshness check should become a hard gate | platform | Open | S |  | Evaluate after tests and initial adoption | docs/30_DOCUMENTATION_FRESHNESS.md | Avoid over-enforcement in V1 |
+| 007 | P1 | Governance | Switch on dev-branch gate in GitHub rulesets | platform | Open | S |  | Configure `dev` and `main` rulesets | docs/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0028-platform-dev-branch-gate.md | Enforce value-preserving promotion path |
 
 ## Rules
 

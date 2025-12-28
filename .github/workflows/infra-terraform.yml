@@ -1,4 +1,5 @@
 name: Infra Terraform Checks
+run-name: "infra-plan (env=${{ inputs.env }})"
 
 on:
   workflow_dispatch:
@@ -90,12 +91,6 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Configure AWS credentials using OIDC
-        uses: aws-actions/configure-aws-credentials@v4.1.0
-        with:
-          aws-region: eu-west-2
-          role-to-assume: ${{ steps.backend.outputs.role }}
-
       - name: Resolve backend config
         id: backend
         run: |
@@ -125,6 +120,12 @@ jobs:
               exit 1
               ;;
           esac
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: eu-west-2
+          role-to-assume: ${{ steps.backend.outputs.role }}
 
       - name: Terraform init (backend)
         run: |
