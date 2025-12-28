@@ -44,3 +44,5 @@ logs/build-timings/
 
 # Local notes
 chat_fil.txt
+envs/dev/grafana
+envs/dev/grafana-describe.txt
