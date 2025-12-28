@@ -45,6 +45,8 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0028](ADR-0028-platform-dev-branch-gate.md) | Platform | Dev branch gate before main | Proposed | 2025-12-27 | Require dev branch apply success before promotion to main. |
 | [ADR-0029](ADR-0029-platform-dev-plan-gate.md) | Platform | Dev plan gate before dev apply | Accepted | 2025-12-27 | Require a dev plan before any dev apply on the same SHA. |
 | [ADR-0030](ADR-0030-platform-precreated-iam-policies.md) | Platform | Pre-create IAM policies for IRSA controllers in V1 | Accepted | 2025-12-28 | Pre-create autoscaler and LB controller policies; attach via ARNs. |
+| [ADR-0031](ADR-0031-platform-bootstrap-irsa-service-accounts.md) | Platform | Create IRSA service accounts during bootstrap | Accepted | 2025-12-28 | Bootstrap creates required IRSA service accounts before controllers. |
+| [ADR-0032](ADR-0032-platform-eks-access-model.md) | Platform | EKS access model (bootstrap admin vs steady-state access) | Accepted | 2025-12-28 | Use access entries for humans; split CI bootstrap vs steady-state access. |
 
 ---
 

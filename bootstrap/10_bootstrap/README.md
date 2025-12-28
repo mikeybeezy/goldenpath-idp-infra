@@ -190,6 +190,10 @@ Ordering note: the AWS LB Controller and Cluster Autoscaler service accounts mus
 exist before installing those controllers. If `ENABLE_TF_K8S_RESOURCES=false`,
 create the service accounts manually (or via Terraform) first, then run bootstrap.
 
+Rationale: we moved service-account creation into bootstrap after early runs failed
+when the controllers were installed without their IRSA-backed service accounts.
+Bootstrapping them first removes the ordering race and keeps failures deterministic.
+
 ### Example: compact output (`COMPACT_OUTPUT=true`)
 
 ```
