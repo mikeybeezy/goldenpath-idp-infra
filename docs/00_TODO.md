@@ -44,6 +44,9 @@ This is the single rolling backlog. Add items here before starting work.
 | 029 | P2 | Docs | Create Terraform state + lock flow diagram | platform | Open | M |  | Show S3 state + DynamoDB lock usage | docs/32_TERRAFORM_STATE_AND_LOCKING.md | Prevent state confusion and lock errors |
 | 030 | P2 | Docs | Create rollback/incident flow diagram | platform | Open | M |  | Show GitOps revert + recovery steps | docs/29_CD_DEPLOYMENT_CONTRACT.md | Standardize rollback expectations |
 | 031 | P2 | Docs | Create cost + lifecycle overview diagram | platform | Open | M |  | Compare ephemeral vs persistent lifecycles | docs/07_REPO_DECOUPLING_OPTIONS.md | Set expectations for cost and uptime |
+| 032 | P2 | Security | Establish periodic IAM audit cadence for CI roles | platform | Open | S |  | Define CloudTrail + Access Analyzer review process | docs/adrs/ADR-0035-platform-iam-audit-cadence.md | Reduce permissions over time based on actual usage |
+| 033 | P2 | Security | Create IAM audit runbook (CloudTrail + Access Analyzer) | platform | Open | S |  | Document exact CLI/Athena queries and steps | docs/runbooks/03_IAM_AUDIT.md | Make IAM reviews repeatable |
+| 034 | P2 | Security | Run first IAM audit after stability milestone | platform | Open | M |  | Execute runbook and tighten policies | docs/runbooks/03_IAM_AUDIT.md | Validate audit cadence in practice |
 
 ## Rules
 

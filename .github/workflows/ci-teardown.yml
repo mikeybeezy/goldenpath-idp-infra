@@ -71,15 +71,23 @@ jobs:
           case "${ENV}" in
             dev)
               echo "role=${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-dev-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-dev-db-key" >> "$GITHUB_OUTPUT"
               ;;
             test)
               echo "role=${{ secrets.TF_AWS_IAM_ROLE_TEST }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-test-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-test-db" >> "$GITHUB_OUTPUT"
               ;;
             staging)
               echo "role=${{ secrets.TF_AWS_IAM_ROLE_STAGING }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-staging-db" >> "$GITHUB_OUTPUT"
               ;;
             prod)
               echo "role=${{ secrets.TF_AWS_IAM_ROLE_PROD }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-prod-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-prod-db" >> "$GITHUB_OUTPUT"
               ;;
             *)
               echo "Unsupported env: ${ENV}" >&2
@@ -95,6 +103,15 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init (backend)
+        run: |
+          terraform -chdir="${TF_DIR}" init -reconfigure \
+            -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
+            -backend-config="key=envs/${ENV}/terraform.tfstate" \
+            -backend-config="region=${AWS_REGION}" \
+            -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
+            -backend-config="encrypt=true"
 
       - name: Run teardown
         run: |
