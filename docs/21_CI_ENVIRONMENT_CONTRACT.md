@@ -163,7 +163,8 @@ Use this as the baseline for the plan role and keep apply permissions separate.
     }
   ]
 }
-```text
+
+```
 
 Replace `YOUR_ACCOUNT_ID` and adjust bucket/table ARNs for other environments.
 
@@ -171,7 +172,7 @@ Replace `YOUR_ACCOUNT_ID` and adjust bucket/table ARNs for other environments.
 
 ## Dev branch gate flow (Option 4)
 
-```
+```text
 Legend:
 [PLAN] = terraform plan workflow (read-only role)
 [APPLY] = terraform apply workflow (write role)
@@ -227,7 +228,8 @@ Legend:
 |  - S3 bucket (dev state)  |
 |  - DynamoDB lock table    |
 +---------------------------+
-```text
+
+```
 
 ## Branch protection (required)
 
@@ -243,7 +245,7 @@ To enforce the dev gate:
 
 Dev apply must only proceed after a **dev plan** has succeeded on the same SHA.
 
-```
+```text
 Current (problem):
 +------------------+     plan (any env)     +-------------------+
 |  Commit (SHA)    |  ------------------>  |  Plan Success?     |
@@ -258,7 +260,7 @@ Current (problem):
 
 Risk: a plan for staging/prod can unlock dev apply.
 
-------------------------------------------------------------
+---
 
 Recommended (fix):
 +------------------+     plan (DEV only)    +-------------------+
@@ -272,6 +274,7 @@ Recommended (fix):
                                         | Apply DEV        |
                                         | (allowed)        |
                                         +------------------+
+
 ```
 
 ## Ownership

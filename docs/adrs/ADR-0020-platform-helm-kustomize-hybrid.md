@@ -1,6 +1,5 @@
 # ADR-0020: Hybrid GitOps approach with Helm and Kustomize
 
-
 - **Status:** Proposed
 - **Date:** 2025-12-27
 - **Owners:** Platform (GoldenPath IDP)
