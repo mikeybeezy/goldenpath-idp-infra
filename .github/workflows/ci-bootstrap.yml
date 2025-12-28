@@ -80,6 +80,9 @@ jobs:
           aws-region: ${{ inputs.region }}
           role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
       # Phase 1: Preflight + tooling
       # Goal: ensure CLI tools are available and inputs are valid before any changes.
       - name: Phase 1 - Preflight checks (stub)
