@@ -84,6 +84,14 @@ Not through:
 
 If engineers must repeatedly ask “how do I do this?”, governance has failed.
 
+## 5. Tagging for Auditability
+
+GoldenPath requires consistent resource tagging to keep audit trails, cost
+attribution, and cleanup reliable. Tagging is a core governance guardrail that
+preserves velocity by making ownership and lifecycle status explicit.
+The canonical tag set lives in `docs/35_RESOURCE_TAGGING.md` and is formalized
+in `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`.
+
 ## V1 Governance Scope & Decisions
 
 ## Cloud Provider
