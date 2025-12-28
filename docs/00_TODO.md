@@ -28,6 +28,7 @@ This is the single rolling backlog. Add items here before starting work.
 | 013 | P3 | Tooling | Standardize cluster name resolution via script | platform | Open | S |  | Use scripts/resolve-cluster-name.sh consistently | Makefile, scripts/resolve-cluster-name.sh | Align local and CI naming |
 | 014 | P3 | CI | Upload plan output as an artifact | platform | Open | S |  | Add artifact upload step | .github/workflows/infra-terraform.yml | Improve traceability |
 | 015 | P2 | CI | Harden plan gate env matching | platform | Open | S |  | Check workflow input env in gate | .github/workflows/infra-terraform-apply-dev.yml | Prevent mismatched plan/apply |
+| 016 | P1 | CI | Allow both BUILD_ID formats (dd-mm-yy-NN and YYYYMMDD-NN) | platform | Open | S |  | Update regex and/or docs to match | Makefile, .github/workflows/ci-bootstrap.yml | Avoid regressions vs documented examples |
 
 ## Rules
 
