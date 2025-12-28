@@ -1,10 +1,10 @@
-# ADR-0011: CI Environment Contract
+# ADR-0034: CI Environment Contract
 
-- **Status:** Superseded
+- **Status:** Accepted
 - **Date:** 2025-12-27
 - **Owners:** Platform (GoldenPath IDP)
 - **Decision type:** Governance / Delivery
-- **Related docs:** docs/01_GOVERNANCE.md, docs/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0034-platform-ci-environment-contract.md
+- **Related docs:** docs/01_GOVERNANCE.md, docs/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0011-platform-ci-environment-contract
 
 ## Context
 
@@ -65,5 +65,6 @@ These tradeoffs are accepted to reduce long-term operational risk and cognitive 
 
 ## Notes
 
-Superseded by `docs/adrs/ADR-0034-platform-ci-environment-contract.md`.
-This ADR remains for historical traceability.
+The CI Environment Contract is expected to evolve as the platform matures.
+This ADR records the decision to formalize the contract, not the contents of the contract itself.
+This ADR supersedes `docs/adrs/ADR-0011-platform-ci-environment-contract`.

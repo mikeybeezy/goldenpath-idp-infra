@@ -48,12 +48,13 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0031](ADR-0031-platform-bootstrap-irsa-service-accounts.md) | Platform | Create IRSA service accounts during bootstrap | Accepted | 2025-12-28 | Bootstrap creates required IRSA service accounts before controllers. |
 | [ADR-0032](ADR-0032-platform-eks-access-model.md) | Platform | EKS access model (bootstrap admin vs steady-state access) | Accepted | 2025-12-28 | Use access entries for humans; split CI bootstrap vs steady-state access. |
 | [ADR-0033](ADR-0033-platform-ci-orchestrated-modes.md) | Platform | CI orchestrated modes for infra lifecycle | Accepted | 2025-12-28 | Explicit build+bootstrap, bootstrap-only, teardown modes. |
+| [ADR-0034](ADR-0034-platform-ci-environment-contract.md) | Platform | CI environment contract | Accepted | 2025-12-27 | Formalize CI environment variables as a governed interface. |
 
 ---
 
 ## Superseded ADRs
 
-_None yet._
+- [ADR-0011](ADR-0011-platform-ci-environment-contract) — superseded by `ADR-0034-platform-ci-environment-contract.md`.
 
 ---
 

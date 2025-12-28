@@ -11,6 +11,14 @@ Filename: `ADR-XXXX-(platform|app)-short-title.md`
 
 ---
 
+## ADR immutability
+
+ADRs are **immutable once created**. If a decision changes, write a new ADR and
+mark the old one as **Superseded** with a reference to the new ADR.
+Do not delete or rewrite prior ADRs.
+
+---
+
 ## Context
 
 What problem are we solving?
