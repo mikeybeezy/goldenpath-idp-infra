@@ -243,31 +243,31 @@ To enforce the dev gate:
 
 **Ruleset: protect-dev**
 
-1) Repo → Settings → Rules → Rulesets → New ruleset  
-2) Name: `protect-dev`  
-3) Target: Branches  
-4) Branch name pattern: `dev`  
+1) Repo → Settings → Rules → Rulesets → New ruleset
+2) Name: `protect-dev`
+3) Target: Branches
+4) Branch name pattern: `dev`
 5) Rules:
    - Require a pull request before merging
    - Require status checks to pass (select `pre-commit`, `PR Terraform Plan`, `Infra Terraform Apply (dev)` or your chosen checks)
    - Require branches to be up to date before merging
    - Block force pushes
-   - Block deletions  
+   - Block deletions
 6) Save ruleset.
 
 **Ruleset: protect-main**
 
-1) Repo → Settings → Rules → Rulesets → New ruleset  
-2) Name: `protect-main`  
-3) Target: Branches  
-4) Branch name pattern: `main`  
+1) Repo → Settings → Rules → Rulesets → New ruleset
+2) Name: `protect-main`
+3) Target: Branches
+4) Branch name pattern: `main`
 5) Rules:
    - Require a pull request before merging
    - Require status checks to pass (select the dev gate checks)
    - Require branches to be up to date before merging
    - Restrict who can push (optional but recommended)
    - Block force pushes
-   - Block deletions  
+   - Block deletions
 6) Save ruleset.
 
 **Enforce “main only from dev”**
