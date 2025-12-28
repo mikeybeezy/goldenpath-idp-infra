@@ -170,10 +170,12 @@ variable "iam_config" {
     oidc_subject                            = string
     enable_autoscaler_role                  = bool
     autoscaler_role_name                    = string
+    autoscaler_policy_arn                   = string
     autoscaler_service_account_namespace    = string
     autoscaler_service_account_name         = string
     enable_lb_controller_role               = bool
     lb_controller_role_name                 = string
+    lb_controller_policy_arn                = string
     lb_controller_service_account_namespace = string
     lb_controller_service_account_name      = string
   })
@@ -192,10 +194,12 @@ variable "iam_config" {
     oidc_subject                            = ""
     enable_autoscaler_role                  = false
     autoscaler_role_name                    = "goldenpath-idp-cluster-autoscaler"
+    autoscaler_policy_arn                   = ""
     autoscaler_service_account_namespace    = "kube-system"
     autoscaler_service_account_name         = "cluster-autoscaler"
     enable_lb_controller_role               = false
     lb_controller_role_name                 = "goldenpath-idp-aws-load-balancer-controller"
+    lb_controller_policy_arn                = ""
     lb_controller_service_account_namespace = "kube-system"
     lb_controller_service_account_name      = "aws-load-balancer-controller"
   }

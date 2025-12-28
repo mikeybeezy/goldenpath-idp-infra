@@ -90,6 +90,19 @@ They are provided via:
 
 ---
 
+## Pre-created IAM policy ARNs (V1)
+
+To keep the apply role least-privilege, the Cluster Autoscaler and AWS Load Balancer Controller
+policies are **pre-created** and passed into Terraform as ARNs.
+
+- `iam_config.autoscaler_policy_arn`
+- `iam_config.lb_controller_policy_arn`
+
+These are stored in `envs/dev/terraform.tfvars` (or provided via `TF_VAR_*` in CI).
+See `docs/adrs/ADR-0030-platform-precreated-iam-policies.md` for rationale and follow-ups.
+
+---
+
 ## Invariants
 
 - Pipelines must behave deterministically given the same inputs.

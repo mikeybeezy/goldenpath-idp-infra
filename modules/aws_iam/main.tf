@@ -129,7 +129,7 @@ resource "aws_iam_role" "cluster_autoscaler" {
 }
 
 data "aws_iam_policy_document" "cluster_autoscaler" {
-  count = var.enable_autoscaler_role ? 1 : 0
+  count = var.enable_autoscaler_role && var.autoscaler_policy_arn == "" ? 1 : 0
 
   statement {
     effect = "Allow"
@@ -149,7 +149,7 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
 }
 
 resource "aws_iam_policy" "cluster_autoscaler" {
-  count       = var.enable_autoscaler_role ? 1 : 0
+  count       = var.enable_autoscaler_role && var.autoscaler_policy_arn == "" ? 1 : 0
   name        = "${var.autoscaler_role_name}-policy"
   description = "IAM policy for Kubernetes Cluster Autoscaler."
   policy      = data.aws_iam_policy_document.cluster_autoscaler[0].json
@@ -159,7 +159,7 @@ resource "aws_iam_policy" "cluster_autoscaler" {
 resource "aws_iam_role_policy_attachment" "cluster_autoscaler" {
   count      = var.enable_autoscaler_role ? 1 : 0
   role       = aws_iam_role.cluster_autoscaler[0].name
-  policy_arn = aws_iam_policy.cluster_autoscaler[0].arn
+  policy_arn = var.autoscaler_policy_arn != "" ? var.autoscaler_policy_arn : aws_iam_policy.cluster_autoscaler[0].arn
 }
 
 data "aws_iam_policy_document" "lb_controller_assume" {
@@ -196,7 +196,7 @@ resource "aws_iam_role" "lb_controller" {
 }
 
 data "aws_iam_policy_document" "lb_controller" {
-  count = var.enable_lb_controller_role ? 1 : 0
+  count = var.enable_lb_controller_role && var.lb_controller_policy_arn == "" ? 1 : 0
 
   statement {
     effect = "Allow"
@@ -333,7 +333,7 @@ data "aws_iam_policy_document" "lb_controller" {
 }
 
 resource "aws_iam_policy" "lb_controller" {
-  count       = var.enable_lb_controller_role ? 1 : 0
+  count       = var.enable_lb_controller_role && var.lb_controller_policy_arn == "" ? 1 : 0
   name        = "${var.lb_controller_role_name}-policy"
   description = "IAM policy for AWS Load Balancer Controller."
   policy      = data.aws_iam_policy_document.lb_controller[0].json
@@ -343,5 +343,5 @@ resource "aws_iam_policy" "lb_controller" {
 resource "aws_iam_role_policy_attachment" "lb_controller" {
   count      = var.enable_lb_controller_role ? 1 : 0
   role       = aws_iam_role.lb_controller[0].name
-  policy_arn = aws_iam_policy.lb_controller[0].arn
+  policy_arn = var.lb_controller_policy_arn != "" ? var.lb_controller_policy_arn : aws_iam_policy.lb_controller[0].arn
 }

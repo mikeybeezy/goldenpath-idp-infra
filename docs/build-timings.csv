@@ -32,3 +32,7 @@ start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,
 2025-12-26T13:02:48Z,2025-12-26T13:18:53Z,terraform-apply,dev,26-12-25-03,965,0,,logs/build-timings/dev-goldenpath-dev-eks-26-12-25-03-20251226T130248Z.log
 2025-12-26T13:33:01Z,2025-12-26T13:42:18Z,teardown,dev,26-12-25-03,557,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251226T133301Z.log
 2025-12-26T18:13:13Z,2025-12-26T18:30:37Z,terraform-apply,dev,26-12-25-03,1044,0,,logs/build-timings/dev-goldenpath-dev-eks-26-12-25-03-20251226T181313Z.log
+2025-12-28T07:02:53Z,2025-12-28T07:02:56Z,teardown,dev,26-12-25-03,3,1,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251228T070253Z.log
+2025-12-28T07:05:53Z,2025-12-28T07:05:56Z,teardown,dev,26-12-25-03,3,1,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251228T070553Z.log
+2025-12-28T07:08:31Z,2025-12-28T07:08:34Z,teardown,dev,26-12-25-03,3,1,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251228T070831Z.log
+2025-12-28T07:08:44Z,2025-12-28T07:08:47Z,teardown,dev,26-12-25-03,3,1,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251228T070844Z.log

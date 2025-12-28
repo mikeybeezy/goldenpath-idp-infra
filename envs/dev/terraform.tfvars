@@ -66,10 +66,12 @@ iam_config = {
   oidc_subject                            = ""
   enable_autoscaler_role                  = true
   autoscaler_role_name                    = "goldenpath-idp-cluster-autoscaler"
+  autoscaler_policy_arn                   = "arn:aws:iam::593517239005:policy/golden-path-cluster-autoscaler-policy"
   autoscaler_service_account_namespace    = "kube-system"
   autoscaler_service_account_name         = "cluster-autoscaler"
   enable_lb_controller_role               = true
   lb_controller_role_name                 = "goldenpath-idp-aws-load-balancer-controller"
+  lb_controller_policy_arn                = "arn:aws:iam::593517239005:policy/goldenpath-load-balancer-controller-policy"
   lb_controller_service_account_namespace = "kube-system"
   lb_controller_service_account_name      = "aws-load-balancer-controller"
 }
