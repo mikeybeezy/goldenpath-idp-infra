@@ -17,7 +17,8 @@ on:
       require_state:
         description: "Fail if remote state object is missing"
         required: true
-        default: "false"
+        default: false
+        type: boolean
 
 jobs:
   terraform-fmt:
@@ -141,7 +142,7 @@ jobs:
             -backend-config="encrypt=true"
 
       - name: Guard: backend state must exist
-        if: ${{ inputs.require_state == 'true' }}
+        if: ${{ inputs.require_state }}
         run: |
           STATE_KEY="envs/${{ inputs.env }}/terraform.tfstate"
           echo "Checking state: s3://${{ steps.backend.outputs.bucket }}/${STATE_KEY}"
