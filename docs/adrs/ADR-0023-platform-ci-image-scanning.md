@@ -6,6 +6,7 @@
 - **Domain:** Platform
 - **Decision type:** Security | Delivery
 - **Related:** docs/01_GOVERNANCE.md, docs/22_CONTAINER_REGISTRY_STANDARD.md
+
 ---
 
 ## Context

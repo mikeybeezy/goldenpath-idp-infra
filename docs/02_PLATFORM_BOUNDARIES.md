@@ -85,7 +85,7 @@ These are the default contract and change slowly.
 
 These can change faster and require explicit adoption.
 
-### Deviation model
+### Deviation process
 
 Teams may deviate from defaults when necessary, but must:
 

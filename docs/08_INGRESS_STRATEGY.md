@@ -49,7 +49,7 @@ slows troubleshooting. V1 should pick one front door unless explicitly required.
 Kong is configured to create an NLB by annotating the proxy Service in the
 Helm values:
 
-```
+```yaml
 
 proxy:
   service:

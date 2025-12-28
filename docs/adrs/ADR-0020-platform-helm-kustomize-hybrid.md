@@ -6,6 +6,7 @@
 - **Domain:** Platform
 - **Decision type:** Architecture | Operations
 - **Related:** docs/09_ARCHITECTURE.md, docs/20_CI_ENVIRONMENT_SEPARATION.md
+
 ---
 
 ## Context

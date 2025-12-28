@@ -6,6 +6,7 @@
 - **Domain:** Platform
 - **Decision type:** Governance | Operations
 - **Related:** docs/01_GOVERNANCE.md, docs/13_COLLABORATION_GUIDE.md, docs/24_PRE_COMMIT_HOOKS.md
+
 ---
 
 ## Context

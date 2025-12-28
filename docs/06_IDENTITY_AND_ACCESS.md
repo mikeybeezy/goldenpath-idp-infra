@@ -84,7 +84,7 @@ Why we use it:
 
 Example:
 
-```
+```bash
 
 aws ssm start-session --target <instance-id>
 

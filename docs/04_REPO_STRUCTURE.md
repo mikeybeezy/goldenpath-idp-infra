@@ -4,7 +4,7 @@ This document explains how the Golden Path IDP repository is organized and why e
 
 ## ASCII Overview
 
-```
+```text
 
 goldenpath-idp-infra/
 ├── bootstrap/

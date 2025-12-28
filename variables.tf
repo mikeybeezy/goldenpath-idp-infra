@@ -3,5 +3,3 @@ variable "region" {
   default     = "value"
   description = "value"
 }
-
-

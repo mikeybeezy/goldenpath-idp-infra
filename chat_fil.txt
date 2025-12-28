@@ -15,8 +15,8 @@ terraform -chdir=envs/dev init
 
 ##################
 
-TF_VAR_cluster_lifecycle=ephemeral 
-TF_VAR_build_id=YYYYMMDD-01 
+TF_VAR_cluster_lifecycle=ephemeral
+TF_VAR_build_id=YYYYMMDD-01
 TF_VAR_owner_team=platform-team
 make timed-apply ENV=dev
 
@@ -70,7 +70,7 @@ COMPACT_OUTPUT=false \
 ENABLE_TF_K8S_RESOURCES=true \
 SCALE_DOWN_AFTER_BOOTSTRAP=true \
 TF_DIR=envs/dev \
-bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh 
+bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
 
 
 make bootstrap ENV_NAME=dev \
@@ -81,7 +81,7 @@ COMPACT_OUTPUT=false \
 ENABLE_TF_K8S_RESOURCES=true \
 SCALE_DOWN_AFTER_BOOTSTRAP=true \
 TF_DIR=envs/dev \
-bash goldenpath-idp-bootstrap.sh 
+bash goldenpath-idp-bootstrap.sh
 
 Notes:
 
