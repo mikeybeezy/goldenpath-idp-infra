@@ -4,7 +4,7 @@ vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
 cluster_lifecycle = "ephemeral"
 # NEED TO UPDATE persistent or ephemeral
-build_id = "26-12-28-02"
+build_id = "26-12-28-04"
 
 
 public_subnets = [
