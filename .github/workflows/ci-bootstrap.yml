@@ -105,6 +105,41 @@ jobs:
           echo "CLUSTER_NAME=${CLUSTER_NAME}" >> "${GITHUB_ENV}"
           echo "Resolved CLUSTER_NAME=${CLUSTER_NAME}"
 
+      - name: Resolve backend config
+        id: backend
+        run: |
+          case "${ENV}" in
+            dev)
+              echo "bucket=goldenpath-idp-dev-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-dev-db-key" >> "$GITHUB_OUTPUT"
+              ;;
+            test)
+              echo "bucket=goldenpath-test-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-test-db" >> "$GITHUB_OUTPUT"
+              ;;
+            staging)
+              echo "bucket=goldenpath-idp-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-staging-db" >> "$GITHUB_OUTPUT"
+              ;;
+            prod)
+              echo "bucket=goldenpath-idp-prod-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-prod-db" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported env: ${ENV}" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Terraform init (backend)
+        run: |
+          terraform -chdir="${TF_DIR}" init \
+            -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
+            -backend-config="key=envs/${ENV}/terraform.tfstate" \
+            -backend-config="region=${AWS_REGION}" \
+            -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
+            -backend-config="encrypt=true"
+
       # Timing note (baseline, non-blocking)
       - name: Timing log (stub)
         run: |
