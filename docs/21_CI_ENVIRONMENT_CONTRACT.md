@@ -226,6 +226,15 @@ Legend:
 |  - DynamoDB lock table    |
 +---------------------------+
 ```
+
+## Branch protection (required)
+
+To enforce the dev gate:
+
+- `main` only allows merges from `dev`.
+- `dev` requires PRs and required checks (plan + apply gate).
+- Direct pushes to `main` and `dev` are blocked.
+
 ---
 
 ## Ownership

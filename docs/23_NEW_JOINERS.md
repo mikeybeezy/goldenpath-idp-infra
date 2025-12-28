@@ -27,6 +27,7 @@ pre-commit run --all-files
 - Pre-commit hooks are required for local commits.
 - CI remains the source of truth; hooks are the fast preflight gate.
 - Pre-commit runs on pull requests and should be required in branch protection.
+- PRs merge into `dev` first; `main` only accepts merges from `dev`.
 
 ## Skip policy
 
