@@ -191,6 +191,15 @@ Advanced DevSecOps controls are intentionally deferred to V2 to preserve deliver
 Principle: GoldenPath defines a CD deployment contract to make promotion and rollback deterministic,
 auditable, and consistent across environments.
 
+Principle: The `main` branch only accepts merges from `dev`. Both `dev` and `main` are protected,
+and promotion requires passing the dev gate.
+
+This branching strategy is designed to preserve value already created. It encodes the philosophy
+that changes should prove themselves in a real environment before they become the platform record.
+The goal is not to claim the only “best” approach, but to keep quality, trust, and delivery
+confidence intact as the platform evolves. Teams may adopt improvements, but the core principle is
+value preservation.
+
 Out of Scope (V1):
 
 - Atlantis
