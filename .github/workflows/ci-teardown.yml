@@ -50,7 +50,7 @@ jobs:
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
       TF_DIR: envs/${{ inputs.env }}
-      CLEANUP_ORPHANS: "true"
+      CLEANUP_ORPHANS: "false"
       REMOVE_K8S_SA_FROM_STATE: "true"
       TF_AUTO_APPROVE: "true"
     steps:

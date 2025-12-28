@@ -47,6 +47,7 @@ This is the single rolling backlog. Add items here before starting work.
 | 032 | P2 | Security | Establish periodic IAM audit cadence for CI roles | platform | Open | S |  | Define CloudTrail + Access Analyzer review process | docs/adrs/ADR-0035-platform-iam-audit-cadence.md | Reduce permissions over time based on actual usage |
 | 033 | P2 | Security | Create IAM audit runbook (CloudTrail + Access Analyzer) | platform | Open | S |  | Document exact CLI/Athena queries and steps | docs/runbooks/03_IAM_AUDIT.md | Make IAM reviews repeatable |
 | 034 | P2 | Security | Run first IAM audit after stability milestone | platform | Open | M |  | Execute runbook and tighten policies | docs/runbooks/03_IAM_AUDIT.md | Validate audit cadence in practice |
+| 035 | P2 | Security | Define multi-account IAM boundaries per environment (V2) | platform | Open | M |  | Map env → account and scope roles per account | docs/33_IAM_ROLES_AND_POLICIES.md | Prepare for teams using separate AWS accounts |
 
 ## Rules
 

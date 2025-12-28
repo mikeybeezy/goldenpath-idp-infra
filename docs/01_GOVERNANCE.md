@@ -179,6 +179,13 @@ Principle: Apply workflows must include a post-apply health check that proves pl
 (EKS reachable, Argo synced/healthy, ingress health endpoint). A successful apply without health
 verification is incomplete.
 
+Principle: Orphan cleanup is a explicit action. It runs as a human-initiated workflow or
+CLI step when needed (not an automatic teardown step), so cleanup intent is always clear and
+auditable. Console-only deletion is discouraged.
+
+Principle: V2 introduces environment-to-account boundaries. Each environment can map to a
+distinct AWS account, and CI roles are scoped per account. See `docs/33_IAM_ROLES_AND_POLICIES.md`.
+
 Principle: CI image scanning uses Trivy as the default gate. Prod fails on HIGH/CRITICAL;
 dev/test warn unless explicitly tightened.
 
