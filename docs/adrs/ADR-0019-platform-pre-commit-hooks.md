@@ -1,11 +1,13 @@
 # ADR-0019: Pre-commit hooks as local quality gates
 
+
 - **Status:** Proposed
 - **Date:** 2025-12-27
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Governance | Operations
 - **Related:** docs/01_GOVERNANCE.md, docs/13_COLLABORATION_GUIDE.md, docs/24_PRE_COMMIT_HOOKS.md
+
 ---
 
 ## Context

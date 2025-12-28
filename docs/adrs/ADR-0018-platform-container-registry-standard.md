@@ -1,11 +1,13 @@
 # ADR-0018: Container registry standard — ECR default, GHCR supported, Docker Hub discouraged
 
+
 - **Status:** Proposed
 - **Date:** 2025-12-27
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Architecture | Security | Delivery
 - **Related:** docs/adrs/ADR-0007-platform-environment-model.md, docs/adrs/ADR-0008-app-backstage-portal.md, docs/01_GOVERNANCE.md
+
 ---
 
 ## Context

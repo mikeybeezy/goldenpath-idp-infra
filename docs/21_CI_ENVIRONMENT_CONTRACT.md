@@ -2,6 +2,7 @@
 
 This document defines the environment variables used by GoldenPath CI pipelines.
 It serves as the contract between:
+
 - CI workflows
 - Terraform
 - Bootstrap scripts
@@ -82,6 +83,7 @@ currently used by workflows in this repo, with their context.
 
 Secrets are **not** defined here.
 They are provided via:
+
 - Repository secrets (role ARNs)
 - AWS OIDC role assumption
 - AWS Secrets Manager / SSM
@@ -161,7 +163,7 @@ Use this as the baseline for the plan role and keep apply permissions separate.
     }
   ]
 }
-```
+```text
 
 Replace `YOUR_ACCOUNT_ID` and adjust bucket/table ARNs for other environments.
 
@@ -225,7 +227,7 @@ Legend:
 |  - S3 bucket (dev state)  |
 |  - DynamoDB lock table    |
 +---------------------------+
-```
+```text
 
 ## Branch protection (required)
 
@@ -276,5 +278,6 @@ Recommended (fix):
 
 This contract is owned by the platform.
 Changes require:
+
 - an ADR if behavior changes
 - doc update in the same PR

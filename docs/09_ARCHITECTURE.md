@@ -2,7 +2,7 @@
 
 ## Boxed diagram (ASCII)
 
-```
+```text
 
 
 ┌───────────────────────────────────────────────┐
@@ -58,7 +58,7 @@
 
 ## Mermaid diagram (renderable)
 
-```
+```mermaid
 flowchart TD
   A[AWS Account<br/>eu-west-2] --> VPC[VPC 10.0.0.0/16<br/>goldenpath-dev-vpc]
   VPC --> IGW[Internet Gateway]
