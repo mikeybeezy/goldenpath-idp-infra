@@ -17,11 +17,22 @@ TF_DIR ?= $(ENV_DIR)
 BUILD_ID ?= $(shell awk -F'=' '/^build_id[[:space:]]*=/{gsub(/"/,"",$$2);gsub(/[[:space:]]/,"",$$2);print $$2;exit}' $(ENV_DIR)/terraform.tfvars 2>/dev/null)
 NODEGROUP ?=
 CLEANUP_ORPHANS ?= false
+ALLOW_REUSE_BUILD_ID ?= false
 
 define require_build_id
 	@if [ -z "$(BUILD_ID)" ]; then \
 	  echo "BUILD_ID is required. Set build_id in $(ENV_DIR)/terraform.tfvars or pass BUILD_ID=..."; \
 	  exit 1; \
+	fi
+	@if ! echo "$(BUILD_ID)" | grep -Eq '^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$$'; then \
+	  echo "BUILD_ID must match dd-mm-yy-NN (example: 28-12-25-01)."; \
+	  exit 1; \
+	fi
+	@if [ -f docs/build-timings.csv ] && [ "$(ALLOW_REUSE_BUILD_ID)" != "true" ]; then \
+	  if awk -F',' -v env="$(ENV)" -v id="$(BUILD_ID)" 'NR>1 && $$4==env && $$5==id {found=1} END{exit found?0:1}' docs/build-timings.csv; then \
+	    echo "BUILD_ID $(BUILD_ID) already exists for $(ENV). Use a new ID or set ALLOW_REUSE_BUILD_ID=true to reuse."; \
+	    exit 1; \
+	  fi; \
 	fi
 endef
 

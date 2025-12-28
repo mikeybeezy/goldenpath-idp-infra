@@ -43,6 +43,12 @@ variable "autoscaler_role_name" {
   default     = "goldenpath-idp-cluster-autoscaler"
 }
 
+variable "autoscaler_policy_arn" {
+  type        = string
+  description = "Existing IAM policy ARN for cluster autoscaler (when pre-created)."
+  default     = ""
+}
+
 variable "autoscaler_service_account_namespace" {
   type        = string
   description = "Namespace for the cluster autoscaler service account."
@@ -65,6 +71,12 @@ variable "lb_controller_role_name" {
   type        = string
   description = "Name for the AWS Load Balancer Controller IAM role."
   default     = "goldenpath-idp-aws-load-balancer-controller"
+}
+
+variable "lb_controller_policy_arn" {
+  type        = string
+  description = "Existing IAM policy ARN for AWS Load Balancer Controller (when pre-created)."
+  default     = ""
 }
 
 variable "lb_controller_service_account_namespace" {

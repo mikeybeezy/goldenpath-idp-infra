@@ -68,10 +68,12 @@ module "iam" {
   oidc_subject                            = var.iam_config.oidc_subject
   enable_autoscaler_role                  = var.iam_config.enable_autoscaler_role
   autoscaler_role_name                    = "${var.iam_config.autoscaler_role_name}${local.role_suffix}"
+  autoscaler_policy_arn                   = var.iam_config.autoscaler_policy_arn
   autoscaler_service_account_namespace    = var.iam_config.autoscaler_service_account_namespace
   autoscaler_service_account_name         = var.iam_config.autoscaler_service_account_name
   enable_lb_controller_role               = var.iam_config.enable_lb_controller_role
   lb_controller_role_name                 = "${var.iam_config.lb_controller_role_name}${local.role_suffix}"
+  lb_controller_policy_arn                = var.iam_config.lb_controller_policy_arn
   lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
   lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
   environment                             = local.environment
