@@ -8,7 +8,7 @@
 
 ## Context
 
-GoldenPath relies on CI pipelines to provision infrastructure, bootstrap clusters, deploy platform tooling, and tear environments down deterministically.  
+GoldenPath relies on CI pipelines to provision infrastructure, bootstrap clusters, deploy platform tooling, and tear environments down deterministically.
 As the system evolved, pipeline behavior became increasingly influenced by environment variables that control:
 
 - target environment selection
@@ -65,5 +65,5 @@ These tradeoffs are accepted to reduce long-term operational risk and cognitive 
 
 ## Notes
 
-The CI Environment Contract is expected to evolve as the platform matures.  
+The CI Environment Contract is expected to evolve as the platform matures.
 This ADR records the decision to formalize the contract, not the contents of the contract itself.

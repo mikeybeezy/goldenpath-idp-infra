@@ -60,4 +60,3 @@ Applies to platform governance, onboarding, and the delivery contract between pl
 ---
 
 ## Notes
-
