@@ -30,6 +30,7 @@ This is the single rolling backlog. Add items here before starting work.
 | 015 | P2 | CI | Harden plan gate env matching | platform | Open | S |  | Check workflow input env in gate | .github/workflows/infra-terraform-apply-dev.yml | Prevent mismatched plan/apply |
 | 016 | P1 | CI | Allow both BUILD_ID formats (dd-mm-yy-NN and YYYYMMDD-NN) | platform | Open | S |  | Update regex and/or docs to match | Makefile, .github/workflows/ci-bootstrap.yml | Avoid regressions vs documented examples |
 | 017 | P2 | CI | Re-enable Super Linter when CI stabilizes | platform | Open | S |  | Restore workflow to reduce doc regressions | .github/workflows/super-linter.yml | Disabled temporarily because it slowed the workflow |
+| 018 | P2 | CI | Add stricter linting gate for merges to dev | platform | Open | M |  | Define required lint checks for dev gate | .github/workflows/yamllint.yml | Catch workflow YAML issues before merge |
 
 ## Rules
 
