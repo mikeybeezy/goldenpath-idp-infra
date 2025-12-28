@@ -57,6 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
     env:
       ENV: ${{ inputs.env }}
       AWS_REGION: ${{ inputs.region }}
@@ -72,6 +73,12 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Configure AWS credentials using OIDC (bootstrap)
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ inputs.region }}
+          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}
 
       # Phase 1: Preflight + tooling
       # Goal: ensure CLI tools are available and inputs are valid before any changes.

@@ -66,6 +66,16 @@ currently used by workflows in this repo, with their context.
 | `DRAIN_TIMEOUT` | step env | Drain timeout during teardown. |
 | `HEARTBEAT_INTERVAL` | step env | Teardown heartbeat interval. |
 
+## CI bootstrap modes (intent-based)
+
+The CI bootstrap workflow supports explicit modes to reduce operator error:
+
+- **build + bootstrap**: apply infra, then bootstrap tooling (default).
+- **bootstrap-only**: skip apply, reuse existing cluster/build.
+- **teardown**: destroy the environment.
+
+See `docs/adrs/ADR-0033-platform-ci-orchestrated-modes.md` for the decision and tradeoffs.
+
 ### CI Backstage (Stub) (`ci-backstage.yml`)
 
 | Variable | Source | Purpose |
