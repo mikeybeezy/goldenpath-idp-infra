@@ -14,6 +14,8 @@ on:
 
 jobs:
   super-linter:
+    # Temporarily disabled to keep CI fast; re-enable once workflow is stable.
+    if: false
     runs-on: ubuntu-latest
     permissions:
       contents: read

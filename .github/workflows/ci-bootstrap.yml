@@ -43,6 +43,10 @@ on:
         description: "Scale down after bootstrap"
         required: true
         default: "false"
+      skip_apply:
+        description: "Skip Terraform apply (bootstrap only)"
+        required: true
+        default: "false"
       lifecycle:
         description: "Lifecycle (ephemeral or persistent)"
         required: true
@@ -102,6 +106,7 @@ jobs:
       # Phase 2: Terraform init/plan/apply
       # Goal: provision or update infra deterministically.
       - name: Phase 2 - Terraform (stub)
+        if: ${{ inputs.skip_apply != 'true' }}
         run: |
           TF_VAR_cluster_lifecycle="${CLUSTER_LIFECYCLE}" \
           TF_VAR_build_id="${BUILD_ID}" \

@@ -29,6 +29,7 @@ This is the single rolling backlog. Add items here before starting work.
 | 014 | P3 | CI | Upload plan output as an artifact | platform | Open | S |  | Add artifact upload step | .github/workflows/infra-terraform.yml | Improve traceability |
 | 015 | P2 | CI | Harden plan gate env matching | platform | Open | S |  | Check workflow input env in gate | .github/workflows/infra-terraform-apply-dev.yml | Prevent mismatched plan/apply |
 | 016 | P1 | CI | Allow both BUILD_ID formats (dd-mm-yy-NN and YYYYMMDD-NN) | platform | Open | S |  | Update regex and/or docs to match | Makefile, .github/workflows/ci-bootstrap.yml | Avoid regressions vs documented examples |
+| 017 | P2 | CI | Re-enable Super Linter when CI stabilizes | platform | Open | S |  | Restore workflow to reduce doc regressions | .github/workflows/super-linter.yml | Disabled temporarily because it slowed the workflow |
 
 ## Rules
 
