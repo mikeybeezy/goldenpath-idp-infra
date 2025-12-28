@@ -5,6 +5,7 @@ This document explains how the Golden Path IDP repository is organized and why e
 ## ASCII Overview
 
 ```
+
 goldenpath-idp-infra/
 ├── bootstrap/
 │   └── 10_bootstrap/
@@ -65,18 +66,23 @@ goldenpath-idp-infra/
 ├── Makefile
 ├── CONTRIBUTING.md
 └── eksctl-template.yaml
+
 ```
 
 ## Folder Details
 
 ### `envs/`
+
 Per-environment Terraform stacks (dev/test/staging/prod). Each directory composes the shared modules to provision AWS infrastructure consistently.
 
 ### `modules/`
+
 Reusable Terraform modules for networking, compute, and other shared infra components consumed by `envs/*`.
 
 ### `idp-tooling/`
+
 Terraform provider modules that configure platform tooling **after** it is deployed:
+
 - `kong/`: defines Kong services, routes, and plugins.
 - `grafana-config/`: manages dashboards, datasources, and alert rules via the Grafana provider.
 - `keycloak/`: automates realms, clients, and roles.
@@ -85,30 +91,38 @@ Terraform provider modules that configure platform tooling **after** it is deplo
 - `aws-secrets-manager/`: codifies secrets, policies, and rotation settings exposed through External Secrets.
 
 ### `gitops/`
+
 GitOps workloads that install tooling inside the cluster:
-- `helm/`: Helm values for Kong, Grafana, Loki, Alertmanager, Fluent Bit, Keycloak, Backstage, Datree, Argo CD. These define workload configuration consumed by Argo CD Applications.
+
+- `helm/`: Helm values for Kong, Grafana, Loki, Alertmanager, Fluent Bit, Keycloak, Backstage, Datree, Argo CD, Argo Rollouts. These define workload configuration consumed by Argo CD Applications.
 - `kustomize/`: base manifests plus environment-specific overlays so Argo CD can reconcile per environment.
 
 ### `compliance/datree/`
+
 Datree policies and documentation describing how Kubernetes manifest checks run in CI. Keeps policy-as-code colocated with repo.
 
 ### `docs/`
+
 Governance and capability documentation ordered numerically for easy navigation. This file (`04_REPO_STRUCTURE.md`) documents layout and workflow.
 
 Notable docs:
+
 - `docs/18_BACKSTAGE_MVP.md` – first‑app checklist to validate CI → GitOps → Kong.
 - `docs/12_GITOPS_AND_CICD.md` – CI/CD overview, runner requirements, and bootstrap notes.
 - `docs/17_BUILD_RUN_FLAGS.md` – canonical list of runtime flags for build/bootstrap/teardown.
 
 ### Root Files
+
 - `eksctl-template.yaml`: starter config for creating EKS clusters via eksctl.
 - `Makefile`: wraps Terraform commands (`make init/plan/apply ENV=<env>`).
 - `CONTRIBUTING.md`: branch strategy and branch protection checklist.
 
 ### `scripts/`
+
 Helper scripts used by CI and local runs.
 
 - `scripts/resolve-cluster-name.sh`: computes the effective EKS cluster name
+
   from `terraform.tfvars` (adds `-<build_id>` for ephemeral runs).
 
 ## Workflow Summary
@@ -121,6 +135,7 @@ Helper scripts used by CI and local runs.
 CI workflow stub:
 
 - `/.github/workflows/ci-bootstrap.yml` stages infra apply, bootstrap, and teardown
+
   for ephemeral runs. It resolves the effective cluster name when not provided.
 
 This separation keeps infrastructure, workloads, and configuration decoupled but fully code-driven, enabling safe promotions across environments.

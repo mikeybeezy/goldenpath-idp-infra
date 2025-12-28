@@ -3,8 +3,9 @@
 - **Status:** Accepted
 - **Date:** 2025-12-26
 - **Owners:** Platform (GoldenPath IDP)
+- **Domain:** Application
 - **Decision type:** Architecture | Observability | Delivery
-- **Related:** docs/01_GOVERNANCE.md, docs/19_DELIVERY_INSIGHTS.md, docs/adrs/ADR-0008-backstage-portal.md
+- **Related:** docs/01_GOVERNANCE.md, docs/19_DELIVERY_INSIGHTS.md, docs/adrs/ADR-0008-app-backstage-portal.md
 
 ## Context
 
@@ -38,7 +39,9 @@ mandatory platform requirement.
 ## Scope
 
 - Applies to: CI pipelines that choose to adopt it (initially Backstage
+
   reference app).
+
 - Out of scope:
   - mandatory instrumentation
   - log or command output capture
@@ -51,7 +54,9 @@ mandatory platform requirement.
 - Makes delivery performance measurable and explainable.
 - Enables trend analysis (build time, step regressions, cache efficiency).
 - Aligns CI/CD observability with runtime observability via shared OTel
+
   semantics.
+
 - Differentiates the platform without increasing baseline complexity.
 
 ### Tradeoffs / Risks

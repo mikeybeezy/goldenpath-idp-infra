@@ -33,35 +33,42 @@ explicit flag in CI (e.g., only when you intend to abandon a build).
 
 Cleanup script:
 
-```
+```text
+
 bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
-```
+
+```text
 
 Set `DRY_RUN=false` to execute deletions. For manual AWS cleanup, see
 `docs/15_TEARDOWN_AND_CLEANUP.md`.
 
 Build ID decision:
 
-```
+```text
+
 docs/16_INFRA_Build_ID_Strategy_Decision.md
-```
+
+```text
 
 ## Terraform Kubernetes resources (decision)
 
 **Problem:** Terraform fails when Kubernetes API access is unavailable
 (`connect: connection refused`) while trying to manage service accounts.
 
-**Options considered:**
+## Options considered:
 
 1) **Single Terraform apply** that includes Kubernetes resources.
+
    - Pros: one command.
    - Cons: brittle when kubeconfig or cluster readiness is missing.
 
 2) **Split into phases**: AWS/EKS first, then Kubernetes resources.
+
    - Pros: reliable and CI-friendly; avoids kube-provider failures.
    - Cons: requires a second apply (unless automated).
 
 3) **Conditional Kubernetes resources** behind a flag.
+
    - Pros: avoids failure until kube access exists.
    - Cons: needs a second apply to enable later.
 

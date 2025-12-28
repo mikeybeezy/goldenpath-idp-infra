@@ -14,15 +14,18 @@ See also: `docs/08_INGRESS_STRATEGY.md` for ingress front door decisions.
 
 ## Environment exposure model
 
-**Dev**
+## Dev
+
 - Public-facing ingress is acceptable to unblock iteration.
 - Expect minimal friction for engineers validating changes.
 
-**Staging/Prod**
+## Staging/Prod
+
 - Ingress is private/internal by default.
 - Access is limited to approved entry points (VPN, bastion, or SSM forward).
 
-**Future**
+## Future
+
 - As the platform matures, all environments move to internal-facing ingress.
 
 ## Kong exposure control (annotations)
@@ -33,10 +36,12 @@ values files (per environment).
 
 Example annotations:
 
-```
+```text
+
 service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
 service.beta.kubernetes.io/aws-load-balancer-scheme: "internal"
-```
+
+```text
 
 When we need public access in dev, we omit the `internal` scheme annotation.
 When we need internal-only access in staging/prod, we enable it.
@@ -57,11 +62,13 @@ operations and support.
 ### Option A: Pritunl (self-hosted)
 
 Pros:
+
 - Lowest cost at small scale.
 - Fast to deploy and flexible.
 - Works well with AWS VPC routing.
 
 Cons:
+
 - You own patching, uptime, and monitoring.
 - HA and disaster recovery require extra work.
 - Security posture depends on ops maturity.
@@ -69,11 +76,13 @@ Cons:
 ### Option B: Pritunl Enterprise (managed)
 
 Pros:
+
 - Reduced ops burden.
 - Enterprise features and support.
 - Straightforward migration from OSS.
 
 Cons:
+
 - Recurring cost.
 - Vendor dependency.
 - Less cloud-native than AWS Client VPN.
@@ -81,11 +90,13 @@ Cons:
 ### Option C: AWS Client VPN (managed)
 
 Pros:
+
 - Fully managed with tight AWS integration.
 - Easier audits and compliance controls.
 - Scales cleanly with multi-account AWS orgs.
 
 Cons:
+
 - Higher recurring cost.
 - Less customization.
 - Pricing scales with active connections.

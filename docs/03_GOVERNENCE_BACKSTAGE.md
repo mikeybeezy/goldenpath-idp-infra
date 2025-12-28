@@ -4,13 +4,13 @@ Here is a clean, senior-level Backstage Governance Mapping Table you can drop st
 
 This makes explicit what Backstage governs, what it surfaces, and what it never enforces.
 
-# **Backstage Governance Mapping**
+## Backstage Governance Mapping
 
 Backstage acts as the governance interface for the platform.
 
 It surfaces standards, ownership, and compliance signals, while enforcement occurs elsewhere in the platform.
 
-# **Governance Responsibility Matrix**
+## Governance Responsibility Matrix
 
 | **Area** | **What Backstage Does** | **What It Does Not Do** | **Enforcement Lives Where** |
 | --- | --- | --- | --- |
@@ -25,7 +25,7 @@ It surfaces standards, ownership, and compliance signals, while enforcement occu
 | Deprecation Visibility | Marks deprecated templates/services clearly | Does not remove or migrate workloads | Platform deprecation process |
 | Deviation Visibility | Makes non-golden-path services visible | Does not prevent deviation | Ownership acknowledgment + governance rules |
 
-# **Backstage as a Governance Lens**
+## Backstage as a Governance Lens
 
 Backstage is treated as:
 
@@ -41,7 +41,7 @@ This prevents Backstage from becoming:
 - A shadow control plane
 - A single point of failure
 
-# **Golden Path Governance via Backstage**
+## Golden Path Governance via Backstage
 
 | **Capability** | **Backstage Role** | **Platform Role** |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ Backstage documents and exposes the Golden Path.
 
 The platform enforces and operates it.
 
-# **Governance Design Principle**
+## Governance Design Principle
 
 Backstage answers: “What should exist and who owns it?”
 
@@ -67,7 +67,7 @@ This separation:
 - Keeps enforcement machine-reliable
 - Prevents policy sprawl
 
-# **Explicit Non-Goals (V1)**
+## Explicit Non-Goals (V1)
 
 Backstage will not:
 
@@ -79,8 +79,29 @@ Backstage will not:
 
 This is intentional.
 
-# **Why This Matters**
+## Why This Matters
 
 - Makes governance visible without being oppressive
 - Scales with teams instead of fighting them
 - Signals staff-level platform judgment
+
+## Backstage as the reference product
+
+Backstage is treated as the reference product for GoldenPath.
+
+This means:
+
+- Backstage is built, tested, packaged, deployed, and promoted using the same pipelines and
+  governance as any other workload.
+- Platform delivery patterns are validated first against Backstage.
+- Any friction encountered while operating Backstage is considered a platform issue, not a product
+  issue.
+
+Backstage serves as:
+
+- A concrete example of the Golden Path.
+- A proving ground for delivery, promotion, and rollback.
+- A living demonstration of platform standards in practice.
+
+GoldenPath will not require teams to adopt patterns or constraints that are not already exercised
+by the platform’s own workloads.
