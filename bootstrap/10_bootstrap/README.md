@@ -44,7 +44,7 @@ times vary based on AWS capacity and regional load.
 
 ## Flow diagram (quick view)
 
-```
+```text
 Prereqs
   -> Metrics Server
   -> Argo CD
@@ -57,7 +57,7 @@ Prereqs
   -> Optional scale down
   -> Sanity checklist
   -> Bootstrap complete
-```
+```text
 
 ## One-stage vs multi-stage
 
@@ -66,31 +66,31 @@ Guidance and use cases are in:
 
 ## Prereqs (mandatory)
 
-```
+```text
 bootstrap/00_prereqs/00_check_tools.sh
 bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
-```
+```text
 
 ## Bootstrap runner (recommended)
 
 For a complete list of runtime flags used by build, bootstrap, and teardown,
 see `docs/17_BUILD_RUN_FLAGS.md`.
 
-```
+```text
 NODE_INSTANCE_TYPE=t3.small bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region> [kong-namespace]
-```
+```text
 
 If you omit `<cluster>` and `<region>`, the runner will read them from
 `TF_DIR/terraform.tfvars`:
 
-```
+```text
 TF_DIR=envs/dev NODE_INSTANCE_TYPE=t3.small \
   bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
-```
+```text
 
 ## Happy path (bootstrap + teardown)
 
-```
+```text
 # Bootstrap
 NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev SKIP_CERT_MANAGER_VALIDATION=true \
   bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
@@ -98,7 +98,7 @@ NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev SKIP_CERT_MANAGER_VALIDATION=true \
 # Teardown
 TEARDOWN_CONFIRM=true \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
-```
+```text
 
 ## Cluster name (set once)
 
@@ -107,22 +107,22 @@ Updates will reuse the value and will not prompt again.
 
 Optional helper:
 
-```
+```text
 make set-cluster-name ENV=dev
-```
+```text
 
 ## Makefile shortcuts
 
 If you prefer one-line commands, use the Makefile:
 
-```
+```text
 make help
 make build ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 make timed-build ENV=dev BUILD_ID=20250115-02 CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 make bootstrap ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 make bootstrap-only ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 make destroy ENV=dev
-```
+```text
 
 `BUILD_ID` is required for timed targets and defaults to the `build_id` value in
 `envs/<env>/terraform.tfvars`. If that value is empty, the Makefile exits with
@@ -133,10 +133,10 @@ needed, but it is optional if your env file already defines it.
 
 Use the teardown runner for a clean, ordered teardown:
 
-```
+```text
 TEARDOWN_CONFIRM=true \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
-```
+```text
 
 Bootstrap mode defaults for this environment:
 
@@ -148,31 +148,31 @@ Bootstrap mode defaults for this environment:
 
 Optional scale-down after bootstrap:
 
-```
+```text
 NODE_INSTANCE_TYPE=t3.small SCALE_DOWN_AFTER_BOOTSTRAP=true TF_DIR=goldenpath-idp-infra/envs/dev \
   bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
-```
+```text
 
 Skip cert-manager validation (default behavior):
 
-```
+```text
 SKIP_CERT_MANAGER_VALIDATION=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
   bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
-```
+```text
 
 Skip waiting for Argo CD apps to sync (default behavior):
 
-```
+```text
 SKIP_ARGO_SYNC_WAIT=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
   bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
-```
+```text
 
 Enable compact output (reduces noisy command output, keeps stage banners and warnings):
 
-```
+```text
 COMPACT_OUTPUT=true NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
   bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
-```
+```text
 
 ## Runner toggles
 
@@ -196,7 +196,7 @@ Bootstrapping them first removes the ordering race and keeps failures determinis
 
 ### Example: compact output (`COMPACT_OUTPUT=true`)
 
-```
+```text
 Bootstrap starting for cluster goldenpath-dev-eks in eu-west-2
 
 ##### STAGE 1: CLUSTER CONTEXT #####
@@ -283,11 +283,11 @@ dev-prometheus           Synced      Degraded      <none>
 
 ##### STAGE 15: SANITY CHECKS #####
 ... (see 50_smoke-tests checklist)
-```
+```text
 
 ### Example: full output (`COMPACT_OUTPUT=false`)
 
-```
+```text
 Bootstrap starting for cluster goldenpath-dev-eks in eu-west-2
 Updated context arn:aws:eks:eu-west-2:593517239005:cluster/goldenpath-dev-eks in /Users/mikesablaze/.kube/config
 aws-cli/1.33.35 Python/3.11.0 Darwin/23.6.0 botocore/1.34.153
@@ -446,21 +446,21 @@ dev-keycloak             Unknown     Healthy       <none>
 dev-kong                 OutOfSync   Healthy       <none>
 dev-loki                 Synced      Healthy       <none>
 dev-prometheus           Synced      Degraded      <none>
-```
+```text
 
 This mode is best when you are debugging a specific failure and want full
 command output.
 
 Enforce cert-manager validation after Argo apps sync:
 
-```
+```text
 SKIP_CERT_MANAGER_VALIDATION=false NODE_INSTANCE_TYPE=t3.small ENV_NAME=dev \
   bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region>
-```
+```text
 
 ## Full manual sequence (multi-stage)
 
-```
+```text
 bash bootstrap/00_prereqs/00_check_tools.sh
 bash bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-subnet-ids> <node-role-arn> <instance-type>
 
@@ -477,24 +477,24 @@ kubectl -n kube-system rollout status deployment/cluster-autoscaler --timeout=18
 bash bootstrap/40_platform-tooling/20_kong_ingress.sh <cluster> <region> [namespace]
 
 bash bootstrap/50_smoke-tests/20_audit.sh <cluster> <region>
-```
+```text
 
 ## Post-build sanity checks
 
-```
+```text
 kubectl get nodes
 kubectl top nodes
 kubectl -n argocd get applications
 kubectl -n kong-system get svc
-```
+```text
 
 ## SSH break-glass
 
 Node access uses SSM by default. Enable SSH break-glass only when needed.
 
-```
+```text
 terraform -chdir=envs/dev apply -var="enable_ssh_break_glass=true" -var="ssh_key_name=mikeybeezy" -var='ssh_source_security_group_ids=["sg-..."]'
-```
+```text
 
 Note: `ssh_key_name` is the AWS EC2 key pair name (not the local `.pem` file).
 
@@ -527,7 +527,7 @@ Terraform, no imports are needed.
 
 Example imports:
 
-```
+```text
 terraform import 'module.eks[0].aws_eks_node_group.this' <cluster>:<node_group>
 terraform import 'module.eks[0].aws_eks_addon.coredns' <cluster>:coredns
 terraform import 'module.eks[0].aws_eks_addon.vpc_cni' <cluster>:vpc-cni
@@ -537,14 +537,14 @@ terraform import 'module.eks[0].aws_eks_addon.efs_csi_driver' <cluster>:aws-efs-
 terraform import 'module.eks[0].aws_eks_addon.snapshot_controller' <cluster>:snapshot-controller
 terraform import 'module.iam[0].aws_iam_role.eks_cluster' <cluster-role-name>
 terraform import 'module.iam[0].aws_iam_role.eks_node_group' <node-role-name>
-```
+```text
 
 ## Connect to the cluster
 
-```
+```text
 aws eks update-kubeconfig --region <region> --name <cluster>
 kubectl get nodes
-```
+```text
 
 ## Script references
 
@@ -567,16 +567,16 @@ AWS Load Balancer Controller likely lacks permissions. A common error is:
 `UnauthorizedOperation: ec2:DescribeRouteTables`. Ensure the controller IAM
 role includes `ec2:DescribeRouteTables`, then restart the deployment:
 
-```
+```text
 kubectl -n kube-system rollout restart deploy/aws-load-balancer-controller
-```
+```text
 
 ## Argo CD access (Keycloak + admin bootstrap)
 
 Argo CD admin access is for bootstrap only and should be disabled once SSO is
 working. Use the helper script:
 
-```
+```text
 bootstrap/10_gitops-controller/20_argocd_admin_access.sh disable
 bootstrap/10_gitops-controller/20_argocd_admin_access.sh enable
-```
+```text
