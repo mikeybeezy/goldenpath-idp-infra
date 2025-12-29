@@ -20,7 +20,9 @@ reference and should evolve as the platform grows.
 - Backend:
   - S3 bucket: `goldenpath-idp-dev-bucket`
   - DynamoDB lock table: `goldenpath-idp-dev-db-key`
-  - State key: `envs/dev/terraform.tfstate`
+  - State keys:
+    - Persistent: `envs/dev/terraform.tfstate`
+    - Ephemeral (per BuildId): `envs/dev/builds/<build_id>/terraform.tfstate`
 
 ## Planned extensions
 

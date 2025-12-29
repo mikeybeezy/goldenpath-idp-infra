@@ -43,8 +43,11 @@ These roles are assumed by Kubernetes service accounts via IRSA.
 ## State and locking (dev)
 
 - **S3 bucket:** `goldenpath-idp-dev-bucket`
-- **State key:** `envs/dev/terraform.tfstate`
 - **DynamoDB lock table:** `goldenpath-idp-dev-db-key`
+- **State keys:**
+  - **Persistent:** `envs/dev/terraform.tfstate`
+  - **Ephemeral (per BuildId):** `envs/dev/builds/<build_id>/terraform.tfstate`
+- **Apply role access:** allow `envs/dev/builds/*` for ephemeral runs.
 
 ## Where roles are configured
 
