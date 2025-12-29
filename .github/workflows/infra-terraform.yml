@@ -14,6 +14,18 @@ on:
           - test
           - staging
           - prod
+      lifecycle:
+        description: "Lifecycle (ephemeral or persistent)"
+        required: true
+        default: "persistent"
+        type: choice
+        options:
+          - ephemeral
+          - persistent
+      build_id:
+        description: "Build ID for ephemeral runs"
+        required: false
+        default: ""
       require_state:
         description: "Fail if remote state object is missing"
         required: true
@@ -85,6 +97,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ENABLE_TF_K8S_RESOURCES: "false"
+      CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
+      BUILD_ID: ${{ inputs.build_id }}
     permissions:
       contents: read
       id-token: write
@@ -134,11 +148,29 @@ jobs:
           aws-region: eu-west-2
           role-to-assume: ${{ steps.backend.outputs.role }}
 
+      - name: Resolve state key
+        run: |
+          if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
+            if [[ -z "${BUILD_ID}" ]]; then
+              echo "build_id is required when lifecycle=ephemeral" >&2
+              exit 1
+            fi
+            if ! echo "${BUILD_ID}" | grep -Eq '^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$'; then
+              echo "Invalid BUILD_ID: ${BUILD_ID} (expected dd-mm-yy-NN)" >&2
+              exit 1
+            fi
+            STATE_KEY="envs/${{ inputs.env }}/builds/${BUILD_ID}/terraform.tfstate"
+          else
+            STATE_KEY="envs/${{ inputs.env }}/terraform.tfstate"
+          fi
+          echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
+          echo "Resolved STATE_KEY=${STATE_KEY}"
+
       - name: Terraform init (backend)
         run: |
           terraform -chdir=envs/${{ inputs.env }} init -reconfigure \
             -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
-            -backend-config="key=envs/${{ inputs.env }}/terraform.tfstate" \
+            -backend-config="key=${STATE_KEY}" \
             -backend-config="region=eu-west-2" \
             -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
@@ -146,7 +178,6 @@ jobs:
       - name: Guard - backend state must exist
         if: ${{ inputs.require_state }}
         run: |
-          STATE_KEY="envs/${{ inputs.env }}/terraform.tfstate"
           echo "Checking state: s3://${{ steps.backend.outputs.bucket }}/${STATE_KEY}"
           if ! aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1; then
             echo "Missing state file in backend. Run infra apply first or migrate local state." >&2
