@@ -124,6 +124,7 @@ repo values in `envs/dev/terraform.tfvars` by design. For ephemeral runs,
 | `inputs.bootstrap_only` | workflow input | Skip Terraform apply; run bootstrap only. |
 | `inputs.confirm_irsa_apply` | workflow input | Confirm IRSA service-account apply (needed for LB + autoscaler; future EFS/EBS). |
 | `inputs.min_ready_nodes` | workflow input | Minimum Ready node count required. |
+| `inputs.new_build` | workflow input | Fail if ephemeral state already exists (prevents accidental append). |
 | `STATE_KEY` | workflow step | Backend state key resolved from lifecycle + Build ID. |
 | `TF_DIR` | workflow env | Terraform root for environment. |
 | `LB_CLEANUP_ATTEMPTS` | workflow env | Load balancer cleanup retries. |

@@ -44,6 +44,9 @@ CI workflows that init Terraform will use this rule (plan, apply, bootstrap,
 teardown, and PR plan). Ephemeral runs will require `build_id`, and the plan/apply
 gate will enforce that the plan and apply use the same lifecycle and BuildId.
 
+When a new ephemeral build is explicitly requested, CI must fail if the
+state key already exists. This avoids accidentally appending to an old build.
+
 ---
 
 ## Scope
