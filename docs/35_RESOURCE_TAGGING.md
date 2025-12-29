@@ -80,6 +80,7 @@ How they are removed:
   Missing tags mean **manual cleanup**.
 - **IAM cleanup policy:** delete actions are tag-scoped; missing tags will block
   automated cleanup.
+- **IAM resources:** IAM policies and roles are **not** deleted by orphan cleanup.
 
 ---
 
