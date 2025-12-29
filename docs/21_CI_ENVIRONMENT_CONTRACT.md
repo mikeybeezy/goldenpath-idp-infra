@@ -112,6 +112,11 @@ precedence over `envs/<env>/terraform.tfvars`. PR plans continue to read the
 repo values in `envs/dev/terraform.tfvars` by design. For ephemeral runs,
 `new_build=true` is required alongside a valid `build_id`.
 
+CI bootstrap supports two configuration sources:
+
+- **repo (default):** uses `envs/<env>/terraform.tfvars` for full config.
+- **inputs:** accepts a base64-encoded tfvars payload via `inputs.tfvars_b64`.
+
 ### CI Bootstrap (Stub) (`ci-bootstrap.yml`)
 
 | Variable | Source | Purpose |
@@ -121,12 +126,15 @@ repo values in `envs/dev/terraform.tfvars` by design. For ephemeral runs,
 | `CLUSTER_NAME` | workflow env | Cluster name override. |
 | `BUILD_ID` | workflow env | Build ID for ephemeral runs. |
 | `CLUSTER_LIFECYCLE` | workflow env | `ephemeral` or `persistent`. |
+| `inputs.config_source` | workflow input | Choose repo `terraform.tfvars` or workflow-provided tfvars. |
+| `inputs.tfvars_b64` | workflow input | Base64-encoded tfvars when `config_source=inputs`. |
 | `inputs.bootstrap_only` | workflow input | Skip Terraform apply; run bootstrap only. |
 | `inputs.confirm_irsa_apply` | workflow input | Confirm IRSA service-account apply (needed for LB + autoscaler; future EFS/EBS). |
 | `inputs.min_ready_nodes` | workflow input | Minimum Ready node count required. |
 | `inputs.new_build` | workflow input | Fail if ephemeral state already exists (prevents accidental append). |
 | `STATE_KEY` | workflow step | Backend state key resolved from lifecycle + Build ID. |
 | `TF_DIR` | workflow env | Terraform root for environment. |
+| `TFVARS_PATH` | workflow env | Explicit tfvars path used for bootstrap IRSA apply. |
 | `LB_CLEANUP_ATTEMPTS` | workflow env | Load balancer cleanup retries. |
 | `LB_CLEANUP_INTERVAL` | workflow env | Seconds between cleanup retries. |
 | `REMOVE_K8S_SA_FROM_STATE` | workflow env | Cleanup flag during teardown. |
