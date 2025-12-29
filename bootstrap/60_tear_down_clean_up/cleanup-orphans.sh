@@ -74,6 +74,15 @@ if [[ -n "${instances}" ]]; then
   run aws ec2 terminate-instances --instance-ids ${instances} --region "${region}"
 fi
 
+# ENIs (only unattached).
+enis=$(aws ec2 describe-network-interfaces \
+  --filters "Name=tag:BuildId,Values=${build_id}" "Name=status,Values=available" \
+  --region "${region}" \
+  --query "NetworkInterfaces[].NetworkInterfaceId" --output text)
+for eni in ${enis}; do
+  run aws ec2 delete-network-interface --network-interface-id "${eni}" --region "${region}"
+done
+
 # NAT gateways.
 nat_gws=$(aws ec2 describe-nat-gateways \
   --filter "Name=tag:BuildId,Values=${build_id}" \
