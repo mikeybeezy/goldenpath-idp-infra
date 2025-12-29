@@ -23,6 +23,11 @@ on:
         description: "Build ID (dd-mm-yy-NN)"
         required: false
         type: string
+      new_build:
+        description: "Confirm a new ephemeral build (required when lifecycle=ephemeral)"
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   apply-staging:
@@ -41,14 +46,27 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ inputs.lifecycle }}" == "ephemeral" ]]; then
-            if [[ -z "${{ inputs.build_id }}" ]]; then
-              echo "build_id is required when lifecycle=ephemeral"
+            if [[ "${{ inputs.new_build }}" != "true" ]]; then
+              echo "new_build must be true when lifecycle=ephemeral" >&2
               exit 1
             fi
-          fi
-          if [[ -n "${{ inputs.build_id }}" ]] && ! [[ "${{ inputs.build_id }}" =~ ^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]; then
-            echo "Invalid build_id: '${{ inputs.build_id }}' (expected dd-mm-yy-NN)"
-            exit 1
+            if [[ -z "${{ inputs.build_id }}" ]]; then
+              echo "build_id is required when lifecycle=ephemeral" >&2
+              exit 1
+            fi
+            if ! [[ "${{ inputs.build_id }}" =~ ^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]; then
+              echo "Invalid build_id: '${{ inputs.build_id }}' (expected dd-mm-yy-NN)" >&2
+              exit 1
+            fi
+          else
+            if [[ "${{ inputs.new_build }}" == "true" ]]; then
+              echo "new_build is only valid for lifecycle=ephemeral" >&2
+              exit 1
+            fi
+            if [[ -n "${{ inputs.build_id }}" ]]; then
+              echo "build_id is only valid for lifecycle=ephemeral" >&2
+              exit 1
+            fi
           fi
 
       - name: Verify staging plan succeeded for this commit
@@ -107,6 +125,7 @@ jobs:
         run: |
           echo "Lifecycle=${{ inputs.lifecycle }}"
           echo "BuildId=${{ inputs.build_id }}"
+          echo "NewBuild=${{ inputs.new_build }}"
           echo "StateKey=${STATE_KEY}"
 
       - name: Terraform init (backend)
@@ -119,7 +138,9 @@ jobs:
             -backend-config="encrypt=true"
 
       - name: Terraform apply (staging)
-        env:
-          TF_VAR_cluster_lifecycle: ${{ inputs.lifecycle }}
-          TF_VAR_build_id: ${{ inputs.build_id }}
-        run: terraform -chdir=envs/staging apply -auto-approve -input=false -no-color
+        run: |
+          var_args=(-var "cluster_lifecycle=${{ inputs.lifecycle }}")
+          if [[ "${{ inputs.lifecycle }}" == "ephemeral" ]]; then
+            var_args+=(-var "build_id=${{ inputs.build_id }}")
+          fi
+          terraform -chdir=envs/staging apply -auto-approve -input=false -no-color "${var_args[@]}"

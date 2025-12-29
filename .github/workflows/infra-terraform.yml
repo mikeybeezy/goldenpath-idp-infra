@@ -26,6 +26,11 @@ on:
         description: "Build ID for ephemeral runs"
         required: false
         default: ""
+      new_build:
+        description: "Confirm a new ephemeral build (required when lifecycle=ephemeral)"
+        required: true
+        default: false
+        type: boolean
       require_state:
         description: "Fail if remote state object is missing"
         required: true
@@ -99,6 +104,7 @@ jobs:
       ENABLE_TF_K8S_RESOURCES: "false"
       CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
       BUILD_ID: ${{ inputs.build_id }}
+      NEW_BUILD: ${{ inputs.new_build }}
     permissions:
       contents: read
       id-token: write
@@ -151,6 +157,10 @@ jobs:
       - name: Resolve state key
         run: |
           if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
+            if [[ "${NEW_BUILD}" != "true" ]]; then
+              echo "new_build must be true when lifecycle=ephemeral" >&2
+              exit 1
+            fi
             if [[ -z "${BUILD_ID}" ]]; then
               echo "build_id is required when lifecycle=ephemeral" >&2
               exit 1
@@ -161,6 +171,14 @@ jobs:
             fi
             STATE_KEY="envs/${{ inputs.env }}/builds/${BUILD_ID}/terraform.tfstate"
           else
+            if [[ "${NEW_BUILD}" == "true" ]]; then
+              echo "new_build is only valid for lifecycle=ephemeral" >&2
+              exit 1
+            fi
+            if [[ -n "${BUILD_ID}" ]]; then
+              echo "build_id is only valid for lifecycle=ephemeral" >&2
+              exit 1
+            fi
             STATE_KEY="envs/${{ inputs.env }}/terraform.tfstate"
           fi
           echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
@@ -170,6 +188,7 @@ jobs:
         run: |
           echo "Lifecycle=${CLUSTER_LIFECYCLE}"
           echo "BuildId=${BUILD_ID}"
+          echo "NewBuild=${NEW_BUILD}"
           echo "StateKey=${STATE_KEY}"
 
       - name: Terraform init (backend)
@@ -191,4 +210,9 @@ jobs:
           fi
 
       - name: Terraform plan
-        run: terraform -chdir=envs/${{ inputs.env }} plan -input=false -no-color
+        run: |
+          var_args=(-var "cluster_lifecycle=${{ inputs.lifecycle }}")
+          if [[ "${{ inputs.lifecycle }}" == "ephemeral" ]]; then
+            var_args+=(-var "build_id=${{ inputs.build_id }}")
+          fi
+          terraform -chdir=envs/${{ inputs.env }} plan -input=false -no-color "${var_args[@]}"
