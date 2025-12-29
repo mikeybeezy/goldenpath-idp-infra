@@ -83,7 +83,7 @@ immediately after bootstrap. It uses the same build ID and cluster naming
 resolution to target the correct environment.
 
 **Default cleanup behavior**
-- `CLEANUP_ORPHANS=true` by default.
+- `cleanup_mode=delete` by default (set `dry_run` or `none` to override).
 - Cleanup targets resources tagged for the platform; untagged resources are out of scope.
 - Teardown role must allow `tag:GetResources` for orphan discovery.
 

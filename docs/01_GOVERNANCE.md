@@ -91,6 +91,9 @@ attribution, and cleanup reliable. Tagging is a core governance guardrail that
 preserves velocity by making ownership and lifecycle status explicit.
 The canonical tag set lives in `docs/35_RESOURCE_TAGGING.md` and is formalized
 in `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`.
+Destructive automation must use tag-scoped IAM policies; see
+`docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md` and
+`docs/adrs/ADR-0039-platform-tag-scoped-iam-policy-template.md`.
 
 ## V1 Governance Scope & Decisions
 

@@ -1,11 +1,11 @@
 # ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown
 
-- **Status:** Accepted
+- **Status:** Superseded
 - **Date:** 2025-12-28
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Operations / Governance
-- **Related:** `docs/01_GOVERNANCE.md`, `docs/20_CI_ENVIRONMENT_SEPARATION.md`
+- **Related:** `docs/01_GOVERNANCE.md`, `docs/20_CI_ENVIRONMENT_SEPARATION.md`, `docs/adrs/ADR-0038-platform-teardown-orphan-cleanup-gate.md`
 
 ---
 
@@ -93,5 +93,7 @@ Does not apply to:
 
 ## Notes
 
-This decision favors predictable teardown over fully automated cleanup. Cleanup
+Superseded by `ADR-0038-platform-teardown-orphan-cleanup-gate.md`.
+
+This decision favored predictable teardown over fully automated cleanup. Cleanup
 remains available but is executed intentionally.

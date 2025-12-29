@@ -37,11 +37,15 @@ on:
         description: "Teardown heartbeat interval (seconds)"
         required: true
         default: "30"
-      cleanup_orphans:
-        description: "Remove BuildId-tagged orphan resources after teardown"
+      cleanup_mode:
+        description: "Orphan cleanup mode (delete, dry_run, none)"
         required: true
-        default: true
-        type: boolean
+        default: "delete"
+        type: choice
+        options:
+          - delete
+          - dry_run
+          - none
       argo_app_namespace:
         description: "Argo CD application namespace to delete before LB cleanup"
         required: true
@@ -72,7 +76,8 @@ jobs:
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
       TF_DIR: envs/${{ inputs.env }}
-      CLEANUP_ORPHANS: ${{ inputs.cleanup_orphans }}
+      CLEANUP_ORPHANS: ${{ inputs.cleanup_mode != 'none' }}
+      ORPHAN_CLEANUP_MODE: ${{ inputs.cleanup_mode }}
       ARGO_APP_NAMESPACE: ${{ inputs.argo_app_namespace }}
       ARGO_APP_NAME: ${{ inputs.argo_app_name }}
       DELETE_ARGO_APP: ${{ inputs.delete_argo_app }}
@@ -164,7 +169,8 @@ jobs:
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
       TF_DIR: envs/${{ inputs.env }}
-      CLEANUP_ORPHANS: ${{ inputs.cleanup_orphans }}
+      CLEANUP_ORPHANS: ${{ inputs.cleanup_mode != 'none' }}
+      ORPHAN_CLEANUP_MODE: ${{ inputs.cleanup_mode }}
       ARGO_APP_NAMESPACE: ${{ inputs.argo_app_namespace }}
       ARGO_APP_NAME: ${{ inputs.argo_app_name }}
       DELETE_ARGO_APP: ${{ inputs.delete_argo_app }}

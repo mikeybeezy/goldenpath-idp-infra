@@ -135,10 +135,18 @@ Load balancer cleanup:
 
 - `LB_CLEANUP_ATTEMPTS` – retry loops for LB Service deletion (default `5`)
 - `LB_CLEANUP_INTERVAL` – delay between retries (default `20`)
+- `LB_CLEANUP_MAX_WAIT` – max wait for LB Services to disappear (default `900`)
+
+Argo CD application cleanup:
+
+- `DELETE_ARGO_APP` – delete Argo Application before LB cleanup (default `true`)
+- `ARGO_APP_NAMESPACE` – Argo Application namespace (default `kong-system`)
+- `ARGO_APP_NAME` – Argo Application name (default `dev-kong`)
 
 Optional cleanup:
 
 - `CLEANUP_ORPHANS` – run tag‑based orphan cleanup
+- `ORPHAN_CLEANUP_MODE` – `delete`, `dry_run`, or `none` (default `delete`)
 - `BUILD_ID` – required when `CLEANUP_ORPHANS=true`
 
 Example:
@@ -146,7 +154,7 @@ Example:
 ```bash
 TEARDOWN_CONFIRM=true RELAX_PDB=true DRAIN_TIMEOUT=300s HEARTBEAT_INTERVAL=30 \
   TF_DIR=envs/dev REQUIRE_KUBE_FOR_TF_DESTROY=true REMOVE_K8S_SA_FROM_STATE=true \
-  TF_DESTROY_FALLBACK_AWS=false CLEANUP_ORPHANS=true BUILD_ID=20250115-02 \
+  TF_DESTROY_FALLBACK_AWS=false CLEANUP_ORPHANS=true ORPHAN_CLEANUP_MODE=delete BUILD_ID=20250115-02 \
   bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh goldenpath-dev-eks-20250115-02 eu-west-2
 
 ```

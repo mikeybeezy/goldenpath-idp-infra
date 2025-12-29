@@ -19,6 +19,7 @@ set -euo pipefail
 #   TF_AUTO_APPROVE=true (use -auto-approve with terraform destroy)
 #   REMOVE_K8S_SA_FROM_STATE=true|false (default true)
 #   CLEANUP_ORPHANS=true BUILD_ID=<id> (run cleanup-orphans after teardown)
+#   ORPHAN_CLEANUP_MODE=delete|dry_run|none (default delete)
 
 cluster_name="${1:-}"
 region="${2:-}"
@@ -58,6 +59,7 @@ ARGO_APP_NAMESPACE="${ARGO_APP_NAMESPACE:-kong-system}"
 ARGO_APP_NAME="${ARGO_APP_NAME:-dev-kong}"
 DELETE_ARGO_APP="${DELETE_ARGO_APP:-true}"
 LB_CLEANUP_MAX_WAIT="${LB_CLEANUP_MAX_WAIT:-900}"
+ORPHAN_CLEANUP_MODE="${ORPHAN_CLEANUP_MODE:-delete}"
 
 cleanup_on_exit() {
   local status=$?
@@ -321,18 +323,36 @@ fi
 stage_done "STAGE 5"
 
 stage_banner "STAGE 6: OPTIONAL ORPHAN CLEANUP"
-if [[ "${CLEANUP_ORPHANS:-false}" == "true" ]]; then
-  if [[ -z "${BUILD_ID:-}" ]]; then
-    echo "CLEANUP_ORPHANS=true but BUILD_ID is not set." >&2
-    exit 1
-  fi
-  echo "Cleaning resources tagged with BuildId=${BUILD_ID}..."
-  DRY_RUN=false run_with_heartbeat "Orphan cleanup for BuildId=${BUILD_ID}" \
-    bash "${repo_root}/bootstrap/60_tear_down_clean_up/cleanup-orphans.sh" "${BUILD_ID}" "${region}"
-else
+if [[ "${CLEANUP_ORPHANS:-false}" != "true" ]]; then
   echo "Skipping orphan cleanup (CLEANUP_ORPHANS=false)."
+  stage_done "STAGE 6"
+else
+  case "${ORPHAN_CLEANUP_MODE}" in
+    none)
+      echo "Skipping orphan cleanup (ORPHAN_CLEANUP_MODE=none)."
+      stage_done "STAGE 6"
+      ;;
+    dry_run|delete)
+      if [[ -z "${BUILD_ID:-}" ]]; then
+        echo "ORPHAN_CLEANUP_MODE=${ORPHAN_CLEANUP_MODE} but BUILD_ID is not set." >&2
+        exit 1
+      fi
+      if [[ "${ORPHAN_CLEANUP_MODE}" == "dry_run" ]]; then
+        cleanup_dry_run="true"
+      else
+        cleanup_dry_run="false"
+      fi
+      echo "Orphan cleanup (mode=${ORPHAN_CLEANUP_MODE}, dry_run=${cleanup_dry_run}) for BuildId=${BUILD_ID}..."
+      DRY_RUN="${cleanup_dry_run}" run_with_heartbeat "Orphan cleanup for BuildId=${BUILD_ID}" \
+        bash "${repo_root}/bootstrap/60_tear_down_clean_up/cleanup-orphans.sh" "${BUILD_ID}" "${region}"
+      stage_done "STAGE 6"
+      ;;
+    *)
+      echo "Unsupported ORPHAN_CLEANUP_MODE=${ORPHAN_CLEANUP_MODE}." >&2
+      exit 1
+      ;;
+  esac
 fi
-stage_done "STAGE 6"
 
 stage_banner "STAGE 7: TEARDOWN COMPLETE"
 echo "Teardown complete."
