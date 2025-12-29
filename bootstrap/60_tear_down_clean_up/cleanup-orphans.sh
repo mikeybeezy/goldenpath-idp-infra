@@ -50,6 +50,40 @@ for arn in ${eks_clusters}; do
   run aws eks delete-cluster --name "${cluster_name}" --region "${region}"
 done
 
+# Load balancers (classic and v2).
+lb_arns=$(aws resourcegroupstaggingapi get-resources \
+  --tag-filters "Key=BuildId,Values=${build_id}" \
+  --resource-type-filters "elasticloadbalancing:loadbalancer" \
+  --region "${region}" \
+  --query "ResourceTagMappingList[].ResourceARN" --output text)
+
+for arn in ${lb_arns}; do
+  if [[ "${arn}" == *"/app/"* || "${arn}" == *"/net/"* || "${arn}" == *"/gateway/"* ]]; then
+    run aws elbv2 delete-load-balancer --load-balancer-arn "${arn}" --region "${region}"
+  else
+    lb_name="${arn##*/}"
+    run aws elb delete-load-balancer --load-balancer-name "${lb_name}" --region "${region}"
+  fi
+done
+
+# EC2 instances.
+instances=$(aws ec2 describe-instances \
+  --filters "Name=tag:BuildId,Values=${build_id}" \
+  --region "${region}" \
+  --query "Reservations[].Instances[].InstanceId" --output text)
+if [[ -n "${instances}" ]]; then
+  run aws ec2 terminate-instances --instance-ids ${instances} --region "${region}"
+fi
+
+# ENIs (only unattached).
+enis=$(aws ec2 describe-network-interfaces \
+  --filters "Name=tag:BuildId,Values=${build_id}" "Name=status,Values=available" \
+  --region "${region}" \
+  --query "NetworkInterfaces[].NetworkInterfaceId" --output text)
+for eni in ${enis}; do
+  run aws ec2 delete-network-interface --network-interface-id "${eni}" --region "${region}"
+done
+
 # IAM roles tagged with BuildId (global; use IAM region).
 iam_roles=$(aws resourcegroupstaggingapi get-resources \
   --tag-filters "Key=BuildId,Values=${build_id}" \
@@ -89,40 +123,6 @@ for arn in ${iam_roles}; do
   run aws iam delete-role --role-name "${role_name}"
 done
 
-# Load balancers (classic and v2).
-lb_arns=$(aws resourcegroupstaggingapi get-resources \
-  --tag-filters "Key=BuildId,Values=${build_id}" \
-  --resource-type-filters "elasticloadbalancing:loadbalancer" \
-  --region "${region}" \
-  --query "ResourceTagMappingList[].ResourceARN" --output text)
-
-for arn in ${lb_arns}; do
-  if [[ "${arn}" == *"/app/"* || "${arn}" == *"/net/"* || "${arn}" == *"/gateway/"* ]]; then
-    run aws elbv2 delete-load-balancer --load-balancer-arn "${arn}" --region "${region}"
-  else
-    lb_name="${arn##*/}"
-    run aws elb delete-load-balancer --load-balancer-name "${lb_name}" --region "${region}"
-  fi
-done
-
-# EC2 instances.
-instances=$(aws ec2 describe-instances \
-  --filters "Name=tag:BuildId,Values=${build_id}" \
-  --region "${region}" \
-  --query "Reservations[].Instances[].InstanceId" --output text)
-if [[ -n "${instances}" ]]; then
-  run aws ec2 terminate-instances --instance-ids ${instances} --region "${region}"
-fi
-
-# ENIs (only unattached).
-enis=$(aws ec2 describe-network-interfaces \
-  --filters "Name=tag:BuildId,Values=${build_id}" "Name=status,Values=available" \
-  --region "${region}" \
-  --query "NetworkInterfaces[].NetworkInterfaceId" --output text)
-for eni in ${enis}; do
-  run aws ec2 delete-network-interface --network-interface-id "${eni}" --region "${region}"
-done
-
 # NAT gateways.
 nat_gws=$(aws ec2 describe-nat-gateways \
   --filter "Name=tag:BuildId,Values=${build_id}" \
@@ -150,6 +150,13 @@ rt_ids=$(aws ec2 describe-route-tables \
 if [[ -n "${rt_ids}" ]]; then
   while read -r rtb main; do
     if [[ "${main}" != "True" ]]; then
+      assoc_ids=$(aws ec2 describe-route-tables \
+        --route-table-ids "${rtb}" \
+        --region "${region}" \
+        --query "RouteTables[].Associations[?Main!=\`true\`].RouteTableAssociationId" --output text)
+      for assoc_id in ${assoc_ids}; do
+        run aws ec2 disassociate-route-table --association-id "${assoc_id}" --region "${region}"
+      done
       run aws ec2 delete-route-table --route-table-id "${rtb}" --region "${region}"
     fi
   done <<< "${rt_ids}"
