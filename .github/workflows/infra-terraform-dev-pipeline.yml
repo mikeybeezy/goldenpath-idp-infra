@@ -61,6 +61,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Note apply role expectation
+        run: |
+          echo "Apply role secrets must exist for the selected environment."
+          echo "Expected secrets: TF_AWS_IAM_ROLE_DEV_APPLY, TF_AWS_IAM_ROLE_TEST_APPLY, TF_AWS_IAM_ROLE_STAGING_APPLY, TF_AWS_IAM_ROLE_PROD_APPLY"
+
       - name: Validate lifecycle and build ID
         shell: bash
         run: |
