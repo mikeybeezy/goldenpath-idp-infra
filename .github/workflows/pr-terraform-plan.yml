@@ -33,11 +33,52 @@ jobs:
       - name: Terraform fmt (check)
         run: terraform fmt -check -recursive
 
+      - name: Resolve state key
+        run: |
+          read_top_var() {
+            local key="$1"
+            awk -F'=' -v k="${key}" '{
+              line=$0
+              sub(/#.*/,"",line)
+              if (line ~ /^[[:space:]]*$/) next
+              split(line, parts, "=")
+              lhs=parts[1]; gsub(/[[:space:]]/,"",lhs)
+              if (lhs==k) {
+                val=parts[2]
+                sub(/#.*/,"",val)
+                gsub(/"/,"",val)
+                gsub(/[[:space:]]/,"",val)
+                print val
+                exit
+              }
+            }' envs/dev/terraform.tfvars
+          }
+          cluster_lifecycle="${CLUSTER_LIFECYCLE:-$(read_top_var "cluster_lifecycle")}"
+          build_id="${BUILD_ID:-$(read_top_var "build_id")}"
+          if [[ -z "${cluster_lifecycle}" ]]; then
+            cluster_lifecycle="persistent"
+          fi
+          if [[ "${cluster_lifecycle}" == "ephemeral" ]]; then
+            if [[ -z "${build_id}" ]]; then
+              echo "build_id is required when cluster_lifecycle=ephemeral" >&2
+              exit 1
+            fi
+            if ! echo "${build_id}" | grep -Eq '^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$'; then
+              echo "Invalid build_id: ${build_id} (expected dd-mm-yy-NN)" >&2
+              exit 1
+            fi
+            STATE_KEY="envs/dev/builds/${build_id}/terraform.tfstate"
+          else
+            STATE_KEY="envs/dev/terraform.tfstate"
+          fi
+          echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
+          echo "Resolved STATE_KEY=${STATE_KEY}"
+
       - name: Terraform init (backend)
         run: |
           terraform -chdir=envs/dev init -reconfigure \
             -backend-config="bucket=goldenpath-idp-dev-bucket" \
-            -backend-config="key=envs/dev/terraform.tfstate" \
+            -backend-config="key=${STATE_KEY}" \
             -backend-config="region=eu-west-2" \
             -backend-config="dynamodb_table=goldenpath-idp-dev-db-key" \
             -backend-config="encrypt=true"
