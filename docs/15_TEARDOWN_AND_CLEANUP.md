@@ -119,6 +119,34 @@ Terraform destroy guard:
 
   cluster deletion when `TF_DESTROY_FALLBACK_AWS=true` (default).
 
+Recovery after partial teardown (state drift):
+
+- If teardown exits early, Kubernetes service accounts may be deleted while
+  Terraform state still tracks them. PR plans will try to recreate them and
+  may fail with Unauthorized during refresh.
+- The teardown runner now attempts a best-effort state cleanup on exit when
+  `TF_DIR` is set and `REMOVE_K8S_SA_FROM_STATE=true`.
+- Use the resume target to finish cleanup when a teardown was interrupted.
+- CI teardown runs automatically attempt `teardown-resume` after a failure.
+- CI teardown defaults to orphan cleanup by BuildId; set `cleanup_orphans=false`
+  in the workflow dispatch input to skip tag-based cleanup.
+
+Resume teardown (recommended):
+
+```bash
+
+make teardown-resume ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
+
+```text
+
+Manual state cleanup (if you only need to reset k8s service accounts):
+
+```bash
+
+bootstrap/60_tear_down_clean_up/remove-k8s-service-accounts-from-state.sh envs/dev
+
+```text
+
 Service-account-only changes vs full apply:
 
 - If you only need Kubernetes service accounts (LB controller/autoscaler), use

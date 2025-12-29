@@ -37,6 +37,11 @@ on:
         description: "Teardown heartbeat interval (seconds)"
         required: true
         default: "30"
+      cleanup_orphans:
+        description: "Remove BuildId-tagged orphan resources after teardown"
+        required: true
+        default: true
+        type: boolean
 
 jobs:
   teardown:
@@ -50,7 +55,7 @@ jobs:
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
       TF_DIR: envs/${{ inputs.env }}
-      CLEANUP_ORPHANS: "false"
+      CLEANUP_ORPHANS: ${{ inputs.cleanup_orphans }}
       REMOVE_K8S_SA_FROM_STATE: "true"
       TF_AUTO_APPROVE: "true"
     steps:
@@ -124,3 +129,91 @@ jobs:
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
           make teardown ENV="${ENV}" BUILD_ID="${BUILD_ID}"
+
+  teardown-resume:
+    runs-on: ubuntu-latest
+    needs: teardown
+    if: ${{ always() && needs.teardown.result == 'failure' }}
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      ENV: ${{ inputs.env }}
+      AWS_REGION: ${{ inputs.region }}
+      CLUSTER_NAME: ${{ inputs.cluster_name }}
+      BUILD_ID: ${{ inputs.build_id }}
+      TF_DIR: envs/${{ inputs.env }}
+      CLEANUP_ORPHANS: ${{ inputs.cleanup_orphans }}
+      REMOVE_K8S_SA_FROM_STATE: "true"
+      TF_AUTO_APPROVE: "true"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Resolve cluster name
+        run: |
+          if [[ -z "${CLUSTER_NAME}" ]]; then
+            CLUSTER_NAME="$(ENV=${ENV} TF_DIR=${TF_DIR} BUILD_ID=${BUILD_ID} CLUSTER_LIFECYCLE=ephemeral bash scripts/resolve-cluster-name.sh)"
+          fi
+          echo "CLUSTER_NAME=${CLUSTER_NAME}" >> "${GITHUB_ENV}"
+          echo "Resolved CLUSTER_NAME=${CLUSTER_NAME}"
+
+      - name: Resolve backend config
+        id: backend
+        run: |
+          case "${ENV}" in
+            dev)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-dev-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-dev-db-key" >> "$GITHUB_OUTPUT"
+              ;;
+            test)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_TEST }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-test-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-test-db" >> "$GITHUB_OUTPUT"
+              ;;
+            staging)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_STAGING }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-staging-db" >> "$GITHUB_OUTPUT"
+              ;;
+            prod)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_PROD }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-prod-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-prod-db" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported env: ${ENV}" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ inputs.region }}
+          role-to-assume: ${{ steps.backend.outputs.role }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init (backend)
+        run: |
+          terraform -chdir="${TF_DIR}" init -reconfigure \
+            -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
+            -backend-config="key=envs/${ENV}/terraform.tfstate" \
+            -backend-config="region=${AWS_REGION}" \
+            -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
+            -backend-config="encrypt=true"
+
+      - name: Run teardown resume
+        run: |
+          TEARDOWN_CONFIRM="true" \
+          RELAX_PDB="${{ inputs.relax_pdb }}" \
+          DRAIN_TIMEOUT="${{ inputs.drain_timeout }}" \
+          HEARTBEAT_INTERVAL="${{ inputs.heartbeat_interval }}" \
+          TF_DIR="${TF_DIR}" \
+          CLEANUP_ORPHANS="${CLEANUP_ORPHANS}" \
+          CLUSTER="${CLUSTER_NAME}" \
+          REGION="${AWS_REGION}" \
+          make teardown-resume ENV="${ENV}" BUILD_ID="${BUILD_ID}"
