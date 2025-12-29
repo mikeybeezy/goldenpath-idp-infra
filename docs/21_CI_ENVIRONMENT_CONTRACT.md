@@ -47,6 +47,9 @@ currently used by workflows in this repo, with their context.
 Apply in this workflow is attached to the `dev` GitHub Environment. If required
 reviewers are configured, apply waits for approval; otherwise it runs immediately.
 
+Apply also accepts a successful **PR Terraform Plan** for the same commit SHA
+as the prerequisite in dev (manual `infra-terraform.yml` still works).
+
 ### Infra Terraform Apply (test) (`infra-terraform-apply-test.yml`)
 
 | Variable | Source | Purpose |
