@@ -58,6 +58,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 ## Superseded ADRs
 
 - [ADR-0011](ADR-0011-platform-ci-environment-contract) — superseded by `ADR-0034-platform-ci-environment-contract.md`.
+- [ADR-0036](ADR-0036-platform-orphan-cleanup-workflow.md) — superseded by `ADR-0038-platform-teardown-orphan-cleanup-gate.md`.
 
 ---
 

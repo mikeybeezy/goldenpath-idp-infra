@@ -81,7 +81,7 @@ Progress heartbeats:
   - Nodegroup/cluster waits are running (`aws eks wait`).
   - The cluster is deleting.
   - Terraform destroy is running (when TF_DIR is set).
-  - Orphan cleanup is running (when CLEANUP_ORPHANS=true).
+  - Orphan cleanup is running (when CLEANUP_ORPHANS=true and mode is not `none`).
 
 Set `HEARTBEAT_INTERVAL` to change the cadence (default `30` seconds).
 
@@ -101,6 +101,13 @@ TEARDOWN_CONFIRM=true LB_CLEANUP_ATTEMPTS=8 LB_CLEANUP_INTERVAL=30 \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
 
 ```text
+
+Orphan cleanup modes:
+
+- `ORPHAN_CLEANUP_MODE=delete` deletes BuildId-tagged resources.
+- `ORPHAN_CLEANUP_MODE=dry_run` lists resources only.
+- `ORPHAN_CLEANUP_MODE=none` skips cleanup (even if `CLEANUP_ORPHANS=true`).
+- CI uses the `cleanup_mode` workflow input to set this.
 
 Terraform destroy guard:
 
@@ -139,8 +146,8 @@ Recovery after partial teardown (state drift):
   `TF_DIR` is set and `REMOVE_K8S_SA_FROM_STATE=true`.
 - Use the resume target to finish cleanup when a teardown was interrupted.
 - CI teardown runs automatically attempt `teardown-resume` after a failure.
-- CI teardown defaults to orphan cleanup by BuildId; set `cleanup_orphans=false`
-  in the workflow dispatch input to skip tag-based cleanup.
+- CI teardown uses a `cleanup_mode` input (`delete`, `dry_run`, `none`).
+  Use `none` to skip, or `dry_run` for discovery without deletes.
 
 Resume teardown (recommended):
 

@@ -49,7 +49,7 @@ Progress heartbeats:
   - Node groups are deleting.
   - The cluster is deleting.
   - Terraform destroy is running (when TF_DIR is set).
-  - Orphan cleanup is running (when CLEANUP_ORPHANS=true).
+  - Orphan cleanup is running (when CLEANUP_ORPHANS=true and mode is not `none`).
 
 Set `HEARTBEAT_INTERVAL` to change the cadence (default `30` seconds).
 
@@ -99,7 +99,14 @@ TEARDOWN_CONFIRM=true TF_DIR=envs/dev \
 Optional cleanup by BuildId:
 
 ```bash
-TEARDOWN_CONFIRM=true CLEANUP_ORPHANS=true BUILD_ID=20250115-01 \
+TEARDOWN_CONFIRM=true CLEANUP_ORPHANS=true ORPHAN_CLEANUP_MODE=delete BUILD_ID=20250115-01 \
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+```
+
+Dry-run orphan discovery during teardown:
+
+```bash
+TEARDOWN_CONFIRM=true CLEANUP_ORPHANS=true ORPHAN_CLEANUP_MODE=dry_run BUILD_ID=20250115-01 \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
 ```
 
