@@ -131,20 +131,37 @@ jobs:
               ;;
           esac
 
-      - name: Guard - backend state must exist
+      - name: Resolve state key
         run: |
-          STATE_KEY="envs/${ENV}/terraform.tfstate"
+          if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
+            STATE_KEY="envs/${ENV}/builds/${BUILD_ID}/terraform.tfstate"
+          else
+            STATE_KEY="envs/${ENV}/terraform.tfstate"
+          fi
+          echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
+          echo "Resolved STATE_KEY=${STATE_KEY}"
+
+      - name: Guard - backend state
+        run: |
           echo "Checking state: s3://${{ steps.backend.outputs.bucket }}/${STATE_KEY}"
-          if ! aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1; then
-            echo "Missing state file in backend. Run infra apply first or migrate local state." >&2
-            exit 1
+          if [[ "${CLUSTER_LIFECYCLE}" == "persistent" ]]; then
+            if ! aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1; then
+              echo "Missing state file in backend. Run infra apply first or migrate local state." >&2
+              exit 1
+            fi
+          else
+            if aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1; then
+              echo "Found existing state for BUILD_ID=${BUILD_ID}. Reusing state for resume."
+            else
+              echo "No state found for BUILD_ID=${BUILD_ID}. A fresh state will be created on apply."
+            fi
           fi
 
       - name: Terraform init (backend)
         run: |
           terraform -chdir="${TF_DIR}" init \
             -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
-            -backend-config="key=envs/${ENV}/terraform.tfstate" \
+            -backend-config="key=${STATE_KEY}" \
             -backend-config="region=${AWS_REGION}" \
             -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"

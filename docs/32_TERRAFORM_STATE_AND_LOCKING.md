@@ -12,8 +12,10 @@ Terraform uses a remote backend to:
 ## Dev backend (current)
 
 - **S3 bucket:** `goldenpath-idp-dev-bucket`
-- **State key:** `envs/dev/terraform.tfstate`
 - **Lock table:** `goldenpath-idp-dev-db-key`
+- **State keys:**
+  - **Persistent:** `envs/dev/terraform.tfstate`
+  - **Ephemeral (per BuildId):** `envs/dev/builds/<build_id>/terraform.tfstate`
 
 ## How it connects
 
@@ -66,10 +68,16 @@ Plan needs read-only access to the state object plus lock access to the table.
 }
 ```
 
+## Ephemeral state access (apply roles)
+
+Ephemeral CI runs store state per BuildId. Apply roles must allow access to
+the `envs/dev/builds/*` prefix in the state bucket.
+
 ## First-run behavior
 
-If the state key does not exist, a first apply must run to create it.
-Plans will fail to lock until the state object exists.
+For **persistent** runs, the state key must exist; a first apply creates it.
+For **ephemeral** runs, the state key is created on the first apply for that
+BuildId, so a missing key is expected on a fresh build.
 
 ## References
 

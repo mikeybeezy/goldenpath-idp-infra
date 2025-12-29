@@ -25,6 +25,14 @@ on:
         description: "Build ID for teardown"
         required: true
         default: ""
+      lifecycle:
+        description: "Lifecycle (ephemeral or persistent)"
+        required: true
+        default: "ephemeral"
+        type: choice
+        options:
+          - ephemeral
+          - persistent
       relax_pdb:
         description: "Relax PDB during teardown"
         required: true
@@ -75,6 +83,7 @@ jobs:
       AWS_REGION: ${{ inputs.region }}
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
+      CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
       TF_DIR: envs/${{ inputs.env }}
       CLEANUP_ORPHANS: ${{ inputs.cleanup_mode != 'none' }}
       ORPHAN_CLEANUP_MODE: ${{ inputs.cleanup_mode }}
@@ -91,7 +100,7 @@ jobs:
       - name: Resolve cluster name
         run: |
           if [[ -z "${CLUSTER_NAME}" ]]; then
-            CLUSTER_NAME="$(ENV=${ENV} TF_DIR=${TF_DIR} BUILD_ID=${BUILD_ID} CLUSTER_LIFECYCLE=ephemeral bash scripts/resolve-cluster-name.sh)"
+            CLUSTER_NAME="$(ENV=${ENV} TF_DIR=${TF_DIR} BUILD_ID=${BUILD_ID} CLUSTER_LIFECYCLE=${CLUSTER_LIFECYCLE} bash scripts/resolve-cluster-name.sh)"
           fi
           echo "CLUSTER_NAME=${CLUSTER_NAME}" >> "${GITHUB_ENV}"
           echo "Resolved CLUSTER_NAME=${CLUSTER_NAME}"
@@ -126,6 +135,16 @@ jobs:
               ;;
           esac
 
+      - name: Resolve state key
+        run: |
+          if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
+            STATE_KEY="envs/${ENV}/builds/${BUILD_ID}/terraform.tfstate"
+          else
+            STATE_KEY="envs/${ENV}/terraform.tfstate"
+          fi
+          echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
+          echo "Resolved STATE_KEY=${STATE_KEY}"
+
       - name: Configure AWS credentials using OIDC
         uses: aws-actions/configure-aws-credentials@v4.1.0
         with:
@@ -139,7 +158,7 @@ jobs:
         run: |
           terraform -chdir="${TF_DIR}" init -reconfigure \
             -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
-            -backend-config="key=envs/${ENV}/terraform.tfstate" \
+            -backend-config="key=${STATE_KEY}" \
             -backend-config="region=${AWS_REGION}" \
             -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
@@ -168,6 +187,7 @@ jobs:
       AWS_REGION: ${{ inputs.region }}
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
+      CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
       TF_DIR: envs/${{ inputs.env }}
       CLEANUP_ORPHANS: ${{ inputs.cleanup_mode != 'none' }}
       ORPHAN_CLEANUP_MODE: ${{ inputs.cleanup_mode }}
@@ -184,7 +204,7 @@ jobs:
       - name: Resolve cluster name
         run: |
           if [[ -z "${CLUSTER_NAME}" ]]; then
-            CLUSTER_NAME="$(ENV=${ENV} TF_DIR=${TF_DIR} BUILD_ID=${BUILD_ID} CLUSTER_LIFECYCLE=ephemeral bash scripts/resolve-cluster-name.sh)"
+            CLUSTER_NAME="$(ENV=${ENV} TF_DIR=${TF_DIR} BUILD_ID=${BUILD_ID} CLUSTER_LIFECYCLE=${CLUSTER_LIFECYCLE} bash scripts/resolve-cluster-name.sh)"
           fi
           echo "CLUSTER_NAME=${CLUSTER_NAME}" >> "${GITHUB_ENV}"
           echo "Resolved CLUSTER_NAME=${CLUSTER_NAME}"
@@ -219,6 +239,16 @@ jobs:
               ;;
           esac
 
+      - name: Resolve state key
+        run: |
+          if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
+            STATE_KEY="envs/${ENV}/builds/${BUILD_ID}/terraform.tfstate"
+          else
+            STATE_KEY="envs/${ENV}/terraform.tfstate"
+          fi
+          echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
+          echo "Resolved STATE_KEY=${STATE_KEY}"
+
       - name: Configure AWS credentials using OIDC
         uses: aws-actions/configure-aws-credentials@v4.1.0
         with:
@@ -232,7 +262,7 @@ jobs:
         run: |
           terraform -chdir="${TF_DIR}" init -reconfigure \
             -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
-            -backend-config="key=envs/${ENV}/terraform.tfstate" \
+            -backend-config="key=${STATE_KEY}" \
             -backend-config="region=${AWS_REGION}" \
             -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
