@@ -22,6 +22,8 @@ currently used by workflows in this repo, with their context.
 | Variable | Source | Purpose |
 | --- | --- | --- |
 | `inputs.env` | workflow_dispatch input | Target environment for plan. |
+| `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
+| `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
 | `secrets.TF_AWS_IAM_ROLE_DEV` | repo secret | OIDC role for dev plan. |
 | `secrets.TF_AWS_IAM_ROLE_TEST` | repo secret | OIDC role for test plan. |
 | `secrets.TF_AWS_IAM_ROLE_STAGING` | repo secret | OIDC role for staging plan. |
@@ -34,7 +36,21 @@ currently used by workflows in this repo, with their context.
 | Variable | Source | Purpose |
 | --- | --- | --- |
 | `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
+| `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
+| `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
 | `secrets.TF_AWS_IAM_ROLE_DEV_APPLY` | repo secret | OIDC role for dev apply (write). |
+| `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
+| `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
+
+### Infra Terraform Pipeline (`infra-terraform-dev-pipeline.yml`)
+
+| Variable | Source | Purpose |
+| --- | --- | --- |
+| `inputs.env` | workflow_dispatch input | Target environment for plan/apply. |
+| `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
+| `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
+| `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `inputs.require_state` | workflow_dispatch input | Fail if persistent state object is missing. |
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Dev backend state config. |
 
@@ -47,6 +63,7 @@ currently used by workflows in this repo, with their context.
 | `CLUSTER_NAME` | workflow env | Cluster name override. |
 | `BUILD_ID` | workflow env | Build ID for ephemeral runs. |
 | `CLUSTER_LIFECYCLE` | workflow env | `ephemeral` or `persistent`. |
+| `STATE_KEY` | workflow step | Backend state key resolved from lifecycle + Build ID. |
 | `TF_DIR` | workflow env | Terraform root for environment. |
 | `LB_CLEANUP_ATTEMPTS` | workflow env | Load balancer cleanup retries. |
 | `LB_CLEANUP_INTERVAL` | workflow env | Seconds between cleanup retries. |
@@ -86,6 +103,7 @@ resolution to target the correct environment.
 - `cleanup_mode=delete` by default (set `dry_run` or `none` to override).
 - Cleanup targets resources tagged for the platform; untagged resources are out of scope.
 - Teardown role must allow `tag:GetResources` for orphan discovery.
+- Teardown resolves the backend state key from `lifecycle` + `build_id`.
 
 ### CI Backstage (Stub) (`ci-backstage.yml`)
 
@@ -118,8 +136,10 @@ the state object and acquire a lock, even though it does not write infra.
 
 **Dev backend**
 - S3 bucket: `goldenpath-idp-dev-bucket`
-- State key: `envs/dev/terraform.tfstate`
 - Lock table: `goldenpath-idp-dev-db-key`
+- State keys:
+  - Persistent: `envs/dev/terraform.tfstate`
+  - Ephemeral (per BuildId): `envs/dev/builds/<build_id>/terraform.tfstate`
 
 **Plan role policy (dev)**
 
@@ -153,6 +173,10 @@ the state object and acquire a lock, even though it does not write infra.
   ]
 }
 ```
+
+Ephemeral runs store state under `envs/dev/builds/<build_id>/terraform.tfstate`.
+Apply roles should allow `s3:GetObject`/`s3:PutObject` for the `envs/dev/builds/*`
+prefix in the state bucket.
 
 ---
 

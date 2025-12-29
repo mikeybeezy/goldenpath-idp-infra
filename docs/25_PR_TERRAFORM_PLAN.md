@@ -6,7 +6,10 @@ This document describes the PR plan workflow and how it behaves.
 
 - Trigger: pull requests that touch Terraform files.
 - Scope: `envs/dev` only.
-- Backend: disabled (`-backend=false`).
+- Backend: remote S3 + DynamoDB (read-only OIDC role).
+- State key: resolved from `envs/dev/terraform.tfvars`:
+  - `cluster_lifecycle=persistent` → `envs/dev/terraform.tfstate`
+  - `cluster_lifecycle=ephemeral` → `envs/dev/builds/<build_id>/terraform.tfstate`
 - Output: posted as a PR comment.
 
 ## Why this exists
@@ -17,12 +20,17 @@ This document describes the PR plan workflow and how it behaves.
 ## Limitations
 
 - Plan output is truncated if too large.
-- Without backend state, plan accuracy can be limited.
+- Plan uses `-refresh=false` so it reflects state, not live AWS drift.
 
 ## Note
 
-This PR plan uses no backend and no AWS credentials. If you later want higher-fidelity plans, add
-read-only AWS OIDC access.
+If you want a fresh-slate plan, update `build_id` in `envs/dev/terraform.tfvars`
+and keep `cluster_lifecycle=ephemeral`. The plan will then use a new state key
+and show a full create from scratch.
+
+If you want the PR plan to reflect incremental changes against a long-lived
+environment, keep `cluster_lifecycle=persistent` so the plan uses the stable
+state key.
 
 ## Change process
 

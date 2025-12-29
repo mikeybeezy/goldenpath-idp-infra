@@ -42,6 +42,40 @@ Use this before marking the platform stable for broader use.
 - ✅ A failed run can be retried without manual cleanup.
 - ✅ Scaling is predictable (node group sizing documented).
 
+## V1 Readiness Tracker (Current State)
+
+| Area | Item | Status | Evidence / Next step |
+| --- | --- | --- | --- |
+| CI + Infrastructure | CI plan/apply/bootstrap/teardown succeed without manual fixes | Not met | Fix teardown hangs + orphan cleanup permissions; validate in `ci-teardown.yml` run |
+| CI + Infrastructure | State in S3 + locks in DynamoDB | Met | `docs/32_TERRAFORM_STATE_AND_LOCKING.md` |
+| CI + Infrastructure | Backend init + state checks automatic | Met | `infra-terraform.yml`, `ci-bootstrap.yml` |
+| CI + Infrastructure | Orphan cleanup default + tag-scoped deletes | Partial | Policy exists; apply to CI role and validate delete perms |
+| CI + Infrastructure | Failures clear + recoverable | Partial | Reduce manual fixes; runbook coverage + max-wait guards |
+| Platform Workloads | Argo CD reachable after bootstrap | Unknown | Run a fresh bootstrap + health check |
+| Platform Workloads | Grafana reachable after autoscaling | Unknown | Validate post-apply health checks |
+| Platform Workloads | Backstage deploys via GitOps | Unknown | Run reference workload deploy |
+| Platform Workloads | Basic smoke checks pass | Unknown | Add/execute smoke check step |
+| Access + Security | OIDC roles separated for plan/apply | Met | `docs/33_IAM_ROLES_AND_POLICIES.md` |
+| Access + Security | IAM policies logged/auditable | Met | IAM index + ADRs |
+| Access + Security | EKS access documented/repeatable | Met | `docs/31_EKS_ACCESS_MODEL.md` |
+| Access + Security | Secrets never live in Git | Partial | Enforce in CI/pre-commit |
+| Documentation + Governance | Living docs indexed + reviewed | Met | `docs/00_DOC_INDEX.md`, `docs/30_DOCUMENTATION_FRESHNESS.md` |
+| Documentation + Governance | ADR immutability + superseded marking | Met | ADR index + superseded entries |
+| Documentation + Governance | Runbooks cover top operational flows | Partial | Expand + validate runbooks |
+| Documentation + Governance | New joiners can run end-to-end | Partial | Run onboarding walkthrough |
+| Confidence Checks | Clean build with new Build ID | Partial | Lifecycle-aware state keys in `ci-bootstrap.yml` + `ci-teardown.yml`; validate in CI |
+| Confidence Checks | Failed run retried without manual cleanup | Not met | Address teardown/orphan cleanup gaps |
+| Confidence Checks | Scaling predictable and documented | Partial | Validate node group sizing docs |
+
+## V1 Readiness Backlog (Hohpe-Inspired)
+
+- [ ] Fitness functions for tag coverage, teardown completeness, and plan/apply gates.
+- [ ] Architect Elevator summary in ADRs/PRs (why + impact, not just mechanics).
+- [ ] Contract stability rules for CI inputs and Terraform module interfaces.
+- [ ] Idempotent ops: explicitly documented re-run behavior for build/teardown.
+- [ ] Golden-path dogfooding: platform deploys via the same templates/pipelines as tenants.
+- [ ] Runbook quality bar: symptom → diagnosis → fix format enforced.
+
 ---
 
 ## Notes

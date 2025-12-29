@@ -53,6 +53,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0037](ADR-0037-platform-resource-tagging-policy.md) | Platform | Platform resource tagging policy | Accepted | 2025-12-28 | Standard tag set for audit, cost, and cleanup consistency. |
 | [ADR-0038](ADR-0038-platform-teardown-orphan-cleanup-gate.md) | Platform | Gate orphan cleanup in CI teardown with explicit modes | Proposed | 2025-12-29 | Cleanup mode is explicit (`delete`, `dry_run`, `none`) with a default delete for ephemeral runs. |
 | [ADR-0039](ADR-0039-platform-tag-scoped-iam-policy-template.md) | Platform | Tag-scoped IAM policy template for destructive automation | Proposed | 2025-12-29 | Standard template for tag-scoped deletes; read-only discovery remains unscoped. |
+| [ADR-0040](ADR-0040-platform-lifecycle-aware-state-keys.md) | Platform | Lifecycle-aware Terraform state keys for BuildId isolation | Proposed | 2025-12-29 | Ephemeral runs use per-BuildId state keys; persistent uses a stable key. |
 
 ---
 
