@@ -244,6 +244,7 @@ jobs:
           echo "Resolved STATE_KEY=${STATE_KEY}"
 
       - name: Guard - backend state must exist (persistent only)
+        if: ${{ inputs.require_state }}
         run: |
           if [[ "${CLUSTER_LIFECYCLE}" == "persistent" ]]; then
             echo "Checking state: s3://${{ steps.backend.outputs.bucket }}/${STATE_KEY}"
