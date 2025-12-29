@@ -20,6 +20,8 @@ Use this to understand **who assumes what**, **where it is used**, and **why**.
 - **Scope:** S3/DynamoDB state + AWS infra create/update.
 - **Teardown/orphan cleanup policy:** `docs/policies/ci-teardown-orphan-cleanup.json`
   (delete actions require `BuildId` + `Environment` tags; read actions are unscoped).
+- **Instance profile read policy:** `docs/policies/ci-apply-iam-instance-profile-read.json`
+  (required for Terraform to list IAM instance profiles when deleting roles).
 - **Note:** IAM policies are excluded from orphan cleanup by design.
 
 ## Cluster roles (IRSA)
