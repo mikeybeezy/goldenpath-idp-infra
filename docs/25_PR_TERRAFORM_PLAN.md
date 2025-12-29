@@ -28,6 +28,10 @@ If you want a fresh-slate plan, update `build_id` in `envs/dev/terraform.tfvars`
 and keep `cluster_lifecycle=ephemeral`. The plan will then use a new state key
 and show a full create from scratch.
 
+If you want the PR plan to reflect incremental changes against a long-lived
+environment, keep `cluster_lifecycle=persistent` so the plan uses the stable
+state key.
+
 ## Change process
 
 - Update the ADR if the workflow changes materially.

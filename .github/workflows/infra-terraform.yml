@@ -166,6 +166,12 @@ jobs:
           echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
           echo "Resolved STATE_KEY=${STATE_KEY}"
 
+      - name: CI summary (state selection)
+        run: |
+          echo "Lifecycle=${CLUSTER_LIFECYCLE}"
+          echo "BuildId=${BUILD_ID}"
+          echo "StateKey=${STATE_KEY}"
+
       - name: Terraform init (backend)
         run: |
           terraform -chdir=envs/${{ inputs.env }} init -reconfigure \
