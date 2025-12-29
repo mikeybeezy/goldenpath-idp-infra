@@ -68,4 +68,3 @@ kubectl get svc -A | rg LoadBalancer
 - Removing a finalizer skips controller cleanup. If an AWS Load Balancer is
   left behind, run the orphan cleanup step (BuildId-tagged) to delete it.
 - If the controller is running, prefer normal deletion without manual patching.
-

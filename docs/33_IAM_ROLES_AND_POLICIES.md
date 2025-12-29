@@ -16,7 +16,7 @@ Use this to understand **who assumes what**, **where it is used**, and **why**.
 
 - **Purpose:** apply infrastructure changes.
 - **Assumed by:** GitHub Actions (OIDC).
-- **Used in:** `infra-terraform-apply-dev.yml`.
+- **Used in:** `infra-terraform-apply-dev.yml`, `ci-teardown.yml`.
 - **Scope:** S3/DynamoDB state + AWS infra create/update.
 - **Teardown/orphan cleanup policy:** `docs/policies/ci-teardown-orphan-cleanup.json`
   (delete actions require `BuildId` + `Environment` tags; read actions are unscoped).
