@@ -28,6 +28,7 @@ jobs:
   apply-dev:
     if: ${{ inputs.confirm_apply == 'apply' }}
     runs-on: ubuntu-latest
+    environment: dev
     permissions:
       contents: read
       id-token: write

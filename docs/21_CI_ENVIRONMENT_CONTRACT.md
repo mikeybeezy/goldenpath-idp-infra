@@ -42,21 +42,22 @@ currently used by workflows in this repo, with their context.
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
 
-### Infra Terraform Pipeline (`infra-terraform-dev-pipeline.yml`)
+Apply in this workflow is attached to the `dev` GitHub Environment. If required
+reviewers are configured, apply waits for approval; otherwise it runs immediately.
+
+### Infra Terraform Plan Pipeline (`infra-terraform-dev-pipeline.yml`)
 
 | Variable | Source | Purpose |
 | --- | --- | --- |
-| `inputs.env` | workflow_dispatch input | Target environment for plan/apply. |
-| `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
+| `inputs.env` | workflow_dispatch input | Target environment for plan. |
 | `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
 | `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
 | `inputs.require_state` | workflow_dispatch input | Fail if persistent state object is missing. |
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
 
-Apply in this pipeline is attached to the GitHub Environment named by `inputs.env`.
-If required reviewers are configured, the apply job waits for approval; otherwise
-it runs immediately.
+This pipeline is plan-only; apply happens in `infra-terraform-apply-dev.yml`
+or other environment-specific apply workflows.
 
 ### CI Bootstrap (Stub) (`ci-bootstrap.yml`)
 
@@ -96,6 +97,19 @@ The CI bootstrap workflow supports explicit modes to reduce operator error:
 - **teardown**: run the dedicated teardown workflow to destroy the environment.
 
 See `docs/adrs/ADR-0033-platform-ci-orchestrated-modes.md` for the decision and tradeoffs.
+
+## Approval modes (vendor-neutral)
+
+GoldenPath supports two manual-approval patterns for infrastructure changes:
+
+1) **Default (vendor-neutral):** separate plan and apply workflows. Apply runs
+   only when a human triggers `workflow_dispatch` and confirms intent.
+2) **Optional (GitHub Environments):** apply workflows can attach to a GitHub
+   Environment (for example, `dev`). If required reviewers are configured, apply
+   waits for approval; if not, it runs immediately.
+
+The platform does **not** require GitHub Environments to be useful. Environments
+are treated as an optional convenience for teams already using that feature.
 
 ### CI Teardown (`ci-teardown.yml`)
 
