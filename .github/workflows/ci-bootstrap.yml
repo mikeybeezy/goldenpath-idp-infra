@@ -79,6 +79,8 @@ jobs:
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
       CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
+      TF_VAR_build_id: ${{ inputs.build_id }}
+      TF_VAR_cluster_lifecycle: ${{ inputs.lifecycle }}
       TF_DIR: envs/${{ inputs.env }}
       MIN_READY_NODES: ${{ inputs.min_ready_nodes }}
       CONFIRM_TF_APPLY: ${{ inputs.confirm_irsa_apply }}
