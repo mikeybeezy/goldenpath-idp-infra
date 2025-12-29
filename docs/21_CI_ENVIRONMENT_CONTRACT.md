@@ -42,17 +42,64 @@ currently used by workflows in this repo, with their context.
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
 
-### Infra Terraform Pipeline (`infra-terraform-dev-pipeline.yml`)
+Apply in this workflow is attached to the `dev` GitHub Environment. If required
+reviewers are configured, apply waits for approval; otherwise it runs immediately.
+
+### Infra Terraform Apply (test) (`infra-terraform-apply-test.yml`)
 
 | Variable | Source | Purpose |
 | --- | --- | --- |
-| `inputs.env` | workflow_dispatch input | Target environment for plan/apply. |
 | `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
+| `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
+| `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `secrets.TF_AWS_IAM_ROLE_TEST_APPLY` | repo secret | OIDC role for test apply (write). |
+| `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
+| `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
+
+Apply in this workflow is attached to the `test` GitHub Environment. If required
+reviewers are configured, apply waits for approval; otherwise it runs immediately.
+
+### Infra Terraform Apply (staging) (`infra-terraform-apply-staging.yml`)
+
+| Variable | Source | Purpose |
+| --- | --- | --- |
+| `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
+| `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
+| `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `secrets.TF_AWS_IAM_ROLE_STAGING_APPLY` | repo secret | OIDC role for staging apply (write). |
+| `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
+| `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
+
+Apply in this workflow is attached to the `staging` GitHub Environment. If required
+reviewers are configured, apply waits for approval; otherwise it runs immediately.
+
+### Infra Terraform Apply (prod) (`infra-terraform-apply-prod.yml`)
+
+| Variable | Source | Purpose |
+| --- | --- | --- |
+| `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
+| `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
+| `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `secrets.TF_AWS_IAM_ROLE_PROD_APPLY` | repo secret | OIDC role for prod apply (write). |
+| `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
+| `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
+
+Apply in this workflow is attached to the `prod` GitHub Environment. If required
+reviewers are configured, apply waits for approval; otherwise it runs immediately.
+
+### Infra Terraform Plan Pipeline (`infra-terraform-dev-pipeline.yml`)
+
+| Variable | Source | Purpose |
+| --- | --- | --- |
+| `inputs.env` | workflow_dispatch input | Target environment for plan. |
 | `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
 | `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
 | `inputs.require_state` | workflow_dispatch input | Fail if persistent state object is missing. |
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
-| `bucket` / `dynamodb_table` | workflow step | Dev backend state config. |
+| `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
+
+This pipeline is plan-only; apply happens in `infra-terraform-apply-dev.yml`
+or other environment-specific apply workflows.
 
 ### CI Bootstrap (Stub) (`ci-bootstrap.yml`)
 
@@ -99,9 +146,9 @@ GoldenPath supports two manual-approval patterns for infrastructure changes:
 
 1) **Default (vendor-neutral):** separate plan and apply workflows. Apply runs
    only when a human triggers `workflow_dispatch` and confirms intent.
-2) **Optional (GitHub Environments):** a single pipeline with `environment`
-   approvals enabled. If an Environment has required reviewers, apply waits
-   for approval; if not, it runs immediately.
+2) **Optional (GitHub Environments):** apply workflows can attach to a GitHub
+   Environment (for example, `dev`). If required reviewers are configured, apply
+   waits for approval; if not, it runs immediately.
 
 The platform does **not** require GitHub Environments to be useful. Environments
 are treated as an optional convenience for teams already using that feature.

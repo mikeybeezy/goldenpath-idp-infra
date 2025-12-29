@@ -59,7 +59,10 @@ Result: Terraform uses `envs/dev/terraform.tfstate`.
 | --- | --- |
 | `infra-terraform.yml` | Yes |
 | `infra-terraform-apply-dev.yml` | Yes (dev only) |
-| `infra-terraform-dev-pipeline.yml` | Yes (all envs) |
+| `infra-terraform-apply-test.yml` | Yes (test only) |
+| `infra-terraform-apply-staging.yml` | Yes (staging only) |
+| `infra-terraform-apply-prod.yml` | Yes (prod only) |
+| `infra-terraform-dev-pipeline.yml` | Yes (plan-only, all envs) |
 | `ci-bootstrap.yml` | Yes |
 | `ci-teardown.yml` | Yes |
 | `pr-terraform-plan.yml` | Yes (reads `envs/dev/terraform.tfvars`) |
