@@ -24,6 +24,7 @@ currently used by workflows in this repo, with their context.
 | `inputs.env` | workflow_dispatch input | Target environment for plan. |
 | `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
 | `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `inputs.new_build` | workflow_dispatch input | Explicit confirmation for new ephemeral builds. |
 | `secrets.TF_AWS_IAM_ROLE_DEV` | repo secret | OIDC role for dev plan. |
 | `secrets.TF_AWS_IAM_ROLE_TEST` | repo secret | OIDC role for test plan. |
 | `secrets.TF_AWS_IAM_ROLE_STAGING` | repo secret | OIDC role for staging plan. |
@@ -38,6 +39,7 @@ currently used by workflows in this repo, with their context.
 | `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
 | `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
 | `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `inputs.new_build` | workflow_dispatch input | Explicit confirmation for new ephemeral builds. |
 | `secrets.TF_AWS_IAM_ROLE_DEV_APPLY` | repo secret | OIDC role for dev apply (write). |
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
@@ -52,6 +54,7 @@ reviewers are configured, apply waits for approval; otherwise it runs immediatel
 | `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
 | `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
 | `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `inputs.new_build` | workflow_dispatch input | Explicit confirmation for new ephemeral builds. |
 | `secrets.TF_AWS_IAM_ROLE_TEST_APPLY` | repo secret | OIDC role for test apply (write). |
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
@@ -66,6 +69,7 @@ reviewers are configured, apply waits for approval; otherwise it runs immediatel
 | `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
 | `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
 | `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `inputs.new_build` | workflow_dispatch input | Explicit confirmation for new ephemeral builds. |
 | `secrets.TF_AWS_IAM_ROLE_STAGING_APPLY` | repo secret | OIDC role for staging apply (write). |
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
@@ -80,6 +84,7 @@ reviewers are configured, apply waits for approval; otherwise it runs immediatel
 | `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
 | `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
 | `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `inputs.new_build` | workflow_dispatch input | Explicit confirmation for new ephemeral builds. |
 | `secrets.TF_AWS_IAM_ROLE_PROD_APPLY` | repo secret | OIDC role for prod apply (write). |
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
@@ -94,12 +99,18 @@ reviewers are configured, apply waits for approval; otherwise it runs immediatel
 | `inputs.env` | workflow_dispatch input | Target environment for plan. |
 | `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
 | `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `inputs.new_build` | workflow_dispatch input | Explicit confirmation for new ephemeral builds. |
 | `inputs.require_state` | workflow_dispatch input | Fail if persistent state object is missing. |
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
 
 This pipeline is plan-only; apply happens in `infra-terraform-apply-dev.yml`
 or other environment-specific apply workflows.
+
+Manual plan/apply workflows pass `-var` overrides so workflow inputs take
+precedence over `envs/<env>/terraform.tfvars`. PR plans continue to read the
+repo values in `envs/dev/terraform.tfvars` by design. For ephemeral runs,
+`new_build=true` is required alongside a valid `build_id`.
 
 ### CI Bootstrap (Stub) (`ci-bootstrap.yml`)
 
@@ -166,6 +177,8 @@ are treated as an optional convenience for teams already using that feature.
 - Infra Terraform Checks
 - PR Terraform Plan
 - Infra Terraform Apply (dev/test/staging/prod) — Environment gates handle approval
+
+Note: `pr-terraform-plan.yml` is PR-triggered only and is not manually runnable.
 
 ### CI Teardown (`ci-teardown.yml`)
 
