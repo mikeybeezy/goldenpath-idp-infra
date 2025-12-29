@@ -146,6 +146,9 @@ What it does:
 - Deletes AWS resources tagged with a `BuildId` (EKS, LBs, EC2, NAT, subnets,
   SGs, IGWs, VPCs).
 
+Safety:
+- Never deletes the Terraform state S3 bucket or the DynamoDB lock table.
+
 Examples:
 
 ```bash

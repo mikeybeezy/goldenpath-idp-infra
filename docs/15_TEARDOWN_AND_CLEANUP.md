@@ -108,6 +108,7 @@ Orphan cleanup modes:
 - `ORPHAN_CLEANUP_MODE=dry_run` lists resources only.
 - `ORPHAN_CLEANUP_MODE=none` skips cleanup (even if `CLEANUP_ORPHANS=true`).
 - CI uses the `cleanup_mode` workflow input to set this.
+- Orphan cleanup never deletes the Terraform state S3 bucket or DynamoDB lock table.
 
 Terraform destroy guard:
 

@@ -31,6 +31,7 @@ echo "Cleanup starting (BuildId=${build_id}, region=${region}, dry_run=${dry_run
 if [[ -n "${state_bucket}" || -n "${state_table}" ]]; then
   echo "State context (bucket=${state_bucket:-unset}, table=${state_table:-unset})"
 fi
+echo "Safety: state backend resources (S3 bucket, DynamoDB lock table) are never modified."
 
 # EKS: delete node groups first, then clusters.
 eks_clusters=$(aws resourcegroupstaggingapi get-resources \
