@@ -99,4 +99,3 @@ It is a living guide for planning and execution.
 - PR plan path uses repo `tfvars`; manual workflows override via inputs.
 - Health checks and dashboards are linked from the catalog.
 - Operators can follow runbooks end-to-end without tribal knowledge.
-
