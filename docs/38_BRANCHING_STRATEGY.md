@@ -68,4 +68,3 @@ in repos without enterprise-level branch protections.
 ## Exceptions
 
 None. Hotfixes still flow through `development` first.
-

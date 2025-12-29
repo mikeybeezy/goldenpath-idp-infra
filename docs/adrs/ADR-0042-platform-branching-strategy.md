@@ -59,4 +59,3 @@ We will document the flow and add an optional CI guard to fail PRs that target
 
 - **Direct feature → main merges:** rejected due to stability and audit risk.
 - **GitFlow with release branches:** rejected as too heavy for current scale.
-
