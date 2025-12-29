@@ -1,5 +1,7 @@
 # Teardown and Cleanup Commands
 
+Last updated: 2025-12-29
+
 This page lists manual AWS CLI commands to find and remove lingering
 resources that block teardown. Use the teardown runner and cleanup scripts
 first; use these commands when Terraform or the scripts cannot finish the job.

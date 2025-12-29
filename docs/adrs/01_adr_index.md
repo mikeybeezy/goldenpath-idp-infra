@@ -51,6 +51,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0034](ADR-0034-platform-ci-environment-contract.md) | Platform | CI environment contract | Accepted | 2025-12-27 | Formalize CI environment variables as a governed interface. |
 | [ADR-0035](ADR-0035-platform-iam-audit-cadence.md) | Platform | IAM audit cadence for CI roles | Proposed | 2025-12-28 | Periodic IAM audits to tighten CI roles based on actual usage. |
 | [ADR-0037](ADR-0037-platform-resource-tagging-policy.md) | Platform | Platform resource tagging policy | Accepted | 2025-12-28 | Standard tag set for audit, cost, and cleanup consistency. |
+| [ADR-0038](ADR-0038-platform-teardown-orphan-cleanup-gate.md) | Platform | Gate orphan cleanup in CI teardown with explicit modes | Proposed | 2025-12-29 | Cleanup mode is explicit (`delete`, `dry_run`, `none`) with a default delete for ephemeral runs. |
 
 ---
 
