@@ -42,6 +42,14 @@ Use this before marking the platform stable for broader use.
 - ✅ A failed run can be retried without manual cleanup.
 - ✅ Scaling is predictable (node group sizing documented).
 
+## Teardown + Rebuild Done Criteria (V1 Gate)
+
+- [ ] Fresh Build ID uses an isolated state key for ephemeral runs (no refresh of prior BuildId resources in PR plan).
+- [ ] Teardown completes without manual intervention; a second run is safe (no destructive retries or stuck resources).
+- [ ] Orphan cleanup only deletes BuildId-tagged resources; state bucket + lock table are always skipped.
+- [ ] Load balancer cleanup does not block teardown (automatic cleanup or runbook path works).
+- [ ] CI logs clearly show what was deleted, skipped, and why.
+
 ## V1 Readiness Tracker (Current State)
 
 | Area | Item | Status | Evidence / Next step |
