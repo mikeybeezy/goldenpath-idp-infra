@@ -42,6 +42,17 @@ currently used by workflows in this repo, with their context.
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Dev backend state config. |
 
+### Infra Terraform Dev Pipeline (`infra-terraform-dev-pipeline.yml`)
+
+| Variable | Source | Purpose |
+| --- | --- | --- |
+| `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
+| `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
+| `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
+| `inputs.require_state` | workflow_dispatch input | Fail if persistent state object is missing. |
+| `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
+| `bucket` / `dynamodb_table` | workflow step | Dev backend state config. |
+
 ### CI Bootstrap (Stub) (`ci-bootstrap.yml`)
 
 | Variable | Source | Purpose |
