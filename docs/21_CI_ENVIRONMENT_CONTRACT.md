@@ -194,6 +194,8 @@ are treated as an optional convenience for teams already using that feature.
 - Infra Terraform Apply (dev/test/staging/prod) — Environment gates handle approval
 
 Note: `pr-terraform-plan.yml` is PR-triggered only and is not manually runnable.
+The PR plan workflow also dispatches `infra-terraform.yml` for the same branch
+to keep apply pre-checks aligned with PR plans.
 
 ### CI Teardown (`ci-teardown.yml`)
 
