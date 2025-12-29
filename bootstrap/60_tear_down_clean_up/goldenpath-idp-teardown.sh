@@ -54,6 +54,11 @@ if [[ -n "${TF_DIR:-}" && "${TF_DIR}" != /* ]]; then
   TF_DIR="${repo_root}/${TF_DIR}"
 fi
 
+ARGO_APP_NAMESPACE="${ARGO_APP_NAMESPACE:-kong-system}"
+ARGO_APP_NAME="${ARGO_APP_NAME:-dev-kong}"
+DELETE_ARGO_APP="${DELETE_ARGO_APP:-true}"
+LB_CLEANUP_MAX_WAIT="${LB_CLEANUP_MAX_WAIT:-900}"
+
 cleanup_on_exit() {
   local status=$?
   trap - EXIT
@@ -129,15 +134,55 @@ wait_with_heartbeat() {
   local label="$1"
   local check_cmd="$2"
   local interval="${3:-${HEARTBEAT_INTERVAL:-30}}"
+  local max_wait_seconds="${4:-}"
+  local start_epoch
+  local now_epoch
+  local elapsed
 
   echo "${label} (heartbeat every ${interval}s)..."
+  start_epoch="$(date -u +%s)"
   while true; do
     if eval "${check_cmd}"; then
       break
     fi
+    if [[ -n "${max_wait_seconds}" && "${max_wait_seconds}" -gt 0 ]]; then
+      now_epoch="$(date -u +%s)"
+      elapsed=$((now_epoch - start_epoch))
+      if [[ "${elapsed}" -ge "${max_wait_seconds}" ]]; then
+        echo "Timed out after ${elapsed}s waiting for: ${label}" >&2
+        return 1
+      fi
+    fi
     echo "  still in progress... $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
     sleep "${interval}"
   done
+}
+
+delete_argo_application() {
+  if [[ "${DELETE_ARGO_APP}" != "true" ]]; then
+    echo "Skipping Argo application deletion (DELETE_ARGO_APP=false)."
+    return 0
+  fi
+
+  if [[ -z "${ARGO_APP_NAMESPACE}" || -z "${ARGO_APP_NAME}" ]]; then
+    echo "Skipping Argo application deletion (namespace/name not set)."
+    return 0
+  fi
+
+  if ! kubectl get crd applications.argoproj.io >/dev/null 2>&1; then
+    echo "Argo Application CRD not found; skipping deletion."
+    return 0
+  fi
+
+  if ! kubectl get ns "${ARGO_APP_NAMESPACE}" >/dev/null 2>&1; then
+    echo "Namespace ${ARGO_APP_NAMESPACE} not found; skipping Argo application deletion."
+    return 0
+  fi
+
+  echo "Deleting Argo Application ${ARGO_APP_NAMESPACE}/${ARGO_APP_NAME} (best effort)..."
+  if ! kubectl -n "${ARGO_APP_NAMESPACE}" delete application "${ARGO_APP_NAME}" --ignore-not-found; then
+    echo "Warning: failed to delete Argo Application ${ARGO_APP_NAMESPACE}/${ARGO_APP_NAME}." >&2
+  fi
 }
 
 cleanup_loadbalancer_services() {
@@ -177,12 +222,15 @@ run_cmd aws eks update-kubeconfig --name "${cluster_name}" --region "${region}"
 stage_done "STAGE 1"
 
 stage_banner "STAGE 2: PRE-DESTROY CLEANUP"
+delete_argo_application
 echo "Removing LoadBalancer services to release AWS resources..."
 run_cmd bash "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh" "${cluster_name}" "${region}" --yes
 cleanup_loadbalancer_services || true
 wait_with_heartbeat \
   "Waiting for LoadBalancer services to be removed" \
-  "test -z \"\$(kubectl get svc -A -o jsonpath='{range .items[?(@.spec.type==\"LoadBalancer\")]}{.metadata.namespace}/{.metadata.name}{\"\\n\"}{end}' 2>/dev/null)\""
+  "test -z \"\$(kubectl get svc -A -o jsonpath='{range .items[?(@.spec.type==\"LoadBalancer\")]}{.metadata.namespace}/{.metadata.name}{\"\\n\"}{end}' 2>/dev/null)\"" \
+  "${HEARTBEAT_INTERVAL:-30}" \
+  "${LB_CLEANUP_MAX_WAIT}"
 stage_done "STAGE 2"
 
 stage_banner "STAGE 3: DRAIN NODEGROUPS"

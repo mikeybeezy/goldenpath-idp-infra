@@ -42,6 +42,23 @@ on:
         required: true
         default: true
         type: boolean
+      argo_app_namespace:
+        description: "Argo CD application namespace to delete before LB cleanup"
+        required: true
+        default: "kong-system"
+      argo_app_name:
+        description: "Argo CD application name to delete before LB cleanup"
+        required: true
+        default: "dev-kong"
+      delete_argo_app:
+        description: "Delete Argo CD application before LB cleanup"
+        required: true
+        default: true
+        type: boolean
+      lb_cleanup_max_wait:
+        description: "Max seconds to wait for LoadBalancer services to disappear"
+        required: true
+        default: "900"
 
 jobs:
   teardown:
@@ -56,6 +73,10 @@ jobs:
       BUILD_ID: ${{ inputs.build_id }}
       TF_DIR: envs/${{ inputs.env }}
       CLEANUP_ORPHANS: ${{ inputs.cleanup_orphans }}
+      ARGO_APP_NAMESPACE: ${{ inputs.argo_app_namespace }}
+      ARGO_APP_NAME: ${{ inputs.argo_app_name }}
+      DELETE_ARGO_APP: ${{ inputs.delete_argo_app }}
+      LB_CLEANUP_MAX_WAIT: ${{ inputs.lb_cleanup_max_wait }}
       REMOVE_K8S_SA_FROM_STATE: "true"
       TF_AUTO_APPROVE: "true"
     steps:
@@ -144,6 +165,10 @@ jobs:
       BUILD_ID: ${{ inputs.build_id }}
       TF_DIR: envs/${{ inputs.env }}
       CLEANUP_ORPHANS: ${{ inputs.cleanup_orphans }}
+      ARGO_APP_NAMESPACE: ${{ inputs.argo_app_namespace }}
+      ARGO_APP_NAME: ${{ inputs.argo_app_name }}
+      DELETE_ARGO_APP: ${{ inputs.delete_argo_app }}
+      LB_CLEANUP_MAX_WAIT: ${{ inputs.lb_cleanup_max_wait }}
       REMOVE_K8S_SA_FROM_STATE: "true"
       TF_AUTO_APPROVE: "true"
     steps:

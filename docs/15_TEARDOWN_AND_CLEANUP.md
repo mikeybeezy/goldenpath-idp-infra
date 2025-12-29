@@ -91,6 +91,7 @@ LoadBalancer cleanup retries:
 
 - `LB_CLEANUP_ATTEMPTS` controls how many retry loops run (default `5`).
 - `LB_CLEANUP_INTERVAL` controls the delay between loops (default `20` seconds).
+- `LB_CLEANUP_MAX_WAIT` caps the LoadBalancer wait loop (default `900` seconds).
 
 ```bash
 
@@ -118,6 +119,14 @@ Terraform destroy guard:
 - If Terraform destroy fails or is skipped, the runner falls back to AWS
 
   cluster deletion when `TF_DESTROY_FALLBACK_AWS=true` (default).
+
+Argo CD application cleanup:
+
+- Teardown deletes the configured Argo CD Application before deleting
+  LoadBalancer Services to prevent GitOps reconciliation from recreating them.
+- `DELETE_ARGO_APP` (default `true`) skips or enables this step.
+- `ARGO_APP_NAMESPACE` (default `kong-system`) selects the namespace.
+- `ARGO_APP_NAME` (default `dev-kong`) selects the application.
 
 Recovery after partial teardown (state drift):
 
