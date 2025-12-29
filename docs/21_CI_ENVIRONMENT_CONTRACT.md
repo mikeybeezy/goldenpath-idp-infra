@@ -153,6 +153,20 @@ GoldenPath supports two manual-approval patterns for infrastructure changes:
 The platform does **not** require GitHub Environments to be useful. Environments
 are treated as an optional convenience for teams already using that feature.
 
+## End-to-end flows (summary)
+
+**Default (manual approval, vendor-neutral)**
+
+- Infra Terraform Checks
+- PR Terraform Plan
+- Infra Terraform Apply (dev/test/staging/prod) — manual `workflow_dispatch` (optional env approval if configured)
+
+**GitHub Environments (optional)**
+
+- Infra Terraform Checks
+- PR Terraform Plan
+- Infra Terraform Apply (dev/test/staging/prod) — Environment gates handle approval
+
 ### CI Teardown (`ci-teardown.yml`)
 
 This workflow is manual and separate from bootstrap to avoid automatic destroy

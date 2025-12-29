@@ -12,6 +12,7 @@ region="${2:-}"
 dry_run="${DRY_RUN:-true}"
 state_bucket="${STATE_BUCKET:-}"
 state_table="${STATE_TABLE:-}"
+iam_region="${IAM_REGION:-us-east-1}"
 
 if [[ -z "${build_id}" || -z "${region}" ]]; then
   echo "Usage: $0 <build-id> <region>" >&2
@@ -31,6 +32,7 @@ echo "Cleanup starting (BuildId=${build_id}, region=${region}, dry_run=${dry_run
 if [[ -n "${state_bucket}" || -n "${state_table}" ]]; then
   echo "State context (bucket=${state_bucket:-unset}, table=${state_table:-unset})"
 fi
+echo "Safety: state backend resources (S3 bucket, DynamoDB lock table) are never modified."
 
 # EKS: delete node groups first, then clusters.
 eks_clusters=$(aws resourcegroupstaggingapi get-resources \
@@ -73,6 +75,54 @@ if [[ -n "${instances}" ]]; then
   run aws ec2 terminate-instances --instance-ids ${instances} --region "${region}"
 fi
 
+# ENIs (only unattached).
+enis=$(aws ec2 describe-network-interfaces \
+  --filters "Name=tag:BuildId,Values=${build_id}" "Name=status,Values=available" \
+  --region "${region}" \
+  --query "NetworkInterfaces[].NetworkInterfaceId" --output text)
+for eni in ${enis}; do
+  run aws ec2 delete-network-interface --network-interface-id "${eni}" --region "${region}"
+done
+
+# IAM roles tagged with BuildId (global; use IAM region).
+iam_roles=$(aws resourcegroupstaggingapi get-resources \
+  --tag-filters "Key=BuildId,Values=${build_id}" \
+  --resource-type-filters "iam:role" \
+  --region "${iam_region}" \
+  --query "ResourceTagMappingList[].ResourceARN" --output text)
+
+for arn in ${iam_roles}; do
+  role_name="${arn##*/}"
+  attached_policies=$(aws iam list-attached-role-policies \
+    --role-name "${role_name}" \
+    --query "AttachedPolicies[].PolicyArn" --output text)
+  for policy in ${attached_policies}; do
+    run aws iam detach-role-policy --role-name "${role_name}" --policy-arn "${policy}"
+  done
+
+  inline_policies=$(aws iam list-role-policies \
+    --role-name "${role_name}" \
+    --query "PolicyNames[]" --output text)
+  for policy in ${inline_policies}; do
+    run aws iam delete-role-policy --role-name "${role_name}" --policy-name "${policy}"
+  done
+
+  profiles=$(aws iam list-instance-profiles-for-role \
+    --role-name "${role_name}" \
+    --query "InstanceProfiles[].InstanceProfileName" --output text)
+  for profile in ${profiles}; do
+    run aws iam remove-role-from-instance-profile --instance-profile-name "${profile}" --role-name "${role_name}"
+    tagged=$(aws iam list-instance-profile-tags \
+      --instance-profile-name "${profile}" \
+      --query "Tags[?Key=='BuildId' && Value=='${build_id}']" --output text)
+    if [[ -n "${tagged}" ]]; then
+      run aws iam delete-instance-profile --instance-profile-name "${profile}"
+    fi
+  done
+
+  run aws iam delete-role --role-name "${role_name}"
+done
+
 # NAT gateways.
 nat_gws=$(aws ec2 describe-nat-gateways \
   --filter "Name=tag:BuildId,Values=${build_id}" \
@@ -100,6 +150,13 @@ rt_ids=$(aws ec2 describe-route-tables \
 if [[ -n "${rt_ids}" ]]; then
   while read -r rtb main; do
     if [[ "${main}" != "True" ]]; then
+      assoc_ids=$(aws ec2 describe-route-tables \
+        --route-table-ids "${rtb}" \
+        --region "${region}" \
+        --query "RouteTables[].Associations[?Main!=\`true\`].RouteTableAssociationId" --output text)
+      for assoc_id in ${assoc_ids}; do
+        run aws ec2 disassociate-route-table --association-id "${assoc_id}" --region "${region}"
+      done
       run aws ec2 delete-route-table --route-table-id "${rtb}" --region "${region}"
     fi
   done <<< "${rt_ids}"

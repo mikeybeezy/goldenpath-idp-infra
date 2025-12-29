@@ -108,6 +108,23 @@ Orphan cleanup modes:
 - `ORPHAN_CLEANUP_MODE=dry_run` lists resources only.
 - `ORPHAN_CLEANUP_MODE=none` skips cleanup (even if `CLEANUP_ORPHANS=true`).
 - CI uses the `cleanup_mode` workflow input to set this.
+- Orphan cleanup never deletes the Terraform state S3 bucket or DynamoDB lock table.
+- Orphan cleanup targets EKS, LBs, EC2, NAT, EIPs, ENIs, route tables, subnets, SGs, IGWs, VPCs, and IAM roles.
+
+Recommended deletion order:
+
+1) EKS node groups → EKS cluster
+2) Load balancers
+3) EC2 instances
+4) ENIs (unattached only)
+5) IAM roles (BuildId-tagged)
+6) NAT gateways
+7) Elastic IPs
+8) Route tables (detach associations, skip main)
+9) Subnets
+10) Security groups (non-default)
+11) Internet gateways (detach then delete)
+12) VPCs
 
 Terraform destroy guard:
 

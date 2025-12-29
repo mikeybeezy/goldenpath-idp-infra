@@ -144,7 +144,10 @@ bootstrap/60_tear_down_clean_up/cleanup-iam.sh --yes
 
 What it does:
 - Deletes AWS resources tagged with a `BuildId` (EKS, LBs, EC2, NAT, subnets,
-  SGs, IGWs, VPCs).
+  EIPs, ENIs, route tables, SGs, IGWs, VPCs, IAM roles).
+
+Safety:
+- Never deletes the Terraform state S3 bucket or the DynamoDB lock table.
 
 Examples:
 
