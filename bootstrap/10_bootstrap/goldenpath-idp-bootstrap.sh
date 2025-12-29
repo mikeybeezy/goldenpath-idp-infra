@@ -45,18 +45,22 @@ read_tfvars_var() {
 }
 
 tfvars_path=""
-if [[ -n "${TF_DIR:-}" ]]; then
+if [[ -n "${TFVARS_PATH:-}" ]]; then
+  tfvars_path="${TFVARS_PATH}"
+elif [[ -n "${TF_DIR:-}" ]]; then
   tfvars_path="${TF_DIR}/terraform.tfvars"
-  if [[ ! -f "${tfvars_path}" ]]; then
-    echo "Expected terraform.tfvars at ${tfvars_path} but it was not found." >&2
-    echo "Set TF_DIR correctly or provide the tfvars file before bootstrap." >&2
-    exit 1
-  fi
+fi
+if [[ -n "${tfvars_path}" && "${tfvars_path}" != /* ]]; then
+  tfvars_path="${repo_root}/${tfvars_path}"
+fi
+if [[ -n "${tfvars_path}" && ! -f "${tfvars_path}" ]]; then
+  echo "Expected terraform.tfvars at ${tfvars_path} but it was not found." >&2
+  echo "Set TFVARS_PATH/TF_DIR correctly or provide the tfvars file before bootstrap." >&2
+  exit 1
 fi
 
 if [[ -z "${cluster_name}" || -z "${region}" ]]; then
   if [[ -n "${TF_DIR:-}" ]]; then
-    tfvars_path="${TF_DIR}/terraform.tfvars"
     cluster_name="${cluster_name:-$(read_tfvars_var "${tfvars_path}" "cluster_name")}"
     region="${region:-$(read_tfvars_var "${tfvars_path}" "aws_region")}"
     region="${region:-$(read_tfvars_var "${tfvars_path}" "region")}"
@@ -166,8 +170,8 @@ effective_build_id() {
     echo "${TF_VAR_build_id}"
     return
   fi
-  if [[ -n "${TF_DIR:-}" ]]; then
-    read_tfvars_build_id "${TF_DIR}/terraform.tfvars"
+  if [[ -n "${tfvars_path}" ]]; then
+    read_tfvars_build_id "${tfvars_path}"
     return
   fi
 }
@@ -272,6 +276,10 @@ if [[ "${enable_tf_k8s_resources}" == "true" ]]; then
   if [[ -z "${TF_DIR:-}" ]]; then
     echo "ENABLE_TF_K8S_RESOURCES is true but TF_DIR is not set; skipping Terraform Kubernetes resources." >&2
   else
+    if [[ -z "${tfvars_path}" ]]; then
+      echo "TFVARS_PATH is required for IRSA apply (full config needed)." >&2
+      exit 1
+    fi
     check_build_id_match
     echo "About to run a targeted Terraform apply for IRSA service accounts."
     echo "This will update state in ${TF_DIR} and may create/update these resources:"

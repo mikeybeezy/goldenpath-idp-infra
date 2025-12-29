@@ -10,15 +10,18 @@ Usage:
 
 Resolution order for tfvars path:
   1) argument (if provided)
-  2) TF_DIR/terraform.tfvars (if TF_DIR is set)
-  3) envs/$ENV/terraform.tfvars (if ENV is set)
-  4) envs/dev/terraform.tfvars
+  2) TFVARS_PATH (if set)
+  3) TF_DIR/terraform.tfvars (if TF_DIR is set)
+  4) envs/$ENV/terraform.tfvars (if ENV is set)
+  5) envs/dev/terraform.tfvars
 USAGE
 }
 
 tfvars_path="${1:-}"
 if [[ -z "${tfvars_path}" ]]; then
-  if [[ -n "${TF_DIR:-}" ]]; then
+  if [[ -n "${TFVARS_PATH:-}" ]]; then
+    tfvars_path="${TFVARS_PATH}"
+  elif [[ -n "${TF_DIR:-}" ]]; then
     tfvars_path="${TF_DIR}/terraform.tfvars"
   elif [[ -n "${ENV:-}" ]]; then
     tfvars_path="envs/${ENV}/terraform.tfvars"
