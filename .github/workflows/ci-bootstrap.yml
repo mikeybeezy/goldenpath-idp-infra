@@ -38,6 +38,11 @@ on:
         required: true
         default: true
         type: boolean
+      new_build:
+        description: "New build (fail if state already exists)"
+        required: true
+        default: false
+        type: boolean
       confirm_irsa_apply:
         description: "Confirm IRSA service-account apply (required for LB + autoscaler; future EFS/EBS)"
         required: true
@@ -185,9 +190,17 @@ jobs:
             fi
           else
             if aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1; then
+              if [[ "${{ inputs.new_build }}" == "true" ]]; then
+                echo "State already exists for BUILD_ID=${BUILD_ID}. New build requested, aborting to avoid append." >&2
+                exit 1
+              fi
               echo "Found existing state for BUILD_ID=${BUILD_ID}. Reusing state for resume."
             else
-              echo "No state found for BUILD_ID=${BUILD_ID}. A fresh state will be created on apply."
+              if [[ "${{ inputs.new_build }}" == "true" ]]; then
+                echo "No state found for BUILD_ID=${BUILD_ID}. New build confirmed."
+              else
+                echo "No state found for BUILD_ID=${BUILD_ID}. A fresh state will be created on apply."
+              fi
             fi
           fi
 
