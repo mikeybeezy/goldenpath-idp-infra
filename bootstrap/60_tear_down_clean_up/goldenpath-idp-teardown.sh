@@ -54,6 +54,25 @@ if [[ -n "${TF_DIR:-}" && "${TF_DIR}" != /* ]]; then
   TF_DIR="${repo_root}/${TF_DIR}"
 fi
 
+cleanup_on_exit() {
+  local status=$?
+  trap - EXIT
+
+  if [[ -n "${TF_DIR:-}" && "${REMOVE_K8S_SA_FROM_STATE:-true}" == "true" ]]; then
+    if command -v terraform >/dev/null 2>&1; then
+      local cleanup_script="${repo_root}/bootstrap/60_tear_down_clean_up/remove-k8s-service-accounts-from-state.sh"
+      if [[ -f "${cleanup_script}" ]]; then
+        echo "Exit cleanup: removing Kubernetes service accounts from Terraform state (best effort)."
+        bash "${cleanup_script}" "${TF_DIR}" >/dev/null 2>&1 || true
+      fi
+    fi
+  fi
+
+  exit "${status}"
+}
+
+trap cleanup_on_exit EXIT
+
 stage_banner() {
   local title="$1"
   echo ""

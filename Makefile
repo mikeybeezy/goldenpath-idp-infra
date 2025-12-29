@@ -60,7 +60,7 @@ endef
 #   make drain-nodegroup NODEGROUP=dev-default
 #   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 
-.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown fmt validate bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown set-cluster-name help
+.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown fmt validate bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help
 
 init:
 	$(TF_BIN) -chdir=$(ENV_DIR) init
@@ -200,6 +200,24 @@ teardown:
 	TF_DIR=$(TF_DIR) \
 	TF_AUTO_APPROVE=true \
 	REMOVE_K8S_SA_FROM_STATE=true \
+	CLEANUP_ORPHANS=$(CLEANUP_ORPHANS) \
+	bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh $(CLUSTER) $(REGION) 2>&1 | tee "$$log"; \
+	exit $${PIPESTATUS[0]}; \
+	'
+
+teardown-resume:
+	$(call require_build_id)
+	@mkdir -p logs/build-timings
+	@bash -c '\
+	build_id=$(BUILD_ID); \
+	log="logs/build-timings/teardown-resume-$(ENV)-$(CLUSTER)-$${build_id}-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	echo "Teardown resume output streaming; full log at $$log"; \
+	TEARDOWN_CONFIRM=true \
+	TF_DIR=$(TF_DIR) \
+	TF_AUTO_APPROVE=true \
+	REMOVE_K8S_SA_FROM_STATE=true \
+	REQUIRE_KUBE_FOR_TF_DESTROY=false \
+	TF_DESTROY_FALLBACK_AWS=true \
 	CLEANUP_ORPHANS=$(CLEANUP_ORPHANS) \
 	bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh $(CLUSTER) $(REGION) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
