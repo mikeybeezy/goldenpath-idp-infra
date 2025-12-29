@@ -85,6 +85,34 @@ run_cmd() {
   fi
 }
 
+confirm_tf_apply() {
+  local label="$1"
+  if [[ "${CONFIRM_TF_APPLY:-false}" == "true" ]]; then
+    return 0
+  fi
+  if [[ -t 0 ]]; then
+    echo ""
+    echo "Confirmation required: ${label}"
+    echo "Type APPLY to proceed or anything else to cancel."
+    read -r reply
+    if [[ "${reply}" != "APPLY" ]]; then
+      echo "Terraform apply cancelled." >&2
+      exit 1
+    fi
+  else
+    echo "Non-interactive shell; set CONFIRM_TF_APPLY=true to proceed." >&2
+    exit 1
+  fi
+}
+
+enable_tf_k8s_resources="${ENABLE_TF_K8S_RESOURCES:-true}"
+scale_down_after_bootstrap="${SCALE_DOWN_AFTER_BOOTSTRAP:-false}"
+min_ready_nodes="${MIN_READY_NODES:-3}"
+if ! [[ "${min_ready_nodes}" =~ ^[0-9]+$ ]]; then
+  echo "MIN_READY_NODES must be a number; got '${min_ready_nodes}'." >&2
+  exit 1
+fi
+
 echo "Bootstrap starting for cluster ${cluster_name} in ${region}"
 
 # Ensure kubeconfig is set for the target cluster.
@@ -161,15 +189,43 @@ check_build_id_match() {
   fi
 }
 
+stage_banner "MODE SUMMARY"
+irsa_apply="no"
+irsa_reason="ENABLE_TF_K8S_RESOURCES=false"
+if [[ "${enable_tf_k8s_resources}" == "true" ]]; then
+  if [[ -z "${TF_DIR:-}" ]]; then
+    irsa_reason="TF_DIR not set (IRSA apply skipped)"
+  else
+    irsa_apply="yes"
+    irsa_reason="targeted Terraform apply for IRSA service accounts"
+  fi
+fi
+tf_build_id="$(effective_build_id)"
+echo "IRSA apply: ${irsa_apply} (${irsa_reason})"
+echo "Scale down after bootstrap: ${scale_down_after_bootstrap}"
+echo "Minimum Ready nodes required: ${min_ready_nodes}"
+echo "BUILD_ID (env): ${BUILD_ID:-<empty>}"
+echo "build_id (Terraform): ${tf_build_id:-<empty>}"
+if [[ "${CONFIRM_TF_APPLY:-false}" != "true" ]]; then
+  echo "Terraform apply confirmation: required (set CONFIRM_TF_APPLY=true to skip)"
+else
+  echo "Terraform apply confirmation: skipped (CONFIRM_TF_APPLY=true)"
+fi
+stage_done "MODE SUMMARY"
+
 # Ensure Terraform-managed Kubernetes resources only apply after kubeconfig is ready.
 # Service accounts must exist before installing AWS LB Controller or Cluster Autoscaler.
 stage_banner "STAGE 3B: SERVICE ACCOUNTS (IRSA)"
-enable_tf_k8s_resources="${ENABLE_TF_K8S_RESOURCES:-true}"
 if [[ "${enable_tf_k8s_resources}" == "true" ]]; then
   if [[ -z "${TF_DIR:-}" ]]; then
     echo "ENABLE_TF_K8S_RESOURCES is true but TF_DIR is not set; skipping Terraform Kubernetes resources." >&2
   else
     check_build_id_match
+    echo "About to run a targeted Terraform apply for IRSA service accounts."
+    echo "This will update state in ${TF_DIR} and may create/update these resources:"
+    echo "  - kubernetes_service_account_v1.aws_load_balancer_controller[0]"
+    echo "  - kubernetes_service_account_v1.cluster_autoscaler[0]"
+    confirm_tf_apply "IRSA service account apply"
     echo "Applying Terraform Kubernetes service accounts in ${TF_DIR} (enable_k8s_resources=true)..."
     run_cmd terraform -chdir="${TF_DIR}" apply -auto-approve \
       -var="enable_k8s_resources=true" \
@@ -193,8 +249,9 @@ stage_done "STAGE 3B"
 stage_banner "STAGE 4: CAPACITY CHECK"
 echo "Checking Ready node count..."
 ready_nodes="$(kubectl get nodes --no-headers 2>/dev/null | awk '$2 == "Ready" {count++} END {print count+0}')"
-if [[ "${ready_nodes}" -lt 3 ]]; then
-  echo "Insufficient node capacity (${ready_nodes} Ready). Enable bootstrap_mode or scale nodes before running full bootstrap." >&2
+if [[ "${ready_nodes}" -lt "${min_ready_nodes}" ]]; then
+  echo "Insufficient node capacity (${ready_nodes} Ready). Require ${min_ready_nodes}." >&2
+  echo "Scale nodes before running full bootstrap." >&2
   exit 1
 fi
 stage_done "STAGE 4"
@@ -274,11 +331,14 @@ stage_done "STAGE 12"
 
 # Optional: scale down after bootstrap by re-applying Terraform with bootstrap_mode=false.
 stage_banner "STAGE 13: OPTIONAL SCALE DOWN"
-if [[ "${SCALE_DOWN_AFTER_BOOTSTRAP:-false}" == "true" ]]; then
+if [[ "${scale_down_after_bootstrap}" == "true" ]]; then
   if [[ -z "${TF_DIR:-}" ]]; then
     echo "SCALE_DOWN_AFTER_BOOTSTRAP is true but TF_DIR is not set." >&2
     exit 1
   fi
+  echo "About to run Terraform apply to set bootstrap_mode=false in ${TF_DIR}."
+  echo "This may reduce node capacity and related resources."
+  confirm_tf_apply "Scale down apply"
   echo "Scaling down via Terraform (bootstrap_mode=false) in ${TF_DIR}"
   tf_auto_approve_flag=""
   if [[ "${TF_AUTO_APPROVE:-false}" == "true" ]]; then
