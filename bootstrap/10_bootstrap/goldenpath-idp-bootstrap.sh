@@ -44,6 +44,16 @@ read_tfvars_var() {
   fi
 }
 
+tfvars_path=""
+if [[ -n "${TF_DIR:-}" ]]; then
+  tfvars_path="${TF_DIR}/terraform.tfvars"
+  if [[ ! -f "${tfvars_path}" ]]; then
+    echo "Expected terraform.tfvars at ${tfvars_path} but it was not found." >&2
+    echo "Set TF_DIR correctly or provide the tfvars file before bootstrap." >&2
+    exit 1
+  fi
+fi
+
 if [[ -z "${cluster_name}" || -z "${region}" ]]; then
   if [[ -n "${TF_DIR:-}" ]]; then
     tfvars_path="${TF_DIR}/terraform.tfvars"
@@ -189,6 +199,48 @@ check_build_id_match() {
   fi
 }
 
+irsa_plan_guard() {
+  local plan_output
+  local summary_line
+  local add_count
+  local change_count
+  local destroy_count
+  local tfvars_args=()
+
+  if [[ -n "${tfvars_path}" ]]; then
+    tfvars_args=(-var-file="${tfvars_path}")
+  fi
+
+  echo "Validating IRSA plan scope (service accounts only)..."
+  plan_output="$(terraform -chdir="${TF_DIR}" plan -no-color \
+    -var="enable_k8s_resources=true" \
+    "${tfvars_args[@]}" \
+    -target="kubernetes_service_account_v1.aws_load_balancer_controller[0]" \
+    -target="kubernetes_service_account_v1.cluster_autoscaler[0]")"
+  echo "${plan_output}"
+
+  summary_line="$(echo "${plan_output}" | grep -m1 -E '^Plan:')"
+  if [[ -z "${summary_line}" ]]; then
+    echo "IRSA plan guard failed: plan summary not found." >&2
+    exit 1
+  fi
+
+  if [[ "${summary_line}" =~ Plan:\ ([0-9]+)\ to\ add,\ ([0-9]+)\ to\ change,\ ([0-9]+)\ to\ destroy\. ]]; then
+    add_count="${BASH_REMATCH[1]}"
+    change_count="${BASH_REMATCH[2]}"
+    destroy_count="${BASH_REMATCH[3]}"
+  else
+    echo "IRSA plan guard failed: unable to parse plan summary." >&2
+    exit 1
+  fi
+
+  if [[ "${change_count}" -ne 0 || "${destroy_count}" -ne 0 || "${add_count}" -gt 2 ]]; then
+    echo "IRSA plan guard failed: expected <= 2 adds and 0 change/destroy." >&2
+    echo "Observed: ${summary_line}" >&2
+    exit 1
+  fi
+}
+
 stage_banner "MODE SUMMARY"
 irsa_apply="no"
 irsa_reason="ENABLE_TF_K8S_RESOURCES=false"
@@ -225,9 +277,11 @@ if [[ "${enable_tf_k8s_resources}" == "true" ]]; then
     echo "This will update state in ${TF_DIR} and may create/update these resources:"
     echo "  - kubernetes_service_account_v1.aws_load_balancer_controller[0]"
     echo "  - kubernetes_service_account_v1.cluster_autoscaler[0]"
+    irsa_plan_guard
     confirm_tf_apply "IRSA service account apply"
     echo "Applying Terraform Kubernetes service accounts in ${TF_DIR} (enable_k8s_resources=true)..."
     run_cmd terraform -chdir="${TF_DIR}" apply -auto-approve \
+      -var-file="${tfvars_path}" \
       -var="enable_k8s_resources=true" \
       -target="kubernetes_service_account_v1.aws_load_balancer_controller[0]" \
       -target="kubernetes_service_account_v1.cluster_autoscaler[0]"
