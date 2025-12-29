@@ -32,6 +32,12 @@ If you want the PR plan to reflect incremental changes against a long-lived
 environment, keep `cluster_lifecycle=persistent` so the plan uses the stable
 state key.
 
+## Two ways to start a new build
+
+1) **Ad-hoc CI only (no PR)**: run the workflow and pass a new `build_id` input.
+2) **PR-driven**: update `build_id` in `envs/dev/terraform.tfvars` so the PR plan
+   uses the new state key.
+
 ## Change process
 
 - Update the ADR if the workflow changes materially.
