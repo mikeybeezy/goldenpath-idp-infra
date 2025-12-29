@@ -7,6 +7,12 @@ on:
         description: "Environment to target (dev/test/staging/prod)"
         required: true
         default: "dev"
+        type: choice
+        options:
+          - dev
+          - test
+          - staging
+          - prod
       region:
         description: "AWS region"
         required: true
@@ -15,42 +21,51 @@ on:
         description: "EKS cluster name"
         required: false
         default: ""
-      build_id:
-        description: "Build ID for ephemeral runs"
-        required: true
-        default: ""
-      node_instance_type:
-        description: "Node instance type (bootstrap)"
-        required: true
-        default: "t3.small"
-      skip_argo_sync_wait:
-        description: "Skip Argo sync wait"
-        required: true
-        default: "true"
-      skip_cert_manager_validation:
-        description: "Skip cert-manager validation"
-        required: true
-        default: "true"
-      compact_output:
-        description: "Compact output"
-        required: true
-        default: "false"
-      enable_tf_k8s_resources:
-        description: "Create IRSA service accounts via Terraform"
-        required: true
-        default: "true"
-      scale_down_after_bootstrap:
-        description: "Scale down after bootstrap"
-        required: true
-        default: "false"
-      skip_apply:
-        description: "Skip Terraform apply (bootstrap only)"
-        required: true
-        default: "false"
       lifecycle:
         description: "Lifecycle (ephemeral or persistent)"
         required: true
         default: "ephemeral"
+        type: choice
+        options:
+          - ephemeral
+          - persistent
+      build_id:
+        description: "Build ID (required for ephemeral)"
+        required: false
+        default: ""
+      bootstrap_only:
+        description: "Bootstrap only (skip Terraform apply)"
+        required: true
+        default: true
+        type: boolean
+      confirm_irsa_apply:
+        description: "Confirm IRSA service-account apply (Terraform)"
+        required: true
+        default: false
+        type: boolean
+      node_instance_type:
+        description: "Node instance type (bootstrap)"
+        required: true
+        default: "t3.small"
+      min_ready_nodes:
+        description: "Minimum Ready nodes required"
+        required: true
+        default: "3"
+      skip_argo_sync_wait:
+        description: "Skip Argo sync wait"
+        required: true
+        default: "true"
+        type: boolean
+      skip_cert_manager_validation:
+        description: "Skip cert-manager validation"
+        required: true
+        default: "true"
+        type: boolean
+      compact_output:
+        description: "Compact output"
+        required: true
+        default: "false"
+        type: boolean
 
 jobs:
   bootstrap:
@@ -65,10 +80,13 @@ jobs:
       BUILD_ID: ${{ inputs.build_id }}
       CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
       TF_DIR: envs/${{ inputs.env }}
+      MIN_READY_NODES: ${{ inputs.min_ready_nodes }}
+      CONFIRM_TF_APPLY: ${{ inputs.confirm_irsa_apply }}
       LB_CLEANUP_ATTEMPTS: "5"
       LB_CLEANUP_INTERVAL: "20"
       REMOVE_K8S_SA_FROM_STATE: "true"
-      ENABLE_TF_K8S_RESOURCES: ${{ inputs.enable_tf_k8s_resources }}
+      ENABLE_TF_K8S_RESOURCES: "true"
+      SCALE_DOWN_AFTER_BOOTSTRAP: "false"
       TF_AUTO_APPROVE: "true"
     steps:
       - name: Checkout repo
@@ -92,8 +110,22 @@ jobs:
           echo "AWS_REGION=${AWS_REGION}"
           echo "CLUSTER_LIFECYCLE=${CLUSTER_LIFECYCLE}"
           echo "BUILD_ID=${BUILD_ID}"
-          if ! echo "${BUILD_ID}" | grep -Eq '^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$'; then
+          if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
+            if [[ -z "${BUILD_ID}" ]]; then
+              echo "BUILD_ID is required when lifecycle=ephemeral." >&2
+              exit 1
+            fi
+          fi
+          if [[ -n "${BUILD_ID}" ]] && ! echo "${BUILD_ID}" | grep -Eq '^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$'; then
             echo "Invalid BUILD_ID: ${BUILD_ID} (expected dd-mm-yy-NN)" >&2
+            exit 1
+          fi
+          if ! echo "${MIN_READY_NODES}" | grep -Eq '^[0-9]+$'; then
+            echo "MIN_READY_NODES must be numeric; got ${MIN_READY_NODES}." >&2
+            exit 1
+          fi
+          if [[ "${ENABLE_TF_K8S_RESOURCES}" == "true" ]] && [[ "${{ inputs.confirm_irsa_apply }}" != "true" ]]; then
+            echo "IRSA service-account apply requires confirm_irsa_apply=true." >&2
             exit 1
           fi
 
@@ -177,7 +209,7 @@ jobs:
       # Phase 2: Terraform init/plan/apply
       # Goal: provision or update infra deterministically.
       - name: Phase 2 - Terraform (stub)
-        if: ${{ inputs.skip_apply != 'true' }}
+        if: ${{ !inputs.bootstrap_only }}
         run: |
           TF_VAR_cluster_lifecycle="${CLUSTER_LIFECYCLE}" \
           TF_VAR_build_id="${BUILD_ID}" \
@@ -190,11 +222,13 @@ jobs:
         run: |
           ENV_NAME="${ENV}" \
           NODE_INSTANCE_TYPE="${{ inputs.node_instance_type }}" \
+          MIN_READY_NODES="${MIN_READY_NODES}" \
           SKIP_ARGO_SYNC_WAIT="${{ inputs.skip_argo_sync_wait }}" \
           SKIP_CERT_MANAGER_VALIDATION="${{ inputs.skip_cert_manager_validation }}" \
           COMPACT_OUTPUT="${{ inputs.compact_output }}" \
           ENABLE_TF_K8S_RESOURCES="${ENABLE_TF_K8S_RESOURCES}" \
-          SCALE_DOWN_AFTER_BOOTSTRAP="${{ inputs.scale_down_after_bootstrap }}" \
+          SCALE_DOWN_AFTER_BOOTSTRAP="${SCALE_DOWN_AFTER_BOOTSTRAP}" \
+          CONFIRM_TF_APPLY="${CONFIRM_TF_APPLY}" \
           TF_DIR="${TF_DIR}" \
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
