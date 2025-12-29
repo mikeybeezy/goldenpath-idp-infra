@@ -28,14 +28,14 @@ These roles are assumed by Kubernetes service accounts via IRSA.
 - **Purpose:** autoscaling node groups.
 - **Assumed by:** service account `kube-system/cluster-autoscaler`.
 - **Used in:** bootstrap (IRSA stage).
-- **Policy ARN:** `arn:aws:iam::593517239005:policy/golden-path-cluster-autoscaler-policy`.
+- **Policy ARN:** `arn:aws:iam::##########:policy/golden-path-cluster-autoscaler-policy`.
 
 ### AWS Load Balancer Controller role
 
 - **Purpose:** provision/load balance AWS ELB resources.
 - **Assumed by:** service account `kube-system/aws-load-balancer-controller`.
 - **Used in:** bootstrap (IRSA stage).
-- **Policy ARN:** `arn:aws:iam::593517239005:policy/goldenpath-load-balancer-controller-policy`.
+- **Policy ARN:** `arn:aws:iam::##########:policy/goldenpath-load-balancer-controller-policy`.
 
 ## State and locking (dev)
 
@@ -48,6 +48,17 @@ These roles are assumed by Kubernetes service accounts via IRSA.
 - **GitHub Secrets:** role ARNs referenced in workflows.
 - **Terraform variables:** IRSA policy ARNs set in `envs/dev/terraform.tfvars`.
 - **Bootstrap:** IRSA service accounts created during bootstrap stage.
+
+## V2: multi-account environment boundaries (planned)
+
+GoldenPath V2 will require a **bounded context per environment**, especially for
+teams operating in different AWS accounts. This means:
+
+- Each environment (dev/test/staging/prod) can map to a distinct AWS account.
+- CI roles are scoped per account and per environment (no shared wide role).
+- Cross-account access is explicit (assume role into the target account).
+- The IAM index will track roles by **environment + account** rather than a
+  single global list.
 
 ## Related docs
 

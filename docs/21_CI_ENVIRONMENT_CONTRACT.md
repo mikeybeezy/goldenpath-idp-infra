@@ -175,6 +175,12 @@ See `docs/adrs/ADR-0030-platform-precreated-iam-policies.md` for rationale and f
 - No variable should change behavior silently.
 - Defaults must be explicit and documented.
 
+## V2 multi-account boundary (planned)
+
+Environments may map to different AWS accounts. CI will assume a per-environment
+role in the target account (no shared global role). This keeps blast radius
+bounded as more teams adopt the platform. See `docs/33_IAM_ROLES_AND_POLICIES.md`.
+
 ## Related docs
 
 - `docs/33_IAM_ROLES_AND_POLICIES.md`

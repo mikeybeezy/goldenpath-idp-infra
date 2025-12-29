@@ -10,6 +10,8 @@ set -euo pipefail
 build_id="${1:-}"
 region="${2:-}"
 dry_run="${DRY_RUN:-true}"
+state_bucket="${STATE_BUCKET:-}"
+state_table="${STATE_TABLE:-}"
 
 if [[ -z "${build_id}" || -z "${region}" ]]; then
   echo "Usage: $0 <build-id> <region>" >&2
@@ -26,6 +28,9 @@ run() {
 }
 
 echo "Cleanup starting (BuildId=${build_id}, region=${region}, dry_run=${dry_run})"
+if [[ -n "${state_bucket}" || -n "${state_table}" ]]; then
+  echo "State context (bucket=${state_bucket:-unset}, table=${state_table:-unset})"
+fi
 
 # EKS: delete node groups first, then clusters.
 eks_clusters=$(aws resourcegroupstaggingapi get-resources \

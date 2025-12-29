@@ -92,6 +92,14 @@ resource "aws_iam_openid_connect_provider" "this" {
 
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = [data.tls_certificate.oidc.certificates[0].sha1_fingerprint]
+
+  tags = merge(
+    var.tags,
+    local.environment_tags,
+    {
+      Name = "${var.cluster_name}-oidc-provider"
+    },
+  )
 }
 
 resource "aws_iam_role" "node_group" {
@@ -182,6 +190,14 @@ resource "aws_eks_addon" "ebs_csi_driver" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
+  tags = merge(
+    var.tags,
+    local.environment_tags,
+    {
+      Name = "${var.cluster_name}-aws-ebs-csi-driver"
+    },
+  )
+
   depends_on = [aws_eks_node_group.this]
 }
 
@@ -198,6 +214,14 @@ resource "aws_eks_addon" "efs_csi_driver" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
+  tags = merge(
+    var.tags,
+    local.environment_tags,
+    {
+      Name = "${var.cluster_name}-aws-efs-csi-driver"
+    },
+  )
+
   depends_on = [aws_eks_node_group.this]
 }
 
@@ -209,6 +233,14 @@ resource "aws_eks_addon" "snapshot_controller" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
+  tags = merge(
+    var.tags,
+    local.environment_tags,
+    {
+      Name = "${var.cluster_name}-snapshot-controller"
+    },
+  )
+
   depends_on = [aws_eks_node_group.this]
 }
 
@@ -218,6 +250,14 @@ resource "aws_eks_addon" "coredns" {
   addon_version               = lookup(var.addon_versions, "coredns", null)
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
+
+  tags = merge(
+    var.tags,
+    local.environment_tags,
+    {
+      Name = "${var.cluster_name}-coredns"
+    },
+  )
 
   depends_on = [aws_eks_cluster.this]
 }
@@ -229,6 +269,14 @@ resource "aws_eks_addon" "kube_proxy" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
+  tags = merge(
+    var.tags,
+    local.environment_tags,
+    {
+      Name = "${var.cluster_name}-kube-proxy"
+    },
+  )
+
   depends_on = [aws_eks_cluster.this]
 }
 
@@ -238,6 +286,14 @@ resource "aws_eks_addon" "vpc_cni" {
   addon_version               = lookup(var.addon_versions, "vpc-cni", null)
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
+
+  tags = merge(
+    var.tags,
+    local.environment_tags,
+    {
+      Name = "${var.cluster_name}-vpc-cni"
+    },
+  )
 
   depends_on = [aws_eks_cluster.this]
 }

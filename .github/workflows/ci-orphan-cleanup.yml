@@ -1,0 +1,115 @@
+name: CI Orphan Cleanup
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment to clean (dev/test/staging/prod)"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - test
+          - staging
+          - prod
+      build_id:
+        description: "Build ID to clean (e.g., 26-12-28-05)"
+        required: true
+      region:
+        description: "AWS region"
+        required: true
+        default: "eu-west-2"
+
+jobs:
+  orphan-cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      ENV: ${{ inputs.env }}
+      BUILD_ID: ${{ inputs.build_id }}
+      AWS_REGION: ${{ inputs.region }}
+      MAX_ATTEMPTS: "3"
+      RETRY_WAIT_SECONDS: "30"
+      DRY_RUN: "false"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Resolve backend config
+        id: backend
+        run: |
+          case "${ENV}" in
+            dev)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-dev-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-dev-db-key" >> "$GITHUB_OUTPUT"
+              ;;
+            test)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_TEST }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-test-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-test-db" >> "$GITHUB_OUTPUT"
+              ;;
+            staging)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_STAGING }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-staging-db" >> "$GITHUB_OUTPUT"
+              ;;
+            prod)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_PROD }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-prod-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-prod-db" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported env: ${ENV}" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ inputs.region }}
+          role-to-assume: ${{ steps.backend.outputs.role }}
+
+      - name: Run orphan cleanup with retries
+        id: cleanup
+        run: |
+          set -euo pipefail
+          attempt=1
+          while [[ "${attempt}" -le "${MAX_ATTEMPTS}" ]]; do
+            echo "Orphan cleanup attempt ${attempt}/${MAX_ATTEMPTS}"
+            if STATE_BUCKET="${{ steps.backend.outputs.bucket }}" \
+              STATE_TABLE="${{ steps.backend.outputs.table }}" \
+              DRY_RUN="${DRY_RUN}" \
+              bash bootstrap/60_tear_down_clean_up/cleanup-orphans.sh "${BUILD_ID}" "${AWS_REGION}"; then
+              echo "result=success" >> "${GITHUB_OUTPUT}"
+              break
+            fi
+            if [[ "${attempt}" -lt "${MAX_ATTEMPTS}" ]]; then
+              echo "Cleanup attempt ${attempt} failed. Retrying in ${RETRY_WAIT_SECONDS}s..."
+              sleep "${RETRY_WAIT_SECONDS}"
+            fi
+            attempt=$((attempt + 1))
+          done
+          if [[ "${attempt}" -gt "${MAX_ATTEMPTS}" ]]; then
+            echo "result=failure" >> "${GITHUB_OUTPUT}"
+            exit 1
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Orphan Cleanup Summary"
+            echo ""
+            echo "- Environment: \`${ENV}\`"
+            echo "- Build ID: \`${BUILD_ID}\`"
+            echo "- Region: \`${AWS_REGION}\`"
+            echo "- State bucket: \`${{ steps.backend.outputs.bucket }}\`"
+            echo "- Lock table: \`${{ steps.backend.outputs.table }}\`"
+            echo "- Attempts: \`${MAX_ATTEMPTS}\`"
+            echo "- Result: \`${{ steps.cleanup.outputs.result || 'failure' }}\`"
+          } >> "${GITHUB_STEP_SUMMARY}"

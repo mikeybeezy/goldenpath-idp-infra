@@ -84,6 +84,14 @@ Not through:
 
 If engineers must repeatedly ask “how do I do this?”, governance has failed.
 
+## 5. Tagging for Auditability
+
+GoldenPath requires consistent resource tagging to keep audit trails, cost
+attribution, and cleanup reliable. Tagging is a core governance guardrail that
+preserves velocity by making ownership and lifecycle status explicit.
+The canonical tag set lives in `docs/35_RESOURCE_TAGGING.md` and is formalized
+in `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`.
+
 ## V1 Governance Scope & Decisions
 
 ## Cloud Provider
@@ -178,6 +186,13 @@ copy/paste and to improve review quality.
 Principle: Apply workflows must include a post-apply health check that proves platform readiness
 (EKS reachable, Argo synced/healthy, ingress health endpoint). A successful apply without health
 verification is incomplete.
+
+Principle: Orphan cleanup is a explicit action. It runs as a human-initiated workflow or
+CLI step when needed (not an automatic teardown step), so cleanup intent is always clear and
+auditable. Console-only deletion is discouraged.
+
+Principle: V2 introduces environment-to-account boundaries. Each environment can map to a
+distinct AWS account, and CI roles are scoped per account. See `docs/33_IAM_ROLES_AND_POLICIES.md`.
 
 Principle: CI image scanning uses Trivy as the default gate. Prod fails on HIGH/CRITICAL;
 dev/test warn unless explicitly tightened.
