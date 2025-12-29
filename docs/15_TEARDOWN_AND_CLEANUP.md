@@ -91,6 +91,7 @@ LoadBalancer cleanup retries:
 
 - `LB_CLEANUP_ATTEMPTS` controls how many retry loops run (default `5`).
 - `LB_CLEANUP_INTERVAL` controls the delay between loops (default `20` seconds).
+- `LB_CLEANUP_MAX_WAIT` caps the LoadBalancer wait loop (default `900` seconds).
 
 ```bash
 
@@ -118,6 +119,42 @@ Terraform destroy guard:
 - If Terraform destroy fails or is skipped, the runner falls back to AWS
 
   cluster deletion when `TF_DESTROY_FALLBACK_AWS=true` (default).
+
+Argo CD application cleanup:
+
+- Teardown deletes the configured Argo CD Application before deleting
+  LoadBalancer Services to prevent GitOps reconciliation from recreating them.
+- `DELETE_ARGO_APP` (default `true`) skips or enables this step.
+- `ARGO_APP_NAMESPACE` (default `kong-system`) selects the namespace.
+- `ARGO_APP_NAME` (default `dev-kong`) selects the application.
+
+Recovery after partial teardown (state drift):
+
+- If teardown exits early, Kubernetes service accounts may be deleted while
+  Terraform state still tracks them. PR plans will try to recreate them and
+  may fail with Unauthorized during refresh.
+- The teardown runner now attempts a best-effort state cleanup on exit when
+  `TF_DIR` is set and `REMOVE_K8S_SA_FROM_STATE=true`.
+- Use the resume target to finish cleanup when a teardown was interrupted.
+- CI teardown runs automatically attempt `teardown-resume` after a failure.
+- CI teardown defaults to orphan cleanup by BuildId; set `cleanup_orphans=false`
+  in the workflow dispatch input to skip tag-based cleanup.
+
+Resume teardown (recommended):
+
+```bash
+
+make teardown-resume ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
+
+```text
+
+Manual state cleanup (if you only need to reset k8s service accounts):
+
+```bash
+
+bootstrap/60_tear_down_clean_up/remove-k8s-service-accounts-from-state.sh envs/dev
+
+```text
 
 Service-account-only changes vs full apply:
 
