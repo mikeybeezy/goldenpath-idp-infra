@@ -51,10 +51,12 @@ Use `make bootstrap-only` when you want the runner without Terraform apply.
 
 - `ENV_NAME` – env key used by Argo apps (e.g., `dev`)
 - `NODE_INSTANCE_TYPE` – instance type for preflight capacity checks
+- `MIN_READY_NODES` – minimum Ready nodes required (default: 3)
 - `SKIP_ARGO_SYNC_WAIT` – do not wait for Argo apps to sync
 - `SKIP_CERT_MANAGER_VALIDATION` – skip cert‑manager rollout check
 - `COMPACT_OUTPUT` – reduce output noise
-- `ENABLE_TF_K8S_RESOURCES` – run the targeted Terraform K8s service-account apply (auto‑approved)
+- `ENABLE_TF_K8S_RESOURCES` – run the targeted Terraform K8s service-account apply
+- `CONFIRM_TF_APPLY` – set `true` to skip the interactive confirmation prompt for the IRSA apply
 - `SCALE_DOWN_AFTER_BOOTSTRAP` – scale nodegroup down after bootstrap
 - `TF_DIR` – when set, the runner reads `cluster_name` and `region` from
 
