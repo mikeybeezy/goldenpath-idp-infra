@@ -15,3 +15,4 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/28_SECURITY_FLOOR_V1.md | platform | 90d | 2025-12-27 | V1 security floor checklist |
 | docs/23_NEW_JOINERS.md | platform | 90d | 2025-12-27 | Onboarding and local preflight rules |
 | docs/30_DOCUMENTATION_FRESHNESS.md | platform | 90d | 2025-12-27 | Doc freshness mechanism |
+| docs/36_STATE_KEY_STRATEGY.md | platform | 90d | 2025-12-29 | Lifecycle-aware state key usage |
