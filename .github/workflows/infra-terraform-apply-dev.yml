@@ -74,18 +74,17 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo;
-            const workflowId = "infra-terraform.yml";
             const sha = context.sha;
             const lifecycle = "${{ inputs.lifecycle }}";
             const buildId = "${{ inputs.build_id }}";
-            const runs = await github.rest.actions.listWorkflowRuns({
+            const manualRuns = await github.rest.actions.listWorkflowRuns({
               owner,
               repo,
-              workflow_id: workflowId,
+              workflow_id: "infra-terraform.yml",
               event: "workflow_dispatch",
               per_page: 20
             });
-            const match = runs.data.workflow_runs.find(
+            const manualMatch = manualRuns.data.workflow_runs.find(
               run =>
                 run.conclusion === "success" &&
                 run.head_sha === sha &&
@@ -94,12 +93,24 @@ jobs:
                 run.display_title.includes(`lifecycle=${lifecycle}`) &&
                 (lifecycle !== "ephemeral" || run.display_title.includes(`build_id=${buildId}`))
             );
-            if (!match) {
+            const prRuns = await github.rest.actions.listWorkflowRuns({
+              owner,
+              repo,
+              workflow_id: "pr-terraform-plan.yml",
+              event: "pull_request",
+              per_page: 20
+            });
+            const prMatch = prRuns.data.workflow_runs.find(
+              run => run.conclusion === "success" && run.head_sha === sha
+            );
+            if (!manualMatch && !prMatch) {
               core.setFailed(
-                `No successful dev plan run found for ${sha}. Run infra-terraform.yml with env=dev and matching lifecycle/build_id first.`
+                `No successful dev plan run found for ${sha}. Run PR Terraform Plan or infra-terraform.yml with env=dev and matching lifecycle/build_id first.`
               );
+            } else if (manualMatch) {
+              core.info(`Dev plan run ok (manual): ${manualMatch.html_url}`);
             } else {
-              core.info(`Dev plan run ok: ${match.html_url}`);
+              core.info(`Dev plan run ok (PR): ${prMatch.html_url}`);
             }
 
       - name: Setup Terraform
