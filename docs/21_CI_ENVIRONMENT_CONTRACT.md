@@ -93,6 +93,19 @@ The CI bootstrap workflow supports explicit modes to reduce operator error:
 
 See `docs/adrs/ADR-0033-platform-ci-orchestrated-modes.md` for the decision and tradeoffs.
 
+## Approval modes (vendor-neutral)
+
+GoldenPath supports two manual-approval patterns for infrastructure changes:
+
+1) **Default (vendor-neutral):** separate plan and apply workflows. Apply runs
+   only when a human triggers `workflow_dispatch` and confirms intent.
+2) **Optional (GitHub Environments):** a single pipeline with `environment`
+   approvals enabled. If an Environment has required reviewers, apply waits
+   for approval; if not, it runs immediately.
+
+The platform does **not** require GitHub Environments to be useful. Environments
+are treated as an optional convenience for teams already using that feature.
+
 ### CI Teardown (`ci-teardown.yml`)
 
 This workflow is manual and separate from bootstrap to avoid automatic destroy
