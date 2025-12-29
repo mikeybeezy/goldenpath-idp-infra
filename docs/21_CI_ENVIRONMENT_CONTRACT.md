@@ -157,19 +157,15 @@ are treated as an optional convenience for teams already using that feature.
 
 **Default (manual approval, vendor-neutral)**
 
-Infra Terraform Checks  
-↓  
-PR Terraform Plan  
-↓  
-Infra Terraform Apply (dev/test/staging/prod) — manual `workflow_dispatch` (optional env approval if configured)
+- Infra Terraform Checks
+- PR Terraform Plan
+- Infra Terraform Apply (dev/test/staging/prod) — manual `workflow_dispatch` (optional env approval if configured)
 
 **GitHub Environments (optional)**
 
-Infra Terraform Checks  
-↓  
-PR Terraform Plan  
-↓  
-Infra Terraform Apply (dev/test/staging/prod) — Environment gates handle approval
+- Infra Terraform Checks
+- PR Terraform Plan
+- Infra Terraform Apply (dev/test/staging/prod) — Environment gates handle approval
 
 ### CI Teardown (`ci-teardown.yml`)
 

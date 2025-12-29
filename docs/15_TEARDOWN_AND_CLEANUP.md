@@ -113,17 +113,17 @@ Orphan cleanup modes:
 
 Recommended deletion order:
 
-1) EKS node groups → EKS cluster  
-2) Load balancers  
-3) EC2 instances  
-4) ENIs (unattached only)  
-5) IAM roles (BuildId-tagged)  
-6) NAT gateways  
-7) Elastic IPs  
-8) Route tables (detach associations, skip main)  
-9) Subnets  
-10) Security groups (non-default)  
-11) Internet gateways (detach then delete)  
+1) EKS node groups → EKS cluster
+2) Load balancers
+3) EC2 instances
+4) ENIs (unattached only)
+5) IAM roles (BuildId-tagged)
+6) NAT gateways
+7) Elastic IPs
+8) Route tables (detach associations, skip main)
+9) Subnets
+10) Security groups (non-default)
+11) Internet gateways (detach then delete)
 12) VPCs
 
 Terraform destroy guard:

@@ -37,17 +37,17 @@ Constraints:
 We will enforce and document a deterministic deletion order in the orphan
 cleanup script:
 
-1) EKS node groups → EKS cluster  
-2) Load balancers  
-3) EC2 instances  
-4) ENIs (unattached only)  
-5) IAM roles (BuildId-tagged)  
-6) NAT gateways  
-7) Elastic IPs  
-8) Route tables (detach associations, skip main)  
-9) Subnets  
-10) Security groups (non-default)  
-11) Internet gateways (detach then delete)  
+1) EKS node groups → EKS cluster
+2) Load balancers
+3) EC2 instances
+4) ENIs (unattached only)
+5) IAM roles (BuildId-tagged)
+6) NAT gateways
+7) Elastic IPs
+8) Route tables (detach associations, skip main)
+9) Subnets
+10) Security groups (non-default)
+11) Internet gateways (detach then delete)
 12) VPCs
 
 This order is implemented in `cleanup-orphans.sh` and documented in the teardown
