@@ -40,12 +40,13 @@ currently used by workflows in this repo, with their context.
 | `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |
 | `secrets.TF_AWS_IAM_ROLE_DEV_APPLY` | repo secret | OIDC role for dev apply (write). |
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
-| `bucket` / `dynamodb_table` | workflow step | Dev backend state config. |
+| `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
 
-### Infra Terraform Dev Pipeline (`infra-terraform-dev-pipeline.yml`)
+### Infra Terraform Pipeline (`infra-terraform-dev-pipeline.yml`)
 
 | Variable | Source | Purpose |
 | --- | --- | --- |
+| `inputs.env` | workflow_dispatch input | Target environment for plan/apply. |
 | `inputs.confirm_apply` | workflow_dispatch input | Manual confirmation for apply. |
 | `inputs.lifecycle` | workflow_dispatch input | State lifecycle (`ephemeral` or `persistent`). |
 | `inputs.build_id` | workflow_dispatch input | Build ID used for ephemeral state keys. |

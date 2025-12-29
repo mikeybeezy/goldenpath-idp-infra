@@ -58,7 +58,8 @@ Result: Terraform uses `envs/dev/terraform.tfstate`.
 | Workflow | Lifecycle-aware state key |
 | --- | --- |
 | `infra-terraform.yml` | Yes |
-| `infra-terraform-apply-dev.yml` | Yes |
+| `infra-terraform-apply-dev.yml` | Yes (dev only) |
+| `infra-terraform-dev-pipeline.yml` | Yes (all envs) |
 | `ci-bootstrap.yml` | Yes |
 | `ci-teardown.yml` | Yes |
 | `pr-terraform-plan.yml` | Yes (reads `envs/dev/terraform.tfvars`) |
