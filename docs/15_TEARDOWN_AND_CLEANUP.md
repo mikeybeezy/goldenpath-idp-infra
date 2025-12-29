@@ -109,7 +109,7 @@ Orphan cleanup modes:
 - `ORPHAN_CLEANUP_MODE=none` skips cleanup (even if `CLEANUP_ORPHANS=true`).
 - CI uses the `cleanup_mode` workflow input to set this.
 - Orphan cleanup never deletes the Terraform state S3 bucket or DynamoDB lock table.
-- Orphan cleanup targets EKS, LBs, EC2, NAT, EIPs, ENIs, subnets, SGs, IGWs, and VPCs.
+- Orphan cleanup targets EKS, LBs, EC2, NAT, EIPs, ENIs, route tables, subnets, SGs, IGWs, VPCs, and IAM roles.
 
 Terraform destroy guard:
 
