@@ -39,9 +39,9 @@ on:
         default: true
         type: boolean
       confirm_irsa_apply:
-        description: "Confirm IRSA service-account apply (Terraform)"
+        description: "Confirm IRSA service-account apply (required for LB + autoscaler; future EFS/EBS)"
         required: true
-        default: false
+        default: true
         type: boolean
       node_instance_type:
         description: "Node instance type (bootstrap)"
