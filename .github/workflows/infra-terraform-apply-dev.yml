@@ -11,9 +11,17 @@ on:
         options:
           - cancel
           - apply
+      lifecycle:
+        description: "Lifecycle (ephemeral or persistent)"
+        required: true
+        default: "ephemeral"
+        type: choice
+        options:
+          - ephemeral
+          - persistent
       build_id:
         description: "Build ID (dd-mm-yy-NN)"
-        required: true
+        required: false
         type: string
 
 jobs:
@@ -28,10 +36,16 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Validate build ID
+      - name: Validate lifecycle and build ID
         shell: bash
         run: |
-          if ! [[ "${{ inputs.build_id }}" =~ ^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]; then
+          if [[ "${{ inputs.lifecycle }}" == "ephemeral" ]]; then
+            if [[ -z "${{ inputs.build_id }}" ]]; then
+              echo "build_id is required when lifecycle=ephemeral"
+              exit 1
+            fi
+          fi
+          if [[ -n "${{ inputs.build_id }}" ]] && ! [[ "${{ inputs.build_id }}" =~ ^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]; then
             echo "Invalid build_id: '${{ inputs.build_id }}' (expected dd-mm-yy-NN)"
             exit 1
           fi
@@ -43,6 +57,8 @@ jobs:
             const { owner, repo } = context.repo;
             const workflowId = "infra-terraform.yml";
             const sha = context.sha;
+            const lifecycle = "${{ inputs.lifecycle }}";
+            const buildId = "${{ inputs.build_id }}";
             const runs = await github.rest.actions.listWorkflowRuns({
               owner,
               repo,
@@ -55,11 +71,13 @@ jobs:
                 run.conclusion === "success" &&
                 run.head_sha === sha &&
                 typeof run.display_title === "string" &&
-                run.display_title.includes("env=dev")
+                run.display_title.includes("env=dev") &&
+                run.display_title.includes(`lifecycle=${lifecycle}`) &&
+                (lifecycle !== "ephemeral" || run.display_title.includes(`build_id=${buildId}`))
             );
             if (!match) {
               core.setFailed(
-                `No successful dev plan run found for ${sha}. Run infra-terraform.yml with env=dev first.`
+                `No successful dev plan run found for ${sha}. Run infra-terraform.yml with env=dev and matching lifecycle/build_id first.`
               );
             } else {
               core.info(`Dev plan run ok: ${match.html_url}`);
@@ -74,16 +92,27 @@ jobs:
           aws-region: eu-west-2
           role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}
 
+      - name: Resolve state key
+        run: |
+          if [[ "${{ inputs.lifecycle }}" == "ephemeral" ]]; then
+            STATE_KEY="envs/dev/builds/${{ inputs.build_id }}/terraform.tfstate"
+          else
+            STATE_KEY="envs/dev/terraform.tfstate"
+          fi
+          echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
+          echo "Resolved STATE_KEY=${STATE_KEY}"
+
       - name: Terraform init (backend)
         run: |
           terraform -chdir=envs/dev init \
             -backend-config="bucket=goldenpath-idp-dev-bucket" \
-            -backend-config="key=envs/dev/terraform.tfstate" \
+            -backend-config="key=${STATE_KEY}" \
             -backend-config="region=eu-west-2" \
             -backend-config="dynamodb_table=goldenpath-idp-dev-db-key" \
             -backend-config="encrypt=true"
 
       - name: Terraform apply (dev)
         env:
+          TF_VAR_cluster_lifecycle: ${{ inputs.lifecycle }}
           TF_VAR_build_id: ${{ inputs.build_id }}
         run: terraform -chdir=envs/dev apply -auto-approve -input=false -no-color

@@ -1,5 +1,5 @@
 name: Infra Terraform Checks
-run-name: "infra-plan (env=${{ inputs.env }})"
+run-name: "infra-plan (env=${{ inputs.env }}, lifecycle=${{ inputs.lifecycle }}, build_id=${{ inputs.build_id }})"
 
 on:
   workflow_dispatch:
