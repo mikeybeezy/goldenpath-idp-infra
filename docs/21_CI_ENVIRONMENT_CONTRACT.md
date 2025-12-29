@@ -121,6 +121,9 @@ repo values in `envs/dev/terraform.tfvars` by design. For ephemeral runs,
 | `CLUSTER_NAME` | workflow env | Cluster name override. |
 | `BUILD_ID` | workflow env | Build ID for ephemeral runs. |
 | `CLUSTER_LIFECYCLE` | workflow env | `ephemeral` or `persistent`. |
+| `inputs.bootstrap_only` | workflow input | Skip Terraform apply; run bootstrap only. |
+| `inputs.confirm_irsa_apply` | workflow input | Explicit confirmation for IRSA Terraform apply. |
+| `inputs.min_ready_nodes` | workflow input | Minimum Ready node count required. |
 | `STATE_KEY` | workflow step | Backend state key resolved from lifecycle + Build ID. |
 | `TF_DIR` | workflow env | Terraform root for environment. |
 | `LB_CLEANUP_ATTEMPTS` | workflow env | Load balancer cleanup retries. |
@@ -145,8 +148,8 @@ repo values in `envs/dev/terraform.tfvars` by design. For ephemeral runs,
 
 The CI bootstrap workflow supports explicit modes to reduce operator error:
 
-- **build + bootstrap**: apply infra, then bootstrap tooling (default).
-- **bootstrap-only**: skip apply, reuse existing cluster/build.
+- **bootstrap-only**: skip apply, reuse existing cluster/build (default).
+- **build + bootstrap**: apply infra, then bootstrap tooling.
 - **teardown**: run the dedicated teardown workflow to destroy the environment.
 
 See `docs/adrs/ADR-0033-platform-ci-orchestrated-modes.md` for the decision and tradeoffs.
