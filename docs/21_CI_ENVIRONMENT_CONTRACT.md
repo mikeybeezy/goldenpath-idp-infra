@@ -122,7 +122,7 @@ repo values in `envs/dev/terraform.tfvars` by design. For ephemeral runs,
 | `BUILD_ID` | workflow env | Build ID for ephemeral runs. |
 | `CLUSTER_LIFECYCLE` | workflow env | `ephemeral` or `persistent`. |
 | `inputs.bootstrap_only` | workflow input | Skip Terraform apply; run bootstrap only. |
-| `inputs.confirm_irsa_apply` | workflow input | Explicit confirmation for IRSA Terraform apply. |
+| `inputs.confirm_irsa_apply` | workflow input | Confirm IRSA service-account apply (needed for LB + autoscaler; future EFS/EBS). |
 | `inputs.min_ready_nodes` | workflow input | Minimum Ready node count required. |
 | `STATE_KEY` | workflow step | Backend state key resolved from lifecycle + Build ID. |
 | `TF_DIR` | workflow env | Terraform root for environment. |
