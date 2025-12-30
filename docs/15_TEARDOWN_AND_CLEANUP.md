@@ -111,6 +111,15 @@ LoadBalancer ENI wait (prevents stuck subnet deletes):
 - Recovery note: if a partial teardown left ENIs behind, re-run teardown with
   `FORCE_DELETE_LBS=true` after confirming only disposable LBs remain.
 
+ENI consistency constraints:
+
+- ENIs for managed services (ELB) cannot be detached or deleted directly.
+- ENIs may remain in-use after LB deletion due to eventual consistency.
+- ENI counts per LB vary with load and can change during teardown.
+- Tag coverage on ENIs is not guaranteed; cluster scoping should be enforced on LBs.
+
+Runbook: `docs/runbooks/06_LB_ENI_ORPHANS.md`
+
 ```bash
 
 TEARDOWN_CONFIRM=true LB_CLEANUP_ATTEMPTS=8 LB_CLEANUP_INTERVAL=30 \

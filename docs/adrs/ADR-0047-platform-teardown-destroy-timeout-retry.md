@@ -26,6 +26,13 @@ Kubernetes-created Network Load Balancer ENIs are still present. The LB cleanup
 step removes services, but AWS eventual consistency can leave ENIs for several
 minutes. This causes long-running pipeline hangs and intermittent failures.
 
+Operational constraints observed:
+
+- Managed-service ENIs cannot be detached or deleted directly.
+- ENIs can persist after LB deletion for minutes to hours.
+- ENI counts per LB vary with load; tags may be incomplete.
+- Terraform cannot observe internal cleanup, so destroy waits can hang.
+
 We need a bounded, repeatable teardown that avoids stuck pipelines while keeping
 the forced cleanup scoped to only the cluster’s Kubernetes-managed LBs.
 
