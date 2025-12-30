@@ -72,9 +72,9 @@ on:
         required: true
         default: "900"
       force_delete_lbs:
-        description: "Break-glass: delete remaining Kubernetes load balancers"
+        description: "Delete remaining Kubernetes load balancers if ENIs persist"
         required: true
-        default: false
+        default: true
         type: boolean
 
 jobs:
