@@ -62,10 +62,26 @@ LoadBalancer cleanup retries:
 - `LB_CLEANUP_MAX_WAIT` caps the LoadBalancer wait loop in Stage 2
   to avoid hanging (default `900` seconds).
 
+LoadBalancer ENI wait (prevents stuck subnet deletes):
+
+- After LoadBalancer Services are gone, the script waits for any
+  network load balancer ENIs to disappear.
+- `WAIT_FOR_LB_ENIS` controls this wait (default `true`).
+- `LB_ENI_WAIT_MAX` caps the ENI wait loop (default `LB_CLEANUP_MAX_WAIT`).
+- `FORCE_DELETE_LBS=true` is a break-glass option that deletes remaining
+  Kubernetes LBs if ENIs do not disappear in time.
+
 Example:
 
 ```bash
 TEARDOWN_CONFIRM=true LB_CLEANUP_ATTEMPTS=8 LB_CLEANUP_INTERVAL=30 \
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+```
+
+Break-glass ENI cleanup:
+
+```bash
+TEARDOWN_CONFIRM=true FORCE_DELETE_LBS=true \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
 ```
 
