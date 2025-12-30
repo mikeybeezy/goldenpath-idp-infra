@@ -109,6 +109,11 @@ jobs:
             const fs = require("fs");
             const plan = fs.readFileSync("plan.txt", "utf8");
             const planJson = JSON.parse(fs.readFileSync("plan.json", "utf8"));
+            const escapeHtml = (value) =>
+              value
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
             const counts = { create: 0, update: 0, delete: 0, read: 0, replace: 0, no_op: 0 };
             const changes = planJson.resource_changes || [];
             for (const change of changes) {
@@ -119,31 +124,31 @@ jobs:
                 counts.replace += 1;
               }
             }
+            const truncated = plan.length > 65000;
+            const planBody = escapeHtml(plan.substring(0, 65000));
             const body = [
               "## Terraform plan (envs/dev)",
               "",
               "<details>",
               "<summary>Plan summary</summary>",
               "",
-              "```text",
+              "<pre>",
               `create:  ${counts.create}`,
               `update:  ${counts.update}`,
               `delete:  ${counts.delete}`,
               `replace: ${counts.replace}`,
               `read:    ${counts.read}`,
               `no_op:   ${counts.no_op}`,
-              "```",
+              "</pre>",
               "</details>",
               "",
               "<details>",
-              "<summary>Full plan (expand)</summary>",
+              `<summary>Full plan${truncated ? " (truncated)" : ""}</summary>`,
               "",
-              "```text",
-              plan.substring(0, 65000),
-              "```",
+              `<pre>${planBody}</pre>`,
               "</details>",
               "",
-              "_Truncated to 65k characters if needed._"
+              truncated ? "_Truncated to 65k characters._" : ""
             ].join("\\n");
 
             const { data: comments } = await github.rest.issues.listComments({
