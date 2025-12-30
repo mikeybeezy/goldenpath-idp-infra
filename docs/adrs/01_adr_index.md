@@ -56,6 +56,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0040](ADR-0040-platform-lifecycle-aware-state-keys.md) | Platform | Lifecycle-aware Terraform state keys for BuildId isolation | Proposed | 2025-12-29 | Ephemeral runs use per-BuildId state keys; persistent uses a stable key. |
 | [ADR-0041](ADR-0041-platform-orphan-cleanup-deletion-order.md) | Platform | Deterministic orphan cleanup deletion order | Proposed | 2025-12-29 | Enforce a dependency-safe deletion order for tagged orphan cleanup. |
 | [ADR-0042](ADR-0042-platform-branching-strategy.md) | Platform | Branching strategy (development → main) | Proposed | 2025-12-29 | All changes merge into development first; only development promotes to main. |
+| [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) | Platform | Teardown waits for LoadBalancer ENIs before subnet delete | Proposed | 2025-12-30 | Add an ENI wait gate and break-glass LB delete to prevent subnet hangs. |
 
 ---
 
