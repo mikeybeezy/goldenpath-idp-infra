@@ -118,6 +118,3 @@ bootstrap_node_group = {
   desired_size = 4
   max_size     = 7
 }
-
-
-
