@@ -15,6 +15,9 @@ set -euo pipefail
 #   DELETE_CLUSTER=true|false (default true, ignored when TF_DIR is set)
 #   LB_CLEANUP_ATTEMPTS=<count> (default 5)
 #   LB_CLEANUP_INTERVAL=<seconds> (default 20)
+#   WAIT_FOR_LB_ENIS=true|false (default true)
+#   LB_ENI_WAIT_MAX=<seconds> (default LB_CLEANUP_MAX_WAIT)
+#   FORCE_DELETE_LBS=true|false (default false, break glass)
 #   TF_DIR=<path> (if set, run terraform destroy instead of aws eks delete-cluster)
 #   TF_AUTO_APPROVE=true (use -auto-approve with terraform destroy)
 #   REMOVE_K8S_SA_FROM_STATE=true|false (default true)
@@ -59,6 +62,9 @@ ARGO_APP_NAMESPACE="${ARGO_APP_NAMESPACE:-kong-system}"
 ARGO_APP_NAME="${ARGO_APP_NAME:-dev-kong}"
 DELETE_ARGO_APP="${DELETE_ARGO_APP:-true}"
 LB_CLEANUP_MAX_WAIT="${LB_CLEANUP_MAX_WAIT:-900}"
+WAIT_FOR_LB_ENIS="${WAIT_FOR_LB_ENIS:-true}"
+LB_ENI_WAIT_MAX="${LB_ENI_WAIT_MAX:-${LB_CLEANUP_MAX_WAIT}}"
+FORCE_DELETE_LBS="${FORCE_DELETE_LBS:-false}"
 ORPHAN_CLEANUP_MODE="${ORPHAN_CLEANUP_MODE:-delete}"
 
 cleanup_on_exit() {
@@ -216,6 +222,109 @@ cleanup_loadbalancer_services() {
   return 1
 }
 
+get_cluster_subnet_filter() {
+  local subnet_ids=""
+  subnet_ids="$(aws eks describe-cluster \
+    --name "${cluster_name}" \
+    --region "${region}" \
+    --query 'cluster.resourcesVpcConfig.subnetIds' \
+    --output text 2>/dev/null || true)"
+  if [[ -z "${subnet_ids}" ]]; then
+    return 1
+  fi
+  echo "${subnet_ids}" | tr ' ' ','
+}
+
+list_lb_enis() {
+  local subnet_filter="$1"
+  if [[ -z "${subnet_filter}" ]]; then
+    return 0
+  fi
+  aws ec2 describe-network-interfaces \
+    --region "${region}" \
+    --filters "Name=subnet-id,Values=${subnet_filter}" \
+              "Name=interface-type,Values=network_load_balancer" \
+              "Name=description,Values=ELB net/*" \
+    --query 'NetworkInterfaces[].[NetworkInterfaceId,Description,Status]' \
+    --output text 2>/dev/null || true
+}
+
+delete_lbs_for_enis() {
+  local enis="$1"
+  declare -A lb_names=()
+  local eni_id=""
+  local desc=""
+  local status=""
+
+  while IFS=$'\t' read -r eni_id desc status; do
+    [[ -z "${desc}" ]] && continue
+    if [[ "${desc}" =~ ^ELB\ net/([^/]+)/ ]]; then
+      local lb_name="${BASH_REMATCH[1]}"
+      if [[ "${lb_name}" == k8s-* ]]; then
+        lb_names["${lb_name}"]=1
+      fi
+    fi
+  done <<< "${enis}"
+
+  if [[ "${#lb_names[@]}" -eq 0 ]]; then
+    echo "No Kubernetes load balancers found in ENI descriptions."
+    return 0
+  fi
+
+  for lb_name in "${!lb_names[@]}"; do
+    local lb_arn=""
+    lb_arn="$(aws elbv2 describe-load-balancers \
+      --region "${region}" \
+      --names "${lb_name}" \
+      --query 'LoadBalancers[0].LoadBalancerArn' \
+      --output text 2>/dev/null || true)"
+    if [[ -z "${lb_arn}" || "${lb_arn}" == "None" ]]; then
+      echo "Load balancer ${lb_name} not found; skipping."
+      continue
+    fi
+    echo "Deleting load balancer ${lb_name} (${lb_arn})"
+    aws elbv2 delete-load-balancer --region "${region}" --load-balancer-arn "${lb_arn}" || true
+  done
+}
+
+wait_for_lb_enis() {
+  local subnet_filter="$1"
+  local interval="${LB_ENI_WAIT_INTERVAL:-30}"
+  local max_wait="${LB_ENI_WAIT_MAX}"
+  local start_epoch
+  start_epoch="$(date -u +%s)"
+
+  if [[ -z "${subnet_filter}" ]]; then
+    echo "Skipping LoadBalancer ENI wait (no subnet filter available)."
+    return 0
+  fi
+
+  echo "Waiting for LoadBalancer ENIs to be removed (heartbeat every ${interval}s)..."
+  while true; do
+    local enis=""
+    enis="$(list_lb_enis "${subnet_filter}")"
+    if [[ -z "${enis}" ]]; then
+      echo "No LoadBalancer ENIs remain."
+      return 0
+    fi
+
+    echo "LoadBalancer ENIs still present:"
+    echo "${enis}"
+
+    if [[ -n "${max_wait}" && "${max_wait}" -gt 0 ]]; then
+      local now_epoch
+      now_epoch="$(date -u +%s)"
+      local elapsed=$((now_epoch - start_epoch))
+      if [[ "${elapsed}" -ge "${max_wait}" ]]; then
+        echo "Timed out after ${elapsed}s waiting for LoadBalancer ENIs." >&2
+        return 1
+      fi
+    fi
+
+    sleep "${interval}"
+  done
+}
+
 echo "Teardown starting for cluster ${cluster_name} in ${region}"
 
 stage_banner "STAGE 1: CLUSTER CONTEXT"
@@ -233,6 +342,22 @@ wait_with_heartbeat \
   "test -z \"\$(kubectl get svc -A -o jsonpath='{range .items[?(@.spec.type==\"LoadBalancer\")]}{.metadata.namespace}/{.metadata.name}{\"\\n\"}{end}' 2>/dev/null)\"" \
   "${HEARTBEAT_INTERVAL:-30}" \
   "${LB_CLEANUP_MAX_WAIT}"
+if [[ "${WAIT_FOR_LB_ENIS}" == "true" ]]; then
+  subnet_filter="$(get_cluster_subnet_filter || true)"
+  if ! wait_for_lb_enis "${subnet_filter}"; then
+    if [[ "${FORCE_DELETE_LBS}" == "true" ]]; then
+      echo "Attempting to delete remaining load balancers (FORCE_DELETE_LBS=true)."
+      remaining_enis="$(list_lb_enis "${subnet_filter}")"
+      if [[ -n "${remaining_enis}" ]]; then
+        delete_lbs_for_enis "${remaining_enis}"
+      fi
+      wait_for_lb_enis "${subnet_filter}"
+    else
+      echo "LoadBalancer ENIs still present. Set FORCE_DELETE_LBS=true to attempt deletion." >&2
+      exit 1
+    fi
+  fi
+fi
 stage_done "STAGE 2"
 
 stage_banner "STAGE 3: DRAIN NODEGROUPS"

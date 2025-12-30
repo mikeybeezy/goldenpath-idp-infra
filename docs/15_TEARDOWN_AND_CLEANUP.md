@@ -95,9 +95,31 @@ LoadBalancer cleanup retries:
 - `LB_CLEANUP_INTERVAL` controls the delay between loops (default `20` seconds).
 - `LB_CLEANUP_MAX_WAIT` caps the LoadBalancer wait loop (default `900` seconds).
 
+LoadBalancer ENI wait (prevents stuck subnet deletes):
+
+- After LoadBalancer Services are gone, the runner waits for any
+  network load balancer ENIs to disappear.
+- `WAIT_FOR_LB_ENIS` controls this wait (default `true`).
+- `LB_ENI_WAIT_MAX` caps the ENI wait loop (default `LB_CLEANUP_MAX_WAIT`).
+- `FORCE_DELETE_LBS=true` is a break-glass option that deletes remaining
+  Kubernetes load balancers if ENIs do not disappear in time.
+- CI exposes this as the `force_delete_lbs` workflow input.
+- Ensure the teardown role can call `elasticloadbalancing:DeleteLoadBalancer`
+  and `ec2:DescribeNetworkInterfaces` (see
+  `docs/policies/ci-teardown-extra-permissions.json`).
+
 ```bash
 
 TEARDOWN_CONFIRM=true LB_CLEANUP_ATTEMPTS=8 LB_CLEANUP_INTERVAL=30 \
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+
+```text
+
+Break-glass ENI cleanup:
+
+```bash
+
+TEARDOWN_CONFIRM=true FORCE_DELETE_LBS=true \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
 
 ```text
@@ -336,6 +358,8 @@ aws ec2 describe-network-interfaces --region "$AWS_REGION" \
 
 If ENIs remain, delete the owning service (LB, NAT, endpoint, or instance)
 before retrying.
+NLB ENIs appear as `ELB net/...` descriptions and will block subnet deletes
+until the load balancer is fully removed.
 
 ## Subnets, route tables, and gateways
 

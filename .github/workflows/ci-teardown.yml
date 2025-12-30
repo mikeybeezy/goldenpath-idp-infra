@@ -71,6 +71,11 @@ on:
         description: "Max seconds to wait for LoadBalancer services to disappear"
         required: true
         default: "900"
+      force_delete_lbs:
+        description: "Break-glass: delete remaining Kubernetes load balancers"
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   teardown:
@@ -91,6 +96,7 @@ jobs:
       ARGO_APP_NAME: ${{ inputs.argo_app_name }}
       DELETE_ARGO_APP: ${{ inputs.delete_argo_app }}
       LB_CLEANUP_MAX_WAIT: ${{ inputs.lb_cleanup_max_wait }}
+      FORCE_DELETE_LBS: ${{ inputs.force_delete_lbs }}
       REMOVE_K8S_SA_FROM_STATE: "true"
       TF_AUTO_APPROVE: "true"
     steps:
@@ -195,6 +201,7 @@ jobs:
       ARGO_APP_NAME: ${{ inputs.argo_app_name }}
       DELETE_ARGO_APP: ${{ inputs.delete_argo_app }}
       LB_CLEANUP_MAX_WAIT: ${{ inputs.lb_cleanup_max_wait }}
+      FORCE_DELETE_LBS: ${{ inputs.force_delete_lbs }}
       REMOVE_K8S_SA_FROM_STATE: "true"
       TF_AUTO_APPROVE: "true"
     steps:
