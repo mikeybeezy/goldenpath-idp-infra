@@ -77,38 +77,64 @@ jobs:
             const sha = context.sha;
             const lifecycle = "${{ inputs.lifecycle }}";
             const buildId = "${{ inputs.build_id }}";
-            const manualRuns = await github.rest.actions.listWorkflowRuns({
-              owner,
-              repo,
-              workflow_id: "infra-terraform.yml",
-              event: "workflow_dispatch",
-              per_page: 20
-            });
-            const manualMatch = manualRuns.data.workflow_runs.find(
-              run =>
-                run.conclusion === "success" &&
-                run.head_sha === sha &&
-                typeof run.display_title === "string" &&
-                run.display_title.includes("env=dev") &&
-                run.display_title.includes(`lifecycle=${lifecycle}`) &&
-                (lifecycle !== "ephemeral" || run.display_title.includes(`build_id=${buildId}`))
-            );
-            const prRuns = await github.rest.actions.listWorkflowRuns({
-              owner,
-              repo,
-              workflow_id: "pr-terraform-plan.yml",
-              event: "pull_request",
-              per_page: 20
-            });
-            const prMatch = prRuns.data.workflow_runs.find(
-              run => run.conclusion === "success" && run.head_sha === sha
-            );
+            const findManualPlan = async (targetSha) => {
+              const manualRuns = await github.rest.actions.listWorkflowRuns({
+                owner,
+                repo,
+                workflow_id: "infra-terraform.yml",
+                event: "workflow_dispatch",
+                per_page: 50
+              });
+              return manualRuns.data.workflow_runs.find(
+                run =>
+                  run.conclusion === "success" &&
+                  run.head_sha === targetSha &&
+                  typeof run.display_title === "string" &&
+                  run.display_title.includes("env=dev") &&
+                  run.display_title.includes(`lifecycle=${lifecycle}`) &&
+                  (lifecycle !== "ephemeral" || run.display_title.includes(`build_id=${buildId}`))
+              );
+            };
+            const findPrPlan = async (targetSha) => {
+              const prRuns = await github.rest.actions.listWorkflowRuns({
+                owner,
+                repo,
+                workflow_id: "pr-terraform-plan.yml",
+                event: "pull_request",
+                per_page: 50
+              });
+              return prRuns.data.workflow_runs.find(
+                run => run.conclusion === "success" && run.head_sha === targetSha
+              );
+            };
+
+            const manualMatch = await findManualPlan(sha);
+            let prMatch = await findPrPlan(sha);
+            let prHeadSha = null;
+
+            if (!prMatch) {
+              const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                owner,
+                repo,
+                commit_sha: sha,
+                per_page: 10,
+                mediaType: { previews: ["groot"] }
+              });
+              const merged = prs.data.find(pr => pr.merged_at);
+              if (merged) {
+                prHeadSha = merged.head.sha;
+                prMatch = await findPrPlan(prHeadSha);
+              }
+            }
+
             if (!manualMatch && !prMatch) {
               core.setFailed(
-                `No successful dev plan run found for ${sha}. Run PR Terraform Plan or infra-terraform.yml with env=dev and matching lifecycle/build_id first.`
+                `No successful dev plan run found for ${sha}. Run PR Terraform Plan (matching the PR head) or infra-terraform.yml with env=dev and matching lifecycle/build_id first.`
               );
             } else if (manualMatch) {
               core.info(`Dev plan run ok (manual): ${manualMatch.html_url}`);
+            } else if (prHeadSha) {
+              core.info(`Dev plan run ok (PR head ${prHeadSha}): ${prMatch.html_url}`);
             } else {
               core.info(`Dev plan run ok (PR): ${prMatch.html_url}`);
             }

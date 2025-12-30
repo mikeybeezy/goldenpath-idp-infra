@@ -50,8 +50,9 @@ Use it when you want an extra validation pass on a specific branch.
 Apply in this workflow is attached to the `dev` GitHub Environment. If required
 reviewers are configured, apply waits for approval; otherwise it runs immediately.
 
-Apply also accepts a successful **PR Terraform Plan** for the same commit SHA
-as the prerequisite in dev (manual `infra-terraform.yml` remains optional).
+Apply also accepts a successful **PR Terraform Plan** for the same commit SHA.
+If apply runs on a merge commit, the guard will also accept the PR plan tied to
+the merged PR head SHA (manual `infra-terraform.yml` remains optional).
 
 ### Infra Terraform Apply (test) (`infra-terraform-apply-test.yml`)
 
