@@ -2,7 +2,7 @@
 
 Filename: `ADR-0044-platform-infra-checks-ref-mode.md`
 
-- **Status:** Proposed
+- **Status:** Superseded by `ADR-0046-platform-pr-plan-validation-ownership.md`
 - **Date:** 2025-12-30
 - **Owners:** `platform`
 - **Domain:** Platform

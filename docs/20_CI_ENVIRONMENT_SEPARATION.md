@@ -5,17 +5,20 @@ reference and should evolve as the platform grows.
 
 ## Current approach
 
-- Single workflow: `infra-terraform.yml` handles plan/apply via `workflow_dispatch`.
+- PR workflow: `pr-terraform-plan.yml` posts plan output and runs fmt/validate guards.
+- Manual apply workflows: `infra-terraform-apply-<env>.yml` apply with explicit confirmation.
+- Optional manual checks: `infra-terraform.yml` runs fmt/validate/plan on demand.
 - Environment separation: GitHub Environments named `dev`, `test`, `staging`, `prod`.
-- Manual gates: apply steps run only when `apply=true` is set at workflow dispatch.
+- Manual gates: apply steps run only when `confirm_apply=apply` is selected.
 - Access model: GitHub Actions uses AWS OIDC and environment-scoped IAM roles.
 - PR workflow: `pr-terraform-plan.yml` posts plan output as a PR comment (dev only).
 
 ## Current dev implementation
 
-- Workflow input: `env=dev`.
-- Manual apply toggle: `apply=true` at workflow dispatch.
-- Role secret: `secrets.TF_AWS_IAM_ROLE_DEV`.
+- Plan source: PR plan (dev) or optional `infra-terraform.yml`.
+- Manual apply: `infra-terraform-apply-dev.yml` with `confirm_apply=apply`.
+- Plan role secret: `secrets.TF_AWS_IAM_ROLE_DEV`.
+- Apply role secret: `secrets.TF_AWS_IAM_ROLE_DEV_APPLY`.
 - Region: `eu-west-2`.
 - Backend:
   - S3 bucket: `goldenpath-idp-dev-bucket`

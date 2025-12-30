@@ -27,7 +27,7 @@ isolate ephemeral runs by BuildId so a new BuildId always starts clean.
 Use when you want a new cluster and empty state.
 
 1. Set `cluster_lifecycle=ephemeral` and a new `build_id`.
-2. Run `infra-terraform.yml` with `lifecycle=ephemeral` and the same `build_id`.
+2. Ensure a plan exists (PR Terraform Plan or `infra-terraform.yml` with `lifecycle=ephemeral`).
 3. Run `infra-terraform-apply-dev.yml` with `lifecycle=ephemeral` and the same `build_id`.
 4. Run `ci-bootstrap.yml` with the same `build_id` if you need platform bootstrap.
 
@@ -48,7 +48,7 @@ Result: Terraform reads the existing ephemeral state and applies changes in plac
 Use when you need to change long-lived infrastructure.
 
 1. Set `cluster_lifecycle=persistent` (BuildId optional).
-2. Run `infra-terraform.yml` with `lifecycle=persistent`.
+2. Ensure a plan exists (PR Terraform Plan or `infra-terraform.yml` with `lifecycle=persistent`).
 3. Run `infra-terraform-apply-dev.yml` with `lifecycle=persistent`.
 
 Result: Terraform uses `envs/dev/terraform.tfstate`.
