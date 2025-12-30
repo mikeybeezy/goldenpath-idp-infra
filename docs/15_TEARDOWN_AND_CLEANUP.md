@@ -101,10 +101,10 @@ LoadBalancer ENI wait (prevents stuck subnet deletes):
   network load balancer ENIs to disappear.
 - `WAIT_FOR_LB_ENIS` controls this wait (default `true`).
 - `LB_ENI_WAIT_MAX` caps the ENI wait loop (default `LB_CLEANUP_MAX_WAIT`).
-- `FORCE_DELETE_LBS=true` is a break-glass option that deletes remaining
-  Kubernetes load balancers if ENIs do not disappear in time. Deletion is
-  scoped to LBs tagged with `elbv2.k8s.aws/cluster=<cluster_name>`.
-- CI exposes this as the `force_delete_lbs` workflow input.
+- `FORCE_DELETE_LBS` defaults to `true` and deletes remaining Kubernetes load
+  balancers if ENIs do not disappear in time. Deletion is scoped to LBs tagged
+  with `elbv2.k8s.aws/cluster=<cluster_name>`.
+- CI exposes this as the `force_delete_lbs` workflow input (default `true`).
 - Ensure the teardown role can call `elasticloadbalancing:DeleteLoadBalancer`,
   `elasticloadbalancing:DescribeTags`, and `ec2:DescribeNetworkInterfaces` (see
   `docs/policies/ci-teardown-extra-permissions.json`).
@@ -118,7 +118,7 @@ TEARDOWN_CONFIRM=true LB_CLEANUP_ATTEMPTS=8 LB_CLEANUP_INTERVAL=30 \
 
 ```text
 
-Break-glass ENI cleanup:
+Force delete remaining cluster LBs (optional override):
 
 ```bash
 

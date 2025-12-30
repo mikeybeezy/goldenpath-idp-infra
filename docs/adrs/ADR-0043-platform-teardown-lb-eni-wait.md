@@ -2,7 +2,7 @@
 
 Filename: `ADR-0043-platform-teardown-lb-eni-wait.md`
 
-- **Status:** Proposed
+- **Status:** Superseded by `ADR-0045-platform-teardown-lb-delete-default.md`
 - **Date:** 2025-12-30
 - **Owners:** `platform`
 - **Domain:** Platform
