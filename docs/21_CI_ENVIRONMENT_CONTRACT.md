@@ -32,6 +32,9 @@ currently used by workflows in this repo, with their context.
 | `aws-region` (eu-west-2) | workflow step | Region used by AWS provider and backend. |
 | `bucket` / `dynamodb_table` | workflow step | Backend state config per environment. |
 
+This workflow is **manual-only**; it is not auto-dispatched by PR plans.
+Use it when you want an extra validation pass on a specific branch.
+
 ### Infra Terraform Apply (dev) (`infra-terraform-apply-dev.yml`)
 
 | Variable | Source | Purpose |
@@ -48,7 +51,7 @@ Apply in this workflow is attached to the `dev` GitHub Environment. If required
 reviewers are configured, apply waits for approval; otherwise it runs immediately.
 
 Apply also accepts a successful **PR Terraform Plan** for the same commit SHA
-as the prerequisite in dev (manual `infra-terraform.yml` still works).
+as the prerequisite in dev (manual `infra-terraform.yml` remains optional).
 
 ### Infra Terraform Apply (test) (`infra-terraform-apply-test.yml`)
 
@@ -184,18 +187,16 @@ are treated as an optional convenience for teams already using that feature.
 **Default (manual approval, vendor-neutral)**
 
 - PR Terraform Plan (auto)
-- Infra Terraform Checks (auto, dispatched by PR plan)
 - Infra Terraform Apply (dev/test/staging/prod) — manual `workflow_dispatch` (optional env approval if configured)
 
 **GitHub Environments (optional)**
 
 - PR Terraform Plan (auto)
-- Infra Terraform Checks (auto, dispatched by PR plan)
 - Infra Terraform Apply (dev/test/staging/prod) — Environment gates handle approval
 
+Optional: run `infra-terraform.yml` manually for an extra validation pass.
+
 Note: `pr-terraform-plan.yml` is PR-triggered only and is not manually runnable.
-The PR plan workflow also dispatches `infra-terraform.yml` for the same branch
-to keep apply pre-checks aligned with PR plans.
 
 ### CI Teardown (`ci-teardown.yml`)
 
