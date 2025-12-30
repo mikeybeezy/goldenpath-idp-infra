@@ -11,6 +11,12 @@ first; use these commands when Terraform or the scripts cannot finish the job.
 The teardown runner drains node groups, removes dependencies, and then
 destroys the cluster.
 
+Teardown runner versions:
+
+- `goldenpath-idp-teardown.sh` (v1, default)
+- `goldenpath-idp-teardown-v2.sh` (v2, iteration track)
+- Makefile selection: set `TEARDOWN_VERSION=v1|v2` (CI exposes the same input).
+
 Why this order matters:
 
 - Node groups keep ENIs, ASGs, and security groups alive.
@@ -49,6 +55,14 @@ Tradeoffs:
 
 TEARDOWN_CONFIRM=true \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+
+```text
+
+Select v2 via Makefile (optional):
+
+```bash
+
+TEARDOWN_VERSION=v2 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
 
 ```text
 

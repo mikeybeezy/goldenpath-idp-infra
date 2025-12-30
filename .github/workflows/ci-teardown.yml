@@ -33,6 +33,14 @@ on:
         options:
           - ephemeral
           - persistent
+      teardown_version:
+        description: "Teardown script version"
+        required: true
+        default: "v1"
+        type: choice
+        options:
+          - v1
+          - v2
       relax_pdb:
         description: "Relax PDB during teardown"
         required: true
@@ -89,6 +97,7 @@ jobs:
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
       CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
+      TEARDOWN_VERSION: ${{ inputs.teardown_version }}
       TF_DIR: envs/${{ inputs.env }}
       CLEANUP_ORPHANS: ${{ inputs.cleanup_mode != 'none' }}
       ORPHAN_CLEANUP_MODE: ${{ inputs.cleanup_mode }}
@@ -194,6 +203,7 @@ jobs:
       CLUSTER_NAME: ${{ inputs.cluster_name }}
       BUILD_ID: ${{ inputs.build_id }}
       CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
+      TEARDOWN_VERSION: ${{ inputs.teardown_version }}
       TF_DIR: envs/${{ inputs.env }}
       CLEANUP_ORPHANS: ${{ inputs.cleanup_mode != 'none' }}
       ORPHAN_CLEANUP_MODE: ${{ inputs.cleanup_mode }}

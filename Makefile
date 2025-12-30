@@ -194,14 +194,19 @@ teardown:
 	@mkdir -p logs/build-timings
 	@bash -c '\
 	build_id=$(BUILD_ID); \
+	script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh"; \
+	if [[ "$${TEARDOWN_VERSION:-v1}" == "v2" ]]; then \
+	  script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh"; \
+	fi; \
 	log="logs/build-timings/teardown-$(ENV)-$(CLUSTER)-$${build_id}-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Teardown output streaming; full log at $$log"; \
+	echo "Teardown script: $$script (version $${TEARDOWN_VERSION:-v1})"; \
 	TEARDOWN_CONFIRM=true \
 	TF_DIR=$(TF_DIR) \
 	TF_AUTO_APPROVE=true \
 	REMOVE_K8S_SA_FROM_STATE=true \
 	CLEANUP_ORPHANS=$(CLEANUP_ORPHANS) \
-	bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh $(CLUSTER) $(REGION) 2>&1 | tee "$$log"; \
+	bash "$$script" $(CLUSTER) $(REGION) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
 
@@ -210,8 +215,13 @@ teardown-resume:
 	@mkdir -p logs/build-timings
 	@bash -c '\
 	build_id=$(BUILD_ID); \
+	script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh"; \
+	if [[ "$${TEARDOWN_VERSION:-v1}" == "v2" ]]; then \
+	  script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh"; \
+	fi; \
 	log="logs/build-timings/teardown-resume-$(ENV)-$(CLUSTER)-$${build_id}-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Teardown resume output streaming; full log at $$log"; \
+	echo "Teardown script: $$script (version $${TEARDOWN_VERSION:-v1})"; \
 	TEARDOWN_CONFIRM=true \
 	TF_DIR=$(TF_DIR) \
 	TF_AUTO_APPROVE=true \
@@ -219,7 +229,7 @@ teardown-resume:
 	REQUIRE_KUBE_FOR_TF_DESTROY=false \
 	TF_DESTROY_FALLBACK_AWS=true \
 	CLEANUP_ORPHANS=$(CLEANUP_ORPHANS) \
-	bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh $(CLUSTER) $(REGION) 2>&1 | tee "$$log"; \
+	bash "$$script" $(CLUSTER) $(REGION) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
 
@@ -231,14 +241,19 @@ timed-teardown:
 	start=$$(date -u +"%Y-%m-%dT%H:%M:%SZ"); \
 	start_epoch=$$(date -u +%s); \
 	build_id=$(BUILD_ID); \
+	script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh"; \
+	if [[ "$${TEARDOWN_VERSION:-v1}" == "v2" ]]; then \
+	  script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh"; \
+	fi; \
 	log="logs/build-timings/teardown-$(ENV)-$(CLUSTER)-$${build_id}-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Teardown output streaming; full log at $$log"; \
+	echo "Teardown script: $$script (version $${TEARDOWN_VERSION:-v1})"; \
 	( time TEARDOWN_CONFIRM=true \
 	  TF_DIR=$(TF_DIR) \
 	  TF_AUTO_APPROVE=true \
 	  REMOVE_K8S_SA_FROM_STATE=true \
 	  CLEANUP_ORPHANS=$(CLEANUP_ORPHANS) \
-	  bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh $(CLUSTER) $(REGION) ) 2>&1 | tee "$$log"; \
+	  bash "$$script" $(CLUSTER) $(REGION) ) 2>&1 | tee "$$log"; \
 	status=$${PIPESTATUS[0]}; \
 	end_epoch=$$(date -u +%s); \
 	duration=$$((end_epoch-start_epoch)); \
