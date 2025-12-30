@@ -7,6 +7,9 @@ Run it after workflow changes or before a release cut.
 
 ---
 
+Authoritative flow diagram: `docs/21_CI_ENVIRONMENT_CONTRACT.md`. This
+checklist follows that flow and does not redefine it.
+
 ## Preconditions
 
 - Target environment: `dev`.
