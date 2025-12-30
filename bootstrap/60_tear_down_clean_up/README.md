@@ -69,7 +69,8 @@ LoadBalancer ENI wait (prevents stuck subnet deletes):
 - `WAIT_FOR_LB_ENIS` controls this wait (default `true`).
 - `LB_ENI_WAIT_MAX` caps the ENI wait loop (default `LB_CLEANUP_MAX_WAIT`).
 - `FORCE_DELETE_LBS=true` is a break-glass option that deletes remaining
-  Kubernetes LBs if ENIs do not disappear in time.
+  Kubernetes LBs if ENIs do not disappear in time. Deletion is scoped to LBs
+  with `elbv2.k8s.aws/cluster=${cluster_name}`.
 
 Example:
 

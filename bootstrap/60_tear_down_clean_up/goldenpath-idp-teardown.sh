@@ -282,6 +282,16 @@ delete_lbs_for_enis() {
       echo "Load balancer ${lb_name} not found; skipping."
       continue
     fi
+    local cluster_tag=""
+    cluster_tag="$(aws elbv2 describe-tags \
+      --region "${region}" \
+      --resource-arns "${lb_arn}" \
+      --query 'TagDescriptions[0].Tags[?Key==`elbv2.k8s.aws/cluster`].Value | [0]' \
+      --output text 2>/dev/null || true)"
+    if [[ "${cluster_tag}" != "${cluster_name}" ]]; then
+      echo "Skipping load balancer ${lb_name}; cluster tag '${cluster_tag}' does not match ${cluster_name}."
+      continue
+    fi
     echo "Deleting load balancer ${lb_name} (${lb_arn})"
     aws elbv2 delete-load-balancer --region "${region}" --load-balancer-arn "${lb_arn}" || true
   done
