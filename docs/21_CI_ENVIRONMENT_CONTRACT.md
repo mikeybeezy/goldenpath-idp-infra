@@ -183,14 +183,14 @@ are treated as an optional convenience for teams already using that feature.
 
 **Default (manual approval, vendor-neutral)**
 
-- Infra Terraform Checks
-- PR Terraform Plan
+- PR Terraform Plan (auto)
+- Infra Terraform Checks (auto, dispatched by PR plan)
 - Infra Terraform Apply (dev/test/staging/prod) — manual `workflow_dispatch` (optional env approval if configured)
 
 **GitHub Environments (optional)**
 
-- Infra Terraform Checks
-- PR Terraform Plan
+- PR Terraform Plan (auto)
+- Infra Terraform Checks (auto, dispatched by PR plan)
 - Infra Terraform Apply (dev/test/staging/prod) — Environment gates handle approval
 
 Note: `pr-terraform-plan.yml` is PR-triggered only and is not manually runnable.
