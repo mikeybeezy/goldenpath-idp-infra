@@ -107,6 +107,8 @@ LoadBalancer ENI wait (prevents stuck subnet deletes):
 - Ensure the teardown role can call `elasticloadbalancing:DeleteLoadBalancer`
   and `ec2:DescribeNetworkInterfaces` (see
   `docs/policies/ci-teardown-extra-permissions.json`).
+- Recovery note: if a partial teardown left ENIs behind, re-run teardown with
+  `FORCE_DELETE_LBS=true` after confirming only disposable LBs remain.
 
 ```bash
 
