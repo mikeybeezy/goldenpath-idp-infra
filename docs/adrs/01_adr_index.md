@@ -57,6 +57,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0041](ADR-0041-platform-orphan-cleanup-deletion-order.md) | Platform | Deterministic orphan cleanup deletion order | Proposed | 2025-12-29 | Enforce a dependency-safe deletion order for tagged orphan cleanup. |
 | [ADR-0042](ADR-0042-platform-branching-strategy.md) | Platform | Branching strategy (development → main) | Proposed | 2025-12-29 | All changes merge into development first; only development promotes to main. |
 | [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) | Platform | Teardown waits for LoadBalancer ENIs before subnet delete | Proposed | 2025-12-30 | Add an ENI wait gate and break-glass LB delete to prevent subnet hangs. |
+| [ADR-0044](ADR-0044-platform-infra-checks-ref-mode.md) | Platform | Configurable ref for infra checks dispatch | Proposed | 2025-12-30 | Allow PR plan to dispatch infra checks on head, base, or both refs. |
 
 ---
 
