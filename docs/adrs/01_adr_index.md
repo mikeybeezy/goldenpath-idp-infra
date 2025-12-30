@@ -59,6 +59,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) | Platform | Teardown waits for LoadBalancer ENIs before subnet delete | Proposed | 2025-12-30 | Add an ENI wait gate and break-glass LB delete to prevent subnet hangs. |
 | [ADR-0045](ADR-0045-platform-teardown-lb-delete-default.md) | Platform | Default LB delete when ENIs persist during teardown | Proposed | 2025-12-30 | Default to cluster-scoped LB deletion when ENIs linger. |
 | [ADR-0046](ADR-0046-platform-pr-plan-validation-ownership.md) | Platform | PR plan owns validation (no auto infra checks dispatch) | Proposed | 2025-12-30 | Remove infra-checks auto-dispatch; PR plan is the validation gate. |
+| [ADR-0047](ADR-0047-platform-teardown-destroy-timeout-retry.md) | Platform | Retry Terraform destroy after timeout with cluster-scoped LB cleanup | Proposed | 2025-12-30 | Cap destroy time, clean up cluster-tagged LBs, and retry once. |
 
 ---
 

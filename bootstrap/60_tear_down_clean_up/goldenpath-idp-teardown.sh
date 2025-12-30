@@ -17,9 +17,11 @@ set -euo pipefail
 #   LB_CLEANUP_INTERVAL=<seconds> (default 20)
 #   WAIT_FOR_LB_ENIS=true|false (default true)
 #   LB_ENI_WAIT_MAX=<seconds> (default LB_CLEANUP_MAX_WAIT)
-#   FORCE_DELETE_LBS=true|false (default false, break glass)
+#   FORCE_DELETE_LBS=true|false (default true, break glass)
 #   TF_DIR=<path> (if set, run terraform destroy instead of aws eks delete-cluster)
 #   TF_AUTO_APPROVE=true (use -auto-approve with terraform destroy)
+#   TF_DESTROY_MAX_WAIT=<seconds> (default 1200)
+#   TF_DESTROY_RETRY_ON_LB_CLEANUP=true|false (default true)
 #   REMOVE_K8S_SA_FROM_STATE=true|false (default true)
 #   CLEANUP_ORPHANS=true BUILD_ID=<id> (run cleanup-orphans after teardown)
 #   ORPHAN_CLEANUP_MODE=delete|dry_run|none (default delete)
@@ -65,6 +67,8 @@ LB_CLEANUP_MAX_WAIT="${LB_CLEANUP_MAX_WAIT:-900}"
 WAIT_FOR_LB_ENIS="${WAIT_FOR_LB_ENIS:-true}"
 LB_ENI_WAIT_MAX="${LB_ENI_WAIT_MAX:-${LB_CLEANUP_MAX_WAIT}}"
 FORCE_DELETE_LBS="${FORCE_DELETE_LBS:-true}"
+TF_DESTROY_MAX_WAIT="${TF_DESTROY_MAX_WAIT:-1200}"
+TF_DESTROY_RETRY_ON_LB_CLEANUP="${TF_DESTROY_RETRY_ON_LB_CLEANUP:-true}"
 ORPHAN_CLEANUP_MODE="${ORPHAN_CLEANUP_MODE:-delete}"
 
 cleanup_on_exit() {
@@ -118,6 +122,20 @@ run_with_heartbeat() {
   done
 
   wait "${cmd_pid}"
+}
+
+run_tf_destroy() {
+  local tf_dir="$1"
+  shift
+  local max_wait="${TF_DESTROY_MAX_WAIT:-}"
+  if [[ -n "${max_wait}" && "${max_wait}" -gt 0 ]]; then
+    if command -v timeout >/dev/null 2>&1; then
+      run_with_heartbeat "Terraform destroy in ${tf_dir}" timeout "${max_wait}" "$@"
+      return $?
+    fi
+    echo "Warning: timeout command not found; running terraform destroy without a max wait." >&2
+  fi
+  run_with_heartbeat "Terraform destroy in ${tf_dir}" "$@"
 }
 
 ensure_kube_access() {
@@ -249,7 +267,7 @@ list_lb_enis() {
     --output text 2>/dev/null || true
 }
 
-delete_lbs_for_enis() {
+extract_lb_names_from_enis() {
   local enis="$1"
   declare -A lb_names=()
   local eni_id=""
@@ -266,12 +284,22 @@ delete_lbs_for_enis() {
     fi
   done <<< "${enis}"
 
-  if [[ "${#lb_names[@]}" -eq 0 ]]; then
+  for lb_name in "${!lb_names[@]}"; do
+    echo "${lb_name}"
+  done
+}
+
+delete_lbs_for_enis() {
+  local enis="$1"
+  local lb_names=""
+  lb_names="$(extract_lb_names_from_enis "${enis}")"
+  if [[ -z "${lb_names}" ]]; then
     echo "No Kubernetes load balancers found in ENI descriptions."
     return 0
   fi
 
-  for lb_name in "${!lb_names[@]}"; do
+  while IFS= read -r lb_name; do
+    [[ -z "${lb_name}" ]] && continue
     local lb_arn=""
     lb_arn="$(aws elbv2 describe-load-balancers \
       --region "${region}" \
@@ -292,9 +320,19 @@ delete_lbs_for_enis() {
       echo "Skipping load balancer ${lb_name}; cluster tag '${cluster_tag}' does not match ${cluster_name}."
       continue
     fi
+    local service_tag=""
+    service_tag="$(aws elbv2 describe-tags \
+      --region "${region}" \
+      --resource-arns "${lb_arn}" \
+      --query 'TagDescriptions[0].Tags[?Key==`kubernetes.io/service-name` || Key==`service.k8s.aws/resource` || Key==`service.k8s.aws/stack`].Key | [0]' \
+      --output text 2>/dev/null || true)"
+    if [[ -z "${service_tag}" || "${service_tag}" == "None" ]]; then
+      echo "Skipping load balancer ${lb_name}; missing Kubernetes service tag."
+      continue
+    fi
     echo "Deleting load balancer ${lb_name} (${lb_arn})"
     aws elbv2 delete-load-balancer --region "${region}" --load-balancer-arn "${lb_arn}" || true
-  done
+  done <<< "${lb_names}"
 }
 
 wait_for_lb_enis() {
@@ -433,10 +471,61 @@ if [[ -n "${TF_DIR:-}" ]]; then
 
   if [[ "${tf_failed}" == "false" ]]; then
     echo "Destroying via Terraform in ${TF_DIR}..."
+    destroy_rc=0
     if [[ "${TF_AUTO_APPROVE:-false}" == "true" ]]; then
-      run_with_heartbeat "Terraform destroy in ${TF_DIR}" terraform -chdir="${TF_DIR}" destroy -auto-approve || tf_failed=true
+      run_tf_destroy "${TF_DIR}" terraform -chdir="${TF_DIR}" destroy -auto-approve || destroy_rc=$?
     else
-      run_with_heartbeat "Terraform destroy in ${TF_DIR}" terraform -chdir="${TF_DIR}" destroy || tf_failed=true
+      run_tf_destroy "${TF_DIR}" terraform -chdir="${TF_DIR}" destroy || destroy_rc=$?
+    fi
+    if [[ "${destroy_rc}" -ne 0 ]]; then
+      tf_failed=true
+      tf_destroy_timed_out=false
+      if [[ "${destroy_rc}" -eq 124 ]]; then
+        tf_destroy_timed_out=true
+      fi
+      if [[ "${TF_DESTROY_RETRY_ON_LB_CLEANUP}" == "true" ]]; then
+        retry_needed="${tf_destroy_timed_out}"
+        if [[ "${WAIT_FOR_LB_ENIS}" == "true" ]]; then
+          subnet_filter="$(get_cluster_subnet_filter || true)"
+          if [[ -n "${subnet_filter}" ]]; then
+            remaining_enis="$(list_lb_enis "${subnet_filter}")"
+            if [[ -n "${remaining_enis}" ]]; then
+              retry_needed="true"
+              if [[ "${FORCE_DELETE_LBS}" == "true" ]]; then
+                echo "Terraform destroy failed; re-checking LoadBalancer ENIs and deleting remaining LBs."
+                lb_names="$(extract_lb_names_from_enis "${remaining_enis}")"
+                echo "Forced cleanup summary (before retry):"
+                while IFS=$'\t' read -r eni_id desc status; do
+                  [[ -z "${eni_id}" ]] && continue
+                  echo "  ENI: ${eni_id} (${status}) ${desc}"
+                done <<< "${remaining_enis}"
+                if [[ -n "${lb_names}" ]]; then
+                  while IFS= read -r lb_name; do
+                    [[ -z "${lb_name}" ]] && continue
+                    echo "  LB: ${lb_name}"
+                  done <<< "${lb_names}"
+                fi
+                delete_lbs_for_enis "${remaining_enis}"
+                wait_for_lb_enis "${subnet_filter}" || true
+              else
+                echo "LoadBalancer ENIs still present. Set FORCE_DELETE_LBS=true to attempt deletion." >&2
+              fi
+            fi
+          fi
+        fi
+        if [[ "${retry_needed}" == "true" ]]; then
+          echo "Retrying Terraform destroy after LoadBalancer cleanup."
+          destroy_retry_rc=0
+          if [[ "${TF_AUTO_APPROVE:-false}" == "true" ]]; then
+            run_tf_destroy "${TF_DIR}" terraform -chdir="${TF_DIR}" destroy -auto-approve || destroy_retry_rc=$?
+          else
+            run_tf_destroy "${TF_DIR}" terraform -chdir="${TF_DIR}" destroy || destroy_retry_rc=$?
+          fi
+          if [[ "${destroy_retry_rc}" -eq 0 ]]; then
+            tf_failed=false
+          fi
+        fi
+      fi
     fi
   fi
 
