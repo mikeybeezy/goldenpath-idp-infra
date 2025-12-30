@@ -174,11 +174,23 @@ jobs:
       - name: Dispatch Infra Terraform Checks
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         uses: actions/github-script@v7
+        env:
+          INFRA_CHECKS_REF: ${{ vars.INFRA_CHECKS_REF }}
         with:
           script: |
             const { owner, repo } = context.repo;
             const lifecycle = process.env.CLUSTER_LIFECYCLE || "persistent";
             const buildId = process.env.BUILD_ID || "";
+            const refMode = (process.env.INFRA_CHECKS_REF || "head").toLowerCase();
+            const allowed = new Set(["head", "base", "both"]);
+            const mode = allowed.has(refMode) ? refMode : "head";
+            const refs = [];
+            if (mode === "head" || mode === "both") {
+              refs.push(context.payload.pull_request.head.ref);
+            }
+            if (mode === "base" || mode === "both") {
+              refs.push(context.payload.pull_request.base.ref);
+            }
             const inputs = {
               env: "dev",
               lifecycle,
@@ -186,11 +198,13 @@ jobs:
               new_build: lifecycle === "ephemeral" ? "true" : "false",
               require_state: "false"
             };
-            await github.rest.actions.createWorkflowDispatch({
-              owner,
-              repo,
-              workflow_id: "infra-terraform.yml",
-              ref: context.payload.pull_request.head.ref,
-              inputs
-            });
-            core.info(`Dispatched infra-terraform.yml for ${context.payload.pull_request.head.ref}`);
+            for (const ref of refs) {
+              await github.rest.actions.createWorkflowDispatch({
+                owner,
+                repo,
+                workflow_id: "infra-terraform.yml",
+                ref,
+                inputs
+              });
+              core.info(`Dispatched infra-terraform.yml for ${ref}`);
+            }
