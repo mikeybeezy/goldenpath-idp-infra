@@ -4,7 +4,7 @@ vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
 cluster_lifecycle = "ephemeral"
 # NEED TO UPDATE persistent or ephemeral
-build_id = "26-12-29-10"
+build_id = "26-12-29-30"
 
 
 public_subnets = [
@@ -118,3 +118,6 @@ bootstrap_node_group = {
   desired_size = 4
   max_size     = 7
 }
+
+
+
