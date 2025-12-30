@@ -32,6 +32,10 @@ If you want the PR plan to reflect incremental changes against a long-lived
 environment, keep `cluster_lifecycle=persistent` so the plan uses the stable
 state key.
 
+Apply guard: `infra-terraform-apply-dev.yml` accepts the PR plan for the same
+commit SHA. When apply runs on a merge commit, it will also accept the PR plan
+from the merged PR head SHA.
+
 ## Two ways to start a new build
 
 1) **Ad-hoc CI only (no PR)**: run the workflow and pass a new `build_id` input.
