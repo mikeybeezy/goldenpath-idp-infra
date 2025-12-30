@@ -18,3 +18,4 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/36_STATE_KEY_STRATEGY.md | platform | 90d | 2025-12-29 | Lifecycle-aware state key usage |
 | docs/37_V1_SCOPE_AND_TIMELINE.md | platform | 90d | 2025-12-29 | V1 vs V1.1 scope and delivery checklist |
 | docs/38_BRANCHING_STRATEGY.md | platform | 90d | 2025-12-29 | Branching strategy and promotion flow |
+| docs/39_GOLDEN_PATH_VALIDATION.md | platform | 90d | 2025-12-30 | End-to-end PR → apply → bootstrap → teardown validation |

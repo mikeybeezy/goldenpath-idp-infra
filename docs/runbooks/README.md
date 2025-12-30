@@ -6,5 +6,6 @@
 - `docs/runbooks/02_GRAFANA_ACCESS.md` — Port-forward Grafana and retrieve admin credentials.
 - `docs/runbooks/03_IAM_AUDIT.md` — Audit CI IAM role usage and tighten permissions.
 - `docs/runbooks/04_LB_FINALIZER_STUCK.md` — Remove stuck LoadBalancer Service finalizers during teardown.
+- `docs/runbooks/05_GOLDEN_PATH_VALIDATION.md` — Validate PR → apply → bootstrap → teardown end-to-end.
 
 Operational runbooks for GoldenPath (incident response, recovery, and routine ops).
