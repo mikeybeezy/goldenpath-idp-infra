@@ -167,6 +167,12 @@ Terraform destroy guard:
 
   destroy. The Makefile teardown targets set this to `true` by default.
 
+- `TF_DESTROY_MAX_WAIT` (default `1200`) caps Terraform destroy runtime. If the
+  timeout is hit, teardown re-checks LoadBalancer ENIs and retries once.
+
+- `TF_DESTROY_RETRY_ON_LB_CLEANUP` (default `true`) enables the retry after LB
+  cleanup when Terraform destroy fails or times out.
+
 - If Terraform destroy fails or is skipped, the runner falls back to AWS
 
   cluster deletion when `TF_DESTROY_FALLBACK_AWS=true` (default).
