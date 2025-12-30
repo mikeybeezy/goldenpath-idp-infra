@@ -84,8 +84,11 @@ It is a living guide for planning and execution.
 - [ ] Cluster health checks automated post-apply.
 - [ ] Runbooks expanded to 5-8 critical scenarios.
 
-### Week 4: Hardening (if needed)
+### Week 4: Hardening (time-boxed)
 
+- [ ] Teardown reliability SLO defined (p95 < 20m, p99 < 45m; break-glass <5%).
+- [ ] Run 5–10 teardown cycles and capture durations + break-glass usage.
+- [ ] If SLO is missed, record a Known limitation and a V1.1 follow-up.
 - [ ] RBAC tightened for apply/teardown actions.
 - [ ] Catalog quality checks (ownership + annotations enforced).
 - [ ] Docs polished and onboarding walkthrough published.
@@ -99,3 +102,4 @@ It is a living guide for planning and execution.
 - PR plan path uses repo `tfvars`; manual workflows override via inputs.
 - Health checks and dashboards are linked from the catalog.
 - Operators can follow runbooks end-to-end without tribal knowledge.
+- Teardown SLO is met or recorded as a Known limitation with a V1.1 follow-up.

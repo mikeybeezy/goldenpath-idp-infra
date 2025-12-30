@@ -49,6 +49,11 @@ This is the single rolling backlog. Add items here before starting work.
 | 033 | P2 | Security | Create IAM audit runbook (CloudTrail + Access Analyzer) | platform | Open | S |  | Document exact CLI/Athena queries and steps | docs/runbooks/03_IAM_AUDIT.md | Make IAM reviews repeatable |
 | 034 | P2 | Security | Run first IAM audit after stability milestone | platform | Open | M |  | Execute runbook and tighten policies | docs/runbooks/03_IAM_AUDIT.md | Validate audit cadence in practice |
 | 035 | P2 | Security | Define multi-account IAM boundaries per environment (V2) | platform | Open | M |  | Map env → account and scope roles per account | docs/33_IAM_ROLES_AND_POLICIES.md | Prepare for teams using separate AWS accounts |
+| 037 | P1 | Teardown | Define teardown reliability SLO (p95 < 20m, p99 < 45m; break-glass <5%) | platform | Open | S | Q1 | Capture in V1 scope and validation checklist | docs/V1_01_SCOPE_AND_TIMELINE.md, docs/39_GOLDEN_PATH_VALIDATION.md | Sets acceptance bar for deterministic teardown |
+| 038 | P1 | Teardown | Run 5–10 teardown cycles and record durations + break-glass usage | platform | Open | M | Q1 | Track runs and summarize results | docs/39_GOLDEN_PATH_VALIDATION.md | Confirms SLO in practice |
+| 039 | P1 | Teardown | If SLO missed, record known limitation and create V1.1 follow-up | platform | Open | S | Q1 | Add known limitation + V1.1 entry | docs/V1_01_SCOPE_AND_TIMELINE.md | Time-boxed hardening without blocking V1 |
+| 040 | P2 | Ops | Add AWS Support escalation criteria for ENI >48h | platform | Open | S | Q1 | Add runbook section | docs/runbooks/06_LB_ENI_ORPHANS.md | Clear path when cleanup stalls |
+| 041 | P2 | Observability | Track teardown duration + break-glass usage in pipeline metrics | platform | Open | M | Q1 | Extend pipeline metrics | docs/V1_01_SCOPE_AND_TIMELINE.md | Measure reliability over time |
 
 ## Rules
 

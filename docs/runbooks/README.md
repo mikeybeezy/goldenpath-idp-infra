@@ -7,5 +7,7 @@
 - `docs/runbooks/03_IAM_AUDIT.md` — Audit CI IAM role usage and tighten permissions.
 - `docs/runbooks/04_LB_FINALIZER_STUCK.md` — Remove stuck LoadBalancer Service finalizers during teardown.
 - `docs/runbooks/05_GOLDEN_PATH_VALIDATION.md` — Validate PR → apply → bootstrap → teardown end-to-end.
+- `docs/runbooks/06_LB_ENI_ORPHANS.md` — Recover subnet deletes blocked by LoadBalancer ENIs.
+- `docs/runbooks/ORPHAN_CLEANUP.md` — Delete BuildId-tagged orphaned resources safely.
 
 Operational runbooks for GoldenPath (incident response, recovery, and routine ops).
