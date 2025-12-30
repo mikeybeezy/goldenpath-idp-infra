@@ -3,7 +3,17 @@
 This folder contains cleanup helpers for AWS resources. Run them when Terraform
 or a manual teardown gets stuck.
 
-## goldenpath-idp-teardown.sh
+## Teardown runner versions
+
+We keep a stable teardown runner and a v2 iteration track:
+
+- `goldenpath-idp-teardown.sh` (v1, default)
+- `goldenpath-idp-teardown-v2.sh` (v2, iteration track)
+
+The Makefile selects the script via `TEARDOWN_VERSION` (`v1` or `v2`).
+CI exposes the same choice as a workflow input.
+
+## goldenpath-idp-teardown.sh (v1)
 
 What it does:
 - Updates kubeconfig for the target cluster.
@@ -21,6 +31,19 @@ Examples:
 ```bash
 TEARDOWN_CONFIRM=true \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+```
+
+Run the v2 runner directly:
+
+```bash
+TEARDOWN_CONFIRM=true \
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh <cluster> <region>
+```
+
+Select v2 via Makefile:
+
+```bash
+TEARDOWN_VERSION=v2 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
 ```
 
 PDB-safe drain (default behavior):

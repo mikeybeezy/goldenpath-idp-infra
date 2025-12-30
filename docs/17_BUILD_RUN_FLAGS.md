@@ -115,6 +115,7 @@ Recommendation:
 
 Safety + flow:
 
+- `TEARDOWN_VERSION` – select teardown runner (`v1` default, `v2` optional)
 - `TEARDOWN_CONFIRM` – must be `true` to run destructive steps
 - `TF_DIR` – run `terraform destroy` instead of `aws eks delete-cluster`
 - `REQUIRE_KUBE_FOR_TF_DESTROY` – require kube access before Terraform destroy

@@ -222,6 +222,11 @@ resolution to target the correct environment.
 - Teardown role must allow `tag:GetResources` for orphan discovery.
 - Teardown resolves the backend state key from `lifecycle` + `build_id`.
 
+**Key inputs**
+- `teardown_version` – select teardown runner (`v1` default, `v2` optional).
+- `force_delete_lbs` – delete cluster-scoped LBs if ENIs persist (default `true`).
+- `lb_cleanup_max_wait` – cap LB/ENI wait loops before retry logic (default `900`).
+
 ### CI Backstage (Stub) (`ci-backstage.yml`)
 
 | Variable | Source | Purpose |
