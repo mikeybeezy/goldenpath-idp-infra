@@ -20,7 +20,7 @@ This document captures the initial operating model for the Golden Path Internal 
 
 | Layer | Owner (RACI) | Required Signals | Tooling | Notes |
 | ------- | -------------- | ------------------ | --------- | ------- |
-| **Platform (EKS, networking, GitOps, Backstage)** | Platform Team **(R/A)**, Security **(C)**, App Teams **(I)** | Latency, traffic, errors, saturation (Golden Signals) + control-plane health | Prometheus, Loki, Fluent Bit, Tempo/Jaeger, Grafana | Platform maintains dashboards/alerts and publishes platform SLOs (e.g., ingress availability ≥ 99.99%). |
+| **Platform (EKS, networking, GitOps, Backstage)** | Platform Team **(R/A)**, Security **(C)**, App Teams **(I)** | Latency, traffic, errors, saturation (Golden Signals) + control-plane health | Prometheus, Loki, Fluent Bit, Grafana (Tempo planned V1.1) | Platform maintains dashboards/alerts and publishes platform SLOs (e.g., ingress availability ≥ 99.99%). |
 | **Shared Services (Ingress, IdP, CI)** | Service Owner **(R)**, Platform **(A)** | Availability, throughput, error rate, queue depth | Prometheus, synthetic checks | Service owner documents SLO + runbooks in Backstage; platform ensures telemetry plumbing. |
 | **Applications / Workloads** | App Team **(R/A)**, Platform **(C)**, Security **(I)** | Golden signals + business SLOs (availability, latency, error budget) | OpenTelemetry SDKs, platform-provided log/trace exporters | Apps must register SLOs in Backstage, wire alerts to their on-call rotation, and honor error budgets. |
 
@@ -29,14 +29,14 @@ This document captures the initial operating model for the Golden Path Internal 
 1. All workloads emit the four golden signals through platform-provided exporters.
 2. Grafana dashboards and Prometheus alert rules for platform SLOs are centrally managed; app teams inherit templates but tune thresholds.
 3. Fluent Bit ships logs to Loki; required labels: `environment`, `namespace`, `application`, `service`.
-4. Tempo/Jaeger collects traces tagged with service + environment; new templates include tracing instrumentation by default.
+4. Distributed tracing is deferred to V1.1. When enabled, Tempo collects traces tagged with service + environment.
 5. SLOs: Platform owns platform-grade SLOs (ingress, cluster health, GitOps latency). App teams own their service SLOs and error budgets.
 
 ### Log & Metric Pipeline
 
 - **Metrics**: Prometheus scrapes clusters + workloads; dashboards shipped in Grafana per environment.
 - **Logs**: Fluent Bit → Loki (default 14-day retention; archival optional).
-- **Traces**: Tempo/Jaeger for distributed traces; mandatory instrumentation baked into templates.
+- **Traces (V1.1)**: Tempo for distributed traces; instrumentation added when V1.1 tracing is enabled.
 - **SLO Registry**: Backstage stores links to service SLO docs and current targets.
 
 ---
@@ -97,7 +97,7 @@ Build naming and teardown discipline are defined in
 | -------- | --------------- | ------------------- |
 | Infrastructure modules, env overlays | Own design, upkeep, and guardrails. | Consume modules; request new features via issues. |
 | CI/CD templates | Provide + maintain templates, quality gates. | Use templates; extend only via approved hooks. |
-| Observability stack | Maintain Prometheus/Loki/Tempo, dashboards, alert routing. | Ensure services emit metrics/logs/traces; define service SLOs. |
+| Observability stack | Maintain Prometheus/Loki/Grafana; Tempo planned V1.1. | Ensure services emit metrics/logs/traces; define service SLOs. |
 | Security (identity, secrets) | Operate IdP, Vault/ASM, RBAC policies. | Integrate apps with provided auth/secrets patterns. |
 | Backstage catalog | Seed templates, maintain plugins. | Keep service metadata current, link runbooks/SLOs. |
 

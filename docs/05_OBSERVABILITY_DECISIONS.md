@@ -39,6 +39,20 @@ to V1.1.
 Persistence is enabled through PVCs backed by EBS/EFS storage add-ons.
 Storage defaults and tradeoffs are documented in `docs/41_STORAGE_AND_PERSISTENCE.md`.
 
+**Exporter + OpenTelemetry split (decision note)**:
+
+- **Infra metrics** stay on Prometheus exporters: `node-exporter` (node OS) and
+  `kube-state-metrics` (Kubernetes object state).
+- **cAdvisor metrics** are scraped from the kubelet (`/metrics/cadvisor`); no separate
+  cAdvisor deployment is required.
+- **App telemetry** uses OpenTelemetry SDKs/Collector for broader signals (metrics, traces,
+  logs) and does **not** replace the infra exporters.
+
+**Tracing backend (decision note)**:
+
+- **Tempo** is the default backend when distributed tracing is enabled (V1.1).
+- Tempo is deployed separately from `kube-prometheus-stack` via GitOps apps.
+
 **Why**:
 
 - V1 needs fast, reliable delivery and visibility without heavy instrumentation.
@@ -61,4 +75,5 @@ Storage defaults and tradeoffs are documented in `docs/41_STORAGE_AND_PERSISTENC
 
 - Publish the RED label contract and dashboard pack.
 - Add minimal alert rules for error rate, latency, and saturation.
-- Create an ADR that records the V1 baseline and V1.1 deferrals.
+- Keep ADRs aligned: `ADR-0049-platform-pragmatic-observability-baseline.md` and
+  `ADR-0055-platform-tempo-tracing-backend.md`.
