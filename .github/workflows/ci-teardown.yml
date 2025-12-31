@@ -178,7 +178,7 @@ jobs:
             -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
 
-      - name: Run teardown
+      - name: Run timed teardown
         run: |
           TEARDOWN_CONFIRM="true" \
           RELAX_PDB="${{ inputs.relax_pdb }}" \
@@ -188,7 +188,12 @@ jobs:
           CLEANUP_ORPHANS="${CLEANUP_ORPHANS}" \
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
-          make teardown ENV="${ENV}" BUILD_ID="${BUILD_ID}"
+          make timed-teardown ENV="${ENV}" BUILD_ID="${BUILD_ID}"
+
+      - name: Reliability metrics summary (timed teardown)
+        if: ${{ always() }}
+        run: |
+          make reliability-metrics
 
   teardown-resume:
     runs-on: ubuntu-latest

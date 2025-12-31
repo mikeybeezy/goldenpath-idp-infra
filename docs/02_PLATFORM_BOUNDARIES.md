@@ -17,6 +17,18 @@ GoldenPath provides a delivery substrate with clear guarantees.
 
 If a team follows the GoldenPath, the platform guarantees these properties.
 
+### Minimal platform contract (V1)
+
+To keep the golden path deterministic and auditable, the platform enforces:
+
+- **Required resource tags**: `BuildId`, `Environment`, `Lifecycle`, `ManagedBy`,
+  `Owner`, `Project` (see `docs/35_RESOURCE_TAGGING.md`).
+- **Required CI inputs**: environment, lifecycle, and build ID inputs for
+  ephemeral runs, plus explicit confirmation inputs for apply/bootstrap
+  (see `docs/21_CI_ENVIRONMENT_CONTRACT.md`).
+- **Changelog gate**: when a PR is labeled `changelog-required`, a changelog
+  entry is mandatory (see `docs/40_CHANGELOG_GOVERNANCE.md`).
+
 ## Platform responsibilities (control plane)
 
 The platform owns how the system is built and operated.

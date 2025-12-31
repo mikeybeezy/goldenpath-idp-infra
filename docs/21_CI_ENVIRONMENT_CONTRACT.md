@@ -12,6 +12,17 @@ These variables are intentionally explicit to support deterministic behavior and
 
 ---
 
+## Contract minimums (V1)
+
+These inputs are the minimum required to keep lifecycle runs deterministic:
+
+- `env` for all workflows.
+- `lifecycle` for plan/apply/bootstrap/teardown workflows.
+- `build_id` when `lifecycle=ephemeral`.
+- `new_build=true` when creating a new ephemeral state key (plan/apply workflows).
+- `confirm_apply=apply` for infra apply workflows.
+- `confirm_irsa_apply=true` for bootstrap when IRSA service accounts are applied.
+
 ## Workflow inputs and env vars
 
 This section lists GitHub Actions inputs, environment variables, and secrets

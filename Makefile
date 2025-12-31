@@ -60,7 +60,7 @@ endef
 #   make drain-nodegroup NODEGROUP=dev-default
 #   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 
-.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown fmt validate bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help
+.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help
 
 init:
 	$(TF_BIN) -chdir=$(ENV_DIR) init
@@ -290,6 +290,9 @@ timed-bootstrap:
 	exit $$status; \
 	'
 
+reliability-metrics:
+	@bash scripts/reliability-metrics.sh
+
 set-cluster-name:
 	@bash -c '\
 	tfvars="$(ENV_DIR)/terraform.tfvars"; \
@@ -319,6 +322,7 @@ help:
 	@echo "  TF_VAR_owner_team=platform-team make plan ENV=dev"
 	@echo "  make fmt"
 	@echo "  make validate ENV=dev"
+	@echo "  make reliability-metrics"
 	@echo "  make bootstrap CLUSTER=goldenpath-dev-eks REGION=eu-west-2"
 	@echo "  make bootstrap-only CLUSTER=goldenpath-dev-eks REGION=eu-west-2"
 	@echo "  make pre-destroy-cleanup CLUSTER=goldenpath-dev-eks REGION=eu-west-2"
