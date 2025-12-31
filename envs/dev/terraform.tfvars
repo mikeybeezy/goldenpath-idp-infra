@@ -4,7 +4,7 @@ vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
 cluster_lifecycle = "ephemeral"
 # NEED TO UPDATE persistent or ephemeral
-build_id = "31-12-25-06"
+build_id = "31-12-25-04"
 
 
 public_subnets = [
@@ -95,8 +95,8 @@ eks_config = {
   ssh_source_security_group_ids = []
   node_group = {
     name           = "dev-default"
-    min_size       = 4
-    max_size       = 8
+    min_size       = 8
+    max_size       = 10
     desired_size   = 4
     instance_types = ["t3.small"]
     disk_size      = 20
