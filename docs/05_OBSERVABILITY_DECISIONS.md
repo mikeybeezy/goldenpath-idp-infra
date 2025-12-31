@@ -122,6 +122,32 @@ service=payments-api env=dev version=2025.12.31-1 team=platform build_id=31-12-2
 - Less per-request debugging detail until traces are added in V1.1.
 - Service-level instrumentation varies until a standard SDK path is adopted.
 
+---
+
+## Dashboard state management (V1)
+
+**Decision**: Grafana dashboards, datasources, and alert rules are managed as
+code via the Grafana provider under `idp-tooling/grafana-config/`.
+
+**Source of truth**:
+
+- Terraform state in `idp-tooling/grafana-config/` is authoritative for
+  platform-managed dashboards and alert rules.
+- The platform team owns baseline dashboards; app teams may add their own
+  dashboards as separate, scoped configs.
+
+**Promotion model**:
+
+- Changes are versioned in Git and promoted through environments using the
+  same CI lifecycle (dev → test → staging → prod).
+- Manual edits in Grafana are discouraged and can be overwritten on the next
+  apply.
+
+**Why**:
+
+- Keeps dashboards deterministic and reviewable.
+- Makes rollbacks and audits consistent with the rest of the platform.
+
 **Next Steps**:
 
 - Implement the RED label contract in dashboards and alert rules.
