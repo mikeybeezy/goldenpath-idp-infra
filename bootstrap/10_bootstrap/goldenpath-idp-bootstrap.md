@@ -59,7 +59,7 @@ These defaults keep the node group stable and reduce early pressure:
 - `desired_size` = 3
 - `max_size` = 5
 - `enable_ssh_break_glass` = `false`
-- `enable_storage_addons` = `false` (EBS/EFS/snapshot deferred)
+- `enable_storage_addons` = `true` (EBS/EFS/snapshot required for persistent monitoring data)
 - `SKIP_ARGO_SYNC_WAIT` = `true` (default, skips Argo app sync waits)
  - `COMPACT_OUTPUT` = `false` (set to `true` to reduce noisy command output)
 

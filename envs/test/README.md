@@ -34,7 +34,7 @@ TF_VAR_cluster_name=goldenpath-test-eks
 terraform -chdir=envs/test apply \
   -var='bootstrap_mode=true' \
   -var='enable_ssh_break_glass=false' \
-  -var='enable_storage_addons=false'
+  -var='enable_storage_addons=true'
 ```
 
 ## Build ID mode (ephemeral vs persistent)

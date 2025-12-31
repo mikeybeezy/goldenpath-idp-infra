@@ -94,7 +94,7 @@ Terraform provider modules that configure platform tooling **after** it is deplo
 
 GitOps workloads that install tooling inside the cluster:
 
-- `helm/`: Helm values for Kong, Grafana, Loki, Alertmanager, Fluent Bit, Keycloak, Backstage, Datree, Argo CD, Argo Rollouts. These define workload configuration consumed by Argo CD Applications.
+- `helm/`: Helm values for Kong, kube-prometheus-stack, Loki, Fluent Bit, Keycloak, Backstage, Datree, Argo CD, Argo Rollouts. These define workload configuration consumed by Argo CD Applications.
 - `kustomize/`: base manifests plus environment-specific overlays so Argo CD can reconcile per environment.
 
 ### `compliance/datree/`
@@ -129,7 +129,7 @@ Helper scripts used by CI and local runs.
 
 1. **Infrastructure (VPC, cluster, etc.)** – Terraform modules in `modules/` + `envs/<env>` provision AWS networking, EKS clusters, IAM roles.
 2. **Bootstrap (cluster bring-up)** – `bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh` installs Argo CD, core add-ons, and platform apps in a deterministic order.
-3. **Tooling Deployments (Kong, Grafana, Loki, Fluent Bit, Keycloak, Backstage)** – Helm charts/Kustomize manifests under `gitops/` deploy the actual workloads via Argo CD.
+3. **Tooling Deployments (Kong, kube-prometheus-stack, Loki, Fluent Bit, Keycloak, Backstage)** – Helm charts/Kustomize manifests under `gitops/` deploy the actual workloads via Argo CD.
 4. **Tooling Configuration (Kong APIs, Grafana dashboards, Keycloak realms)** – Terraform provider modules in `idp-tooling/` manage API-level config so changes are versioned and promoted top-to-bottom.
 
 CI workflow stub:

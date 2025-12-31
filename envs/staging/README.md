@@ -34,7 +34,7 @@ TF_VAR_cluster_name=goldenpath-staging-eks
 terraform -chdir=envs/staging apply \
   -var='bootstrap_mode=true' \
   -var='enable_ssh_break_glass=false' \
-  -var='enable_storage_addons=false'
+  -var='enable_storage_addons=true'
 ```
 
 ## Build ID mode (ephemeral vs persistent)
