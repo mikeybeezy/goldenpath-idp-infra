@@ -211,6 +211,8 @@ What it does:
 Safety:
 - Runs in **dry-run** mode by default.
 - Deletes only resources tagged to the cluster (and optional stack).
+- `DELETE_CLUSTER_TAGGED_SGS=true` expands scope to any security group tagged
+  with `elbv2.k8s.aws/cluster=<cluster>`.
 
 Examples:
 
@@ -218,6 +220,8 @@ Examples:
 bootstrap/60_tear_down_clean_up/cleanup-managed-lb-resources.sh <cluster> <region>
 DRY_RUN=false bootstrap/60_tear_down_clean_up/cleanup-managed-lb-resources.sh <cluster> <region>
 STACK_TAG="kong-system/dev-kong-kong-proxy" DRY_RUN=false \
+  bootstrap/60_tear_down_clean_up/cleanup-managed-lb-resources.sh <cluster> <region>
+DELETE_CLUSTER_TAGGED_SGS=true DRY_RUN=false \
   bootstrap/60_tear_down_clean_up/cleanup-managed-lb-resources.sh <cluster> <region>
 ```
 

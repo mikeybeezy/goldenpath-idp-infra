@@ -20,6 +20,7 @@ Related: `.github/workflows/ci-managed-lb-cleanup.yml`, `docs/runbooks/08_MANAGE
 ### Added
 
 - `CI Managed LB Cleanup` workflow and runbook.
+- Optional deletion of security groups tagged with `elbv2.k8s.aws/cluster`.
 
 ### Documented
 

@@ -12,6 +12,7 @@ cluster_name="${1:-}"
 region="${2:-}"
 dry_run="${DRY_RUN:-true}"
 stack_tag="${STACK_TAG:-}"
+delete_cluster_tagged_sgs="${DELETE_CLUSTER_TAGGED_SGS:-false}"
 
 if [[ -z "${cluster_name}" || -z "${region}" ]]; then
   echo "Usage: $0 <cluster-name> <region>" >&2
@@ -38,6 +39,7 @@ echo "Managed LB cleanup starting (cluster=${cluster_name}, region=${region}, dr
 if [[ -n "${stack_tag}" ]]; then
   echo "Stack filter: service.k8s.aws/stack=${stack_tag}"
 fi
+echo "Delete cluster-tagged security groups: ${delete_cluster_tagged_sgs}"
 
 tag_filters=("Key=elbv2.k8s.aws/cluster,Values=${cluster_name}")
 if [[ -n "${stack_tag}" ]]; then
@@ -97,6 +99,23 @@ if [[ -n "${sg_ids}" ]]; then
   done
 else
   echo "No managed LB security groups found for cluster tag."
+fi
+
+if [[ "${delete_cluster_tagged_sgs}" == "true" ]]; then
+  cluster_sg_ids=$(aws ec2 describe-security-groups \
+    --filters "Name=tag:elbv2.k8s.aws/cluster,Values=${cluster_name}" \
+    --region "${region}" \
+    --query "SecurityGroups[?GroupName!=\`default\`].GroupId" --output text)
+
+  if [[ -n "${cluster_sg_ids}" ]]; then
+    for sg_id in ${cluster_sg_ids}; do
+      run_delete "Delete cluster-tagged security group ${sg_id}" aws ec2 delete-security-group --group-id "${sg_id}" --region "${region}"
+    done
+  else
+    echo "No cluster-tagged security groups found."
+  fi
+else
+  echo "Skipping cluster-tagged security group cleanup (DELETE_CLUSTER_TAGGED_SGS=false)."
 fi
 
 if [[ "${#failures[@]}" -gt 0 ]]; then
