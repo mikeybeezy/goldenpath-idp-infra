@@ -108,6 +108,9 @@ LoadBalancer cleanup retries:
 - `LB_CLEANUP_ATTEMPTS` controls how many retry loops run (default `5`).
 - `LB_CLEANUP_INTERVAL` controls the delay between loops (default `20` seconds).
 - `LB_CLEANUP_MAX_WAIT` caps the LoadBalancer wait loop (default `900` seconds).
+- If Services remain after the wait, v2 can remove stuck finalizers when
+  `FORCE_DELETE_LB_FINALIZERS=true` (break-glass). This is safe only for
+  teardown runs where the Service should be deleted.
 
 LoadBalancer ENI wait (prevents stuck subnet deletes):
 

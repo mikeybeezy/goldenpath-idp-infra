@@ -49,6 +49,14 @@ kubectl -n kong-system patch svc dev-kong-kong-proxy \
   -p '{"metadata":{"finalizers":[]}}' --type=merge
 ```
 
+If using the v2 teardown runner, you can also set a break-glass flag to remove
+stuck finalizers automatically:
+
+```bash
+FORCE_DELETE_LB_FINALIZERS=true \
+  TEARDOWN_VERSION=v2 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
+```
+
 4) Delete the Service:
 
 ```bash
