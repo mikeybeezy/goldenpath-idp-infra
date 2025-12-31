@@ -172,7 +172,14 @@ resource "aws_eks_node_group" "this" {
     min_size     = local.node_group.min_size
   }
 
-  tags = merge(var.tags, local.environment_tags)
+  tags = merge(
+    var.tags,
+    local.environment_tags,
+    {
+      "k8s.io/cluster-autoscaler/enabled"             = "true"
+      "k8s.io/cluster-autoscaler/${var.cluster_name}" = "owned"
+    },
+  )
 
   depends_on = [aws_iam_role_policy_attachment.node_group]
 }

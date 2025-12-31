@@ -1,4 +1,5 @@
-name: CI Bootstrap (Stub)
+# Owner: platform
+name: Bootstrap - CI Bootstrap (Stub)
 
 on:
   workflow_dispatch:
@@ -357,5 +358,12 @@ jobs:
           echo "Phase 4: sanity checks and Argo status summary go here"
           echo "kubectl get nodes"
           echo "kubectl -n argocd get applications"
+      - name: Runbook link
+        if: always()
+        run: |
+          {
+            echo "Runbook: docs/39_GOLDEN_PATH_VALIDATION.md"
+            echo "Runbook: docs/17_BUILD_RUN_FLAGS.md"
+          } >> "${GITHUB_STEP_SUMMARY}"
 
       # Teardown runs in a separate workflow to avoid auto-destroy after bootstrap.

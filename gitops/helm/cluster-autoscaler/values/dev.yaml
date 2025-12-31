@@ -1,5 +1,5 @@
 autoDiscovery:
-  clusterName: goldenpath-dev-eks
+  clusterName: ""
 
 awsRegion: eu-west-2
 
