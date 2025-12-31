@@ -1,1 +1,12 @@
 # Values overrides for loki in staging environment
+
+loki:
+  deploymentMode: SingleBinary
+  singleBinary:
+    replicas: 1
+  read:
+    replicas: 0
+  write:
+    replicas: 0
+  backend:
+    replicas: 0

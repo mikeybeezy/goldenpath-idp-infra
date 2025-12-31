@@ -33,6 +33,8 @@
 **Decision**: Start Loki in **Single Binary** mode for V1, and move to **Simple Scalable**
 only when scale/retention/HA requirements justify it.
 
+Loki is deployed in the `monitoring` namespace.
+
 **Why**:
 
 - Single Binary is simpler to operate and cheaper for early usage.
