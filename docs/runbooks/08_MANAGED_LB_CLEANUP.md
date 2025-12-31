@@ -9,6 +9,7 @@ AWS Load Balancer Controller managed resources (LBs, ENIs, security groups).
 - `region`
 - `cluster_name` (or `build_id` + `lifecycle=ephemeral` to resolve)
 - Optional `stack_tag` (example: `kong-system/dev-kong-kong-proxy`)
+- Optional `delete_cluster_tagged_sgs` (true/false)
 
 ## Steps
 
@@ -22,4 +23,6 @@ AWS Load Balancer Controller managed resources (LBs, ENIs, security groups).
 
 - This workflow only deletes resources tagged with `elbv2.k8s.aws/cluster`.
 - Use `stack_tag` to narrow cleanup to a single service stack when needed.
+- If `delete_cluster_tagged_sgs=true`, the workflow also deletes any
+  security group tagged with `elbv2.k8s.aws/cluster` (excluding `default`).
 - If deletions fail due to dependencies, re-run after LBs finish deleting.
