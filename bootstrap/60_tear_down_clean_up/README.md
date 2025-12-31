@@ -84,8 +84,9 @@ LoadBalancer cleanup retries:
 - `LB_CLEANUP_INTERVAL` controls the delay between loops (default `20` seconds).
 - `LB_CLEANUP_MAX_WAIT` caps the LoadBalancer wait loop in Stage 2
   to avoid hanging (default `900` seconds).
-- v2 supports a break-glass finalizer removal with
+- v2 defaults to break-glass finalizer removal with
   `FORCE_DELETE_LB_FINALIZERS=true` when Services are stuck in `Terminating`.
+  This default prevents teardown hangs when the LB controller is not available.
 - If Kubernetes access is unavailable, v2 skips Kubernetes cleanup and performs
   AWS-only LoadBalancer cleanup before destroy.
 
