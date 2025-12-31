@@ -13,7 +13,7 @@ set -euo pipefail
 #   DELETE_NODEGROUPS=true|false (default true)
 #   WAIT_FOR_NODEGROUP_DELETE=true|false (default true)
 #   DELETE_CLUSTER=true|false (default true, ignored when TF_DIR is set)
-#   SUSPEND_ARGO_APP=true|false (default true)
+#   SUSPEND_ARGO_APP=true|false (default false)
 #   DELETE_KONG_RESOURCES=true|false (default true)
 #   KONG_NAMESPACE=<namespace> (default kong-system)
 #   KONG_RELEASE=<helm release> (default dev-kong)
@@ -25,6 +25,8 @@ set -euo pipefail
 #   WAIT_FOR_LB_ENIS=true|false (default true)
 #   LB_ENI_WAIT_MAX=<seconds> (default LB_CLEANUP_MAX_WAIT)
 #   FORCE_DELETE_LBS=true|false (default true, break glass)
+#   FORCE_DELETE_LB_FINALIZERS=true|false (default false, break glass)
+#   LB_FINALIZER_WAIT_MAX=<seconds> (default 300)
 #   KUBECTL_REQUEST_TIMEOUT=<duration> (default 10s)
 #   TF_DIR=<path> (if set, run terraform destroy instead of aws eks delete-cluster)
 #   TF_AUTO_APPROVE=true (use -auto-approve with terraform destroy)
@@ -70,7 +72,7 @@ fi
 
 ARGO_APP_NAMESPACE="${ARGO_APP_NAMESPACE:-kong-system}"
 ARGO_APP_NAME="${ARGO_APP_NAME:-dev-kong}"
-SUSPEND_ARGO_APP="${SUSPEND_ARGO_APP:-true}"
+SUSPEND_ARGO_APP="${SUSPEND_ARGO_APP:-false}"
 DELETE_ARGO_APP="${DELETE_ARGO_APP:-true}"
 DELETE_KONG_RESOURCES="${DELETE_KONG_RESOURCES:-true}"
 KONG_NAMESPACE="${KONG_NAMESPACE:-${ARGO_APP_NAMESPACE}}"
@@ -82,6 +84,8 @@ LB_CLEANUP_MAX_WAIT="${LB_CLEANUP_MAX_WAIT:-900}"
 WAIT_FOR_LB_ENIS="${WAIT_FOR_LB_ENIS:-true}"
 LB_ENI_WAIT_MAX="${LB_ENI_WAIT_MAX:-${LB_CLEANUP_MAX_WAIT}}"
 FORCE_DELETE_LBS="${FORCE_DELETE_LBS:-true}"
+FORCE_DELETE_LB_FINALIZERS="${FORCE_DELETE_LB_FINALIZERS:-false}"
+LB_FINALIZER_WAIT_MAX="${LB_FINALIZER_WAIT_MAX:-300}"
 TF_DESTROY_MAX_WAIT="${TF_DESTROY_MAX_WAIT:-1200}"
 TF_DESTROY_RETRY_ON_LB_CLEANUP="${TF_DESTROY_RETRY_ON_LB_CLEANUP:-true}"
 ORPHAN_CLEANUP_MODE="${ORPHAN_CLEANUP_MODE:-delete}"
@@ -198,6 +202,48 @@ wait_with_heartbeat() {
     echo "  still in progress... $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
     sleep "${interval}"
   done
+}
+
+list_lb_services() {
+  kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" get svc -A \
+    -o jsonpath='{range .items[?(@.spec.type=="LoadBalancer")]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}' 2>/dev/null || true
+}
+
+describe_lb_service_finalizers() {
+  local services="$1"
+  while read -r svc; do
+    [[ -z "${svc}" ]] && continue
+    local ns="${svc%%/*}"
+    local name="${svc##*/}"
+    local deletion_ts=""
+    local finalizers=""
+    deletion_ts="$(kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" get svc "${name}" -o jsonpath='{.metadata.deletionTimestamp}' 2>/dev/null || true)"
+    finalizers="$(kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" get svc "${name}" -o jsonpath='{.metadata.finalizers[*]}' 2>/dev/null || true)"
+    echo "  ${ns}/${name} deletionTimestamp=${deletion_ts:-none} finalizers=${finalizers:-none}"
+  done <<< "${services}"
+}
+
+remove_lb_service_finalizers() {
+  local services="$1"
+  while read -r svc; do
+    [[ -z "${svc}" ]] && continue
+    local ns="${svc%%/*}"
+    local name="${svc##*/}"
+    local deletion_ts=""
+    local finalizers=""
+    deletion_ts="$(kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" get svc "${name}" -o jsonpath='{.metadata.deletionTimestamp}' 2>/dev/null || true)"
+    finalizers="$(kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" get svc "${name}" -o jsonpath='{.metadata.finalizers[*]}' 2>/dev/null || true)"
+    if [[ -z "${finalizers}" ]]; then
+      continue
+    fi
+    if [[ -z "${deletion_ts}" ]]; then
+      echo "Service ${ns}/${name} not marked for deletion; skipping finalizer removal."
+      continue
+    fi
+    echo "Removing finalizers from ${ns}/${name}..."
+    kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" patch svc "${name}" \
+      --type=merge -p '{"metadata":{"finalizers":[]}}' >/dev/null 2>&1 || true
+  done <<< "${services}"
 }
 
 delete_argo_application() {
@@ -511,45 +557,84 @@ wait_for_lb_enis() {
 }
 
 echo "Teardown starting for cluster ${cluster_name} in ${region}"
+cluster_exists="true"
 
 stage_banner "STAGE 1: CLUSTER CONTEXT"
-echo "Updating kubeconfig for ${cluster_name} (${region})..."
-run_cmd aws eks update-kubeconfig --name "${cluster_name}" --region "${region}"
+echo "Validating cluster ${cluster_name} exists..."
+if ! aws eks describe-cluster --name "${cluster_name}" --region "${region}" >/dev/null 2>&1; then
+  echo "Cluster ${cluster_name} not found; skipping Kubernetes cleanup stages."
+  cluster_exists="false"
+else
+  echo "Updating kubeconfig for ${cluster_name} (${region})..."
+  run_cmd aws eks update-kubeconfig --name "${cluster_name}" --region "${region}"
+fi
 stage_done "STAGE 1"
 
 stage_banner "STAGE 2: PRE-DESTROY CLEANUP"
-delete_argo_application
-delete_kong_resources
-scale_down_lb_controller
-echo "Removing LoadBalancer services to release AWS resources..."
-run_cmd bash "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh" "${cluster_name}" "${region}" --yes
-cleanup_loadbalancer_services || true
-wait_with_heartbeat \
-  "Waiting for LoadBalancer services to be removed" \
-  "test -z \"\$(kubectl --request-timeout=${KUBECTL_REQUEST_TIMEOUT} get svc -A -o jsonpath='{range .items[?(@.spec.type==\"LoadBalancer\")]}{.metadata.namespace}/{.metadata.name}{\"\\n\"}{end}' 2>/dev/null)\"" \
-  "${HEARTBEAT_INTERVAL:-30}" \
-  "${LB_CLEANUP_MAX_WAIT}"
-if [[ "${WAIT_FOR_LB_ENIS}" == "true" ]]; then
-  subnet_filter="$(get_cluster_subnet_filter || true)"
-  if ! wait_for_lb_enis "${subnet_filter}"; then
-    if [[ "${FORCE_DELETE_LBS}" == "true" ]]; then
-      echo "Attempting to delete remaining load balancers (FORCE_DELETE_LBS=true)."
-      delete_lbs_by_cluster_tag || true
-      remaining_enis="$(list_lb_enis "${subnet_filter}")"
-      if [[ -n "${remaining_enis}" ]]; then
-        delete_lbs_for_enis "${remaining_enis}"
-      fi
-      wait_for_lb_enis "${subnet_filter}"
+if [[ "${cluster_exists}" == "false" ]]; then
+  echo "Skipping Kubernetes pre-destroy cleanup (cluster not found)."
+else
+  delete_argo_application
+  delete_kong_resources
+  echo "Removing LoadBalancer services to release AWS resources..."
+  run_cmd bash "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh" "${cluster_name}" "${region}" --yes
+  cleanup_loadbalancer_services || true
+  lb_wait_rc=0
+  wait_with_heartbeat \
+    "Waiting for LoadBalancer services to be removed" \
+    "test -z \"\$(list_lb_services)\"" \
+    "${HEARTBEAT_INTERVAL:-30}" \
+    "${LB_CLEANUP_MAX_WAIT}" || lb_wait_rc=$?
+  if [[ "${lb_wait_rc}" -ne 0 ]]; then
+    remaining_services="$(list_lb_services)"
+    if [[ -z "${remaining_services}" ]]; then
+      echo "No LoadBalancer services remain after wait timeout; continuing."
     else
-      echo "LoadBalancer ENIs still present. Set FORCE_DELETE_LBS=true to attempt deletion." >&2
-      exit 1
+      echo "LoadBalancer services still present after wait:"
+      echo "${remaining_services}"
+      echo "Finalizer status:"
+      describe_lb_service_finalizers "${remaining_services}"
+      if [[ "${FORCE_DELETE_LB_FINALIZERS}" == "true" ]]; then
+        echo "Removing stuck LoadBalancer service finalizers (FORCE_DELETE_LB_FINALIZERS=true)."
+        remove_lb_service_finalizers "${remaining_services}"
+        wait_with_heartbeat \
+          "Waiting for LoadBalancer services after finalizer removal" \
+          "test -z \"\$(list_lb_services)\"" \
+          "${HEARTBEAT_INTERVAL:-30}" \
+          "${LB_FINALIZER_WAIT_MAX}"
+      else
+        echo "LoadBalancer services still present. Set FORCE_DELETE_LB_FINALIZERS=true to remove stuck finalizers." >&2
+        exit 1
+      fi
+    fi
+  fi
+
+  scale_down_lb_controller
+
+  if [[ "${WAIT_FOR_LB_ENIS}" == "true" ]]; then
+    subnet_filter="$(get_cluster_subnet_filter || true)"
+    if ! wait_for_lb_enis "${subnet_filter}"; then
+      if [[ "${FORCE_DELETE_LBS}" == "true" ]]; then
+        echo "Attempting to delete remaining load balancers (FORCE_DELETE_LBS=true)."
+        delete_lbs_by_cluster_tag || true
+        remaining_enis="$(list_lb_enis "${subnet_filter}")"
+        if [[ -n "${remaining_enis}" ]]; then
+          delete_lbs_for_enis "${remaining_enis}"
+        fi
+        wait_for_lb_enis "${subnet_filter}"
+      else
+        echo "LoadBalancer ENIs still present. Set FORCE_DELETE_LBS=true to attempt deletion." >&2
+        exit 1
+      fi
     fi
   fi
 fi
 stage_done "STAGE 2"
 
 stage_banner "STAGE 3: DRAIN NODEGROUPS"
-if [[ "${SKIP_DRAIN_NODEGROUPS:-false}" == "true" ]]; then
+if [[ "${cluster_exists}" == "false" ]]; then
+  echo "Skipping nodegroup drain (cluster not found)."
+elif [[ "${SKIP_DRAIN_NODEGROUPS:-false}" == "true" ]]; then
   echo "Skipping nodegroup drain (SKIP_DRAIN_NODEGROUPS=true)."
 else
   nodegroups="$(aws eks list-nodegroups --cluster-name "${cluster_name}" --region "${region}" --query 'nodegroups[]' --output text)"
@@ -565,7 +650,9 @@ fi
 stage_done "STAGE 3"
 
 stage_banner "STAGE 4: DELETE NODEGROUPS"
-if [[ "${DELETE_NODEGROUPS:-true}" == "true" ]]; then
+if [[ "${cluster_exists}" == "false" ]]; then
+  echo "Skipping nodegroup deletion (cluster not found)."
+elif [[ "${DELETE_NODEGROUPS:-true}" == "true" ]]; then
   nodegroups="$(aws eks list-nodegroups --cluster-name "${cluster_name}" --region "${region}" --query 'nodegroups[]' --output text)"
   if [[ -z "${nodegroups}" ]]; then
     echo "No nodegroups found."
