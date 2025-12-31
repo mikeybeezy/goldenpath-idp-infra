@@ -201,6 +201,26 @@ bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
 DRY_RUN=false bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
 ```
 
+## cleanup-managed-lb-resources.sh
+
+What it does:
+- Deletes AWS Load Balancer Controller managed LBs, ENIs, and security groups
+  tagged with `elbv2.k8s.aws/cluster=<cluster>`.
+- Optionally narrows the scope with `service.k8s.aws/stack=<stack>`.
+
+Safety:
+- Runs in **dry-run** mode by default.
+- Deletes only resources tagged to the cluster (and optional stack).
+
+Examples:
+
+```bash
+bootstrap/60_tear_down_clean_up/cleanup-managed-lb-resources.sh <cluster> <region>
+DRY_RUN=false bootstrap/60_tear_down_clean_up/cleanup-managed-lb-resources.sh <cluster> <region>
+STACK_TAG="kong-system/dev-kong-kong-proxy" DRY_RUN=false \
+  bootstrap/60_tear_down_clean_up/cleanup-managed-lb-resources.sh <cluster> <region>
+```
+
 ## pre-destroy-cleanup.sh
 
 What it does:
