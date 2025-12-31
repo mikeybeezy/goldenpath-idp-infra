@@ -73,6 +73,15 @@ if [[ -z "${cluster_name}" || -z "${region}" ]]; then
   exit 1
 fi
 
+# Determine storage add-on expectation (default: true).
+storage_addons_enabled="${ENABLE_STORAGE_ADDONS:-}"
+if [[ -z "${storage_addons_enabled}" && -n "${tfvars_path}" ]]; then
+  storage_addons_enabled="$(read_tfvars_var "${tfvars_path}" "enable_storage_addons")"
+fi
+if [[ -z "${storage_addons_enabled}" ]]; then
+  storage_addons_enabled="true"
+fi
+
 # Preflight checks for required CLIs.
 require_cmd aws
 require_cmd kubectl
@@ -341,6 +350,28 @@ else
   run_cmd bash "${repo_root}/bootstrap/30_core-addons/20_cert_manager.sh" "${cluster_name}" "${region}"
 fi
 stage_done "STAGE 7"
+
+# Validate storage add-ons when required.
+stage_banner "STAGE 7B: STORAGE ADD-ONS"
+if [[ "${storage_addons_enabled}" == "true" ]]; then
+  for addon in aws-ebs-csi-driver aws-efs-csi-driver snapshot-controller; do
+    status="$(aws eks describe-addon \
+      --cluster-name "${cluster_name}" \
+      --region "${region}" \
+      --addon-name "${addon}" \
+      --query 'addon.status' \
+      --output text 2>/dev/null || true)"
+    if [[ "${status}" != "ACTIVE" ]]; then
+      echo "Storage add-on ${addon} is not Active (status=${status})." >&2
+      echo "Enable storage add-ons or set ENABLE_STORAGE_ADDONS=false to skip this check." >&2
+      exit 1
+    fi
+    echo "Storage add-on ${addon} is Active."
+  done
+else
+  echo "Storage add-ons disabled; skipping validation."
+fi
+stage_done "STAGE 7B"
 
 # Apply Cluster Autoscaler first so capacity is stable before Kong.
 stage_banner "STAGE 8: AUTOSCALER APP"

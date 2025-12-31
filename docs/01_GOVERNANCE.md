@@ -218,6 +218,10 @@ auditable, and consistent across environments.
 Principle: The `main` branch only accepts merges from `dev`. Both `dev` and `main` are protected,
 and promotion requires passing the dev gate.
 
+Principle: Monitoring and observability data is persisted from day one. Storage add-ons are
+required so Prometheus/Grafana/Alertmanager data survives pod restarts and rollout cycles. See
+`docs/41_STORAGE_AND_PERSISTENCE.md` and `docs/adrs/ADR-0052-platform-kube-prometheus-stack-bundle.md`.
+
 This branching strategy is designed to preserve value already created. It encodes the philosophy
 that changes should prove themselves in a real environment before they become the platform record.
 The goal is not to claim the only “best” approach, but to keep quality, trust, and delivery
