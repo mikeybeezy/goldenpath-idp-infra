@@ -9,7 +9,7 @@ jobs:
   enforce-development-only:
     runs-on: ubuntu-latest
     steps:
-      - name: Enforce development -> main
+      - name: Enforce * -> main
         run: |
           if [[ "${{ github.head_ref }}" != "development" ]]; then
             echo "Only development may merge to main." >&2
