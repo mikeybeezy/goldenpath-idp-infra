@@ -49,8 +49,9 @@ kubectl -n kong-system patch svc dev-kong-kong-proxy \
   -p '{"metadata":{"finalizers":[]}}' --type=merge
 ```
 
-If using the v2 teardown runner, the break-glass flag defaults to on, but you
-can also set it explicitly:
+If using the v2 teardown runner, the break-glass flag defaults to on to prevent
+teardown hangs when the LB controller is unavailable, but you can also set it
+explicitly:
 
 ```bash
 FORCE_DELETE_LB_FINALIZERS=true \

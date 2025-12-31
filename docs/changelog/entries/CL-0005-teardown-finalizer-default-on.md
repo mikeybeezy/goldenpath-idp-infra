@@ -7,7 +7,8 @@ Related: bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh, .github/
 
 ## Summary
 
-- Default v2 teardown to remove stuck LoadBalancer Service finalizers.
+- Default v2 teardown to remove stuck LoadBalancer Service finalizers to avoid
+  teardown hangs when the LB controller is unavailable.
 
 ## Impact
 
