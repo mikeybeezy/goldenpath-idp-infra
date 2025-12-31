@@ -18,6 +18,7 @@ set -euo pipefail
 #   WAIT_FOR_LB_ENIS=true|false (default true)
 #   LB_ENI_WAIT_MAX=<seconds> (default LB_CLEANUP_MAX_WAIT)
 #   FORCE_DELETE_LBS=true|false (default true, break glass)
+#   KUBECTL_REQUEST_TIMEOUT=<duration> (default 10s)
 #   TF_DIR=<path> (if set, run terraform destroy instead of aws eks delete-cluster)
 #   TF_AUTO_APPROVE=true (use -auto-approve with terraform destroy)
 #   TF_DESTROY_MAX_WAIT=<seconds> (default 1200)
@@ -70,6 +71,7 @@ FORCE_DELETE_LBS="${FORCE_DELETE_LBS:-true}"
 TF_DESTROY_MAX_WAIT="${TF_DESTROY_MAX_WAIT:-1200}"
 TF_DESTROY_RETRY_ON_LB_CLEANUP="${TF_DESTROY_RETRY_ON_LB_CLEANUP:-true}"
 ORPHAN_CLEANUP_MODE="${ORPHAN_CLEANUP_MODE:-delete}"
+KUBECTL_REQUEST_TIMEOUT="${KUBECTL_REQUEST_TIMEOUT:-10s}"
 
 cleanup_on_exit() {
   local status=$?
@@ -216,7 +218,7 @@ cleanup_loadbalancer_services() {
   local max_attempts="${LB_CLEANUP_ATTEMPTS:-5}"
 
   while [[ "${attempt}" -le "${max_attempts}" ]]; do
-    services="$(kubectl get svc -A -o jsonpath='{range .items[?(@.spec.type=="LoadBalancer")]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}' 2>/dev/null)"
+    services="$(kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" get svc -A -o jsonpath='{range .items[?(@.spec.type=="LoadBalancer")]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}' 2>/dev/null)"
     if [[ -z "${services}" ]]; then
       echo "No LoadBalancer services remain."
       return 0
@@ -228,7 +230,7 @@ cleanup_loadbalancer_services() {
       ns="${svc%%/*}"
       name="${svc##*/}"
       echo "Deleting ${ns}/${name}"
-      kubectl -n "${ns}" delete svc "${name}" || true
+      kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" delete svc "${name}" || true
     done <<< "${services}"
 
     echo "Waiting for LoadBalancer services to be removed..."
@@ -387,7 +389,7 @@ run_cmd bash "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.s
 cleanup_loadbalancer_services || true
 wait_with_heartbeat \
   "Waiting for LoadBalancer services to be removed" \
-  "test -z \"\$(kubectl get svc -A -o jsonpath='{range .items[?(@.spec.type==\"LoadBalancer\")]}{.metadata.namespace}/{.metadata.name}{\"\\n\"}{end}' 2>/dev/null)\"" \
+  "test -z \"\$(kubectl --request-timeout=${KUBECTL_REQUEST_TIMEOUT} get svc -A -o jsonpath='{range .items[?(@.spec.type==\"LoadBalancer\")]}{.metadata.namespace}/{.metadata.name}{\"\\n\"}{end}' 2>/dev/null)\"" \
   "${HEARTBEAT_INTERVAL:-30}" \
   "${LB_CLEANUP_MAX_WAIT}"
 if [[ "${WAIT_FOR_LB_ENIS}" == "true" ]]; then
