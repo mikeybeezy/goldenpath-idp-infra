@@ -1,90 +1,38 @@
-# Changelog Guidance and Template
+# Changelog Guidance (Label-Gated)
 
-A changelog captures material changes at the system boundary: what changed and who is impacted.
-It complements commits, PRs, ADRs, and runbooks by summarizing observable behavior.
+This changelog records material, user-visible changes to platform behavior and
+contracts. It complements commits, PRs, ADRs, and runbooks by focusing on
+observable impact.
 
-## Placement in the documentation stack
+## Policy
 
-```text
-Commits
-  - granular implementation detail
+Changelog entries are required only when a PR carries the label
+`changelog-required`. The label is applied when a change affects any item in
+the required list below.
 
-Pull Requests
-  - scoped intent and testing
+## Required when label is set
 
-ADRs
-  - decisions and tradeoffs
+- CI/CD flow, approvals, or gates
+- Terraform behavior or state handling
+- Teardown/bootstrap safety or timing
+- Defaults, flags, or required inputs
+- Operator actions or recovery steps
 
-CHANGELOG
-  - system behavior and contract changes
+## Not required
 
-Runbooks
-  - operational steps and recovery
-```
+- Comments, formatting, or typos only
+- Internal refactors with no behavior change
+- Dependency bumps with no user impact
 
-## Include in the changelog
+## Entry location and numbering
 
-- New capabilities or workflows
-- Behavior or contract changes
-- Defaults that impact operators or consumers
-- Breaking changes or migrations
-- Operational risk changes
-
-## Exclude from the changelog
-
-- Refactors without behavior change
-- Dependency bumps without user impact
-- Typos, formatting, or minor logs
-
-## Update cadence
-
-- Update on meaningful platform behavior changes
-- Prefer fewer, higher-signal entries
-
-## Numbering convention
-
-Changelog entries use a sequential identifier to mirror ADR numbering.
+Entries live in `docs/changelog/entries/` and use sequential IDs that mirror
+ADR numbering.
 
 - Format: `CL-0001`, `CL-0002`, ...
+- Filename: `CL-0001-short-title.md`
 - Sequence is monotonic and never reused
-- Include the identifier in the entry heading
 
-## Default template
+## Template
 
-The template below is the default format. It is also available at
-`docs/changelog/Changelog-template.md`.
-
-```md
-# Changelog
-
-All notable changes to Golden Path IDP are documented here.
-
-Scope:
-- Focus on platform behavior and contracts
-- Not a commit log
-
-## [Unreleased]
-- <optional note>
-
-## [CL-0001] [<Milestone or Release>] - <YYYY-MM-DD>
-### Added
-- <new capability>
-
-### Changed
-- <behavior or contract change>
-
-### Fixed
-- <operational fix>
-
-### Deprecated
-- <deprecated behavior>
-
-### Removed
-- <removed behavior>
-
-### Documented
-- <docs/runbooks/ADR updates>
-
-### Known limitations
-- <known gaps or risks>
-```
+The canonical template is in `docs/changelog/Changelog-template.md`.

@@ -13,6 +13,13 @@ set -euo pipefail
 #   DELETE_NODEGROUPS=true|false (default true)
 #   WAIT_FOR_NODEGROUP_DELETE=true|false (default true)
 #   DELETE_CLUSTER=true|false (default true, ignored when TF_DIR is set)
+#   SUSPEND_ARGO_APP=true|false (default true)
+#   DELETE_KONG_RESOURCES=true|false (default true)
+#   KONG_NAMESPACE=<namespace> (default kong-system)
+#   KONG_RELEASE=<helm release> (default dev-kong)
+#   SCALE_DOWN_LB_CONTROLLER=true|false (default true)
+#   LB_CONTROLLER_NAMESPACE=<namespace> (default kube-system)
+#   LB_CONTROLLER_DEPLOYMENT=<name> (default aws-load-balancer-controller)
 #   LB_CLEANUP_ATTEMPTS=<count> (default 5)
 #   LB_CLEANUP_INTERVAL=<seconds> (default 20)
 #   WAIT_FOR_LB_ENIS=true|false (default true)
@@ -62,7 +69,14 @@ fi
 
 ARGO_APP_NAMESPACE="${ARGO_APP_NAMESPACE:-kong-system}"
 ARGO_APP_NAME="${ARGO_APP_NAME:-dev-kong}"
+SUSPEND_ARGO_APP="${SUSPEND_ARGO_APP:-true}"
 DELETE_ARGO_APP="${DELETE_ARGO_APP:-true}"
+DELETE_KONG_RESOURCES="${DELETE_KONG_RESOURCES:-true}"
+KONG_NAMESPACE="${KONG_NAMESPACE:-${ARGO_APP_NAMESPACE}}"
+KONG_RELEASE="${KONG_RELEASE:-dev-kong}"
+SCALE_DOWN_LB_CONTROLLER="${SCALE_DOWN_LB_CONTROLLER:-true}"
+LB_CONTROLLER_NAMESPACE="${LB_CONTROLLER_NAMESPACE:-kube-system}"
+LB_CONTROLLER_DEPLOYMENT="${LB_CONTROLLER_DEPLOYMENT:-aws-load-balancer-controller}"
 LB_CLEANUP_MAX_WAIT="${LB_CLEANUP_MAX_WAIT:-900}"
 WAIT_FOR_LB_ENIS="${WAIT_FOR_LB_ENIS:-true}"
 LB_ENI_WAIT_MAX="${LB_ENI_WAIT_MAX:-${LB_CLEANUP_MAX_WAIT}}"
@@ -185,6 +199,10 @@ wait_with_heartbeat() {
 }
 
 delete_argo_application() {
+  if [[ "${SUSPEND_ARGO_APP}" == "true" ]]; then
+    suspend_argo_application
+  fi
+
   if [[ "${DELETE_ARGO_APP}" != "true" ]]; then
     echo "Skipping Argo application deletion (DELETE_ARGO_APP=false)."
     return 0
@@ -209,6 +227,75 @@ delete_argo_application() {
   if ! kubectl -n "${ARGO_APP_NAMESPACE}" delete application "${ARGO_APP_NAME}" --ignore-not-found; then
     echo "Warning: failed to delete Argo Application ${ARGO_APP_NAMESPACE}/${ARGO_APP_NAME}." >&2
   fi
+}
+
+delete_kong_resources() {
+  if [[ "${DELETE_KONG_RESOURCES}" != "true" ]]; then
+    echo "Skipping Kong resource cleanup (DELETE_KONG_RESOURCES=false)."
+    return 0
+  fi
+
+  if [[ -z "${KONG_NAMESPACE}" || -z "${KONG_RELEASE}" ]]; then
+    echo "Skipping Kong resource cleanup (namespace/release not set)."
+    return 0
+  fi
+
+  if ! kubectl get ns "${KONG_NAMESPACE}" >/dev/null 2>&1; then
+    echo "Namespace ${KONG_NAMESPACE} not found; skipping Kong resource cleanup."
+    return 0
+  fi
+
+  echo "Deleting Kong resources in ${KONG_NAMESPACE} (release=${KONG_RELEASE})..."
+  kubectl -n "${KONG_NAMESPACE}" delete deploy,sts,ds,svc,ingress \
+    -l "app.kubernetes.io/instance=${KONG_RELEASE}" \
+    --ignore-not-found || true
+}
+
+scale_down_lb_controller() {
+  if [[ "${SCALE_DOWN_LB_CONTROLLER}" != "true" ]]; then
+    echo "Skipping LB controller scale down (SCALE_DOWN_LB_CONTROLLER=false)."
+    return 0
+  fi
+
+  if [[ -z "${LB_CONTROLLER_NAMESPACE}" || -z "${LB_CONTROLLER_DEPLOYMENT}" ]]; then
+    echo "Skipping LB controller scale down (namespace/deployment not set)."
+    return 0
+  fi
+
+  if ! kubectl -n "${LB_CONTROLLER_NAMESPACE}" get deploy "${LB_CONTROLLER_DEPLOYMENT}" >/dev/null 2>&1; then
+    echo "LB controller deployment not found; skipping scale down."
+    return 0
+  fi
+
+  echo "Scaling down ${LB_CONTROLLER_NAMESPACE}/${LB_CONTROLLER_DEPLOYMENT} to stop LB reprovision."
+  kubectl -n "${LB_CONTROLLER_NAMESPACE}" scale deploy "${LB_CONTROLLER_DEPLOYMENT}" --replicas=0 || true
+}
+
+suspend_argo_application() {
+  if [[ "${SUSPEND_ARGO_APP}" != "true" ]]; then
+    return 0
+  fi
+
+  if [[ -z "${ARGO_APP_NAMESPACE}" || -z "${ARGO_APP_NAME}" ]]; then
+    return 0
+  fi
+
+  if ! kubectl get crd applications.argoproj.io >/dev/null 2>&1; then
+    return 0
+  fi
+
+  if ! kubectl get ns "${ARGO_APP_NAMESPACE}" >/dev/null 2>&1; then
+    return 0
+  fi
+
+  if ! kubectl -n "${ARGO_APP_NAMESPACE}" get application "${ARGO_APP_NAME}" >/dev/null 2>&1; then
+    return 0
+  fi
+
+  echo "Suspending Argo Application ${ARGO_APP_NAMESPACE}/${ARGO_APP_NAME} to stop reprovision."
+  kubectl -n "${ARGO_APP_NAMESPACE}" patch application "${ARGO_APP_NAME}" \
+    --type merge \
+    -p '{"spec":{"syncPolicy":null}}' >/dev/null 2>&1 || true
 }
 
 cleanup_loadbalancer_services() {
@@ -294,8 +381,9 @@ delete_lbs_for_enis() {
   local lb_names=""
   lb_names="$(extract_lb_names_from_enis "${enis}")"
   if [[ -z "${lb_names}" ]]; then
-    echo "No Kubernetes load balancers found in ENI descriptions."
-    return 0
+    echo "No Kubernetes load balancers found in ENI descriptions; falling back to tag scan."
+    delete_lbs_by_cluster_tag
+    return $?
   fi
 
   while IFS= read -r lb_name; do
@@ -333,6 +421,41 @@ delete_lbs_for_enis() {
     echo "Deleting load balancer ${lb_name} (${lb_arn})"
     aws elbv2 delete-load-balancer --region "${region}" --load-balancer-arn "${lb_arn}" || true
   done <<< "${lb_names}"
+}
+
+delete_lbs_by_cluster_tag() {
+  local lb_arns=""
+  lb_arns="$(aws elbv2 describe-load-balancers \
+    --region "${region}" \
+    --query 'LoadBalancers[].LoadBalancerArn' \
+    --output text 2>/dev/null || true)"
+  if [[ -z "${lb_arns}" ]]; then
+    echo "No load balancers found for tag scan."
+    return 0
+  fi
+
+  for lb_arn in ${lb_arns}; do
+    local cluster_tag=""
+    cluster_tag="$(aws elbv2 describe-tags \
+      --region "${region}" \
+      --resource-arns "${lb_arn}" \
+      --query 'TagDescriptions[0].Tags[?Key==`elbv2.k8s.aws/cluster`].Value | [0]' \
+      --output text 2>/dev/null || true)"
+    if [[ "${cluster_tag}" != "${cluster_name}" ]]; then
+      continue
+    fi
+    local service_tag=""
+    service_tag="$(aws elbv2 describe-tags \
+      --region "${region}" \
+      --resource-arns "${lb_arn}" \
+      --query 'TagDescriptions[0].Tags[?Key==`kubernetes.io/service-name` || Key==`service.k8s.aws/resource` || Key==`service.k8s.aws/stack`].Key | [0]' \
+      --output text 2>/dev/null || true)"
+    if [[ -z "${service_tag}" || "${service_tag}" == "None" ]]; then
+      continue
+    fi
+    echo "Deleting load balancer ${lb_arn} (cluster tag ${cluster_tag})."
+    aws elbv2 delete-load-balancer --region "${region}" --load-balancer-arn "${lb_arn}" || true
+  done
 }
 
 wait_for_lb_enis() {
@@ -382,6 +505,8 @@ stage_done "STAGE 1"
 
 stage_banner "STAGE 2: PRE-DESTROY CLEANUP"
 delete_argo_application
+delete_kong_resources
+scale_down_lb_controller
 echo "Removing LoadBalancer services to release AWS resources..."
 run_cmd bash "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh" "${cluster_name}" "${region}" --yes
 cleanup_loadbalancer_services || true
@@ -395,6 +520,7 @@ if [[ "${WAIT_FOR_LB_ENIS}" == "true" ]]; then
   if ! wait_for_lb_enis "${subnet_filter}"; then
     if [[ "${FORCE_DELETE_LBS}" == "true" ]]; then
       echo "Attempting to delete remaining load balancers (FORCE_DELETE_LBS=true)."
+      delete_lbs_by_cluster_tag || true
       remaining_enis="$(list_lb_enis "${subnet_filter}")"
       if [[ -n "${remaining_enis}" ]]; then
         delete_lbs_for_enis "${remaining_enis}"
