@@ -111,6 +111,8 @@ LoadBalancer cleanup retries:
 - If Services remain after the wait, v2 can remove stuck finalizers when
   `FORCE_DELETE_LB_FINALIZERS=true` (break-glass). This is safe only for
   teardown runs where the Service should be deleted.
+- If Kubernetes access is unavailable, v2 skips Kubernetes cleanup and performs
+  AWS-only LoadBalancer cleanup before continuing to destroy.
 
 LoadBalancer ENI wait (prevents stuck subnet deletes):
 

@@ -86,6 +86,8 @@ LoadBalancer cleanup retries:
   to avoid hanging (default `900` seconds).
 - v2 supports a break-glass finalizer removal with
   `FORCE_DELETE_LB_FINALIZERS=true` when Services are stuck in `Terminating`.
+- If Kubernetes access is unavailable, v2 skips Kubernetes cleanup and performs
+  AWS-only LoadBalancer cleanup before destroy.
 
 LoadBalancer ENI wait (prevents stuck subnet deletes):
 

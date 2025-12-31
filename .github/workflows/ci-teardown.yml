@@ -84,6 +84,11 @@ on:
         required: true
         default: true
         type: boolean
+      force_delete_lb_finalizers:
+        description: "Break-glass: remove stuck LoadBalancer service finalizers"
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   teardown:
@@ -106,6 +111,7 @@ jobs:
       DELETE_ARGO_APP: ${{ inputs.delete_argo_app }}
       LB_CLEANUP_MAX_WAIT: ${{ inputs.lb_cleanup_max_wait }}
       FORCE_DELETE_LBS: ${{ inputs.force_delete_lbs }}
+      FORCE_DELETE_LB_FINALIZERS: ${{ inputs.force_delete_lb_finalizers }}
       REMOVE_K8S_SA_FROM_STATE: "true"
       TF_AUTO_APPROVE: "true"
     steps:
@@ -217,6 +223,7 @@ jobs:
       DELETE_ARGO_APP: ${{ inputs.delete_argo_app }}
       LB_CLEANUP_MAX_WAIT: ${{ inputs.lb_cleanup_max_wait }}
       FORCE_DELETE_LBS: ${{ inputs.force_delete_lbs }}
+      FORCE_DELETE_LB_FINALIZERS: ${{ inputs.force_delete_lb_finalizers }}
       REMOVE_K8S_SA_FROM_STATE: "true"
       TF_AUTO_APPROVE: "true"
     steps:

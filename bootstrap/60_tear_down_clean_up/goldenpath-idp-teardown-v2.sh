@@ -558,6 +558,7 @@ wait_for_lb_enis() {
 
 echo "Teardown starting for cluster ${cluster_name} in ${region}"
 cluster_exists="true"
+kube_access="true"
 
 stage_banner "STAGE 1: CLUSTER CONTEXT"
 echo "Validating cluster ${cluster_name} exists..."
@@ -567,12 +568,29 @@ if ! aws eks describe-cluster --name "${cluster_name}" --region "${region}" >/de
 else
   echo "Updating kubeconfig for ${cluster_name} (${region})..."
   run_cmd aws eks update-kubeconfig --name "${cluster_name}" --region "${region}"
+  if ! kubectl get ns >/dev/null 2>&1; then
+    echo "Kubernetes API not reachable or unauthorized; skipping Kubernetes cleanup stages."
+    kube_access="false"
+    REQUIRE_KUBE_FOR_TF_DESTROY="false"
+  fi
 fi
 stage_done "STAGE 1"
 
 stage_banner "STAGE 2: PRE-DESTROY CLEANUP"
-if [[ "${cluster_exists}" == "false" ]]; then
-  echo "Skipping Kubernetes pre-destroy cleanup (cluster not found)."
+if [[ "${cluster_exists}" == "false" || "${kube_access}" == "false" ]]; then
+  echo "Skipping Kubernetes pre-destroy cleanup (cluster not reachable)."
+  if [[ "${WAIT_FOR_LB_ENIS}" == "true" ]]; then
+    subnet_filter="$(get_cluster_subnet_filter || true)"
+    echo "Attempting AWS-only LoadBalancer cleanup."
+    if [[ "${FORCE_DELETE_LBS}" == "true" ]]; then
+      delete_lbs_by_cluster_tag || true
+      remaining_enis="$(list_lb_enis "${subnet_filter}")"
+      if [[ -n "${remaining_enis}" ]]; then
+        delete_lbs_for_enis "${remaining_enis}"
+      fi
+    fi
+    wait_for_lb_enis "${subnet_filter}" || true
+  fi
 else
   delete_argo_application
   delete_kong_resources
@@ -632,7 +650,7 @@ fi
 stage_done "STAGE 2"
 
 stage_banner "STAGE 3: DRAIN NODEGROUPS"
-if [[ "${cluster_exists}" == "false" ]]; then
+if [[ "${cluster_exists}" == "false" || "${kube_access}" == "false" ]]; then
   echo "Skipping nodegroup drain (cluster not found)."
 elif [[ "${SKIP_DRAIN_NODEGROUPS:-false}" == "true" ]]; then
   echo "Skipping nodegroup drain (SKIP_DRAIN_NODEGROUPS=true)."
@@ -650,7 +668,7 @@ fi
 stage_done "STAGE 3"
 
 stage_banner "STAGE 4: DELETE NODEGROUPS"
-if [[ "${cluster_exists}" == "false" ]]; then
+if [[ "${cluster_exists}" == "false" || "${kube_access}" == "false" ]]; then
   echo "Skipping nodegroup deletion (cluster not found)."
 elif [[ "${DELETE_NODEGROUPS:-true}" == "true" ]]; then
   nodegroups="$(aws eks list-nodegroups --cluster-name "${cluster_name}" --region "${region}" --query 'nodegroups[]' --output text)"
