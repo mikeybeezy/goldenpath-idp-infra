@@ -1,6 +1,7 @@
 # Loki Helm Deployment
 
 The Loki stack provides log storage (Loki) plus promtail agents for scraping.
+The platform default is **Single Binary** mode in the `monitoring` namespace.
 
 ```
 gitops/helm/loki/

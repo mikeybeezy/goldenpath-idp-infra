@@ -28,6 +28,28 @@
 
 ---
 
+## Loki deployment mode (V1 default)
+
+**Decision**: Start Loki in **Single Binary** mode for V1, and move to **Simple Scalable**
+only when scale/retention/HA requirements justify it.
+
+Loki is deployed in the `monitoring` namespace.
+
+**Why**:
+
+- Single Binary is simpler to operate and cheaper for early usage.
+- Simple Scalable adds HA and better query/write scaling but requires object storage and more ops overhead.
+
+**Triggers to switch**:
+
+- Sustained ingestion/query pressure (slow queries, frequent OOMs).
+- Retention beyond local PV limits.
+- HA expectations for logs in production.
+
+**Related ADR**: `docs/adrs/ADR-0056-platform-loki-deployment-mode.md`.
+
+---
+
 ## Pragmatic V1 observability baseline (RED + Golden Signals)
 
 **Decision**: Use a metrics-first baseline for V1: RED at the ingress/gateway layer and

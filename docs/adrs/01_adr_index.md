@@ -67,6 +67,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0053](ADR-0053-platform-storage-lifecycle-separation.md) | Platform | Separate storage lifecycle from bootstrap and teardown | Proposed | 2025-12-31 | Storage add-ons required at bootstrap; cleanup is an explicit workflow. |
 | [ADR-0054](ADR-0054-platform-observability-exporters-otel-split.md) | Platform | Exporter vs OpenTelemetry split for platform observability | Proposed | 2025-12-31 | Infra metrics stay on exporters; app telemetry uses OpenTelemetry; cAdvisor via kubelet. |
 | [ADR-0055](ADR-0055-platform-tempo-tracing-backend.md) | Platform | Tempo as the standard tracing backend (V1.1) | Proposed | 2025-12-31 | Tempo selected for OTel traces when tracing is enabled; deployed separately from kube-prometheus-stack. |
+| [ADR-0056](ADR-0056-platform-loki-deployment-mode.md) | Platform | Loki deployment mode for V1 | Proposed | 2025-12-31 | Default to single-binary Loki; switch to simple scalable when scale/HA demands it. |
 
 ---
 
