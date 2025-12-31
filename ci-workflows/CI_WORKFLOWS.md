@@ -23,6 +23,7 @@ CI Workflows (GitHub Actions)
 │
 ├─ Terraform Apply
 │  ├─ Apply - Infra Terraform Apply (dev)
+│  ├─ Apply - Infra Terraform Update (dev)
 │  ├─ Apply - Infra Terraform Apply (test)
 │  ├─ Apply - Infra Terraform Apply (staging)
 │  └─ Apply - Infra Terraform Apply (prod)
@@ -116,6 +117,13 @@ CI Workflows (GitHub Actions)
 - Owner: platform
 - Inputs: confirm_apply, lifecycle, build_id, new_build
 - Purpose: apply dev infra with plan gate
+- Runbook: `docs/21_CI_ENVIRONMENT_CONTRACT.md`
+
+### Apply - Infra Terraform Update (dev)
+- Trigger: workflow_dispatch
+- Owner: platform
+- Inputs: confirm_apply, build_id
+- Purpose: apply dev updates to an existing ephemeral cluster (state must exist)
 - Runbook: `docs/21_CI_ENVIRONMENT_CONTRACT.md`
 
 ### Apply - Infra Terraform Apply (test)

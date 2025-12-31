@@ -71,6 +71,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0057](ADR-0057-platform-ci-terraform-force-unlock-workflow.md) | Platform | CI Terraform force-unlock workflow (break-glass) | Proposed | 2025-12-31 | Manual CI workflow to force-unlock stuck Terraform state keys. |
 | [ADR-0058](ADR-0058-platform-grafana-config-workflow.md) | Platform | Separate Grafana config workflow with readiness guard | Proposed | 2025-12-31 | Grafana config applied via manual workflow with readiness check. |
 | [ADR-0059](ADR-0059-platform-ci-workflow-index-and-ownership.md) | Platform | CI workflow index, ownership, and UI grouping | Proposed | 2025-12-31 | Single workflow index with naming prefixes and owner/runbook metadata. |
+| [ADR-0060](ADR-0060-platform-ephemeral-update-workflow.md) | Platform | Separate update workflow for existing ephemeral dev clusters | Proposed | 2025-12-31 | Manual update workflow with plan and state guards for existing BuildIds. |
 
 ---
 
