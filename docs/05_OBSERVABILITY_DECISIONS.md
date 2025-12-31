@@ -88,6 +88,35 @@ Storage defaults and tradeoffs are documented in `docs/41_STORAGE_AND_PERSISTENC
 - Golden Signals dashboard aggregates RED plus infra saturation (CPU/memory/node).
 - CI/CD pipeline metrics remain separate and focus on plan/apply/teardown outcomes.
 
+---
+
+## RED label contract (V1)
+
+These labels are required on RED metrics emitted at the ingress/gateway layer.
+They provide consistent grouping for dashboards and alerts while keeping
+cardinality controlled.
+
+Required labels:
+
+- `service`: logical service name (matches catalog entity name).
+- `env`: environment (dev/test/staging/prod).
+- `version`: deploy version (image tag or git SHA).
+- `team`: owning team/group.
+- `build_id`: CI build identifier for the deployment.
+
+Guidance:
+
+- Use low‑cardinality values; avoid request IDs or user IDs.
+- If a value is not available, use `unknown` rather than dropping the label.
+- Dashboards and alerts should group by `service` and `env`, and use `version`
+  and `build_id` for rollbacks and diff views.
+
+Example:
+
+```
+service=payments-api env=dev version=2025.12.31-1 team=platform build_id=31-12-25-02
+```
+
 **Trade-offs**:
 
 - Less per-request debugging detail until traces are added in V1.1.
@@ -95,7 +124,7 @@ Storage defaults and tradeoffs are documented in `docs/41_STORAGE_AND_PERSISTENC
 
 **Next Steps**:
 
-- Publish the RED label contract and dashboard pack.
+- Implement the RED label contract in dashboards and alert rules.
 - Add minimal alert rules for error rate, latency, and saturation.
 - Keep ADRs aligned: `ADR-0049-platform-pragmatic-observability-baseline.md` and
   `ADR-0055-platform-tempo-tracing-backend.md`.
