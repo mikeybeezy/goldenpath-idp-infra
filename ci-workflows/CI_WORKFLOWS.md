@@ -123,7 +123,7 @@ CI Workflows (GitHub Actions)
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: confirm_apply, build_id
-- Purpose: apply dev updates to an existing ephemeral cluster (state must exist)
+- Purpose: apply dev updates to an existing ephemeral cluster (plan gate + state must exist)
 - Runbook: `docs/21_CI_ENVIRONMENT_CONTRACT.md`
 
 ### Apply - Infra Terraform Apply (test)
