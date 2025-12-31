@@ -220,13 +220,18 @@ delete_argo_application() {
     return 0
   fi
 
-  if ! kubectl get ns "${ARGO_APP_NAMESPACE}" >/dev/null 2>&1; then
+  if ! kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" get ns "${ARGO_APP_NAMESPACE}" >/dev/null 2>&1; then
     echo "Namespace ${ARGO_APP_NAMESPACE} not found; skipping Argo application deletion."
     return 0
   fi
 
+  if ! kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ARGO_APP_NAMESPACE}" get application "${ARGO_APP_NAME}" >/dev/null 2>&1; then
+    echo "Argo application ${ARGO_APP_NAMESPACE}/${ARGO_APP_NAME} not found; skipping deletion."
+    return 0
+  fi
+
   echo "Deleting Argo Application ${ARGO_APP_NAMESPACE}/${ARGO_APP_NAME} (best effort)..."
-  if ! kubectl -n "${ARGO_APP_NAMESPACE}" delete application "${ARGO_APP_NAME}" --ignore-not-found; then
+  if ! kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ARGO_APP_NAMESPACE}" delete application "${ARGO_APP_NAME}" --wait=false --ignore-not-found; then
     echo "Warning: failed to delete Argo Application ${ARGO_APP_NAMESPACE}/${ARGO_APP_NAME}." >&2
   fi
 }
@@ -242,15 +247,22 @@ delete_kong_resources() {
     return 0
   fi
 
-  if ! kubectl get ns "${KONG_NAMESPACE}" >/dev/null 2>&1; then
+  if ! kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" get ns "${KONG_NAMESPACE}" >/dev/null 2>&1; then
     echo "Namespace ${KONG_NAMESPACE} not found; skipping Kong resource cleanup."
     return 0
   fi
 
+  kong_resources="$(kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${KONG_NAMESPACE}" get deploy,sts,ds,svc,ingress \
+    -l "app.kubernetes.io/instance=${KONG_RELEASE}" -o name 2>/dev/null || true)"
+  if [[ -z "${kong_resources}" ]]; then
+    echo "No Kong resources found for release ${KONG_RELEASE}; skipping cleanup."
+    return 0
+  fi
+
   echo "Deleting Kong resources in ${KONG_NAMESPACE} (release=${KONG_RELEASE})..."
-  kubectl -n "${KONG_NAMESPACE}" delete deploy,sts,ds,svc,ingress \
+  kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${KONG_NAMESPACE}" delete deploy,sts,ds,svc,ingress \
     -l "app.kubernetes.io/instance=${KONG_RELEASE}" \
-    --ignore-not-found || true
+    --ignore-not-found --wait=false || true
 }
 
 scale_down_lb_controller() {
@@ -264,13 +276,13 @@ scale_down_lb_controller() {
     return 0
   fi
 
-  if ! kubectl -n "${LB_CONTROLLER_NAMESPACE}" get deploy "${LB_CONTROLLER_DEPLOYMENT}" >/dev/null 2>&1; then
+  if ! kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${LB_CONTROLLER_NAMESPACE}" get deploy "${LB_CONTROLLER_DEPLOYMENT}" >/dev/null 2>&1; then
     echo "LB controller deployment not found; skipping scale down."
     return 0
   fi
 
   echo "Scaling down ${LB_CONTROLLER_NAMESPACE}/${LB_CONTROLLER_DEPLOYMENT} to stop LB reprovision."
-  kubectl -n "${LB_CONTROLLER_NAMESPACE}" scale deploy "${LB_CONTROLLER_DEPLOYMENT}" --replicas=0 || true
+  kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${LB_CONTROLLER_NAMESPACE}" scale deploy "${LB_CONTROLLER_DEPLOYMENT}" --replicas=0 || true
 }
 
 suspend_argo_application() {
@@ -317,7 +329,7 @@ cleanup_loadbalancer_services() {
       ns="${svc%%/*}"
       name="${svc##*/}"
       echo "Deleting ${ns}/${name}"
-      kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" delete svc "${name}" || true
+      kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" delete svc "${name}" --wait=false || true
     done <<< "${services}"
 
     echo "Waiting for LoadBalancer services to be removed..."

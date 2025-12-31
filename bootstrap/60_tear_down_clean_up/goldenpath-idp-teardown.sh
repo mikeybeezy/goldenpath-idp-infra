@@ -197,18 +197,23 @@ delete_argo_application() {
     return 0
   fi
 
-  if ! kubectl get crd applications.argoproj.io >/dev/null 2>&1; then
+  if ! kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" get crd applications.argoproj.io >/dev/null 2>&1; then
     echo "Argo Application CRD not found; skipping deletion."
     return 0
   fi
 
-  if ! kubectl get ns "${ARGO_APP_NAMESPACE}" >/dev/null 2>&1; then
+  if ! kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" get ns "${ARGO_APP_NAMESPACE}" >/dev/null 2>&1; then
     echo "Namespace ${ARGO_APP_NAMESPACE} not found; skipping Argo application deletion."
     return 0
   fi
 
+  if ! kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ARGO_APP_NAMESPACE}" get application "${ARGO_APP_NAME}" >/dev/null 2>&1; then
+    echo "Argo application ${ARGO_APP_NAMESPACE}/${ARGO_APP_NAME} not found; skipping deletion."
+    return 0
+  fi
+
   echo "Deleting Argo Application ${ARGO_APP_NAMESPACE}/${ARGO_APP_NAME} (best effort)..."
-  if ! kubectl -n "${ARGO_APP_NAMESPACE}" delete application "${ARGO_APP_NAME}" --ignore-not-found; then
+  if ! kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ARGO_APP_NAMESPACE}" delete application "${ARGO_APP_NAME}" --wait=false --ignore-not-found; then
     echo "Warning: failed to delete Argo Application ${ARGO_APP_NAMESPACE}/${ARGO_APP_NAME}." >&2
   fi
 }
@@ -230,7 +235,7 @@ cleanup_loadbalancer_services() {
       ns="${svc%%/*}"
       name="${svc##*/}"
       echo "Deleting ${ns}/${name}"
-      kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" delete svc "${name}" || true
+      kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" delete svc "${name}" --wait=false || true
     done <<< "${services}"
 
     echo "Waiting for LoadBalancer services to be removed..."
