@@ -2,20 +2,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: dev-prometheus
+  name: test-kube-prometheus-stack
   namespace: argocd
 spec:
   project: default
   destination:
-    namespace: prometheus
+    namespace: monitoring
     server: https://kubernetes.default.svc
   sources:
     - repoURL: https://prometheus-community.github.io/helm-charts
-      chart: prometheus
-      targetRevision: 25.8.0
+      chart: kube-prometheus-stack
+      targetRevision: 45.7.1
       helm:
         valueFiles:
-          - $values/gitops/helm/prometheus/values/dev.yaml
+          - $values/gitops/helm/kube-prometheus-stack/values/test.yaml
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
       targetRevision: HEAD
       ref: values

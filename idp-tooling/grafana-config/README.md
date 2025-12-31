@@ -1,6 +1,6 @@
 # Grafana Configuration Module
 
-Helm deploys Grafana the application (`gitops/helm/grafana`). This module uses the Grafana Terraform provider to manage what lives inside Grafana:
+Helm deploys Grafana as part of `kube-prometheus-stack` (`gitops/helm/kube-prometheus-stack`). This module uses the Grafana Terraform provider to manage what lives inside Grafana:
 
 - Datasources (Loki, Prometheus, CloudWatch, Datadog, …)
 - Dashboards and folders

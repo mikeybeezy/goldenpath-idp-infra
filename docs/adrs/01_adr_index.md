@@ -63,6 +63,10 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0049](ADR-0049-platform-pragmatic-observability-baseline.md) | Platform | Pragmatic observability baseline for V1 (RED + Golden Signals) | Proposed | 2025-12-31 | Metrics-first baseline; traces deferred to V1.1. |
 | [ADR-0050](ADR-0050-platform-changelog-label-gate.md) | Platform | Label-gated changelog entries | Proposed | 2025-12-31 | Require changelog entries only when a PR carries a label. |
 | [ADR-0051](ADR-0051-platform-reliability-metrics-contract-minimums.md) | Platform | Minimal reliability metrics and contract minimums | Proposed | 2025-12-31 | Build/teardown timing summary plus minimal tag/CI/changelog contract. |
+| [ADR-0052](ADR-0052-platform-kube-prometheus-stack-bundle.md) | Platform | Use kube-prometheus-stack as the V1 monitoring bundle | Proposed | 2025-12-31 | Replace standalone Prometheus/Grafana/Alertmanager with a single bundle and PVC-backed persistence. |
+| [ADR-0053](ADR-0053-platform-storage-lifecycle-separation.md) | Platform | Separate storage lifecycle from bootstrap and teardown | Proposed | 2025-12-31 | Storage add-ons required at bootstrap; cleanup is an explicit workflow. |
+| [ADR-0054](ADR-0054-platform-observability-exporters-otel-split.md) | Platform | Exporter vs OpenTelemetry split for platform observability | Proposed | 2025-12-31 | Infra metrics stay on exporters; app telemetry uses OpenTelemetry; cAdvisor via kubelet. |
+| [ADR-0055](ADR-0055-platform-tempo-tracing-backend.md) | Platform | Tempo as the standard tracing backend (V1.1) | Proposed | 2025-12-31 | Tempo selected for OTel traces when tracing is enabled; deployed separately from kube-prometheus-stack. |
 
 ---
 

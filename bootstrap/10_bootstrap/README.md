@@ -509,8 +509,8 @@ Installed as EKS managed add-ons during cluster provisioning:
 - aws-efs-csi-driver: shared file storage for persistent volumes.
 - snapshot-controller: CSI volume snapshot APIs.
 
-Note: EBS/EFS/snapshot add-ons can be disabled via `enable_storage_addons=false`
-and enabled later once the cluster is stable.
+Note: EBS/EFS/snapshot add-ons are required for persistent monitoring data.
+Set `enable_storage_addons=false` only for short-lived or non-persistent runs.
 
 ## Private subnets and NAT requirement
 

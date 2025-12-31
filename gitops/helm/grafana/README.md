@@ -1,6 +1,7 @@
-# Grafana Helm Deployment
+# Grafana Helm Deployment (Deprecated)
 
-Grafana provides dashboards and alert visualization for the platform. This chart installs Grafana into the `grafana` namespace and uses environment-specific values so each cluster can point to the right datasources and credentials.
+Grafana is now deployed via the `kube-prometheus-stack` bundle. This chart is
+retained only for reference and should not be deployed in new environments.
 
 ```
 gitops/helm/grafana/
@@ -11,4 +12,4 @@ gitops/helm/grafana/
     └── prod.yaml
 ```
 
-Referenced from `gitops/argocd/apps/<env>/grafana.yaml` using `$values/gitops/helm/grafana/values/<env>.yaml`.
+Use `gitops/argocd/apps/<env>/kube-prometheus-stack.yaml` instead.

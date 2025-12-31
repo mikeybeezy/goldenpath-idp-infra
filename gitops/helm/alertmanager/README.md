@@ -1,6 +1,7 @@
-# Alertmanager Helm Deployment
+# Alertmanager Helm Deployment (Deprecated)
 
-Alertmanager handles routing of Prometheus/Loki alerts (email, Slack, PagerDuty, etc.).
+Alertmanager is now deployed via the `kube-prometheus-stack` bundle. This chart
+is retained only for reference and should not be deployed in new environments.
 
 ```
 gitops/helm/alertmanager/
@@ -11,4 +12,4 @@ gitops/helm/alertmanager/
     └── prod.yaml
 ```
 
-Argo CD Application manifests (`gitops/argocd/apps/<env>/…`) reference these value files.
+Use `gitops/argocd/apps/<env>/kube-prometheus-stack.yaml` instead.

@@ -1,6 +1,7 @@
-# Prometheus Helm Deployment
+# Prometheus Helm Deployment (Deprecated)
 
-Prometheus scrapes metrics from workloads, exporters, and the platform control plane.
+Prometheus is now deployed via the `kube-prometheus-stack` bundle. This chart
+is retained only for reference and should not be deployed in new environments.
 
 ```
 gitops/helm/prometheus/
@@ -11,4 +12,4 @@ gitops/helm/prometheus/
     └── prod.yaml
 ```
 
-Argo CD Applications (`gitops/argocd/apps/<env>/prometheus.yaml`) include the matching value file via `$values/gitops/helm/prometheus/values/<env>.yaml`.
+Use `gitops/argocd/apps/<env>/kube-prometheus-stack.yaml` instead.
