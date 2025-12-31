@@ -141,6 +141,7 @@ Load balancer cleanup:
 
 - `LB_CLEANUP_ATTEMPTS` – retry loops for LB Service deletion (default `5`)
 - `LB_CLEANUP_INTERVAL` – delay between retries (default `20`)
+- `KUBECTL_REQUEST_TIMEOUT` – request timeout for kubectl LB cleanup calls (default `10s`)
 - `LB_CLEANUP_MAX_WAIT` – max wait for LB Services to disappear (default `900`)
 
 Argo CD application cleanup:

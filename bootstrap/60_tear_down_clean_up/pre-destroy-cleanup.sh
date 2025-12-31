@@ -9,6 +9,7 @@ set -euo pipefail
 cluster_name="${1:-}"
 region="${2:-}"
 confirm="${3:-}"
+kubectl_timeout="${KUBECTL_REQUEST_TIMEOUT:-10s}"
 
 if [[ -z "${cluster_name}" || -z "${region}" ]]; then
   echo "Usage: $0 <cluster-name> <region> [--yes]" >&2
@@ -17,7 +18,7 @@ fi
 
 aws eks update-kubeconfig --name "${cluster_name}" --region "${region}"
 
-services="$(kubectl get svc -A -o jsonpath='{range .items[?(@.spec.type=="LoadBalancer")]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}')"
+services="$(kubectl --request-timeout="${kubectl_timeout}" get svc -A -o jsonpath='{range .items[?(@.spec.type=="LoadBalancer")]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}')"
 
 if [[ -z "${services}" ]]; then
   echo "No LoadBalancer services found."
@@ -36,7 +37,7 @@ while read -r svc; do
   ns="${svc%%/*}"
   name="${svc##*/}"
   echo "Deleting ${ns}/${name}"
-  kubectl -n "${ns}" delete svc "${name}"
+  kubectl --request-timeout="${kubectl_timeout}" -n "${ns}" delete svc "${name}" || true
 done <<< "${services}"
 
 echo "LoadBalancer service deletion requested. Wait for AWS LBs to fully remove before destroy."
