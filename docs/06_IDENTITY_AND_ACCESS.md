@@ -40,11 +40,11 @@ These service accounts are created by Terraform and annotated for IRSA.
 | AWS Load Balancer Controller | `kube-system` | `aws-load-balancer-controller` | `goldenpath-idp-aws-load-balancer-controller` | Creates/updates AWS load balancers and target groups. |
 | Cluster Autoscaler | `kube-system` | `cluster-autoscaler` | `goldenpath-idp-cluster-autoscaler` | Scales node groups based on pending pods. |
 
-## Storage add-ons (when enabled)
+## Storage add-ons (default enabled)
 
-When EBS/EFS/snapshot add-ons are enabled, each controller gets its own service
-account and (where required) its own IRSA role. We do not share controller
-roles across add-ons.
+Storage add-ons are enabled by default to support persistent monitoring data.
+Each controller gets its own service account and (where required) its own IRSA
+role. We do not share controller roles across add-ons.
 
 Expected service accounts:
 

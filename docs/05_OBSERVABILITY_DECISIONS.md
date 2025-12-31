@@ -34,6 +34,11 @@
 derived Golden Signals dashboards. Logs remain via Fluent Bit. Distributed traces are deferred
 to V1.1.
 
+**Implementation**: Deploy Prometheus, Grafana, and Alertmanager via the
+`kube-prometheus-stack` Helm bundle (v45.7.1) in the `monitoring` namespace.
+Persistence is enabled through PVCs backed by EBS/EFS storage add-ons.
+Storage defaults and tradeoffs are documented in `docs/41_STORAGE_AND_PERSISTENCE.md`.
+
 **Why**:
 
 - V1 needs fast, reliable delivery and visibility without heavy instrumentation.

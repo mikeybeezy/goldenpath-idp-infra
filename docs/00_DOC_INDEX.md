@@ -8,7 +8,7 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | Doc | Owner | Review cycle | Last reviewed | Notes |
 | --- | --- | --- | --- | --- |
 | docs/00_DESIGN_PHILOSOPHY.md | platform | 90d | 2025-12-27 | Core origin and product philosophy |
-| docs/01_GOVERNANCE.md | platform | 90d | 2025-12-27 | Governance principles and rules |
+| docs/01_GOVERNANCE.md | platform | 90d | 2025-12-31 | Governance principles and rules |
 | docs/02_PLATFORM_BOUNDARIES.md | platform | 90d | 2025-12-31 | Platform vs team contract |
 | docs/21_CI_ENVIRONMENT_CONTRACT.md | platform | 90d | 2025-12-31 | CI environment inputs and guarantees |
 | docs/29_CD_DEPLOYMENT_CONTRACT.md | platform | 90d | 2025-12-27 | CD expectations and promotion model |
@@ -21,3 +21,4 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/39_GOLDEN_PATH_VALIDATION.md | platform | 90d | 2025-12-30 | End-to-end PR → apply → bootstrap → teardown validation |
 | docs/40_CHANGELOG_GOVERNANCE.md | platform | 90d | 2025-12-31 | Changelog policy and enforcement |
 | docs/changelog/CHANGELOG_LABELS.md | platform | 90d | 2025-12-31 | Changelog label definitions and rules |
+| docs/41_STORAGE_AND_PERSISTENCE.md | platform | 90d | 2025-12-31 | Storage defaults, persistence requirements, and tradeoffs |
