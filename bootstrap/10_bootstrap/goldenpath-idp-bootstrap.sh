@@ -379,6 +379,9 @@ env_name="${ENV_NAME:-dev}"
 autoscaler_app="${env_name}-cluster-autoscaler"
 echo "INSTALLING Cluster Autoscaler app for ${env_name}..."
 run_cmd kubectl apply -f "${repo_root}/gitops/argocd/apps/${env_name}/cluster-autoscaler.yaml"
+autoscaler_cluster_name="${cluster_name}"
+autoscaler_patch="$(printf '[{"op":"add","path":"/spec/sources/0/helm/parameters","value":[{"name":"autoDiscovery.clusterName","value":"%s"}]}]' "${autoscaler_cluster_name}")"
+run_cmd kubectl -n argocd patch application "${autoscaler_app}" --type=json -p "${autoscaler_patch}"
 stage_done "STAGE 8"
 
 # Optionally wait for the Cluster Autoscaler Argo app to sync before installing Kong.

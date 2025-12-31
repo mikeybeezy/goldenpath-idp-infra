@@ -78,7 +78,14 @@ resource "aws_eks_cluster" "this" {
     security_group_ids = [aws_security_group.cluster.id]
   }
 
-  tags = merge(var.tags, local.environment_tags)
+  tags = merge(
+    var.tags,
+    local.environment_tags,
+    {
+      "k8s.io/cluster-autoscaler/enabled"             = "true"
+      "k8s.io/cluster-autoscaler/${var.cluster_name}" = "owned"
+    },
+  )
 
   depends_on = [aws_iam_role_policy_attachment.cluster]
 }
