@@ -7,27 +7,27 @@ Related: docs/17_BUILD_RUN_FLAGS.md, bootstrap/60_tear_down_clean_up/goldenpath-
 
 ## Summary
 
-- Add a kubectl request timeout to LoadBalancer cleanup calls to avoid indefinite hangs.
+- Add kubectl request timeouts and non-blocking deletes to teardown cleanup paths.
 - Document the new timeout flag for operators.
 
 ## Impact
 
-- Teardown LB cleanup will fail fast on API stalls and continue through the wait loop.
+- Teardown cleanup avoids indefinite waits on stuck API calls and deletion finalizers.
 - Operators can tune cleanup request timeout without changing teardown logic.
 
 ## Changes
 
 ### Added
 
-- `KUBECTL_REQUEST_TIMEOUT` flag for teardown LB cleanup calls.
+- `KUBECTL_REQUEST_TIMEOUT` flag for teardown cleanup calls.
 
 ### Changed
 
-- LoadBalancer service get/delete calls use request timeouts in teardown runners.
+- Teardown delete calls use request timeouts and `--wait=false` for Argo/Kong/LB cleanup.
 
 ### Fixed
 
-- Teardown can no longer hang indefinitely on a stuck Kubernetes API call during LB cleanup.
+- Teardown is more resilient to stuck Kubernetes API calls and long-running deletions.
 
 ### Deprecated
 

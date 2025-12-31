@@ -37,7 +37,7 @@ while read -r svc; do
   ns="${svc%%/*}"
   name="${svc##*/}"
   echo "Deleting ${ns}/${name}"
-  kubectl --request-timeout="${kubectl_timeout}" -n "${ns}" delete svc "${name}" || true
+  kubectl --request-timeout="${kubectl_timeout}" -n "${ns}" delete svc "${name}" --wait=false || true
 done <<< "${services}"
 
 echo "LoadBalancer service deletion requested. Wait for AWS LBs to fully remove before destroy."
