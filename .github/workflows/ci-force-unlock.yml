@@ -1,0 +1,134 @@
+name: CI Force Unlock
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment (dev/test/staging/prod)"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - test
+          - staging
+          - prod
+      region:
+        description: "AWS region"
+        required: true
+        default: "eu-west-2"
+      lifecycle:
+        description: "Lifecycle (ephemeral or persistent)"
+        required: true
+        default: "ephemeral"
+        type: choice
+        options:
+          - ephemeral
+          - persistent
+      build_id:
+        description: "Build ID for ephemeral state (required when lifecycle=ephemeral)"
+        required: false
+        default: ""
+      lock_id:
+        description: "Terraform lock ID (UUID) to force-unlock"
+        required: true
+        default: ""
+      confirm_unlock:
+        description: "Confirm force unlock"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  force-unlock:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      ENV: ${{ inputs.env }}
+      AWS_REGION: ${{ inputs.region }}
+      BUILD_ID: ${{ inputs.build_id }}
+      CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
+      LOCK_ID: ${{ inputs.lock_id }}
+      TF_DIR: envs/${{ inputs.env }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Validate inputs
+        run: |
+          if [[ "${{ inputs.confirm_unlock }}" != "true" ]]; then
+            echo "confirm_unlock must be true to proceed." >&2
+            exit 1
+          fi
+          if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" && -z "${BUILD_ID}" ]]; then
+            echo "build_id is required when lifecycle=ephemeral." >&2
+            exit 1
+          fi
+          if [[ -z "${LOCK_ID}" ]]; then
+            echo "lock_id is required." >&2
+            exit 1
+          fi
+
+      - name: Resolve backend config
+        id: backend
+        run: |
+          case "${ENV}" in
+            dev)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-dev-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-dev-db-key" >> "$GITHUB_OUTPUT"
+              ;;
+            test)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_TEST }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-test-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-test-db" >> "$GITHUB_OUTPUT"
+              ;;
+            staging)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_STAGING }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-staging-db" >> "$GITHUB_OUTPUT"
+              ;;
+            prod)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_PROD }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-prod-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-prod-db" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported env: ${ENV}" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Resolve state key
+        run: |
+          if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
+            STATE_KEY="envs/${ENV}/builds/${BUILD_ID}/terraform.tfstate"
+          else
+            STATE_KEY="envs/${ENV}/terraform.tfstate"
+          fi
+          echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
+          echo "Resolved STATE_KEY=${STATE_KEY}"
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ inputs.region }}
+          role-to-assume: ${{ steps.backend.outputs.role }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init (backend)
+        run: |
+          terraform -chdir="${TF_DIR}" init -reconfigure \
+            -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
+            -backend-config="key=${STATE_KEY}" \
+            -backend-config="region=${AWS_REGION}" \
+            -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
+            -backend-config="encrypt=true"
+
+      - name: Force unlock
+        run: |
+          terraform -chdir="${TF_DIR}" force-unlock -force "${LOCK_ID}"

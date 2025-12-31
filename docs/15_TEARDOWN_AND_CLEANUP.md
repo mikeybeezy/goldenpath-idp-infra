@@ -225,6 +225,8 @@ Recovery after partial teardown (state drift):
 - CI teardown runs automatically attempt `teardown-resume` after a failure.
 - CI teardown uses a `cleanup_mode` input (`delete`, `dry_run`, `none`).
   Use `none` to skip, or `dry_run` for discovery without deletes.
+- Use the `CI Force Unlock` workflow to release a stuck Terraform lock only
+  after confirming no Terraform jobs are active for the same state.
 
 Resume teardown (recommended):
 
