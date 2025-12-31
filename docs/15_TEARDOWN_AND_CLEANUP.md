@@ -108,8 +108,8 @@ LoadBalancer cleanup retries:
 - `LB_CLEANUP_ATTEMPTS` controls how many retry loops run (default `5`).
 - `LB_CLEANUP_INTERVAL` controls the delay between loops (default `20` seconds).
 - `LB_CLEANUP_MAX_WAIT` caps the LoadBalancer wait loop (default `900` seconds).
-- If Services remain after the wait, v2 can remove stuck finalizers when
-  `FORCE_DELETE_LB_FINALIZERS=true` (break-glass). This is safe only for
+- If Services remain after the wait, v2 removes stuck finalizers by default
+  (`FORCE_DELETE_LB_FINALIZERS=true`). This is safe only for
   teardown runs where the Service should be deleted.
 - If Kubernetes access is unavailable, v2 skips Kubernetes cleanup and performs
   AWS-only LoadBalancer cleanup before continuing to destroy.

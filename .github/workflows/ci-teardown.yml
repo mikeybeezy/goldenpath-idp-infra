@@ -85,9 +85,9 @@ on:
         default: true
         type: boolean
       force_delete_lb_finalizers:
-        description: "Break-glass: remove stuck LoadBalancer service finalizers"
+        description: "Remove stuck LoadBalancer service finalizers"
         required: true
-        default: false
+        default: true
         type: boolean
 
 jobs:

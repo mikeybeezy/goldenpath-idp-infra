@@ -25,7 +25,7 @@ set -euo pipefail
 #   WAIT_FOR_LB_ENIS=true|false (default true)
 #   LB_ENI_WAIT_MAX=<seconds> (default LB_CLEANUP_MAX_WAIT)
 #   FORCE_DELETE_LBS=true|false (default true, break glass)
-#   FORCE_DELETE_LB_FINALIZERS=true|false (default false, break glass)
+#   FORCE_DELETE_LB_FINALIZERS=true|false (default true, break glass)
 #   LB_FINALIZER_WAIT_MAX=<seconds> (default 300)
 #   KUBECTL_REQUEST_TIMEOUT=<duration> (default 10s)
 #   TF_DIR=<path> (if set, run terraform destroy instead of aws eks delete-cluster)
@@ -84,7 +84,7 @@ LB_CLEANUP_MAX_WAIT="${LB_CLEANUP_MAX_WAIT:-900}"
 WAIT_FOR_LB_ENIS="${WAIT_FOR_LB_ENIS:-true}"
 LB_ENI_WAIT_MAX="${LB_ENI_WAIT_MAX:-${LB_CLEANUP_MAX_WAIT}}"
 FORCE_DELETE_LBS="${FORCE_DELETE_LBS:-true}"
-FORCE_DELETE_LB_FINALIZERS="${FORCE_DELETE_LB_FINALIZERS:-false}"
+FORCE_DELETE_LB_FINALIZERS="${FORCE_DELETE_LB_FINALIZERS:-true}"
 LB_FINALIZER_WAIT_MAX="${LB_FINALIZER_WAIT_MAX:-300}"
 TF_DESTROY_MAX_WAIT="${TF_DESTROY_MAX_WAIT:-1200}"
 TF_DESTROY_RETRY_ON_LB_CLEANUP="${TF_DESTROY_RETRY_ON_LB_CLEANUP:-true}"
