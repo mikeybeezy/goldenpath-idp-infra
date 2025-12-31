@@ -15,6 +15,12 @@ Use this before marking the platform stable for broader use.
 - ✅ Orphan cleanup runs by default and only touches tagged resources.
 - ✅ Failures are clear and recoverable (no stuck pipelines).
 
+## Reliability Metrics (Minimal)
+
+- ✅ Timed build/teardown runs write rows to `docs/build-timings.csv`.
+- ✅ `make reliability-metrics` summarizes build/teardown counts and durations.
+- ✅ Metrics are focused on reliability signals (success rate + duration), not full CI observability.
+
 ## Platform Workloads
 
 - ✅ Argo CD is reachable after bootstrap.

@@ -38,6 +38,9 @@ and append a row to `docs/build-timings.csv`.
 `BUILD_ID` is required for timed targets. If you omit it, the Makefile will
 read `build_id` from `envs/<env>/terraform.tfvars` and fail if it is empty.
 
+Use `make reliability-metrics` to summarize build/teardown counts and durations
+from `docs/build-timings.csv`.
+
 Output logs are written to `logs/build-timings/*.log` and include the cluster
 name in the filename. The non‑timed `make apply`, `make bootstrap`, and
 `make teardown` targets also stream and write logs, but they do not add CSV rows.

@@ -62,6 +62,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0048](ADR-0048-platform-teardown-version-selector.md) | Platform | Versioned teardown runners with selectable entrypoint | Proposed | 2025-12-30 | Keep v1 stable while iterating on v2; selection via `TEARDOWN_VERSION`. |
 | [ADR-0049](ADR-0049-platform-pragmatic-observability-baseline.md) | Platform | Pragmatic observability baseline for V1 (RED + Golden Signals) | Proposed | 2025-12-31 | Metrics-first baseline; traces deferred to V1.1. |
 | [ADR-0050](ADR-0050-platform-changelog-label-gate.md) | Platform | Label-gated changelog entries | Proposed | 2025-12-31 | Require changelog entries only when a PR carries a label. |
+| [ADR-0051](ADR-0051-platform-reliability-metrics-contract-minimums.md) | Platform | Minimal reliability metrics and contract minimums | Proposed | 2025-12-31 | Build/teardown timing summary plus minimal tag/CI/changelog contract. |
 
 ---
 
