@@ -227,6 +227,9 @@ Recovery after partial teardown (state drift):
   Use `none` to skip, or `dry_run` for discovery without deletes.
 - Use the `CI Force Unlock` workflow to release a stuck Terraform lock only
   after confirming no Terraform jobs are active for the same state.
+- Use the `CI Managed LB Cleanup` workflow when the cluster is gone but VPC
+  deletion fails due to AWS Load Balancer Controller managed security groups,
+  ENIs, or LBs tagged to the cluster.
 
 Resume teardown (recommended):
 

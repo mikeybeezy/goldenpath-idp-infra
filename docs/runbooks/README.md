@@ -9,6 +9,7 @@
 - `docs/runbooks/05_GOLDEN_PATH_VALIDATION.md` — Validate PR → apply → bootstrap → teardown end-to-end.
 - `docs/runbooks/06_LB_ENI_ORPHANS.md` — Recover subnet deletes blocked by LoadBalancer ENIs.
 - `docs/runbooks/07_TF_STATE_FORCE_UNLOCK.md` — Break-glass Terraform state unlock.
+- `docs/runbooks/08_MANAGED_LB_CLEANUP.md` — Remove LBC-managed LBs, ENIs, and SGs by cluster tag.
 - `docs/runbooks/ORPHAN_CLEANUP.md` — Delete BuildId-tagged orphaned resources safely.
 
 Operational runbooks for GoldenPath (incident response, recovery, and routine ops).
