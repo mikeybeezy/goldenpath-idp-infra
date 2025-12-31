@@ -57,6 +57,10 @@ FORCE_DELETE_LB_FINALIZERS=true \
   TEARDOWN_VERSION=v2 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
 ```
 
+If Kubernetes access is unavailable, v2 skips Kubernetes cleanup and attempts
+AWS-only LoadBalancer cleanup. This will not remove Service finalizers; restore
+access to remove them if the Service still exists.
+
 4) Delete the Service:
 
 ```bash
