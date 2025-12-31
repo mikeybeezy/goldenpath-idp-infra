@@ -249,19 +249,91 @@ jobs:
           echo "End:   $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
           echo "Capture timestamps around real apply/bootstrap steps once wired."
 
-      # Phase 2: Terraform init/plan/apply
+      # Phase 2+3: Timed build + bootstrap (ephemeral only)
+      # Goal: capture build/teardown timing while keeping lifecycle deterministic.
+      - name: Phase 2+3 - Timed build + bootstrap (stub)
+        if: ${{ !inputs.bootstrap_only && inputs.lifecycle == 'ephemeral' }}
+        run: |
+          TF_VAR_cluster_lifecycle="${CLUSTER_LIFECYCLE}" \
+          TF_VAR_build_id="${BUILD_ID}" \
+          TF_VAR_owner_team="platform-team" \
+          ENV_NAME="${ENV}" \
+          NODE_INSTANCE_TYPE="${{ inputs.node_instance_type }}" \
+          MIN_READY_NODES="${MIN_READY_NODES}" \
+          SKIP_ARGO_SYNC_WAIT="${{ inputs.skip_argo_sync_wait }}" \
+          SKIP_CERT_MANAGER_VALIDATION="${{ inputs.skip_cert_manager_validation }}" \
+          COMPACT_OUTPUT="${{ inputs.compact_output }}" \
+          ENABLE_TF_K8S_RESOURCES="${ENABLE_TF_K8S_RESOURCES}" \
+          SCALE_DOWN_AFTER_BOOTSTRAP="${SCALE_DOWN_AFTER_BOOTSTRAP}" \
+          CONFIRM_TF_APPLY="${CONFIRM_TF_APPLY}" \
+          TF_DIR="${TF_DIR}" \
+          TFVARS_PATH="${TFVARS_PATH}" \
+          CLUSTER="${CLUSTER_NAME}" \
+          REGION="${AWS_REGION}" \
+          make timed-build ENV="${ENV}" BUILD_ID="${BUILD_ID}" CLUSTER="${CLUSTER_NAME}" REGION="${AWS_REGION}"
+
+      - name: Reliability metrics summary (timed build)
+        if: ${{ always() && !inputs.bootstrap_only && inputs.lifecycle == 'ephemeral' }}
+        run: |
+          make reliability-metrics
+
+      # Phase 2: Terraform init/plan/apply (persistent)
       # Goal: provision or update infra deterministically.
       - name: Phase 2 - Terraform (stub)
-        if: ${{ !inputs.bootstrap_only }}
+        if: ${{ !inputs.bootstrap_only && inputs.lifecycle != 'ephemeral' }}
         run: |
           TF_VAR_cluster_lifecycle="${CLUSTER_LIFECYCLE}" \
           TF_VAR_build_id="${BUILD_ID}" \
           TF_VAR_owner_team="platform-team" \
           make apply ENV="${ENV}" BUILD_ID="${BUILD_ID}"
 
-      # Phase 3: Bootstrap runner
+      # Phase 3: Bootstrap runner (persistent)
       # Goal: install core platform tooling in the enforced order.
       - name: Phase 3 - Bootstrap runner (stub)
+        if: ${{ !inputs.bootstrap_only && inputs.lifecycle != 'ephemeral' }}
+        run: |
+          ENV_NAME="${ENV}" \
+          NODE_INSTANCE_TYPE="${{ inputs.node_instance_type }}" \
+          MIN_READY_NODES="${MIN_READY_NODES}" \
+          SKIP_ARGO_SYNC_WAIT="${{ inputs.skip_argo_sync_wait }}" \
+          SKIP_CERT_MANAGER_VALIDATION="${{ inputs.skip_cert_manager_validation }}" \
+          COMPACT_OUTPUT="${{ inputs.compact_output }}" \
+          ENABLE_TF_K8S_RESOURCES="${ENABLE_TF_K8S_RESOURCES}" \
+          SCALE_DOWN_AFTER_BOOTSTRAP="${SCALE_DOWN_AFTER_BOOTSTRAP}" \
+          CONFIRM_TF_APPLY="${CONFIRM_TF_APPLY}" \
+          TF_DIR="${TF_DIR}" \
+          TFVARS_PATH="${TFVARS_PATH}" \
+          CLUSTER="${CLUSTER_NAME}" \
+          REGION="${AWS_REGION}" \
+          make bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}"
+
+      # Phase 3: Timed bootstrap-only (when build_id is available)
+      - name: Phase 3 - Timed bootstrap only (stub)
+        if: ${{ inputs.bootstrap_only && inputs.build_id != '' }}
+        run: |
+          ENV_NAME="${ENV}" \
+          NODE_INSTANCE_TYPE="${{ inputs.node_instance_type }}" \
+          MIN_READY_NODES="${MIN_READY_NODES}" \
+          SKIP_ARGO_SYNC_WAIT="${{ inputs.skip_argo_sync_wait }}" \
+          SKIP_CERT_MANAGER_VALIDATION="${{ inputs.skip_cert_manager_validation }}" \
+          COMPACT_OUTPUT="${{ inputs.compact_output }}" \
+          ENABLE_TF_K8S_RESOURCES="${ENABLE_TF_K8S_RESOURCES}" \
+          SCALE_DOWN_AFTER_BOOTSTRAP="${SCALE_DOWN_AFTER_BOOTSTRAP}" \
+          CONFIRM_TF_APPLY="${CONFIRM_TF_APPLY}" \
+          TF_DIR="${TF_DIR}" \
+          TFVARS_PATH="${TFVARS_PATH}" \
+          CLUSTER="${CLUSTER_NAME}" \
+          REGION="${AWS_REGION}" \
+          make timed-bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}" CLUSTER="${CLUSTER_NAME}" REGION="${AWS_REGION}"
+
+      - name: Reliability metrics summary (timed bootstrap)
+        if: ${{ always() && inputs.bootstrap_only && inputs.build_id != '' }}
+        run: |
+          make reliability-metrics
+
+      # Phase 3: Bootstrap-only fallback (no build_id)
+      - name: Phase 3 - Bootstrap only (stub)
+        if: ${{ inputs.bootstrap_only && inputs.build_id == '' }}
         run: |
           ENV_NAME="${ENV}" \
           NODE_INSTANCE_TYPE="${{ inputs.node_instance_type }}" \
