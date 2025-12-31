@@ -1,4 +1,5 @@
-name: Infra Terraform Apply (staging)
+# Owner: platform
+name: Apply - Infra Terraform Apply (staging)
 
 on:
   workflow_dispatch:
@@ -144,3 +145,7 @@ jobs:
             var_args+=(-var "build_id=${{ inputs.build_id }}")
           fi
           terraform -chdir=envs/staging apply -auto-approve -input=false -no-color "${var_args[@]}"
+      - name: Runbook link
+        if: always()
+        run: |
+          echo "Runbook: docs/21_CI_ENVIRONMENT_CONTRACT.md" >> "${GITHUB_STEP_SUMMARY}"

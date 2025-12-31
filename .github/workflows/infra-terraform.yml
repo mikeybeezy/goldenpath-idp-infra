@@ -1,4 +1,5 @@
-name: Infra Terraform Checks
+# Owner: platform
+name: Plan - Infra Terraform Checks
 run-name: "infra-plan (env=${{ inputs.env }}, lifecycle=${{ inputs.lifecycle }}, build_id=${{ inputs.build_id }})"
 
 on:
@@ -246,3 +247,7 @@ jobs:
           for key in ("create", "update", "delete", "replace", "read", "no_op"):
               print(f"{key}: {counts[key]}")
           PY
+      - name: Runbook link
+        if: always()
+        run: |
+          echo "Runbook: docs/21_CI_ENVIRONMENT_CONTRACT.md" >> "${GITHUB_STEP_SUMMARY}"

@@ -1,4 +1,5 @@
-name: Changelog Policy
+# Owner: platform
+name: Policy - Changelog Policy
 
 on:
   pull_request:
@@ -56,3 +57,7 @@ jobs:
             }
 
             core.info("Changelog entry detected.");
+      - name: Runbook link
+        if: always()
+        run: |
+          echo "Runbook: docs/changelog/README.md" >> "${GITHUB_STEP_SUMMARY}"

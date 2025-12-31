@@ -1,4 +1,5 @@
-name: CI Orphan Cleanup
+# Owner: platform
+name: Ops - CI Orphan Cleanup
 
 on:
   workflow_dispatch:
@@ -112,4 +113,5 @@ jobs:
             echo "- Lock table: \`${{ steps.backend.outputs.table }}\`"
             echo "- Attempts: \`${MAX_ATTEMPTS}\`"
             echo "- Result: \`${{ steps.cleanup.outputs.result || 'failure' }}\`"
+            echo "- Runbook: docs/runbooks/ORPHAN_CLEANUP.md"
           } >> "${GITHUB_STEP_SUMMARY}"

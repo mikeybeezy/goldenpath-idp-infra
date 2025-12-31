@@ -1,4 +1,5 @@
-name: CI Managed LB Cleanup
+# Owner: platform
+name: Ops - CI Managed LB Cleanup
 
 on:
   workflow_dispatch:
@@ -126,3 +127,7 @@ jobs:
           STACK_TAG="${STACK_TAG}" \
           DELETE_CLUSTER_TAGGED_SGS="${DELETE_CLUSTER_TAGGED_SGS}" \
           bash bootstrap/60_tear_down_clean_up/cleanup-managed-lb-resources.sh "${CLUSTER_NAME}" "${AWS_REGION}"
+      - name: Runbook link
+        if: always()
+        run: |
+          echo "Runbook: docs/runbooks/08_MANAGED_LB_CLEANUP.md" >> "${GITHUB_STEP_SUMMARY}"

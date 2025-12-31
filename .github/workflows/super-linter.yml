@@ -1,4 +1,5 @@
-name: Super Linter (Markdown)
+# Owner: platform
+name: Quality - Super Linter (Markdown)
 
 on:
   pull_request:
@@ -33,3 +34,7 @@ jobs:
           DEFAULT_BRANCH: main
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_MARKDOWN: true
+      - name: Runbook link
+        if: always()
+        run: |
+          echo "Runbook: docs/30_DOCUMENTATION_FRESHNESS.md" >> "${GITHUB_STEP_SUMMARY}"

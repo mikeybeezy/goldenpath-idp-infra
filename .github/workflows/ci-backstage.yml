@@ -1,4 +1,5 @@
-name: CI Backstage (Stub)
+# Owner: platform
+name: Bootstrap - CI Backstage (Stub)
 
 on:
   workflow_dispatch:
@@ -49,3 +50,7 @@ jobs:
         run: |
           echo "kubectl -n backstage get pods"
           echo "kubectl -n kong-system get svc"
+      - name: Runbook link
+        if: always()
+        run: |
+          echo "Runbook: docs/18_BACKSTAGE_MVP.md" >> "${GITHUB_STEP_SUMMARY}"

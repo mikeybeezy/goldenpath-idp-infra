@@ -1,4 +1,5 @@
-name: CI Force Unlock
+# Owner: platform
+name: Ops - CI Force Unlock
 
 on:
   workflow_dispatch:
@@ -132,3 +133,7 @@ jobs:
       - name: Force unlock
         run: |
           terraform -chdir="${TF_DIR}" force-unlock -force "${LOCK_ID}"
+      - name: Runbook link
+        if: always()
+        run: |
+          echo "Runbook: docs/runbooks/07_TF_STATE_FORCE_UNLOCK.md" >> "${GITHUB_STEP_SUMMARY}"
