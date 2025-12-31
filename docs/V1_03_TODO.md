@@ -54,6 +54,9 @@ This is the single rolling backlog. Add items here before starting work.
 | 039 | P1 | Teardown | If SLO missed, record known limitation and create V1.1 follow-up | platform | Open | S | Q1 | Add known limitation + V1.1 entry | docs/V1_01_SCOPE_AND_TIMELINE.md | Time-boxed hardening without blocking V1 |
 | 040 | P2 | Ops | Add AWS Support escalation criteria for ENI >48h | platform | Open | S | Q1 | Add runbook section | docs/runbooks/06_LB_ENI_ORPHANS.md | Clear path when cleanup stalls |
 | 041 | P2 | Observability | Track teardown duration + break-glass usage in pipeline metrics | platform | Open | M | Q1 | Extend pipeline metrics | docs/V1_01_SCOPE_AND_TIMELINE.md | Measure reliability over time |
+| 042 | P1 | Observability | Define RED label contract (service/env/version/team/build_id) | platform | Open | S | Q1 | Publish label contract and sources | docs/05_OBSERVABILITY_DECISIONS.md | Consistent metrics for dashboards and alerts |
+| 043 | P1 | Observability | Build RED + Golden Signals dashboards with minimal alerts | platform | Open | M | Q1 | Create dashboards and alert rules | docs/37_V1_SCOPE_AND_TIMELINE.md | V1 visibility baseline for operators |
+| 044 | P2 | Observability | Capture V1.1 trace plan (OTel + Tempo) | platform | Open | S | Q2 | Define data path and sampling | docs/37_V1_SCOPE_AND_TIMELINE.md | Make trace adoption explicit and time-boxed |
 
 ## Rules
 

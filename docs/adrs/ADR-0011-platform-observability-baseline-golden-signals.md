@@ -1,11 +1,11 @@
 # ADR-0011: Observability baseline for golden signals in production
 
-- **Status:** Proposed
+- **Status:** Superseded (by ADR-0049-platform-pragmatic-observability-baseline.md)
 - **Date:** 2025-12-23
 - **Owners:** platform team
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`
+- **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`, `docs/adrs/ADR-0049-platform-pragmatic-observability-baseline.md`
 
 ---
 

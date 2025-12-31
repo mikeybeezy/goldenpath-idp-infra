@@ -25,7 +25,6 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0008](ADR-0008-app-backstage-portal.md) | Application | Use Backstage as developer portal and V1 demo app for promotion | Accepted | 2025-12-26 | Backstage deployed via GitOps; used to prove CI→GitOps→promotion loop. |
 | [ADR-0009](ADR-0009-app-delivery-insights.md) | Application | CI/CD observability via OpenTelemetry (“Delivery Insights”) | Accepted | 2025-12-26 | Optional OTel-based delivery insights for CI pipelines. |
 | [ADR-0010](ADR-0010-platform-terraform-lockfile-stability.md) | Platform | Enforce Terraform lockfile stability in CI | Accepted | 2025-12-26 | CI validates against committed lockfiles; upgrades are manual and reviewed. |
-| [ADR-0011](ADR-0011-platform-observability-baseline-golden-signals.md) | Platform | Observability baseline for golden signals in production | Proposed | 2025-12-23 | Minimal stack for golden signals: metrics, logs, traces, alerts. |
 | [ADR-0012](ADR-0012-platform-repo-decoupling-options.md) | Platform | Repo decoupling options for infra and platform tooling | Accepted | 2025-12-26 | Monorepo now; move to two-repo split when dev baseline is stable. |
 | [ADR-0013](ADR-0013-platform-argo-app-management-approach.md) | Platform | Argo CD app management approach for current scale | Accepted | 2025-12-26 | Use app-of-apps now; defer ApplicationSet until scale demands it. |
 | [ADR-0014](ADR-0014-platform-ci-local-preflight-checks.md) | Platform | Local preflight checks before PRs | Proposed | 2025-12-26 | Baseline local checks; CI remains authoritative; `act` is recommended. |
@@ -61,12 +60,14 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0046](ADR-0046-platform-pr-plan-validation-ownership.md) | Platform | PR plan owns validation (no auto infra checks dispatch) | Proposed | 2025-12-30 | Remove infra-checks auto-dispatch; PR plan is the validation gate. |
 | [ADR-0047](ADR-0047-platform-teardown-destroy-timeout-retry.md) | Platform | Retry Terraform destroy after timeout with cluster-scoped LB cleanup | Proposed | 2025-12-30 | Cap destroy time, clean up cluster-tagged LBs, and retry once. |
 | [ADR-0048](ADR-0048-platform-teardown-version-selector.md) | Platform | Versioned teardown runners with selectable entrypoint | Proposed | 2025-12-30 | Keep v1 stable while iterating on v2; selection via `TEARDOWN_VERSION`. |
+| [ADR-0049](ADR-0049-platform-pragmatic-observability-baseline.md) | Platform | Pragmatic observability baseline for V1 (RED + Golden Signals) | Proposed | 2025-12-31 | Metrics-first baseline; traces deferred to V1.1. |
+| [ADR-0050](ADR-0050-platform-changelog-label-gate.md) | Platform | Label-gated changelog entries | Proposed | 2025-12-31 | Require changelog entries only when a PR carries a label. |
 
 ---
 
 ## Superseded ADRs
 
-- [ADR-0011](ADR-0011-platform-ci-environment-contract) — superseded by `ADR-0034-platform-ci-environment-contract.md`.
+- [ADR-0011](ADR-0011-platform-observability-baseline-golden-signals.md) — superseded by `ADR-0049-platform-pragmatic-observability-baseline.md`.
 - [ADR-0036](ADR-0036-platform-orphan-cleanup-workflow.md) — superseded by `ADR-0038-platform-teardown-orphan-cleanup-gate.md`.
 - [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) — superseded by `ADR-0045-platform-teardown-lb-delete-default.md`.
 - [ADR-0044](ADR-0044-platform-infra-checks-ref-mode.md) — superseded by `ADR-0046-platform-pr-plan-validation-ownership.md`.

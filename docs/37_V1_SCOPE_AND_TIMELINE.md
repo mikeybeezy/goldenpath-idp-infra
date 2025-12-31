@@ -15,11 +15,18 @@ It is a living guide for planning and execution.
 
 ## V1 scope (lightweight but usable)
 
-### Pipeline observability (OpenTelemetry metrics)
+### CI/CD observability (metrics only)
 
 - Capture pipeline duration, success/fail, retries, and environment.
 - Scope to plan/apply/teardown only.
 - Export to a single backend (Grafana/Prometheus or a minimal OTel collector).
+
+### Observability baseline (RED + Golden Signals)
+
+- RED metrics at ingress/gateway: request rate, error rate, latency histograms.
+- Minimal label contract: service, env, version, team, build_id.
+- Golden Signals dashboards derived from RED + infra saturation.
+- Minimal alerts: error rate, latency, saturation.
 
 ### ADR creation
 
@@ -39,12 +46,6 @@ It is a living guide for planning and execution.
 - Manual registration only (no automation in V1).
 - Required annotations for CI and dashboards.
 
-### Golden signals dashboards
-
-- One dashboard per core tool (CI, Argo CD, cluster).
-- Standard panels: latency, error rate, throughput, saturation.
-- Built from existing metrics where possible.
-
 ### Cluster health checks
 
 - Post-apply checks: API reachable, nodes ready, system pods healthy, ingress OK.
@@ -55,8 +56,8 @@ It is a living guide for planning and execution.
 ## V1.1 deferrals (explicit)
 
 - Automated service discovery from repos/cluster state.
-- Full OpenTelemetry traces for per-step pipeline spans.
-- Advanced health (SLOs, alerting, automated remediation).
+- Full OpenTelemetry traces (pipeline + service spans).
+- Advanced health (SLOs, error budgets, automated remediation).
 - Expanded dashboards beyond the core toolset.
 
 ---
@@ -80,7 +81,7 @@ It is a living guide for planning and execution.
 ### Week 3: Observability + Health
 
 - [ ] Pipeline metrics captured and surfaced in a dashboard.
-- [ ] Golden signals dashboards for CI, Argo, and cluster exist.
+- [ ] RED + Golden Signals dashboards published with minimal alerts.
 - [ ] Cluster health checks automated post-apply.
 - [ ] Runbooks expanded to 5-8 critical scenarios.
 

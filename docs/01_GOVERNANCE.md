@@ -95,6 +95,12 @@ Destructive automation must use tag-scoped IAM policies; see
 `docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md` and
 `docs/adrs/ADR-0039-platform-tag-scoped-iam-policy-template.md`.
 
+## 6. Changelog Accountability
+
+Material platform behavior changes must be captured in a changelog entry when
+the PR is labeled `changelog-required`. The policy and label rules are defined
+in `docs/40_CHANGELOG_GOVERNANCE.md`.
+
 ## V1 Governance Scope & Decisions
 
 ## Cloud Provider
