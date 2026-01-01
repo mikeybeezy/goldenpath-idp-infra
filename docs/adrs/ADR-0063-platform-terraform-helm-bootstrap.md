@@ -27,6 +27,7 @@ We will **move the bootstrapping of ArgoCD (and critical system controllers)** d
 1.  The `aws_eks` module (or a new `bootstrap` module) will interact with the EKS cluster endpoint directly.
 2.  ArgoCD will be defined as a `resource "helm_release" "argocd"` within the Terraform graph.
 3.  The `goldenpath-idp-bootstrap.sh` script will be deprecated and replaced by a standard `terraform apply`.
+4.  Terminating the "App of Apps" chain will be handled by Terraform. We will use `kubernetes_manifest` resources to inject the initial ArgoCD Application manifests (Kong, Autoscaler, etc.) immediately after the Helm release is ready.
 
 ---
 
