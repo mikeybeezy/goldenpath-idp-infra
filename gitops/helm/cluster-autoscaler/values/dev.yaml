@@ -1,5 +1,5 @@
 autoDiscovery:
-  clusterName: ""
+  clusterName: "goldenpath-dev-eks-31-12-25-04"
 
 awsRegion: eu-west-2
 
@@ -13,3 +13,5 @@ extraArgs:
   balance-similar-node-groups: "true"
   skip-nodes-with-local-storage: "false"
   expander: "least-waste"
+
+
