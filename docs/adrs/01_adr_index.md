@@ -73,6 +73,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0059](ADR-0059-platform-ci-workflow-index-and-ownership.md) | Platform | CI workflow index, ownership, and UI grouping | Proposed | 2025-12-31 | Single workflow index with naming prefixes and owner/runbook metadata. |
 | [ADR-0060](ADR-0060-platform-ephemeral-update-workflow.md) | Platform | Separate update workflow for existing ephemeral dev clusters | Proposed | 2025-12-31 | Manual update workflow with plan and state guards for existing BuildIds. |
 | [ADR-0061](ADR-0061-platform-observability-provisioning-boundary.md) | Platform | Observability provisioning boundary (Helm in-cluster, Terraform external) | Proposed | 2025-12-31 | Helm for in-cluster observability; Terraform for external/SaaS observability. |
+| [ADR-0062](ADR-0062-platform-app-template-contract.md) | Platform | App template contract for team-owned deployments | Proposed | 2025-12-31 | Reference app bundle with explicit platform vs app ownership. |
 
 ---
 

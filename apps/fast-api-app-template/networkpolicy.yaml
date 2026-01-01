@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: "<APP_NAME>-default"
+  namespace: "<NAMESPACE>"
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: "<APP_NAME>"
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: "kong-system"
+      ports:
+        - protocol: TCP
+          port: <SERVICE_PORT>
+  egress:
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53

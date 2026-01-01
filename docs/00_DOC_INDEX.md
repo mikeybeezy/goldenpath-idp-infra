@@ -22,3 +22,4 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/40_CHANGELOG_GOVERNANCE.md | platform | 90d | 2025-12-31 | Changelog policy and enforcement |
 | docs/changelog/CHANGELOG_LABELS.md | platform | 90d | 2025-12-31 | Changelog label definitions and rules |
 | docs/41_STORAGE_AND_PERSISTENCE.md | platform | 90d | 2025-12-31 | Storage defaults, persistence requirements, and tradeoffs |
+| docs/42_APP_TEMPLATE_LIVING.md | platform | 90d | 2025-12-31 | App template structure and ownership boundaries |
