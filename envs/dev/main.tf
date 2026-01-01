@@ -228,7 +228,7 @@ provider "helm" {
 module "kubernetes_addons" {
   source = "../../modules/kubernetes_addons"
   count  = var.eks_config.enabled ? 1 : 0
-  
+
   path_to_app_manifests = "${path.module}/../../gitops/argocd/apps/dev"
 
   tags = local.common_tags
