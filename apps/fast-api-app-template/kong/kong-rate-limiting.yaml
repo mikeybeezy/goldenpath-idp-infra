@@ -1,12 +1,12 @@
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
-  name: "<KONG_RATE_LIMIT_PLUGIN>"
-  namespace: "<NAMESPACE>"
+  name: "{{ values.kong_rate_limit_plugin }}"
+  namespace: "{{ values.namespace }}"
   annotations:
     kubernetes.io/ingress.class: kong
 plugin: rate-limiting
 config:
-  minute: <RATE_LIMIT_PER_MIN>
+  minute: {{ values.rate_limit_per_min }}
   limit_by: consumer
   policy: local

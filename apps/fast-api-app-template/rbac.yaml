@@ -1,8 +1,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: "<APP_NAME>-reader"
-  namespace: "<NAMESPACE>"
+  name: "{{ values.app_name }}-reader"
+  namespace: "{{ values.namespace }}"
 rules:
   - apiGroups: [""]
     resources: ["configmaps", "secrets"]
@@ -11,13 +11,13 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: "<APP_NAME>-reader"
-  namespace: "<NAMESPACE>"
+  name: "{{ values.app_name }}-reader"
+  namespace: "{{ values.namespace }}"
 subjects:
   - kind: ServiceAccount
-    name: "<SERVICE_ACCOUNT_NAME>"
-    namespace: "<NAMESPACE>"
+    name: "{{ values.service_account_name }}"
+    namespace: "{{ values.namespace }}"
 roleRef:
   kind: Role
-  name: "<APP_NAME>-reader"
+  name: "{{ values.app_name }}-reader"
   apiGroup: rbac.authorization.k8s.io

@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "<APP_NAME>-dashboard"
-  namespace: "<NAMESPACE>"
+  name: "{{ values.app_name }}-dashboard"
+  namespace: "{{ values.namespace }}"
   labels:
     grafana_dashboard: "1"
 data:
-  <APP_NAME>-dashboard.json: |
+  {{ values.app_name }}-dashboard.json: |
     {
-      "title": "<APP_NAME> Overview",
-      "tags": ["<TEAM>", "<ENV>"]
+      "title": "{{ values.app_name }} Overview",
+      "tags": ["{{ values.team }}", "{{ values.env }}"]
     }

@@ -1,1 +1,8 @@
 # Values overrides for backstage in dev environment
+appConfig:
+  catalog:
+    locations:
+      - type: url
+        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/app-template/template.yaml
+        rules:
+          - allow: [Template]
