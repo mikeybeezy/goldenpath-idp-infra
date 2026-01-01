@@ -1,0 +1,36 @@
+# CL-0011: App template contract and reference bundle
+
+Date: 2025-12-31
+Owner: platform
+Scope: app onboarding, deployment templates
+Related: `apps/fast-api-app-template/`, `docs/adrs/ADR-0062-platform-app-template-contract.md`, `docs/42_APP_TEMPLATE_LIVING.md`
+
+## Summary
+
+- Add a reference app template bundle with explicit platform vs app ownership.
+- Publish a living doc for the template structure and boundaries.
+
+## Impact
+
+- App teams get a consistent starting point for deployments.
+- Platform ownership boundaries are explicit and reviewable.
+
+## Changes
+
+### Added
+
+- `apps/fast-api-app-template/` reference manifests with placeholders.
+- `docs/42_APP_TEMPLATE_LIVING.md` living structure doc.
+- ADR-0062 to document the contract.
+
+### Documented
+
+- Template ownership boundaries and update expectations.
+
+## Rollback / Recovery
+
+- Revert the template and ADR if the contract changes.
+
+## Validation
+
+- Not run (documentation/template change).
