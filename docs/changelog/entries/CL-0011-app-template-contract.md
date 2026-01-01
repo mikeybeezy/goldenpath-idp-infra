@@ -3,7 +3,7 @@
 Date: 2025-12-31
 Owner: platform
 Scope: app onboarding, deployment templates
-Related: `apps/fast-api-app-template/`, `docs/adrs/ADR-0062-platform-app-template-contract.md`, `docs/42_APP_TEMPLATE_LIVING.md`
+Related: `apps/fast-api-app-template/`, `docs/adrs/ADR-0062-platform-app-template-contract.md`, `docs/20-contracts/42_APP_TEMPLATE_LIVING.md`
 
 ## Summary
 
@@ -20,7 +20,7 @@ Related: `apps/fast-api-app-template/`, `docs/adrs/ADR-0062-platform-app-templat
 ### Added
 
 - `apps/fast-api-app-template/` reference manifests with placeholders.
-- `docs/42_APP_TEMPLATE_LIVING.md` living structure doc.
+- `docs/20-contracts/42_APP_TEMPLATE_LIVING.md` living structure doc.
 - ADR-0062 to document the contract.
 
 ### Documented

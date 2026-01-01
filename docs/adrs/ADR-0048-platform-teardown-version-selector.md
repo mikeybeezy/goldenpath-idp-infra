@@ -7,7 +7,7 @@ Filename: `ADR-0048-platform-teardown-version-selector.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh`, `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh`, `.github/workflows/ci-teardown.yml`, `docs/15_TEARDOWN_AND_CLEANUP.md`
+- **Related:** `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh`, `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh`, `.github/workflows/ci-teardown.yml`, `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`
 
 ---
 

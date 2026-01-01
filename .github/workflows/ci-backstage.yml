@@ -53,4 +53,4 @@ jobs:
       - name: Runbook link
         if: always()
         run: |
-          echo "Runbook: docs/18_BACKSTAGE_MVP.md" >> "${GITHUB_STEP_SUMMARY}"
+          echo "Runbook: docs/00-foundations/18_BACKSTAGE_MVP.md" >> "${GITHUB_STEP_SUMMARY}"

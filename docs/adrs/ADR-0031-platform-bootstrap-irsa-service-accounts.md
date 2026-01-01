@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Operations | Delivery
-- **Related:** bootstrap/10_bootstrap/README.md, docs/21_CI_ENVIRONMENT_CONTRACT.md
+- **Related:** bootstrap/10_bootstrap/README.md, docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md
 
 ---
 

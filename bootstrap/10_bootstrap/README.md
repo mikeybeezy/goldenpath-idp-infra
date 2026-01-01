@@ -31,7 +31,7 @@ bootstrap/10_bootstrap/
 
 Argo CD is where the cluster reconciles against the desired state in this repo.
 Once Applications are created, Argo CD keeps them in sync with Git.
-GitOps details live in `docs/12_GITOPS_AND_CICD.md`.
+GitOps details live in `docs/40-delivery/12_GITOPS_AND_CICD.md`.
 
 At the end of the runner, we print an Argo status summary. If any app reports
 `HEALTH=Unknown`, the runner prints a warning so you can review it manually.
@@ -74,7 +74,7 @@ bootstrap/00_prereqs/10_eks_preflight.sh <cluster> <region> <vpc-id> <private-su
 ## Bootstrap runner (recommended)
 
 For a complete list of runtime flags used by build, bootstrap, and teardown,
-see `docs/17_BUILD_RUN_FLAGS.md`.
+see `docs/40-delivery/17_BUILD_RUN_FLAGS.md`.
 
 ```text
 NODE_INSTANCE_TYPE=t3.small bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh <cluster> <region> [kong-namespace]
@@ -551,12 +551,12 @@ kubectl get nodes
 - `60_tear_down_clean_up/cleanup-orphans.sh`: cleanup tagged orphaned resources (manual, dry-run default).
 - `60_tear_down_clean_up/pre-destroy-cleanup.sh`: delete LoadBalancer services before teardown.
 - `60_tear_down_clean_up/drain-nodegroup.sh`: cordon and drain nodes for safe node group updates.
-- Manual teardown commands: `docs/15_TEARDOWN_AND_CLEANUP.md`.
+- Manual teardown commands: `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`.
 
 ## Kong notes
 
 Kong is installed through Argo CD so the cluster reconciles with Git state.
-Ingress strategy (Kong+NLB vs ALB): `docs/08_INGRESS_STRATEGY.md`.
+Ingress strategy (Kong+NLB vs ALB): `docs/30-architecture/08_INGRESS_STRATEGY.md`.
 cert-manager is also installed through Argo CD. If Argo apps have not synced
 yet, skip the cert-manager validation and re-run it after the apps are applied.
 

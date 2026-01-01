@@ -7,7 +7,7 @@ Filename: `ADR-0058-platform-grafana-config-workflow.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Observability | Operations
-- **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`, `idp-tooling/grafana-config/`
+- **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`, `idp-tooling/grafana-config/`
 
 ---
 

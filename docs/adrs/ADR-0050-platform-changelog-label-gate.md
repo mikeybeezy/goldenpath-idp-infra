@@ -5,7 +5,7 @@
 - **Owners:** platform
 - **Domain:** Platform
 - **Decision type:** Governance
-- **Related:** `docs/40_CHANGELOG_GOVERNANCE.md`, `docs/changelog/README.md`
+- **Related:** `docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md`, `docs/changelog/README.md`
 
 ---
 

@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Governance
-- **Related:** `docs/01_GOVERNANCE.md`, `docs/35_RESOURCE_TAGGING.md`
+- **Related:** `docs/10-governance/01_GOVERNANCE.md`, `docs/10-governance/35_RESOURCE_TAGGING.md`
 
 ---
 

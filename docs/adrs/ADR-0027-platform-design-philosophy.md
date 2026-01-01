@@ -7,7 +7,7 @@ Filename: `ADR-0027-platform-design-philosophy.md`
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Governance
-- **Related:** `docs/00_DESIGN_PHILOSOPHY.md`, `docs/00_DOC_INDEX.md`, `docs/01_GOVERNANCE.md`, `docs/02_PLATFORM_BOUNDARIES.md`
+- **Related:** `docs/00-foundations/00_DESIGN_PHILOSOPHY.md`, `docs/90-doc-system/00_DOC_INDEX.md`, `docs/10-governance/01_GOVERNANCE.md`, `docs/20-contracts/02_PLATFORM_BOUNDARIES.md`
 
 ---
 
@@ -34,7 +34,7 @@ Specifically:
 ## Scope
 
 Applies to platform governance, platform-owned workloads, and all living
-documents listed in `docs/00_DOC_INDEX.md`.
+documents listed in `docs/90-doc-system/00_DOC_INDEX.md`.
 
 Does not mandate that product teams adopt identical tooling, but it defines the
 baseline experience and reference behavior they can expect.
@@ -65,7 +65,7 @@ baseline experience and reference behavior they can expect.
 
 ## Follow-ups
 
-- Maintain `docs/00_DOC_INDEX.md` as the canonical list of living docs.
+- Maintain `docs/90-doc-system/00_DOC_INDEX.md` as the canonical list of living docs.
 - Use `scripts/check-doc-freshness.py` to monitor review cadence.
 - Add a TODO to test the mechanism before enforcing it.
 

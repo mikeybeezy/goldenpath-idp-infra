@@ -5,7 +5,7 @@
 - **Owners:** platform team
 - **Domain:** Platform
 - **Decision type:** Observability
-- **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`, `docs/adrs/ADR-0049-platform-pragmatic-observability-baseline.md`, `docs/adrs/ADR-0054-platform-observability-exporters-otel-split.md`
+- **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`, `docs/adrs/ADR-0049-platform-pragmatic-observability-baseline.md`, `docs/adrs/ADR-0054-platform-observability-exporters-otel-split.md`
 
 ---
 

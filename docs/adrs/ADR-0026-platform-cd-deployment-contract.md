@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Governance | Delivery
-- **Related:** docs/01_GOVERNANCE.md, docs/29_CD_DEPLOYMENT_CONTRACT.md, docs/21_CI_ENVIRONMENT_CONTRACT.md, docs/02_PLATFORM_BOUNDARIES.md
+- **Related:** docs/10-governance/01_GOVERNANCE.md, docs/20-contracts/29_CD_DEPLOYMENT_CONTRACT.md, docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md, docs/20-contracts/02_PLATFORM_BOUNDARIES.md
 
 ---
 

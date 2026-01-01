@@ -12,7 +12,7 @@ Read-only actions stay unscoped so discovery still works.
 
 ## Required tags
 
-Use the canonical tags from `docs/35_RESOURCE_TAGGING.md`. For cleanup and
+Use the canonical tags from `docs/10-governance/35_RESOURCE_TAGGING.md`. For cleanup and
 teardown, **BuildId** and **Environment** are the minimum set.
 
 ## Template (preferred)

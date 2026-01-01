@@ -7,7 +7,7 @@ Filename: `ADR-0041-platform-orphan-cleanup-deletion-order.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `docs/15_TEARDOWN_AND_CLEANUP.md`, `bootstrap/60_tear_down_clean_up/cleanup-orphans.sh`, `docs/adrs/ADR-0038-platform-teardown-orphan-cleanup-gate.md`
+- **Related:** `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`, `bootstrap/60_tear_down_clean_up/cleanup-orphans.sh`, `docs/adrs/ADR-0038-platform-teardown-orphan-cleanup-gate.md`
 
 ---
 

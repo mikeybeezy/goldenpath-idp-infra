@@ -7,7 +7,7 @@ Filename: `ADR-0045-platform-teardown-lb-delete-default.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh`, `docs/15_TEARDOWN_AND_CLEANUP.md`, `.github/workflows/ci-teardown.yml`, `docs/policies/ci-teardown-extra-permissions.json`, `docs/adrs/ADR-0043-platform-teardown-lb-eni-wait.md`
+- **Related:** `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh`, `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`, `.github/workflows/ci-teardown.yml`, `docs/policies/ci-teardown-extra-permissions.json`, `docs/adrs/ADR-0043-platform-teardown-lb-eni-wait.md`
 
 ---
 

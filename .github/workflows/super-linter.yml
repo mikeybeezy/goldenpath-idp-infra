@@ -37,4 +37,4 @@ jobs:
       - name: Runbook link
         if: always()
         run: |
-          echo "Runbook: docs/30_DOCUMENTATION_FRESHNESS.md" >> "${GITHUB_STEP_SUMMARY}"
+          echo "Runbook: docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md" >> "${GITHUB_STEP_SUMMARY}"

@@ -5,7 +5,7 @@
 - **Owners:** platform
 - **Domain:** Platform
 - **Decision type:** Operations | Governance
-- **Related:** `docs/41_STORAGE_AND_PERSISTENCE.md`, `docs/15_TEARDOWN_AND_CLEANUP.md`, `bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh`, `.github/workflows/ci-bootstrap.yml`, `.github/workflows/ci-teardown.yml`
+- **Related:** `docs/50-observability/41_STORAGE_AND_PERSISTENCE.md`, `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`, `bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh`, `.github/workflows/ci-bootstrap.yml`, `.github/workflows/ci-teardown.yml`
 
 ---
 

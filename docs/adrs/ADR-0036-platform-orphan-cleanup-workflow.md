@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Operations / Governance
-- **Related:** `docs/01_GOVERNANCE.md`, `docs/20_CI_ENVIRONMENT_SEPARATION.md`, `docs/adrs/ADR-0038-platform-teardown-orphan-cleanup-gate.md`
+- **Related:** `docs/10-governance/01_GOVERNANCE.md`, `docs/20-contracts/20_CI_ENVIRONMENT_SEPARATION.md`, `docs/adrs/ADR-0038-platform-teardown-orphan-cleanup-gate.md`
 
 ---
 

@@ -7,7 +7,7 @@ Filename: `ADR-0057-platform-ci-terraform-force-unlock-workflow.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `.github/workflows/ci-force-unlock.yml`, `docs/runbooks/07_TF_STATE_FORCE_UNLOCK.md`, `docs/15_TEARDOWN_AND_CLEANUP.md`
+- **Related:** `.github/workflows/ci-force-unlock.yml`, `docs/runbooks/07_TF_STATE_FORCE_UNLOCK.md`, `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`
 
 ---
 

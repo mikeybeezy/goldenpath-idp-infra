@@ -80,5 +80,5 @@ case with the ENI IDs and VPC/subnet details.
 ## Related
 
 - `docs/runbooks/04_LB_FINALIZER_STUCK.md`
-- `docs/15_TEARDOWN_AND_CLEANUP.md`
+- `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`
 - `docs/adrs/ADR-0047-platform-teardown-destroy-timeout-retry.md`

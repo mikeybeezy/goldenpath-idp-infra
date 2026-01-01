@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Application
 - **Decision type:** Architecture | UX | Product
-- **Related:** docs/01_GOVERNANCE.md, docs/18_BACKSTAGE_MVP.md
+- **Related:** docs/10-governance/01_GOVERNANCE.md, docs/00-foundations/18_BACKSTAGE_MVP.md
 
 ## Context
 

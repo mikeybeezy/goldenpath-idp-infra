@@ -1,5 +1,12 @@
 # Changelog Labels (Living)
 
+Doc contract:
+- Purpose: Track changelog label rules and required entry format.
+- Owner: platform
+- Status: living
+- Review cadence: 90d
+- Related: docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md, docs/changelog/Changelog-template.md
+
 This document records the labels and rules used by the changelog gate.
 
 ## Labels

@@ -5,7 +5,7 @@
 - **Owners:** platform team
 - **Domain:** Platform
 - **Decision type:** Observability
-- **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`
+- **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`
 
 ---
 

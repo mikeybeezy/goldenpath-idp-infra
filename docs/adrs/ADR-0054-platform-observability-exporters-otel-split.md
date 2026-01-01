@@ -5,7 +5,7 @@
 - **Owners:** platform team
 - **Domain:** Platform
 - **Decision type:** Observability
-- **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`, `docs/adrs/ADR-0049-platform-pragmatic-observability-baseline.md`, `docs/adrs/ADR-0052-platform-kube-prometheus-stack-bundle.md`
+- **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`, `docs/adrs/ADR-0049-platform-pragmatic-observability-baseline.md`, `docs/adrs/ADR-0052-platform-kube-prometheus-stack-bundle.md`
 
 ---
 
@@ -82,7 +82,7 @@ but they must not remove the baseline exporters without an approved exception.
 
 ## Follow-ups
 
-- Keep `docs/05_OBSERVABILITY_DECISIONS.md` aligned with this split.
+- Keep `docs/50-observability/05_OBSERVABILITY_DECISIONS.md` aligned with this split.
 - Document the OTel rollout path (collector, exporters, destinations).
 
 ---

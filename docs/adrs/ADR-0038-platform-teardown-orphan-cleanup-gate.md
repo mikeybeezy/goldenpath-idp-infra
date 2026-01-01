@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Operations / Governance
-- **Related:** `docs/15_TEARDOWN_AND_CLEANUP.md`, `docs/runbooks/ORPHAN_CLEANUP.md`, `docs/adrs/ADR-0036-platform-orphan-cleanup-workflow.md`, `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`, `.github/workflows/ci-teardown.yml`
+- **Related:** `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`, `docs/runbooks/ORPHAN_CLEANUP.md`, `docs/adrs/ADR-0036-platform-orphan-cleanup-workflow.md`, `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`, `.github/workflows/ci-teardown.yml`
 
 ---
 

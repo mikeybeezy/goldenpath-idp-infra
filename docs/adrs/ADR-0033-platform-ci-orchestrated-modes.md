@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Operations | Delivery
-- **Related:** docs/21_CI_ENVIRONMENT_CONTRACT.md, .github/workflows/ci-bootstrap.yml
+- **Related:** docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md, .github/workflows/ci-bootstrap.yml
 
 ---
 

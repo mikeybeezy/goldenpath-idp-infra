@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Security / Operations / Governance
-- **Related docs:** docs/06_REBUILD_SEQUENCE.md, docs/08_SOURCE_OF_TRUTH.md, docs/01_GOVERNANCE.md
+- **Related docs:** docs/06_REBUILD_SEQUENCE.md, docs/08_SOURCE_OF_TRUTH.md, docs/10-governance/01_GOVERNANCE.md
 
 ## Context
 

@@ -7,7 +7,7 @@ Filename: `ADR-0060-platform-ephemeral-update-workflow.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Operations | Governance
-- **Related:** `.github/workflows/infra-terraform-update-dev.yml`, `ci-workflows/CI_WORKFLOWS.md`, `docs/21_CI_ENVIRONMENT_CONTRACT.md`
+- **Related:** `.github/workflows/infra-terraform-update-dev.yml`, `ci-workflows/CI_WORKFLOWS.md`, `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`
 
 ---
 

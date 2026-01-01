@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Security | Operations
-- **Related:** docs/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0015-platform-aws-oidc-for-github-actions.md
+- **Related:** docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0015-platform-aws-oidc-for-github-actions.md
 
 ---
 

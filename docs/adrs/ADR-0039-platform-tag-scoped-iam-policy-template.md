@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Governance / Operations
-- **Related:** `docs/01_GOVERNANCE.md`, `docs/35_RESOURCE_TAGGING.md`, `docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md`, `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`
+- **Related:** `docs/10-governance/01_GOVERNANCE.md`, `docs/10-governance/35_RESOURCE_TAGGING.md`, `docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md`, `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`
 
 ---
 

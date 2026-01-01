@@ -178,6 +178,6 @@ jobs:
         if: always()
         run: |
           {
-            echo "Runbook: docs/21_CI_ENVIRONMENT_CONTRACT.md"
-            echo "Runbook: docs/39_GOLDEN_PATH_VALIDATION.md"
+            echo "Runbook: docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md"
+            echo "Runbook: docs/40-delivery/39_GOLDEN_PATH_VALIDATION.md"
           } >> "${GITHUB_STEP_SUMMARY}"

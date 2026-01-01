@@ -4,7 +4,8 @@
 - **Date:** 2025-12-27
 - **Owners:** Platform (GoldenPath IDP)
 - **Decision type:** Governance / Delivery
-- **Related docs:** docs/01_GOVERNANCE.md, docs/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0011-platform-ci-environment-contract
+- **Related docs:** docs/10-governance/01_GOVERNANCE.md, docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md
+- **Legacy alias:** docs/adrs/ADR-0011-platform-ci-environment-contract
 
 ## Context
 

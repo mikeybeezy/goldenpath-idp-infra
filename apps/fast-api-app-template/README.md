@@ -26,4 +26,4 @@ If using manually, replace these placeholders before applying.
 
 - Do not manage the same dashboards in both Helm/ConfigMaps and Terraform.
 - The ServiceMonitor expects a `release: kube-prometheus-stack` label.
-- Living doc: `docs/42_APP_TEMPLATE_LIVING.md`
+- Living doc: `docs/20-contracts/42_APP_TEMPLATE_LIVING.md`

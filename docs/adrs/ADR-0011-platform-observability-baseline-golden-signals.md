@@ -5,7 +5,7 @@
 - **Owners:** platform team
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`, `docs/adrs/ADR-0049-platform-pragmatic-observability-baseline.md`
+- **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`, `docs/adrs/ADR-0049-platform-pragmatic-observability-baseline.md`
 
 ---
 
@@ -68,7 +68,7 @@ documented exception.
 
 ## Follow-ups
 
-- Align `docs/05_OBSERVABILITY_DECISIONS.md` with this baseline.
+- Align `docs/50-observability/05_OBSERVABILITY_DECISIONS.md` with this baseline.
 - Publish a short golden-signal dashboard pack and alert rules.
 
 ---
