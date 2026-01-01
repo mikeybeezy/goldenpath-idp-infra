@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Architecture | Operations
-- **Related:** docs/09_ARCHITECTURE.md, docs/20_CI_ENVIRONMENT_SEPARATION.md
+- **Related:** docs/30-architecture/09_ARCHITECTURE.md, docs/20-contracts/20_CI_ENVIRONMENT_SEPARATION.md
 
 ---
 

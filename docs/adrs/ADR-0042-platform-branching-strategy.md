@@ -7,7 +7,7 @@ Filename: `ADR-0042-platform-branching-strategy.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Governance
-- **Related:** `docs/38_BRANCHING_STRATEGY.md`, `docs/23_NEW_JOINERS.md`
+- **Related:** `docs/40-delivery/38_BRANCHING_STRATEGY.md`, `docs/80-onboarding/23_NEW_JOINERS.md`
 
 ---
 

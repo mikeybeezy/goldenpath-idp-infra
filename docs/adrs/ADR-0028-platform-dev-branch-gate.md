@@ -7,7 +7,7 @@ Filename: `ADR-0028-platform-dev-branch-gate.md`
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Delivery
-- **Related:** `docs/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/29_CD_DEPLOYMENT_CONTRACT.md`, `docs/01_GOVERNANCE.md`
+- **Related:** `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/20-contracts/29_CD_DEPLOYMENT_CONTRACT.md`, `docs/10-governance/01_GOVERNANCE.md`
 
 ---
 

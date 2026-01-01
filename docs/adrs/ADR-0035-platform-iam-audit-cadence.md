@@ -4,7 +4,7 @@
 - **Date:** 2025-12-28
 - **Owners:** Platform (GoldenPath IDP)
 - **Decision type:** Security / Governance
-- **Related:** docs/01_GOVERNANCE.md, docs/33_IAM_ROLES_AND_POLICIES.md
+- **Related:** docs/10-governance/01_GOVERNANCE.md, docs/60-security/33_IAM_ROLES_AND_POLICIES.md
 
 ## Context
 

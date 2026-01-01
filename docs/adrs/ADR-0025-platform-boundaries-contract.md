@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Governance | Operations
-- **Related:** docs/02_PLATFORM_BOUNDARIES.md, docs/01_GOVERNANCE.md, docs/23_NEW_JOINERS.md
+- **Related:** docs/20-contracts/02_PLATFORM_BOUNDARIES.md, docs/10-governance/01_GOVERNANCE.md, docs/80-onboarding/23_NEW_JOINERS.md
 
 ---
 

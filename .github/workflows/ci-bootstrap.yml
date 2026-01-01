@@ -362,8 +362,8 @@ jobs:
         if: always()
         run: |
           {
-            echo "Runbook: docs/39_GOLDEN_PATH_VALIDATION.md"
-            echo "Runbook: docs/17_BUILD_RUN_FLAGS.md"
+            echo "Runbook: docs/40-delivery/39_GOLDEN_PATH_VALIDATION.md"
+            echo "Runbook: docs/40-delivery/17_BUILD_RUN_FLAGS.md"
           } >> "${GITHUB_STEP_SUMMARY}"
 
       # Teardown runs in a separate workflow to avoid auto-destroy after bootstrap.

@@ -7,7 +7,7 @@ Filename: `ADR-0044-platform-infra-checks-ref-mode.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `.github/workflows/pr-terraform-plan.yml`, `.github/workflows/infra-terraform.yml`, `docs/21_CI_ENVIRONMENT_CONTRACT.md`
+- **Related:** `.github/workflows/pr-terraform-plan.yml`, `.github/workflows/infra-terraform.yml`, `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`
 
 ---
 

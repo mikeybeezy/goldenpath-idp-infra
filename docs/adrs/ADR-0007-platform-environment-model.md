@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Architecture | Operations | Cost
-- **Related:** docs/01_GOVERNANCE.md, docs/02_GOVERNANCE_MODEL.md
+- **Related:** docs/10-governance/01_GOVERNANCE.md
 
 ## Context
 

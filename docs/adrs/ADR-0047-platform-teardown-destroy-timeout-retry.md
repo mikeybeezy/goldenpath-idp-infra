@@ -7,7 +7,7 @@ Filename: `ADR-0047-platform-teardown-destroy-timeout-retry.md`
 - **Owners:** `platform-team`
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `docs/15_TEARDOWN_AND_CLEANUP.md`, `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh`, `docs/adrs/ADR-0045-platform-teardown-lb-delete-default.md`
+- **Related:** `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`, `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh`, `docs/adrs/ADR-0045-platform-teardown-lb-delete-default.md`
 
 ---
 
@@ -91,7 +91,7 @@ non-Kubernetes-managed load balancers.
 ## Follow-ups
 
 - Ensure teardown IAM roles include required LB/ENI permissions.
-- Keep `docs/15_TEARDOWN_AND_CLEANUP.md` updated with timeout/retry behavior.
+- Keep `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md` updated with timeout/retry behavior.
 
 ---
 

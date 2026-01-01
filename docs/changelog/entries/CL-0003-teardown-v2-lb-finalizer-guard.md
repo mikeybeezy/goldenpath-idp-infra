@@ -3,7 +3,7 @@
 Date: 2025-12-31
 Owner: platform
 Scope: teardown
-Related: bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh, docs/15_TEARDOWN_AND_CLEANUP.md
+Related: bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh, docs/70-operations/15_TEARDOWN_AND_CLEANUP.md
 
 ## Summary
 

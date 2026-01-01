@@ -41,4 +41,4 @@ kubectl get secret -n <GRAFANA_NAMESPACE> <GRAFANA_SECRET> \
 
 ## Related docs
 
-- `docs/31_EKS_ACCESS_MODEL.md`
+- `docs/60-security/31_EKS_ACCESS_MODEL.md`

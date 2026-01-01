@@ -5,7 +5,7 @@
 - **Owners:** platform
 - **Domain:** Platform
 - **Decision type:** Observability
-- **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`, `gitops/helm/kube-prometheus-stack`, `docs/06_IDENTITY_AND_ACCESS.md`, `docs/41_STORAGE_AND_PERSISTENCE.md`
+- **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`, `gitops/helm/kube-prometheus-stack`, `docs/60-security/06_IDENTITY_AND_ACCESS.md`, `docs/50-observability/41_STORAGE_AND_PERSISTENCE.md`
 
 ---
 

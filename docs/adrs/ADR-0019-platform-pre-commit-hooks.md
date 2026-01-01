@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Governance | Operations
-- **Related:** docs/01_GOVERNANCE.md, docs/13_COLLABORATION_GUIDE.md, docs/24_PRE_COMMIT_HOOKS.md
+- **Related:** docs/10-governance/01_GOVERNANCE.md, docs/80-onboarding/13_COLLABORATION_GUIDE.md, docs/40-delivery/24_PRE_COMMIT_HOOKS.md
 
 ---
 

@@ -5,7 +5,7 @@
 - **Owners:** platform
 - **Domain:** Platform
 - **Decision type:** Operations | Governance
-- **Related:** `docs/17_BUILD_RUN_FLAGS.md`, `docs/34_PLATFORM_SUCCESS_CHECKLIST.md`, `docs/02_PLATFORM_BOUNDARIES.md`, `docs/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/35_RESOURCE_TAGGING.md`, `docs/40_CHANGELOG_GOVERNANCE.md`, `docs/build-timings.csv`, `scripts/reliability-metrics.sh`
+- **Related:** `docs/40-delivery/17_BUILD_RUN_FLAGS.md`, `docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md`, `docs/20-contracts/02_PLATFORM_BOUNDARIES.md`, `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/10-governance/35_RESOURCE_TAGGING.md`, `docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md`, `docs/build-timings.csv`, `scripts/reliability-metrics.sh`
 
 ---
 

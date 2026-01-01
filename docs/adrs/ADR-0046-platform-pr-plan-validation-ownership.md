@@ -7,7 +7,7 @@ Filename: `ADR-0046-platform-pr-plan-validation-ownership.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `.github/workflows/pr-terraform-plan.yml`, `.github/workflows/infra-terraform.yml`, `.github/workflows/infra-terraform-apply-dev.yml`, `docs/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/36_STATE_KEY_STRATEGY.md`
+- **Related:** `.github/workflows/pr-terraform-plan.yml`, `.github/workflows/infra-terraform.yml`, `.github/workflows/infra-terraform-apply-dev.yml`, `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/70-operations/36_STATE_KEY_STRATEGY.md`
 
 ---
 

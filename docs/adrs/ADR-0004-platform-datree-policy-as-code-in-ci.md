@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Governance / Quality / Security
-- **Related docs:** compliance/datree/, docs/01_GOVERNANCE.md, docs/06_REBUILD_SEQUENCE.md
+- **Related docs:** compliance/datree/, docs/10-governance/01_GOVERNANCE.md, docs/06_REBUILD_SEQUENCE.md
 
 ## Context
 

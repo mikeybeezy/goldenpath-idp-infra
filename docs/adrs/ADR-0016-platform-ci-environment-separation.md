@@ -5,7 +5,7 @@
 - **Owners:** platform team
 - **Domain:** Platform
 - **Decision type:** Governance
-- **Related:** `.github/workflows/infra-terraform.yml`, `docs/01_GOVERNANCE.md`
+- **Related:** `.github/workflows/infra-terraform.yml`, `docs/10-governance/01_GOVERNANCE.md`
 
 ---
 

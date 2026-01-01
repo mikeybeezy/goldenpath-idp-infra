@@ -68,5 +68,5 @@ Why: Remove unused actions while keeping required permissions.
 
 ## Related docs
 
-- `docs/33_IAM_ROLES_AND_POLICIES.md`
+- `docs/60-security/33_IAM_ROLES_AND_POLICIES.md`
 - `docs/adrs/ADR-0035-platform-iam-audit-cadence.md`

@@ -18,7 +18,7 @@ Each environment composes the shared modules so you can deploy the same architec
 ## Backstage MVP
 
 When you are ready to validate the platform end-to-end, start with Backstage as
-the first app through CI/CD. See `docs/18_BACKSTAGE_MVP.md` for the checklist
+the first app through CI/CD. See `docs/00-foundations/18_BACKSTAGE_MVP.md` for the checklist
 and file touchpoints.
 
 ## Prerequisites

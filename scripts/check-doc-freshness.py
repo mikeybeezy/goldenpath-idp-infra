@@ -5,12 +5,12 @@ import os
 import sys
 
 
-INDEX_PATH = os.path.join("docs", "00_DOC_INDEX.md")
+INDEX_PATH = os.path.join("docs", "90-doc-system", "00_DOC_INDEX.md")
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Check doc freshness based on docs/00_DOC_INDEX.md."
+        description="Check doc freshness based on docs/90-doc-system/00_DOC_INDEX.md."
     )
     parser.add_argument(
         "--fail",

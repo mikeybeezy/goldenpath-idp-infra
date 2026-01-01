@@ -7,7 +7,7 @@ Filename: `ADR-0040-platform-lifecycle-aware-state-keys.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `docs/36_STATE_KEY_STRATEGY.md`, `docs/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/32_TERRAFORM_STATE_AND_LOCKING.md`, `.github/workflows/infra-terraform.yml`, `.github/workflows/infra-terraform-apply-dev.yml`, `.github/workflows/ci-bootstrap.yml`, `.github/workflows/ci-teardown.yml`, `.github/workflows/pr-terraform-plan.yml`
+- **Related:** `docs/70-operations/36_STATE_KEY_STRATEGY.md`, `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/70-operations/32_TERRAFORM_STATE_AND_LOCKING.md`, `.github/workflows/infra-terraform.yml`, `.github/workflows/infra-terraform-apply-dev.yml`, `.github/workflows/ci-bootstrap.yml`, `.github/workflows/ci-teardown.yml`, `.github/workflows/pr-terraform-plan.yml`
 
 ---
 

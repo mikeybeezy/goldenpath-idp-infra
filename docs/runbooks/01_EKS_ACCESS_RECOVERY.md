@@ -68,4 +68,4 @@ kubectl get pods -A
 
 ## Related docs
 
-- `docs/31_EKS_ACCESS_MODEL.md`
+- `docs/60-security/31_EKS_ACCESS_MODEL.md`

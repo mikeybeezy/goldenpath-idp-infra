@@ -7,7 +7,7 @@ Filename: `ADR-0029-platform-dev-plan-gate.md`
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Delivery
-- **Related:** `docs/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/adrs/ADR-0028-platform-dev-branch-gate.md`
+- **Related:** `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/adrs/ADR-0028-platform-dev-branch-gate.md`
 
 ---
 

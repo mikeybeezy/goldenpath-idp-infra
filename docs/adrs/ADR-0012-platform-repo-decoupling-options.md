@@ -5,7 +5,7 @@
 - **Owners:** platform team
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `docs/07_REPO_DECOUPLING_OPTIONS.md`
+- **Related:** `docs/30-architecture/07_REPO_DECOUPLING_OPTIONS.md`
 
 ---
 

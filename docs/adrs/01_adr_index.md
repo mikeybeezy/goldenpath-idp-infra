@@ -84,6 +84,9 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 - [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) — superseded by `ADR-0045-platform-teardown-lb-delete-default.md`.
 - [ADR-0044](ADR-0044-platform-infra-checks-ref-mode.md) — superseded by `ADR-0046-platform-pr-plan-validation-ownership.md`.
 
+Legacy aliases (kept to preserve historical links):
+- `docs/adrs/ADR-0011-platform-ci-environment-contract` → `ADR-0034-platform-ci-environment-contract.md`
+
 ---
 
 ## New ADRs

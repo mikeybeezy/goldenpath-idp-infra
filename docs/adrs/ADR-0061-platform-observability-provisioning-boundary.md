@@ -5,7 +5,7 @@
 - **Owners:** platform
 - **Domain:** Platform
 - **Decision type:** Observability | Governance
-- **Related:** `docs/05_OBSERVABILITY_DECISIONS.md`, `docs/01_GOVERNANCE.md`, `docs/adrs/ADR-0052-platform-kube-prometheus-stack-bundle.md`
+- **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`, `docs/10-governance/01_GOVERNANCE.md`, `docs/adrs/ADR-0052-platform-kube-prometheus-stack-bundle.md`
 
 ---
 

@@ -250,4 +250,4 @@ jobs:
       - name: Runbook link
         if: always()
         run: |
-          echo "Runbook: docs/21_CI_ENVIRONMENT_CONTRACT.md" >> "${GITHUB_STEP_SUMMARY}"
+          echo "Runbook: docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md" >> "${GITHUB_STEP_SUMMARY}"

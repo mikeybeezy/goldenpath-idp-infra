@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Delivery | Governance
-- **Related:** docs/20_CI_ENVIRONMENT_SEPARATION.md, docs/21_CI_ENVIRONMENT_CONTRACT.md, .github/workflows/pr-terraform-plan.yml
+- **Related:** docs/20-contracts/20_CI_ENVIRONMENT_SEPARATION.md, docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md, .github/workflows/pr-terraform-plan.yml
 
 ---
 

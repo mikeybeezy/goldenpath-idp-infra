@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Architecture / Operations
-- **Related docs:** docs/06_REBUILD_SEQUENCE.md, docs/08_SOURCE_OF_TRUTH.md, docs/04_REPO_STRUCTURE.md
+- **Related docs:** docs/06_REBUILD_SEQUENCE.md, docs/08_SOURCE_OF_TRUTH.md, docs/30-architecture/04_REPO_STRUCTURE.md
 
 ## Context
 

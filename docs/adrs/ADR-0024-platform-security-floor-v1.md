@@ -5,7 +5,7 @@
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Security | Governance
-- **Related:** docs/01_GOVERNANCE.md, docs/22_CONTAINER_REGISTRY_STANDARD.md, docs/27_CI_IMAGE_SCANNING.md
+- **Related:** docs/10-governance/01_GOVERNANCE.md, docs/60-security/22_CONTAINER_REGISTRY_STANDARD.md, docs/60-security/27_CI_IMAGE_SCANNING.md
 
 ---
 

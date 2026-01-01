@@ -5,7 +5,7 @@
 - **Owners:** platform
 - **Domain:** Platform
 - **Decision type:** Governance | Delivery
-- **Related:** `apps/fast-api-app-template/`, `docs/01_GOVERNANCE.md`
+- **Related:** `apps/fast-api-app-template/`, `docs/10-governance/01_GOVERNANCE.md`
 
 ---
 
