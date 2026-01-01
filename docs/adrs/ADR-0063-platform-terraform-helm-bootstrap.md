@@ -11,7 +11,7 @@
 
 ## Context
 
-Running the platform requires a complex sequence of operations: provisioning AWS infrastructure (Terraform) and then installing Kubernetes controllers like ArgoCD (Bash scripts/Helm). 
+Running the platform requires a complex sequence of operations: provisioning AWS infrastructure (Terraform) and then installing Kubernetes controllers like ArgoCD (Bash scripts/Helm).
 
 The current approach relies on `goldenpath-idp-bootstrap.sh`, which wraps Terraform triggers and then imperatively runs `helm install`. This creates several issues:
 1.  **Fragility**: The script must manually wait for the cluster to be ready, manage kubeconfig contexts, and handle partial failures.
