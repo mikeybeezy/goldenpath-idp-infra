@@ -13,5 +13,3 @@ extraArgs:
   balance-similar-node-groups: "true"
   skip-nodes-with-local-storage: "false"
   expander: "least-waste"
-
-
