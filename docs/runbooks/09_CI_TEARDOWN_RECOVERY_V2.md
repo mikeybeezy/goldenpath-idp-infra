@@ -34,3 +34,10 @@ recovers strictly via CI without requiring kube access.
 - Managed LB resources deleted
 - VPC deletion unblocked
 - Teardown completes via CI
+
+## Recent successful run (reference)
+
+- Build ID: `31-12-25-04`
+- Duration: `11m39s` (~700s)
+- Log: `logs/build-timings/teardown-dev-goldenpath-dev-eks-31-12-25-04-31-12-25-04-20260101T040157Z.log`
+- Storage add-ons: EBS CSI + EFS CSI + snapshot controller enabled
