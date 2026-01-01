@@ -1,5 +1,16 @@
 terraform {
   required_version = ">= 1.5.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.12"
+    }
+  }
 }
 
 locals {
@@ -204,16 +215,21 @@ resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
   depends_on = [module.eks, module.iam]
 }
 
-resource "kubernetes_service_account_v1" "cluster_autoscaler" {
-  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_autoscaler_role ? 1 : 0
 
-  metadata {
-    name      = var.iam_config.autoscaler_service_account_name
-    namespace = var.iam_config.autoscaler_service_account_namespace
-    annotations = {
-      "eks.amazonaws.com/role-arn" = module.iam[0].cluster_autoscaler_role_arn
-    }
+
+provider "helm" {
+  kubernetes {
+    host                   = module.eks[0].cluster_endpoint
+    cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
+    token                  = data.aws_eks_cluster_auth.this.token
   }
+}
 
-  depends_on = [module.eks, module.iam]
+module "kubernetes_addons" {
+  source = "../../modules/kubernetes_addons"
+  count  = var.eks_config.enabled ? 1 : 0
+
+  tags = local.common_tags
+
+  depends_on = [module.eks]
 }
