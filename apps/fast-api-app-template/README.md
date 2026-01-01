@@ -19,8 +19,8 @@ Platform-owned (teams request changes):
 
 ## Placeholders
 
-All values in angle brackets (for example, "<APP_NAME>") are placeholders and
-must be replaced before applying.
+Template values use `{{ values.* }}` placeholders rendered by Backstage.
+If using manually, replace these placeholders before applying.
 
 ## Notes
 

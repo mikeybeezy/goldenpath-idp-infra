@@ -1,23 +1,23 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: "<APP_NAME>"
-  namespace: "<NAMESPACE>"
+  name: "{{ values.app_name }}"
+  namespace: "{{ values.namespace }}"
   annotations:
     kubernetes.io/ingress.class: kong
     konghq.com/strip-path: "false"
     konghq.com/methods: "GET, POST"
-    konghq.com/plugins: "<KONG_AUTH_PLUGIN>,<KONG_RATE_LIMIT_PLUGIN>"
+    konghq.com/plugins: "{{ values.kong_auth_plugin }},{{ values.kong_rate_limit_plugin }}"
 spec:
   ingressClassName: kong
   rules:
-    - host: "<APP_HOST>"
+    - host: "{{ values.app_host }}"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: "<APP_NAME>"
+                name: "{{ values.app_name }}"
                 port:
-                  number: <SERVICE_PORT>
+                  number: {{ values.service_port }}

@@ -1,8 +1,8 @@
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
-  name: "<KONG_AUTH_PLUGIN>"
-  namespace: "<NAMESPACE>"
+  name: "{{ values.kong_auth_plugin }}"
+  namespace: "{{ values.namespace }}"
   annotations:
     kubernetes.io/ingress.class: kong
 plugin: key-auth

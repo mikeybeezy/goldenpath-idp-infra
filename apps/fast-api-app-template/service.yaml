@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "<APP_NAME>"
-  namespace: "<NAMESPACE>"
+  name: "{{ values.app_name }}"
+  namespace: "{{ values.namespace }}"
   labels:
-    app.kubernetes.io/name: "<APP_NAME>"
-    app.kubernetes.io/instance: "<APP_NAME>"
+    app.kubernetes.io/name: "{{ values.app_name }}"
+    app.kubernetes.io/instance: "{{ values.app_name }}"
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: "<APP_NAME>"
+    app.kubernetes.io/name: "{{ values.app_name }}"
   ports:
     - name: http
-      port: <SERVICE_PORT>
+      port: {{ values.service_port }}
       targetPort: http

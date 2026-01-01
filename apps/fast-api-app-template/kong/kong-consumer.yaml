@@ -1,11 +1,11 @@
 apiVersion: configuration.konghq.com/v1
 kind: KongConsumer
 metadata:
-  name: "<KONG_CONSUMER_NAME>"
-  namespace: "<NAMESPACE>"
+  name: "{{ values.kong_consumer_name }}"
+  namespace: "{{ values.namespace }}"
   annotations:
     kubernetes.io/ingress.class: kong
-username: "<KONG_CONSUMER_USERNAME>"
-custom_id: "<KONG_CONSUMER_ID>"
+username: "{{ values.kong_consumer_username }}"
+custom_id: "{{ values.kong_consumer_id }}"
 credentials:
-  - "<KONG_CREDENTIAL_SECRET_NAME>"
+  - "{{ values.kong_credential_secret_name }}"

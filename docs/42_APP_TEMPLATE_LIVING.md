@@ -12,6 +12,7 @@ apps/fast-api-app-template/
 ├─ service.yaml
 ├─ servicemonitor.yaml
 ├─ ingress.yaml
+├─ catalog-info.yaml
 ├─ serviceaccount.yaml
 ├─ rbac.yaml
 ├─ networkpolicy.yaml
