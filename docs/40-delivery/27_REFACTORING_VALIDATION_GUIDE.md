@@ -32,20 +32,32 @@ terraform -chdir=envs/dev validate
 terraform -chdir=envs/dev plan
 ```
 
-### Phase 2: Ephemeral CI Environment
+### Phase 2: Manual Plan (Required)
 
-1.  Push your feature branch to GitHub (e.g., `feature/terraform-bootstrap`).
-2.  Navigate to **Actions** -> **Infra Terraform Apply (dev)**.
-3.  **Use workflow from**: Select your branch (`feature/terraform-bootstrap`) from the dropdown. *This is critical to test your new code.*
-4.  Run workflow with these inputs:
+The `Apply` workflow enforces that a successful `Plan` has run for the specific commit. Since we are testing a feature branch, we must trigger this manually.
+
+1.  Navigate to **Actions** -> **Plan - Infra Terraform Checks**.
+2.  **Use workflow from**: Select your branch (e.g., `feature/terraform-bootstrap`).
+3.  Run workflow with inputs:
+    *   `env`: **dev**
+    *   `lifecycle`: **ephemeral**
+    *   `build_id`: **<your-initials>-01**
+    *   `new_build`: **true**
+4.  **Wait for success (Green Tick).**
+
+### Phase 3: Ephemeral CI Environment (Apply)
+
+1.  Navigate to **Actions** -> **Infra Terraform Apply (dev)**.
+2.  **Use workflow from**: Select your branch (`feature/terraform-bootstrap`).
+3.  Run workflow with inputs:
     *   `lifecycle`: **ephemeral**
     *   `confirm_apply`: **apply**
-    *   `build_id`: **<your-initials>-01** (e.g., `msk-01`)
+    *   `build_id`: **<your-initials>-01**
     *   `new_build`: **true**
 
 **Why?** This creates a brand new EKS cluster from scratch using your code. If the bootstrap logic is broken, it will fail here, leaving `dev` untouched.
 
-### Phase 3: Verification Checks
+### Phase 4: Verification Checks
 
 Once the CI job succeeds, connect to the ephemeral cluster:
 
@@ -64,7 +76,7 @@ kubectl -n argocd get applications
 kubectl -n kong-system get svc
 ```
 
-### Phase 4: Teardown
+### Phase 5: Teardown
 
 To avoid unnecessary costs, destroy the environment immediately after verification.
 
