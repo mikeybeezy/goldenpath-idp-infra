@@ -124,33 +124,31 @@ service=payments-api env=dev version=2025.12.31-1 team=platform build_id=31-12-2
 
 ---
 
-## Dashboard state management (V1)
+## Observability provisioning boundary (V1)
 
-**Decision**: Grafana dashboards, datasources, and alert rules are managed as
-code via the Grafana provider under `idp-tooling/grafana-config/`.
+**Decision**: In-cluster observability is provisioned via Helm + GitOps.
+Terraform is reserved for external/SaaS observability resources.
 
 **Source of truth**:
 
-- Terraform state in `idp-tooling/grafana-config/` is authoritative for
-  platform-managed dashboards and alert rules.
-- The platform team owns baseline dashboards; app teams may add their own
-  dashboards as separate, scoped configs.
-
-**Promotion model**:
-
-- Changes are versioned in Git and promoted through environments using the
-  same CI lifecycle (dev → test → staging → prod).
-- Manual edits in Grafana are discouraged and can be overwritten on the next
-  apply.
+- **In-cluster:** Helm chart values and ConfigMaps/Secrets (kube-prometheus-stack).
+- **External/SaaS:** Terraform providers (Grafana Cloud, Datadog, PagerDuty).
 
 **Why**:
 
-- Keeps dashboards deterministic and reviewable.
-- Makes rollbacks and audits consistent with the rest of the platform.
+- Avoids drift between Terraform and Helm for the same Grafana instance.
+- Keeps upgrades safe and repeatable with chart version pinning.
+- Keeps cloud primitives and SaaS integrations in Terraform where state matters.
+
+**Operational rule**:
+
+- Do not manage the same dashboards in both Helm and Terraform.
+- If Grafana is in-cluster, use ConfigMaps and Helm values for dashboards/alerts.
 
 **Next Steps**:
 
 - Implement the RED label contract in dashboards and alert rules.
 - Add minimal alert rules for error rate, latency, and saturation.
-- Keep ADRs aligned: `ADR-0049-platform-pragmatic-observability-baseline.md` and
-  `ADR-0055-platform-tempo-tracing-backend.md`.
+- Keep ADRs aligned: `ADR-0049-platform-pragmatic-observability-baseline.md`,
+  `ADR-0055-platform-tempo-tracing-backend.md`, and
+  `ADR-0061-platform-observability-provisioning-boundary.md`.

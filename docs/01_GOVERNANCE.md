@@ -412,6 +412,18 @@ The platform owns reliability of the path.
 
 Applications own reliability of behavior.
 
+## Observability Provisioning Boundary
+
+We keep provisioning simple and deterministic by enforcing a clear boundary:
+
+- **Inside Kubernetes:** Helm + GitOps (kube-prometheus-stack, ConfigMaps).
+- **Outside Kubernetes / SaaS:** Terraform (Grafana Cloud, Datadog, PagerDuty).
+- **Cloud + cluster-adjacent infrastructure:** Terraform remains the backbone
+  (VPC, EKS, IAM, DNS, KMS, state backends).
+
+This prevents drift between Terraform and Helm and keeps observability changes
+auditable through Git.
+
 ## Platform-Owned Golden Signals
 
 These answer: “Is the platform safe to deploy into?”

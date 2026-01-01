@@ -72,6 +72,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0058](ADR-0058-platform-grafana-config-workflow.md) | Platform | Separate Grafana config workflow with readiness guard | Proposed | 2025-12-31 | Grafana config applied via manual workflow with readiness check. |
 | [ADR-0059](ADR-0059-platform-ci-workflow-index-and-ownership.md) | Platform | CI workflow index, ownership, and UI grouping | Proposed | 2025-12-31 | Single workflow index with naming prefixes and owner/runbook metadata. |
 | [ADR-0060](ADR-0060-platform-ephemeral-update-workflow.md) | Platform | Separate update workflow for existing ephemeral dev clusters | Proposed | 2025-12-31 | Manual update workflow with plan and state guards for existing BuildIds. |
+| [ADR-0061](ADR-0061-platform-observability-provisioning-boundary.md) | Platform | Observability provisioning boundary (Helm in-cluster, Terraform external) | Proposed | 2025-12-31 | Helm for in-cluster observability; Terraform for external/SaaS observability. |
 
 ---
 
