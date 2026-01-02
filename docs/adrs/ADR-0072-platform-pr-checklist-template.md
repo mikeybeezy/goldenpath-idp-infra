@@ -62,3 +62,4 @@ Applies to onboarding and PR guardrails documentation only.
 - **Link only to the GitHub template:** lower maintenance but higher friction.
 - **Embed a screenshot:** quickly becomes stale and cannot be copied.
 
+
