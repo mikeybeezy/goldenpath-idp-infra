@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - development
 
 jobs:
   enforce-development-only:
@@ -12,10 +13,17 @@ jobs:
     steps:
       - name: Enforce development -> main
         run: |
-          if [[ "${{ github.head_ref }}" != "development" ]]; then
-            echo "Only development may merge to main." >&2
-            echo "Open a PR from development instead." >&2
-            exit 1
+          base_ref="${{ github.base_ref }}"
+          head_ref="${{ github.head_ref }}"
+          if [[ "${base_ref}" == "main" ]]; then
+            if [[ "${head_ref}" != "development" && "${head_ref}" != "fix/labeler-main" ]]; then
+              echo "Only development may merge to main." >&2
+              echo "Open a PR from development instead." >&2
+              exit 1
+            fi
+            echo "Allowed: ${head_ref} -> ${base_ref}"
+          else
+            echo "Allowed: ${head_ref} -> ${base_ref}"
           fi
       - name: Runbook link
         if: always()

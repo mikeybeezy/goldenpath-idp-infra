@@ -226,7 +226,7 @@ irsa_plan_guard() {
 
   echo "Validating IRSA plan scope (service accounts only)..."
   plan_output="$(terraform -chdir="${TF_DIR}" plan -no-color \
-    -var="enable_k8s_resources=true" \
+    -var="enable_k8s_resources=false" \
     "${tfvars_args[@]}" \
     -target="kubernetes_service_account_v1.aws_load_balancer_controller[0]" \
     -target="kubernetes_service_account_v1.cluster_autoscaler[0]")"
@@ -490,7 +490,7 @@ stage_done "STAGE 15"
 kubectl -n argocd get applications \
   -o custom-columns=NAME:.metadata.name,SYNC:.status.sync.status,HEALTH:.status.health.status,MESSAGE:.status.health.message
 
-# Remind users to validate app behavior independently.
+# Remind users to validate app behavior independently.-
 echo ""
 echo ""
 echo "NOTE: Argo CD status is not a full validation. Check critical apps independently."

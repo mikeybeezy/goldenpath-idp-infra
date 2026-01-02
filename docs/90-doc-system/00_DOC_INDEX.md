@@ -16,6 +16,7 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | --- | --- | --- | --- | --- |
 | docs/00-foundations/00_DESIGN_PHILOSOPHY.md | platform | 90d | 2025-12-27 | Core origin and product philosophy |
 | docs/10-governance/01_GOVERNANCE.md | platform | 90d | 2025-12-31 | Governance principles and rules |
+| docs/10-governance/04_PR_GUARDRAILS.md | platform | 90d | 2026-01-02 | PR guardrails, labels, and enforcement |
 | docs/20-contracts/02_PLATFORM_BOUNDARIES.md | platform | 90d | 2025-12-31 | Platform vs team contract |
 | docs/20-contracts/20_CI_ENVIRONMENT_SEPARATION.md | platform | 90d | 2026-01-01 | CI environment separation summary |
 | docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md | platform | 90d | 2025-12-31 | CI environment inputs and guarantees |
