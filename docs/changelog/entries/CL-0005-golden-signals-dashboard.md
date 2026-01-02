@@ -3,7 +3,7 @@
 Date: 2026-01-02
 Owner: platform
 Scope: apps/fast-api-app-template, gitops/helm/kube-prometheus-stack
-Related: docs/adrs/ADR-0066-platform-dashboards-as-code.md
+Related: docs/adrs/ADR-0066-platform-dashboards-as-code.md, PR #106
 
 ## Summary
 
