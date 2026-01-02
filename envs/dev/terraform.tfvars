@@ -83,8 +83,8 @@ addon_replica_counts = {
   snapshot-controller = 1
 }
 
-enable_storage_addons = true
-enable_k8s_resources  = true
+enable_storage_addons = false
+enable_k8s_resources  = false
 
 eks_config = {
   enabled                       = true
