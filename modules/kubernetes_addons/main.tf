@@ -19,6 +19,40 @@ resource "helm_release" "argocd" {
   # Add common tags to the deployment if supported by the chart, or just track via Terraform state.
 }
 
+resource "helm_release" "aws_load_balancer_controller" {
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+  wait       = true
+  timeout    = 300
+
+  set {
+    name  = "clusterName"
+    value = var.cluster_name
+  }
+
+  set {
+    name  = "region"
+    value = var.aws_region
+  }
+
+  set {
+    name  = "vpcId"
+    value = var.vpc_id
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = var.service_account_name
+  }
+}
+
 resource "helm_release" "bootstrap_apps" {
   name       = "bootstrap-apps"
   chart      = "${path.module}/bootstrap-chart"
@@ -39,6 +73,7 @@ resource "helm_release" "bootstrap_apps" {
   ]
 
   depends_on = [
-    helm_release.argocd
+    helm_release.argocd,
+    helm_release.aws_load_balancer_controller
   ]
 }

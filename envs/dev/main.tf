@@ -231,6 +231,11 @@ module "kubernetes_addons" {
 
   path_to_app_manifests = "${path.module}/../../gitops/argocd/apps/dev"
 
+  # AWS Load Balancer Controller specific inputs
+  vpc_id       = module.vpc.vpc_id
+  cluster_name = local.cluster_name_effective
+  aws_region   = "eu-west-2" # Hardcoded based on provider config, could also be var.aws_region if available
+
   tags = local.common_tags
 
   depends_on = [module.eks]
