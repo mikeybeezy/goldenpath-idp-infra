@@ -27,7 +27,7 @@ If more detail is needed, use the workflow run link and log file paths.
 
 | Date (UTC) | Build ID | SHA | Build (s) | Bootstrap (s) | Teardown (s) | Status | Entry | Run URL |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-01-02 | 02-01-26-06 | cd190568def5677508a5804e82e73c3f1a3802b2 (build) / 4be3d33a7118b86457727b8cfd026da3f8deea38 (bootstrap) | 905 | 215 | - | success | docs/build-run-logs/BR-0001-02-01-26-06.md | build: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20662142526 / bootstrap: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20664240754 |
+| 2026-01-02 | 02-01-26-06 | cd190568def5677508a5804e82e73c3f1a3802b2 (build) / 4be3d33a7118b86457727b8cfd026da3f8deea38 (bootstrap/teardown) | 905 | 215 | 703 | success | docs/build-run-logs/BR-0001-02-01-26-06.md; docs/build-run-logs/TD-0001-02-01-26-06.md | build: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20662142526 / bootstrap: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20664240754 / teardown: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20665012721 |
 
 ## Entry template
 
@@ -54,3 +54,7 @@ Ad hoc notes/observations:
 ## Entry: 2026-01-02 (BR-0001-02-01-26-06)
 
 Detailed entry: docs/build-run-logs/BR-0001-02-01-26-06.md
+
+## Entry: 2026-01-02 (TD-0001-02-01-26-06)
+
+Detailed entry: docs/build-run-logs/TD-0001-02-01-26-06.md
