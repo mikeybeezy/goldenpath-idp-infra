@@ -21,6 +21,17 @@ def parse_args():
         "--today",
         help="Override today's date (YYYY-MM-DD) for testing.",
     )
+    parser.add_argument(
+        "--only",
+        action="append",
+        default=[],
+        help="Limit checks to specific doc paths (repeat or comma-separate).",
+    )
+    parser.add_argument(
+        "--warn-within",
+        type=int,
+        help="Warn when reviews are due within N days (non-failing).",
+    )
     return parser.parse_args()
 
 
@@ -56,6 +67,10 @@ def load_rows(path):
 def main():
     args = parse_args()
     today = parse_date(args.today) if args.today else dt.date.today()
+    only_docs = []
+    for entry in args.only:
+        only_docs.extend([value.strip() for value in entry.split(",") if value.strip()])
+    only_set = set(only_docs)
 
     if not os.path.exists(INDEX_PATH):
         print(f"ERROR: Missing {INDEX_PATH}")
@@ -68,6 +83,14 @@ def main():
 
     warnings = []
     errors = []
+    soon = []
+
+    if only_set:
+        row_map = {row[0]: row for row in rows}
+        rows = [row_map[doc] for doc in only_docs if doc in row_map]
+        missing = sorted(only_set - set(row_map.keys()))
+        for doc in missing:
+            errors.append(f"Missing doc in index: {doc}")
 
     for row in rows:
         doc_path = row[0]
@@ -101,11 +124,20 @@ def main():
                 f"{doc_path}: overdue by {age_days - cycle_days}d "
                 f"(last reviewed {last_reviewed}, cycle {review_cycle})"
             )
+        elif args.warn_within is not None:
+            remaining_days = cycle_days - age_days
+            if remaining_days <= args.warn_within:
+                soon.append(
+                    f"{doc_path}: due in {remaining_days}d "
+                    f"(last reviewed {last_reviewed}, cycle {review_cycle})"
+                )
 
     for item in errors:
         print(f"ERROR: {item}")
     for item in warnings:
         print(f"WARN: {item}")
+    for item in soon:
+        print(f"SOON: {item}")
 
     if args.fail and (errors or warnings):
         return 1
