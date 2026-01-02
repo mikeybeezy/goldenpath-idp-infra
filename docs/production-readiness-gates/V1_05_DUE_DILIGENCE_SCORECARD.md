@@ -4,7 +4,7 @@ Doc contract:
 - Purpose: Periodic assessment of platform maturity and buyer risk.
 - Owner: platform
 - Status: living
-- Review cadence: 90d
+- Review cadence: 30d
 - Last reviewed: 2026-01-02
 - Related: docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md, docs/10-governance/01_GOVERNANCE.md
 
@@ -17,7 +17,7 @@ Scale:
 - 4 = strong
 - 5 = excellent
 
-Update this scorecard every 90 days or after major platform changes. The intent
+Update this scorecard every 30 days or after major platform changes. The intent
 is to keep decision readiness visible and traceable.
 
 ## 1) Ownership & Governance (3/5)

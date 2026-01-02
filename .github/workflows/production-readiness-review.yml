@@ -1,0 +1,146 @@
+# Owner: platform
+name: Policy - Production Readiness Review Cadence
+
+on:
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  review-cadence:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check review cadence
+        id: check
+        run: |
+          set +e
+          output=$(python3 scripts/check-doc-freshness.py --fail \
+            --only docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md \
+            --only docs/production-readiness-gates/V1_03_TODO.md \
+            --only docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md \
+            --only docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md 2>&1)
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "output<<'EOF'" >> "$GITHUB_OUTPUT"
+          echo "$output" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Fail on overdue reviews (PRs)
+        if: github.event_name == 'pull_request' && steps.check.outputs.status != '0'
+        run: |
+          echo "${{ steps.check.outputs.output }}"
+          exit 1
+      - name: Open review issue (scheduled)
+        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.check.outputs.status != '0'
+        uses: actions/github-script@v7
+        env:
+          CHECK_OUTPUT: ${{ steps.check.outputs.output }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const title = "Monthly platform review overdue";
+            const body = [
+              "The 30-day review cadence for production readiness docs is overdue.",
+              "",
+              "Docs to review:",
+              "- docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md",
+              "- docs/production-readiness-gates/V1_03_TODO.md",
+              "- docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md",
+              "- docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md",
+              "",
+              "Update `docs/90-doc-system/00_DOC_INDEX.md` with new `Last reviewed` dates.",
+              "",
+              "Check output:",
+              "```",
+              process.env.CHECK_OUTPUT || "No output captured.",
+              "```"
+            ].join("\n");
+
+            const query = `repo:${owner}/${repo} is:issue is:open in:title "${title}"`;
+            const { data } = await github.rest.search.issuesAndPullRequests({ q: query });
+            if (data.total_count > 0) {
+              const issue = data.items[0];
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issue.number,
+                body,
+              });
+            } else {
+              await github.rest.issues.create({ owner, repo, title, body });
+            }
+      - name: Check review due soon (scheduled)
+        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.check.outputs.status == '0'
+        id: soon
+        run: |
+          set +e
+          output=$(python3 scripts/check-doc-freshness.py --warn-within 7 \
+            --only docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md \
+            --only docs/production-readiness-gates/V1_03_TODO.md \
+            --only docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md \
+            --only docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md 2>&1)
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "output<<'EOF'" >> "$GITHUB_OUTPUT"
+          echo "$output" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Open review reminder issue (scheduled)
+        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.check.outputs.status == '0' && contains(steps.soon.outputs.output, 'SOON:')
+        uses: actions/github-script@v7
+        env:
+          CHECK_OUTPUT: ${{ steps.soon.outputs.output }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const title = "Monthly platform review due soon";
+            const body = [
+              "The 30-day review cadence for production readiness docs is due within 7 days.",
+              "",
+              "Docs to review:",
+              "- docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md",
+              "- docs/production-readiness-gates/V1_03_TODO.md",
+              "- docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md",
+              "- docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md",
+              "",
+              "Update `docs/90-doc-system/00_DOC_INDEX.md` with new `Last reviewed` dates after review.",
+              "",
+              "Check output:",
+              "```",
+              process.env.CHECK_OUTPUT || "No output captured.",
+              "```"
+            ].join("\n");
+
+            const query = `repo:${owner}/${repo} is:issue is:open in:title "${title}"`;
+            const { data } = await github.rest.search.issuesAndPullRequests({ q: query });
+            if (data.total_count > 0) {
+              const issue = data.items[0];
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issue.number,
+                body,
+              });
+            } else {
+              await github.rest.issues.create({ owner, repo, title, body });
+            }
+      - name: Summary
+        if: always()
+        run: |
+          echo "Docs under review:" >> "$GITHUB_STEP_SUMMARY"
+          echo "- docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md" >> "$GITHUB_STEP_SUMMARY"
+          echo "- docs/production-readiness-gates/V1_03_TODO.md" >> "$GITHUB_STEP_SUMMARY"
+          echo "- docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md" >> "$GITHUB_STEP_SUMMARY"
+          echo "- docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md" >> "$GITHUB_STEP_SUMMARY"
