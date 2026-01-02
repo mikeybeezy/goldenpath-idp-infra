@@ -1,3 +1,5 @@
+Select at least one checkbox per section by changing `[ ]` to `[x]`.
+
 ## Change Type
 - [ ] Feature
 - [ ] Bug fix
