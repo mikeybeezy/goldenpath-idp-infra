@@ -75,6 +75,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0061](ADR-0061-platform-observability-provisioning-boundary.md) | Platform | Observability provisioning boundary (Helm in-cluster, Terraform external) | Proposed | 2025-12-31 | Helm for in-cluster observability; Terraform for external/SaaS observability. |
 | [ADR-0062](ADR-0062-platform-app-template-contract.md) | Platform | App template contract for team-owned deployments | Proposed | 2025-12-31 | Reference app bundle with explicit platform vs app ownership. |
 | [ADR-0072](ADR-0072-platform-pr-checklist-template.md) | Platform | PR checklist template in PR gates guide | Proposed | 2026-01-02 | Copy PR checklist into PR gates doc to reduce guardrail friction. |
+| [ADR-0073](ADR-0073-platform-bootstrap-v3-irsa-skip.md) | Platform | Bootstrap v3 skips Terraform IRSA apply in Stage 3B | Proposed | 2026-01-02 | v3 bootstrap validates service accounts only to avoid IRSA plan failures. |
 
 ---
 
