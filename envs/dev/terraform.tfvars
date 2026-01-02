@@ -4,7 +4,7 @@ vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
 cluster_lifecycle = "ephemeral"
 # NEED TO UPDATE persistent or ephemeral
-build_id = "02-01-26-04"
+build_id = "02-01-26-06"
 
 
 public_subnets = [
@@ -83,8 +83,8 @@ addon_replica_counts = {
   snapshot-controller = 1
 }
 
-enable_storage_addons = false
-enable_k8s_resources  = false
+enable_storage_addons = true
+enable_k8s_resources  = true
 
 eks_config = {
   enabled                       = true
