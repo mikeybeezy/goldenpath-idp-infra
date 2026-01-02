@@ -1,4 +1,4 @@
-# ADR-0069: Standardized Documentation Taxonomy
+# ADR-0071: Standardized Documentation Taxonomy
 
 ## Status
 
@@ -9,8 +9,8 @@ Accepted
 The documentation structure has grown organically, leading to scattered "product-like" definitions (Requirements, Catalog, SLAs) and ambiguous homes for operational policies (Upgrade/Deprecation rules).
 
 New files were introduced without a clear home:
-- `production-readiness-gates/V1_03_TODO.md`
-- `production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md`
+- `production-readiness-gates/ROADMAP.md` (formerly `V1_03_TODO.md`)
+- `production-readiness-gates/READINESS_CHECKLIST.md` (formerly `V1_05_DUE_DILIGENCE_SCORECARD.md`)
 
 We need a standardized taxonomy to ensure every document has a predictable, discoverable location that aligns with the "Dewey Decimal" system (e.g., `20-contracts`, `70-operations`).
 

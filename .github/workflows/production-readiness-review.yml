@@ -26,9 +26,9 @@ jobs:
           set +e
           output=$(python3 scripts/check-doc-freshness.py --fail \
             --only docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md \
-            --only docs/production-readiness-gates/V1_03_TODO.md \
+            --only docs/production-readiness-gates/ROADMAP.md \
             --only docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md \
-            --only docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md 2>&1)
+            --only docs/production-readiness-gates/READINESS_CHECKLIST.md 2>&1)
           status=$?
           echo "status=$status" >> "$GITHUB_OUTPUT"
           echo "output<<EOF" >> "$GITHUB_OUTPUT"
@@ -55,9 +55,9 @@ jobs:
               "",
               "Docs to review:",
               "- docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md",
-              "- docs/production-readiness-gates/V1_03_TODO.md",
+              "- docs/production-readiness-gates/ROADMAP.md",
               "- docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md",
-              "- docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md",
+              "- docs/production-readiness-gates/READINESS_CHECKLIST.md",
               "",
               "Update `docs/90-doc-system/00_DOC_INDEX.md` with new `Last reviewed` dates.",
               "",
@@ -87,9 +87,9 @@ jobs:
           set +e
           output=$(python3 scripts/check-doc-freshness.py --warn-within 7 \
             --only docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md \
-            --only docs/production-readiness-gates/V1_03_TODO.md \
+            --only docs/production-readiness-gates/ROADMAP.md \
             --only docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md \
-            --only docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md 2>&1)
+            --only docs/production-readiness-gates/READINESS_CHECKLIST.md 2>&1)
           status=$?
           echo "status=$status" >> "$GITHUB_OUTPUT"
           echo "output<<EOF" >> "$GITHUB_OUTPUT"
@@ -111,9 +111,9 @@ jobs:
               "",
               "Docs to review:",
               "- docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md",
-              "- docs/production-readiness-gates/V1_03_TODO.md",
+              "- docs/production-readiness-gates/ROADMAP.md",
               "- docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md",
-              "- docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md",
+              "- docs/production-readiness-gates/READINESS_CHECKLIST.md",
               "",
               "Update `docs/90-doc-system/00_DOC_INDEX.md` with new `Last reviewed` dates after review.",
               "",
@@ -141,6 +141,6 @@ jobs:
         run: |
           echo "Docs under review:" >> "$GITHUB_STEP_SUMMARY"
           echo "- docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md" >> "$GITHUB_STEP_SUMMARY"
-          echo "- docs/production-readiness-gates/V1_03_TODO.md" >> "$GITHUB_STEP_SUMMARY"
+          echo "- docs/production-readiness-gates/ROADMAP.md" >> "$GITHUB_STEP_SUMMARY"
           echo "- docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md" >> "$GITHUB_STEP_SUMMARY"
-          echo "- docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md" >> "$GITHUB_STEP_SUMMARY"
+          echo "- docs/production-readiness-gates/READINESS_CHECKLIST.md" >> "$GITHUB_STEP_SUMMARY"

@@ -1,9 +1,9 @@
-# CL-0018: Documentation Taxonomy Refactor
+# CL-0021: Documentation Taxonomy Refactor
 
 Date: 2026-01-02
 Owner: platform
 Scope: docs
-Related: docs/adrs/ADR-0069-doc-taxonomy-refactor.md, PR #112
+Related: docs/adrs/ADR-0071-doc-taxonomy-refactor.md, PR #112
 
 ## Summary
 
@@ -17,7 +17,7 @@ Restructured the documentation layout to standardize where "Product", "Contracts
 - `docs/20-contracts/01_PLATFORM_SERVICE_AGREEMENT.md`: Placeholder for SLAs.
 - `docs/20-contracts/10_SERVICE_CATALOG.md`: Placeholder for service catalog.
 - `docs/70-operations/01_LIFECYCLE_POLICY.md`: Placeholder for upgrade/deprecation policies.
-- `docs/adrs/ADR-0069-doc-taxonomy-refactor.md`: Decision record for this change.
+- `docs/adrs/ADR-0071-doc-taxonomy-refactor.md`: Decision record for this change.
 
 ### Changed
 

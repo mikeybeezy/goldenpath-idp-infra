@@ -5,7 +5,7 @@ Doc contract:
 - Owner: platform
 - Status: living
 - Review cadence: 90d
-- Related: docs/V1_03_TODO.md, docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md
+- Related: docs/production-readiness-gates/ROADMAP.md, docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md
 
 This document defines the scoped V1 deliverables and what is deferred to V1.1.
 It is a living guide for planning and execution.
