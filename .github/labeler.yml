@@ -47,3 +47,4 @@ adr-required:
           - ".github/workflows/**"
           - "docs/10-governance/**"
           - "docs/20-contracts/**"
+# no-op 2026-01-02T11:16:48Z
