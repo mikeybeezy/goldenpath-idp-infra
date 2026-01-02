@@ -22,9 +22,9 @@ pre-merge apply without introducing per-PR ephemeral environments.
 
 Introduce a **dev branch gate**:
 
-- Feature branches merge into `development` or `dev-feature`.
-- The gate branch applies to the shared dev environment.
-- Only changes that pass in the dev gate are promoted to `main`.
+- Feature branches merge into `dev`.
+- `dev` applies to the shared dev environment.
+- Only changes that pass in `dev` are promoted to `main`.
 
 This keeps the dev environment as a shared gate while avoiding per-PR
 environment cost.
@@ -49,7 +49,7 @@ minimum promotion path for changes that affect delivery rails or infrastructure.
 
 ### Operational impact
 
-- The gate branch becomes the pre-merge validation branch.
+- `dev` becomes the pre-merge validation branch.
 - Promotion requires a clean dev run before merging to `main`.
 
 ## Alternatives considered
@@ -59,7 +59,7 @@ minimum promotion path for changes that affect delivery rails or infrastructure.
 
 ## Follow-ups
 
-- Update branch protection to require dev gate checks before `main`.
+- Update branch protection to require dev checks before `main`.
 - Document the dev gate workflow in governance and onboarding.
 
 ## Diagram
@@ -76,11 +76,10 @@ Legend:
 |  - Devs implement change  |
 +-------------+-------------+
               |
-              | PR merge --> dev/dev-feature
+              | PR merge --> dev
               v
 +---------------------------+        [QUALITY GATE]
-|  dev/dev-feature branch   |  -------------------------+
-|  (gate)                   |                           |
+|  dev branch (gate)        |  -------------------------+
 |  - Shared pre-merge gate  |                           |
 +-------------+-------------+                           |
               |                                         |
