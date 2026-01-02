@@ -1,4 +1,4 @@
-# CL-0005: Golden Signals Dashboard Standard
+# CL-0020: Golden Signals Dashboard Standard
 
 Date: 2026-01-02
 Owner: platform

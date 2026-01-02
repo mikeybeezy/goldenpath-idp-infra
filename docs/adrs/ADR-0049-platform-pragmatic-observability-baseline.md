@@ -5,7 +5,7 @@
 - **Owners:** platform team
 - **Domain:** Platform
 - **Decision type:** Observability
-- **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`, `docs/adrs/ADR-0011-platform-observability-baseline-golden-signals.md`
+- **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`, `docs/adrs/ADR-0069-platform-observability-baseline-golden-signals.md`
 
 ---
 
