@@ -38,6 +38,7 @@ on:
         options:
           - v1
           - v2
+          - v3
       config_source:
         description: "Config source (repo tfvars or workflow inputs)"
         required: true

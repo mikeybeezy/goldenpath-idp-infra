@@ -24,8 +24,10 @@ ifeq ($(BOOTSTRAP_VERSION),v1)
 BOOTSTRAP_SCRIPT := bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
 else ifeq ($(BOOTSTRAP_VERSION),v2)
 BOOTSTRAP_SCRIPT := bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v2.sh
+else ifeq ($(BOOTSTRAP_VERSION),v3)
+BOOTSTRAP_SCRIPT := bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v3.sh
 else
-$(error BOOTSTRAP_VERSION must be v1 or v2)
+$(error BOOTSTRAP_VERSION must be v1, v2, or v3)
 endif
 
 define require_build_id
