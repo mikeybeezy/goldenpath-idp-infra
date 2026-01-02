@@ -37,3 +37,4 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/20-contracts/42_APP_TEMPLATE_LIVING.md | platform | 90d | 2025-12-31 | App template structure and ownership boundaries |
 | docs/00-foundations/43_OPERATING_PRINCIPLES.md | platform | 90d | 2026-01-01 | Grove-inspired operating principles |
 | docs/90-doc-system/44_DOC_TIGHTENING_PLAN.md | platform | 90d | 2026-01-01 | Doc relationships and consolidation plan |
+| docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md | platform | 90d | 2026-01-02 | Periodic due-diligence assessment and gaps |
