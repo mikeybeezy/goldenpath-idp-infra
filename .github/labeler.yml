@@ -1,39 +1,49 @@
 infra:
-  - "envs/**"
-  - "modules/**"
-  - "bootstrap/**"
-  - "gitops/**"
-  - "idp-tooling/**"
-  - "scripts/**"
-  - ".github/workflows/**"
-  - "Makefile"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "envs/**"
+          - "modules/**"
+          - "bootstrap/**"
+          - "gitops/**"
+          - "idp-tooling/**"
+          - "scripts/**"
+          - ".github/workflows/**"
+          - "Makefile"
 
 governance:
-  - "docs/10-governance/**"
-  - "docs/20-contracts/**"
-  - "docs/90-doc-system/**"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/10-governance/**"
+          - "docs/20-contracts/**"
+          - "docs/90-doc-system/**"
 
 docs:
-  - "docs/**"
-  - "!docs/10-governance/**"
-  - "!docs/20-contracts/**"
-  - "!docs/90-doc-system/**"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "!docs/10-governance/**"
+          - "!docs/20-contracts/**"
+          - "!docs/90-doc-system/**"
 
 changelog-required:
-  - "envs/**"
-  - "modules/**"
-  - "bootstrap/**"
-  - "gitops/**"
-  - ".github/workflows/**"
-  - "docs/10-governance/**"
-  - "docs/20-contracts/**"
-  - "docs/90-doc-system/**"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "envs/**"
+          - "modules/**"
+          - "bootstrap/**"
+          - "gitops/**"
+          - ".github/workflows/**"
+          - "docs/10-governance/**"
+          - "docs/20-contracts/**"
+          - "docs/90-doc-system/**"
 
 adr-required:
-  - "envs/**"
-  - "modules/**"
-  - "bootstrap/**"
-  - "gitops/**"
-  - ".github/workflows/**"
-  - "docs/10-governance/**"
-  - "docs/20-contracts/**"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "envs/**"
+          - "modules/**"
+          - "bootstrap/**"
+          - "gitops/**"
+          - ".github/workflows/**"
+          - "docs/10-governance/**"
+          - "docs/20-contracts/**"
