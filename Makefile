@@ -12,12 +12,21 @@ SKIP_CERT_MANAGER_VALIDATION ?= true
 SKIP_ARGO_SYNC_WAIT ?= true
 COMPACT_OUTPUT ?= false
 SCALE_DOWN_AFTER_BOOTSTRAP ?= false
+BOOTSTRAP_VERSION ?= v1
 # Defaults to envs/<env>; override on the command line for custom paths.
 TF_DIR ?= $(ENV_DIR)
 BUILD_ID ?= $(shell awk -F'=' '/^build_id[[:space:]]*=/{gsub(/"/,"",$$2);gsub(/[[:space:]]/,"",$$2);print $$2;exit}' $(ENV_DIR)/terraform.tfvars 2>/dev/null)
 NODEGROUP ?=
 CLEANUP_ORPHANS ?= false
 ALLOW_REUSE_BUILD_ID ?= false
+
+ifeq ($(BOOTSTRAP_VERSION),v1)
+BOOTSTRAP_SCRIPT := bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
+else ifeq ($(BOOTSTRAP_VERSION),v2)
+BOOTSTRAP_SCRIPT := bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v2.sh
+else
+$(error BOOTSTRAP_VERSION must be v1 or v2)
+endif
 
 define require_build_id
 	@if [ -z "$(BUILD_ID)" ]; then \
@@ -99,7 +108,7 @@ build:
 	ENABLE_TF_K8S_RESOURCES=$(ENABLE_TF_K8S_RESOURCES) \
 	SCALE_DOWN_AFTER_BOOTSTRAP=$(SCALE_DOWN_AFTER_BOOTSTRAP) \
 	TF_DIR=$(TF_DIR) \
-	bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh $(CLUSTER) $(REGION) $(KONG_NAMESPACE) 2>&1 | tee "$$log"; \
+	bash $(BOOTSTRAP_SCRIPT) $(CLUSTER) $(REGION) $(KONG_NAMESPACE) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
 
@@ -142,7 +151,7 @@ timed-build:
 	  ENABLE_TF_K8S_RESOURCES=$(ENABLE_TF_K8S_RESOURCES) \
 	  SCALE_DOWN_AFTER_BOOTSTRAP=$(SCALE_DOWN_AFTER_BOOTSTRAP) \
 	  TF_DIR=$(TF_DIR) \
-	  bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh $(CLUSTER) $(REGION) $(KONG_NAMESPACE) ) 2>&1 | tee "$$log"; \
+	  bash $(BOOTSTRAP_SCRIPT) $(CLUSTER) $(REGION) $(KONG_NAMESPACE) ) 2>&1 | tee "$$log"; \
 	status=$${PIPESTATUS[0]}; \
 	end_epoch=$$(date -u +%s); \
 	duration=$$((end_epoch-start_epoch)); \
@@ -171,7 +180,7 @@ bootstrap:
 	COMPACT_OUTPUT=$(COMPACT_OUTPUT) \
 	SCALE_DOWN_AFTER_BOOTSTRAP=$(SCALE_DOWN_AFTER_BOOTSTRAP) \
 	TF_DIR=$(TF_DIR) \
-	bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh $(CLUSTER) $(REGION) $(KONG_NAMESPACE) 2>&1 | tee "$$log"; \
+	bash $(BOOTSTRAP_SCRIPT) $(CLUSTER) $(REGION) $(KONG_NAMESPACE) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
 
@@ -281,7 +290,7 @@ timed-bootstrap:
 	  ENABLE_TF_K8S_RESOURCES=$(ENABLE_TF_K8S_RESOURCES) \
 	  SCALE_DOWN_AFTER_BOOTSTRAP=$(SCALE_DOWN_AFTER_BOOTSTRAP) \
 	  TF_DIR=$(TF_DIR) \
-	  bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh $(CLUSTER) $(REGION) $(KONG_NAMESPACE) ) 2>&1 | tee "$$log"; \
+	  bash $(BOOTSTRAP_SCRIPT) $(CLUSTER) $(REGION) $(KONG_NAMESPACE) ) 2>&1 | tee "$$log"; \
 	status=$${PIPESTATUS[0]}; \
 	end_epoch=$$(date -u +%s); \
 	duration=$$((end_epoch-start_epoch)); \

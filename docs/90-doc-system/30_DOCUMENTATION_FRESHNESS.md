@@ -62,7 +62,7 @@ Optional subset check:
 ```bash
 python3 scripts/check-doc-freshness.py --fail \
   --only docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md \
-  --only docs/production-readiness-gates/V1_03_TODO.md
+  --only docs/production-readiness-gates/ROADMAP.md
 ```
 
 Optional pre-due reminder:
@@ -70,7 +70,7 @@ Optional pre-due reminder:
 ```bash
 python3 scripts/check-doc-freshness.py --warn-within 7 \
   --only docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md \
-  --only docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md
+  --only docs/production-readiness-gates/READINESS_CHECKLIST.md
 ```
 
 Optional test override:
@@ -101,9 +101,9 @@ This may coincide with edits or be a separate review pass.
 The platform runs a 30-day review cycle for:
 
 - docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md
-- docs/production-readiness-gates/V1_03_TODO.md
+- docs/production-readiness-gates/ROADMAP.md
 - docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md
-- docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md
+- docs/production-readiness-gates/READINESS_CHECKLIST.md
 
 This is enforced by `.github/workflows/production-readiness-review.yml`.
 If you make it a required check on `main`, merges are blocked when the review

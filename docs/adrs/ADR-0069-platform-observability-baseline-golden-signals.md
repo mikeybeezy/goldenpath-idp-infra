@@ -1,4 +1,4 @@
-# ADR-0011: Observability baseline for golden signals in production
+# ADR-0069: Observability baseline for golden signals in production
 
 - **Status:** Superseded (by ADR-0049-platform-pragmatic-observability-baseline.md)
 - **Date:** 2025-12-23

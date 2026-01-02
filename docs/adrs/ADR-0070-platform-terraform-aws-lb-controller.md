@@ -1,4 +1,4 @@
-# ADR-0064: Terraform Management of AWS Load Balancer Controller
+# ADR-0070: Terraform Management of AWS Load Balancer Controller
 
 - **Status:** Proposed
 - **Date:** 2026-01-02

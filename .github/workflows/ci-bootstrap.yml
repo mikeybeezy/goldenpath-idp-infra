@@ -30,6 +30,14 @@ on:
         options:
           - ephemeral
           - persistent
+      bootstrap_version:
+        description: "Bootstrap script version"
+        required: true
+        default: "v1"
+        type: choice
+        options:
+          - v1
+          - v2
       config_source:
         description: "Config source (repo tfvars or workflow inputs)"
         required: true
@@ -102,6 +110,7 @@ jobs:
       TF_DIR: envs/${{ inputs.env }}
       MIN_READY_NODES: ${{ inputs.min_ready_nodes }}
       CONFIRM_TF_APPLY: ${{ inputs.confirm_irsa_apply }}
+      BOOTSTRAP_VERSION: ${{ inputs.bootstrap_version }}
       LB_CLEANUP_ATTEMPTS: "5"
       LB_CLEANUP_INTERVAL: "20"
       REMOVE_K8S_SA_FROM_STATE: "true"
@@ -208,6 +217,28 @@ jobs:
           fi
           echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
           echo "Resolved STATE_KEY=${STATE_KEY}"
+
+      - name: Bootstrap config summary
+        if: always()
+        run: |
+          {
+            echo "Bootstrap config"
+            echo "- bootstrap_version: ${BOOTSTRAP_VERSION}"
+            echo "- env: ${ENV}"
+            echo "- region: ${AWS_REGION}"
+            echo "- lifecycle: ${CLUSTER_LIFECYCLE}"
+            echo "- build_id: ${BUILD_ID:-<empty>}"
+            echo "- cluster_name: ${CLUSTER_NAME}"
+            echo "- config_source: ${{ inputs.config_source }}"
+            echo "- tfvars_path: ${TFVARS_PATH}"
+            echo "- state_key: ${STATE_KEY}"
+            echo "- enable_tf_k8s_resources: ${ENABLE_TF_K8S_RESOURCES}"
+            echo "- confirm_irsa_apply: ${{ inputs.confirm_irsa_apply }}"
+            echo "- skip_argo_sync_wait: ${{ inputs.skip_argo_sync_wait }}"
+            echo "- skip_cert_manager_validation: ${{ inputs.skip_cert_manager_validation }}"
+            echo "- compact_output: ${{ inputs.compact_output }}"
+            echo "- min_ready_nodes: ${MIN_READY_NODES}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Guard - backend state
         run: |
