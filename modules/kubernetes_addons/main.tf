@@ -76,8 +76,8 @@ resource "helm_release" "bootstrap_apps" {
           basename(f) == "cluster-autoscaler.yaml" ?
           replace(
             file("${var.path_to_app_manifests}/${f}"),
-            "        valueFiles:",
-            "        parameters:\n          - name: autoDiscovery.clusterName\n            value: ${var.cluster_name}\n        valueFiles:"
+            "          valueFiles:",
+            "          parameters:\n            - name: autoDiscovery.clusterName\n              value: ${var.cluster_name}\n          valueFiles:"
           ) :
           file("${var.path_to_app_manifests}/${f}")
         )
