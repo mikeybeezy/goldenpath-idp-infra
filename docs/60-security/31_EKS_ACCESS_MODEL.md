@@ -96,6 +96,25 @@ aws eks describe-cluster \
 - Human access is explicit via access entries and policies.
 - Workload access uses IRSA and is separate from human access.
 
+## Terraform Authentication
+
+Terraform manages Kubernetes resources (via the `kubernetes` and `helm` providers) by authenticating as the IAM Role running the apply. We avoid static tokens. Instead, we use the `exec` plugin to generate short-lived tokens on demand:
+
+```hcl
+provider "kubernetes" {
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", var.cluster_name]
+    command     = "aws"
+  }
+}
+```
+
+ This ensures that:
+ 1.  **Zero Trust**: No long-lived secrets are stored in the state.
+ 2.  **Robustness**: Authentication refreshes automatically if the apply takes longer than 15 minutes.
+ 3.  **Traceability**: All API actions are logged in CloudTrail as the assumed IAM Role.
+
 ## Related docs
 
 - `docs/60-security/33_IAM_ROLES_AND_POLICIES.md`
