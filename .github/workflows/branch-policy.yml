@@ -16,9 +16,10 @@ jobs:
           base_ref="${{ github.base_ref }}"
           head_ref="${{ github.head_ref }}"
           if [[ "${base_ref}" == "main" ]]; then
-            if [[ "${head_ref}" != "development" ]]; then
-              echo "Only development may merge to main." >&2
-              echo "Open a PR from development instead." >&2
+            allowed_heads=("development" "dev-feature")
+            if [[ ! " ${allowed_heads[*]} " =~ " ${head_ref} " ]]; then
+              echo "Only development or dev-feature may merge to main." >&2
+              echo "Open a PR from development or dev-feature instead." >&2
               exit 1
             fi
             echo "Allowed: ${head_ref} -> ${base_ref}"
