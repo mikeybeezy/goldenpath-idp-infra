@@ -226,7 +226,7 @@ irsa_plan_guard() {
 
   echo "Validating IRSA plan scope (service accounts only)..."
   plan_output="$(terraform -chdir="${TF_DIR}" plan -no-color \
-    -var="enable_k8s_resources=true" \
+    -var="enable_k8s_resources=false" \
     "${tfvars_args[@]}" \
     -target="kubernetes_service_account_v1.aws_load_balancer_controller[0]" \
     -target="kubernetes_service_account_v1.cluster_autoscaler[0]")"
