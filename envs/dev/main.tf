@@ -191,14 +191,40 @@ module "eks" {
   depends_on = [module.public_route_table]
 }
 
-data "aws_eks_cluster_auth" "this" {
-  name = module.eks[0].cluster_name
+data "aws_caller_identity" "current" {}
+
+# Grant the Terraform runner (CI role or local user) admin access to the cluster
+# This ensures 'exec' auth works even if the creator was a different role.
+resource "aws_eks_access_entry" "terraform_admin" {
+  cluster_name  = module.eks[0].cluster_name
+  principal_arn = data.aws_caller_identity.current.arn
+  type          = "STANDARD"
+
+  tags = local.common_tags
+
+  depends_on = [module.eks]
+}
+
+resource "aws_eks_access_policy_association" "terraform_admin" {
+  cluster_name  = module.eks[0].cluster_name
+  principal_arn = aws_eks_access_entry.terraform_admin.principal_arn
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+
+  access_scope {
+    type = "cluster"
+  }
+
+  depends_on = [aws_eks_access_entry.terraform_admin]
 }
 
 provider "kubernetes" {
   host                   = module.eks[0].cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
-  token                  = data.aws_eks_cluster_auth.this.token
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", module.eks[0].cluster_name, "--region", "eu-west-2"]
+    command     = "aws"
+  }
 }
 
 resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
@@ -212,16 +238,40 @@ resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
     }
   }
 
-  depends_on = [module.eks, module.iam]
+  depends_on = [
+    module.eks,
+    module.iam,
+    aws_eks_access_policy_association.terraform_admin
+  ]
 }
 
+resource "kubernetes_service_account_v1" "cluster_autoscaler" {
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_autoscaler_role ? 1 : 0
 
+  metadata {
+    name      = var.iam_config.autoscaler_service_account_name
+    namespace = var.iam_config.autoscaler_service_account_namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].cluster_autoscaler_role_arn
+    }
+  }
+
+  depends_on = [
+    module.eks,
+    module.iam,
+    aws_eks_access_policy_association.terraform_admin
+  ]
+}
 
 provider "helm" {
   kubernetes {
     host                   = module.eks[0].cluster_endpoint
     cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
-    token                  = data.aws_eks_cluster_auth.this.token
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      args        = ["eks", "get-token", "--cluster-name", module.eks[0].cluster_name, "--region", "eu-west-2"]
+      command     = "aws"
+    }
   }
 }
 
@@ -238,5 +288,9 @@ module "kubernetes_addons" {
 
   tags = local.common_tags
 
-  depends_on = [module.eks]
+  depends_on = [
+    module.eks,
+    kubernetes_service_account_v1.aws_load_balancer_controller,
+    aws_eks_access_policy_association.terraform_admin
+  ]
 }
