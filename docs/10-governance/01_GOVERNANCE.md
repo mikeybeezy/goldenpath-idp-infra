@@ -257,8 +257,8 @@ Advanced DevSecOps controls are intentionally deferred to V2 to preserve deliver
 Principle: GoldenPath defines a CD deployment contract to make promotion and rollback deterministic,
 auditable, and consistent across environments.
 
-Principle: The `main` branch only accepts merges from `dev`. Both `dev` and `main` are protected,
-and promotion requires passing the dev gate.
+Principle: The `main` branch only accepts merges from `development` or `dev-feature`. Both the
+gate branch and `main` are protected, and promotion requires passing the dev gate.
 
 Principle: Monitoring and observability data is persisted from day one. Storage add-ons are
 required so Prometheus/Grafana/Alertmanager data survives pod restarts and rollout cycles. See

@@ -4,17 +4,19 @@
 
 Use short-lived branches and keep `main` deployable.
 
-- `main`: protected, always deployable; only merged PRs.
+- `main`: protected, always deployable; only PRs from a gate branch.
+- `development` / `dev-feature`: optional gate branches allowed to merge into `main`.
 - `feature/<topic>`: new work.
 - `fix/<topic>`: urgent bugfixes.
 - `chore/<topic>`: docs, tooling, cleanup.
 
 Flow:
 
-1. Branch from `main`.
-2. Open a PR early for visibility.
-3. Squash-merge into `main`.
-4. Delete the branch after merge.
+1. Branch from the active gate branch (`development` or `dev-feature`).
+2. Open a PR early for visibility into that gate branch.
+3. Squash-merge into the gate branch after checks pass.
+4. Promote via PR from the gate branch to `main`.
+5. Delete the branch after merge.
 
 Examples:
 

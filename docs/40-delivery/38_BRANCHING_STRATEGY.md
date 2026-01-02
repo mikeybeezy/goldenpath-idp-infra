@@ -23,19 +23,21 @@ It keeps main stable and ensures all changes are reviewed.
 ## Branch roles
 
 - `main`: production-ready baseline, protected.
-- `development`: integration branch, only source allowed to merge into `main`.
-- short-lived branches: feature/fix/docs/chore branches off `development`.
+- `development`: primary integration branch, allowed to merge into `main`.
+- `dev-feature`: optional integration branch, allowed to merge into `main` when enabled.
+- short-lived branches: feature/fix/docs/chore branches off the active gate branch.
 
 ---
 
 ## PR flow
 
-1) Create a branch from `development`.
-2) Open a PR into `development`.
+1) Create a branch from the active gate branch (`development` or `dev-feature`).
+2) Open a PR into that gate branch.
 3) Merge after checks pass.
-4) Promote via a single PR from `development` to `main`.
+4) Promote via a single PR from the gate branch to `main`.
 
 Direct merges from feature branches to `main` are not allowed.
+Only `development` or `dev-feature` may target `main`.
 
 ---
 
@@ -67,11 +69,11 @@ Recommended settings for `development`:
 ## CI guard (optional enforcement)
 
 We recommend a lightweight CI guard that fails any PR targeting `main`
-unless the source branch is `development`. This makes the policy enforceable
-in repos without enterprise-level branch protections.
+unless the source branch is `development` or `dev-feature`. This makes the
+policy enforceable in repos without enterprise-level branch protections.
 
 ---
 
 ## Exceptions
 
-None. Hotfixes still flow through `development` first.
+None. Hotfixes still flow through the gate branch first.
