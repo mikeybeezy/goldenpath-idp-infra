@@ -73,6 +73,11 @@ on:
         description: "Node instance type (bootstrap)"
         required: true
         default: "t3.small"
+      enable_tf_k8s_resources:
+        description: "Enable Terraform-managed Kubernetes resources (IRSA service accounts)"
+        required: true
+        default: true
+        type: boolean
       min_ready_nodes:
         description: "Minimum Ready nodes required"
         required: true
@@ -114,7 +119,7 @@ jobs:
       LB_CLEANUP_ATTEMPTS: "5"
       LB_CLEANUP_INTERVAL: "20"
       REMOVE_K8S_SA_FROM_STATE: "true"
-      ENABLE_TF_K8S_RESOURCES: "true"
+      ENABLE_TF_K8S_RESOURCES: ${{ inputs.enable_tf_k8s_resources }}
       SCALE_DOWN_AFTER_BOOTSTRAP: "false"
       TF_AUTO_APPROVE: "true"
     steps:
