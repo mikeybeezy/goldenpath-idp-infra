@@ -64,4 +64,3 @@ and contribution.
 - Guardrails and policy sources: `docs/10-governance/04_PR_GUARDRAILS.md`
 - Doc freshness rules: `docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md`
 - Changelog policy: `docs/changelog/README.md`
-
