@@ -184,31 +184,6 @@ data "aws_eks_cluster_auth" "this" {
   name = module.eks[0].cluster_name
 }
 
-# Grant Cluster Admin access to specified principals (CI/CD roles, etc.)
-resource "aws_eks_access_entry" "terraform_admin" {
-  for_each      = toset(var.admin_arns)
-  cluster_name  = module.eks[0].cluster_name
-  principal_arn = each.value
-  type          = "STANDARD"
-
-  tags = local.common_tags
-
-  depends_on = [module.eks]
-}
-
-resource "aws_eks_access_policy_association" "terraform_admin" {
-  for_each      = aws_eks_access_entry.terraform_admin
-  cluster_name  = module.eks[0].cluster_name
-  principal_arn = each.value.principal_arn
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-
-  access_scope {
-    type = "cluster"
-  }
-
-  depends_on = [aws_eks_access_entry.terraform_admin]
-}
-
 provider "kubernetes" {
   host                   = module.eks[0].cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)

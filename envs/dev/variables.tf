@@ -21,12 +21,6 @@ variable "owner_team" {
   default     = "platform-team"
 }
 
-variable "admin_arns" {
-  description = "List of IAM ARNs to grant Cluster Admin access (e.g., CI Plan Role, CI Apply Role)."
-  type        = list(string)
-  default     = []
-}
-
 variable "cluster_lifecycle" {
   type        = string
   description = "Lifecycle for the environment: ephemeral or persistent."
