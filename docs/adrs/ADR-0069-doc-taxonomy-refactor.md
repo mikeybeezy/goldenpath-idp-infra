@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-The documentation structure has grown organically, leading to scattered "product-like" definitions (Requirements, Catalog, SLAs) and ambiguous homes for operational policies (Upgrade/Deprecation rules). 
+The documentation structure has grown organically, leading to scattered "product-like" definitions (Requirements, Catalog, SLAs) and ambiguous homes for operational policies (Upgrade/Deprecation rules).
 
 New files were introduced without a clear home:
 - `production-readiness-gates/V1_03_TODO.md`
