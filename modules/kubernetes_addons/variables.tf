@@ -15,3 +15,24 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "vpc_id" {
+  description = "VPC ID where the cluster is running (required for AWS LB Controller)."
+  type        = string
+}
+
+variable "cluster_name" {
+  description = "Name of the EKS cluster (required for AWS LB Controller)."
+  type        = string
+}
+
+variable "aws_region" {
+  description = "AWS Region where the cluster is running (required for AWS LB Controller)."
+  type        = string
+}
+
+variable "service_account_name" {
+  description = "Name of the service account for AWS LB Controller."
+  type        = string
+  default     = "aws-load-balancer-controller"
+}
