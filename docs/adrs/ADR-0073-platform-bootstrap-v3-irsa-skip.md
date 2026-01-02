@@ -62,5 +62,3 @@ Applies to bootstrap runs that select `BOOTSTRAP_VERSION=v3`.
 - **Patch the v2 guard to accept "No changes":** still runs Terraform in
   bootstrap; more moving parts for a stage intended to be validation only.
 - **Expose an IRSA toggle only:** relies on manual input and is easy to mis-set.
-
-
