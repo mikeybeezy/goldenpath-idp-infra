@@ -1,0 +1,67 @@
+# Owner: platform
+name: Policy - PR Guardrails
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  pr-guardrails:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce PR checklist selections
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body || "";
+            const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            const isChecked = (label) => {
+              const pattern = new RegExp(`- \\[[xX]\\] ${escapeRegex(label)}`);
+              return pattern.test(body);
+            };
+
+            const sections = [
+              {
+                name: "Change Type",
+                labels: ["Feature", "Bug fix", "Infra change", "Governance / Policy"],
+              },
+              {
+                name: "Decision Impact",
+                labels: ["Requires ADR", "Updates existing ADR", "No architectural impact"],
+              },
+              {
+                name: "Production Readiness",
+                labels: ["Readiness checklist completed", "No production impact"],
+              },
+              {
+                name: "Testing / Validation",
+                labels: [
+                  "Plan/apply link provided (paste below)",
+                  "Test command or run ID provided (paste below)",
+                  "Not applicable",
+                ],
+              },
+              {
+                name: "Risk & Rollback",
+                labels: [
+                  "Rollback plan documented (link or notes below)",
+                  "Data migration required",
+                  "No data migration",
+                  "Not applicable",
+                ],
+              },
+            ];
+
+            const missing = sections.filter(section =>
+              !section.labels.some(label => isChecked(label))
+            );
+
+            if (missing.length) {
+              core.setFailed(
+                `Missing required PR checklist selections: ${missing.map(s => s.name).join(", ")}.`
+              );
+            }
