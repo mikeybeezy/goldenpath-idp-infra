@@ -32,6 +32,7 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | platform | 90d | 2025-12-29 | V1 vs V1.1 scope and delivery checklist |
 | docs/40-delivery/38_BRANCHING_STRATEGY.md | platform | 90d | 2025-12-29 | Branching strategy and promotion flow |
 | docs/40-delivery/39_GOLDEN_PATH_VALIDATION.md | platform | 90d | 2025-12-30 | End-to-end PR → apply → bootstrap → teardown validation |
+| docs/40-delivery/41_BUILD_RUN_LOG.md | platform | 30d | 2026-01-02 | Build/bootstrap/teardown run summaries and links |
 | docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md | platform | 90d | 2025-12-31 | Changelog policy and enforcement |
 | docs/changelog/CHANGELOG_LABELS.md | platform | 90d | 2025-12-31 | Changelog label definitions and rules |
 | docs/10-governance/35_RESOURCE_TAGGING.md | platform | 90d | 2026-01-01 | Tagging contract and cleanup implications |
