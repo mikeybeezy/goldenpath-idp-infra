@@ -16,6 +16,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "argocd_values" {
+  description = "Custom values.yaml content for ArgoCD."
+  type        = string
+  default     = ""
+}
+
 variable "vpc_id" {
   description = "VPC ID where the cluster is running (required for AWS LB Controller)."
   type        = string

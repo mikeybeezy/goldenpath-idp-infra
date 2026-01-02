@@ -11,6 +11,8 @@ resource "helm_release" "argocd" {
   # Pass minimal values or rely on defaults.
   # We use "server.insecure=true" if we are terminating TLS at an oversized ALB (common in simple setups),
   # but here we stick to defaults unless specified.
+  values = [var.argocd_values]
+
   set {
     name  = "server.service.type"
     value = "ClusterIP"
@@ -63,11 +65,22 @@ resource "helm_release" "bootstrap_apps" {
   timeout          = 300
 
   # Collect all YAML files from the target directory and pass them as a list of strings
+  # Logic:
+  # 1. Recursive discovery (**/*.{yaml,yml})
+  # 2. Inject cluster name into cluster-autoscaler.yaml
   values = [
     yamlencode({
       manifests = [
-        for f in(var.path_to_app_manifests != "" ? fileset(var.path_to_app_manifests, "*.yaml") : []) :
-        file("${var.path_to_app_manifests}/${f}")
+        for f in(var.path_to_app_manifests != "" ? fileset(var.path_to_app_manifests, "**/*.{yaml,yml}") : []) :
+        (
+          basename(f) == "cluster-autoscaler.yaml" ?
+          replace(
+            file("${var.path_to_app_manifests}/${f}"),
+            "        valueFiles:",
+            "        parameters:\n          - name: autoDiscovery.clusterName\n            value: ${var.cluster_name}\n        valueFiles:"
+          ) :
+          file("${var.path_to_app_manifests}/${f}")
+        )
       ]
     })
   ]
