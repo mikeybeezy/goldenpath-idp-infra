@@ -16,6 +16,11 @@ on:
         description: "Build ID (dd-mm-yy-NN) for existing ephemeral cluster"
         required: true
         type: string
+      enable_k8s_resources:
+        description: "Enable Kubernetes/Helm resources (set false for access-entry-only update)"
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   update-dev:
@@ -136,6 +141,7 @@ jobs:
           echo "Lifecycle=ephemeral"
           echo "BuildId=${{ inputs.build_id }}"
           echo "StateKey=${STATE_KEY}"
+          echo "EnableK8sResources=${{ inputs.enable_k8s_resources }}"
 
       - name: Terraform init (backend)
         run: |
@@ -150,7 +156,8 @@ jobs:
         run: |
           terraform -chdir=envs/dev apply -auto-approve -input=false -no-color \
             -var "cluster_lifecycle=ephemeral" \
-            -var "build_id=${{ inputs.build_id }}"
+            -var "build_id=${{ inputs.build_id }}" \
+            -var "enable_k8s_resources=${{ inputs.enable_k8s_resources }}"
 
       - name: Runbook link
         if: always()
