@@ -176,6 +176,8 @@ jobs:
             -backend-config="encrypt=true"
 
       - name: Terraform apply (dev)
+        env:
+          TF_VAR_admin_arns: '["${{ secrets.TF_AWS_IAM_ROLE_DEV }}", "${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}"]'
         run: |
           var_args=(-var "cluster_lifecycle=${{ inputs.lifecycle }}")
           if [[ "${{ inputs.lifecycle }}" == "ephemeral" ]]; then
