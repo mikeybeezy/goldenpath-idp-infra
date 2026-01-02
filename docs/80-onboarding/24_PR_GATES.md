@@ -64,3 +64,46 @@ and contribution.
 - Guardrails and policy sources: `docs/10-governance/04_PR_GUARDRAILS.md`
 - Doc freshness rules: `docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md`
 - Changelog policy: `docs/changelog/README.md`
+
+## PR checklist template (copy/paste)
+
+This matches `.github/pull_request_template.md`.
+
+```
+Select at least one checkbox per section by changing `[ ]` to `[x]`.
+
+## Change Type
+- [ ] Feature
+- [ ] Bug fix
+- [ ] Infra change
+- [ ] Governance / Policy
+
+## Decision Impact
+- [ ] Requires ADR
+- [ ] Updates existing ADR
+- [ ] No architectural impact
+
+## Production Readiness
+- [ ] Readiness checklist completed
+- [ ] No production impact
+
+## Testing / Validation
+- [ ] Plan/apply link provided (paste below)
+- [ ] Test command or run ID provided (paste below)
+- [ ] Not applicable
+
+Testing/Validation details:
+- Plan/apply link:
+- Test command/run:
+
+## Risk & Rollback
+- [ ] Rollback plan documented (link or notes below)
+- [ ] Data migration required
+- [ ] No data migration
+- [ ] Not applicable
+
+Rollback notes/link:
+
+## Notes / Summary (optional)
+-
+```
