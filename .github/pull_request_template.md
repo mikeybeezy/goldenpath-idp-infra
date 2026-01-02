@@ -1,3 +1,5 @@
+Select at least one checkbox per section by changing `[ ]` to `[x]`.
+
 ## Change Type
 - [ ] Feature
 - [ ] Bug fix
@@ -29,3 +31,6 @@ Testing/Validation details:
 - [ ] Not applicable
 
 Rollback notes/link:
+
+## Notes / Summary (optional)
+-
