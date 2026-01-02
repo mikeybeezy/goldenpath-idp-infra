@@ -54,19 +54,19 @@ resource "helm_release" "aws_load_balancer_controller" {
 }
 
 resource "helm_release" "bootstrap_apps" {
-  name       = "bootstrap-apps"
-  chart      = "${path.module}/bootstrap-chart"
-  version    = "0.1.0"
-  namespace  = "argocd"
+  name             = "bootstrap-apps"
+  chart            = "${path.module}/bootstrap-chart"
+  version          = "0.1.0"
+  namespace        = "argocd"
   create_namespace = true
-  wait       = true
-  timeout    = 300
+  wait             = true
+  timeout          = 300
 
   # Collect all YAML files from the target directory and pass them as a list of strings
   values = [
     yamlencode({
       manifests = [
-        for f in (var.path_to_app_manifests != "" ? fileset(var.path_to_app_manifests, "*.yaml") : []) :
+        for f in(var.path_to_app_manifests != "" ? fileset(var.path_to_app_manifests, "*.yaml") : []) :
         file("${var.path_to_app_manifests}/${f}")
       ]
     })
