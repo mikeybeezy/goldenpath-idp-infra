@@ -39,6 +39,10 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/20-contracts/42_APP_TEMPLATE_LIVING.md | platform | 90d | 2025-12-31 | App template structure and ownership boundaries |
 | docs/00-foundations/43_OPERATING_PRINCIPLES.md | platform | 90d | 2026-01-01 | Grove-inspired operating principles |
 | docs/90-doc-system/44_DOC_TIGHTENING_PLAN.md | platform | 90d | 2026-01-01 | Doc relationships and consolidation plan |
-| docs/production-readiness-gates/V1_03_TODO.md | platform | 30d | 2026-01-02 | Monthly platform backlog review |
+| docs/production-readiness-gates/ROADMAP.md | platform | 30d | 2026-01-02 | Monthly platform backlog review |
 | docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md | platform | 30d | 2026-01-02 | Capability matrix with status updates |
-| docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md | platform | 30d | 2026-01-02 | Periodic due-diligence assessment and gaps |
+| docs/production-readiness-gates/READINESS_CHECKLIST.md | platform | 30d | 2026-01-02 | Periodic due-diligence assessment and gaps |
+| docs/00-foundations/10_PLATFORM_REQUIREMENTS.md | platform | 90d | 2026-01-02 | Formal platform requirements |
+| docs/20-contracts/01_PLATFORM_SERVICE_AGREEMENT.md | platform | 90d | 2026-01-02 | Platform SLA/SLO agreement |
+| docs/20-contracts/10_SERVICE_CATALOG.md | platform | 90d | 2026-01-02 | Supported services and add-ons |
+| docs/70-operations/01_LIFECYCLE_POLICY.md | platform | 90d | 2026-01-02 | Lifecycle and upgrade policy |
