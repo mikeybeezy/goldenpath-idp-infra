@@ -26,7 +26,7 @@ If more detail is needed, use the workflow run link and log file paths.
 
 | Date (UTC) | Build ID | SHA | Build (s) | Bootstrap (s) | Teardown (s) | Status | Run URL |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-01-02 | 02-01-26-06 | cd190568def5677508a5804e82e73c3f1a3802b2 | <fill> | <fill> | <fill> | success | <link> |
+| 2026-01-02 | 02-01-26-06 | cd190568def5677508a5804e82e73c3f1a3802b2 (build) / 4be3d33a7118b86457727b8cfd026da3f8deea38 (bootstrap) | 905 | 215 | - | success | build: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20662142526 / bootstrap: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20664240754 |
 
 ## Entry template
 
@@ -36,7 +36,8 @@ Build ID:
 Branch/Commit:
 Workflow:
 Jobs:
-Workflow run URL:
+Workflow run URL (build):
+Workflow run URL (bootstrap):
 Scripts:
 Config source:
 Storage add-ons:
@@ -53,17 +54,18 @@ Ad hoc notes/observations:
 
 Date (UTC): 2026-01-02
 Build ID: 02-01-26-06
-Branch/Commit: development @ cd190568def5677508a5804e82e73c3f1a3802b2
+Branch/Commit: development @ cd190568def5677508a5804e82e73c3f1a3802b2 (build), 4be3d33a7118b86457727b8cfd026da3f8deea38 (bootstrap)
 Workflow: Bootstrap - CI Bootstrap (Stub)
 Jobs: Dev apply (build) -> Bootstrap (v3)
-Workflow run URL: <link>
+Workflow run URL (build): https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20662142526
+Workflow run URL (bootstrap): https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20664240754
 Scripts: bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v3.sh
 Config source: envs/dev/terraform.tfvars
 Storage add-ons: enabled (EBS/EFS/snapshot-controller)
 IRSA strategy: validated existing service accounts; no Terraform apply in Stage 3B
-Build duration (seconds): <from docs/build-timings.csv>
-Bootstrap duration (seconds): <from docs/build-timings.csv>
-Teardown duration (seconds): <if run>
+Build duration (seconds): 905
+Bootstrap duration (seconds): 215
+Teardown duration (seconds): -
 Outcome: build completed with AWS + Kubernetes resources
 Artifacts: logs/build-timings/<build-log>.log; logs/build-timings/<bootstrap-log>.log
-Ad hoc notes/observations: <fill>
+Ad hoc notes/observations: Build completed with storage add-ons enabled by default.
