@@ -38,6 +38,12 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+      - name: Validate branch
+        run: |
+          if [[ "${{ github.ref_name }}" != "main" && "${{ github.ref_name }}" != "development" ]]; then
+            echo "Orphan cleanup can only run from main or development." >&2
+            exit 1
+          fi
 
       - name: Resolve backend config
         id: backend
