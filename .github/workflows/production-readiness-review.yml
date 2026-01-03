@@ -31,7 +31,7 @@ jobs:
             --only docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md 2>&1)
           status=$?
           echo "status=$status" >> "$GITHUB_OUTPUT"
-          echo "output<<'EOF'" >> "$GITHUB_OUTPUT"
+          echo "output<<EOF" >> "$GITHUB_OUTPUT"
           echo "$output" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
           exit 0
@@ -92,7 +92,7 @@ jobs:
             --only docs/production-readiness-gates/V1_05_DUE_DILIGENCE_SCORECARD.md 2>&1)
           status=$?
           echo "status=$status" >> "$GITHUB_OUTPUT"
-          echo "output<<'EOF'" >> "$GITHUB_OUTPUT"
+          echo "output<<EOF" >> "$GITHUB_OUTPUT"
           echo "$output" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
           exit 0
