@@ -1,5 +1,7 @@
 # Platform TODO (Living)
 
+Last updated: 2026-01-03
+
 This is the single rolling backlog. Add items here before starting work.
 
 ## Priority legend
@@ -62,6 +64,10 @@ This is the single rolling backlog. Add items here before starting work.
 | 047 | P3 | Teardown | Implement async Node Group deletion | platform | Open | M | Q2 | Trigger delete via CLI before Terraform | docs/40-delivery/17_BUILD_RUN_FLAGS.md | Reduce teardown duration by parallelizing slow steps |
 | 048 | P2 | Cost | Validate orphaned EBS PVCs (tag scan) | platform | Open | S | Q1 | Scan `tag:kubernetes.io/created-for/pvc/name` in `teardown.sh` | docs/30-architecture/07_REPO_DECOUPLING_OPTIONS.md | Prevent hidden costs from persistent PVCs |
 | 049 | P2 | Cost | Add Infracost baseline diff vs main for PRs | platform | Open | S | Q2 | Compare `main` vs PR plan costs | .github/workflows/pr-terraform-plan.yml | Show cost deltas, not just totals |
+| 050 | P1 | Environments | Enable EKS in test, staging, and prod envs | platform | Open | M | Q1 | Uncomment and validate `eks_config` per env | envs/test/terraform.tfvars, envs/staging/terraform.tfvars, envs/prod/terraform.tfvars | Multi-env parity for workloads (added 2026-01-03) |
+| 051 | P1 | Apps | Add stateful app template (StatefulSet + PVC + storage class) | platform | Open | M | Q1 | Define template and ownership boundaries | apps/ (new) + docs/20-contracts/42_APP_TEMPLATE_LIVING.md | Required for stateful workload golden path (added 2026-01-03) |
+| 052 | P1 | GitOps | Add GitOps app manifests for stateless + stateful apps per env | platform | Open | M | Q1 | Create `gitops/argocd/apps/<env>/<app>.yaml` | gitops/argocd/apps/<env> | Consistent deployment across envs (added 2026-01-03) |
+| 053 | P1 | Observability | Validate OOTB app + platform observability across all envs | platform | Open | M | Q1 | Run env verification checklist + record results | docs/50-observability/05_OBSERVABILITY_DECISIONS.md, docs/production-readiness-gates/READINESS_CHECKLIST.md | Confirm observability parity beyond dev (added 2026-01-03) |
 
 ## Rules
 
