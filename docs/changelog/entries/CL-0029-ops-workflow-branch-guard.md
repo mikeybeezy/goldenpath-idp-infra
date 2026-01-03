@@ -3,7 +3,7 @@
 Date: 2026-01-03
 Owner: platform
 Scope: CI/CD operations
-Related: PR <TBD>
+Related: PR #126
 
 ## Summary
 
