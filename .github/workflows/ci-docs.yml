@@ -7,6 +7,9 @@ on:
       - "scripts/validate-metadata.py"
       - ".github/workflows/ci-docs.yml"
 
+permissions:
+  contents: read
+
 jobs:
   validate-metadata:
     runs-on: ubuntu-latest
@@ -21,7 +24,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pyyaml
+          pip install pyyaml==6.0.1
+
+      - name: Debug File Existence
+        run: |
+          ls -la docs/adrs/ || true
+          ls -la docs/changelog/entries/ || true
 
       - name: Run Metadata Validator
         run: |
