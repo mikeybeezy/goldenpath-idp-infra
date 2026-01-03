@@ -41,6 +41,7 @@ governance doc and request approval.
 - **Failure loop:** If CI fails: read logs → fix the specific issue → re-run
   until green.
 - **No false completion:** Do not mark work complete if required checks fail.
+- **No merge by agent:** All merges require human approval.
 
 Reference:
 - PR checklist template: `.github/pull_request_template.md`
@@ -87,7 +88,18 @@ commands to ensure consistent flags, environment variables, and safety checks.
 - State verification explicitly (tests run vs not run).
 - Use evidence links when claiming a change is validated.
 
-## 9) Value preservation mechanisms
+## 9) PR monitoring (agent tasks)
+
+Agents are responsible for keeping PRs green, not merging them.
+
+1. Check PR status after every push or label change.
+2. If a check fails, read the log and map it to a specific file or rule.
+3. Apply the smallest fix, re-run local checks, and push.
+4. Re-check status until all required checks pass.
+5. Confirm labels reflect the actual scope (avoid false ADR/changelog blocks).
+6. Notify a human for merge approval once green.
+
+## 10) Value preservation mechanisms
 
 These are mandatory habits to preserve agent value and reduce rework:
 
@@ -109,9 +121,9 @@ These are mandatory habits to preserve agent value and reduce rework:
    - Track build time, bootstrap time, teardown time, first-run success rate.
    - Record these in `docs/40-delivery/41_BUILD_RUN_LOG.md`.
 
-## 10) Definition of done
+## 11) Definition of done
 
 Work is complete when:
-- PR is green and merged into `development`.
+- PR is green and handed off for human merge approval into `development`.
 - Documentation triggers are satisfied (labels honored).
 - Evidence links are recorded where required.

@@ -8,6 +8,7 @@ Owner: platform
 - Add AI governance policy for guardrails, auditability, and QA expectations.
 - Add AI protocols for operator and agent execution rules.
 - Add AI change log ledger and link in doc index.
+- Clarify PR monitoring tasks and human-only merge approval.
 
 ## References
 

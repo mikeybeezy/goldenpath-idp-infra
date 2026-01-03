@@ -16,6 +16,7 @@ preserve quality and trust in the platform.
 - All changes require explicit user approval and must follow PR gates.
 - Agents must not merge to `main` directly; use `development` as the source of
   truth unless otherwise approved.
+- All merges require explicit human approval.
 
 ## 2) Guardrails
 
