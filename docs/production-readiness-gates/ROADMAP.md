@@ -1,5 +1,7 @@
 # Platform TODO (Living)
 
+Last updated: 2026-01-03
+
 This is the single rolling backlog. Add items here before starting work.
 
 ## Priority legend
@@ -57,6 +59,10 @@ This is the single rolling backlog. Add items here before starting work.
 | 042 | P1 | Observability | Define RED label contract (service/env/version/team/build_id) | platform | Done | S | Q1 | Implement in dashboards + alerts | docs/50-observability/05_OBSERVABILITY_DECISIONS.md | Consistent metrics for dashboards and alerts |
 | 043 | P1 | Observability | Build RED + Golden Signals dashboards with minimal alerts | platform | Open | M | Q1 | Create dashboards and alert rules | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | V1 visibility baseline for operators |
 | 044 | P2 | Observability | Capture V1.1 trace plan (OTel + Tempo) | platform | Open | S | Q2 | Define data path and sampling | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | Make trace adoption explicit and time-boxed |
+| 045 | P1 | Environments | Enable EKS in test, staging, and prod envs | platform | Open | M | Q1 | Uncomment and validate `eks_config` per env | envs/test/terraform.tfvars, envs/staging/terraform.tfvars, envs/prod/terraform.tfvars | Multi-env parity for workloads (added 2026-01-03) |
+| 046 | P1 | Apps | Add stateful app template (StatefulSet + PVC + storage class) | platform | Open | M | Q1 | Define template and ownership boundaries | apps/ (new) + docs/20-contracts/42_APP_TEMPLATE_LIVING.md | Required for stateful workload golden path (added 2026-01-03) |
+| 047 | P1 | GitOps | Add GitOps app manifests for stateless + stateful apps per env | platform | Open | M | Q1 | Create `gitops/argocd/apps/<env>/<app>.yaml` | gitops/argocd/apps/<env> | Consistent deployment across envs (added 2026-01-03) |
+| 048 | P1 | Observability | Validate OOTB app + platform observability across all envs | platform | Open | M | Q1 | Run env verification checklist + record results | docs/50-observability/05_OBSERVABILITY_DECISIONS.md, docs/production-readiness-gates/READINESS_CHECKLIST.md | Confirm observability parity beyond dev (added 2026-01-03) |
 
 ## Rules
 
