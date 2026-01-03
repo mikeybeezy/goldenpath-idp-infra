@@ -46,7 +46,10 @@ PRs are labeled automatically based on touched paths:
 - `governance`: docs/10-governance, docs/20-contracts, docs/90-doc-system
 - `docs`: remaining docs paths
 - `changelog-required`: infra + governance domains
-- `adr-required`: infra + governance domains
+- `adr-required`: modules/bootstrap/gitops/workflows/scripts + governance domains
+
+Note: `envs/**` is intentionally excluded from `adr-required` to keep build-id
+updates low-friction.
 
 Configured in `/.github/labeler.yml` and applied by
 `/.github/workflows/pr-labeler.yml`.

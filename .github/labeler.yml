@@ -40,7 +40,6 @@ changelog-required:
 adr-required:
   - changed-files:
       - any-glob-to-any-file:
-          - "envs/**"
           - "modules/**"
           - "bootstrap/**"
           - "gitops/**"
