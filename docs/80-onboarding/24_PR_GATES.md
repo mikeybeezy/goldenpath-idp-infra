@@ -58,6 +58,7 @@ and contribution.
 9. If checks appear stuck or a retarget is not picked up, add a no-op commit to retrigger.
 10. Confirm all required checks are green and approvals are in place.
 11. If opening a second PR (for example, `development -> main`), repeat steps 2-10.
+12. If GitHub reports merge conflicts, rebase on the base branch and repeat steps 5-10.
 
 ## Failure triage loop (repeat until green)
 
@@ -92,6 +93,7 @@ git push
 | `Missing ADR entry` | `adr-required` label | Add `docs/adrs/ADR-####-short-title.md` and update index |
 | `Branch Policy Guard` | PR targets `main` from non-`development` | Open PR into `development` |
 | `Labeler` | Invalid `.github/labeler.yml` or stale base | Fix config or update base branch |
+| Merge conflicts | Base branch moved since branch creation | Rebase on base and resolve conflicts |
 
 ## Gate triggers and responses
 
