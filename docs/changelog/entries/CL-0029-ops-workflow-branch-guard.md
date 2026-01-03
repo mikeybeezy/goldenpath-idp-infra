@@ -3,7 +3,7 @@
 Date: 2026-01-03
 Owner: platform
 Scope: CI/CD operations
-Related: PR #126
+Related: PR #126, docs/adrs/ADR-0074-platform-ops-workflow-branch-guard.md
 
 ## Summary
 
