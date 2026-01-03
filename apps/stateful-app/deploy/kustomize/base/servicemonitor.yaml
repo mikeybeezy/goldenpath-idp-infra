@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: "stateful-app"
+  namespace: "apps-stateful"
+  labels:
+    release: kube-prometheus-stack
+    app.kubernetes.io/name: "stateful-app"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "stateful-app"
+  namespaceSelector:
+    matchNames:
+      - "apps-stateful"
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s

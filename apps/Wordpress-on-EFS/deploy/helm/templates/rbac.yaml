@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "{{ .Values.appName }}-reader"
+  namespace: "{{ .Values.namespace }}"
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "{{ .Values.appName }}-reader"
+  namespace: "{{ .Values.namespace }}"
+subjects:
+  - kind: ServiceAccount
+    name: "{{ .Values.serviceAccountName }}"
+    namespace: "{{ .Values.namespace }}"
+roleRef:
+  kind: Role
+  name: "{{ .Values.appName }}-reader"
+  apiGroup: rbac.authorization.k8s.io

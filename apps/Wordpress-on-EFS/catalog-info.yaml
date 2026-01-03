@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "{{ values.app_name }}"
+  description: "{{ values.description }}"
+  tags:
+    - golden-path
+    - "{{ values.team }}"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: "{{ values.owner }}"
+  system: "{{ values.system }}"

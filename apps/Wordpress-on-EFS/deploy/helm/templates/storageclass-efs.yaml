@@ -1,0 +1,14 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: "{{ .Values.efsStorageClassName }}"
+provisioner: efs.csi.aws.com
+parameters:
+  provisioningMode: efs-ap
+  fileSystemId: "{{ .Values.efsFileSystemId }}"
+  directoryPerms: "700"
+  gidRangeStart: "1000"
+  gidRangeEnd: "2000"
+  basePath: "/{{ .Values.appName }}"
+reclaimPolicy: Retain
+volumeBindingMode: Immediate

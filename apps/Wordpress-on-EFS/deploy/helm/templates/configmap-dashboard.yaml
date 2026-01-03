@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.appName }}-dashboard"
+  namespace: "{{ .Values.namespace }}"
+  annotations:
+    k8s-sidecar-target-directory: "/tmp/dashboards/{{ .Values.appName }}"
+  labels:
+    grafana_dashboard: "1"
+    app: "{{ .Values.appName }}"
+data:
+  {{ .Values.appName }}-dashboard.json: |
+    {
+      "title": "{{ .Values.appName }} - Golden Signals",
+      "tags": [ "golden-path", "{{ .Values.team }}", "{{ .Values.env }}" ],
+      "timezone": "browser",
+      "schemaVersion": 30,
+      "refresh": "1m",
+      "editable": false,
+      "panels": [
+        {
+          "type": "row",
+          "title": "Application Health (Golden Signals)",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }
+        },
+        {
+          "title": "Request Rate (RPS)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 1 },
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total{app=\"{{ .Values.appName }}\", namespace=\"{{ .Values.namespace }}\"}[2m])) by (method)",
+              "legendFormat": "{{method}}"
+            }
+          ],
+          "unit": "reqps"
+        },
+        {
+          "title": "Error Rate (%)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 1 },
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total{app=\"{{ .Values.appName }}\", namespace=\"{{ .Values.namespace }}\", status=~\"5.*\"}[2m])) / sum(rate(http_requests_total{app=\"{{ .Values.appName }}\", namespace=\"{{ .Values.namespace }}\"}[2m])) * 100",
+              "legendFormat": "5xx Errors"
+            }
+          ],
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 1 }
+            ]
+          }
+        },
+        {
+          "title": "Latency (P95)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 1 },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{app=\"{{ .Values.appName }}\", namespace=\"{{ .Values.namespace }}\"}[5m])) by (le))",
+              "legendFormat": "P95"
+            }
+          ],
+          "unit": "s"
+        },
+        {
+          "type": "row",
+          "title": "Infrastructure Saturation",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 }
+        },
+        {
+          "title": "CPU Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 10 },
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"{{ .Values.appName }}-.*\", namespace=\"{{ .Values.namespace }}\"}[2m])) by (pod)",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "unit": "short"
+        },
+        {
+          "title": "Memory Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 10 },
+          "targets": [
+            {
+              "expr": "sum(container_memory_usage_bytes{pod=~\"{{ .Values.appName }}-.*\", namespace=\"{{ .Values.namespace }}\"}) by (pod)",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "unit": "bytes"
+        },
+        {
+          "type": "row",
+          "title": "Log Investigation (Recent Errors)",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 18 }
+        },
+        {
+          "type": "logs",
+          "title": "Recent Application Logs",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 19 },
+          "targets": [
+            {
+              "expr": "{app=\"{{ .Values.appName }}\", namespace=\"{{ .Values.namespace }}\"} |= \"error\"",
+              "legendFormat": ""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": false,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending"
+          }
+        }
+      ]
+    }

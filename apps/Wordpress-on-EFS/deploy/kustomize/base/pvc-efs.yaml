@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "wordpress-efs-efs"
+  namespace: "apps-wordpress-efs"
+  labels:
+    app.kubernetes.io/name: "wordpress-efs"
+    app.kubernetes.io/instance: "wordpress-efs"
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "efs-sc"
+  resources:
+    requests:
+      storage: "50Gi"
