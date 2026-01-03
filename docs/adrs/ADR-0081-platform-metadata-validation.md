@@ -41,3 +41,4 @@ We choose to write and maintain `scripts/validate-metadata.py`.
 ## Consequences
 *   **Positive:** Guaranteed referential integrity. No "Dead Links" in our graph.
 *   **Negative:** We must maintain the python script.
+
