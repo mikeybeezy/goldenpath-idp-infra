@@ -90,6 +90,11 @@ on:
         required: true
         default: true
         type: boolean
+      generate_log:
+        description: "Generate TD-XXXX log artifact"
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   teardown:
@@ -242,7 +247,7 @@ jobs:
   log-generation:
     runs-on: ubuntu-latest
     needs: teardown
-    if: ${{ always() }}
+    if: ${{ always() && inputs.generate_log }}
     permissions:
       contents: write
     steps:
@@ -276,3 +281,114 @@ jobs:
         with:
           commit_message: "docs: auto-generate teardown log for build ${{ inputs.build_id }}"
           file_pattern: "docs/build-run-logs/TD-*.md"
+
+  teardown-resume:
+    runs-on: ubuntu-latest
+    needs: teardown
+    if: ${{ always() && needs.teardown.result == 'failure' }}
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      ENV: ${{ inputs.env }}
+      AWS_REGION: ${{ inputs.region }}
+      CLUSTER_NAME: ${{ inputs.cluster_name }}
+      BUILD_ID: ${{ inputs.build_id }}
+      CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
+      TEARDOWN_VERSION: ${{ inputs.teardown_version }}
+      TF_DIR: envs/${{ inputs.env }}
+      CLEANUP_ORPHANS: ${{ inputs.cleanup_mode != 'none' }}
+      ORPHAN_CLEANUP_MODE: ${{ inputs.cleanup_mode }}
+      ARGO_APP_NAMESPACE: ${{ inputs.argo_app_namespace }}
+      ARGO_APP_NAME: ${{ inputs.argo_app_name }}
+      DELETE_ARGO_APP: ${{ inputs.delete_argo_app }}
+      LB_CLEANUP_MAX_WAIT: ${{ inputs.lb_cleanup_max_wait }}
+      FORCE_DELETE_LBS: ${{ inputs.force_delete_lbs }}
+      FORCE_DELETE_LB_FINALIZERS: ${{ inputs.force_delete_lb_finalizers }}
+      REMOVE_K8S_SA_FROM_STATE: "true"
+      TF_AUTO_APPROVE: "true"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Resolve cluster name
+        run: |
+          if [[ -z "${CLUSTER_NAME}" ]]; then
+            CLUSTER_NAME="$(ENV=${ENV} TF_DIR=${TF_DIR} BUILD_ID=${BUILD_ID} CLUSTER_LIFECYCLE=${CLUSTER_LIFECYCLE} bash scripts/resolve-cluster-name.sh)"
+          fi
+          echo "CLUSTER_NAME=${CLUSTER_NAME}" >> "${GITHUB_ENV}"
+          echo "Resolved CLUSTER_NAME=${CLUSTER_NAME}"
+
+      - name: Resolve backend config
+        id: backend
+        run: |
+          case "${ENV}" in
+            dev)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-dev-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-dev-db-key" >> "$GITHUB_OUTPUT"
+              ;;
+            test)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_TEST }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-test-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-test-db" >> "$GITHUB_OUTPUT"
+              ;;
+            staging)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_STAGING }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-staging-db" >> "$GITHUB_OUTPUT"
+              ;;
+            prod)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_PROD }}" >> "$GITHUB_OUTPUT"
+              echo "bucket=goldenpath-idp-prod-bucket" >> "$GITHUB_OUTPUT"
+              echo "table=goldenpath-idp-prod-db" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported env: ${ENV}" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Resolve state key
+        run: |
+          if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
+            STATE_KEY="envs/${ENV}/builds/${BUILD_ID}/terraform.tfstate"
+          else
+            STATE_KEY="envs/${ENV}/terraform.tfstate"
+          fi
+          echo "STATE_KEY=${STATE_KEY}" >> "${GITHUB_ENV}"
+          echo "Resolved STATE_KEY=${STATE_KEY}"
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ inputs.region }}
+          role-to-assume: ${{ steps.backend.outputs.role }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init (backend)
+        run: |
+          terraform -chdir="${TF_DIR}" init -reconfigure \
+            -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
+            -backend-config="key=${STATE_KEY}" \
+            -backend-config="region=${AWS_REGION}" \
+            -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
+            -backend-config="encrypt=true"
+
+      - name: Run teardown resume
+        run: |
+          TEARDOWN_CONFIRM="true" \
+          RELAX_PDB="${{ inputs.relax_pdb }}" \
+          DRAIN_TIMEOUT="${{ inputs.drain_timeout }}" \
+          HEARTBEAT_INTERVAL="${{ inputs.heartbeat_interval }}" \
+          TF_DIR="${TF_DIR}" \
+          CLEANUP_ORPHANS="${CLEANUP_ORPHANS}" \
+          CLUSTER="${CLUSTER_NAME}" \
+          REGION="${AWS_REGION}" \
+          make teardown-resume ENV="${ENV}" BUILD_ID="${BUILD_ID}"
+      - name: Runbook link
+        if: ${{ always() }}
+        run: |
+          echo "Runbook: docs/runbooks/09_CI_TEARDOWN_RECOVERY_V2.md" >> "${GITHUB_STEP_SUMMARY}"
