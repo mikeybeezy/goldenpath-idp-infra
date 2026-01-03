@@ -52,6 +52,8 @@ If `changelog-required` is present, a changelog entry is required:
 
 - `docs/changelog/entries/CL-####-short-title.md`
 
+If `changelog-exempt` is present, the changelog gate is skipped.
+
 Enforced by `/.github/workflows/changelog-policy.yml`.
 
 ### ADR gate
