@@ -1,4 +1,4 @@
-# CL-0002: Kube-prometheus-stack baseline and storage defaults
+# CL-0018: Kube-prometheus-stack baseline and storage defaults
 
 Date: 2025-12-31
 Owner: platform

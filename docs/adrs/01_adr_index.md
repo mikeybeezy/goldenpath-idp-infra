@@ -79,13 +79,13 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 
 ## Superseded ADRs
 
-- [ADR-0011](ADR-0011-platform-observability-baseline-golden-signals.md) — superseded by `ADR-0049-platform-pragmatic-observability-baseline.md`.
+- [ADR-0069](ADR-0069-platform-observability-baseline-golden-signals.md) — superseded by `ADR-0049-platform-pragmatic-observability-baseline.md`.
 - [ADR-0036](ADR-0036-platform-orphan-cleanup-workflow.md) — superseded by `ADR-0038-platform-teardown-orphan-cleanup-gate.md`.
 - [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) — superseded by `ADR-0045-platform-teardown-lb-delete-default.md`.
 - [ADR-0044](ADR-0044-platform-infra-checks-ref-mode.md) — superseded by `ADR-0046-platform-pr-plan-validation-ownership.md`.
 
 Legacy aliases (kept to preserve historical links):
-- `docs/adrs/ADR-0011-platform-ci-environment-contract` → `ADR-0034-platform-ci-environment-contract.md`
+- `docs/adrs/ADR-0011-platform-ci-environment-contract.md` → `ADR-0034-platform-ci-environment-contract.md`
 
 ---
 
