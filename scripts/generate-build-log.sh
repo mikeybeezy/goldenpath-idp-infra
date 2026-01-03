@@ -4,8 +4,8 @@ set -e
 # Usage: ./generate-build-log.sh <BUILD_ID> <BUILD_DURATION> <BOOTSTRAP_DURATION> <RUN_URL> <OUTCOME> <FLAGS_STRING> [ERROR_MSG]
 
 BUILD_ID="$1"
-BUILD_DURATION="$2"
-BOOTSTRAP_DURATION="$3"
+BUILD_DURATION="${2:-"-"}"
+BOOTSTRAP_DURATION="${3:-"-"}"
 RUN_URL="$4"
 OUTCOME="$5"
 FLAGS="$6"
@@ -36,21 +36,34 @@ echo "Generating log: ${LOG_FILE}"
 # 2. Copy Template
 cp "$TEMPLATE" "$LOG_FILE"
 
+WORKFLOW_NAME="${GITHUB_WORKFLOW:-CI Bootstrap}"
+JOB_LIST="See workflow run"
+CONFIG_SOURCE="See workflow run"
+STORAGE_ADDONS="See workflow run"
+IRSA_STRATEGY="See workflow run"
+PLAN_DELTA="See logs (Auto-capture pending)"
+TEARDOWN_DURATION="-"
+ARTIFACTS="See workflow run"
+SAFE_FLAGS="${FLAGS//|/-}"
+
 # 3. Replace Placeholders
 sed -i "s|YYYY-MM-DD|$(date -u +%Y-%m-%d)|g" "$LOG_FILE"
 sed -i "s|<build-id>|${BUILD_ID}|g" "$LOG_FILE"
 sed -i "s|<branch>|${GITHUB_REF_NAME:-unknown}|g" "$LOG_FILE"
 sed -i "s|<sha>|${GITHUB_SHA:-unknown}|g" "$LOG_FILE"
+sed -i "s|<workflow-name>|${WORKFLOW_NAME}|g" "$LOG_FILE"
+sed -i "s|<job-list>|${JOB_LIST}|g" "$LOG_FILE"
 sed -i "s|<url>|${RUN_URL}|g" "$LOG_FILE"
-sed -i "s|<script-version>|Automated (See Flags)|g" "$LOG_FILE"
-sed -i "s|<flags>|${FLAGS}|g" "$LOG_FILE"
+sed -i "s|<config-source>|${CONFIG_SOURCE}|g" "$LOG_FILE"
+sed -i "s|<storage-addons>|${STORAGE_ADDONS}|g" "$LOG_FILE"
+sed -i "s|<irsa-strategy>|${IRSA_STRATEGY}|g" "$LOG_FILE"
+sed -i "s|<plan-delta>|${PLAN_DELTA}|g" "$LOG_FILE"
 sed -i "s|<build-seconds>|${BUILD_DURATION}|g" "$LOG_FILE"
 sed -i "s|<bootstrap-seconds>|${BOOTSTRAP_DURATION}|g" "$LOG_FILE"
+sed -i "s|<teardown-seconds>|${TEARDOWN_DURATION}|g" "$LOG_FILE"
 sed -i "s|<Outcome>|${OUTCOME}|g" "$LOG_FILE"
-
-# 4. Fill Metrics with defaults
-# Plan Delta is hard to capture without grep, default to "See logs"
-sed -i "s|<delta>|See logs (Auto-capture pending)|g" "$LOG_FILE"
+sed -i "s|<artifacts>|${ARTIFACTS}|g" "$LOG_FILE"
+sed -i "s|<flags>|${SAFE_FLAGS}|g" "$LOG_FILE"
 
 if [[ -n "$ERROR_MSG" ]]; then
   NOTES="Automated capture: FAILED. Error: ${ERROR_MSG}"

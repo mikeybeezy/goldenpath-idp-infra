@@ -39,13 +39,14 @@ cp "$TEMPLATE" "$LOG_FILE"
 
 # 3. Replace Placeholders
 # Use | as delimiter for sed to avoid escaping / in URLs
+SAFE_FLAGS="${FLAGS//|/-}"
 sed -i "s|YYYY-MM-DD|$(date -u +%Y-%m-%d)|g" "$LOG_FILE"
 sed -i "s|<build-id>|${BUILD_ID}|g" "$LOG_FILE"
 sed -i "s|<branch>|${GITHUB_REF_NAME:-unknown}|g" "$LOG_FILE"
 sed -i "s|<sha>|${GITHUB_SHA:-unknown}|g" "$LOG_FILE"
 sed -i "s|<url>|${RUN_URL}|g" "$LOG_FILE"
 sed -i "s|<script-version>|Automated (See Flags)|g" "$LOG_FILE"
-sed -i "s|<flags>|${FLAGS}|g" "$LOG_FILE"
+sed -i "s|<flags>|${SAFE_FLAGS}|g" "$LOG_FILE"
 sed -i "s|<seconds>|${DURATION}|g" "$LOG_FILE"
 sed -i "s|<Outcome>|${OUTCOME}|g" "$LOG_FILE"
 
