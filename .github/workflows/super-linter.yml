@@ -9,6 +9,7 @@ on:
 
 jobs:
   super-linter:
+    name: Quality - Super Linter (Markdown)
     runs-on: ubuntu-latest
     permissions:
       contents: read
