@@ -6,7 +6,7 @@ Doc contract:
 - Owner: platform
 - Status: living
 - Review cadence: 90d
-- Related: docs/20-contracts/02_PLATFORM_BOUNDARIES.md, docs/50-observability/05_OBSERVABILITY_DECISIONS.md, docs/00-foundations/18_BACKSTAGE_MVP.md, docs/10-governance/35_RESOURCE_TAGGING.md, docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md
+- Related: docs/20-contracts/02_PLATFORM_BOUNDARIES.md, docs/50-observability/05_OBSERVABILITY_DECISIONS.md, docs/00-foundations/18_BACKSTAGE_MVP.md, docs/10-governance/35_RESOURCE_TAGGING.md, docs/10-governance/06_COST_GOVERNANCE.md, docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md
 
 This document defines how the Internal Developer Platform (IDP) is governed.
 
@@ -107,6 +107,12 @@ Destructive automation must use tag-scoped IAM policies; see
 Material platform behavior changes must be captured in a changelog entry when
 the PR is labeled `changelog-required`. The policy and label rules are defined
 in `docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md`.
+
+## 7. Cost Visibility
+
+Cost impact is surfaced early in CI to drive informed decisions without
+blocking delivery. The cost visibility policy is defined in
+`docs/10-governance/06_COST_GOVERNANCE.md`.
 
 ## Governance Operating Model (V1)
 

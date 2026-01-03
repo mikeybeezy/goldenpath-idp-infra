@@ -11,8 +11,33 @@ This directory holds per-run records for builds/bootstraps and teardowns.
 
 ## When to add a new entry
 
-- Add a `BR-` entry after a successful build + bootstrap run.
-- Add a `TD-` entry after a teardown run (success or failure).
+Create an entry when:
+- A build/bootstrap/teardown run is used for validation, demos, or promotion decisions.
+- A run exposes a failure mode, cleanup issue, or notable drift.
+- You need a durable reference beyond CI logs (timing, flags, or outcomes).
+
+Do not create an entry for:
+- Local experiments that are not part of shared validation.
+- Runs that duplicate an existing log without new findings.
 
 Use `docs/40-delivery/41_BUILD_RUN_LOG.md` as the summary index and link to
 these entries for deeper detail.
+
+## Usage guidelines
+
+- Keep entries lightweight and factual; avoid narrative unless there is an issue.
+- Use the workflow run URL as the source of truth for logs and raw output.
+- Summarize key metrics (duration, plan delta, orphan counts) consistently.
+- Periodically summarize (weekly/monthly) to keep the log set actionable.
+
+## Standard Fields
+
+Please copy the appropriate template when creating a new entry:
+- **Build/Bootstrap:** `docs/build-run-logs/BR-TEMPLATE.md`
+- **Teardown:** `docs/build-run-logs/TD-TEMPLATE.md`
+
+Key metrics to capture:
+- **Build ID / Commit:** Traceability to code.
+- **Plan Delta:** Number of resources added/changed/destroyed (Blast radius).
+- **Duration:** Precise times for Build vs. Bootstrap phases.
+- **Flags:** Exact flags used for reproducibility.

@@ -1,0 +1,358 @@
+name: Scaffold App Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_create:
+        description: Type "create" to scaffold and create the repo
+        required: true
+        default: cancel
+        type: choice
+        options:
+          - cancel
+          - create
+      repo_owner:
+        description: GitHub org for the new repo
+        required: true
+        default: mikeybeezy
+        type: string
+      owner_team:
+        description: GitHub team slug (e.g., checkout-team)
+        required: true
+        type: string
+      project_name:
+        description: Project name (lowercase, kebab-case)
+        required: true
+        type: string
+      template_type:
+        description: Golden Path template
+        required: true
+        default: fast-api
+        type: choice
+        options:
+          - fast-api
+      repo_name:
+        description: Repository name (defaults to project_name if blank)
+        required: false
+        default: ""
+        type: string
+      visibility:
+        description: Repository visibility
+        required: true
+        default: private
+        type: choice
+        options:
+          - private
+          - public
+      description:
+        description: Repo/app description
+        required: false
+        default: Golden Path service
+        type: string
+      system:
+        description: Backstage system (optional)
+        required: false
+        default: ""
+        type: string
+      namespace:
+        description: Kubernetes namespace
+        required: true
+        default: default
+        type: string
+      lifecycle:
+        description: Service lifecycle
+        required: true
+        default: experimental
+        type: choice
+        options:
+          - experimental
+          - production
+          - deprecated
+      service_tier:
+        description: Service tier
+        required: true
+        default: tier-3
+        type: choice
+        options:
+          - tier-1
+          - tier-2
+          - tier-3
+      data_classification:
+        description: Data classification
+        required: true
+        default: internal
+        type: choice
+        options:
+          - public
+          - internal
+          - confidential
+          - restricted
+      env:
+        description: Environment label
+        required: true
+        default: dev
+        type: string
+      build_id:
+        description: Build ID label
+        required: false
+        default: unknown
+        type: string
+      app_image:
+        description: Container image (optional; defaults to ghcr.io/<owner>/<repo>)
+        required: false
+        default: ""
+        type: string
+      app_host:
+        description: Ingress host
+        required: false
+        default: app.example.com
+        type: string
+      oidc_secret_name:
+        description: Secret name for OIDC role ARN (optional)
+        required: false
+        default: AWS_OIDC_ROLE_ARN
+        type: string
+      oidc_role_arn:
+        description: OIDC role ARN (optional)
+        required: false
+        default: ""
+        type: string
+      default_branch:
+        description: Default branch name
+        required: true
+        default: main
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  scaffold:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.REPO_SCOPED_GH_TOKEN }}
+    steps:
+      - name: Validate confirmation
+        if: ${{ inputs.confirm_create != 'create' }}
+        run: |
+          echo "confirm_create must be 'create' to proceed."
+          exit 1
+
+      - name: Validate inputs and auth
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN}" ]]; then
+            echo "Missing REPO_SCOPED_GH_TOKEN secret."
+            exit 1
+          fi
+
+          PROJECT_NAME="${{ inputs.project_name }}"
+          if ! [[ "${PROJECT_NAME}" =~ ^[a-z0-9-]+$ ]]; then
+            echo "project_name must match ^[a-z0-9-]+$"
+            exit 1
+          fi
+
+          REPO_OWNER="${{ inputs.repo_owner }}"
+          if ! gh api "orgs/${REPO_OWNER}" >/dev/null 2>&1; then
+            echo "repo_owner must be a GitHub org (org not found: ${REPO_OWNER})."
+            exit 1
+          fi
+
+          OWNER_TEAM="${{ inputs.owner_team }}"
+          if ! gh api "orgs/${REPO_OWNER}/teams/${OWNER_TEAM}" >/dev/null 2>&1; then
+            echo "owner_team not found in org: ${OWNER_TEAM}"
+            exit 1
+          fi
+
+          REPO_NAME="${{ inputs.repo_name }}"
+          if [[ -z "${REPO_NAME}" ]]; then
+            REPO_NAME="${PROJECT_NAME}"
+          fi
+          if gh repo view "${REPO_OWNER}/${REPO_NAME}" >/dev/null 2>&1; then
+            echo "Repo already exists: ${REPO_OWNER}/${REPO_NAME}"
+            exit 1
+          fi
+
+          TEMPLATE_TYPE="${{ inputs.template_type }}"
+          case "${TEMPLATE_TYPE}" in
+            fast-api)
+              TEMPLATE_DIR="apps/fast-api-app-template"
+              ;;
+            *)
+              echo "Unsupported template_type: ${TEMPLATE_TYPE}"
+              exit 1
+              ;;
+          esac
+
+          APP_IMAGE="${{ inputs.app_image }}"
+          if [[ -z "${APP_IMAGE}" ]]; then
+            APP_IMAGE="ghcr.io/${REPO_OWNER}/${REPO_NAME}"
+          fi
+
+          echo "REPO_OWNER=${REPO_OWNER}" >> "${GITHUB_ENV}"
+          echo "REPO_NAME=${REPO_NAME}" >> "${GITHUB_ENV}"
+          echo "PROJECT_NAME=${PROJECT_NAME}" >> "${GITHUB_ENV}"
+          echo "OWNER_TEAM=${OWNER_TEAM}" >> "${GITHUB_ENV}"
+          echo "TEMPLATE_TYPE=${TEMPLATE_TYPE}" >> "${GITHUB_ENV}"
+          echo "TEMPLATE_DIR=${TEMPLATE_DIR}" >> "${GITHUB_ENV}"
+          echo "APP_IMAGE=${APP_IMAGE}" >> "${GITHUB_ENV}"
+
+      - name: Checkout template repo
+        uses: actions/checkout@v4
+
+      - name: Build scaffold values
+        env:
+          INPUT_NAMESPACE: ${{ inputs.namespace }}
+          INPUT_SYSTEM: ${{ inputs.system }}
+          INPUT_DESCRIPTION: ${{ inputs.description }}
+          INPUT_LIFECYCLE: ${{ inputs.lifecycle }}
+          INPUT_SERVICE_TIER: ${{ inputs.service_tier }}
+          INPUT_DATA_CLASSIFICATION: ${{ inputs.data_classification }}
+          INPUT_ENV: ${{ inputs.env }}
+          INPUT_BUILD_ID: ${{ inputs.build_id }}
+          INPUT_APP_HOST: ${{ inputs.app_host }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          values = {
+              "app_name": os.environ["PROJECT_NAME"],
+              "namespace": os.environ["INPUT_NAMESPACE"],
+              "owner": f"group:{os.environ['OWNER_TEAM']}",
+              "owner_team": os.environ["OWNER_TEAM"],
+              "system": os.environ.get("INPUT_SYSTEM") or "",
+              "description": os.environ.get("INPUT_DESCRIPTION") or "Golden Path service",
+              "lifecycle": os.environ["INPUT_LIFECYCLE"],
+              "service_tier": os.environ["INPUT_SERVICE_TIER"],
+              "data_classification": os.environ["INPUT_DATA_CLASSIFICATION"],
+              "app_image": os.environ["APP_IMAGE"],
+              "app_version": "latest",
+              "app_port": 8080,
+              "service_port": 80,
+              "replicas": 1,
+              "cpu_request": "100m",
+              "memory_request": "128Mi",
+              "cpu_limit": "500m",
+              "memory_limit": "512Mi",
+              "env": os.environ["INPUT_ENV"],
+              "team": os.environ["OWNER_TEAM"],
+              "build_id": os.environ.get("INPUT_BUILD_ID") or "unknown",
+              "app_host": os.environ["INPUT_APP_HOST"],
+              "kong_auth_plugin": f"{os.environ['PROJECT_NAME']}-auth",
+              "kong_rate_limit_plugin": f"{os.environ['PROJECT_NAME']}-rate-limit",
+              "kong_consumer_name": f"{os.environ['PROJECT_NAME']}-consumer",
+              "kong_consumer_username": os.environ["PROJECT_NAME"],
+              "kong_consumer_id": os.environ["PROJECT_NAME"],
+              "kong_credential_secret_name": f"{os.environ['PROJECT_NAME']}-apikey",
+              "kong_api_key": "change-me",
+              "rate_limit_per_min": 60,
+              "service_account_name": os.environ["PROJECT_NAME"],
+          }
+
+          Path("/tmp/scaffold-values.json").write_text(
+              json.dumps(values, indent=2), encoding="utf-8"
+          )
+          PY
+
+      - name: Render template
+        run: |
+          set -euo pipefail
+          python scripts/render-template.py \
+            "${TEMPLATE_DIR}" \
+            /tmp/scaffold-repo \
+            /tmp/scaffold-values.json \
+            --strict
+
+      - name: Initialize git repo
+        run: |
+          set -euo pipefail
+          cd /tmp/scaffold-repo
+          git init
+          git checkout -b "${{ inputs.default_branch }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: scaffold ${PROJECT_NAME}"
+
+      - name: Create repo and push
+        run: |
+          set -euo pipefail
+          VISIBILITY="--private"
+          if [[ "${{ inputs.visibility }}" == "public" ]]; then
+            VISIBILITY="--public"
+          fi
+
+          gh repo create "${REPO_OWNER}/${REPO_NAME}" \
+            ${VISIBILITY} \
+            --description "${{ inputs.description }}" \
+            --confirm
+
+          cd /tmp/scaffold-repo
+          git remote add origin "https://github.com/${REPO_OWNER}/${REPO_NAME}.git"
+          git push -u origin "${{ inputs.default_branch }}"
+
+      - name: Apply branch protection
+        run: |
+          set -euo pipefail
+          cat > /tmp/branch-protection.json <<EOF
+          {
+            "required_status_checks": null,
+            "enforce_admins": true,
+            "required_pull_request_reviews": null,
+            "restrictions": null,
+            "required_linear_history": true,
+            "allow_force_pushes": false,
+            "allow_deletions": false,
+            "required_conversation_resolution": true
+          }
+          EOF
+          gh api -X PUT \
+            -H "Accept: application/vnd.github+json" \
+            "repos/${REPO_OWNER}/${REPO_NAME}/branches/${{ inputs.default_branch }}/protection" \
+            --input /tmp/branch-protection.json
+
+      - name: Set team permissions
+        run: |
+          set -euo pipefail
+          gh api -X PUT \
+            -H "Accept: application/vnd.github+json" \
+            "orgs/${REPO_OWNER}/teams/${OWNER_TEAM}/repos/${REPO_OWNER}/${REPO_NAME}" \
+            -f permission=admin
+
+      - name: Set repo topics
+        env:
+          SERVICE_TIER: ${{ inputs.service_tier }}
+        run: |
+          set -euo pipefail
+          TIER_TAG="${SERVICE_TIER}"
+          cat > /tmp/topics.json <<EOF
+          {
+            "names": [
+              "golden-path",
+              "service",
+              "owner-${OWNER_TEAM}",
+              "${TIER_TAG}",
+              "data-${{ inputs.data_classification }}",
+              "template-${TEMPLATE_TYPE}"
+            ]
+          }
+          EOF
+          gh api -X PUT \
+            -H "Accept: application/vnd.github+json" \
+            "repos/${REPO_OWNER}/${REPO_NAME}/topics" \
+            --input /tmp/topics.json
+
+      - name: Set optional OIDC secret
+        if: ${{ inputs.oidc_role_arn != '' }}
+        run: |
+          set -euo pipefail
+          gh secret set "${{ inputs.oidc_secret_name }}" \
+            -b "${{ inputs.oidc_role_arn }}" \
+            -R "${REPO_OWNER}/${REPO_NAME}"
+
+      - name: Summary
+        run: |
+          echo "Repo created: https://github.com/${REPO_OWNER}/${REPO_NAME}"
