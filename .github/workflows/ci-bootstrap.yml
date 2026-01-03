@@ -126,6 +126,12 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+      - name: Validate branch
+        run: |
+          if [[ "${{ github.ref_name }}" != "main" && "${{ github.ref_name }}" != "development" ]]; then
+            echo "Bootstrap can only run from main or development." >&2
+            exit 1
+          fi
 
       - name: Configure AWS credentials using OIDC (bootstrap)
         uses: aws-actions/configure-aws-credentials@v4.1.0
