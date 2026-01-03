@@ -98,6 +98,11 @@ on:
         required: true
         default: "false"
         type: boolean
+      generate_log:
+        description: "Generate BR-XXXX log artifact"
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   bootstrap:
@@ -223,7 +228,6 @@ jobs:
       - name: Guard - backend state
         run: |
           echo "Checking state: s3://${{ steps.backend.outputs.bucket }}/${STATE_KEY}"
-          # (State check logic)
           aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1 || true
 
       - name: Terraform init (backend)
@@ -294,7 +298,6 @@ jobs:
         if: ${{ !inputs.bootstrap_only && inputs.lifecycle != 'ephemeral' }}
         run: |
           ENV_NAME="${ENV}" \
-          # (truncated inputs)
           make bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}"
 
       # Phase 3: Timed bootstrap-only (when build_id is available)
@@ -343,7 +346,6 @@ jobs:
       - name: Phase 3 - Bootstrap only (stub)
         if: ${{ inputs.bootstrap_only && inputs.build_id == '' }}
         run: |
-          # (truncated inputs)
           make bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}"
 
       - name: Phase 4 - Post-bootstrap checks (stub)
@@ -361,7 +363,7 @@ jobs:
   log-generation:
     runs-on: ubuntu-latest
     needs: bootstrap
-    if: ${{ always() }}
+    if: ${{ always() && inputs.generate_log }}
     permissions:
       contents: write
     steps:
