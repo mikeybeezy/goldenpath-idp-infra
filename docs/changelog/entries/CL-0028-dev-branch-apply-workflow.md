@@ -3,7 +3,7 @@
 Date: 2026-01-03
 Owner: platform
 Scope: CI/CD guardrails
-Related: PR <TBD>
+Related: PR #125
 
 ## Summary
 
