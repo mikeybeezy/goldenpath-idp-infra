@@ -85,6 +85,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0080](ADR-0080-platform-github-agent-roles.md) | Platform | GitHub App roles for AI/automation access | Proposed | 2026-01-03 | Define least-privilege roles without human accounts. |
 | [ADR-0081](ADR-0081-platform-repo-wide-linting.md) | Platform | Repo-wide linting for knowledge-graph hygiene | Proposed | 2026-01-03 | Run Markdown/YAML lint repo-wide with template ignores. |
 | [ADR-0082](ADR-0082-platform-metadata-validation.md) | Platform | Metadata validation strategy | Proposed | 2026-01-03 | Validate metadata frontmatter for governance and traceability. |
+| [ADR-0083](ADR-0083-platform-metadata-backfill-protocol.md) | Platform | Metadata backfill campaign protocol | Proposed | 2026-01-03 | Define deterministic backfill steps and audit artifacts. |
 
 ---
 
