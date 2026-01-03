@@ -19,7 +19,9 @@ these entries for deeper detail.
 
 ## Standard Fields
 
-Please copy `docs/build-run-logs/TEMPLATE.md` when creating a new entry.
+Please copy the appropriate template when creating a new entry:
+- **Build/Bootstrap:** `docs/build-run-logs/BR-TEMPLATE.md`
+- **Teardown:** `docs/build-run-logs/TD-TEMPLATE.md`
 
 Key metrics to capture:
 - **Build ID / Commit:** Traceability to code.
