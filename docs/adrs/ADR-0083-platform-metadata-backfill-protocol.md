@@ -18,7 +18,7 @@ relates_to:
   - ADR-0082
 ---
 
-# ADR-0083: Metadata Backfill Campaign Protocol
+## ADR-0083: Metadata Backfill Campaign Protocol
 
 Date: 2026-01-03
 Status: Proposed

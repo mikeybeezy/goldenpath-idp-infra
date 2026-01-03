@@ -19,7 +19,7 @@ relates_to:
   - ADR-0083
 ---
 
-# Metadata Backfill Runbook
+## Metadata Backfill Runbook
 
 Purpose: Backfill metadata for docs and Terraform with deterministic steps and
 audit trails, while keeping changes small and reversible.
