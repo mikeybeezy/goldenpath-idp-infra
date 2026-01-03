@@ -295,7 +295,7 @@ jobs:
         id: timed_build
         run: |
           START_TIME=$(date +%s)
-          
+
           set +e
           TF_VAR_cluster_lifecycle="${CLUSTER_LIFECYCLE}" \
           TF_VAR_build_id="${BUILD_ID}" \
@@ -314,15 +314,15 @@ jobs:
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
           make timed-build ENV="${ENV}" BUILD_ID="${BUILD_ID}" CLUSTER="${CLUSTER_NAME}" REGION="${AWS_REGION}" > build.log 2>&1
-          
+
           EXIT_CODE=$?
           set -e
           cat build.log
-          
+
           END_TIME=$(date +%s)
           DURATION=$((END_TIME - START_TIME))
           echo "duration=${DURATION}" >> "$GITHUB_OUTPUT"
-          
+
           if [[ $EXIT_CODE -ne 0 ]]; then
             ERROR_MSG=$(tail -n 20 build.log | tr '\n' ' ' | sed 's/"/\\"/g')
             echo "error_message=${ERROR_MSG}" >> "$GITHUB_OUTPUT"
@@ -368,7 +368,7 @@ jobs:
         id: timed_bootstrap
         run: |
           START_TIME=$(date +%s)
-          
+
           set +e
           ENV_NAME="${ENV}" \
           NODE_INSTANCE_TYPE="${{ inputs.node_instance_type }}" \
@@ -384,15 +384,15 @@ jobs:
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
           make timed-bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}" CLUSTER="${CLUSTER_NAME}" REGION="${AWS_REGION}" > bootstrap.log 2>&1
-          
+
           EXIT_CODE=$?
           set -e
           cat bootstrap.log
-          
+
           END_TIME=$(date +%s)
           DURATION=$((END_TIME - START_TIME))
           echo "duration=${DURATION}" >> "$GITHUB_OUTPUT"
-          
+
           if [[ $EXIT_CODE -ne 0 ]]; then
             ERROR_MSG=$(tail -n 20 bootstrap.log | tr '\n' ' ' | sed 's/"/\\"/g')
             echo "error_message=${ERROR_MSG}" >> "$GITHUB_OUTPUT"
