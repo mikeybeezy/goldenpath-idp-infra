@@ -58,6 +58,9 @@ This is the single rolling backlog. Add items here before starting work.
 | 043 | P1 | Observability | Build RED + Golden Signals dashboards with minimal alerts | platform | Open | M | Q1 | Create dashboards and alert rules | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | V1 visibility baseline for operators |
 | 044 | P2 | Observability | Capture V1.1 trace plan (OTel + Tempo) | platform | Open | S | Q2 | Define data path and sampling | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | Make trace adoption explicit and time-boxed |
 | 045 | P2 | Cost | Implement Infracost + Backstage Integration | platform | Open | M | Q2 | Add `infracost` step to CI | docs/production-readiness-gates/ROADMAP.md | Surface cost impact in PRs and Backstage (Leading Indicator) |
+| 046 | P2 | Teardown | Targeted cleanup for orphaned Target Groups | platform | Open | S | Q1 | Add TG scan/delete to `teardown.sh` | docs/runbooks/06_LB_ENI_ORPHANS.md | Prevent quota exhaustion from ghost resources |
+| 047 | P3 | Teardown | Implement async Node Group deletion | platform | Open | M | Q2 | Trigger delete via CLI before Terraform | docs/40-delivery/17_BUILD_RUN_FLAGS.md | Reduce teardown duration by parallelizing slow steps |
+| 048 | P2 | Cost | Validate orphaned EBS volumes in teardown | platform | Open | S | Q1 | Add volume scan to `teardown.sh` | docs/30-architecture/07_REPO_DECOUPLING_OPTIONS.md | Prevent hidden costs from persistent PVCs |
 
 ## Rules
 
