@@ -79,6 +79,8 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0074](ADR-0074-platform-ops-workflow-branch-guard.md) | Platform | Ops workflows restricted to main and development | Accepted | 2026-01-03 | Guard ops workflows to reduce drift from feature branches. |
 | [ADR-0075](ADR-0075-app-example-deployments.md) | Platform | App example deployments via Argo CD, Helm, and Kustomize | Accepted | 2026-01-03 | Standardize example app packaging and GitOps app manifests. |
 | [ADR-0076](ADR-0076-platform-infracost-ci-visibility.md) | Platform | Lightweight CI cost visibility with Infracost | Accepted | 2026-01-03 | Post cost visibility in PRs without gating. |
+| [ADR-0077](ADR-0077-platform-ci-build-teardown-log-automation.md) | Platform | CI build/teardown log automation | Proposed | 2026-01-03 | Auto-generate build and teardown log entries from CI runs. |
+| [ADR-0078](ADR-0078-platform-governed-repo-scaffolder.md) | Platform | Governance-driven app repository scaffolder | Proposed | 2026-01-03 | Scaffolds app repos with required metadata via Backstage or workflow. |
 
 ---
 

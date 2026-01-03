@@ -53,6 +53,12 @@ It is a living guide for planning and execution.
 - Manual registration only (no automation in V1).
 - Required annotations for CI and dashboards.
 
+### App scaffolding + repo creation (Golden Path)
+
+- Backstage scaffolder creates a new app repo from a golden-path template.
+- Repo includes CI, GitOps, and docs scaffolding by default.
+- Catalog registration remains manual in V1.
+
 ### Cluster health checks
 
 - Post-apply checks: API reachable, nodes ready, system pods healthy, ingress OK.
@@ -81,6 +87,7 @@ It is a living guide for planning and execution.
 ### Week 2: Golden-path UX
 
 - [ ] Scaffolder templates for plan/apply/teardown exist.
+- [ ] Scaffolder can create a new app repo from a golden-path template.
 - [ ] Pipeline triggers wired from Backstage.
 - [ ] Backstage entities link to CI runs and docs.
 - [ ] Runbook format finalized; 2-3 runbooks published.

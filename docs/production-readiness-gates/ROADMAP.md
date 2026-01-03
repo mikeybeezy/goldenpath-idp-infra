@@ -68,6 +68,15 @@ This is the single rolling backlog. Add items here before starting work.
 | 051 | P1 | Apps | Add stateful app template (StatefulSet + PVC + storage class) | platform | Open | M | Q1 | Define template and ownership boundaries | apps/ (new) + docs/20-contracts/42_APP_TEMPLATE_LIVING.md | Required for stateful workload golden path (added 2026-01-03) |
 | 052 | P1 | GitOps | Add GitOps app manifests for stateless + stateful apps per env | platform | Open | M | Q1 | Create `gitops/argocd/apps/<env>/<app>.yaml` | gitops/argocd/apps/<env> | Consistent deployment across envs (added 2026-01-03) |
 | 053 | P1 | Observability | Validate OOTB app + platform observability across all envs | platform | Open | M | Q1 | Run env verification checklist + record results | docs/50-observability/05_OBSERVABILITY_DECISIONS.md, docs/production-readiness-gates/READINESS_CHECKLIST.md | Confirm observability parity beyond dev (added 2026-01-03) |
+| 054 | P2 | Teardown | Unified Teardown Recovery Protocol | platform | Open | M | Q1 | Create `force-cleanup` action + auto-retry in CI | docs/production-readiness-gates/ROADMAP.md | Consolidate orphan/LB cleanup into a single reliability hammer |
+| 055 | P2 | Governance | Repository lifecycle policy + runbook | platform | Open | S | Q1 | Publish policy + runbook; align with scaffolder inputs | docs/10-governance/05_REPOSITORY_LIFECYCLE.md, docs/runbooks/10_REPO_DECOMMISSIONING.md | Define deterministic repo lifecycle and decommissioning |
+| 056 | P2 | Governance | Validate repo lifecycle workflow (3+ drills) | platform | Open | M | Q1 | Run 3 scaffold runs + 1 decommission drill; record evidence links | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Ensure solution goes beyond documentation |
+| 057 | P3 | Governance | Log repo creation + decommission duration | platform | Open | S | Q1 | Capture duration metrics from scaffolder + decommission drills | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Track end-to-end lifecycle automation time |
+| 058 | P3 | Governance | Track scaffold/decommission success rate | platform | Open | S | Q1 | Record pass/fail % for lifecycle runs | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Reliability signal for automation |
+| 059 | P3 | Governance | Track first-run success vs retries | platform | Open | S | Q1 | Capture retry counts for lifecycle workflows | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Indicates determinism and stability |
+| 060 | P3 | Governance | Track time-to-ready for new repos | platform | Open | S | Q1 | Measure repo creation → first CI green | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | End-to-end onboarding signal |
+| 061 | P3 | Governance | Track policy compliance coverage | platform | Open | S | Q1 | % repos with metadata + branch protection | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Ensures governance-by-default |
+| 062 | P3 | Governance | Track stale repo count and archive rate | platform | Open | S | Q1 | Count stale repos flagged vs archived | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Confirms controlled exit path |
 
 ## Rules
 
