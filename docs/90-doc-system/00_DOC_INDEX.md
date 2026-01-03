@@ -31,6 +31,8 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/70-operations/36_STATE_KEY_STRATEGY.md | platform | 90d | 2025-12-29 | Lifecycle-aware state key usage |
 | docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md | platform | 30d | 2026-01-02 | Baseline success checklist (living) |
 | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | platform | 90d | 2025-12-29 | V1 vs V1.1 scope and delivery checklist |
+| docs/00-foundations/43_OPERATING_PRINCIPLES.md | platform | 90d | 2026-01-03 | Operating principles and signal register |
+| docs/00-foundations/44_PRINCIPLES_AND_FRAMEWORKS.md | platform | 90d | 2026-01-03 | Decision frameworks and mapped references |
 | docs/40-delivery/38_BRANCHING_STRATEGY.md | platform | 90d | 2025-12-29 | Branching strategy and promotion flow |
 | docs/40-delivery/39_GOLDEN_PATH_VALIDATION.md | platform | 90d | 2025-12-30 | End-to-end PR → apply → bootstrap → teardown validation |
 | docs/40-delivery/41_BUILD_RUN_LOG.md | platform | 30d | 2026-01-02 | Build/bootstrap/teardown run summaries and links |
@@ -39,7 +41,6 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/10-governance/35_RESOURCE_TAGGING.md | platform | 90d | 2026-01-01 | Tagging contract and cleanup implications |
 | docs/50-observability/41_STORAGE_AND_PERSISTENCE.md | platform | 90d | 2025-12-31 | Storage defaults, persistence requirements, and tradeoffs |
 | docs/20-contracts/42_APP_TEMPLATE_LIVING.md | platform | 90d | 2025-12-31 | App template structure and ownership boundaries |
-| docs/00-foundations/43_OPERATING_PRINCIPLES.md | platform | 90d | 2026-01-01 | Grove-inspired operating principles |
 | docs/90-doc-system/44_DOC_TIGHTENING_PLAN.md | platform | 90d | 2026-01-01 | Doc relationships and consolidation plan |
 | docs/production-readiness-gates/ROADMAP.md | platform | 30d | 2026-01-02 | Monthly platform backlog review |
 | docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md | platform | 30d | 2026-01-02 | Capability matrix with status updates |
