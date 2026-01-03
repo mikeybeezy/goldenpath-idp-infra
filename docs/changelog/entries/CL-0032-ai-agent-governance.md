@@ -9,6 +9,8 @@ Owner: platform
 - Add AI protocols for operator and agent execution rules.
 - Add AI change log ledger and link in doc index.
 - Clarify PR monitoring tasks and human-only merge approval.
+- Add tiered authority model and core principle for human ownership.
+- Add agent protocol guarantees for idempotence, traceability, and reviewability.
 
 ## References
 

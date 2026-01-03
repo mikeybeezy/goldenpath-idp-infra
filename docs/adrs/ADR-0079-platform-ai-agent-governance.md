@@ -15,7 +15,8 @@ guardrails, and reproducible outcomes.
 
 ## Decision
 
-Adopt an AI governance layer with three concrete artifacts:
+Adopt an AI governance layer with three concrete artifacts and a tiered
+authority model:
 
 1. `docs/10-governance/07_AI_AGENT_GOVERNANCE.md`
    - Defines authority, guardrails, auditability, QA expectations, and
@@ -24,6 +25,9 @@ Adopt an AI governance layer with three concrete artifacts:
    - Detailed operating procedures aligned to governance policy.
 3. `docs/90-doc-system/AI_CHANGELOG.md`
    - A living ledger to record AI-driven changes with evidence.
+
+The tiered model defines what actions are allowed per risk class (read-only,
+write isolated, safe execution, human-only high risk).
 
 ## Consequences
 

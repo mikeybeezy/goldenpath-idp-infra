@@ -26,7 +26,15 @@ This protocol implements the policy in
 `docs/10-governance/07_AI_AGENT_GOVERNANCE.md`. When in doubt, follow the
 governance doc and request approval.
 
-## 2) Safety and branching (ask-first rule)
+## 2) Tiered authority map
+
+Operate within the assigned tier:
+- Tier 0: read/reason only.
+- Tier 1: write in isolation (PR required).
+- Tier 2: safe execution only (no apply/destroy/IAM).
+- Tier 3: human only.
+
+## 3) Safety and branching (ask-first rule)
 
 - **Branching:** Do not create, switch, or delete branches without explicit
   user approval in the current turn.
@@ -35,7 +43,7 @@ governance doc and request approval.
 - **No rushing:** Do not chain destructive commands without an intermediate
   check-in (for example, delete, reset, force-push).
 
-## 3) The green gate (PRs)
+## 4) The green gate (PRs)
 
 - **Definition of done:** A task is not complete until the PR is green.
 - **Failure loop:** If CI fails: read logs → fix the specific issue → re-run
@@ -47,7 +55,7 @@ Reference:
 - PR checklist template: `.github/pull_request_template.md`
 - PR gate triage: `docs/80-onboarding/24_PR_GATES.md`
 
-## 4) Documentation triggers (label-gated)
+## 5) Documentation triggers (label-gated)
 
 **Changelog** (`docs/changelog/entries/CL-####-short-title.md`)
 - Required when `changelog-required` label is present.
@@ -66,29 +74,29 @@ Reference:
 Rule of thumb: code changes without documentation updates are incomplete when
 labels require them.
 
-## 5) Context loading (start of session)
+## 6) Context loading (start of session)
 
 Read and align on priorities before proposing work:
 1. `docs/production-readiness-gates/ROADMAP.md`
 2. `docs/80-onboarding/13_COLLABORATION_GUIDE.md`
 
-## 6) Standard interfaces
+## 7) Standard interfaces
 
 Prefer `Makefile` targets (for example, `make apply`, `make test`) over raw
 commands to ensure consistent flags, environment variables, and safety checks.
 
-## 7) Escalation and approvals
+## 8) Escalation and approvals
 
 - Obtain explicit approval before destructive actions or branch operations.
 - If a change could alter infrastructure, validate via the defined CI workflows
   and document the evidence.
 
-## 8) QA and accuracy
+## 9) QA and accuracy
 
 - State verification explicitly (tests run vs not run).
 - Use evidence links when claiming a change is validated.
 
-## 9) PR monitoring (agent tasks)
+## 10) PR monitoring (agent tasks)
 
 Agents are responsible for keeping PRs green, not merging them.
 
@@ -99,7 +107,7 @@ Agents are responsible for keeping PRs green, not merging them.
 5. Confirm labels reflect the actual scope (avoid false ADR/changelog blocks).
 6. Notify a human for merge approval once green.
 
-## 10) Value preservation mechanisms
+## 11) Value preservation mechanisms
 
 These are mandatory habits to preserve agent value and reduce rework:
 
@@ -121,7 +129,16 @@ These are mandatory habits to preserve agent value and reduce rework:
    - Track build time, bootstrap time, teardown time, first-run success rate.
    - Record these in `docs/40-delivery/41_BUILD_RUN_LOG.md`.
 
-## 11) Definition of done
+## 12) Agent protocol (behavioral guarantees)
+
+Every agent action must be:
+
+1. **Idempotent**: safe to re-run with no hidden state.
+2. **Traceable**: leaves a commit/PR, explanation, and references.
+3. **Reviewable**: a human can understand why the change exists without
+   re-contacting the agent.
+
+## 13) Definition of done
 
 Work is complete when:
 - PR is green and handed off for human merge approval into `development`.
