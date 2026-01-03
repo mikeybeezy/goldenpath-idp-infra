@@ -46,6 +46,22 @@ Platform-owned:
 - networkpolicy.yaml
 - rbac.yaml (only when needed)
 
+## Scaffolder contract (governance metadata)
+
+Required inputs (Backstage + CI scaffolder):
+- `owner_team` (GitHub team slug, e.g., checkout-team)
+- `system` (Backstage system; optional)
+- `lifecycle` (experimental, production, deprecated)
+- `service_tier` (tier-1, tier-2, tier-3)
+- `data_classification` (public, internal, confidential, restricted)
+
+Catalog fields:
+- `spec.owner` is set to `group:<owner_team>`
+- `spec.lifecycle` and annotations under `platform.goldenpath.dev/*`
+
+Workflow requirements:
+- `REPO_SCOPED_GH_TOKEN` secret with repo creation permissions.
+
 ## Change Log (Living)
 
 - 2025-12-31: Initial reference template added with placeholders and Kong +

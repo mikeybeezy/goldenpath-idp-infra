@@ -16,6 +16,7 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | --- | --- | --- | --- | --- |
 | docs/00-foundations/00_DESIGN_PHILOSOPHY.md | platform | 90d | 2025-12-27 | Core origin and product philosophy |
 | docs/10-governance/01_GOVERNANCE.md | platform | 90d | 2026-01-03 | Governance principles and rules |
+| docs/10-governance/05_REPOSITORY_LIFECYCLE.md | platform | 90d | 2026-01-03 | Repo lifecycle policy and decommissioning requirements |
 | docs/10-governance/04_PR_GUARDRAILS.md | platform | 90d | 2026-01-03 | PR guardrails, labels, and enforcement |
 | docs/10-governance/06_COST_GOVERNANCE.md | platform | 90d | 2026-01-03 | Cost visibility policy and escalation guidance |
 | docs/20-contracts/02_PLATFORM_BOUNDARIES.md | platform | 90d | 2025-12-31 | Platform vs team contract |
@@ -44,6 +45,7 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/10-governance/35_RESOURCE_TAGGING.md | platform | 90d | 2026-01-01 | Tagging contract and cleanup implications |
 | docs/50-observability/41_STORAGE_AND_PERSISTENCE.md | platform | 90d | 2025-12-31 | Storage defaults, persistence requirements, and tradeoffs |
 | docs/20-contracts/42_APP_TEMPLATE_LIVING.md | platform | 90d | 2025-12-31 | App template structure and ownership boundaries |
+| docs/user-stories/00_INDEX.md | platform | 90d | 2026-01-03 | User stories linking features to outcomes |
 | docs/90-doc-system/44_DOC_TIGHTENING_PLAN.md | platform | 90d | 2026-01-01 | Doc relationships and consolidation plan |
 | docs/production-readiness-gates/ROADMAP.md | platform | 30d | 2026-01-02 | Monthly platform backlog review |
 | docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md | platform | 30d | 2026-01-02 | Capability matrix with status updates |
@@ -52,3 +54,4 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/20-contracts/01_PLATFORM_SERVICE_AGREEMENT.md | platform | 90d | 2026-01-02 | Platform SLA/SLO agreement |
 | docs/20-contracts/10_SERVICE_CATALOG.md | platform | 90d | 2026-01-02 | Supported services and add-ons |
 | docs/70-operations/01_LIFECYCLE_POLICY.md | platform | 90d | 2026-01-02 | Lifecycle and upgrade policy |
+| docs/runbooks/10_REPO_DECOMMISSIONING.md | platform | 90d | 2026-01-03 | Repo decommissioning runbook and tombstone template |

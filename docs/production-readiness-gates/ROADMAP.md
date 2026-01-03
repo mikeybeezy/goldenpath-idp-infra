@@ -62,6 +62,15 @@ This is the single rolling backlog. Add items here before starting work.
 | 047 | P3 | Teardown | Implement async Node Group deletion | platform | Open | M | Q2 | Trigger delete via CLI before Terraform | docs/40-delivery/17_BUILD_RUN_FLAGS.md | Reduce teardown duration by parallelizing slow steps |
 | 048 | P2 | Cost | Validate orphaned EBS PVCs (tag scan) | platform | Open | S | Q1 | Scan `tag:kubernetes.io/created-for/pvc/name` in `teardown.sh` | docs/30-architecture/07_REPO_DECOUPLING_OPTIONS.md | Prevent hidden costs from persistent PVCs |
 | 049 | P2 | Cost | Add Infracost baseline diff vs main for PRs | platform | Open | S | Q2 | Compare `main` vs PR plan costs | .github/workflows/pr-terraform-plan.yml | Show cost deltas, not just totals |
+| 050 | P2 | Teardown | Unified Teardown Recovery Protocol | platform | Open | M | Q1 | Create `force-cleanup` action + auto-retry in CI | docs/production-readiness-gates/ROADMAP.md | Consolidate orphan/LB cleanup into a single reliability hammer |
+| 051 | P2 | Governance | Repository lifecycle policy + runbook | platform | Open | S | Q1 | Publish policy + runbook; align with scaffolder inputs | docs/10-governance/05_REPOSITORY_LIFECYCLE.md, docs/runbooks/10_REPO_DECOMMISSIONING.md | Define deterministic repo lifecycle and decommissioning |
+| 052 | P2 | Governance | Validate repo lifecycle workflow (3+ drills) | platform | Open | M | Q1 | Run 3 scaffold runs + 1 decommission drill; record evidence links | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Ensure solution goes beyond documentation |
+| 053 | P3 | Governance | Log repo creation + decommission duration | platform | Open | S | Q1 | Capture duration metrics from scaffolder + decommission drills | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Track end-to-end lifecycle automation time |
+| 054 | P3 | Governance | Track scaffold/decommission success rate | platform | Open | S | Q1 | Record pass/fail % for lifecycle runs | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Reliability signal for automation |
+| 055 | P3 | Governance | Track first-run success vs retries | platform | Open | S | Q1 | Capture retry counts for lifecycle workflows | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Indicates determinism and stability |
+| 056 | P3 | Governance | Track time-to-ready for new repos | platform | Open | S | Q1 | Measure repo creation → first CI green | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | End-to-end onboarding signal |
+| 057 | P3 | Governance | Track policy compliance coverage | platform | Open | S | Q1 | % repos with metadata + branch protection | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Ensures governance-by-default |
+| 058 | P3 | Governance | Track stale repo count and archive rate | platform | Open | S | Q1 | Count stale repos flagged vs archived | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Confirms controlled exit path |
 
 ## Rules
 
