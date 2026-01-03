@@ -5,10 +5,15 @@ Doc contract:
 - Owner: platform
 - Status: living
 - Review cadence: 90d
-- Related: docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md, docs/50-observability/05_OBSERVABILITY_DECISIONS.md, docs/40-delivery/16_INFRA_Build_ID_Strategy_Decision.md
+- Related: docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md, docs/50-observability/05_OBSERVABILITY_DECISIONS.md, docs/40-delivery/16_INFRA_Build_ID_Strategy_Decision.md, docs/00-foundations/44_PRINCIPLES_AND_FRAMEWORKS.md
 
 These principles guide how we make tradeoffs, prioritize work, and measure
 platform progress. They are meant to be practical and enforceable.
+
+## Frameworks reference
+
+For Hohpe, Grove, Rumelt, DDD, and due-diligence mappings, see
+docs/00-foundations/44_PRINCIPLES_AND_FRAMEWORKS.md.
 
 ## Strategy kernel (Rumelt)
 
