@@ -1,5 +1,5 @@
 ---
-id: ADR-0081
+id: ADR-0082
 title: Platform Metadata Validation Strategy
 type: adr
 owner: platform-team
@@ -15,7 +15,7 @@ relates_to:
   - ADR-0066
 ---
 
-# ADR-0081: Platform Metadata Validation Strategy
+# ADR-0082: Platform Metadata Validation Strategy
 
 ## Context
 As the Golden Path IDP scales, we are introducing a "Knowledge Graph" approach to link artifacts (Code, Docs, Decisions). We need a way to enforce the integrity of these links.
@@ -41,4 +41,3 @@ We choose to write and maintain `scripts/validate-metadata.py`.
 ## Consequences
 *   **Positive:** Guaranteed referential integrity. No "Dead Links" in our graph.
 *   **Negative:** We must maintain the python script.
-

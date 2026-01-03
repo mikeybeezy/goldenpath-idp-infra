@@ -1,5 +1,5 @@
 ---
-id: CL-0033
+id: CL-0037
 title: Platform Metadata Fabric (Knowledge Graph)
 type: changelog
 owner: platform-team
@@ -8,10 +8,10 @@ risk_profile:
   production_impact: low
   security_risk: none
 relates_to:
-  - ADR-0081
+  - ADR-0082
 ---
 
-# CL-0033: Platform Metadata Fabric (Knowledge Graph)
+# CL-0037: Platform Metadata Fabric (Knowledge Graph)
 
 Date: 2026-01-03
 Author: Antigravity
@@ -22,13 +22,9 @@ Introduced the **Platform Metadata Fabric** to enable semantically linked docume
 ## Changes
 ### Documentation System
 *   **Strategy:** Defined `METADATA_STRATEGY.md` with the "Rich Schema" (Identity, Governance, Reliability).
-*   **Templates:** Updated `ADR-TEMPLATE` and `CHANGELOG-TEMPLATE` to enforce the new schema.
 *   **Validation:** Added `scripts/validate-metadata.py` to enforce schema compliance in CI.
 *   **Runbook:** Added `METADATA_VALIDATION_GUIDE.md` for team onboarding.
-*   **Decision:** Record `ADR-0081` justifying the custom validation approach.
-
-### Infrastructure
-*   **Tags:** Defined standard tagging schema for all Terraform resources (Owner, DocsID, CostCenter).
+*   **Decision:** Record `ADR-0082` justifying the custom validation approach.
 
 ## Impact
 *   **New Docs:** Must include YAML frontmatter validation.
@@ -38,4 +34,3 @@ Introduced the **Platform Metadata Fabric** to enable semantically linked docume
 ## Verification
 *   Ran `validate-metadata.py` locally.
 *   Verified templates render correctly.
-
