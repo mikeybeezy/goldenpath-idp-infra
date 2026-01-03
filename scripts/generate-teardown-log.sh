@@ -20,7 +20,7 @@ fi
 
 # 1. Determine next sequence number
 # Find max TD-XXXX number
-LAST_LOG=$(find "$LOG_DIR" -name "TD-*.md" | sort | tail -n 1)
+LAST_LOG=$(find "$LOG_DIR" -name "TD-*.md" ! -name "TD-TEMPLATE.md" | sort | tail -n 1)
 if [[ -z "$LAST_LOG" ]]; then
   NEXT_SEQ="0001"
 else
