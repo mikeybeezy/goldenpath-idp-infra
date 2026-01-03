@@ -9,11 +9,11 @@ A stateful app can then request a volume, by specifying a _persistent volume cla
 >    ```
 >    kubectl apply -f gp2-storage-class.yaml --namespace=ns-eks-course
 >    ```
->    If you receive the following error, then there is already gp2 storageclass available and you can skip above command:  
+>    If you receive the following error, then there is already gp2 storageclass available and you can skip above command:
 >
->>    *The StorageClass "gp2" is invalid:*  
->>    *parameters: Forbidden: updates to parameters are forbidden.*  
->>    *reclaimPolicy: Forbidden: updates to reclaimPolicy are forbidden.*  
+>>    *The StorageClass "gp2" is invalid:*
+>>    *parameters: Forbidden: updates to parameters are forbidden.*
+>>    *reclaimPolicy: Forbidden: updates to reclaimPolicy are forbidden.*
 >
 >    ...and set this storage class as *default* !
 >    check current situation:

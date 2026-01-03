@@ -46,6 +46,6 @@ delete MySQL _deployment_
 kubectl delete -f deploy-mysql.yaml --namespace=ns-eks-course
 ```
 
-delete EBS volumes  
+delete EBS volumes
 since we specified policy _retain_ for the pv's, we have to delete them manually after deleting the pods, which had them in use.
 For that go to AWS mgm console => EC2 => Volumes => select and delete the detached ones

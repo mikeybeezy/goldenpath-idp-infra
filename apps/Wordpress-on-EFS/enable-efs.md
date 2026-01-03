@@ -1,5 +1,5 @@
 # click through AWS console to create EFS
-login to AWS console and search for service _EFS_   
+login to AWS console and search for service _EFS_
 click through wizard , use our course VPC and all 3 AZs
 *specify the security group of your EC2-worker-nodes, to be applied to EFS as well*
 
