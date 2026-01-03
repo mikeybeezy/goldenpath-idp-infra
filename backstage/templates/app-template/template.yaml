@@ -12,21 +12,23 @@ spec:
       required:
         - app_name
         - namespace
-        - owner
+        - owner_team
         - repoUrl
       properties:
         app_name:
           title: App name
           type: string
           description: Service name (lowercase, kebab-case)
+          pattern: "^[a-z0-9-]+$"
         namespace:
           title: Namespace
           type: string
           default: default
-        owner:
-          title: Owner
+        owner_team:
+          title: Owner team
           type: string
-          description: Backstage group or user (e.g., group:platform)
+          description: GitHub team slug (e.g., checkout-team)
+          pattern: "^[a-z0-9-]+$"
         system:
           title: System
           type: string
@@ -39,6 +41,37 @@ spec:
           title: Repo URL
           type: string
           description: GitHub repo (e.g., github.com?owner=org&repo=repo)
+    - title: Governance
+      required:
+        - lifecycle
+        - service_tier
+        - data_classification
+      properties:
+        lifecycle:
+          title: Lifecycle
+          type: string
+          enum:
+            - experimental
+            - production
+            - deprecated
+          default: experimental
+        service_tier:
+          title: Service tier
+          type: string
+          enum:
+            - tier-1
+            - tier-2
+            - tier-3
+          default: tier-3
+        data_classification:
+          title: Data classification
+          type: string
+          enum:
+            - public
+            - internal
+            - confidential
+            - restricted
+          default: internal
     - title: Runtime
       properties:
         app_image:
@@ -138,13 +171,17 @@ spec:
       action: fetch:template
       input:
         url: ../../apps/fast-api-app-template
-        targetPath: apps/${{ parameters.app_name }}
+        targetPath: .
         values:
           app_name: ${{ parameters.app_name }}
           namespace: ${{ parameters.namespace }}
-          owner: ${{ parameters.owner }}
+          owner: group:${{ parameters.owner_team }}
+          owner_team: ${{ parameters.owner_team }}
           system: ${{ parameters.system }}
           description: ${{ parameters.description }}
+          lifecycle: ${{ parameters.lifecycle }}
+          service_tier: ${{ parameters.service_tier }}
+          data_classification: ${{ parameters.data_classification }}
           app_image: ${{ parameters.app_image }}
           app_version: ${{ parameters.app_version }}
           app_port: ${{ parameters.app_port }}
@@ -178,7 +215,7 @@ spec:
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: /apps/${{ parameters.app_name }}/catalog-info.yaml
+        catalogInfoPath: /catalog-info.yaml
   output:
     links:
       - title: Repository

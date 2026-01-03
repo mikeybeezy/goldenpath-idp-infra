@@ -22,6 +22,13 @@ Platform-owned (teams request changes):
 Template values use `{{ values.* }}` placeholders rendered by Backstage.
 If using manually, replace these placeholders before applying.
 
+## Governance metadata (required)
+
+- `owner_team` (GitHub team slug, e.g., checkout-team)
+- `service_tier` (e.g., tier-1, tier-2, tier-3)
+- `data_classification` (e.g., public, internal, confidential, restricted)
+- `lifecycle` (e.g., experimental, production, deprecated)
+
 ## Notes
 
 - Do not manage the same dashboards in both Helm/ConfigMaps and Terraform.

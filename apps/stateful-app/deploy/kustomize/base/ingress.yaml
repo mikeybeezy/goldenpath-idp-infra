@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "stateful-app"
+  namespace: "apps-stateful"
+  annotations:
+    kubernetes.io/ingress.class: kong
+    konghq.com/strip-path: "false"
+    konghq.com/methods: "GET, POST"
+    konghq.com/plugins: "sample-auth,sample-rate-limit"
+spec:
+  ingressClassName: kong
+  rules:
+    - host: "stateful.dev.goldenpath.local"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "stateful-app"
+                port:
+                  number: 80

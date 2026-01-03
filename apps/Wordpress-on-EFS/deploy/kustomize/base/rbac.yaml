@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "wordpress-efs-reader"
+  namespace: "apps-wordpress-efs"
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "wordpress-efs-reader"
+  namespace: "apps-wordpress-efs"
+subjects:
+  - kind: ServiceAccount
+    name: "wordpress-efs"
+    namespace: "apps-wordpress-efs"
+roleRef:
+  kind: Role
+  name: "wordpress-efs-reader"
+  apiGroup: rbac.authorization.k8s.io

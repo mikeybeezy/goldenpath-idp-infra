@@ -21,7 +21,7 @@ an image, deploy via GitOps, and expose it through Kong.
 
 ### 1) Scaffold Backstage
 
-- Create the repo with `@backstage/create-app`.
+- Create the repo via the app scaffolder (Backstage template or workflow).
 - Keep plugins minimal (catalog, scaffolder, techdocs).
 - Add a simple health endpoint in the backend.
 

@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "stateful-app-reader"
+  namespace: "apps-stateful"
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "stateful-app-reader"
+  namespace: "apps-stateful"
+subjects:
+  - kind: ServiceAccount
+    name: "stateful-app"
+    namespace: "apps-stateful"
+roleRef:
+  kind: Role
+  name: "stateful-app-reader"
+  apiGroup: rbac.authorization.k8s.io
