@@ -33,6 +33,11 @@ The PR template requires explicit selections for:
 
 Enforced by `/.github/workflows/pr-guardrails.yml`.
 
+Template enforcement:
+- PR bodies must be based on `.github/pull_request_template.md`.
+- Guardrails fail if the template header is missing or the body contains
+  escaped newlines (`\\n`).
+
 ### Auto-labeling by path
 
 PRs are labeled automatically based on touched paths:

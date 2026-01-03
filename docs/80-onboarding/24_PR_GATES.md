@@ -52,8 +52,10 @@ and contribution.
 3. Prepare PR content: short summary, checklist selections, testing notes/links.
 4. Add required artifacts (ADR, changelog, doc index updates).
 5. Run local guardrails (`pre-commit run --all-files`, formatters/linters as needed).
-6. Commit, push, and open PR with checklist completed.
-7. Review CI/guardrail results; if any fail, follow the triage loop below.
+6. Commit, push, and open PR using `.github/pull_request_template.md` (CLI:
+   `gh pr create -F .github/pull_request_template.md`) with checklist completed.
+7. Check CI/guardrail results immediately; if any fail, follow the triage loop
+   below.
 8. Re-run local guardrails after fixes and re-push until all checks pass.
 9. If checks appear stuck or a retarget is not picked up, add a no-op commit to retrigger.
 10. Confirm all required checks are green and approvals are in place.
@@ -157,3 +159,6 @@ Rollback notes/link:
 ## Notes / Summary (optional)
 -
 ```
+
+CLI note: prefer `gh pr create -F .github/pull_request_template.md` to avoid
+escaped newlines in the PR body.
