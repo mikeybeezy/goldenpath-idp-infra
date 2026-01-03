@@ -98,11 +98,7 @@ on:
         required: true
         default: "false"
         type: boolean
-      generate_log:
-        description: "Generate BR-XXXX log artifact"
-        required: false
-        default: true
-        type: boolean
+
 
 jobs:
   bootstrap:
@@ -363,7 +359,7 @@ jobs:
   log-generation:
     runs-on: ubuntu-latest
     needs: bootstrap
-    if: ${{ always() && inputs.generate_log }}
+    if: ${{ always() }}
     permissions:
       contents: write
     steps:
