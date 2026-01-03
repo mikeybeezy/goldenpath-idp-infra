@@ -19,8 +19,11 @@ these entries for deeper detail.
 
 ## Standard Fields
 
-Each log entry should capture:
+Please copy `docs/build-run-logs/TEMPLATE.md` when creating a new entry.
+
+Key metrics to capture:
 - **Build ID / Commit:** Traceability to code.
 - **Plan Delta:** Number of resources added/changed/destroyed (Blast radius).
 - **Duration:** Precise times for Build vs. Bootstrap phases.
+- **Flags:** Exact flags used for reproducibility.
 
