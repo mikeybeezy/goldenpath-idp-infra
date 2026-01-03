@@ -109,6 +109,8 @@ git push
 | Quality - Pre-commit | Code changes | Lint/format/hook checks | Run `pre-commit run --all-files`, fix failures |
 | Quality - Doc Freshness | Living docs touched | Doc appears in index and is current | Update `docs/90-doc-system/00_DOC_INDEX.md` |
 | Quality - YAML/Markdown | YAML/MD touched | Linting | Fix lint errors |
+| Quality - Super Linter (Markdown) | Docs touched | Markdown lint | Fix markdown lint errors |
+| Quality - Yamllint | YAML touched | YAML lint | Fix YAML lint errors |
 | Plan - PR Terraform Plan | Infra paths | Terraform fmt/validate/plan | Fix plan errors or re-run after updates |
 
 ## Where to look for details

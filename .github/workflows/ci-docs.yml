@@ -1,0 +1,29 @@
+name: Docs - Metadata Validation
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "scripts/validate-metadata.py"
+      - ".github/workflows/ci-docs.yml"
+
+jobs:
+  validate-metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install pyyaml
+
+      - name: Run Metadata Validator
+        run: |
+          chmod +x scripts/validate-metadata.py
+          python3 scripts/validate-metadata.py docs
