@@ -201,6 +201,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build scaffold values
+        env:
+          INPUT_NAMESPACE: ${{ inputs.namespace }}
+          INPUT_SYSTEM: ${{ inputs.system }}
+          INPUT_DESCRIPTION: ${{ inputs.description }}
+          INPUT_LIFECYCLE: ${{ inputs.lifecycle }}
+          INPUT_SERVICE_TIER: ${{ inputs.service_tier }}
+          INPUT_DATA_CLASSIFICATION: ${{ inputs.data_classification }}
+          INPUT_ENV: ${{ inputs.env }}
+          INPUT_BUILD_ID: ${{ inputs.build_id }}
+          INPUT_APP_HOST: ${{ inputs.app_host }}
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -210,14 +220,14 @@ jobs:
 
           values = {
               "app_name": os.environ["PROJECT_NAME"],
-              "namespace": "${{ inputs.namespace }}",
+              "namespace": os.environ["INPUT_NAMESPACE"],
               "owner": f"group:{os.environ['OWNER_TEAM']}",
               "owner_team": os.environ["OWNER_TEAM"],
-              "system": "${{ inputs.system }}",
-              "description": "${{ inputs.description }}",
-              "lifecycle": "${{ inputs.lifecycle }}",
-              "service_tier": "${{ inputs.service_tier }}",
-              "data_classification": "${{ inputs.data_classification }}",
+              "system": os.environ.get("INPUT_SYSTEM") or "",
+              "description": os.environ.get("INPUT_DESCRIPTION") or "Golden Path service",
+              "lifecycle": os.environ["INPUT_LIFECYCLE"],
+              "service_tier": os.environ["INPUT_SERVICE_TIER"],
+              "data_classification": os.environ["INPUT_DATA_CLASSIFICATION"],
               "app_image": os.environ["APP_IMAGE"],
               "app_version": "latest",
               "app_port": 8080,
@@ -227,10 +237,10 @@ jobs:
               "memory_request": "128Mi",
               "cpu_limit": "500m",
               "memory_limit": "512Mi",
-              "env": "${{ inputs.env }}",
+              "env": os.environ["INPUT_ENV"],
               "team": os.environ["OWNER_TEAM"],
-              "build_id": "${{ inputs.build_id }}",
-              "app_host": "${{ inputs.app_host }}",
+              "build_id": os.environ.get("INPUT_BUILD_ID") or "unknown",
+              "app_host": os.environ["INPUT_APP_HOST"],
               "kong_auth_plugin": f"{os.environ['PROJECT_NAME']}-auth",
               "kong_rate_limit_plugin": f"{os.environ['PROJECT_NAME']}-rate-limit",
               "kong_consumer_name": f"{os.environ['PROJECT_NAME']}-consumer",
@@ -313,10 +323,11 @@ jobs:
             -f permission=admin
 
       - name: Set repo topics
+        env:
+          SERVICE_TIER: ${{ inputs.service_tier }}
         run: |
           set -euo pipefail
-          TIER_TAG="tier-${{ inputs.service_tier }}"
-          TIER_TAG="${TIER_TAG#tier-tier-}"
+          TIER_TAG="${SERVICE_TIER}"
           cat > /tmp/topics.json <<EOF
           {
             "names": [
