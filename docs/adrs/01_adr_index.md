@@ -83,6 +83,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0078](ADR-0078-platform-governed-repo-scaffolder.md) | Platform | Governance-driven app repository scaffolder | Proposed | 2026-01-03 | Scaffolds app repos with required metadata via Backstage or workflow. |
 | [ADR-0079](ADR-0079-platform-ai-agent-governance.md) | Platform | AI agent governance and auditability | Proposed | 2026-01-03 | Establish guardrails, QA expectations, and auditability for AI changes. |
 | [ADR-0080](ADR-0080-platform-github-agent-roles.md) | Platform | GitHub App roles for AI/automation access | Proposed | 2026-01-03 | Define least-privilege roles without human accounts. |
+| [ADR-0081](ADR-0081-platform-repo-wide-linting.md) | Platform | Repo-wide linting for knowledge-graph hygiene | Proposed | 2026-01-03 | Run Markdown/YAML lint repo-wide with template ignores. |
 
 ---
 

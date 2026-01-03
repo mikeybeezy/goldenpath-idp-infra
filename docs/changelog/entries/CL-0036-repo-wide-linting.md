@@ -14,4 +14,5 @@ Owner: platform
 - Workflow: .github/workflows/super-linter.yml
 - Workflow: .github/workflows/yamllint.yml
 - Config: .yamllint
+- ADR: docs/adrs/ADR-0081-platform-repo-wide-linting.md
 - Docs: docs/10-governance/04_PR_GUARDRAILS.md
