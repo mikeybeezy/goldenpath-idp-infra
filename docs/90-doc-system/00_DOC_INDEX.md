@@ -33,6 +33,7 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md | platform | 90d | 2026-01-03 | AI agent and operator protocols |
 | docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md | platform | 90d | 2025-12-27 | Doc freshness mechanism |
 | docs/90-doc-system/AI_CHANGELOG.md | platform | 90d | 2026-01-03 | AI contribution ledger with evidence |
+| docs/90-doc-system/METADATA_BACKFILL_RUNBOOK.md | platform | 90d | 2026-01-03 | Deterministic protocol for metadata backfill |
 | docs/70-operations/32_TERRAFORM_STATE_AND_LOCKING.md | platform | 90d | 2026-01-01 | State backend, locking, and CI access paths |
 | docs/70-operations/36_STATE_KEY_STRATEGY.md | platform | 90d | 2025-12-29 | Lifecycle-aware state key usage |
 | docs/70-operations/40_COST_VISIBILITY.md | platform | 90d | 2026-01-03 | CI cost visibility implementation and operator notes |
@@ -59,3 +60,4 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/20-contracts/10_SERVICE_CATALOG.md | platform | 90d | 2026-01-02 | Supported services and add-ons |
 | docs/70-operations/01_LIFECYCLE_POLICY.md | platform | 90d | 2026-01-02 | Lifecycle and upgrade policy |
 | docs/runbooks/10_REPO_DECOMMISSIONING.md | platform | 90d | 2026-01-03 | Repo decommissioning runbook and tombstone template |
+| docs/runbooks/11_ARGOCD_APP_READINESS.md | platform | 90d | 2026-01-03 | Argo CD app readiness checklist and dependency checks |

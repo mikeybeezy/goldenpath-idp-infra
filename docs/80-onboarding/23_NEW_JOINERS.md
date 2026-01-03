@@ -30,6 +30,7 @@ pre-commit run --all-files
 
 - Fix any issues reported by the hooks before opening a PR.
 - Review PR gates and how to unblock them in `docs/80-onboarding/24_PR_GATES.md`.
+- Review AI agent protocols in `docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md` (these rules apply to human collaborators too).
 
 ## Expectations
 
