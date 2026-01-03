@@ -57,6 +57,7 @@ This is the single rolling backlog. Add items here before starting work.
 | 042 | P1 | Observability | Define RED label contract (service/env/version/team/build_id) | platform | Done | S | Q1 | Implement in dashboards + alerts | docs/50-observability/05_OBSERVABILITY_DECISIONS.md | Consistent metrics for dashboards and alerts |
 | 043 | P1 | Observability | Build RED + Golden Signals dashboards with minimal alerts | platform | Open | M | Q1 | Create dashboards and alert rules | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | V1 visibility baseline for operators |
 | 044 | P2 | Observability | Capture V1.1 trace plan (OTel + Tempo) | platform | Open | S | Q2 | Define data path and sampling | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | Make trace adoption explicit and time-boxed |
+| 045 | P2 | Cost | Implement Infracost + Backstage Integration | platform | Open | M | Q2 | Add `infracost` step to CI | docs/production-readiness-gates/ROADMAP.md | Surface cost impact in PRs and Backstage (Leading Indicator) |
 
 ## Rules
 

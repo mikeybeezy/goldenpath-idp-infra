@@ -16,3 +16,11 @@ This directory holds per-run records for builds/bootstraps and teardowns.
 
 Use `docs/40-delivery/41_BUILD_RUN_LOG.md` as the summary index and link to
 these entries for deeper detail.
+
+## Standard Fields
+
+Each log entry should capture:
+- **Build ID / Commit:** Traceability to code.
+- **Plan Delta:** Number of resources added/changed/destroyed (Blast radius).
+- **Duration:** Precise times for Build vs. Bootstrap phases.
+
