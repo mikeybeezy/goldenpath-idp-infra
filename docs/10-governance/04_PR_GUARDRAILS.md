@@ -51,6 +51,16 @@ PRs are labeled automatically based on touched paths:
 Configured in `/.github/labeler.yml` and applied by
 `/.github/workflows/pr-labeler.yml`.
 
+### Required status checks (branch rulesets)
+
+Ensure branch rulesets for `development` and `main` require these checks:
+
+- `Yamllint`
+- `Quality - Super Linter (Markdown)`
+
+Both lint checks run repo-wide to keep YAML and Markdown consistent as the
+knowledge graph footprint expands.
+
 ### Changelog gate
 
 If `changelog-required` is present, a changelog entry is required:

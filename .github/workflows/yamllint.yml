@@ -3,9 +3,9 @@ name: Quality - YAML Lint
 
 on:
   pull_request:
-    paths:
-      - ".github/workflows/*.yml"
-      - ".github/workflows/*.yaml"
+  push:
+    branches:
+      - main
 
 jobs:
   yamllint:
@@ -20,7 +20,7 @@ jobs:
       - name: Run yamllint
         uses: ibiqlik/action-yamllint@v3
         with:
-          file_or_dir: .github/workflows
+          file_or_dir: .
           config_file: .yamllint
       - name: Runbook link
         if: always()

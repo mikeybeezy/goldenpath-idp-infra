@@ -12,13 +12,14 @@ runbook/docs. Keep this file updated to avoid workflow sprawl.
 
 ASCII map (quick glance):
 
-```
+```text
 CI Workflows (GitHub Actions)
 
 ├─ Guardrails / Policy (PR)
 │  ├─ Policy - Branch Policy Guard
 │  ├─ Policy - Changelog Policy
 │  ├─ Quality - Doc Freshness Check
+│  ├─ Docs - Metadata Validation
 │  ├─ Quality - Pre-commit checks
 │  ├─ Quality - YAML Lint
 │  └─ Quality - Super Linter (Markdown)
@@ -72,6 +73,13 @@ CI Workflows (GitHub Actions)
 - Inputs: none
 - Purpose: warning-only doc freshness validation
 - Runbook: `docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md`
+
+### Docs - Metadata Validation
+- Trigger: pull_request docs/**, scripts/validate-metadata.py
+- Owner: platform
+- Inputs: none
+- Purpose: validate metadata frontmatter and references in docs
+- Runbook: `docs/90-doc-system/METADATA_VALIDATION_GUIDE.md`
 
 ### Quality - Pre-commit checks
 - Trigger: pull_request
