@@ -45,6 +45,36 @@ and contribution.
   - Terraform fmt/validate/plan
 ```
 
+## Runbook: PR to green (deterministic)
+
+1. Sync base branch and confirm target (`feature -> development`, `development -> main`).
+2. Identify required gates from change scope (labels, ADR, changelog, doc freshness).
+3. Prepare PR content: short summary, checklist selections, testing notes/links.
+4. Add required artifacts (ADR, changelog, doc index updates).
+5. Run local guardrails (`pre-commit run --all-files`, formatters/linters as needed).
+6. Commit, push, and open PR with checklist completed.
+7. Review CI/guardrail results; if any fail, follow the triage loop below.
+8. Re-run local guardrails after fixes and re-push until all checks pass.
+9. Confirm all required checks are green and approvals are in place.
+
+## Failure triage loop (repeat until green)
+
+```text
+[Check failed] -> read logs -> map to file/rule -> fix -> re-run local checks
+     -> push -> re-check CI
+```
+
+## Common failures and fast fixes
+
+| Failure | Likely cause | Fast fix |
+| --- | --- | --- |
+| `trim trailing whitespace` | Extra spaces at line ends | Run `pre-commit run --all-files` and commit changes |
+| `end-of-file-fixer` | Missing newline at EOF | Run `pre-commit run --all-files` and commit changes |
+| `Missing changelog entry` | `changelog-required` label | Add `docs/changelog/entries/CL-####-short-title.md` |
+| `Missing ADR entry` | `adr-required` label | Add `docs/adrs/ADR-####-short-title.md` and update index |
+| `Branch Policy Guard` | PR targets `main` from non-`development` | Open PR into `development` |
+| `Labeler` | Invalid `.github/labeler.yml` or stale base | Fix config or update base branch |
+
 ## Gate triggers and responses
 
 | Gate | Trigger | What it checks | How to unblock |
