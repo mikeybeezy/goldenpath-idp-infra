@@ -1,5 +1,14 @@
 extends: default
 
+ignore: |
+  .git/
+  .terraform/
+  .venv/
+  build/
+  dist/
+  node_modules/
+  vendor/
+
 rules:
   document-start: disable
   truthy:

@@ -3,15 +3,9 @@ name: Quality - Super Linter (Markdown)
 
 on:
   pull_request:
-    paths:
-      - "docs/**"
-      - ".github/workflows/super-linter.yml"
   push:
     branches:
       - main
-    paths:
-      - "docs/**"
-      - ".github/workflows/super-linter.yml"
 
 jobs:
   super-linter:
