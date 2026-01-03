@@ -12,6 +12,7 @@ This guide outlines the minimum setup expected for contributors to GoldenPath ID
 ## Required setup
 
 - Install the project tooling listed in `docs/80-onboarding/13_COLLABORATION_GUIDE.md`.
+- Review the day-one checklist in `docs/80-onboarding/25_DAY_ONE_CHECKLIST.md`.
 - Review the platform/team boundary in `docs/20-contracts/02_PLATFORM_BOUNDARIES.md`.
 - Install pre-commit and enable hooks:
 

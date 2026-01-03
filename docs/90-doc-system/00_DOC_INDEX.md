@@ -23,8 +23,9 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | ci-workflows/CI_WORKFLOWS.md | platform | 90d | 2026-01-01 | Workflow index with owners and runbooks |
 | docs/20-contracts/29_CD_DEPLOYMENT_CONTRACT.md | platform | 90d | 2025-12-27 | CD expectations and promotion model |
 | docs/60-security/28_SECURITY_FLOOR_V1.md | platform | 90d | 2025-12-27 | V1 security floor checklist |
-| docs/80-onboarding/23_NEW_JOINERS.md | platform | 90d | 2025-12-27 | Onboarding and local preflight rules |
+| docs/80-onboarding/23_NEW_JOINERS.md | platform | 90d | 2026-01-03 | Onboarding and local preflight rules |
 | docs/80-onboarding/24_PR_GATES.md | platform | 90d | 2026-01-03 | PR gate overview and unblock guidance |
+| docs/80-onboarding/25_DAY_ONE_CHECKLIST.md | platform | 90d | 2026-01-03 | Inputs and artifacts for fast onboarding |
 | docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md | platform | 90d | 2025-12-27 | Doc freshness mechanism |
 | docs/70-operations/32_TERRAFORM_STATE_AND_LOCKING.md | platform | 90d | 2026-01-01 | State backend, locking, and CI access paths |
 | docs/70-operations/36_STATE_KEY_STRATEGY.md | platform | 90d | 2025-12-29 | Lifecycle-aware state key usage |
