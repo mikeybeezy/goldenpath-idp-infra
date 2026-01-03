@@ -21,7 +21,7 @@ fi
 
 # 1. Determine next sequence number
 # Find max BR-XXXX number
-LAST_LOG=$(find "$LOG_DIR" -name "BR-*.md" | sort | tail -n 1)
+LAST_LOG=$(find "$LOG_DIR" -name "BR-*.md" ! -name "BR-TEMPLATE.md" | sort | tail -n 1)
 if [[ -z "$LAST_LOG" ]]; then
   NEXT_SEQ="0001"
 else
