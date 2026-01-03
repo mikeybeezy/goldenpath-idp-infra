@@ -1,3 +1,22 @@
+---
+id: 08_GITHUB_AGENT_ROLES
+title: GitHub Agent Roles (Apps and Service Accounts)
+type: policy
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to: []
+---
+
 # GitHub Agent Roles (Apps and Service Accounts)
 
 Doc contract:
