@@ -15,8 +15,9 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | Doc | Owner | Review cycle | Last reviewed | Notes |
 | --- | --- | --- | --- | --- |
 | docs/00-foundations/00_DESIGN_PHILOSOPHY.md | platform | 90d | 2025-12-27 | Core origin and product philosophy |
-| docs/10-governance/01_GOVERNANCE.md | platform | 90d | 2025-12-31 | Governance principles and rules |
+| docs/10-governance/01_GOVERNANCE.md | platform | 90d | 2026-01-03 | Governance principles and rules |
 | docs/10-governance/04_PR_GUARDRAILS.md | platform | 90d | 2026-01-03 | PR guardrails, labels, and enforcement |
+| docs/10-governance/06_COST_GOVERNANCE.md | platform | 90d | 2026-01-03 | Cost visibility policy and escalation guidance |
 | docs/20-contracts/02_PLATFORM_BOUNDARIES.md | platform | 90d | 2025-12-31 | Platform vs team contract |
 | docs/20-contracts/20_CI_ENVIRONMENT_SEPARATION.md | platform | 90d | 2026-01-01 | CI environment separation summary |
 | docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md | platform | 90d | 2025-12-31 | CI environment inputs and guarantees |
@@ -29,6 +30,7 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md | platform | 90d | 2025-12-27 | Doc freshness mechanism |
 | docs/70-operations/32_TERRAFORM_STATE_AND_LOCKING.md | platform | 90d | 2026-01-01 | State backend, locking, and CI access paths |
 | docs/70-operations/36_STATE_KEY_STRATEGY.md | platform | 90d | 2025-12-29 | Lifecycle-aware state key usage |
+| docs/70-operations/40_COST_VISIBILITY.md | platform | 90d | 2026-01-03 | CI cost visibility implementation and operator notes |
 | docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md | platform | 30d | 2026-01-02 | Baseline success checklist (living) |
 | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | platform | 90d | 2025-12-29 | V1 vs V1.1 scope and delivery checklist |
 | docs/00-foundations/43_OPERATING_PRINCIPLES.md | platform | 90d | 2026-01-03 | Operating principles and signal register |
