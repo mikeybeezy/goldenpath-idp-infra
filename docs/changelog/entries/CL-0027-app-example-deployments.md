@@ -3,7 +3,7 @@
 Date: 2026-01-03
 Owner: platform
 Scope: app examples, GitOps templates, documentation
-Related: PR #TBD
+Related: PR #127, docs/adrs/ADR-0075-app-example-deployments.md
 
 ## Summary
 
