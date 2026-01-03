@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-efs
+  namespace: apps-wordpress-efs
+  labels:
+    app.kubernetes.io/name: wordpress-efs
+    app.kubernetes.io/instance: wordpress-efs
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: wordpress-efs
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

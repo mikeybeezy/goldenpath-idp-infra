@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ values.app_name }}-efs"
+  namespace: "{{ values.namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ values.app_name }}"
+    app.kubernetes.io/instance: "{{ values.app_name }}"
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "{{ values.efs_storage_class_name }}"
+  resources:
+    requests:
+      storage: "{{ values.efs_storage_size }}"

@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: "wordpress-efs"
+  namespace: "apps-wordpress-efs"
+  labels:
+    release: kube-prometheus-stack
+    app.kubernetes.io/name: "wordpress-efs"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "wordpress-efs"
+  namespaceSelector:
+    matchNames:
+      - "apps-wordpress-efs"
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s

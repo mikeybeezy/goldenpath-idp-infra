@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "wordpress-efs"
+  namespace: "apps-wordpress-efs"
+  annotations:
+    kubernetes.io/ingress.class: kong
+    konghq.com/strip-path: "false"
+    konghq.com/methods: "GET, POST"
+    konghq.com/plugins: "sample-auth,sample-rate-limit"
+spec:
+  ingressClassName: kong
+  rules:
+    - host: "wordpress.dev.goldenpath.local"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "wordpress-efs"
+                port:
+                  number: 80
