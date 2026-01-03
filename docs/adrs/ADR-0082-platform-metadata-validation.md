@@ -15,14 +15,14 @@ relates_to:
   - ADR-0066
 ---
 
-# ADR-0082: Platform Metadata Validation Strategy
+## ADR-0082: Platform Metadata Validation Strategy
 
 ## Context
 As the Golden Path IDP scales, we are introducing a "Knowledge Graph" approach to link artifacts (Code, Docs, Decisions). We need a way to enforce the integrity of these links.
 
 ## Options Considered
-1.  **Generic Linters (SuperLinter / Yamllint):** Good for syntax, bad for logic.
-2.  **Custom Script (`validate-metadata.py`):** Can check business logic and referential integrity.
+1. **Generic Linters (SuperLinter / Yamllint):** Good for syntax, bad for logic.
+2. **Custom Script (`validate-metadata.py`):** Can check business logic and referential integrity.
 
 ## Comparison
 
@@ -35,9 +35,9 @@ As the Golden Path IDP scales, we are introducing a "Knowledge Graph" approach t
 | **Maintenance** | Low (Off the shelf) | Medium (Owned code) |
 
 ## Decision
-We will implment **BOTH**, but rely on the **Custom Validator** for the "Green Gate".
+We will implement **BOTH**, but rely on the **Custom Validator** for the "Green Gate".
 We choose to write and maintain `scripts/validate-metadata.py`.
 
 ## Consequences
-*   **Positive:** Guaranteed referential integrity. No "Dead Links" in our graph.
-*   **Negative:** We must maintain the python script.
+* **Positive:** Guaranteed referential integrity. No "Dead Links" in our graph.
+* **Negative:** We must maintain the python script.

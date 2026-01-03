@@ -12,7 +12,7 @@ runbook/docs. Keep this file updated to avoid workflow sprawl.
 
 ASCII map (quick glance):
 
-```
+```text
 CI Workflows (GitHub Actions)
 
 ├─ Guardrails / Policy (PR)

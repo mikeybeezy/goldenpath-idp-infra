@@ -6,7 +6,7 @@ owner: platform-team
 status: active
 ---
 
-# Metadata Validation Runbook
+## Metadata Validation Runbook
 
 ## Overview
 This guide explains the `validate-metadata.py` tool used in our CI/CD pipeline.
