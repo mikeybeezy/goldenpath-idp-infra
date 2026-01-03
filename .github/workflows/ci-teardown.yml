@@ -199,7 +199,7 @@ jobs:
         id: timed_teardown
         run: |
           START_TIME=$(date +%s)
-          
+
           # Run make, capture output to both console and file
           # If make fails, capture exit code and error message
           set +e
@@ -212,17 +212,17 @@ jobs:
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
           make timed-teardown ENV="${ENV}" BUILD_ID="${BUILD_ID}" > teardown.log 2>&1
-          
+
           EXIT_CODE=$?
           set -e
-          
+
           # Restore output to console for visibility
           cat teardown.log
-          
+
           END_TIME=$(date +%s)
           DURATION=$((END_TIME - START_TIME))
           echo "duration=${DURATION}" >> "$GITHUB_OUTPUT"
-          
+
           if [[ $EXIT_CODE -ne 0 ]]; then
             echo "Teardown FAILED with exit code ${EXIT_CODE}"
             # Capture last 20 lines of log as error message, escape newlines

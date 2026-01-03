@@ -77,6 +77,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0072](ADR-0072-platform-pr-checklist-template.md) | Platform | PR checklist template in PR gates guide | Proposed | 2026-01-02 | Copy PR checklist into PR gates doc to reduce guardrail friction. |
 | [ADR-0073](ADR-0073-platform-bootstrap-v3-irsa-skip.md) | Platform | Bootstrap v3 skips Terraform IRSA apply in Stage 3B | Proposed | 2026-01-02 | v3 bootstrap validates service accounts only to avoid IRSA plan failures. |
 | [ADR-0074](ADR-0074-platform-ops-workflow-branch-guard.md) | Platform | Ops workflows restricted to main and development | Accepted | 2026-01-03 | Guard ops workflows to reduce drift from feature branches. |
+| [ADR-0077](ADR-0077-platform-ci-build-teardown-log-automation.md) | Platform | CI build/teardown log automation | Proposed | 2026-01-03 | Auto-generate build and teardown log entries from CI runs. |
 
 ---
 
