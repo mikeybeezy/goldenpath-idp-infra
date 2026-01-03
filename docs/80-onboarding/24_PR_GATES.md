@@ -123,7 +123,7 @@ git push
 
 This matches `.github/pull_request_template.md`.
 
-```
+```markdown
 Select at least one checkbox per section by changing `[ ]` to `[x]`.
 
 ## Change Type

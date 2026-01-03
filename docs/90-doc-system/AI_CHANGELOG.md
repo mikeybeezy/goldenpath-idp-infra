@@ -14,3 +14,4 @@ This log captures AI-generated work, why it happened, and how it was verified.
 | Date | PR/Commit | Summary | Evidence | Verification | Owner | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | YYYY-MM-DD | PR-#### / commit SHA | One-line summary | Links to runs/logs | Tests run or "not run" | platform | Optional |
+| 2026-01-03 | local changes | Added Backstage docs index, changelog templates, and initial doc/runbook stubs | n/a | not run | platform | Backstage repo docs scaffold |
