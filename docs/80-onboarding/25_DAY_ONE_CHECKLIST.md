@@ -46,5 +46,5 @@ documents, and artifacts you need before you start making changes.
 
 1. Install pre-commit and run `pre-commit run --all-files`.
 2. Confirm branch flow: create a feature branch from `development`.
-3. Open a draft PR into `development` to validate guardrails and labels.
+3. Open a draft PR into `development` to validate guardrails and labels (use `.github/pull_request_template.md`).
 4. Capture any missing access or missing config as issues.
