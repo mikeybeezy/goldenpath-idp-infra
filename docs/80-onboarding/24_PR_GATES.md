@@ -55,13 +55,31 @@ and contribution.
 6. Commit, push, and open PR with checklist completed.
 7. Review CI/guardrail results; if any fail, follow the triage loop below.
 8. Re-run local guardrails after fixes and re-push until all checks pass.
-9. Confirm all required checks are green and approvals are in place.
+9. If checks appear stuck or a retarget is not picked up, add a no-op commit to retrigger.
+10. Confirm all required checks are green and approvals are in place.
+11. If opening a second PR (for example, `development -> main`), repeat steps 2-10.
 
 ## Failure triage loop (repeat until green)
 
 ```text
 [Check failed] -> read logs -> map to file/rule -> fix -> re-run local checks
      -> push -> re-check CI
+```
+
+## When to use a no-op commit
+
+Use a no-op commit only when the PR content has not changed but you need to
+force a re-run of checks. Typical cases:
+
+- Retargeted base branch (checks still show the previous branch policy result).
+- Workflow or policy checks stuck in "queued" or "in progress".
+- GitHub reports a stale or missing check after a force-push or rebase.
+
+Example:
+
+```bash
+git commit --allow-empty -m "chore: retrigger PR checks"
+git push
 ```
 
 ## Common failures and fast fixes
