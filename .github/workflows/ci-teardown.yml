@@ -124,8 +124,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Validate branch
         run: |
-          if [[ "${{ github.ref_name }}" != "main" && "${{ github.ref_name }}" != "development" && "${{ github.ref_name }}" != "feature/teardown-log-automation" ]]; then
-            echo "Teardown can only run from main or development (or feature branch for testing)." >&2
+          if [[ "${{ github.ref_name }}" != "main" && "${{ github.ref_name }}" != "development" ]]; then
+            echo "Teardown can only run from main or development." >&2
             exit 1
           fi
 
@@ -273,6 +273,7 @@ jobs:
 
       - name: Commit and Push Log
         if: ${{ steps.generate.outcome == 'success' }}
+        continue-on-error: true
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "docs: auto-generate teardown log for build ${{ inputs.build_id }}"

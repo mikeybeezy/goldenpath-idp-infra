@@ -133,8 +133,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Validate branch
         run: |
-          if [[ "${{ github.ref_name }}" != "main" && "${{ github.ref_name }}" != "development" && "${{ github.ref_name }}" != "feature/teardown-log-automation" ]]; then
-            echo "Bootstrap can only run from main or development (or feature branch for testing)." >&2
+          if [[ "${{ github.ref_name }}" != "main" && "${{ github.ref_name }}" != "development" ]]; then
+            echo "Bootstrap can only run from main or development." >&2
             exit 1
           fi
 
@@ -152,7 +152,31 @@ jobs:
         run: |
           echo "Phase 1: validate inputs and tools"
           echo "ENV=${ENV}"
-          # (Validation logic truncated for brevity, assume valid from previous version)
+          echo "AWS_REGION=${AWS_REGION}"
+          echo "CLUSTER_LIFECYCLE=${CLUSTER_LIFECYCLE}"
+          echo "BUILD_ID=${BUILD_ID}"
+          if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
+            if [[ -z "${BUILD_ID}" ]]; then
+              echo "BUILD_ID is required when lifecycle=ephemeral." >&2
+              exit 1
+            fi
+          fi
+          if [[ "${{ inputs.config_source }}" == "inputs" ]] && [[ -z "${{ inputs.tfvars_b64 }}" ]]; then
+            echo "tfvars_b64 is required when config_source=inputs." >&2
+            exit 1
+          fi
+          if [[ -n "${BUILD_ID}" ]] && ! echo "${BUILD_ID}" | grep -Eq '^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$'; then
+            echo "Invalid BUILD_ID: ${BUILD_ID} (expected dd-mm-yy-NN)" >&2
+            exit 1
+          fi
+          if ! echo "${MIN_READY_NODES}" | grep -Eq '^[0-9]+$'; then
+            echo "MIN_READY_NODES must be numeric; got ${MIN_READY_NODES}." >&2
+            exit 1
+          fi
+          if [[ "${ENABLE_TF_K8S_RESOURCES}" == "true" ]] && [[ "${{ inputs.confirm_irsa_apply }}" != "true" ]]; then
+            echo "IRSA service-account apply requires confirm_irsa_apply=true." >&2
+            exit 1
+          fi
 
       - name: Configure tfvars source
         run: |
@@ -160,8 +184,10 @@ jobs:
             tfvars_path="${GITHUB_WORKSPACE}/.bootstrap.tfvars"
             echo "${{ inputs.tfvars_b64 }}" | base64 --decode > "${tfvars_path}"
             echo "TFVARS_PATH=${tfvars_path}" >> "${GITHUB_ENV}"
+            echo "Using tfvars from workflow input."
           else
             echo "TFVARS_PATH=${GITHUB_WORKSPACE}/${TF_DIR}/terraform.tfvars" >> "${GITHUB_ENV}"
+            echo "Using tfvars from repo (${TF_DIR}/terraform.tfvars)."
           fi
 
       - name: Resolve cluster name
@@ -219,12 +245,40 @@ jobs:
             echo "- lifecycle: ${CLUSTER_LIFECYCLE}"
             echo "- build_id: ${BUILD_ID:-<empty>}"
             echo "- cluster_name: ${CLUSTER_NAME}"
+            echo "- config_source: ${{ inputs.config_source }}"
+            echo "- tfvars_path: ${TFVARS_PATH}"
+            echo "- state_key: ${STATE_KEY}"
+            echo "- enable_tf_k8s_resources: ${ENABLE_TF_K8S_RESOURCES}"
+            echo "- confirm_irsa_apply: ${{ inputs.confirm_irsa_apply }}"
+            echo "- skip_argo_sync_wait: ${{ inputs.skip_argo_sync_wait }}"
+            echo "- skip_cert_manager_validation: ${{ inputs.skip_cert_manager_validation }}"
+            echo "- compact_output: ${{ inputs.compact_output }}"
+            echo "- min_ready_nodes: ${MIN_READY_NODES}"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Guard - backend state
         run: |
           echo "Checking state: s3://${{ steps.backend.outputs.bucket }}/${STATE_KEY}"
-          aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1 || true
+          if [[ "${CLUSTER_LIFECYCLE}" == "persistent" ]]; then
+            if ! aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1; then
+              echo "Missing state file in backend. Run infra apply first or migrate local state." >&2
+              exit 1
+            fi
+          else
+            if aws s3api head-object --bucket "${{ steps.backend.outputs.bucket }}" --key "${STATE_KEY}" >/dev/null 2>&1; then
+              if [[ "${{ inputs.new_build }}" == "true" ]]; then
+                echo "State already exists for BUILD_ID=${BUILD_ID}. New build requested, aborting to avoid append." >&2
+                exit 1
+              fi
+              echo "Found existing state for BUILD_ID=${BUILD_ID}. Reusing state for resume."
+            else
+              if [[ "${{ inputs.new_build }}" == "true" ]]; then
+                echo "No state found for BUILD_ID=${BUILD_ID}. New build confirmed."
+              else
+                echo "No state found for BUILD_ID=${BUILD_ID}. A fresh state will be created on apply."
+              fi
+            fi
+          fi
 
       - name: Terraform init (backend)
         run: |
@@ -294,6 +348,18 @@ jobs:
         if: ${{ !inputs.bootstrap_only && inputs.lifecycle != 'ephemeral' }}
         run: |
           ENV_NAME="${ENV}" \
+          NODE_INSTANCE_TYPE="${{ inputs.node_instance_type }}" \
+          MIN_READY_NODES="${MIN_READY_NODES}" \
+          SKIP_ARGO_SYNC_WAIT="${{ inputs.skip_argo_sync_wait }}" \
+          SKIP_CERT_MANAGER_VALIDATION="${{ inputs.skip_cert_manager_validation }}" \
+          COMPACT_OUTPUT="${{ inputs.compact_output }}" \
+          ENABLE_TF_K8S_RESOURCES="${ENABLE_TF_K8S_RESOURCES}" \
+          SCALE_DOWN_AFTER_BOOTSTRAP="${SCALE_DOWN_AFTER_BOOTSTRAP}" \
+          CONFIRM_TF_APPLY="${CONFIRM_TF_APPLY}" \
+          TF_DIR="${TF_DIR}" \
+          TFVARS_PATH="${TFVARS_PATH}" \
+          CLUSTER="${CLUSTER_NAME}" \
+          REGION="${AWS_REGION}" \
           make bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}"
 
       # Phase 3: Timed bootstrap-only (when build_id is available)
@@ -342,11 +408,26 @@ jobs:
       - name: Phase 3 - Bootstrap only (stub)
         if: ${{ inputs.bootstrap_only && inputs.build_id == '' }}
         run: |
+          ENV_NAME="${ENV}" \
+          NODE_INSTANCE_TYPE="${{ inputs.node_instance_type }}" \
+          MIN_READY_NODES="${MIN_READY_NODES}" \
+          SKIP_ARGO_SYNC_WAIT="${{ inputs.skip_argo_sync_wait }}" \
+          SKIP_CERT_MANAGER_VALIDATION="${{ inputs.skip_cert_manager_validation }}" \
+          COMPACT_OUTPUT="${{ inputs.compact_output }}" \
+          ENABLE_TF_K8S_RESOURCES="${ENABLE_TF_K8S_RESOURCES}" \
+          SCALE_DOWN_AFTER_BOOTSTRAP="${SCALE_DOWN_AFTER_BOOTSTRAP}" \
+          CONFIRM_TF_APPLY="${CONFIRM_TF_APPLY}" \
+          TF_DIR="${TF_DIR}" \
+          TFVARS_PATH="${TFVARS_PATH}" \
+          CLUSTER="${CLUSTER_NAME}" \
+          REGION="${AWS_REGION}" \
           make bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}"
 
       - name: Phase 4 - Post-bootstrap checks (stub)
         run: |
-          echo "Phase 4: sanity checks"
+          echo "Phase 4: sanity checks and Argo status summary go here"
+          echo "kubectl get nodes"
+          echo "kubectl -n argocd get applications"
 
       - name: Runbook link
         if: always()
@@ -359,7 +440,7 @@ jobs:
   log-generation:
     runs-on: ubuntu-latest
     needs: bootstrap
-    if: ${{ always() }}
+    if: ${{ always() && inputs.build_id != '' }}
     permissions:
       contents: write
     steps:
@@ -390,6 +471,7 @@ jobs:
 
       - name: Commit and Push Log
         if: ${{ steps.generate.outcome == 'success' }}
+        continue-on-error: true
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "docs: auto-generate build log for build ${{ inputs.build_id }}"
