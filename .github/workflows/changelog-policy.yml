@@ -25,6 +25,7 @@ jobs:
         with:
           script: |
             const requiredLabel = "changelog-required";
+            const exemptLabel = "changelog-exempt";
             const entryRegex = /^docs\/changelog\/entries\/CL-\d{4}-.*\.md$/;
             const { owner, repo } = context.repo;
             const issue_number = context.issue.number;
@@ -35,9 +36,14 @@ jobs:
               issue_number,
             });
 
-            const hasLabel = labels.some((label) => label.name === requiredLabel);
-            if (!hasLabel) {
+            const hasRequired = labels.some((label) => label.name === requiredLabel);
+            const hasExempt = labels.some((label) => label.name === exemptLabel);
+            if (!hasRequired) {
               core.info("Changelog label not set; skipping.");
+              return;
+            }
+            if (hasExempt) {
+              core.info("Changelog exempt label set; skipping.");
               return;
             }
 
