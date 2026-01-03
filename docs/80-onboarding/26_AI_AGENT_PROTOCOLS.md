@@ -50,6 +50,9 @@ Operate within the assigned tier:
   until green.
 - **No false completion:** Do not mark work complete if required checks fail.
 - **No merge by agent:** All merges require human approval.
+- **PR template required:** Use `.github/pull_request_template.md` as the base.
+  For CLI usage, prefer `gh pr create -F .github/pull_request_template.md` to
+  avoid escaped newlines.
 
 Reference:
 - PR checklist template: `.github/pull_request_template.md`
@@ -98,7 +101,9 @@ commands to ensure consistent flags, environment variables, and safety checks.
 
 ## 10) PR monitoring (agent tasks)
 
-Agents are responsible for keeping PRs green, not merging them.
+Agents are responsible for keeping PRs green, not merging them. Default
+behavior is to check CI status after every PR create/edit and iterate until
+all required checks are green.
 
 1. Check PR status after every push or label change.
 2. If a check fails, read the log and map it to a specific file or rule.

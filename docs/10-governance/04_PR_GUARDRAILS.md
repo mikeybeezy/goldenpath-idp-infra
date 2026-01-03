@@ -33,6 +33,11 @@ The PR template requires explicit selections for:
 
 Enforced by `/.github/workflows/pr-guardrails.yml`.
 
+Template enforcement:
+- PR bodies must be based on `.github/pull_request_template.md`.
+- Guardrails fail if the template header is missing or the body contains
+  escaped newlines (`\\n`).
+
 ### Auto-labeling by path
 
 PRs are labeled automatically based on touched paths:
@@ -107,6 +112,16 @@ Bootstrap guardrails and refactors are documented here:
 - Require a rollback note when touching bootstrap, CI, or infra contracts.
 - Auto-label PRs by path and let labels drive ADR/changelog requirements.
 - Keep guardrails “thin”: fail fast on missing metadata, not on content quality.
+
+## Main branch hard-lock (required)
+
+Use branch rulesets to enforce the development-only path:
+
+- Require PRs (no direct pushes) to `main`.
+- Require the `enforce-development-only` check.
+- Require at least one human approval.
+- Block force-pushes and deletions.
+- Optional: require linear history to avoid drift.
 
 ## Future options (not enabled)
 

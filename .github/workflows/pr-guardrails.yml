@@ -19,6 +19,21 @@ jobs:
           script: |
             const body = context.payload.pull_request.body || "";
             const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            const templateHeader =
+              "Select at least one checkbox per section by changing `[ ]` to `[x]`.";
+            const errors = [];
+
+            if (!body.includes(templateHeader)) {
+              errors.push(
+                "PR body must be based on `.github/pull_request_template.md` (missing template header)."
+              );
+            }
+
+            if (body.includes("\\n")) {
+              errors.push(
+                "PR body contains escaped newlines (\\\\n). Replace them with real line breaks or use `gh pr create -F .github/pull_request_template.md`."
+              );
+            }
             const isChecked = (label) => {
               const pattern = new RegExp(`- \\[[xX]\\] ${escapeRegex(label)}`);
               return pattern.test(body);
@@ -61,7 +76,11 @@ jobs:
             );
 
             if (missing.length) {
-              core.setFailed(
+              errors.push(
                 `Missing required PR checklist selections: ${missing.map(s => s.name).join(", ")}.`
               );
+            }
+
+            if (errors.length) {
+              core.setFailed(errors.join(" "));
             }
