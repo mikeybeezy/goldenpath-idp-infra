@@ -64,8 +64,8 @@ SHA: 4be3d33a7118b86457727b8cfd026da3f8deea38
 
 Script Used =  V2
 
-Notes: Clean Teardowon, 
-AWS orphans:  
+Notes: Clean Teardowon,
+AWS orphans:
 TG = serval but could have accumlated across several builds, Target groups but we can try and capture them becuase use tags KEY= elbv2.k8s.aws/cluster VALUE=goldenpath-dev-eks-30-12-25-01
 0 = ENI
 0 = VPC
@@ -78,6 +78,6 @@ TG = serval but could have accumlated across several builds, Target groups but w
 0 = RT
 0 = Volumes Need more data
 0 = SNAP SHOTS  need more data
-0 = IGW 
+0 = IGW
 0 = IAM roles
 0 = EKS
