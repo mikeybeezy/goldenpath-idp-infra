@@ -115,6 +115,23 @@ spec:
       - CreateNamespace=true
 ```
 
+### Helm env-specific values (optional)
+
+By default, example charts ship a single `values.yaml`. If you need per-env
+overrides, add `values-<env>.yaml` files under `deploy/helm/` and update the
+Argo CD Application to reference them, for example:
+
+```yaml
+source:
+  repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+  targetRevision: development
+  path: apps/sample-stateless-app/deploy/helm
+  helm:
+    valueFiles:
+      - values.yaml
+      - values-dev.yaml
+```
+
 ## Example apps in this repo
 
 - `apps/sample-stateless-app/`:
