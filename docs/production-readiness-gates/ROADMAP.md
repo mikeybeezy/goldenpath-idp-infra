@@ -61,6 +61,7 @@ This is the single rolling backlog. Add items here before starting work.
 | 046 | P2 | Teardown | Targeted cleanup for orphans (Kong TGs + Balancers) | platform | Open | S | Q1 | Scan by cluster/build_id/kong tags | docs/runbooks/06_LB_ENI_ORPHANS.md | Prevent quota exhaustion from ghost ingress resources |
 | 047 | P3 | Teardown | Implement async Node Group deletion | platform | Open | M | Q2 | Trigger delete via CLI before Terraform | docs/40-delivery/17_BUILD_RUN_FLAGS.md | Reduce teardown duration by parallelizing slow steps |
 | 048 | P2 | Cost | Validate orphaned EBS PVCs (tag scan) | platform | Open | S | Q1 | Scan `tag:kubernetes.io/created-for/pvc/name` in `teardown.sh` | docs/30-architecture/07_REPO_DECOUPLING_OPTIONS.md | Prevent hidden costs from persistent PVCs |
+| 049 | P2 | Teardown | Unified Teardown Recovery Protocol | platform | Open | M | Q1 | Create `force-cleanup` action + auto-retry in CI | docs/production-readiness-gates/ROADMAP.md | Consolidate orphan/LB cleanup into a single reliability hammer |
 
 ## Rules
 
