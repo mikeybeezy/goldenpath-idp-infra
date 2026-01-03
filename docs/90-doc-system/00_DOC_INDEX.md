@@ -20,6 +20,7 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/10-governance/04_PR_GUARDRAILS.md | platform | 90d | 2026-01-03 | PR guardrails, labels, and enforcement |
 | docs/10-governance/06_COST_GOVERNANCE.md | platform | 90d | 2026-01-03 | Cost visibility policy and escalation guidance |
 | docs/10-governance/07_AI_AGENT_GOVERNANCE.md | platform | 90d | 2026-01-03 | AI agent governance and auditability policy |
+| docs/10-governance/08_GITHUB_AGENT_ROLES.md | platform | 90d | 2026-01-03 | GitHub App roles for AI/automation access |
 | docs/20-contracts/02_PLATFORM_BOUNDARIES.md | platform | 90d | 2025-12-31 | Platform vs team contract |
 | docs/20-contracts/20_CI_ENVIRONMENT_SEPARATION.md | platform | 90d | 2026-01-01 | CI environment separation summary |
 | docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md | platform | 90d | 2025-12-31 | CI environment inputs and guarantees |

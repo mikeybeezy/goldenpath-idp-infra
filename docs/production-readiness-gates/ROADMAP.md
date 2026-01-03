@@ -77,6 +77,7 @@ This is the single rolling backlog. Add items here before starting work.
 | 060 | P3 | Governance | Track time-to-ready for new repos | platform | Open | S | Q1 | Measure repo creation → first CI green | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | End-to-end onboarding signal |
 | 061 | P3 | Governance | Track policy compliance coverage | platform | Open | S | Q1 | % repos with metadata + branch protection | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Ensures governance-by-default |
 | 062 | P3 | Governance | Track stale repo count and archive rate | platform | Open | S | Q1 | Count stale repos flagged vs archived | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Confirms controlled exit path |
+| 063 | P2 | Governance | Explore GitHub App agent roles | platform | Open | S | Q1 | Define minimal permissions and installation flow | docs/10-governance/08_GITHUB_AGENT_ROLES.md | Avoid new human accounts while preserving auditability |
 
 ## Rules
 

@@ -108,6 +108,16 @@ Bootstrap guardrails and refactors are documented here:
 - Auto-label PRs by path and let labels drive ADR/changelog requirements.
 - Keep guardrails “thin”: fail fast on missing metadata, not on content quality.
 
+## Main branch hard-lock (required)
+
+Use branch rulesets to enforce the development-only path:
+
+- Require PRs (no direct pushes) to `main`.
+- Require the `enforce-development-only` check.
+- Require at least one human approval.
+- Block force-pushes and deletions.
+- Optional: require linear history to avoid drift.
+
 ## Future options (not enabled)
 
 - Require PR reviews on `main` (adds approval gate, prevents self-merge).

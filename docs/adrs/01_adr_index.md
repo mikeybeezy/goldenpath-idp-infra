@@ -82,6 +82,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0077](ADR-0077-platform-ci-build-teardown-log-automation.md) | Platform | CI build/teardown log automation | Proposed | 2026-01-03 | Auto-generate build and teardown log entries from CI runs. |
 | [ADR-0078](ADR-0078-platform-governed-repo-scaffolder.md) | Platform | Governance-driven app repository scaffolder | Proposed | 2026-01-03 | Scaffolds app repos with required metadata via Backstage or workflow. |
 | [ADR-0079](ADR-0079-platform-ai-agent-governance.md) | Platform | AI agent governance and auditability | Proposed | 2026-01-03 | Establish guardrails, QA expectations, and auditability for AI changes. |
+| [ADR-0080](ADR-0080-platform-github-agent-roles.md) | Platform | GitHub App roles for AI/automation access | Proposed | 2026-01-03 | Define least-privilege roles without human accounts. |
 
 ---
 
