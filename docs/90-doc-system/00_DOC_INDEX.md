@@ -19,6 +19,7 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | platform | 90d | 2026-01-03 | Repo lifecycle policy and decommissioning requirements |
 | docs/10-governance/04_PR_GUARDRAILS.md | platform | 90d | 2026-01-03 | PR guardrails, labels, and enforcement |
 | docs/10-governance/06_COST_GOVERNANCE.md | platform | 90d | 2026-01-03 | Cost visibility policy and escalation guidance |
+| docs/10-governance/07_AI_AGENT_GOVERNANCE.md | platform | 90d | 2026-01-03 | AI agent governance and auditability policy |
 | docs/20-contracts/02_PLATFORM_BOUNDARIES.md | platform | 90d | 2025-12-31 | Platform vs team contract |
 | docs/20-contracts/20_CI_ENVIRONMENT_SEPARATION.md | platform | 90d | 2026-01-01 | CI environment separation summary |
 | docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md | platform | 90d | 2025-12-31 | CI environment inputs and guarantees |
@@ -28,7 +29,9 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/80-onboarding/23_NEW_JOINERS.md | platform | 90d | 2026-01-03 | Onboarding and local preflight rules |
 | docs/80-onboarding/24_PR_GATES.md | platform | 90d | 2026-01-03 | PR gate overview and unblock guidance |
 | docs/80-onboarding/25_DAY_ONE_CHECKLIST.md | platform | 90d | 2026-01-03 | Inputs and artifacts for fast onboarding |
+| docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md | platform | 90d | 2026-01-03 | AI agent and operator protocols |
 | docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md | platform | 90d | 2025-12-27 | Doc freshness mechanism |
+| docs/90-doc-system/AI_CHANGELOG.md | platform | 90d | 2026-01-03 | AI contribution ledger with evidence |
 | docs/70-operations/32_TERRAFORM_STATE_AND_LOCKING.md | platform | 90d | 2026-01-01 | State backend, locking, and CI access paths |
 | docs/70-operations/36_STATE_KEY_STRATEGY.md | platform | 90d | 2025-12-29 | Lifecycle-aware state key usage |
 | docs/70-operations/40_COST_VISIBILITY.md | platform | 90d | 2026-01-03 | CI cost visibility implementation and operator notes |
