@@ -1,19 +1,20 @@
 #!/bin/bash
 set -e
 
-# Usage: ./generate-teardown-log.sh <BUILD_ID> <DURATION_SECONDS> <RUN_URL> <OUTCOME> <FLAGS_STRING>
+# Usage: ./generate-teardown-log.sh <BUILD_ID> <DURATION_SECONDS> <RUN_URL> <OUTCOME> <FLAGS_STRING> [ERROR_MSG]
 
 BUILD_ID="$1"
 DURATION="$2"
 RUN_URL="$3"
 OUTCOME="$4"
 FLAGS="$5"
+ERROR_MSG="$6"
 
 LOG_DIR="docs/build-run-logs"
 TEMPLATE="${LOG_DIR}/TD-TEMPLATE.md"
 
 if [[ -z "$BUILD_ID" ]]; then
-  echo "Usage: $0 <BUILD_ID> <DURATION> <URL> <OUTCOME> <FLAGS>"
+  echo "Usage: $0 <BUILD_ID> <DURATION> <URL> <OUTCOME> <FLAGS> [ERROR_MSG]"
   exit 1
 fi
 
@@ -48,14 +49,22 @@ sed -i "s|<flags>|${FLAGS}|g" "$LOG_FILE"
 sed -i "s|<seconds>|${DURATION}|g" "$LOG_FILE"
 sed -i "s|<Outcome>|${OUTCOME}|g" "$LOG_FILE"
 
-# 4. Fill Metrics Placeholders with '0' (Automation defaults to 0, human can update if needed)
-# Or ideally, we grep the teardown output? For now, set to "?" to prompt review, or "0" if we trust the clean teardown.
-# Let's use "0 (auto)" to be safe.
+# 4. Fill Metrics Placeholders with '0' (Automation defaults to '0 (auto)')
 sed -i "s|<count>|0 (auto)|g" "$LOG_FILE"
-sed -i "s|<notes>|Automated capture from CI.|g" "$LOG_FILE"
 sed -i "s|<finding>|N/A|g" "$LOG_FILE"
 sed -i "s|<impact>|N/A|g" "$LOG_FILE"
 sed -i "s|<action>|N/A|g" "$LOG_FILE"
+
+if [[ -n "$ERROR_MSG" ]]; then
+  NOTES="Automated capture: FAILED. Error: ${ERROR_MSG}"
+  # Escape newlines or special chars for sed if necessary, but keep simple for now
+  # Replace | with - to avoid sed delimiter conflict
+  NOTES=${NOTES//|/-}
+else
+  NOTES="Automated capture from CI."
+fi
+
+sed -i "s|<notes>|${NOTES}|g" "$LOG_FILE"
 
 echo "Log generated successfully."
 echo "new_log_path=${LOG_FILE}" >> "$GITHUB_OUTPUT"
