@@ -28,5 +28,3 @@ Key metrics to capture:
 - **Plan Delta:** Number of resources added/changed/destroyed (Blast radius).
 - **Duration:** Precise times for Build vs. Bootstrap phases.
 - **Flags:** Exact flags used for reproducibility.
-
-
