@@ -23,7 +23,7 @@ def parse_frontmatter(filepath):
         frontmatter_match = re.search(r'^---\n(.*?)\n---', content, re.DOTALL)
         if not frontmatter_match:
             return None, "Malformed or unterminated frontmatter"
-        
+
         data = yaml.safe_load(frontmatter_match.group(1))
         return data, None
     except yaml.YAMLError as e:
@@ -34,12 +34,12 @@ def validate_schema(data, filepath):
     Validates the parsed frontmatter against the schema.
     """
     errors = []
-    
+
     # 1. Check Required Fields
     for field in REQUIRED_FIELDS:
         if field not in data:
             errors.append(f"Missing required field: '{field}'")
-    
+
     # 2. Start-Specific Checks (Optimization: Only check id format if present)
     if 'id' in data:
         # Check ID matches filename (roughly)
@@ -61,24 +61,24 @@ def scan_directory(root_dir):
     """
     fail_count = 0
     pass_count = 0
-    
+
     print(f"🔍 Scanning {root_dir} for metadata compliance...")
 
     for root, dirs, files in os.walk(root_dir):
         for file in files:
             if file.endswith('.md') and not file == 'DOC_INDEX.md': # Skip index
                 filepath = os.path.join(root, file)
-                
+
                 # Check if it SHOULD have metadata (ADRs, Changelogs, Policies)
                 if 'adrs/' in filepath or 'changelog/entries/' in filepath or 'governance/' in filepath:
                     data, error = parse_frontmatter(filepath)
-                    
+
                     if error:
                         # Warning only for now, as we are backfilling
                         print(f"⚠️  [MISSING] {filepath}: {error}")
-                        # fail_count += 1 
+                        # fail_count += 1
                         continue
-                    
+
                     validation_errors = validate_schema(data, filepath)
                     if validation_errors:
                         print(f"❌ [INVALID] {filepath}")
@@ -91,7 +91,7 @@ def scan_directory(root_dir):
     print("-" * 40)
     print(f"✅ Passed: {pass_count}")
     print(f"❌ Failed: {fail_count}")
-    
+
     if fail_count > 0:
         return 1
     return 0
@@ -101,5 +101,5 @@ if __name__ == "__main__":
         target_dir = "docs"
     else:
         target_dir = sys.argv[1]
-        
+
     sys.exit(scan_directory(target_dir))

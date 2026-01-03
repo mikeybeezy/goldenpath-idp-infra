@@ -49,7 +49,7 @@ tags = {
   Service     = "golden-path-idp"
   CostCenter  = "shared-platform"
   Category    = "compute" # compute, storage, network, database, observability
-  
+
   # Governance Links
   DocsID      = "ADR-####"
 
