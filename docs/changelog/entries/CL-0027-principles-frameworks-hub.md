@@ -3,7 +3,7 @@
 Date: 2026-01-03
 Owner: platform
 Scope: foundations and documentation
-Related: PR <TBD>
+Related: PR #124
 
 ## Summary
 
