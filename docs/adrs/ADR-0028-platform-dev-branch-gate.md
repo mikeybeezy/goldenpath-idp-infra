@@ -1,3 +1,22 @@
+---
+id: ADR-0028
+title: ADR-0028: Dev branch gate before main
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to: []
+---
+
 # ADR-0028: Dev branch gate before main
 
 Filename: `ADR-0028-platform-dev-branch-gate.md`

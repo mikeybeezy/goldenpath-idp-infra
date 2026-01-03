@@ -3,7 +3,7 @@ id: ADR-0011
 title: ADR-0011: CI Environment Contract (Superseded)
 type: adr
 owner: platform-team
-status: active
+status: deprecated
 risk_profile:
   production_impact: low
   security_risk: none
