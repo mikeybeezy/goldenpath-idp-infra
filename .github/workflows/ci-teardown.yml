@@ -91,12 +91,16 @@ on:
         default: true
         type: boolean
 
+
 jobs:
   teardown:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
+    outputs:
+      duration: ${{ steps.timed_teardown.outputs.duration }}
+      error_message: ${{ steps.timed_teardown.outputs.error_message }}
     env:
       ENV: ${{ inputs.env }}
       AWS_REGION: ${{ inputs.region }}
@@ -192,7 +196,13 @@ jobs:
             -backend-config="encrypt=true"
 
       - name: Run timed teardown
+        id: timed_teardown
         run: |
+          START_TIME=$(date +%s)
+
+          # Run make, capture output to both console and file
+          # If make fails, capture exit code and error message
+          set +e
           TEARDOWN_CONFIRM="true" \
           RELAX_PDB="${{ inputs.relax_pdb }}" \
           DRAIN_TIMEOUT="${{ inputs.drain_timeout }}" \
@@ -201,7 +211,25 @@ jobs:
           CLEANUP_ORPHANS="${CLEANUP_ORPHANS}" \
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
-          make timed-teardown ENV="${ENV}" BUILD_ID="${BUILD_ID}"
+          make timed-teardown ENV="${ENV}" BUILD_ID="${BUILD_ID}" > teardown.log 2>&1
+
+          EXIT_CODE=$?
+          set -e
+
+          # Restore output to console for visibility
+          cat teardown.log
+
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - START_TIME))
+          echo "duration=${DURATION}" >> "$GITHUB_OUTPUT"
+
+          if [[ $EXIT_CODE -ne 0 ]]; then
+            echo "Teardown FAILED with exit code ${EXIT_CODE}"
+            # Capture last 20 lines of log as error message, escape newlines
+            ERROR_MSG=$(tail -n 20 teardown.log | tr '\n' ' ' | sed 's/"/\\"/g')
+            echo "error_message=${ERROR_MSG}" >> "$GITHUB_OUTPUT"
+            exit $EXIT_CODE
+          fi
 
       - name: Reliability metrics summary (timed teardown)
         if: ${{ always() }}
@@ -211,6 +239,45 @@ jobs:
         if: ${{ always() }}
         run: |
           echo "Runbook: docs/runbooks/09_CI_TEARDOWN_RECOVERY_V2.md" >> "${GITHUB_STEP_SUMMARY}"
+
+  log-generation:
+    runs-on: ubuntu-latest
+    needs: teardown
+    if: ${{ always() }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Determine Outcome
+        id: outcome
+        run: |
+          if [[ "${{ needs.teardown.result }}" == "success" ]]; then
+            echo "outcome=Success" >> "$GITHUB_OUTPUT"
+          else
+            echo "outcome=Failure" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate Teardown Log
+        if: ${{ needs.teardown.result == 'success' || needs.teardown.result == 'failure' }}
+        id: generate
+        run: |
+          ./scripts/generate-teardown-log.sh \
+            "${{ inputs.build_id }}" \
+            "${{ needs.teardown.outputs.duration }}" \
+            "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            "${{ steps.outcome.outputs.outcome }}" \
+            "TEARDOWN_VERSION=${{ inputs.teardown_version }} CLEANUP_MODE=${{ inputs.cleanup_mode }}" \
+            "${{ needs.teardown.outputs.error_message }}"
+
+      - name: Commit and Push Log
+        if: ${{ steps.generate.outcome == 'success' }}
+        continue-on-error: true
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: auto-generate teardown log for build ${{ inputs.build_id }}"
+          file_pattern: "docs/build-run-logs/TD-*.md"
 
   teardown-resume:
     runs-on: ubuntu-latest

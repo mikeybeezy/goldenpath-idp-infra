@@ -12,17 +12,17 @@ Workflow run URL (bootstrap): <url>
 Scripts: bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v3.sh
 TF Flags: <flags>
 Bootstrap Flags: <flags>
-Config source: envs/<env>/terraform.tfvars
-Storage add-ons: <enabled/disabled>
-IRSA strategy: <strategy>
+Config source: <config-source>
+Storage add-ons: <storage-addons>
+IRSA strategy: <irsa-strategy>
 
 ## Metrics
-Plan Delta: +X added, ~Y changed, -Z destroyed (<reason>)
-Build duration (seconds): <seconds>
-Bootstrap duration (seconds): <seconds>
-Teardown duration (seconds): <seconds>
+Plan Delta: <plan-delta>
+Build duration (seconds): <build-seconds>
+Bootstrap duration (seconds): <bootstrap-seconds>
+Teardown duration (seconds): <teardown-seconds>
 
 ## Outcome
 Outcome: <Success/Failure>
-Artifacts: <path-to-artifacts>
+Artifacts: <artifacts>
 Ad hoc notes/observations: <notes>

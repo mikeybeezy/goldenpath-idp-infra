@@ -99,12 +99,17 @@ on:
         default: "false"
         type: boolean
 
+
 jobs:
   bootstrap:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
+    outputs:
+      build_duration: ${{ steps.timed_build.outputs.duration }}
+      bootstrap_duration: ${{ steps.timed_bootstrap.outputs.duration }}
+      error_message: ${{ steps.timed_build.outputs.error_message }}${{ steps.timed_bootstrap.outputs.error_message }}
     env:
       ENV: ${{ inputs.env }}
       AWS_REGION: ${{ inputs.region }}
@@ -143,7 +148,6 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       # Phase 1: Preflight + tooling
-      # Goal: ensure CLI tools are available and inputs are valid before any changes.
       - name: Phase 1 - Preflight checks (stub)
         run: |
           echo "Phase 1: validate inputs and tools"
@@ -285,19 +289,14 @@ jobs:
             -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
 
-      # Timing note (baseline, non-blocking)
-      - name: Timing log (stub)
-        run: |
-          echo "CI timing log"
-          echo "Start: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-          echo "End:   $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-          echo "Capture timestamps around real apply/bootstrap steps once wired."
-
       # Phase 2+3: Timed build + bootstrap (ephemeral only)
-      # Goal: capture build/teardown timing while keeping lifecycle deterministic.
       - name: Phase 2+3 - Timed build + bootstrap (stub)
         if: ${{ !inputs.bootstrap_only && inputs.lifecycle == 'ephemeral' }}
+        id: timed_build
         run: |
+          START_TIME=$(date +%s)
+
+          set +e
           TF_VAR_cluster_lifecycle="${CLUSTER_LIFECYCLE}" \
           TF_VAR_build_id="${BUILD_ID}" \
           TF_VAR_owner_team="platform-team" \
@@ -314,7 +313,21 @@ jobs:
           TFVARS_PATH="${TFVARS_PATH}" \
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
-          make timed-build ENV="${ENV}" BUILD_ID="${BUILD_ID}" CLUSTER="${CLUSTER_NAME}" REGION="${AWS_REGION}"
+          make timed-build ENV="${ENV}" BUILD_ID="${BUILD_ID}" CLUSTER="${CLUSTER_NAME}" REGION="${AWS_REGION}" > build.log 2>&1
+
+          EXIT_CODE=$?
+          set -e
+          cat build.log
+
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - START_TIME))
+          echo "duration=${DURATION}" >> "$GITHUB_OUTPUT"
+
+          if [[ $EXIT_CODE -ne 0 ]]; then
+            ERROR_MSG=$(tail -n 20 build.log | tr '\n' ' ' | sed 's/"/\\"/g')
+            echo "error_message=${ERROR_MSG}" >> "$GITHUB_OUTPUT"
+            exit $EXIT_CODE
+          fi
 
       - name: Reliability metrics summary (timed build)
         if: ${{ always() && !inputs.bootstrap_only && inputs.lifecycle == 'ephemeral' }}
@@ -322,7 +335,6 @@ jobs:
           make reliability-metrics
 
       # Phase 2: Terraform init/plan/apply (persistent)
-      # Goal: provision or update infra deterministically.
       - name: Phase 2 - Terraform (stub)
         if: ${{ !inputs.bootstrap_only && inputs.lifecycle != 'ephemeral' }}
         run: |
@@ -332,7 +344,6 @@ jobs:
           make apply ENV="${ENV}" BUILD_ID="${BUILD_ID}"
 
       # Phase 3: Bootstrap runner (persistent)
-      # Goal: install core platform tooling in the enforced order.
       - name: Phase 3 - Bootstrap runner (stub)
         if: ${{ !inputs.bootstrap_only && inputs.lifecycle != 'ephemeral' }}
         run: |
@@ -354,7 +365,11 @@ jobs:
       # Phase 3: Timed bootstrap-only (when build_id is available)
       - name: Phase 3 - Timed bootstrap only (stub)
         if: ${{ inputs.bootstrap_only && inputs.build_id != '' }}
+        id: timed_bootstrap
         run: |
+          START_TIME=$(date +%s)
+
+          set +e
           ENV_NAME="${ENV}" \
           NODE_INSTANCE_TYPE="${{ inputs.node_instance_type }}" \
           MIN_READY_NODES="${MIN_READY_NODES}" \
@@ -368,7 +383,21 @@ jobs:
           TFVARS_PATH="${TFVARS_PATH}" \
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
-          make timed-bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}" CLUSTER="${CLUSTER_NAME}" REGION="${AWS_REGION}"
+          make timed-bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}" CLUSTER="${CLUSTER_NAME}" REGION="${AWS_REGION}" > bootstrap.log 2>&1
+
+          EXIT_CODE=$?
+          set -e
+          cat bootstrap.log
+
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - START_TIME))
+          echo "duration=${DURATION}" >> "$GITHUB_OUTPUT"
+
+          if [[ $EXIT_CODE -ne 0 ]]; then
+            ERROR_MSG=$(tail -n 20 bootstrap.log | tr '\n' ' ' | sed 's/"/\\"/g')
+            echo "error_message=${ERROR_MSG}" >> "$GITHUB_OUTPUT"
+            exit $EXIT_CODE
+          fi
 
       - name: Reliability metrics summary (timed bootstrap)
         if: ${{ always() && inputs.bootstrap_only && inputs.build_id != '' }}
@@ -394,13 +423,12 @@ jobs:
           REGION="${AWS_REGION}" \
           make bootstrap ENV="${ENV}" BUILD_ID="${BUILD_ID}"
 
-      # Phase 4: Post-bootstrap validation
-      # Goal: capture a deterministic status summary for CI logs.
       - name: Phase 4 - Post-bootstrap checks (stub)
         run: |
           echo "Phase 4: sanity checks and Argo status summary go here"
           echo "kubectl get nodes"
           echo "kubectl -n argocd get applications"
+
       - name: Runbook link
         if: always()
         run: |
@@ -409,4 +437,42 @@ jobs:
             echo "Runbook: docs/40-delivery/17_BUILD_RUN_FLAGS.md"
           } >> "${GITHUB_STEP_SUMMARY}"
 
-      # Teardown runs in a separate workflow to avoid auto-destroy after bootstrap.
+  log-generation:
+    runs-on: ubuntu-latest
+    needs: bootstrap
+    if: ${{ always() && inputs.build_id != '' }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Determine Outcome
+        id: outcome
+        run: |
+          if [[ "${{ needs.bootstrap.result }}" == "success" ]]; then
+            echo "outcome=Success" >> "$GITHUB_OUTPUT"
+          else
+            echo "outcome=Failure" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate Build Log
+        if: ${{ needs.bootstrap.result == 'success' || needs.bootstrap.result == 'failure' }}
+        id: generate
+        run: |
+          ./scripts/generate-build-log.sh \
+            "${{ inputs.build_id }}" \
+            "${{ needs.bootstrap.outputs.build_duration }}" \
+            "${{ needs.bootstrap.outputs.bootstrap_duration }}" \
+            "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            "${{ steps.outcome.outputs.outcome }}" \
+            "BOOTSTRAP_VERSION=${{ inputs.bootstrap_version }} LIFECYCLE=${{ inputs.lifecycle }}" \
+            "${{ needs.bootstrap.outputs.error_message }}"
+
+      - name: Commit and Push Log
+        if: ${{ steps.generate.outcome == 'success' }}
+        continue-on-error: true
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: auto-generate build log for build ${{ inputs.build_id }}"
+          file_pattern: "docs/build-run-logs/BR-*.md"
