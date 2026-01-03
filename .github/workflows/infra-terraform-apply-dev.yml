@@ -196,7 +196,7 @@ jobs:
             --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
             --access-scope type=cluster \
             --region eu-west-2 || true
-          
+
           # 4. Update Kubeconfig & Verify
           echo "Verifying Connectivity..."
           aws eks update-kubeconfig --name goldenpath-dev-eks-${{ inputs.build_id }} --region eu-west-2 || true
