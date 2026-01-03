@@ -6,6 +6,8 @@ ignore: |
   .venv/
   build/
   dist/
+  apps/
+  modules/**/templates/
   node_modules/
   vendor/
 
