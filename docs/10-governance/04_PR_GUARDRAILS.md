@@ -132,6 +132,7 @@ Use branch rulesets to enforce the development-only path:
 - Require at least one human approval.
 - Block force-pushes and deletions.
 - Optional: require linear history to avoid drift.
+- Exception: allow build-id branches (`build-<dd-mm-yy-NN>` or `build/<dd-mm-yy-NN>`) to merge to `main` for build validation.
 
 ## Future options (not enabled)
 
