@@ -1,0 +1,60 @@
+# Build Run Log (Living)
+
+Doc contract:
+- Purpose: Record build, bootstrap, and teardown run summaries with links for deeper detail.
+- Owner: platform
+- Status: living
+- Review cadence: 30d
+- Related: docs/40-delivery/17_BUILD_RUN_FLAGS.md, docs/build-timings.csv
+
+This log is a human-readable companion to `docs/build-timings.csv` and the
+per-run entries in `docs/build-run-logs/`.
+Use it to capture the context that does not fit in the CSV (commit SHA,
+workflow run links, scripts, and observations).
+
+## Best-practice capture (fast scan + deep dive)
+
+- Keep a short summary table for scanning; include date, Build ID, SHA, status,
+  and durations.
+- Link to the GitHub Actions run and the `logs/build-timings/*.log` artifacts.
+- Record the exact bootstrap script version (v1/v2/v3) and workflow used.
+- Copy durations from `docs/build-timings.csv` to avoid manual timing errors.
+- Add a short "Ad hoc notes/observations" line for anomalies or context.
+
+If more detail is needed, use the workflow run link and log file paths.
+
+## Summary table
+
+| Date (UTC) | Build ID | SHA | Build (s) | Bootstrap (s) | Teardown (s) | Status | Entry | Run URL |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-01-02 | 02-01-26-06 | cd190568def5677508a5804e82e73c3f1a3802b2 (build) / 4be3d33a7118b86457727b8cfd026da3f8deea38 (bootstrap/teardown) | 905 | 215 | 703 | success | docs/build-run-logs/BR-0001-02-01-26-06.md; docs/build-run-logs/TD-0001-02-01-26-06.md | build: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20662142526 / bootstrap: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20664240754 / teardown: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20665012721 |
+
+## Entry template
+
+```
+Date (UTC):
+Build ID:
+Branch/Commit:
+Workflow:
+Jobs:
+Workflow run URL (build):
+Workflow run URL (bootstrap):
+Scripts:
+Config source:
+Storage add-ons:
+IRSA strategy:
+Build duration (seconds):
+Bootstrap duration (seconds):
+Teardown duration (seconds):
+Outcome:
+Artifacts:
+Ad hoc notes/observations:
+```
+
+## Entry: 2026-01-02 (BR-0001-02-01-26-06)
+
+Detailed entry: docs/build-run-logs/BR-0001-02-01-26-06.md
+
+## Entry: 2026-01-02 (TD-0001-02-01-26-06)
+
+Detailed entry: docs/build-run-logs/TD-0001-02-01-26-06.md
