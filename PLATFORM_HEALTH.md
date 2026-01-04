@@ -51,3 +51,8 @@ relates_to: []
 > [!NOTE]
 > **How it works**: This metric measures the percentage of 'Governance Sidecars' that have been successfully propagated into live deployment configurations (Helm values, ArgoCD manifests).
 - **Coverage**: 100.0% (29/29)
+
+## ⚠️ Known Coverage Gaps
+While currently tracked resources are 100% compliant, the following areas are currently **untracked** (Dark Infrastructure) and valid targets for future governance phases:
+- **Terraform Modules (`envs/**`)**: Currently lack `metadata.yaml` sidecars (relying on AWS tags instead).
+- **Automation Scripts (`scripts/*.sh`, `Makefile`)**: Governance headers (In-File) are planned for Phase 3.
