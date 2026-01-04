@@ -1,5 +1,4 @@
 ---
-
 id: deploy-sample-app
 title: Setup sample guestbook app
 type: documentation
@@ -7,7 +6,8 @@ category: apps
 version: '1.0'
 owner: platform-team
 status: active
-dependencies: []
+dependencies:
+  - SAMPLE_STATELESS_APP
 risk_profile:
   production_impact: low
   security_risk: none
@@ -18,7 +18,8 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - scaling-pods
 ---
 
 # Setup sample guestbook app

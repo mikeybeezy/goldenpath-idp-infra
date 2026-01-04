@@ -1,0 +1,34 @@
+name: "Quality - Platform Health Check"
+
+on:
+  push:
+    branches: [ development ]
+  schedule:
+    - cron: '0 0 * * *' # Run daily at midnight
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Run Platform Health Check
+        run: |
+          python3 scripts/platform-health.py > PLATFORM_HEALTH.md
+          cat PLATFORM_HEALTH.md
+
+      - name: Upload Health Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: platform-health-report
+          path: PLATFORM_HEALTH.md
