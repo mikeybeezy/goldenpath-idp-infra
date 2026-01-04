@@ -6,8 +6,10 @@ category: envs
 version: 1.0
 owner: platform-team
 status: active
-dependencies: []
-status: active
+dependencies:
+  - MODULE_VPC
+  - MODULE_AWS_EKS
+  - MODULE_AWS_IAM
 risk_profile:
   production_impact: low
   security_risk: none
@@ -18,7 +20,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - STAGING_ENV_README
+  - PROD_ENV_README
 ---
 
 # Dev Environment
