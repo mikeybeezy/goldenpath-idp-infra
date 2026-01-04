@@ -1,9 +1,12 @@
 ---
 id: SHARED_RESPONSIBILITY
-title: 
+title: Shared Responsibility Model
 type: documentation
+category: 60-security
+version: 1.0
 owner: platform-team
-status: active
+status: draft
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - 06_IDENTITY_AND_ACCESS
+  - 01_PLATFORM_SERVICE_AGREEMENT
 ---
 
 #

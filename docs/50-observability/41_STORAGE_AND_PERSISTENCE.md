@@ -14,8 +14,12 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 01_GOVERNANCE
+- 05_OBSERVABILITY_DECISIONS
+- ADR-0052
+- ADR-0053
+------
 
 # Storage and Persistence (Living)
 

@@ -1,6 +1,6 @@
 ---
 id: ADR-0069
-title: "ADR-0069: Observability baseline for golden signals in production"
+title: 'ADR-0069: Observability baseline for golden signals in production'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 05_OBSERVABILITY_DECISIONS
+- ADR-0049
+- ADR-0069
+------
 
 # ADR-0069: Observability baseline for golden signals in production
 

@@ -14,8 +14,12 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 05_OBSERVABILITY_DECISIONS
+- 16_INFRA_Build_ID_Strategy_Decision
+- 34_PLATFORM_SUCCESS_CHECKLIST
+- 44_PRINCIPLES_AND_FRAMEWORKS
+------
 
 # Platform Operating Principles (Grove + Rumelt)
 

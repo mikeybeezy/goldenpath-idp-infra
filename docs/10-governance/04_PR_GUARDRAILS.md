@@ -14,8 +14,18 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 01_GOVERNANCE
+- 21_CI_ENVIRONMENT_CONTRACT
+- 27_REFACTORING_VALIDATION_GUIDE
+- 38_BRANCHING_STRATEGY
+- ADR-####
+- ADR-0044
+- ADR-0046
+- ADR-0063
+- CL-####
+- CL-0002
+------
 
 # PR Guardrails (GoldenPath IDP)
 

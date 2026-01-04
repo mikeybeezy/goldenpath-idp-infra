@@ -1,9 +1,13 @@
 ---
-id: README
-title: Grafana Helm Deployment (Deprecated)
+id: HELM_GRAFANA
+title: Grafana Reference Chart (Deprecated)
 type: documentation
+category: gitops
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:kube-prometheus-stack
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +18,8 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - HELM_KUBE_PROMETHEUS_STACK
 ---
 
 # Grafana Helm Deployment (Deprecated)

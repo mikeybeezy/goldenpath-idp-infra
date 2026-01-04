@@ -1,6 +1,6 @@
 ---
 id: ADR-0078
-title: "ADR-0078: Governance-driven app repository scaffolder"
+title: 'ADR-0078: Governance-driven app repository scaffolder'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 42_APP_TEMPLATE_LIVING
+- ADR-0062
+- ADR-0078
+------
 
 # ADR-0078: Governance-driven app repository scaffolder
 

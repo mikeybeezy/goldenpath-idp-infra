@@ -2,8 +2,11 @@
 id: goldenpath-idp-bootstrap
 title: Helm Bootstrap Runner (Non-Production)
 type: documentation
+category: bootstrap
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,13 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
+  - ADR-0001
+  - ADR-0002
+  - ADR-0013
+  - ARGOCD_HELM_README
+  - 18_BACKSTAGE_MVP
 ---
 
 # Helm Bootstrap Runner (Non-Production)

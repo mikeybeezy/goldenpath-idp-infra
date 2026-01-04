@@ -14,8 +14,12 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 07_TF_STATE_FORCE_UNLOCK
+- 21_CI_ENVIRONMENT_CONTRACT
+- 33_IAM_ROLES_AND_POLICIES
+- 36_STATE_KEY_STRATEGY
+------
 
 # Terraform State and Locking (Living)
 

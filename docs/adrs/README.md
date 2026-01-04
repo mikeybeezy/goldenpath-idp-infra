@@ -1,9 +1,12 @@
 ---
-id: README
-title: "ADR-XXXX: Concise decision title"
-type: adr
+id: ADRS_README
+title: ADR Directory Guide
+type: documentation
+category: adrs
+version: 1.0
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,10 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR_TEMPLATE
+  - 01_GOVERNANCE
+  - 07_AI_AGENT_GOVERNANCE
 ---
 
 # ADR-XXXX: Concise decision title

@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 38_BRANCHING_STRATEGY
+- SHARED_RESPONSIBILITY
+------
 
 # Collaboration Guide
 

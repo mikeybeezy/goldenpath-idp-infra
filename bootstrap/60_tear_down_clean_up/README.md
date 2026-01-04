@@ -1,20 +1,30 @@
 ---
-id: README
+id: TEARDOWN_README
 title: Tear Down and Cleanup Scripts
 type: documentation
+category: bootstrap
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - module:kubernetes
+  - module:terraform
 risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
+  production_impact: high
+  security_risk: access
+  coupling_risk: high
 reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
+  rollback_strategy: not-applicable
+  observability_tier: gold
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - BOOTSTRAP_README
+  - GOLDENPATH_IDP_BOOTSTRAP
+  - ADR-0036
+  - 15_TEARDOWN_AND_CLEANUP
+  - 17_BUILD_RUN_FLAGS
 ---
 
 # Tear Down and Cleanup Scripts

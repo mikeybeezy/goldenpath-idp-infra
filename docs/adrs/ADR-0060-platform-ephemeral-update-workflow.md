@@ -1,6 +1,6 @@
 ---
 id: ADR-0060
-title: "ADR-0060: Separate update workflow for existing ephemeral dev clusters"
+title: 'ADR-0060: Separate update workflow for existing ephemeral dev clusters'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 21_CI_ENVIRONMENT_CONTRACT
+- ADR-0060
+- CI_WORKFLOWS
+------
 
 # ADR-0060: Separate update workflow for existing ephemeral dev clusters
 

@@ -2,8 +2,11 @@
 id: 10_SERVICE_CATALOG
 title: Service Catalog
 type: contract
+category: 20-contracts
+version: 1.0
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: medium
   security_risk: none
@@ -14,7 +17,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - 01_PLATFORM_SERVICE_AGREEMENT
+  - 14_MODULES_OVERVIEW
 ---
 
 # Service Catalog

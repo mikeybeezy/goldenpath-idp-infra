@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 01_GOVERNANCE
+- 10_REPO_DECOMMISSIONING
+- ADR-0078
+------
 
 # Repository Lifecycle Governance
 

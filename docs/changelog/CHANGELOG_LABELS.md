@@ -1,6 +1,6 @@
 ---
 id: CHANGELOG_LABELS
-title: "Changelog Labels (Living)"
+title: Changelog Labels (Living)
 type: documentation
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 40_CHANGELOG_GOVERNANCE
+- CHANGELOG_TEMPLATE
+- CL-####
+------
 
 # Changelog Labels (Living)
 

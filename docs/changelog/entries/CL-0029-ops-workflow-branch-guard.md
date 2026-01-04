@@ -1,6 +1,6 @@
 ---
 id: CL-0029
-title: "CL-0029: Ops workflow branch guard"
+title: 'CL-0029: Ops workflow branch guard'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0074
+- CL-0029
+------
 
 # CL-0029: Ops workflow branch guard
 

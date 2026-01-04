@@ -1,6 +1,6 @@
 ---
 id: ADR-0029
-title: "ADR-0029: Dev plan gate before dev apply"
+title: 'ADR-0029: Dev plan gate before dev apply'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 21_CI_ENVIRONMENT_CONTRACT
+- ADR-0028
+- ADR-0029
+------
 
 # ADR-0029: Dev plan gate before dev apply
 

@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 01_adr_index
+- 24_PR_GATES
+- 43_OPERATING_PRINCIPLES
+------
 
 # Principles and Decision Frameworks
 

@@ -1,6 +1,6 @@
 ---
 id: ADR-0057
-title: "ADR-0057: CI Terraform force-unlock workflow (break-glass)"
+title: 'ADR-0057: CI Terraform force-unlock workflow (break-glass)'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 07_TF_STATE_FORCE_UNLOCK
+- 15_TEARDOWN_AND_CLEANUP
+- ADR-0057
+------
 
 # ADR-0057: CI Terraform force-unlock workflow (break-glass)
 

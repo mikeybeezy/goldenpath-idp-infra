@@ -1,20 +1,27 @@
 ---
-id: 30_dev_baseline_checklist
-title: Dev Baseline Checklist
+id: DEV_BASELINE_CHECKLIST
+title: Dev Environment Baseline Checklist
 type: documentation
+category: bootstrap
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - module:kubernetes
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
 reliability:
-  rollback_strategy: git-revert
+  rollback_strategy: rerun-bootstrap
   observability_tier: bronze
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - BOOTSTRAP_README
+  - GOLDENPATH_IDP_BOOTSTRAP
+  - DEV_ENV_README
 ---
 
 # Dev Baseline Checklist

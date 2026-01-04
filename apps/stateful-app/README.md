@@ -1,20 +1,31 @@
 ---
-id: README
+id: STATEFUL_APP_README
 title: Stateful App Template (Reference)
-type: documentation
+type: template
+category: apps
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:helm
+  - module:efs
+  - module:kubernetes
 risk_profile:
   production_impact: low
   security_risk: none
-  coupling_risk: low
+  coupling_risk: medium
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - FAST_API_APP_TEMPLATE
+  - STATEFUL_APP_NAMESPACE
+  - STATEFUL_APP_PVC
+  - STATEFUL_APP_DEPLOY
+  - 18_BACKSTAGE_MVP
 ---
 
 # Stateful App Template (Reference)

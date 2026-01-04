@@ -1,6 +1,6 @@
 ---
 id: ADR-0052
-title: "ADR-0052: Use kube-prometheus-stack as the V1 monitoring bundle"
+title: 'ADR-0052: Use kube-prometheus-stack as the V1 monitoring bundle'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,12 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 05_OBSERVABILITY_DECISIONS
+- 06_IDENTITY_AND_ACCESS
+- 41_STORAGE_AND_PERSISTENCE
+- ADR-0052
+------
 
 # ADR-0052: Use kube-prometheus-stack as the V1 monitoring bundle
 

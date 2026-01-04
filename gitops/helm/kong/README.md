@@ -1,9 +1,14 @@
 ---
-id: README
-title: Kong Helm Deployment
+id: HELM_KONG
+title: Kong Ingress Controller Helm Chart (Values)
 type: documentation
+category: gitops
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:kong
+  - image:kong
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +19,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0002
+  - HELM_CERT_MANAGER
 ---
 
 # Kong Helm Deployment

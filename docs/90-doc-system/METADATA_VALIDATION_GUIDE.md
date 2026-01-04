@@ -1,9 +1,28 @@
 ---
-id: DOC-002
+id: METADATA_VALIDATION_GUIDE
 title: Metadata Validation Runbook
 type: runbook
+category: 90-doc-system
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - scripts/validate-metadata.py
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - METADATA_BACKFILL_SCRIPT
+  - RELATIONSHIP_EXTRACTION_SCRIPT
+  - ADR-0084
+  - METADATA_STRATEGY
 ---
 
 ## Metadata Validation Runbook

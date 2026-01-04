@@ -15,9 +15,13 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-  - ADR-0082
-  - ADR-0083
----
+- ADR-0082
+- ADR-0083
+- ADR-XXXX
+- CL-XXXX
+- METADATA_STRATEGY
+- METADATA_VALIDATION_GUIDE
+------
 
 ## Metadata Backfill Runbook
 

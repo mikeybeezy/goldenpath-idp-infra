@@ -1,6 +1,6 @@
 ---
 id: CI_WORKFLOWS
-title: "CI Workflows Index (Living)"
+title: CI Workflows Index (Living)
 type: documentation
 owner: platform-team
 status: active
@@ -14,8 +14,20 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 07_TF_STATE_FORCE_UNLOCK
+- 08_MANAGED_LB_CLEANUP
+- 09_CI_TEARDOWN_RECOVERY_V2
+- 17_BUILD_RUN_FLAGS
+- 18_BACKSTAGE_MVP
+- 21_CI_ENVIRONMENT_CONTRACT
+- 30_DOCUMENTATION_FRESHNESS
+- 39_GOLDEN_PATH_VALIDATION
+- ADR-0028
+- CHANGELOG
+- METADATA_VALIDATION_GUIDE
+- ORPHAN_CLEANUP
+------
 
 # CI Workflows Index (Living)
 

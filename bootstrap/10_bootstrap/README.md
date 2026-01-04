@@ -1,20 +1,38 @@
 ---
-id: README
+id: BOOTSTRAP_README
 title: Bootstrap Entrypoint
 type: documentation
+category: bootstrap
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:argo-cd
+  - chart:aws-load-balancer-controller
+  - chart:cert-manager
+  - chart:kong
 risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
+  production_impact: high
+  security_risk: access
+  coupling_risk: high
 reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
+  rollback_strategy: manual
+  observability_tier: gold
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - GOLDENPATH_IDP_BOOTSTRAP
+  - ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
+  - DEV_BASELINE_CHECKLIST
+  - TEARDOWN_README
+  - ADR-0001
+  - ADR-0002
+  - ADR-0013
+  - 12_GITOPS_AND_CICD
+  - 08_INGRESS_STRATEGY
+  - 15_TEARDOWN_AND_CLEANUP
+  - 17_BUILD_RUN_FLAGS
 ---
 
 # Bootstrap Entrypoint

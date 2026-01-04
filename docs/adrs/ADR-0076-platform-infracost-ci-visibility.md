@@ -1,6 +1,6 @@
 ---
 id: ADR-0076
-title: "ADR-0076: Lightweight CI cost visibility with Infracost"
+title: 'ADR-0076: Lightweight CI cost visibility with Infracost'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0076
+- CL-0030
+------
 
 # ADR-0076: Lightweight CI cost visibility with Infracost
 

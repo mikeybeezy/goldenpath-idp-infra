@@ -14,8 +14,21 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 00_DOC_INDEX
+- 30_DOCUMENTATION_FRESHNESS
+- ADR-0001
+- ADR-0008
+- ADR-0024
+- ADR-0025
+- ADR-0026
+- ADR-0034
+- ADR-0037
+- ADR-0043
+- ADR-0052
+- ADR-0056
+- ADR-0062
+------
 
 # Documentation Tightening Plan (V1)
 

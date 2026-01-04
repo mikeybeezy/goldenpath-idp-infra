@@ -1,6 +1,6 @@
 ---
 id: CL-0009
-title: "CL-0009: Autoscaler discovery for ephemeral clusters"
+title: 'CL-0009: Autoscaler discovery for ephemeral clusters'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0009
+------
 
 # CL-0009: Autoscaler discovery for ephemeral clusters
 

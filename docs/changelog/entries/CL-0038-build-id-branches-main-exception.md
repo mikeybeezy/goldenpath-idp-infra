@@ -7,7 +7,9 @@ status: active
 risk_profile:
   production_impact: low
   security_risk: low
----
+relates_to:
+- CL-0038
+------
 
 ## CL-0038: Allow build-id branches to merge to main
 

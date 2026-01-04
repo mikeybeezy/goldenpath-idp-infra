@@ -2,19 +2,26 @@
 id: 07_TF_STATE_FORCE_UNLOCK
 title: Terraform State Force Unlock (Runbook)
 type: runbook
+category: runbooks
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - module:terraform
+  - module:dynamodb
 risk_profile:
-  production_impact: medium
+  production_impact: high
   security_risk: access
-  coupling_risk: low
+  coupling_risk: high
 reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
+  rollback_strategy: not-applicable
+  observability_tier: gold
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - 32_TERRAFORM_STATE_AND_LOCKING
+  - CI_WORKFLOWS
 ---
 
 # Terraform State Force Unlock (Runbook)

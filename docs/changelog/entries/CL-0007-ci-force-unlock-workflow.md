@@ -1,6 +1,6 @@
 ---
 id: CL-0007
-title: "CL-0007: CI force-unlock workflow"
+title: 'CL-0007: CI force-unlock workflow'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0007
+------
 
 # CL-0007: CI force-unlock workflow
 

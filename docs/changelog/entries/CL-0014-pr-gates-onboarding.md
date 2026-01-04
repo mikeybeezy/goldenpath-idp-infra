@@ -1,6 +1,6 @@
 ---
 id: CL-0014
-title: "CL-0014: PR gate onboarding guide"
+title: 'CL-0014: PR gate onboarding guide'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 24_PR_GATES
+- CL-0014
+------
 
 # CL-0014: PR gate onboarding guide
 

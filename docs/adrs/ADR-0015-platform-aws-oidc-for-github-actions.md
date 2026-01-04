@@ -1,6 +1,6 @@
 ---
 id: ADR-0015
-title: "ADR-0015: Use AWS OIDC for GitHub Actions authentication"
+title: 'ADR-0015: Use AWS OIDC for GitHub Actions authentication'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0015
+------
 
 # ADR-0015: Use AWS OIDC for GitHub Actions authentication
 

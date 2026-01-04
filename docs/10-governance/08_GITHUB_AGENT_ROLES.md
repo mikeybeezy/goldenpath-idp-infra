@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 04_PR_GUARDRAILS
+- 07_AI_AGENT_GOVERNANCE
+- 26_AI_AGENT_PROTOCOLS
+------
 
 # GitHub Agent Roles (Apps and Service Accounts)
 

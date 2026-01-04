@@ -1,6 +1,6 @@
 ---
 id: CL-0004
-title: [0.0.4] - 2026-01-02
+title: '[0.0.4] - 2026-01-02'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0004
+------
 
 ## [0.0.4] - 2026-01-02
 

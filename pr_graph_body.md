@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0082
+------
 
 Select at least one checkbox per section by changing `[ ]` to `[x]`.
 

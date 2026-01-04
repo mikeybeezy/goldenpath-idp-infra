@@ -1,6 +1,6 @@
 ---
 id: ADR-0059
-title: "ADR-0059: CI workflow index, ownership, and UI grouping"
+title: 'ADR-0059: CI workflow index, ownership, and UI grouping'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0059
+- CI_WORKFLOWS
+------
 
 # ADR-0059: CI workflow index, ownership, and UI grouping
 

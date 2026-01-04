@@ -14,8 +14,16 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 17_BUILD_RUN_FLAGS
+- 20_CI_ENVIRONMENT_SEPARATION
+- 25_PR_TERRAFORM_PLAN
+- 33_IAM_ROLES_AND_POLICIES
+- ADR-0030
+- ADR-0033
+- ADR-0034
+- CI_WORKFLOWS
+------
 
 # CI Environment Contract
 

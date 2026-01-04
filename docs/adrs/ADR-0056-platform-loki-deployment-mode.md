@@ -1,6 +1,6 @@
 ---
 id: ADR-0056
-title: "ADR-0056: Loki deployment mode for V1"
+title: 'ADR-0056: Loki deployment mode for V1'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 05_OBSERVABILITY_DECISIONS
+- ADR-0056
+------
 
 # ADR-0056: Loki deployment mode for V1
 

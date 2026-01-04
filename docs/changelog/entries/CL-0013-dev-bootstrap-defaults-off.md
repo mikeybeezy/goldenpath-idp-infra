@@ -1,6 +1,6 @@
 ---
 id: CL-0013
-title: "CL-0013: Dev bootstrap defaults off"
+title: 'CL-0013: Dev bootstrap defaults off'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0064
+- CL-0013
+------
 
 # CL-0013: Dev bootstrap defaults off
 

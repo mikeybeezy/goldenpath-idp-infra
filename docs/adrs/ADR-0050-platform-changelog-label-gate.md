@@ -1,6 +1,6 @@
 ---
 id: ADR-0050
-title: "ADR-0050: Label-gated changelog entries"
+title: 'ADR-0050: Label-gated changelog entries'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,12 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 40_CHANGELOG_GOVERNANCE
+- ADR-0050
+- CHANGELOG
+- CL-####
+------
 
 # ADR-0050: Label-gated changelog entries
 

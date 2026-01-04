@@ -1,9 +1,14 @@
 ---
-id: README
-title: External Secrets Helm Deployment
+id: HELM_EXTERNAL_SECRETS
+title: External Secrets Helm Chart (Values)
 type: documentation
+category: gitops
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:external-secrets
+  - image:external-secrets
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +19,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0006
+  - 06_IDENTITY_AND_ACCESS
 ---
 
 # External Secrets Helm Deployment

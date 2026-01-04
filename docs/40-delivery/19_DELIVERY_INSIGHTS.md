@@ -2,8 +2,12 @@
 id: 19_DELIVERY_INSIGHTS
 title: Delivery Insights (CI/CD Observability)
 type: documentation
+category: 40-delivery
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - module:opentelemetry
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +18,8 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0009
 ---
 
 # Delivery Insights (CI/CD Observability)

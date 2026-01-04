@@ -1,6 +1,6 @@
 ---
 id: ADR-0080
-title: "ADR-0080: GitHub App Roles for AI/Automation Access"
+title: 'ADR-0080: GitHub App Roles for AI/Automation Access'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0080
+------
 
 # ADR-0080: GitHub App Roles for AI/Automation Access
 

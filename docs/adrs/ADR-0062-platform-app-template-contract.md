@@ -1,6 +1,6 @@
 ---
 id: ADR-0062
-title: "ADR-0062: App template contract for team-owned deployments"
+title: 'ADR-0062: App template contract for team-owned deployments'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 01_GOVERNANCE
+- ADR-0062
+------
 
 # ADR-0062: App template contract for team-owned deployments
 

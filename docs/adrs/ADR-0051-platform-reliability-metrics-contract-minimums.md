@@ -1,6 +1,6 @@
 ---
 id: ADR-0051
-title: "ADR-0051: Minimal reliability metrics and contract minimums"
+title: 'ADR-0051: Minimal reliability metrics and contract minimums'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,15 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 02_PLATFORM_BOUNDARIES
+- 17_BUILD_RUN_FLAGS
+- 21_CI_ENVIRONMENT_CONTRACT
+- 34_PLATFORM_SUCCESS_CHECKLIST
+- 35_RESOURCE_TAGGING
+- 40_CHANGELOG_GOVERNANCE
+- ADR-0051
+------
 
 # ADR-0051: Minimal reliability metrics and contract minimums
 

@@ -1,6 +1,6 @@
 ---
 id: ADR-0004
-title: "ADR-0004: Use Datree as Kubernetes policy-as-code gate in CI"
+title: 'ADR-0004: Use Datree as Kubernetes policy-as-code gate in CI'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0004
+------
 
 # ADR-0004: Use Datree as Kubernetes policy-as-code gate in CI
 

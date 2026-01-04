@@ -2,8 +2,11 @@
 id: README
 title: Test Environment
 type: documentation
+category: envs
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to: []
----
+------
 
 # Test Environment
 

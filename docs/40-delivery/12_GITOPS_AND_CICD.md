@@ -14,8 +14,14 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 06_IDENTITY_AND_ACCESS
+- 16_INFRA_Build_ID_Strategy_Decision
+- 17_BUILD_RUN_FLAGS
+- 26_POST_APPLY_HEALTH_CHECKS
+- 29_CD_DEPLOYMENT_CONTRACT
+- ADR-0001
+------
 
 # GitOps and CI/CD
 

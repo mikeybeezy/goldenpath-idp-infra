@@ -1,6 +1,6 @@
 ---
 id: CL-0026
-title: "CL-0026: Day-one onboarding checklist"
+title: 'CL-0026: Day-one onboarding checklist'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0026
+------
 
 # CL-0026: Day-one onboarding checklist
 

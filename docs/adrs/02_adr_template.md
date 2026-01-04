@@ -1,9 +1,12 @@
 ---
-id: 02_adr_template
-title: "ADR-XXXX: Concise decision title"
-type: adr
+id: ADR_TEMPLATE
+title: 'ADR-XXXX: Template for Architecture Decision Records'
+type: template
+category: adrs
+version: 1.0
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0084
+  - 01_GOVERNANCE
 ---
 
 # ADR-XXXX: Concise decision title

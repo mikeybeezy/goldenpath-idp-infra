@@ -1,9 +1,15 @@
 ---
-id: README
-title: Kube Prometheus Stack Deployment
+id: HELM_KUBE_PROMETHEUS_STACK
+title: Kube Prometheus Stack Helm Chart (Values)
 type: documentation
+category: gitops
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:kube-prometheus-stack
+  - image:prometheus
+  - image:grafana
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +20,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - HELM_LOKI
+  - HELM_FLUENT_BIT
 ---
 
 # Kube Prometheus Stack Deployment

@@ -1,6 +1,6 @@
 ---
 id: ADR-0021
-title: "ADR-0021: PR Terraform plan with automated comments"
+title: 'ADR-0021: PR Terraform plan with automated comments'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0021
+------
 
 # ADR-0021: PR Terraform plan with automated comments
 

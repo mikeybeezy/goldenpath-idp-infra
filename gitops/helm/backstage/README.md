@@ -1,20 +1,26 @@
 ---
-id: README
-title: Backstage Helm Deployment
+id: HELM_BACKSTAGE
+title: Backstage Helm Chart (Values)
 type: documentation
+category: gitops
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - image:backstage
 risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
+  production_impact: medium
+  security_risk: low
+  coupling_risk: medium
 reliability:
   rollback_strategy: git-revert
-  observability_tier: bronze
+  observability_tier: silver
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - 18_BACKSTAGE_MVP
+  - ADR-0008
 ---
 
 # Backstage Helm Deployment

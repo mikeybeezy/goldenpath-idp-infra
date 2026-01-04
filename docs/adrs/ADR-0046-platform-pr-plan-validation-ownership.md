@@ -1,6 +1,6 @@
 ---
 id: ADR-0046
-title: "ADR-0046: PR plan owns validation (no auto infra checks dispatch)"
+title: 'ADR-0046: PR plan owns validation (no auto infra checks dispatch)'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,12 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 21_CI_ENVIRONMENT_CONTRACT
+- 36_STATE_KEY_STRATEGY
+- ADR-0044
+- ADR-0046
+------
 
 # ADR-0046: PR plan owns validation (no auto infra checks dispatch)
 

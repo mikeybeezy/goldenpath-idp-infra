@@ -1,6 +1,6 @@
 ---
 id: ADR-0047
-title: "ADR-0047: Retry Terraform destroy after timeout with cluster-scoped LB cleanup"
+title: 'ADR-0047: Retry Terraform destroy after timeout with cluster-scoped LB cleanup'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 15_TEARDOWN_AND_CLEANUP
+- ADR-0045
+- ADR-0047
+------
 
 # ADR-0047: Retry Terraform destroy after timeout with cluster-scoped LB cleanup
 

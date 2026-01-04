@@ -1,6 +1,6 @@
 ---
 id: READINESS_CHECKLIST
-title: "V1_05: Platform Due-Diligence Scorecard"
+title: 'V1_05: Platform Due-Diligence Scorecard'
 type: documentation
 owner: platform-team
 status: active
@@ -14,8 +14,15 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 01_GOVERNANCE
+- 37_V1_SCOPE_AND_TIMELINE
+- ADR-0040
+- ADR-0044
+- ADR-0046
+- ADR-0063
+- CL-0002
+------
 
 # V1_05: Platform Due-Diligence Scorecard
 

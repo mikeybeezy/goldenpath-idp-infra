@@ -1,6 +1,6 @@
 ---
 id: CL-0010
-title: "CL-0010: Dev ephemeral update workflow"
+title: 'CL-0010: Dev ephemeral update workflow'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0060
+- CI_WORKFLOWS
+- CL-0010
+------
 
 # CL-0010: Dev ephemeral update workflow
 

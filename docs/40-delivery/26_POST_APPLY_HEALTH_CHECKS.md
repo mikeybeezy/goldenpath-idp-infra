@@ -2,8 +2,14 @@
 id: 26_POST_APPLY_HEALTH_CHECKS
 title: Post-Apply Health Checks (Living Document)
 type: documentation
+category: 40-delivery
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:argo-cd
+  - chart:kong
+  - module:kubernetes
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +20,8 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0022
 ---
 
 # Post-Apply Health Checks (Living Document)

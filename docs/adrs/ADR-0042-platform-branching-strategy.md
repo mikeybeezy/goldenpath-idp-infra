@@ -1,6 +1,6 @@
 ---
 id: ADR-0042
-title: "ADR-0042: Branching strategy (development → main)"
+title: "ADR-0042: Branching strategy (development \u2192 main)"
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 23_NEW_JOINERS
+- 38_BRANCHING_STRATEGY
+- ADR-0042
+------
 
 # ADR-0042: Branching strategy (development → main)
 

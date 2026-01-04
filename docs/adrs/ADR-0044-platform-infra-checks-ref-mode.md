@@ -1,6 +1,6 @@
 ---
 id: ADR-0044
-title: "ADR-0044: Configurable ref for infra checks dispatch"
+title: 'ADR-0044: Configurable ref for infra checks dispatch'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 21_CI_ENVIRONMENT_CONTRACT
+- ADR-0044
+- ADR-0046
+------
 
 # ADR-0044: Configurable ref for infra checks dispatch
 

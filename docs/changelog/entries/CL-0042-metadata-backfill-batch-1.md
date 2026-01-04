@@ -5,10 +5,13 @@ type: changelog
 owner: platform-team
 status: active
 relates_to:
-  - ADR-0082
-  - ADR-0083
-  - METADATA_STRATEGY
----
+- ADR-0001
+- ADR-0040
+- ADR-0082
+- ADR-0083
+- CL-0042
+- METADATA_STRATEGY
+------
 
 # CL-0042: Metadata Backfill Batch 1
 

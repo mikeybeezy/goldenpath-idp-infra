@@ -1,6 +1,6 @@
 ---
 id: ADR-0020
-title: "ADR-0020: Hybrid GitOps approach with Helm and Kustomize"
+title: 'ADR-0020: Hybrid GitOps approach with Helm and Kustomize'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0020
+------
 
 # ADR-0020: Hybrid GitOps approach with Helm and Kustomize
 

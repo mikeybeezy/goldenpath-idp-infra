@@ -1,6 +1,6 @@
 ---
 id: CL-0034
-title: "Changelog: PR template enforcement and CI iteration"
+title: 'Changelog: PR template enforcement and CI iteration'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0034
+------
 
 # Changelog: PR template enforcement and CI iteration
 

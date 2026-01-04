@@ -1,6 +1,6 @@
 ---
 id: CL-0012
-title: "CL-0012: Backstage template for dev Terraform apply"
+title: 'CL-0012: Backstage template for dev Terraform apply'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0012
+------
 
 # CL-0012: Backstage template for dev Terraform apply
 

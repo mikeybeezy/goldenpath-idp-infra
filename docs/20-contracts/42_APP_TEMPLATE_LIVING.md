@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 02_PLATFORM_BOUNDARIES
+- ADR-0062
+- FAST-API-APP-TEMPLATE
+------
 
 # App Template Living Doc
 

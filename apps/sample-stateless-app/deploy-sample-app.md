@@ -2,8 +2,11 @@
 id: deploy-sample-app
 title: Setup sample guestbook app
 type: documentation
+category: apps
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to: []
----
+------
 
 # Setup sample guestbook app
 * based on https://github.com/kubernetes/examples/tree/master/guestbook

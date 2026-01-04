@@ -1,6 +1,6 @@
 ---
 id: CL-0024
-title: "CL-0024: Build run log entries"
+title: 'CL-0024: Build run log entries'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0024
+------
 
 # CL-0024: Build run log entries
 

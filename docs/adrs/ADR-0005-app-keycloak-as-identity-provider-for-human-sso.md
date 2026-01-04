@@ -1,6 +1,7 @@
 ---
 id: ADR-0005
-title: "ADR-0005: Adopt Keycloak for platform SSO (humans) and keep IRSA for pod-to-AWS auth"
+title: 'ADR-0005: Adopt Keycloak for platform SSO (humans) and keep IRSA for pod-to-AWS
+  auth'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +15,10 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0003
+- ADR-0005
+------
 
 # ADR-0005: Adopt Keycloak for platform SSO (humans) and keep IRSA for pod-to-AWS auth
 

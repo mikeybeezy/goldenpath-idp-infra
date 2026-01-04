@@ -14,8 +14,14 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 30_DOCUMENTATION_FRESHNESS
+- CHANGELOG
+- CHANGELOG_LABELS
+- CHANGELOG_TEMPLATE
+- CL-0001
+- CL-0002
+------
 
 # Changelog Governance
 

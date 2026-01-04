@@ -1,6 +1,7 @@
 ---
 id: ADR-0061
-title: "ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform external)"
+title: 'ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform
+  external)'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +15,12 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 01_GOVERNANCE
+- 05_OBSERVABILITY_DECISIONS
+- ADR-0052
+- ADR-0061
+------
 
 # ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform external)
 

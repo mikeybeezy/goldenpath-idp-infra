@@ -14,8 +14,14 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 00_DOC_INDEX
+- 04_PR_GUARDRAILS
+- 30_DOCUMENTATION_FRESHNESS
+- ADR-####
+- CHANGELOG
+- CL-####
+------
 
 # PR Gates and How to Unblock Them
 

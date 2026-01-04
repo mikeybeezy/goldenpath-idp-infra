@@ -12,8 +12,9 @@ lifecycle:
   supported_until: 2027-01-01
   breaking_change: false
 relates_to:
-  - ADR-0066
----
+- ADR-0066
+- ADR-0082
+------
 
 ## ADR-0082: Platform Metadata Validation Strategy
 

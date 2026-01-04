@@ -1,9 +1,14 @@
 ---
-id: README
-title: Fluent Bit Helm Deployment
+id: HELM_FLUENT_BIT
+title: Fluent Bit Helm Chart (Values)
 type: documentation
+category: gitops
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:fluent-bit
+  - image:fluent-bit
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +19,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - HELM_LOKI
+  - HELM_KUBE_PROMETHEUS_STACK
 ---
 
 # Fluent Bit Helm Deployment

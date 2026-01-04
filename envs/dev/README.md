@@ -1,8 +1,12 @@
 ---
-id: README
+id: DEV_ENV_README
 title: Dev Environment
 type: documentation
+category: envs
+version: 1.0
 owner: platform-team
+status: active
+dependencies: []
 status: active
 risk_profile:
   production_impact: low

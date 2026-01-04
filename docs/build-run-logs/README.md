@@ -14,8 +14,13 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: [BR-TEMPLATE, TD-TEMPLATE]
----
+relates_to:
+- 41_BUILD_RUN_LOG
+- BR-TEMPLATE
+- BR_TEMPLATE
+- TD-TEMPLATE
+- TD_TEMPLATE
+------
 
 # Build Run Logs
 

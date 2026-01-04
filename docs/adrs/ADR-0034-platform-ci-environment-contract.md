@@ -1,6 +1,6 @@
 ---
 id: ADR-0034
-title: "ADR-0034: CI Environment Contract"
+title: 'ADR-0034: CI Environment Contract'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0011
+- ADR-0034
+------
 
 # ADR-0034: CI Environment Contract
 

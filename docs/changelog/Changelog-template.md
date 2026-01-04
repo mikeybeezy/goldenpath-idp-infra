@@ -1,6 +1,6 @@
 ---
 id: CHANGELOG_TEMPLATE
-title: "CL-0001: <short title>"
+title: 'CL-0001: <short title>'
 type: template
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0001
+------
 
 # CL-0001: <short title>
 

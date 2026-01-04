@@ -1,6 +1,6 @@
 ---
 id: CL-0035
-title: "Changelog: re-enable super-linter and require lint checks"
+title: 'Changelog: re-enable super-linter and require lint checks'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0035
+------
 
 # Changelog: re-enable super-linter and require lint checks
 

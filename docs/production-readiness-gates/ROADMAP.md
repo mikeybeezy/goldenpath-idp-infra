@@ -14,8 +14,13 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0022
+- ADR-0028
+- ADR-0034
+- ADR-0035
+- ADR-0037
+------
 
 # Platform TODO (Living)
 

@@ -1,6 +1,6 @@
 ---
 id: CL-0006
-title: "CL-0006: Loki single-binary default and monitoring namespace"
+title: 'CL-0006: Loki single-binary default and monitoring namespace'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0006
+------
 
 # CL-0006: Loki single-binary default and monitoring namespace
 

@@ -1,6 +1,6 @@
 ---
 id: CL-0005
-title: "CL-0005: Teardown finalizer removal default-on"
+title: 'CL-0005: Teardown finalizer removal default-on'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0005
+------
 
 # CL-0005: Teardown finalizer removal default-on
 

@@ -1,6 +1,6 @@
 ---
 id: ADR-0066
-title: "ADR-0066: Platform Dashboards as Code"
+title: 'ADR-0066: Platform Dashboards as Code'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 09_PLATFORM_DASHBOARD_CATALOG
+- ADR-0066
+------
 
 # ADR-0066: Platform Dashboards as Code
 

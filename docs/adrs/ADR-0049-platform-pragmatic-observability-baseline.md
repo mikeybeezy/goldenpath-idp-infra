@@ -1,6 +1,6 @@
 ---
 id: ADR-0049
-title: "ADR-0049: Pragmatic observability baseline for V1 (RED + Golden Signals)"
+title: 'ADR-0049: Pragmatic observability baseline for V1 (RED + Golden Signals)'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 05_OBSERVABILITY_DECISIONS
+- ADR-0049
+- ADR-0069
+------
 
 # ADR-0049: Pragmatic observability baseline for V1 (RED + Golden Signals)
 

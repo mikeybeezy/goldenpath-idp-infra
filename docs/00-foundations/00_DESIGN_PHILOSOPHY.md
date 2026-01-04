@@ -14,8 +14,13 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 00_DOC_INDEX
+- 01_GOVERNANCE
+- 02_PLATFORM_BOUNDARIES
+- 30_DOCUMENTATION_FRESHNESS
+- 43_OPERATING_PRINCIPLES
+------
 
 # GoldenPath Design Philosophy
 

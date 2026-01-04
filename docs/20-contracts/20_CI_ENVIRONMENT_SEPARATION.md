@@ -1,6 +1,6 @@
 ---
 id: 20_CI_ENVIRONMENT_SEPARATION
-title: "CI Environment Separation (Living Document)"
+title: CI Environment Separation (Living Document)
 type: contract
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 21_CI_ENVIRONMENT_CONTRACT
+- ADR-0016
+- CI_WORKFLOWS
+------
 
 # CI Environment Separation (Living Document)
 

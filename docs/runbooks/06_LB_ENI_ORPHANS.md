@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 04_LB_FINALIZER_STUCK
+- 15_TEARDOWN_AND_CLEANUP
+- ADR-0047
+------
 
 # Load Balancer ENIs Block Subnet Deletion
 

@@ -1,20 +1,27 @@
 ---
-id: README
-title: Route Table Module
+id: MODULE_AWS_ROUTE_TABLE
+title: Route Table Terraform Module
 type: documentation
+category: modules
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - aws-provider
 risk_profile:
-  production_impact: low
-  security_risk: none
+  production_impact: high
+  security_risk: low
   coupling_risk: low
 reliability:
   rollback_strategy: git-revert
-  observability_tier: bronze
+  observability_tier: silver
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - 09_ARCHITECTURE
+  - MODULE_VPC
+  - MODULE_AWS_SUBNET
 ---
 
 # Route Table Module

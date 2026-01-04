@@ -1,9 +1,13 @@
 ---
-id: README
-title: Alertmanager Helm Deployment (Deprecated)
+id: HELM_ALERTMANAGER
+title: Alertmanager Helm Chart (Values)
 type: documentation
+category: gitops
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:kube-prometheus-stack
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +18,8 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - 18_BACKSTAGE_MVP
 ---
 
 # Alertmanager Helm Deployment (Deprecated)

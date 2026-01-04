@@ -1,6 +1,7 @@
 ---
 id: ADR-0006
-title: "ADR-0006: Use AWS Secrets Manager/SSM as system of record for secrets and External Secrets to hydrate Kubernetes"
+title: 'ADR-0006: Use AWS Secrets Manager/SSM as system of record for secrets and
+  External Secrets to hydrate Kubernetes'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +15,11 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0003
+- ADR-0006
+- ADR-0007
+------
 
 # ADR-0006: Use AWS Secrets Manager/SSM as system of record for secrets and External Secrets to hydrate Kubernetes
 

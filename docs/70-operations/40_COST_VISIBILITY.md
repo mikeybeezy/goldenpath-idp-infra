@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 06_COST_GOVERNANCE
+- ADR-0076
+------
 
 # Cost Visibility (CI + Infracost)
 

@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 15_TEARDOWN_AND_CLEANUP
+------
 
 # Infra Failure Modes and Recovery
 

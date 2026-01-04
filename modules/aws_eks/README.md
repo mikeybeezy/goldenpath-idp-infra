@@ -1,20 +1,30 @@
 ---
-id: README
-title: EKS Cluster Module
+id: MODULE_AWS_EKS
+title: EKS Cluster Terraform Module
 type: documentation
+category: modules
+version: 1.1
 owner: platform-team
 status: active
+dependencies:
+  - aws-provider
+  - kubernetes-provider
+  - helm-provider
 risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
+  production_impact: high
+  security_risk: medium
+  coupling_risk: high
 reliability:
   rollback_strategy: git-revert
-  observability_tier: bronze
+  observability_tier: silver
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - 09_ARCHITECTURE
+  - MODULE_VPC
+  - MODULE_AWS_IAM
+  - ADR-0032
 ---
 
 # EKS Cluster Module

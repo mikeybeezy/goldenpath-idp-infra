@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 12_GITOPS_AND_CICD
+- 29_CD_DEPLOYMENT_CONTRACT
+- 42_APP_TEMPLATE_LIVING
+------
 
 # App Example Deployments (Argo CD + Helm + Kustomize)
 

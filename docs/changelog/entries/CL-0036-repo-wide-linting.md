@@ -1,6 +1,6 @@
 ---
 id: CL-0036
-title: "Changelog: repo-wide linting for knowledge graph hygiene"
+title: 'Changelog: repo-wide linting for knowledge graph hygiene'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0081
+- CL-0036
+------
 
 # Changelog: repo-wide linting for knowledge graph hygiene
 

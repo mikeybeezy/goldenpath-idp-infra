@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 21_CI_ENVIRONMENT_CONTRACT
+- 37_V1_SCOPE_AND_TIMELINE
+------
 
 # Branching Strategy (GoldenPath IDP)
 

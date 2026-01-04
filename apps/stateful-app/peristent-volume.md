@@ -1,20 +1,28 @@
 ---
-id: peristent-volume
-title: persistent volume
+id: STATEFUL_APP_PVC
+title: Persistent Volume Claims for Stateful Apps
 type: documentation
+category: apps
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - module:ebs
+  - module:kubernetes
 risk_profile:
-  production_impact: low
+  production_impact: medium
   security_risk: none
-  coupling_risk: low
+  coupling_risk: medium
 reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
+  rollback_strategy: kubectl-delete
+  observability_tier: silver
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - STATEFUL_APP_README
+  - STATEFUL_APP_NAMESPACE
+  - STATEFUL_APP_DEPLOY
 ---
 
 # persistent volume

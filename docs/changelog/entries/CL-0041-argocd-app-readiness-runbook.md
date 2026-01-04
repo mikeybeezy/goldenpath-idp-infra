@@ -7,7 +7,12 @@ status: active
 risk_profile:
   production_impact: low
   security_risk: low
----
+relates_to:
+- 00_DOC_INDEX
+- 11_ARGOCD_APP_READINESS
+- CL-0041
+- RUNBOOKS
+------
 
 ## CL-0041: Argo CD app readiness runbook
 

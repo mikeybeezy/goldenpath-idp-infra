@@ -1,20 +1,26 @@
 ---
-id: one_stage_vs_multistage_bootstrap
+id: ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
 title: One-Stage vs Multi-Stage Bootstrap
 type: documentation
+category: bootstrap
+version: 1.0
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
-  production_impact: low
+  production_impact: medium
   security_risk: none
-  coupling_risk: low
+  coupling_risk: medium
 reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
+  rollback_strategy: manual
+  observability_tier: silver
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - GOLDENPATH_IDP_BOOTSTRAP
+  - ADR-0013
+  - 18_BACKSTAGE_MVP
 ---
 
 # One-Stage vs Multi-Stage Bootstrap

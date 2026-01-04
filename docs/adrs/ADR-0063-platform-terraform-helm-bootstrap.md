@@ -1,6 +1,6 @@
 ---
 id: ADR-0063
-title: "ADR-0063: Terraform Helm Provider for Bootstrap"
+title: 'ADR-0063: Terraform Helm Provider for Bootstrap'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0001
+- ADR-0063
+------
 
 # ADR-0063: Terraform Helm Provider for Bootstrap
 

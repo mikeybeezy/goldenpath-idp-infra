@@ -2,19 +2,27 @@
 id: 08_MANAGED_LB_CLEANUP
 title: Managed LB Resource Cleanup (Runbook)
 type: runbook
+category: runbooks
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:aws-load-balancer-controller
 risk_profile:
-  production_impact: medium
+  production_impact: high
   security_risk: access
-  coupling_risk: low
+  coupling_risk: medium
 reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
+  rollback_strategy: not-applicable
+  observability_tier: gold
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - TEARDOWN_README
+  - 04_LB_FINALIZER_STUCK
+  - 15_TEARDOWN_AND_CLEANUP
+  - CI_WORKFLOWS
 ---
 
 # Managed LB Resource Cleanup (Runbook)

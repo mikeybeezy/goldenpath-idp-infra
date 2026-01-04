@@ -8,8 +8,9 @@ risk_profile:
   production_impact: low
   security_risk: none
 relates_to:
-  - ADR-0082
----
+- ADR-0082
+- CL-0037
+------
 
 ## CL-0037: Platform Metadata Fabric (Knowledge Graph)
 

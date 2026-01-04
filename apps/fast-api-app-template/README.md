@@ -1,20 +1,30 @@
 ---
-id: README
+id: FAST_API_APP_TEMPLATE
 title: App Template (Reference)
 type: template
+category: apps
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - image:python:3.11-slim
+  - chart:kube-prometheus-stack
+  - module:kong
 risk_profile:
   production_impact: low
   security_risk: none
-  coupling_risk: low
+  coupling_risk: medium
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - 42_APP_TEMPLATE_LIVING
+  - 02_PLATFORM_BOUNDARIES
+  - 18_BACKSTAGE_MVP
+  - 10_SERVICE_CATALOG
 ---
 
 # App Template (Reference)

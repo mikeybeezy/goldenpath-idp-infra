@@ -1,6 +1,6 @@
 ---
 id: ADR-0017
-title: "ADR-0017: Policy as code for infrastructure and application changes"
+title: 'ADR-0017: Policy as code for infrastructure and application changes'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,11 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 20_CI_ENVIRONMENT_SEPARATION
+- 21_CI_ENVIRONMENT_CONTRACT
+- ADR-0017
+------
 
 # ADR-0017: Policy as code for infrastructure and application changes
 

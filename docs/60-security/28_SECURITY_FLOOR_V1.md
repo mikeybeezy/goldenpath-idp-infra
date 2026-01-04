@@ -14,8 +14,12 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
----
+relates_to:
+- 01_GOVERNANCE
+- 24_PRE_COMMIT_HOOKS
+- 27_CI_IMAGE_SCANNING
+- ADR-0024
+------
 
 # Security Floor V1 (Living Document)
 

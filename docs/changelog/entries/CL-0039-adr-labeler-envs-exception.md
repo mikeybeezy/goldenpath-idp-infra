@@ -7,7 +7,9 @@ status: active
 risk_profile:
   production_impact: low
   security_risk: low
----
+relates_to:
+- CL-0039
+------
 
 ## CL-0039: Exclude envs from ADR labeler rule
 

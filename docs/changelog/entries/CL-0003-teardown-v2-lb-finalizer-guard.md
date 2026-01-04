@@ -1,6 +1,6 @@
 ---
 id: CL-0003
-title: "CL-0003: Teardown v2 LoadBalancer finalizer guard"
+title: 'CL-0003: Teardown v2 LoadBalancer finalizer guard'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- CL-0003
+------
 
 # CL-0003: Teardown v2 LoadBalancer finalizer guard
 

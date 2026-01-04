@@ -1,9 +1,14 @@
 ---
-id: README
-title: Datree Admission Webhook
+id: HELM_DATREE
+title: Datree Admission Webhook (Values)
 type: documentation
+category: gitops
+version: 1.0
 owner: platform-team
 status: active
+dependencies:
+  - chart:datree
+  - image:datree
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +19,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0004
+  - ADR-0033
 ---
 
 # Datree Admission Webhook

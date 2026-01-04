@@ -1,6 +1,6 @@
 ---
 id: ADR-0065
-title: "ADR-0065: Restore branch policy guard for main"
+title: 'ADR-0065: Restore branch policy guard for main'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0065
+------
 
 # ADR-0065: Restore branch policy guard for main
 

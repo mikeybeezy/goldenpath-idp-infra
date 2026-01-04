@@ -1,6 +1,6 @@
 ---
 id: ADR-0067
-title: "ADR-0067: Use base ref for labeler checkout"
+title: 'ADR-0067: Use base ref for labeler checkout'
 type: adr
 owner: platform-team
 status: active
@@ -14,8 +14,9 @@ reliability:
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0067
+------
 
 # ADR-0067: Use base ref for labeler checkout
 

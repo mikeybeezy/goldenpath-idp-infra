@@ -1,6 +1,6 @@
 ---
 id: CL-0023
-title: "CL-0023: Bootstrap v3 skips IRSA apply"
+title: 'CL-0023: Bootstrap v3 skips IRSA apply'
 type: changelog
 owner: platform-team
 status: active
@@ -14,8 +14,10 @@ reliability:
 lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
-relates_to: []
----
+relates_to:
+- ADR-0073
+- CL-0023
+------
 
 # CL-0023: Bootstrap v3 skips IRSA apply
 
