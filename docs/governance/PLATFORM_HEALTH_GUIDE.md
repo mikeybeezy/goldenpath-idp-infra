@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- PLATFORM_HEALTH
-- ADR-0090
-- METADATA_INJECTION_GUIDE
+  - PLATFORM_HEALTH
+  - ADR-0090
+  - METADATA_INJECTION_GUIDE
 ---
 
 # Platform Health Dashboard Guide

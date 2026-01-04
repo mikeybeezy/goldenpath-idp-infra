@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 21_CI_ENVIRONMENT_CONTRACT
-- ADR-0060
-- CI_WORKFLOWS
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - ADR-0060
+  - CI_WORKFLOWS
 ---
 
 # ADR-0060: Separate update workflow for existing ephemeral dev clusters

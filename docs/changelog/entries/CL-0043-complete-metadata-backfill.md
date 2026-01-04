@@ -18,13 +18,13 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- ADR-0034
-- ADR-0082
-- ADR-0083
-- ADR-0084
-- CL-0042
-- CL-0043
-- METADATA_STRATEGY
+  - ADR-0034
+  - ADR-0082
+  - ADR-0083
+  - ADR-0084
+  - CL-0042
+  - CL-0043
+  - METADATA_STRATEGY
 ---
 
 # CL-0043: Complete Metadata Backfill with Knowledge Graph

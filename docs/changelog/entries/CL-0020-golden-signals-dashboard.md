@@ -18,10 +18,10 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- 09_PLATFORM_DASHBOARD_CATALOG
-- ADR-0066
-- ADR-0066-platform-dashboards-as-code
-- CL-0020
+  - 09_PLATFORM_DASHBOARD_CATALOG
+  - ADR-0066
+  - ADR-0066-platform-dashboards-as-code
+  - CL-0020
 ---
 
 # CL-0020: Golden Signals Dashboard Standard

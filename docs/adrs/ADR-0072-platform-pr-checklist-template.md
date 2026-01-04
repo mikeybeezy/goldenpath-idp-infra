@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 24_PR_GATES
-- ADR-0072
+  - 24_PR_GATES
+  - ADR-0072
 ---
 
 # ADR-0072: PR checklist template in PR gates guide

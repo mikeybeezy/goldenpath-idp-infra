@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 12_GITOPS_AND_CICD
-- 39_GOLDEN_PATH_VALIDATION
-- ADR-0026
+  - 12_GITOPS_AND_CICD
+  - 39_GOLDEN_PATH_VALIDATION
+  - ADR-0026
 ---
 
 # CD Deployment Contract

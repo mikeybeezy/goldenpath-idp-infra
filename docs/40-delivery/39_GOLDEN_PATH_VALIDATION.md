@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 21_CI_ENVIRONMENT_CONTRACT
-- 34_PLATFORM_SUCCESS_CHECKLIST
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - 34_PLATFORM_SUCCESS_CHECKLIST
 ---
 
 # Golden Path Validation (Living)

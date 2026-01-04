@@ -18,11 +18,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 06_IDENTITY_AND_ACCESS
-- 16_INFRA_Build_ID_Strategy_Decision
-- 17_BUILD_RUN_FLAGS
-- ADR-0001
-- BOOTSTRAP_10_BOOTSTRAP_README
+  - 06_IDENTITY_AND_ACCESS
+  - 16_INFRA_Build_ID_Strategy_Decision
+  - 17_BUILD_RUN_FLAGS
+  - ADR-0001
+  - BOOTSTRAP_10_BOOTSTRAP_README
 ---
 
 # GitOps and CI/CD

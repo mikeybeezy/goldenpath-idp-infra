@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- module:aws_iam
-- module:aws_eks
+  - module:aws_iam
+  - module:aws_eks
 risk_profile:
   production_impact: low
   security_risk: none
@@ -20,9 +20,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 17_BUILD_RUN_FLAGS
-- ADR-0040
-- ORPHAN_CLEANUP
+  - 17_BUILD_RUN_FLAGS
+  - ADR-0040
+  - ORPHAN_CLEANUP
 ---
 
 # Build ID Strategy Decision

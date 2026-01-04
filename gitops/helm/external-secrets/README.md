@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- chart:external-secrets
-- image:external-secrets
+  - chart:external-secrets
+  - image:external-secrets
 risk_profile:
   production_impact: low
   security_risk: none
@@ -20,8 +20,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- ADR-0006
-- 06_IDENTITY_AND_ACCESS
+  - ADR-0006
+  - 06_IDENTITY_AND_ACCESS
 ---
 
 # External Secrets Helm Deployment

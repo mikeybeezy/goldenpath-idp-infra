@@ -18,10 +18,10 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- 42_APP_TEMPLATE_LIVING
-- ADR-0078
-- ADR-0078-platform-governed-repo-scaffolder
-- CL-0031
+  - 42_APP_TEMPLATE_LIVING
+  - ADR-0078
+  - ADR-0078-platform-governed-repo-scaffolder
+  - CL-0031
 ---
 
 # CL-0031: Governance-driven app repo scaffolder

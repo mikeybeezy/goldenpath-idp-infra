@@ -14,18 +14,18 @@ spec:
     namespace: keycloak
     server: https://kubernetes.default.svc
   sources:
-  - repoURL: https://charts.bitnami.com/bitnami
-    chart: keycloak
-    targetRevision: 22.1.6
-    helm:
-      valueFiles:
-      - $values/gitops/helm/keycloak/values/prod.yaml
-  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-    targetRevision: HEAD
-    ref: values
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: keycloak
+      targetRevision: 22.1.6
+      helm:
+        valueFiles:
+          - $values/gitops/helm/keycloak/values/prod.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: HEAD
+      ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true

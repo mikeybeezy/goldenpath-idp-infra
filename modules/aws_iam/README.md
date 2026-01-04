@@ -7,7 +7,7 @@ version: 1.1
 owner: platform-team
 status: active
 dependencies:
-- aws-provider
+  - aws-provider
 risk_profile:
   production_impact: high
   security_risk: medium
@@ -19,9 +19,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 09_ARCHITECTURE
-- 06_IDENTITY_AND_ACCESS
-- ADR-0031
+  - 09_ARCHITECTURE
+  - 06_IDENTITY_AND_ACCESS
+  - ADR-0031
 ---
 
 # EKS IAM Module

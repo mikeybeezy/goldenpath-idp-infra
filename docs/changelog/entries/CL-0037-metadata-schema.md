@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- ADR-0082
-- CL-0037
+  - ADR-0082
+  - CL-0037
 ---
 
 ## CL-0037: Platform Metadata Fabric (Knowledge Graph)

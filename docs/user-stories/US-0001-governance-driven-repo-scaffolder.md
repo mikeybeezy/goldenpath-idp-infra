@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- ADR-0078
-- ADR-0078-platform-governed-repo-scaffolder
-- CL-0031
+  - ADR-0078
+  - ADR-0078-platform-governed-repo-scaffolder
+  - CL-0031
 ---
 
 # US-0001: Governance-driven repo scaffolder

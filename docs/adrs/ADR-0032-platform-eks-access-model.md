@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- ADR-0015
-- ADR-0032
+  - ADR-0015
+  - ADR-0032
 ---
 
 # ADR-0032: EKS access model (bootstrap admin vs steady-state access)

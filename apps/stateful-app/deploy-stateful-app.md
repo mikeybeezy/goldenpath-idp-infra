@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- module:aws_eks
-- module:kubernetes
+  - module:aws_eks
+  - module:kubernetes
 risk_profile:
   production_impact: medium
   security_risk: low
@@ -20,7 +20,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 09_ARCHITECTURE
+  - 09_ARCHITECTURE
 ---
 
 # deploy mysql

@@ -2,16 +2,16 @@
 appConfig:
   catalog:
     locations:
-    - type: url
-      target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/ci-apply-dev/template.yaml
-      rules:
-      - allow:
-        - Template
-    - type: url
-      target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/app-template/template.yaml
-      rules:
-      - allow:
-        - Template
+      - type: url
+        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/ci-apply-dev/template.yaml
+        rules:
+          - allow:
+              - Template
+      - type: url
+        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/app-template/template.yaml
+        rules:
+          - allow:
+              - Template
 governance:
   id: HELM_BACKSTAGE
   owner: platform-team

@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- ADR-0064
+  - ADR-0064
 ---
 
 # ADR-0064: Dev bootstrap defaults off for k8s resources and storage

@@ -14,18 +14,18 @@ spec:
     namespace: datree-system
     server: https://kubernetes.default.svc
   sources:
-  - repoURL: https://charts.datree.io
-    chart: datree-admission-webhook
-    targetRevision: 1.0.12
-    helm:
-      valueFiles:
-      - $values/gitops/helm/datree/values/test.yaml
-  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-    targetRevision: HEAD
-    ref: values
+    - repoURL: https://charts.datree.io
+      chart: datree-admission-webhook
+      targetRevision: 1.0.12
+      helm:
+        valueFiles:
+          - $values/gitops/helm/datree/values/test.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: HEAD
+      ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true

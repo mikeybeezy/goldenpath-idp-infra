@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 12_GITOPS_AND_CICD
-- 17_BUILD_RUN_FLAGS
-- 18_BACKSTAGE_MVP
+  - 12_GITOPS_AND_CICD
+  - 17_BUILD_RUN_FLAGS
+  - 18_BACKSTAGE_MVP
 ---
 
 # Repository Structure & Workflow

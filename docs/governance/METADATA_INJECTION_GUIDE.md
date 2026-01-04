@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- METADATA_VALIDATION_GUIDE
-- METADATA_MAINTENANCE_GUIDE
-- ADR-0089
+  - METADATA_VALIDATION_GUIDE
+  - METADATA_MAINTENANCE_GUIDE
+  - ADR-0089
 ---
 
 # Metadata Injection Guide

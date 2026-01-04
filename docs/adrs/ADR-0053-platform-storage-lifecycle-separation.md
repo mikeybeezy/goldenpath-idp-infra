@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 15_TEARDOWN_AND_CLEANUP
-- 41_STORAGE_AND_PERSISTENCE
-- ADR-0053
+  - 15_TEARDOWN_AND_CLEANUP
+  - 41_STORAGE_AND_PERSISTENCE
+  - ADR-0053
 ---
 
 # ADR-0053: Separate storage lifecycle from bootstrap and teardown

@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- ADR-0007
-- 35_RESOURCE_TAGGING
+  - ADR-0007
+  - 35_RESOURCE_TAGGING
 ---
 
 # Lifecycle & Upgrade Policy

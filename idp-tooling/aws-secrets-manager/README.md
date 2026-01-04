@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- provider:aws
+  - provider:aws
 risk_profile:
   production_impact: low
   security_risk: high
@@ -19,8 +19,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- HELM_EXTERNAL_SECRETS
-- ADR-0006
+  - HELM_EXTERNAL_SECRETS
+  - ADR-0006
 ---
 
 # AWS Secrets Manager Module

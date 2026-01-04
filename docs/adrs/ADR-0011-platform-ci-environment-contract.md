@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- ADR-0011
-- ADR-0034
-- ADR-0034-platform-ci-environment-contract
+  - ADR-0011
+  - ADR-0034
+  - ADR-0034-platform-ci-environment-contract
 ---
 
 # ADR-0011: CI Environment Contract (Superseded)

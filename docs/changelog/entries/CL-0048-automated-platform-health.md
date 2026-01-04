@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- ADR-0090
-- PLATFORM_HEALTH_GUIDE
+  - ADR-0090
+  - PLATFORM_HEALTH_GUIDE
 ---
 
 # CL-0048: Automated Platform Health Auditing

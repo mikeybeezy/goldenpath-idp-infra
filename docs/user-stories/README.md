@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 00_INDEX
+  - 00_INDEX
 ---
 
 # User Stories (Living)

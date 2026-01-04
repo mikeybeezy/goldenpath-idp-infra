@@ -18,10 +18,10 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- 00_DOC_INDEX
-- 11_ARGOCD_APP_READINESS
-- CL-0041
-- DOCS_RUNBOOKS_README
+  - 00_DOC_INDEX
+  - 11_ARGOCD_APP_READINESS
+  - CL-0041
+  - DOCS_RUNBOOKS_README
 ---
 
 ## CL-0041: Argo CD app readiness runbook

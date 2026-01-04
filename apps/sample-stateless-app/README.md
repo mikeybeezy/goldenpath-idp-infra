@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- chart:helm
-- module:kubernetes
+  - chart:helm
+  - module:kubernetes
 risk_profile:
   production_impact: low
   security_risk: none
@@ -20,9 +20,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- FAST_API_APP_TEMPLATE
-- 42_APP_TEMPLATE_LIVING
-- 18_BACKSTAGE_MVP
+  - FAST_API_APP_TEMPLATE
+  - 42_APP_TEMPLATE_LIVING
+  - 18_BACKSTAGE_MVP
 ---
 
 # Sample Stateless App (Reference)

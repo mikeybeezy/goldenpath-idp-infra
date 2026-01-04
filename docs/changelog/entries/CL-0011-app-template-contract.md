@@ -18,10 +18,10 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- 42_APP_TEMPLATE_LIVING
-- ADR-0062
-- ADR-0062-platform-app-template-contract
-- CL-0011
+  - 42_APP_TEMPLATE_LIVING
+  - ADR-0062
+  - ADR-0062-platform-app-template-contract
+  - CL-0011
 ---
 
 # CL-0011: App template contract and reference bundle

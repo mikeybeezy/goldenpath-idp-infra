@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- 07_REPO_DECOUPLING_OPTIONS
-- ADR-0012
+  - 07_REPO_DECOUPLING_OPTIONS
+  - ADR-0012
 ---
 
 # ADR-0012: Repo decoupling options for infra and platform tooling

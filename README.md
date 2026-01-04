@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 18_BACKSTAGE_MVP
+  - 18_BACKSTAGE_MVP
 ---
 
 # Golden Path IDP Infra

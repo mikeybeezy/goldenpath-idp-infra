@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 35_RESOURCE_TAGGING
+  - 35_RESOURCE_TAGGING
 ---
 
 # Tag-Scoped IAM Policy Template (Living)

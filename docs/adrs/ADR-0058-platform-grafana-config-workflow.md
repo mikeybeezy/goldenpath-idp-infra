@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 05_OBSERVABILITY_DECISIONS
-- ADR-0058
+  - 05_OBSERVABILITY_DECISIONS
+  - ADR-0058
 ---
 
 # ADR-0058: Separate Grafana config workflow with readiness guard

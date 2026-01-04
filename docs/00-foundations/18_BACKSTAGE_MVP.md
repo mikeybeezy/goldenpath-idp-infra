@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 03_GOVERNANCE_BACKSTAGE
-- 12_GITOPS_AND_CICD
-- ADR-0008
+  - 03_GOVERNANCE_BACKSTAGE
+  - 12_GITOPS_AND_CICD
+  - ADR-0008
 ---
 
 # Backstage MVP (First App Through CI/CD)

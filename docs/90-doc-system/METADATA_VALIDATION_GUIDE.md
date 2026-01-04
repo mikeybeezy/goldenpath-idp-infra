@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- scripts/validate-metadata.py
+  - scripts/validate-metadata.py
 risk_profile:
   production_impact: low
   security_risk: none
@@ -19,10 +19,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- METADATA_BACKFILL_SCRIPT
-- RELATIONSHIP_EXTRACTION_SCRIPT
-- ADR-0084
-- METADATA_STRATEGY
+  - METADATA_BACKFILL_SCRIPT
+  - RELATIONSHIP_EXTRACTION_SCRIPT
+  - ADR-0084
+  - METADATA_STRATEGY
 ---
 
 ## Metadata Validation Runbook

@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 15_TEARDOWN_AND_CLEANUP
-- ADR-0048
+  - 15_TEARDOWN_AND_CLEANUP
+  - ADR-0048
 ---
 
 # ADR-0048: Versioned teardown runners with selectable entrypoint

@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- ADR-0065
-- ADR-0065-platform-branch-policy-guard
-- CL-0015
+  - ADR-0065
+  - ADR-0065-platform-branch-policy-guard
+  - CL-0015
 ---
 
 # CL-0015: Restore branch policy guard for main

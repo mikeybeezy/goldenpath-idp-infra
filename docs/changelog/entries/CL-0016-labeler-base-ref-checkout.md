@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- ADR-0067
-- ADR-0067-platform-labeler-base-ref
-- CL-0016
+  - ADR-0067
+  - ADR-0067-platform-labeler-base-ref
+  - CL-0016
 ---
 
 # CL-0016: Labeler uses base ref checkout

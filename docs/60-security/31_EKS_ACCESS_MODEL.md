@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 33_IAM_ROLES_AND_POLICIES
+  - 33_IAM_ROLES_AND_POLICIES
 ---
 
 # EKS Access Model (Living)

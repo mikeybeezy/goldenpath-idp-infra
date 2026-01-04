@@ -18,11 +18,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- CHANGELOG_LABELS
-- CL-0001
-- CL-0002
-- Changelog-template
-- DOCS_CHANGELOG_README
+  - CHANGELOG_LABELS
+  - CL-0001
+  - CL-0002
+  - Changelog-template
+  - DOCS_CHANGELOG_README
 ---
 
 # Changelog Governance

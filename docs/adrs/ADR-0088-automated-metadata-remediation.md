@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- ADR-0082
-- ADR-0084
-- METADATA_MAINTENANCE_GUIDE
+  - ADR-0082
+  - ADR-0084
+  - METADATA_MAINTENANCE_GUIDE
 ---
 
 # ADR-0088: Automated Metadata Remediation over Manual Compliance

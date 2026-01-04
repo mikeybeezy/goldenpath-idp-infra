@@ -18,11 +18,11 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- 00_DESIGN_PHILOSOPHY
-- 00_DOC_INDEX
-- 01_GOVERNANCE
-- 02_PLATFORM_BOUNDARIES
-- ADR-0027
+  - 00_DESIGN_PHILOSOPHY
+  - 00_DOC_INDEX
+  - 01_GOVERNANCE
+  - 02_PLATFORM_BOUNDARIES
+  - ADR-0027
 ---
 
 # ADR-0027: Platform design philosophy and reference implementation

@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 07_TF_STATE_FORCE_UNLOCK
-- 15_TEARDOWN_AND_CLEANUP
-- ADR-0057
+  - 07_TF_STATE_FORCE_UNLOCK
+  - 15_TEARDOWN_AND_CLEANUP
+  - ADR-0057
 ---
 
 # ADR-0057: CI Terraform force-unlock workflow (break-glass)

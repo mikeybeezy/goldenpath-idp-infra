@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 06_IDENTITY_AND_ACCESS
-- ADR-0024
+  - 06_IDENTITY_AND_ACCESS
+  - ADR-0024
 ---
 

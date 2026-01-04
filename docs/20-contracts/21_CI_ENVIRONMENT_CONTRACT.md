@@ -18,12 +18,12 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 33_IAM_ROLES_AND_POLICIES
-- ADR-0030
-- ADR-0030-platform-precreated-iam-policies
-- ADR-0033
-- ADR-0033-platform-ci-orchestrated-modes
-- ADR-0034
+  - 33_IAM_ROLES_AND_POLICIES
+  - ADR-0030
+  - ADR-0030-platform-precreated-iam-policies
+  - ADR-0033
+  - ADR-0033-platform-ci-orchestrated-modes
+  - ADR-0034
 ---
 
 id: 21_CI_ENVIRONMENT_CONTRACT

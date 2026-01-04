@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- ADR-0081
+  - ADR-0081
 ---
 
 # ADR-0081: Repo-wide linting for knowledge-graph hygiene

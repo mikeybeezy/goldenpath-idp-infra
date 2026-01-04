@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- ADR-0010
+  - ADR-0010
 ---
 
 # ADR-0010: Enforce Terraform lockfile stability in CI

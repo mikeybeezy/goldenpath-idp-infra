@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- CL-0038
+  - CL-0038
 ---
 
 ## CL-0038: Allow build-id branches to merge to main

@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- provider:kong
+  - provider:kong
 risk_profile:
   production_impact: high
   security_risk: low
@@ -19,8 +19,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- HELM_KONG
-- ADR-0002
+  - HELM_KONG
+  - ADR-0002
 ---
 
 # Kong Configuration Module

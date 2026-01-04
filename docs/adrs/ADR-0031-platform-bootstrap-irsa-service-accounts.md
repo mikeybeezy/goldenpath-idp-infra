@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- ADR-0031
+  - ADR-0031
 ---
 
 # ADR-0031: Create IRSA service accounts during bootstrap

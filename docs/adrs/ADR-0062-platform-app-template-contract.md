@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 01_GOVERNANCE
-- ADR-0062
+  - 01_GOVERNANCE
+  - ADR-0062
 ---
 
 # ADR-0062: App template contract for team-owned deployments

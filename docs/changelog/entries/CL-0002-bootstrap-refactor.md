@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- ADR-0063
-- CL-0002
+  - ADR-0063
+  - CL-0002
 ---
 
 # CL-0002: Refactor Bootstrap to Terraform

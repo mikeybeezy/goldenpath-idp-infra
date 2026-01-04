@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- ADR-0063
-- ADR-0063-platform-terraform-helm-bootstrap
-- ADR-0070
+  - ADR-0063
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - ADR-0070
 ---
 
 # ADR-0070: Terraform Management of AWS Load Balancer Controller

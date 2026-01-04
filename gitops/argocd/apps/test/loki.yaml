@@ -14,18 +14,18 @@ spec:
     namespace: monitoring
     server: https://kubernetes.default.svc
   sources:
-  - repoURL: https://grafana.github.io/helm-charts
-    chart: loki-stack
-    targetRevision: 2.9.11
-    helm:
-      valueFiles:
-      - $values/gitops/helm/loki/values/test.yaml
-  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-    targetRevision: HEAD
-    ref: values
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: loki-stack
+      targetRevision: 2.9.11
+      helm:
+        valueFiles:
+          - $values/gitops/helm/loki/values/test.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: HEAD
+      ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true

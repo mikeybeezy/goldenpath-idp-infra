@@ -6,7 +6,7 @@ prometheus:
       volumeClaimTemplate:
         spec:
           accessModes:
-          - ReadWriteOnce
+            - ReadWriteOnce
           resources:
             requests:
               storage: 50Gi
@@ -16,7 +16,7 @@ alertmanager:
       volumeClaimTemplate:
         spec:
           accessModes:
-          - ReadWriteOnce
+            - ReadWriteOnce
           resources:
             requests:
               storage: 10Gi
@@ -25,10 +25,10 @@ grafana:
     enabled: true
     size: 10Gi
   additionalDataSources:
-  - name: Loki
-    type: loki
-    access: proxy
-    url: http://loki-gateway.monitoring.svc:3100
+    - name: Loki
+      type: loki
+      access: proxy
+      url: http://loki-gateway.monitoring.svc:3100
 governance:
   id: HELM_KUBE_PROMETHEUS_STACK
   owner: platform-team

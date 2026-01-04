@@ -7,10 +7,10 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- module:vpc
-- module:aws_eks
-- module:aws_iam
-- chart:argo-cd
+  - module:vpc
+  - module:aws_eks
+  - module:aws_iam
+  - chart:argo-cd
 risk_profile:
   production_impact: low
   security_risk: none
@@ -22,8 +22,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 09_ARCHITECTURE
-- ADR-0012
+  - 09_ARCHITECTURE
+  - ADR-0012
 ---
 
 # Repo Decoupling Options

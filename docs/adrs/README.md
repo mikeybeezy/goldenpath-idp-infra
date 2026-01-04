@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- ADR_TEMPLATE
-- 01_GOVERNANCE
-- 07_AI_AGENT_GOVERNANCE
+  - ADR_TEMPLATE
+  - 01_GOVERNANCE
+  - 07_AI_AGENT_GOVERNANCE
 ---
 
 # ADR-XXXX: Concise decision title

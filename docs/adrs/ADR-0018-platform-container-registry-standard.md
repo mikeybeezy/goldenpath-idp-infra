@@ -19,9 +19,9 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- ADR-0007
-- ADR-0008
-- ADR-0018
+  - ADR-0007
+  - ADR-0008
+  - ADR-0018
 ---
 
 # ADR-0018: Container registry standard — ECR default, GHCR supported, Docker Hub discouraged

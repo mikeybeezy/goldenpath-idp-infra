@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 34_PLATFORM_SUCCESS_CHECKLIST
-- ROADMAP
+  - 34_PLATFORM_SUCCESS_CHECKLIST
+  - ROADMAP
 ---
 
 # V1 Scope and Timeline (Backstage + Platform Capabilities)

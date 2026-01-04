@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 40_CHANGELOG_GOVERNANCE
-- ADR-0050
-- DOCS_CHANGELOG_README
+  - 40_CHANGELOG_GOVERNANCE
+  - ADR-0050
+  - DOCS_CHANGELOG_README
 ---
 
 # ADR-0050: Label-gated changelog entries

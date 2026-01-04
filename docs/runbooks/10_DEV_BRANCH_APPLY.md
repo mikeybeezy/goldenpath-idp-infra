@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- module:terraform
+  - module:terraform
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -19,9 +19,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- CI_WORKFLOWS
-- ADR-0028
-- ADR-0029
+  - CI_WORKFLOWS
+  - ADR-0028
+  - ADR-0029
 ---
 
 # Runbook: Dev Branch Infra Apply

@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 09_PLATFORM_DASHBOARD_CATALOG
-- ADR-0066
+  - 09_PLATFORM_DASHBOARD_CATALOG
+  - ADR-0066
 ---
 
 # ADR-0066: Platform Dashboards as Code

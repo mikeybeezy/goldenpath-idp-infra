@@ -18,10 +18,10 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- 01_GOVERNANCE
-- 35_RESOURCE_TAGGING
-- 40_COST_VISIBILITY
-- ADR-0076
+  - 01_GOVERNANCE
+  - 35_RESOURCE_TAGGING
+  - 40_COST_VISIBILITY
+  - ADR-0076
 ---
 
 # Cost Governance (Visibility First)

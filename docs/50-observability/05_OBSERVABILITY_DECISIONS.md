@@ -18,14 +18,14 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 41_STORAGE_AND_PERSISTENCE
-- ADR-0049
-- ADR-0052
-- ADR-0054
-- ADR-0055
-- ADR-0056
-- ADR-0056-platform-loki-deployment-mode
-- ADR-0061
+  - 41_STORAGE_AND_PERSISTENCE
+  - ADR-0049
+  - ADR-0052
+  - ADR-0054
+  - ADR-0055
+  - ADR-0056
+  - ADR-0056-platform-loki-deployment-mode
+  - ADR-0061
 ---
 
 # Observability Tooling Decisions

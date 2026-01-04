@@ -7,9 +7,9 @@ version: '1.0'
 owner: platform-team
 status: active
 dependencies:
-- chart:redis
-- module:aws_iam
-- module:vpc
+  - chart:redis
+  - module:aws_iam
+  - module:vpc
 risk_profile:
   production_impact: high
   security_risk: access
@@ -21,8 +21,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- ADR-0084
-- CL-0043
+  - ADR-0084
+  - CL-0043
 ---
 
 # Metadata Backfill Script - Usage & Operations

@@ -18,12 +18,12 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- ADR-0082
-- ADR-0083
-- ADR-0084
-- CL-0042
-- CL-0043
-- METADATA_STRATEGY
+  - ADR-0082
+  - ADR-0083
+  - ADR-0084
+  - CL-0042
+  - CL-0043
+  - METADATA_STRATEGY
 ---
 
 # ADR-0084: Enhanced Metadata Schema for Knowledge Graph

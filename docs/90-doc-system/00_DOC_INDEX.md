@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 30_DOCUMENTATION_FRESHNESS
+  - 30_DOCUMENTATION_FRESHNESS
 ---
 
 # Documentation Index (Living)

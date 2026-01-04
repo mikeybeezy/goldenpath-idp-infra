@@ -7,9 +7,9 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- chart:helm
-- module:efs
-- module:kubernetes
+  - chart:helm
+  - module:efs
+  - module:kubernetes
 risk_profile:
   production_impact: low
   security_risk: none
@@ -21,11 +21,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- FAST_API_APP_TEMPLATE
-- STATEFUL_APP_NAMESPACE
-- STATEFUL_APP_PVC
-- STATEFUL_APP_DEPLOY
-- 18_BACKSTAGE_MVP
+  - FAST_API_APP_TEMPLATE
+  - STATEFUL_APP_NAMESPACE
+  - STATEFUL_APP_PVC
+  - STATEFUL_APP_DEPLOY
+  - 18_BACKSTAGE_MVP
 ---
 
 # Stateful App Template (Reference)

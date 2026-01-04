@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- ADR-0089
-- METADATA_INJECTION_GUIDE
+  - ADR-0089
+  - METADATA_INJECTION_GUIDE
 ---
 
 # CL-0047: Closed-Loop Governance & Metadata Injection

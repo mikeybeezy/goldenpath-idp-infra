@@ -18,16 +18,16 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- 21_CI_ENVIRONMENT_CONTRACT
-- 27_REFACTORING_VALIDATION_GUIDE
-- ADR-0044
-- ADR-0044-platform-infra-checks-ref-mode
-- ADR-0046
-- ADR-0046-platform-pr-plan-validation-ownership
-- ADR-0063
-- ADR-0063-platform-terraform-helm-bootstrap
-- CL-0002
-- CL-0002-bootstrap-refactor
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - 27_REFACTORING_VALIDATION_GUIDE
+  - ADR-0044
+  - ADR-0044-platform-infra-checks-ref-mode
+  - ADR-0046
+  - ADR-0046-platform-pr-plan-validation-ownership
+  - ADR-0063
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - CL-0002
+  - CL-0002-bootstrap-refactor
 ---
 
 id: 04_PR_GUARDRAILS

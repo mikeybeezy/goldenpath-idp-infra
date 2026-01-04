@@ -31,7 +31,7 @@ risk_profile:
 
 # Mandatory: Operational expectations
 reliability:
-  rollback_strategy: "helm-rollback" # helm-rollback | git-revert | manual
+  rollback_strategy: "helm-rollback"  # helm-rollback | git-revert | manual
   observability_tier: silver        # gold | silver | bronze
 
 # Mandatory: Support roadmap

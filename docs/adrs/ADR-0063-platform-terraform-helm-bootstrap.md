@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- ADR-0001
-- ADR-0001-platform-argocd-as-gitops-operator
-- ADR-0063
+  - ADR-0001
+  - ADR-0001-platform-argocd-as-gitops-operator
+  - ADR-0063
 ---
 
 # ADR-0063: Terraform Helm Provider for Bootstrap

@@ -7,9 +7,9 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- image:python:3.11-slim
-- chart:kube-prometheus-stack
-- module:kong
+  - image:python:3.11-slim
+  - chart:kube-prometheus-stack
+  - module:kong
 risk_profile:
   production_impact: low
   security_risk: none
@@ -21,10 +21,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 42_APP_TEMPLATE_LIVING
-- 02_PLATFORM_BOUNDARIES
-- 18_BACKSTAGE_MVP
-- 10_SERVICE_CATALOG
+  - 42_APP_TEMPLATE_LIVING
+  - 02_PLATFORM_BOUNDARIES
+  - 18_BACKSTAGE_MVP
+  - 10_SERVICE_CATALOG
 ---
 
 # App Template (Reference)

@@ -18,10 +18,10 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- 21_CI_ENVIRONMENT_CONTRACT
-- ADR-0028
-- ADR-0028-platform-dev-branch-gate
-- ADR-0029
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - ADR-0028
+  - ADR-0028-platform-dev-branch-gate
+  - ADR-0029
 ---
 
 # ADR-0029: Dev plan gate before dev apply

@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- CL-0003
+  - CL-0003
 ---
 
 # CL-0003: Teardown v2 LoadBalancer finalizer guard

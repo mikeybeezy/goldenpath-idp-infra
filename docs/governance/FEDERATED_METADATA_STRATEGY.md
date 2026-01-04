@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- module:governance-engine
+  - module:governance-engine
 risk_profile:
   production_impact: low
   security_risk: none

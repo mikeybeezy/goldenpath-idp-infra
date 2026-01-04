@@ -7,9 +7,9 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- chart:kube-prometheus-stack
-- chart:loki
-- chart:fluent-bit
+  - chart:kube-prometheus-stack
+  - chart:loki
+  - chart:fluent-bit
 risk_profile:
   production_impact: low
   security_risk: none
@@ -21,9 +21,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- IDP_TOOLING_MONITORING_ALERTMANAGER
-- IDP_TOOLING_MONITORING_FLUENT_BIT
-- IDP_TOOLING_MONITORING_GRAFANA
+  - IDP_TOOLING_MONITORING_ALERTMANAGER
+  - IDP_TOOLING_MONITORING_FLUENT_BIT
+  - IDP_TOOLING_MONITORING_GRAFANA
 ---
 
 # Monitoring Configuration Modules

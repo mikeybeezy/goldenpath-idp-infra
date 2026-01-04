@@ -14,18 +14,18 @@ spec:
     namespace: backstage
     server: https://kubernetes.default.svc
   sources:
-  - repoURL: https://backstage.github.io/charts
-    chart: backstage
-    targetRevision: 1.12.0
-    helm:
-      valueFiles:
-      - $values/gitops/helm/backstage/values/<env>.yaml
-  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-    targetRevision: HEAD
-    ref: values
+    - repoURL: https://backstage.github.io/charts
+      chart: backstage
+      targetRevision: 1.12.0
+      helm:
+        valueFiles:
+          - $values/gitops/helm/backstage/values/<env>.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: HEAD
+      ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true

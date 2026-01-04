@@ -18,10 +18,10 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- 15_TEARDOWN_AND_CLEANUP
-- ADR-0043
-- ADR-0043-platform-teardown-lb-eni-wait
-- ADR-0045
+  - 15_TEARDOWN_AND_CLEANUP
+  - ADR-0043
+  - ADR-0043-platform-teardown-lb-eni-wait
+  - ADR-0045
 ---
 
 # ADR-0045: Default LB delete when ENIs persist during teardown

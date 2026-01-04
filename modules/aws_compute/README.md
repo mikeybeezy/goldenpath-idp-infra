@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- aws-provider
+  - aws-provider
 risk_profile:
   production_impact: high
   security_risk: low
@@ -19,8 +19,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 09_ARCHITECTURE
-- MODULE_AWS_NIC
+  - 09_ARCHITECTURE
+  - MODULE_AWS_NIC
 ---
 
 # EC2 Compute Module

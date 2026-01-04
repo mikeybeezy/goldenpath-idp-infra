@@ -18,11 +18,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 21_CI_ENVIRONMENT_CONTRACT
-- 25_PR_TERRAFORM_PLAN
-- 32_TERRAFORM_STATE_AND_LOCKING
-- ADR-0040
-- ADR-0040-platform-lifecycle-aware-state-keys
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - 25_PR_TERRAFORM_PLAN
+  - 32_TERRAFORM_STATE_AND_LOCKING
+  - ADR-0040
+  - ADR-0040-platform-lifecycle-aware-state-keys
 ---
 
 # State Key Strategy (Living)

@@ -18,12 +18,12 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 05_OBSERVABILITY_DECISIONS
-- ADR-0049
-- ADR-0049-platform-pragmatic-observability-baseline
-- ADR-0054
-- ADR-0054-platform-observability-exporters-otel-split
-- ADR-0055
+  - 05_OBSERVABILITY_DECISIONS
+  - ADR-0049
+  - ADR-0049-platform-pragmatic-observability-baseline
+  - ADR-0054
+  - ADR-0054-platform-observability-exporters-otel-split
+  - ADR-0055
 ---
 
 # ADR-0055: Tempo as the standard tracing backend (V1.1)

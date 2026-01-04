@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- module:trivy
+  - module:trivy
 risk_profile:
   production_impact: medium
   security_risk: high
@@ -19,9 +19,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- ADR-0023
-- 22_CONTAINER_REGISTRY_STANDARD
-- CI_WORKFLOWS
+  - ADR-0023
+  - 22_CONTAINER_REGISTRY_STANDARD
+  - CI_WORKFLOWS
 ---
 
 # CI Image Scanning (Living Document)

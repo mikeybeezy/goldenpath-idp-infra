@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- chart:cert-manager
+  - chart:cert-manager
 risk_profile:
   production_impact: medium
   security_risk: low
@@ -19,8 +19,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 09_ARCHITECTURE
-- ADR-0070
+  - 09_ARCHITECTURE
+  - ADR-0070
 ---
 
 # cert-manager Helm Deployment

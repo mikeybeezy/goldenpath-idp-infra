@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- provider:keycloak
+  - provider:keycloak
 risk_profile:
   production_impact: high
   security_risk: high
@@ -19,9 +19,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- HELM_KEYCLOAK
-- ADR-0005
-- 06_IDENTITY_AND_ACCESS
+  - HELM_KEYCLOAK
+  - ADR-0005
+  - 06_IDENTITY_AND_ACCESS
 ---
 
 # Keycloak Configuration Module

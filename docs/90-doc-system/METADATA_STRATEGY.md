@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- ADR-0050
-- ADR-0066
-- CL-0005
+  - ADR-0050
+  - ADR-0066
+  - CL-0005
 ---
 
 # Platform Metadata Strategy

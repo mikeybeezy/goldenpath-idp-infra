@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 33_IAM_ROLES_AND_POLICIES
-- ADR-0035
-- ADR-0035-platform-iam-audit-cadence
+  - 33_IAM_ROLES_AND_POLICIES
+  - ADR-0035
+  - ADR-0035-platform-iam-audit-cadence
 ---
 
 # IAM Audit (Runbook)

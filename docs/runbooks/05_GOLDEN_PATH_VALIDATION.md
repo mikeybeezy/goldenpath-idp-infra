@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- module:terraform
-- module:kubernetes
+  - module:terraform
+  - module:kubernetes
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -20,10 +20,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- BOOTSTRAP_README
-- TEARDOWN_README
-- 39_GOLDEN_PATH_VALIDATION
-- CI_WORKFLOWS
+  - BOOTSTRAP_README
+  - TEARDOWN_README
+  - 39_GOLDEN_PATH_VALIDATION
+  - CI_WORKFLOWS
 ---
 
 # Runbook: Golden Path Validation

@@ -7,8 +7,8 @@ version: '1.0'
 owner: platform-team
 status: active
 dependencies:
-- module:vpc
-- service:eks
+  - module:vpc
+  - service:eks
 risk_profile:
   production_impact: high
   security_risk: ingress-exposure
@@ -20,6 +20,6 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: true
 relates_to:
-- ADR-0002
-- 12_GITOPS_AND_CICD
+  - ADR-0002
+  - 12_GITOPS_AND_CICD
 ---

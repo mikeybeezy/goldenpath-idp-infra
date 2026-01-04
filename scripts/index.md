@@ -7,8 +7,8 @@ version: '1.0'
 owner: platform-team
 status: active
 dependencies:
-- python3
-- pyyaml
+  - python3
+  - pyyaml
 risk_profile:
   production_impact: low
   security_risk: medium
@@ -20,9 +20,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- PLATFORM_HEALTH
-- METADATA_VALIDATION_GUIDE
-- METADATA_MAINTENANCE_GUIDE
+  - PLATFORM_HEALTH
+  - METADATA_VALIDATION_GUIDE
+  - METADATA_MAINTENANCE_GUIDE
 ---
 
 # Platform Automation Scripts Index

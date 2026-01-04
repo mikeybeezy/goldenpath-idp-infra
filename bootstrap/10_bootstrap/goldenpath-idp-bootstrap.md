@@ -18,12 +18,12 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
-- ADR-0001
-- ADR-0002
-- ADR-0013
-- ARGOCD_HELM_README
-- 18_BACKSTAGE_MVP
+  - ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
+  - ADR-0001
+  - ADR-0002
+  - ADR-0013
+  - ARGOCD_HELM_README
+  - 18_BACKSTAGE_MVP
 ---
 
 # Helm Bootstrap Runner (Non-Production)

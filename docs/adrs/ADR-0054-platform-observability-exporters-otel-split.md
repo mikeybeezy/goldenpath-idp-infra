@@ -18,12 +18,12 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 05_OBSERVABILITY_DECISIONS
-- ADR-0049
-- ADR-0049-platform-pragmatic-observability-baseline
-- ADR-0052
-- ADR-0052-platform-kube-prometheus-stack-bundle
-- ADR-0054
+  - 05_OBSERVABILITY_DECISIONS
+  - ADR-0049
+  - ADR-0049-platform-pragmatic-observability-baseline
+  - ADR-0052
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0054
 ---
 
 # ADR-0054: Exporter vs OpenTelemetry split for platform observability

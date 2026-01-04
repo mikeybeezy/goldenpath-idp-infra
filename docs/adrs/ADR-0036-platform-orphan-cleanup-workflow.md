@@ -18,11 +18,11 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 01_GOVERNANCE
-- 20_CI_ENVIRONMENT_SEPARATION
-- ADR-0036
-- ADR-0038
-- ADR-0038-platform-teardown-orphan-cleanup-gate
+  - 01_GOVERNANCE
+  - 20_CI_ENVIRONMENT_SEPARATION
+  - ADR-0036
+  - ADR-0038
+  - ADR-0038-platform-teardown-orphan-cleanup-gate
 ---
 
 # ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown

@@ -7,9 +7,9 @@ version: 1.1
 owner: platform-team
 status: active
 dependencies:
-- aws-provider
-- kubernetes-provider
-- helm-provider
+  - aws-provider
+  - kubernetes-provider
+  - helm-provider
 risk_profile:
   production_impact: high
   security_risk: medium
@@ -21,10 +21,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 09_ARCHITECTURE
-- MODULE_VPC
-- MODULE_AWS_IAM
-- ADR-0032
+  - 09_ARCHITECTURE
+  - MODULE_VPC
+  - MODULE_AWS_IAM
+  - ADR-0032
 ---
 
 # EKS Cluster Module

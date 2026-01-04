@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- 01_GOVERNANCE
-- ADR-0037
-- ADR-0037-platform-resource-tagging-policy
+  - 01_GOVERNANCE
+  - ADR-0037
+  - ADR-0037-platform-resource-tagging-policy
 ---
 
 # Resource Tagging (Living)

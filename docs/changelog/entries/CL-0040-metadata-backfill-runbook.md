@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- ADR-0083
-- CL-0040
-- METADATA_BACKFILL_RUNBOOK
+  - ADR-0083
+  - CL-0040
+  - METADATA_BACKFILL_RUNBOOK
 ---
 
 ## CL-0040: Metadata backfill runbook and protocol

@@ -43,6 +43,10 @@ SKELETON = {
     'relates_to': []
 }
 
+class IndentDumper(yaml.SafeDumper):
+    def increase_indent(self, flow=False, indentless=False):
+        return super(IndentDumper, self).increase_indent(flow, False)
+
 def get_type_from_path(filepath):
     if 'adrs/' in filepath: return 'adr'
     if 'changelog/' in filepath: return 'changelog'
@@ -61,70 +65,6 @@ def parse_frontmatter(content):
         except:
             return None, 0
     return None, 0
-
-def standardize_file(filepath):
-    try:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            content = f.read()
-    except Exception as e:
-        print(f"Error reading {filepath}: {e}")
-        return
-
-    # AGGRESSIVE CLEANUP: Strip multiple frontmatter blocks or corrupted dashes
-    # We want to find where the "real" body begins
-    data, body_start = parse_frontmatter(content)
-
-    # If we found multiple blocks, or trailing dashes in the body, we need to be deeper.
-    filename_base = os.path.splitext(os.path.basename(filepath))[0]
-
-    # If no frontmatter found by regex, but file starts with dashes, it's corrupted
-    if data is None and content.startswith('---'):
-        # Just strip everything until the next clear # Header or significant text
-        # Or just look for the last --- in the first 20 lines
-        lines = content.splitlines()
-        last_dash_idx = -1
-        for i, line in enumerate(lines[:30]):
-            if line.strip() == '---' or line.strip().startswith('---'):
-                last_dash_idx = i
-        if last_dash_idx != -1:
-            body = "\n".join(lines[last_dash_idx+1:])
-        else:
-            body = content
-    elif data is not None:
-        # We have data, but let's check if the body starts with another set of dashes
-        body = content[body_start:]
-        while body.lstrip().startswith('---'):
-            # Recursively strip if there are nested or duplicate blocks
-            lines = body.lstrip().splitlines()
-            next_dash = -1
-            for i, line in enumerate(lines[1:30]): # Look for closing dashes
-                if line.strip().startswith('---'):
-                    next_dash = i + 1
-                    break
-            if next_dash != -1:
-                body = "\n".join(lines[next_dash+1:])
-            else:
-                body = body.lstrip()[3:] # Just strip leading ---
-    else:
-        body = content
-
-    # Standard body extraction finished. Now rebuild.
-    title_match = re.search(r'^#\s+(.*)', body, re.MULTILINE)
-    default_title = title_match.group(1) if title_match else filename_base
-
-    if data is None:
-        new_data = SKELETON.copy()
-        new_data['title'] = default_title
-        new_data['type'] = get_type_from_path(filepath)
-    else:
-        new_data = SKELETON.copy()
-        for key in data:
-            if key in new_data and isinstance(new_data[key], dict) and isinstance(data[key], dict):
-                new_data[key].update(data[key])
-            else:
-                new_data[key] = data[key]
-        if 'type' not in data:
-            new_data['type'] = get_type_from_path(filepath)
 
 SIDECAR_MANDATED_ZONES = [
     'gitops/helm',
@@ -217,6 +157,7 @@ def standardize_file(filepath):
 
         current_id = str(new_data.get('id', '')).upper()
         if not current_id or current_id in ['README', 'METADATA', 'INDEX']:
+             new_id = new_id + '_' + filename_base.upper() if (filename_base == 'index' or filename_base == 'metadata') else new_id
              new_data['id'] = new_id
     else:
         new_data['id'] = filename_base
@@ -224,7 +165,7 @@ def standardize_file(filepath):
     new_data['title'] = str(new_data['title']).strip('"`')
 
     # Construct New Content
-    new_fm = yaml.dump(new_data, sort_keys=False, default_flow_style=False, allow_unicode=True)
+    new_fm = yaml.dump(new_data, Dumper=IndentDumper, sort_keys=False, default_flow_style=False, allow_unicode=True, indent=2)
     if is_yaml:
         new_content = f"---\n{new_fm}---\n"
     else:
@@ -266,7 +207,6 @@ def inject_governance(sidecar_path, data):
                     candidates.append(os.path.join(root, f))
 
     # 4. ArgoCD Application Manifests (Labeling the delivery resource)
-    # We look for files in gitops/argocd/apps that mention the current component
     argocd_dir = os.path.abspath(os.path.join(os.getcwd(), 'gitops', 'argocd', 'apps'))
     if os.path.isdir(argocd_dir):
         comp_name = os.path.basename(base_dir)
@@ -306,7 +246,7 @@ def inject_governance(sidecar_path, data):
 
             with open(cand, 'w', encoding='utf-8') as f:
                 f.write("# Managed by scripts/standardize-metadata.py\n")
-                yaml.dump(v_data, f, sort_keys=False, default_flow_style=False)
+                yaml.dump(v_data, f, Dumper=IndentDumper, sort_keys=False, default_flow_style=False, indent=2)
         except Exception as e:
             print(f"⚠️ Failed injection for {cand}: {e}")
 

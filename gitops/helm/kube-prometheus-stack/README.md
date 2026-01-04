@@ -7,9 +7,9 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- chart:kube-prometheus-stack
-- image:prometheus
-- image:grafana
+  - chart:kube-prometheus-stack
+  - image:prometheus
+  - image:grafana
 risk_profile:
   production_impact: low
   security_risk: none
@@ -21,8 +21,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- HELM_LOKI
-- HELM_FLUENT_BIT
+  - HELM_LOKI
+  - HELM_FLUENT_BIT
 ---
 
 # Kube Prometheus Stack Deployment

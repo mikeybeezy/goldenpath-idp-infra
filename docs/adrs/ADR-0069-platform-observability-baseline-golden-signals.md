@@ -18,10 +18,10 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- 05_OBSERVABILITY_DECISIONS
-- ADR-0049
-- ADR-0049-platform-pragmatic-observability-baseline
-- ADR-0069
+  - 05_OBSERVABILITY_DECISIONS
+  - ADR-0049
+  - ADR-0049-platform-pragmatic-observability-baseline
+  - ADR-0069
 ---
 
 # ADR-0069: Observability baseline for golden signals in production

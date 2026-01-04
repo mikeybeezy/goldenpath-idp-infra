@@ -7,7 +7,7 @@ version: '1.0'
 owner: platform-team
 status: active
 dependencies:
-- module:docs
+  - module:docs
 risk_profile:
   production_impact: low
   security_risk: low
@@ -19,9 +19,9 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-- ADR-0086
-- CL-0045
-- FEDERATED_METADATA_STRATEGY
+  - ADR-0086
+  - CL-0045
+  - FEDERATED_METADATA_STRATEGY
 ---
 
 # CL-0045: Federated Governance Strategy and Runbook

@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- 07_REPO_DECOUPLING_OPTIONS
-- ADR-0013
+  - 07_REPO_DECOUPLING_OPTIONS
+  - ADR-0013
 ---
 
 # ADR-0013: Argo CD app management approach for current scale

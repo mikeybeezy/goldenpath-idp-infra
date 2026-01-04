@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 08_INGRESS_STRATEGY
+  - 08_INGRESS_STRATEGY
 ---
 
 # Networking Decisions

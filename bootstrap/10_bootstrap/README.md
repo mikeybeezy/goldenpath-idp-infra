@@ -7,10 +7,10 @@ version: '1.0'
 owner: platform-team
 status: active
 dependencies:
-- chart:argo-cd
-- chart:aws-load-balancer-controller
-- chart:cert-manager
-- chart:kong
+  - chart:argo-cd
+  - chart:aws-load-balancer-controller
+  - chart:cert-manager
+  - chart:kong
 risk_profile:
   production_impact: medium
   security_risk: none
@@ -22,14 +22,14 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 08_INGRESS_STRATEGY
-- 12_GITOPS_AND_CICD
-- 15_TEARDOWN_AND_CLEANUP
-- 17_BUILD_RUN_FLAGS
-- ADR-0001
-- ADR-0002
-- ADR-0013
-- one_stage_vs_multistage_bootstrap
+  - 08_INGRESS_STRATEGY
+  - 12_GITOPS_AND_CICD
+  - 15_TEARDOWN_AND_CLEANUP
+  - 17_BUILD_RUN_FLAGS
+  - ADR-0001
+  - ADR-0002
+  - ADR-0013
+  - one_stage_vs_multistage_bootstrap
 ---
 
 id: BOOTSTRAP_README

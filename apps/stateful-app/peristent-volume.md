@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- module:ebs
-- module:kubernetes
+  - module:ebs
+  - module:kubernetes
 risk_profile:
   production_impact: medium
   security_risk: none
@@ -20,9 +20,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- STATEFUL_APP_README
-- STATEFUL_APP_NAMESPACE
-- STATEFUL_APP_DEPLOY
+  - STATEFUL_APP_README
+  - STATEFUL_APP_NAMESPACE
+  - STATEFUL_APP_DEPLOY
 ---
 
 # persistent volume

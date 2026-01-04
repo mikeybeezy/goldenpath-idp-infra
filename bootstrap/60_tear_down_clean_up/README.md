@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- module:kubernetes
-- module:terraform
+  - module:kubernetes
+  - module:terraform
 risk_profile:
   production_impact: high
   security_risk: access
@@ -20,11 +20,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- BOOTSTRAP_README
-- GOLDENPATH_IDP_BOOTSTRAP
-- ADR-0036
-- 15_TEARDOWN_AND_CLEANUP
-- 17_BUILD_RUN_FLAGS
+  - BOOTSTRAP_README
+  - GOLDENPATH_IDP_BOOTSTRAP
+  - ADR-0036
+  - 15_TEARDOWN_AND_CLEANUP
+  - 17_BUILD_RUN_FLAGS
 ---
 
 # Tear Down and Cleanup Scripts

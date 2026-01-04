@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-- provider:backstage
+  - provider:backstage
 risk_profile:
   production_impact: low
   security_risk: medium
@@ -19,8 +19,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- HELM_BACKSTAGE
-- ADR-0008
+  - HELM_BACKSTAGE
+  - ADR-0008
 ---
 
 # Backstage Configuration Module

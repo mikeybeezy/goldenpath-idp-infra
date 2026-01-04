@@ -14,18 +14,18 @@ spec:
     namespace: monitoring
     server: https://kubernetes.default.svc
   sources:
-  - repoURL: https://fluent.github.io/helm-charts
-    chart: fluent-bit
-    targetRevision: 0.47.0
-    helm:
-      valueFiles:
-      - $values/gitops/helm/fluent-bit/values/dev.yaml
-  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-    targetRevision: HEAD
-    ref: values
+    - repoURL: https://fluent.github.io/helm-charts
+      chart: fluent-bit
+      targetRevision: 0.47.0
+      helm:
+        valueFiles:
+          - $values/gitops/helm/fluent-bit/values/dev.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: HEAD
+      ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true
