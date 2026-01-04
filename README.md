@@ -1,118 +1,96 @@
-# Golden Path IDP Infra
+# 🏛️ Golden Path IDP (Infra)
 
-This repository contains Terraform modules and environment definitions that provision the baseline cloud infrastructure for the Golden Path Internal Developer Platform (IDP). The code is designed to be approachable—even if you are still in college or just getting started with Terraform.
+[![CI Status](https://img.shields.io/github/actions/workflow/status/mikeybeezy/goldenpath-idp-infra/ci-bootstrap.yml?label=Bootstrap)](https://github.com/mikeybeezy/goldenpath-idp-infra/actions)
+[![Docs](https://img.shields.io/badge/Docs-Live-green)](docs/00_DOC_INDEX.md)
+[![Metadata Fabric](https://img.shields.io/badge/Metadata-Enforced-blue)](docs/90-doc-system/METADATA_STRATEGY.md)
 
-## Repository Layout
+**The Engineering Foundation for the Golden Path Internal Developer Platform.**
+This repository defines the infrastructure (AWS/EKS), governance (Policies), and delivery pipelines (GitOps/ArgoCD) that power our engineering capabilities.
+
+---
+
+## 🚀 Key Capabilities
+
+### 1. Infrastructure as Code (IaC)
+- **EKS & VPC:** Production-grade Kubernetes clusters managed via Terraform.
+- **Bootstrapping:** Automated "Cluster-in-a-Box" logic via `make timed-build` sets up ArgoCD, Ingress, and Observability.
+- **Teardown Automation:** Deterministic cleanup for ephemeral environments.
+
+### 2. Governance & Metadata
+- **Knowledge Graph:** All artifacts are linked via a [Rich Metadata Schema](docs/90-doc-system/METADATA_STRATEGY.md).
+- **AI Protocols:** Strict [Agent Governance](docs/10-governance/07_AI_AGENT_GOVERNANCE.md) ensures safe AI collaboration.
+- **Cost Visibility:** Infracost integration provides $ estimates on every PR.
+
+### 3. Documentation System
+We treat docs as code.
+- **ADRs:** [Architectural Decision Records](docs/adrs/) for technical choices.
+- **Changelogs:** [Structured release notes](docs/changelog/) linked to decisions.
+- **Runbooks:** [Operational guides](docs/runbooks/) for on-call success.
+
+---
+
+## 📂 Repository Layout
 
 ```
 .
-├── modules/        # Reusable Terraform modules (VPC, subnets, SG, compute, etc.)
-├── envs/           # Per-environment stacks (dev, test, staging, prod)
-│   └── <env>/      # Each environment has its own main.tf, backend.tf, terraform.tfvars
-├── main.tf         # Root provider + Terraform settings shared across envs
-└── README.md
+├── envs/            # Environment Stacks (dev, staging, prod)
+├── modules/         # Reusable Terraform Modules (EKS, VPC, IAM)
+├── gitops/          # ArgoCD Application Manifests
+├── docs/            # The Platform Knowledge Base
+├── scripts/         # Automation (Teardown logs, Validation)
+└── Makefile         # The Developer Control Plane
 ```
 
-Each environment composes the shared modules so you can deploy the same architecture with different CIDRs or tags.
+---
 
-## Backstage MVP
+## ⚡ Quick Start
 
-When you are ready to validate the platform end-to-end, start with Backstage as
-the first app through CI/CD. See `docs/00-foundations/18_BACKSTAGE_MVP.md` for the checklist
-and file touchpoints.
+**Prerequisites:** Terraform 1.5+, AWS CLI, `make`.
 
-## Prerequisites
+### 1. The Standard Interface
+We use `Makefile` targets to ensure consistency.
 
-1. **Terraform 1.5+** – install from <https://developer.hashicorp.com/terraform/downloads>.
-2. **AWS credentials configured** – run `aws configure` or export `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`.
-3. **An S3 bucket & DynamoDB table (optional but recommended)** for remote state (edit `envs/<env>/backend.tf` to point at your bucket/table).
-
-## Step-by-Step Usage
-
-1. **Clone the repo**
-   ```sh
-   git clone <repo-url> && cd goldenpath-idp-infra
-   ```
-
-2. **Review the modules**
-   - `modules/vpc`: creates the VPC, internet gateway, and public route table.
-   - `modules/aws_subnet`: defines public/private subnets.
-   - `modules/aws_sg`: reusable HTTPS security group.
-   - `modules/aws_compute`: EC2 instance + network interface.
-
-3. **Pick an environment to work with**
-   ```sh
-   cd envs/dev   # replace dev with test/staging/prod if needed
-   ```
-   - `main.tf` wires the shared modules but now reads everything from variables, so you rarely edit this file.
-   - `terraform.tfvars` is where you define the CIDR blocks, subnet objects, tags, and naming prefix for that environment.
-   - `variables.tf` documents the inputs Terraform expects, making it easy to see what goes in the `tfvars`.
-   - `backend.tf` is where you point to your remote state bucket/table.
-
-4. **Initialize Terraform for that environment**
-   ```sh
-   terraform init
-   ```
-   This downloads provider plugins and configures remote state.
-
-5. **Preview the changes**
-   ```sh
-   terraform plan -out plan.out
-   ```
-   Review the plan output; it shows exactly what AWS resources will be created or changed.
-
-6. **Apply when ready**
-   ```sh
-   terraform apply plan.out
-   ```
-   Terraform will create the VPC, subnets, route tables, and security groups defined for the environment. Confirm with `yes` when prompted.
-
-7. **Tear down (optional)**
-   ```sh
-   terraform destroy
-   ```
-   Use this when you need to clean up the environment to avoid AWS charges.
-
-### Golden Commands (Makefile)
-
-If you prefer a simplified workflow, the Makefile wraps the standard Terraform commands per environment:
-
-```sh
+```bash
+# Initialize & Plan (Persistent Envs)
 make init ENV=dev
 make plan ENV=dev
+
+# Apply Infrastructure
 make apply ENV=dev
 ```
 
-Each target runs the corresponding `terraform -chdir=envs/$ENV <command>` under the hood, so swap `dev` for `test`, `staging`, or `prod` as needed.
+### 2. Ephemeral Environment Workflow
+For validation or testing, we use unique Build IDs to spin up and tear down complete stacks.
 
-Step-by-step with the Makefile:
-1. Open a terminal and `cd` into the repo root (`goldenpath-idp-infra`).
-2. Pick an environment name (`dev`, `test`, `staging`, `prod`). Example uses `dev`.
-3. Run `make init ENV=dev` to execute `terraform -chdir=envs/dev init` (downloads providers/state).
-4. Run `make plan ENV=dev` to execute `terraform -chdir=envs/dev plan` and preview changes.
-5. Run `make apply ENV=dev` to execute `terraform -chdir=envs/dev apply` and deploy (confirm when prompted).
-6. Swap `ENV=dev` for `ENV=test`, `staging`, or `prod` to repeat; the Makefile just saves you from typing the `-chdir` commands manually.
+```bash
+# Define a unique Build ID (Format: dd-mm-yy-NN)
+export BUILD_ID="03-01-26-01"
 
-Timing runs:
-- `make timed-apply`, `make timed-bootstrap`, and `make timed-teardown` write full output to `logs/build-timings/*.log` and append timing rows to `docs/build-timings.csv`.
+# Spin up full stack (Infra + ArgoCD + Apps)
+make timed-build ENV=dev BUILD_ID=$BUILD_ID
 
+# ... Validate Platform ...
 
-## Customizing the Infrastructure
+# Tear down completely
+make timed-teardown ENV=dev BUILD_ID=$BUILD_ID
+```
 
-- **CIDR ranges & AZs**: edit `public_subnets` / `private_subnets` lists in `envs/<env>/terraform.tfvars`. Each item needs a `name`, `cidr_block`, and `availability_zone`, and you can add as many entries as you need (one per subnet/AZ pair). The subnet module automatically creates one subnet per object in the list. If your AWS account is limited to specific AZs (e.g., `eu-west-2a/b/c`), make sure the `availability_zone` fields match the zones that AWS allows in that region; otherwise Terraform will fail with “InvalidParameterValue” errors.
+### 3. Validating Changes
+Before submitting a PR, run the local validation suite:
 
-- **Tags**: add any key/value pairs under `common_tags` in the same `tfvars`; they merge with defaults so all resources stay labeled.
+```bash
+# Validate Metadata Links
+python3 scripts/validate-metadata.py docs
+```
 
-- **Name prefix & environment label**: set `name_prefix` and `environment` fields if you want different naming (e.g., `goldenpath-prod`).
+---
 
-- **Compute module**: every environment already includes the `aws_compute` module, but it’s disabled by default. Edit `compute_config` inside `envs/<env>/terraform.tfvars` (set `enabled = true`, choose an AMI, instance type, subnet type, etc.) to spin up a single EC2 instance. Leave `enabled = false` to skip it.
+## 🧠 Governance & Contribution
 
-- **EKS (optional)**: the repo already contains an `aws_eks` module and wiring in every environment, but those blocks are commented out by default. To spin up a cluster for a specific env, remove the comment markers around the `module "eks"` block in `envs/<env>/main.tf`, the `variable "eks_config"` block in `envs/<env>/variables.tf`, and the `eks_config` object in `envs/<env>/terraform.tfvars`. Update the config (cluster name, version, node-group sizes/types), run `terraform plan`, and apply. Comment them back out whenever you want to pause or remove EKS.
+*   **Humans:** Read the [Collaboration Guide](docs/80-onboarding/13_COLLABORATION_GUIDE.md).
+*   **AI Agents:** Read [Protocol 26](docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md) before performing any action.
+*   **Decisions:** New features require an [ADR](docs/adrs/02_adr_template.md).
 
-## Tips
-
-- Commit changes per environment so you can trace who modified what.
-- Run `terraform fmt` before committing to keep files tidy.
-- Use separate AWS accounts or isolated VPC CIDRs for `dev`, `test`, `staging`, and `prod` so they never conflict.
-
-You now have a reproducible foundation for the Golden Path IDP. Expand it by adding more modules (EKS, RDS, Argo CD) as the platform evolves.
+## 📊 Status
+*   **Roadmap:** [View Active Priorities](docs/production-readiness-gates/ROADMAP.md)
+*   **Policies:** [View Governance Index](docs/10-governance/01_GOVERNANCE.md)
