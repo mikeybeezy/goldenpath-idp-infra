@@ -1,3 +1,25 @@
+---
+id: ADR-0042
+title: "ADR-0042: Branching strategy (development \u2192 main)"
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+- 23_NEW_JOINERS
+- 38_BRANCHING_STRATEGY
+- ADR-0042
+---
+
 # ADR-0042: Branching strategy (development → main)
 
 Filename: `ADR-0042-platform-branching-strategy.md`

@@ -1,6 +1,34 @@
+---
+id: 02_PLATFORM_BOUNDARIES
+title: Platform Boundaries & Contract
+type: contract
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: high
+  security_risk: none
+  coupling_risk: high
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 01_GOVERNANCE
+- 21_CI_ENVIRONMENT_CONTRACT
+- 29_CD_DEPLOYMENT_CONTRACT
+- 35_RESOURCE_TAGGING
+- 40_CHANGELOG_GOVERNANCE
+- 42_APP_TEMPLATE_LIVING
+
+---
+
 # Platform Boundaries & Contract
 
 Doc contract:
+
 - Purpose: Define platform vs team ownership and the minimum contract between them.
 - Owner: platform
 - Status: living

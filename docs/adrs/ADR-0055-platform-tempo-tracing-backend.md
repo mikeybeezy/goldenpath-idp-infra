@@ -1,3 +1,26 @@
+---
+id: ADR-0055
+title: 'ADR-0055: Tempo as the standard tracing backend (V1.1)'
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+- 05_OBSERVABILITY_DECISIONS
+- ADR-0049
+- ADR-0054
+- ADR-0055
+---
+
 # ADR-0055: Tempo as the standard tracing backend (V1.1)
 
 - **Status:** Proposed

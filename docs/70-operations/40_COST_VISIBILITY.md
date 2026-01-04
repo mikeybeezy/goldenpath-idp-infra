@@ -1,6 +1,30 @@
+---
+id: 40_COST_VISIBILITY
+title: Cost Visibility (CI + Infracost)
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 06_COST_GOVERNANCE
+- ADR-0076
+
+---
+
 # Cost Visibility (CI + Infracost)
 
 Doc contract:
+
 - Purpose: Describe the current cost visibility implementation and how to operate it.
 - Owner: platform
 - Status: living

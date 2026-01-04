@@ -1,6 +1,34 @@
+---
+id: 40_CHANGELOG_GOVERNANCE
+title: Changelog Governance
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 30_DOCUMENTATION_FRESHNESS
+- CHANGELOG
+- CHANGELOG_LABELS
+- CHANGELOG_TEMPLATE
+- CL-0001
+- CL-0002
+
+---
+
 # Changelog Governance
 
 Doc contract:
+
 - Purpose: Define when and how changelog entries are required.
 - Owner: platform
 - Status: living

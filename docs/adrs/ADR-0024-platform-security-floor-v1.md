@@ -1,3 +1,23 @@
+---
+id: ADR-0024
+title: 'ADR-0024: Security floor for V1'
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to:
+- ADR-0024
+---
+
 # ADR-0024: Security floor for V1
 
 - **Status:** Proposed

@@ -1,3 +1,29 @@
+---
+id: 07_TF_STATE_FORCE_UNLOCK
+title: Terraform State Force Unlock (Runbook)
+type: runbook
+category: runbooks
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - module:terraform
+  - module:dynamodb
+risk_profile:
+  production_impact: high
+  security_risk: access
+  coupling_risk: high
+reliability:
+  rollback_strategy: not-applicable
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 32_TERRAFORM_STATE_AND_LOCKING
+  - CI_WORKFLOWS
+---
+
 # Terraform State Force Unlock (Runbook)
 
 Use this only when a Terraform run left a stale lock and no other Terraform

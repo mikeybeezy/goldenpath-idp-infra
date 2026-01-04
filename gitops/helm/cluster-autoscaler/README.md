@@ -1,3 +1,29 @@
+---
+id: HELM_CLUSTER_AUTOSCALER
+title: Cluster Autoscaler Helm Chart (Values)
+type: documentation
+category: gitops
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - chart:cluster-autoscaler
+  - module:aws_iam
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - MODULE_AWS_IAM
+  - ADR-0031
+---
+
 # Cluster Autoscaler Helm Deployment
 
 Cluster Autoscaler adjusts the EKS node group size based on pending pods.

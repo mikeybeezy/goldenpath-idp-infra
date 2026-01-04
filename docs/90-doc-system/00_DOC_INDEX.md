@@ -1,6 +1,29 @@
+---
+id: 00_DOC_INDEX
+title: Documentation Index (Living)
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 30_DOCUMENTATION_FRESHNESS
+
+---
+
 # Documentation Index (Living)
 
 Doc contract:
+
 - Purpose: Track living docs and review metadata for freshness checks.
 - Owner: platform
 - Status: living
@@ -60,3 +83,4 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/20-contracts/10_SERVICE_CATALOG.md | platform | 90d | 2026-01-02 | Supported services and add-ons |
 | docs/70-operations/01_LIFECYCLE_POLICY.md | platform | 90d | 2026-01-02 | Lifecycle and upgrade policy |
 | docs/runbooks/10_REPO_DECOMMISSIONING.md | platform | 90d | 2026-01-03 | Repo decommissioning runbook and tombstone template |
+| docs/runbooks/11_ARGOCD_APP_READINESS.md | platform | 90d | 2026-01-03 | Argo CD app readiness checklist and dependency checks |

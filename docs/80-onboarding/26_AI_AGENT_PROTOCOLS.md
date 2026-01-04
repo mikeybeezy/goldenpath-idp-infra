@@ -1,6 +1,39 @@
+---
+id: 26_AI_AGENT_PROTOCOLS
+title: AI Agent & Operator Protocols
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 00_DOC_INDEX
+- 04_PR_GUARDRAILS
+- 07_AI_AGENT_GOVERNANCE
+- 13_COLLABORATION_GUIDE
+- 21_CI_ENVIRONMENT_CONTRACT
+- 24_PR_GATES
+- 41_BUILD_RUN_LOG
+- ADR-####
+- AI_CHANGELOG
+- CL-####
+- ROADMAP
+
+---
+
 # AI Agent & Operator Protocols
 
 Doc contract:
+
 - Purpose: Define mandatory operating rules for AI agents and collaborators to keep work safe, deterministic, and auditable.
 - Owner: platform
 - Status: living
@@ -16,6 +49,7 @@ every change explainable and reproducible.
 **Applies to:** AI agents and human collaborators running tasks in this repo.
 
 **Role focus for agents:**
+
 - Architecture Steward: preserve boundaries, ADRs, and decision quality.
 - Reliability Engineer: keep CI/teardown deterministic and measurable.
 - Documentation Lead: ensure changes are recorded and linked.
@@ -29,6 +63,7 @@ governance doc and request approval.
 ## 2) Tiered authority map
 
 Operate within the assigned tier:
+
 - Tier 0: read/reason only.
 - Tier 1: write in isolation (PR required).
 - Tier 2: safe execution only (no apply/destroy/IAM).
@@ -55,22 +90,26 @@ Operate within the assigned tier:
   avoid escaped newlines.
 
 Reference:
+
 - PR checklist template: `.github/pull_request_template.md`
 - PR gate triage: `docs/80-onboarding/24_PR_GATES.md`
 
 ## 5) Documentation triggers (label-gated)
 
 **Changelog** (`docs/changelog/entries/CL-####-short-title.md`)
+
 - Required when `changelog-required` label is present.
 - Typical triggers: CI/CD flow changes, Terraform behavior changes, guardrail
   updates.
 
 **ADR** (`docs/adrs/ADR-####-short-title.md`)
+
 - Required when `adr-required` label is present.
 - Typical triggers: strategy choices, platform contract changes, security or
   governance shifts.
 
 **Workflow changes**
+
 - Update `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md` when adding or
   changing GitHub Actions.
 
@@ -80,6 +119,7 @@ labels require them.
 ## 6) Context loading (start of session)
 
 Read and align on priorities before proposing work:
+
 1. `docs/production-readiness-gates/ROADMAP.md`
 2. `docs/80-onboarding/13_COLLABORATION_GUIDE.md`
 
@@ -146,6 +186,7 @@ Every agent action must be:
 ## 13) Definition of done
 
 Work is complete when:
+
 - PR is green and handed off for human merge approval into `development`.
 - Documentation triggers are satisfied (labels honored).
 - Evidence links are recorded where required.

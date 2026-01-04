@@ -1,6 +1,33 @@
+---
+id: 00_DESIGN_PHILOSOPHY
+title: GoldenPath Design Philosophy
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 00_DOC_INDEX
+- 01_GOVERNANCE
+- 02_PLATFORM_BOUNDARIES
+- 30_DOCUMENTATION_FRESHNESS
+- 43_OPERATING_PRINCIPLES
+
+---
+
 # GoldenPath Design Philosophy
 
 Doc contract:
+
 - Purpose: Define product philosophy and foundational principles.
 - Owner: platform
 - Status: living

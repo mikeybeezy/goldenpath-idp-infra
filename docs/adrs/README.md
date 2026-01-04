@@ -1,3 +1,28 @@
+---
+id: README
+title: ADR Directory Guide
+type: documentation
+category: adrs
+version: 1.0
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+  - ADR_TEMPLATE
+  - 01_GOVERNANCE
+  - 07_AI_AGENT_GOVERNANCE
+---
+
 # ADR-XXXX: Concise decision title
 
 Filename: `ADR-XXXX-(platform|app)-short-title.md`

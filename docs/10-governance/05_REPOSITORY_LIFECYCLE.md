@@ -1,6 +1,31 @@
+---
+id: 05_REPOSITORY_LIFECYCLE
+title: Repository Lifecycle Governance
+type: policy
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to:
+
+- 01_GOVERNANCE
+- 10_REPO_DECOMMISSIONING
+- ADR-0078
+
+---
+
 # Repository Lifecycle Governance
 
 Doc contract:
+
 - Purpose: Define the repo lifecycle and required governance evidence.
 - Owner: platform
 - Status: living

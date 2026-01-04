@@ -1,3 +1,24 @@
+---
+id: ADR-0058
+title: 'ADR-0058: Separate Grafana config workflow with readiness guard'
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+- 05_OBSERVABILITY_DECISIONS
+- ADR-0058
+---
+
 # ADR-0058: Separate Grafana config workflow with readiness guard
 
 Filename: `ADR-0058-platform-grafana-config-workflow.md`
@@ -43,10 +64,12 @@ Bootstrap will **not** invoke Grafana config by default.
 ## Scope
 
 Applies to:
+
 - Grafana dashboards, datasources, and alert rules managed via Terraform.
 - CI-driven platform configuration flows.
 
 Does not apply to:
+
 - Grafana deployment (handled by bootstrap/GitOps).
 - App-team owned dashboards managed outside platform scope.
 

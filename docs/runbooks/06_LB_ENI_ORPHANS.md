@@ -1,3 +1,27 @@
+---
+id: 06_LB_ENI_ORPHANS
+title: Load Balancer ENIs Block Subnet Deletion
+type: runbook
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 04_LB_FINALIZER_STUCK
+- 15_TEARDOWN_AND_CLEANUP
+- ADR-0047
+
+---
+
 # Load Balancer ENIs Block Subnet Deletion
 
 ## Purpose

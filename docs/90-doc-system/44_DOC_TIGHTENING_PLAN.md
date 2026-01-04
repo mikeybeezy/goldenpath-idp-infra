@@ -1,6 +1,41 @@
+---
+id: 44_DOC_TIGHTENING_PLAN
+title: Documentation Tightening Plan (V1)
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 00_DOC_INDEX
+- 30_DOCUMENTATION_FRESHNESS
+- ADR-0001
+- ADR-0008
+- ADR-0024
+- ADR-0025
+- ADR-0026
+- ADR-0034
+- ADR-0037
+- ADR-0043
+- ADR-0052
+- ADR-0056
+- ADR-0062
+
+---
+
 # Documentation Tightening Plan (V1)
 
 Doc contract:
+
 - Purpose: Reduce duplication, make doc relationships explicit, and keep living docs current.
 - Owner: platform
 - Status: living

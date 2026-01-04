@@ -1,6 +1,38 @@
+---
+id: 04_PR_GUARDRAILS
+title: PR Guardrails (GoldenPath IDP)
+type: policy
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to:
+
+- 01_GOVERNANCE
+- 21_CI_ENVIRONMENT_CONTRACT
+- 27_REFACTORING_VALIDATION_GUIDE
+- 38_BRANCHING_STRATEGY
+- ADR-####
+- ADR-0044
+- ADR-0046
+- ADR-0063
+- CL-####
+- CL-0002
+
+---
+
 # PR Guardrails (GoldenPath IDP)
 
 Doc contract:
+
 - Purpose: Define PR guardrails, labels, and enforcement workflows.
 - Owner: platform
 - Status: living
@@ -34,6 +66,7 @@ The PR template requires explicit selections for:
 Enforced by `/.github/workflows/pr-guardrails.yml`.
 
 Template enforcement:
+
 - PR bodies must be based on `.github/pull_request_template.md`.
 - Guardrails fail if the template header is missing or the body contains
   escaped newlines (`\\n`).

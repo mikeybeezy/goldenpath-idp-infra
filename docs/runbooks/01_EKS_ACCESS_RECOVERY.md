@@ -1,9 +1,32 @@
+---
+id: 01_EKS_ACCESS_RECOVERY
+title: EKS Access Recovery (Runbook)
+type: runbook
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 31_EKS_ACCESS_MODEL
+
+---
+
 # EKS Access Recovery (Runbook)
 
 This runbook provides the step-by-step procedure to restore access to an EKS
 cluster and refresh your kubeconfig.
 
 Use this when:
+
 - A new cluster was created and you need initial access.
 - Your access entry/policy was not created by Terraform or bootstrap.
 - Your local kubeconfig is missing or stale.

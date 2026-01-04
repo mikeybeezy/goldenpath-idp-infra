@@ -1,6 +1,31 @@
+---
+id: 25_DAY_ONE_CHECKLIST
+title: Day-One Onboarding Checklist
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 00_DOC_INDEX
+- 23_NEW_JOINERS
+- 24_PR_GATES
+
+---
+
 # Day-One Onboarding Checklist
 
 Doc contract:
+
 - Purpose: Provide the minimum inputs and artifacts to get productive fast.
 - Owner: platform
 - Status: living
@@ -46,5 +71,5 @@ documents, and artifacts you need before you start making changes.
 
 1. Install pre-commit and run `pre-commit run --all-files`.
 2. Confirm branch flow: create a feature branch from `development`.
-3. Open a draft PR into `development` to validate guardrails and labels.
+3. Open a draft PR into `development` to validate guardrails and labels (use `.github/pull_request_template.md`).
 4. Capture any missing access or missing config as issues.

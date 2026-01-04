@@ -1,3 +1,25 @@
+---
+id: ADR-0043
+title: 'ADR-0043: Teardown waits for LoadBalancer ENIs before subnet delete'
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+- 15_TEARDOWN_AND_CLEANUP
+- ADR-0043
+- ADR-0045
+---
+
 # ADR-0043: Teardown waits for LoadBalancer ENIs before subnet delete
 
 Filename: `ADR-0043-platform-teardown-lb-eni-wait.md`
@@ -28,6 +50,7 @@ attached ENIs. This is especially common during partial teardown or when the
 NLB takes longer to release ENIs.
 
 Constraints:
+
 - Teardown must remain automation-first and recoverable from partial failures.
 - Any destructive shortcuts must be explicit and auditable.
 
@@ -48,11 +71,13 @@ subnet deletion:
 ## Scope
 
 Applies to:
+
 - `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh`
 - `.github/workflows/ci-teardown.yml`
 - Teardown documentation and IAM policy guidance
 
 Does not apply to:
+
 - Orphan cleanup deletion order (`cleanup-orphans.sh`)
 - Non-AWS Kubernetes environments
 

@@ -1,6 +1,34 @@
+---
+id: 24_PR_GATES
+title: PR Gates and How to Unblock Them
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 00_DOC_INDEX
+- 04_PR_GUARDRAILS
+- 30_DOCUMENTATION_FRESHNESS
+- ADR-####
+- CHANGELOG
+- CL-####
+
+---
+
 # PR Gates and How to Unblock Them
 
 Doc contract:
+
 - Purpose: Explain PR gates, triggers, and the fastest way to unblock.
 - Owner: platform
 - Status: living
