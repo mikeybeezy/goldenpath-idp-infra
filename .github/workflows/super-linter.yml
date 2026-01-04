@@ -2,10 +2,7 @@
 name: Quality - Super Linter (Markdown)
 
 on:
-  pull_request:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   super-linter:
