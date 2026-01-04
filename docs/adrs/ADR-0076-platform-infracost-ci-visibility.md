@@ -26,8 +26,8 @@ relates_to:
 
 Filename: `ADR-0076-platform-infracost-ci-visibility.md`
 
-- **Status:** Accepted
-- **Date:** 2026-01-03
+- **Status:** Implemented
+- **Date:** 2026-01-04
 - **Owners:** platform
 - **Domain:** Platform
 - **Decision type:** Governance

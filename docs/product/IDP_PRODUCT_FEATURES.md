@@ -63,7 +63,12 @@ The IDP enables "Push-Button" repository creation, transforming a single form su
 - **Unified Onboarding**: Using the **`repo-scaffold-app.yml`** workflow or Backstage Software Templates, developers Fill out a single form to automate repo creation, branch protection, and team permissions.
 - **Render-on-the-Fly**: The **`render_template.py`** engine dynamically injects governance IDs and service metadata into the scaffolded code before it is even pushed to GitHub.
 
-## 8. Workload-Centric Abstractions (Planned)
+## 8. FinOps / Cost Visibility
+The platform empowers engineers to be financially responsible by making cost impact visible *before* resources are provisioned.
+- **Infracost Integration**: Automated cost estimation runs on every Terraform PR, surfacing the exact weekly/monthly cost impact of infrastructure changes.
+- **Non-blocking Signals**: Developers get immediate feedback via PR comments, enabling "Cost Aware" decision making without slowing down velocity.
+
+## 9. Workload-Centric Abstractions (Planned)
 Future evolution focuses on the "Score" implementation to allow developers to define **WHAT** they need, hiding the complexity of **HOW** it is provisioned.
 - **Zero-YAML Onboarding**: Moving away from complex K8s manifests toward workload-centric descriptors.
 
