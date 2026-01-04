@@ -1,3 +1,22 @@
+---
+id: BUILD_RUN_LOGS_README
+title: Build and Teardown Logs Documentation
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: not-applicable
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: [BR-TEMPLATE, TD-TEMPLATE]
+---
+
 # Build Run Logs
 
 This directory holds per-run records for builds/bootstraps and teardowns.
