@@ -39,3 +39,18 @@ MD001: false
 
 # MD007: Unordered list indentation - disabled for flexibility
 MD007: false
+
+# MD022: Headings should be surrounded by blank lines - disabled to reduce boilerplate
+MD022: false
+
+# MD031: Fenced code blocks should be surrounded by blank lines - disabled to reduce boilerplate
+MD031: false
+
+# MD032: Lists should be surrounded by blank lines - disabled to reduce boilerplate
+MD032: false
+
+# MD012: Multiple consecutive blank lines - disabled for flexibility
+MD012: false
+
+# MD047: File should end with a single newline - handled by our scripts, but disable here to prevent linter conflict
+MD047: false
