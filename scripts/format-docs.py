@@ -16,14 +16,28 @@ def fix_formatting(filepath):
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
 
-        # 1. Standardize frontmatter markers (no leading/trailing whitespace on the marker line)
+        # 1. Standardize frontmatter markers safely
         lines = []
-        for line in content.splitlines():
+        in_frontmatter = False
+        frontmatter_done = False
+
+        for i, line in enumerate(content.splitlines()):
             stripped = line.strip()
-            if stripped == '---':
-                lines.append('---')
-            else:
-                lines.append(line.rstrip())
+
+            # Standardize frontmatter markers ONLY if they appear at the start of the file
+            if not frontmatter_done:
+                if i == 0 and stripped == '---':
+                    in_frontmatter = True
+                    lines.append('---')
+                    continue
+                elif in_frontmatter and stripped == '---':
+                    in_frontmatter = False
+                    frontmatter_done = True
+                    lines.append('---')
+                    continue
+
+            # For all other lines, only remove trailing whitespace
+            lines.append(line.rstrip())
 
         # 2. Strip all trailing empty lines
         while lines and not lines[-1]:
