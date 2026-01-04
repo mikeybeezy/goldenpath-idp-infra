@@ -1,5 +1,5 @@
 ---
-id: MODULE_AWS_SUBNET
+id: MODULES_AWS_SUBNET_README
 title: Subnet Terraform Module
 type: documentation
 category: modules

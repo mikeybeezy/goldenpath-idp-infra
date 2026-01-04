@@ -1,3 +1,10 @@
+"""
+Purpose: Global Formatting & Whitespace Normalizer
+Achievement: Enforces strict EOF newlines, strips trailing whitespace, and standardizes
+             frontmatter terminators across all text-based files.
+Value: Ensures a premium, consistent look-and-feel across the entire documentation estate
+       while preventing "noise" in git diffs caused by erratic whitespace.
+"""
 import os
 
 def is_binary(filepath):

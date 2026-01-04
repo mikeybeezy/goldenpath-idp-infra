@@ -2,8 +2,11 @@
 id: 04_PR_GUARDRAILS
 title: PR Guardrails (GoldenPath IDP)
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,19 +18,52 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - 27_REFACTORING_VALIDATION_GUIDE
+  - ADR-0044
+  - ADR-0044-platform-infra-checks-ref-mode
+  - ADR-0046
+  - ADR-0046-platform-pr-plan-validation-ownership
+  - ADR-0063
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - CL-0002
+  - CL-0002-bootstrap-refactor
+---
 
+id: 04_PR_GUARDRAILS
+title: PR Guardrails (GoldenPath IDP)
+type: policy
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to:
 - 01_GOVERNANCE
 - 21_CI_ENVIRONMENT_CONTRACT
 - 27_REFACTORING_VALIDATION_GUIDE
 - 38_BRANCHING_STRATEGY
 - ADR-####
 - ADR-0044
+- ADR-0044-platform-infra-checks-ref-mode
 - ADR-0046
+- ADR-0046-platform-pr-plan-validation-ownership
 - ADR-0063
+- ADR-0063-platform-terraform-helm-bootstrap
 - CL-####
 - CL-0002
-
----
+- CL-0002-bootstrap-refactor
+------
 
 # PR Guardrails (GoldenPath IDP)
 

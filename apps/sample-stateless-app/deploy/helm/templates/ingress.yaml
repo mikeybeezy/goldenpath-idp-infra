@@ -20,4 +20,4 @@ spec:
               service:
                 name: "{{ .Values.appName }}"
                 port:
-                  number: {{ .Values.servicePort }}
+                  number: "{{ .Values.servicePort }}"

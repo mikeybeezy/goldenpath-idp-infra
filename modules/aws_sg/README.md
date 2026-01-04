@@ -1,5 +1,5 @@
 ---
-id: MODULE_AWS_SG
+id: MODULES_AWS_SG_README
 title: Security Group Terraform Module
 type: documentation
 category: modules

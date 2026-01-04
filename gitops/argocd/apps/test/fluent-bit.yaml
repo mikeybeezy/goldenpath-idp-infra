@@ -1,8 +1,13 @@
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: test-fluent-bit
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: HELM_FLUENT_BIT
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: low
 spec:
   project: default
   destination:

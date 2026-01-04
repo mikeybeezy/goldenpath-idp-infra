@@ -1,9 +1,12 @@
 ---
-id: BUILD_RUN_LOGS_README
+id: DOCS_BUILD-RUN-LOGS_README
 title: Build and Teardown Logs Documentation
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,13 +18,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 41_BUILD_RUN_LOG
-- BR-TEMPLATE
-- BR_TEMPLATE
-- TD-TEMPLATE
-- TD_TEMPLATE
-
+  - 41_BUILD_RUN_LOG
+  - BR-TEMPLATE
+  - BR_TEMPLATE
+  - TD-TEMPLATE
+  - TD_TEMPLATE
 ---
 
 # Build Run Logs

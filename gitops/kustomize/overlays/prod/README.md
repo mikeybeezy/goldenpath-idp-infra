@@ -1,6 +1,5 @@
 ---
-
-id: README
+id: GITOPS_KUSTOMIZE_OVERLAYS_PROD_README
 title: Readme
 type: documentation
 category: gitops

@@ -1,5 +1,5 @@
 ---
-id: MODULE_AWS_IAM
+id: MODULES_AWS_IAM_README
 title: EKS IAM Terraform Module
 type: documentation
 category: modules

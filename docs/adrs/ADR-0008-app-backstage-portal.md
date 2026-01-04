@@ -1,10 +1,13 @@
 ---
-id: ADR-0008
+id: ADR-0008-app-backstage-portal
 title: 'ADR-0008: Use Backstage as the developer portal and the V1 demo application
   for env promotion'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -16,9 +19,7 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-
-- ADR-0008
-
+  - ADR-0008
 ---
 
 # ADR-0008: Use Backstage as the developer portal and the V1 demo application for env promotion

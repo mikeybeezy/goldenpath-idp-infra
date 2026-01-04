@@ -1,9 +1,12 @@
 ---
-id: ADR-0002
+id: ADR-0002-platform-Kong-as-ingress-API-gateway
 title: 'ADR-0002: Use Kong as the primary ingress/API gateway behind an internal NLB'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,9 +18,7 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-
-- ADR-0002
-
+  - ADR-0002
 ---
 
 # ADR-0002: Use Kong as the primary ingress/API gateway behind an internal NLB

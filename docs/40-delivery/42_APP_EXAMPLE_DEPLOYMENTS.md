@@ -2,8 +2,11 @@
 id: 42_APP_EXAMPLE_DEPLOYMENTS
 title: App Example Deployments (Argo CD + Helm + Kustomize)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 12_GITOPS_AND_CICD
-- 29_CD_DEPLOYMENT_CONTRACT
-- 42_APP_TEMPLATE_LIVING
-
+  - 12_GITOPS_AND_CICD
+  - 29_CD_DEPLOYMENT_CONTRACT
+  - 42_APP_TEMPLATE_LIVING
 ---
 
 # App Example Deployments (Argo CD + Helm + Kustomize)

@@ -2,8 +2,11 @@
 id: 08_GITHUB_AGENT_ROLES
 title: GitHub Agent Roles (Apps and Service Accounts)
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +18,9 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-
-- 04_PR_GUARDRAILS
-- 07_AI_AGENT_GOVERNANCE
-- 26_AI_AGENT_PROTOCOLS
-
+  - 04_PR_GUARDRAILS
+  - 07_AI_AGENT_GOVERNANCE
+  - 26_AI_AGENT_PROTOCOLS
 ---
 
 # GitHub Agent Roles (Apps and Service Accounts)

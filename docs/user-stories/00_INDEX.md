@@ -1,5 +1,5 @@
 ---
-id: USER_STORIES_INDEX
+id: 00_INDEX
 title: User Story Index
 type: documentation
 category: user-stories

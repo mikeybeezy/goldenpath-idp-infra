@@ -1,23 +1,24 @@
 ---
-id: ADR-0085
-title: Implementing Score in V1
+id: ADR-0085-score-implementation
+title: 'ADR-0085: Implementing Score in V1'
 type: adr
-category: architecture
-version: 1.0
+category: unknown
+version: '1.0'
 owner: platform-team
-status: proposed
+status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
-  coupling_risk: high
+  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 lifecycle:
-  supported_until: 2028-01-01
+  supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-  - 07_REPO_DECOUPLING_OPTIONS
+  - ADR-0085
 ---
 
 # ADR-0085: Implementing Score in V1

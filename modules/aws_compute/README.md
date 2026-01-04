@@ -1,5 +1,5 @@
 ---
-id: MODULE_AWS_COMPUTE
+id: MODULES_AWS_COMPUTE_README
 title: EC2 Compute Terraform Module
 type: documentation
 category: modules

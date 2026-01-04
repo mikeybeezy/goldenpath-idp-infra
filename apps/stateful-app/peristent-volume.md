@@ -1,5 +1,5 @@
 ---
-id: STATEFUL_APP_PVC
+id: peristent-volume
 title: Persistent Volume Claims for Stateful Apps
 type: documentation
 category: apps

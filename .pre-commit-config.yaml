@@ -8,3 +8,8 @@ repos:
     rev: v1.91.0
     hooks:
       - id: terraform_fmt
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.39.0
+    hooks:
+      - id: markdownlint
+        args: ["--config", ".github/linters/markdownlint.yml"]

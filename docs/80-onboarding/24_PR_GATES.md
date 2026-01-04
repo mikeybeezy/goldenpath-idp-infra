@@ -2,8 +2,11 @@
 id: 24_PR_GATES
 title: PR Gates and How to Unblock Them
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,14 +18,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 00_DOC_INDEX
-- 04_PR_GUARDRAILS
-- 30_DOCUMENTATION_FRESHNESS
-- ADR-####
-- CHANGELOG
-- CL-####
-
+  - 00_DOC_INDEX
+  - 04_PR_GUARDRAILS
+  - 30_DOCUMENTATION_FRESHNESS
+  - DOCS_CHANGELOG_README
 ---
 
 # PR Gates and How to Unblock Them

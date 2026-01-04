@@ -1,5 +1,5 @@
 ---
-id: MODULE_AWS_EKS
+id: MODULES_AWS_EKS_README
 title: EKS Cluster Terraform Module
 type: documentation
 category: modules

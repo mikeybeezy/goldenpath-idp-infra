@@ -2,8 +2,11 @@
 id: METADATA_STRATEGY
 title: Platform Metadata Strategy
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- ADR-0050
-- ADR-0066
-- CL-0005
+  - ADR-0050
+  - ADR-0066
+  - CL-0005
 ---
 
 # Platform Metadata Strategy
@@ -91,4 +94,4 @@ tags = {
 
 1. **Standards:** Publish this schema.
 2. **Backfill:** Update Template files (`ADR-TEMPLATE.md`) and existing critical docs.
-3. **Enforcement:** Add `validate-metadata.py` to CI.
+3. **Enforcement:** Add `validate_metadata.py` to CI.

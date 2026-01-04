@@ -1,11 +1,11 @@
 ---
 id: US-0001-governance-driven-repo-scaffolder
 title: 'US-0001: Governance-driven repo scaffolder'
-type: user-story
-category: user-stories
-version: 1.0
+type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
-status: approved
+status: active
 dependencies: []
 risk_profile:
   production_impact: low
@@ -19,9 +19,8 @@ lifecycle:
   breaking_change: false
 relates_to:
   - ADR-0078
+  - ADR-0078-platform-governed-repo-scaffolder
   - CL-0031
-  - USER_STORIES_INDEX
-  - 18_BACKSTAGE_MVP
 ---
 
 # US-0001: Governance-driven repo scaffolder

@@ -1,5 +1,5 @@
 ---
-id: ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
+id: one_stage_vs_multistage_bootstrap
 title: One-Stage vs Multi-Stage Bootstrap
 type: documentation
 category: bootstrap

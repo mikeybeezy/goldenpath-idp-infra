@@ -2,8 +2,11 @@
 id: 32_TERRAFORM_STATE_AND_LOCKING
 title: Terraform State and Locking (Living)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,12 +18,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 07_TF_STATE_FORCE_UNLOCK
-- 21_CI_ENVIRONMENT_CONTRACT
-- 33_IAM_ROLES_AND_POLICIES
-- 36_STATE_KEY_STRATEGY
-
+  - 07_TF_STATE_FORCE_UNLOCK
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - 33_IAM_ROLES_AND_POLICIES
+  - 36_STATE_KEY_STRATEGY
 ---
 
 # Terraform State and Locking (Living)

@@ -1,5 +1,5 @@
 ---
-id: STATEFUL_APP_NAMESPACE
+id: namespace
 title: Stateful App Namespace Setup
 type: documentation
 category: apps

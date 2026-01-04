@@ -2,8 +2,11 @@
 id: 03_GOVERNANCE_BACKSTAGE
 title: Backstage Governance (Deprecated)
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: deprecated
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +18,9 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-
-- 01_GOVERNANCE
-- 18_BACKSTAGE_MVP
-- ADR-0008
-
+  - 01_GOVERNANCE
+  - 18_BACKSTAGE_MVP
+  - ADR-0008
 ---
 
 # Backstage Governance (Deprecated)

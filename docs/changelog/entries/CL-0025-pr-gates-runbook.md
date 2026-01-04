@@ -1,9 +1,12 @@
 ---
-id: CL-0025
+id: CL-0025-pr-gates-runbook
 title: 'CL-0025: PR gates runbook'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,9 +18,7 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
-- CL-0025
-
+  - CL-0025
 ---
 
 # CL-0025: PR gates runbook

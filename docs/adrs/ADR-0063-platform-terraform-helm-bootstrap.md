@@ -1,22 +1,26 @@
 ---
-id: ADR-0063
+id: ADR-0063-platform-terraform-helm-bootstrap
 title: 'ADR-0063: Terraform Helm Provider for Bootstrap'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
 reliability:
   rollback_strategy: git-revert
-  observability_tier: silver
+  observability_tier: bronze
 lifecycle:
-  supported_until: 2028-01-04
+  supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- ADR-0001
-- ADR-0063
+  - ADR-0001
+  - ADR-0001-platform-argocd-as-gitops-operator
+  - ADR-0063
 ---
 
 # ADR-0063: Terraform Helm Provider for Bootstrap

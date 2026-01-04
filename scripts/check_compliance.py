@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""
+Purpose: Metadata Compliance Audit Tool
+Achievement: Performs deep inspection of YAML frontmatter syntax and mandatory field presence.
+Value: Used for secondary audits and legacy compliance checks before migrating to the
+       unified "Healer" (standardize-metadata.py).
+"""
 import os
 import yaml
 import re

@@ -1,5 +1,5 @@
 ---
-id: MODULE_VPC
+id: MODULES_VPC_README
 title: VPC Foundation Terraform Module
 type: documentation
 category: modules

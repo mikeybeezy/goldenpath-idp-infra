@@ -1,5 +1,5 @@
 ---
-id: MODULE_AWS_NIC
+id: MODULES_AWS_NIC_README
 title: Network Interface Terraform Module
 type: documentation
 category: modules

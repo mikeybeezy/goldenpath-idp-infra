@@ -4,6 +4,9 @@ metadata:
   name: "{{ values.app_name }}"
   description: "{{ values.description }}"
   annotations:
+    goldenpath.idp/id: "{{ values.governance.id }}"
+    goldenpath.idp/owner: "{{ values.governance.owner }}"
+    goldenpath.idp/risk: "{{ values.governance.risk_profile.production_impact }}"
     platform.goldenpath.dev/service-tier: "{{ values.service_tier }}"
     platform.goldenpath.dev/data-classification: "{{ values.data_classification }}"
     platform.goldenpath.dev/owner-team: "{{ values.owner_team }}"

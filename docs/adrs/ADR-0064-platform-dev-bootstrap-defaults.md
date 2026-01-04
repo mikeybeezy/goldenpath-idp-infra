@@ -1,9 +1,12 @@
 ---
-id: ADR-0064
+id: ADR-0064-platform-dev-bootstrap-defaults
 title: 'ADR-0064: Dev bootstrap defaults off for k8s resources and storage'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- ADR-0064
+  - ADR-0064
 ---
 
 # ADR-0064: Dev bootstrap defaults off for k8s resources and storage

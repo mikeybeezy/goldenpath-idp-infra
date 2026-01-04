@@ -1,5 +1,5 @@
 ---
-id: DEV_BASELINE_CHECKLIST
+id: 30_dev_baseline_checklist
 title: Dev Environment Baseline Checklist
 type: documentation
 category: bootstrap

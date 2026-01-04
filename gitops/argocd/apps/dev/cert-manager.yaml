@@ -1,8 +1,13 @@
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: dev-cert-manager
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: HELM_CERT_MANAGER
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: medium
 spec:
   project: default
   destination:

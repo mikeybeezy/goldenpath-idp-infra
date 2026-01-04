@@ -1,4 +1,23 @@
 ---
+id: pass-pr-gates
+title: pass-pr-gates
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
 description: Steps to ensure a Pull Request passes all repository-wide CI gates
 ---
 
@@ -8,7 +27,7 @@ To ensure your Pull Request passes all CI gates (Metadata, Pre-commit, Super-Lin
 Ensure all markdown files have the required frontmatter schema and that the `id` field matches the filename.
 // turbo
 ```bash
-python3 scripts/validate-metadata.py
+python3 scripts/validate_metadata.py
 ```
 
 ### 2. Automated Formatting

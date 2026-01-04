@@ -17,7 +17,7 @@ spec:
               kubernetes.io/metadata.name: "kong-system"
       ports:
         - protocol: TCP
-          port: {{ values.service_port }}
+          port: "{{ values.service_port }}"
   egress:
     - to:
         - namespaceSelector: {}

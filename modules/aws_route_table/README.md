@@ -1,5 +1,5 @@
 ---
-id: MODULE_AWS_ROUTE_TABLE
+id: MODULES_AWS_ROUTE_TABLE_README
 title: Route Table Terraform Module
 type: documentation
 category: modules

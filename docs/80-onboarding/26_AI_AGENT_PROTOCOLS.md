@@ -2,8 +2,11 @@
 id: 26_AI_AGENT_PROTOCOLS
 title: AI Agent & Operator Protocols
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,19 +18,17 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 00_DOC_INDEX
-- 04_PR_GUARDRAILS
-- 07_AI_AGENT_GOVERNANCE
-- 13_COLLABORATION_GUIDE
-- 21_CI_ENVIRONMENT_CONTRACT
-- 24_PR_GATES
-- 41_BUILD_RUN_LOG
-- ADR-####
-- AI_CHANGELOG
-- CL-####
-- ROADMAP
-
+  - 00_DOC_INDEX
+  - 04_PR_GUARDRAILS
+  - 07_AI_AGENT_GOVERNANCE
+  - 13_COLLABORATION_GUIDE
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - 24_PR_GATES
+  - 41_BUILD_RUN_LOG
+  - ADR-####
+  - AI_CHANGELOG
+  - CL-####
+  - ROADMAP
 ---
 
 # AI Agent & Operator Protocols

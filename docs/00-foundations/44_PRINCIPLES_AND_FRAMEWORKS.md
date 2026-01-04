@@ -2,8 +2,11 @@
 id: 44_PRINCIPLES_AND_FRAMEWORKS
 title: Principles and Decision Frameworks
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 01_adr_index
-- 24_PR_GATES
-- 43_OPERATING_PRINCIPLES
-
+  - 01_adr_index
+  - 24_PR_GATES
+  - 43_OPERATING_PRINCIPLES
 ---
 
 # Principles and Decision Frameworks
