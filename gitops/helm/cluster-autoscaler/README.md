@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - chart:cluster-autoscaler
-  - module:aws_iam
+- chart:cluster-autoscaler
+- module:aws_iam
 risk_profile:
   production_impact: low
   security_risk: none
@@ -20,8 +20,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - MODULE_AWS_IAM
-  - ADR-0031
+- MODULE_AWS_IAM
+- ADR-0031
 ---
 
 # Cluster Autoscaler Helm Deployment

@@ -1,9 +1,12 @@
 ---
-id: ADR-0053
+id: ADR-0053-platform-storage-lifecycle-separation
 title: 'ADR-0053: Separate storage lifecycle from bootstrap and teardown'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

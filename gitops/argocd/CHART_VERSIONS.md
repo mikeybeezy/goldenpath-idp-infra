@@ -1,5 +1,4 @@
 ---
-
 id: CHART_VERSIONS
 title: Helm Chart Versions (Argo-managed)
 type: documentation

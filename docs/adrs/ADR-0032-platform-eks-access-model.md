@@ -1,9 +1,12 @@
 ---
-id: ADR-0032
+id: ADR-0032-platform-eks-access-model
 title: 'ADR-0032: EKS access model (bootstrap admin vs steady-state access)'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

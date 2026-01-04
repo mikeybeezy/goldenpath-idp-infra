@@ -1,5 +1,5 @@
 ---
-id: MODULE_AWS_SG
+id: MODULES_AWS_SG_README
 title: Security Group Terraform Module
 type: documentation
 category: modules
@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - aws-provider
+- aws-provider
 risk_profile:
   production_impact: high
   security_risk: low
@@ -19,9 +19,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - ADR-0003
-  - MODULE_VPC
-  - MODULE_AWS_NIC
+- ADR-0003
+- MODULE_VPC
+- MODULE_AWS_NIC
 ---
 
 # Security Group Module

@@ -7,7 +7,7 @@ version: '1.0'
 owner: platform-team
 status: active
 dependencies:
-  - SAMPLE_STATELESS_APP
+- SAMPLE_STATELESS_APP
 risk_profile:
   production_impact: low
   security_risk: none
@@ -19,7 +19,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - scaling-pods
+- scaling-pods
 ---
 
 # Setup sample guestbook app

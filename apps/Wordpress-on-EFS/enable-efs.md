@@ -1,5 +1,5 @@
 ---
-id: WORDPRESS_ENABLE_EFS
+id: enable-efs
 title: Enable EFS for WordPress on EKS
 type: documentation
 category: apps
@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - module:efs
-  - module:vpc
+- module:efs
+- module:vpc
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -20,9 +20,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - WORDPRESS_ON_EFS_README
-  - STATEFUL_APP_ON_EFS
-  - STATEFUL_APP_PVC
+- WORDPRESS_ON_EFS_README
+- STATEFUL_APP_ON_EFS
+- STATEFUL_APP_PVC
 ---
 
 # click through AWS console to create EFS

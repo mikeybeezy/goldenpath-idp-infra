@@ -1,10 +1,13 @@
 ---
-id: ADR-0007
+id: ADR-0007-platform-environment-model
 title: 'ADR-0007: Adopt an environment model that balances cost, iteration speed,
   and credible separation'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -16,9 +19,7 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-
 - ADR-0007
-
 ---
 
 # ADR-0007: Adopt an environment model that balances cost, iteration speed, and credible separation

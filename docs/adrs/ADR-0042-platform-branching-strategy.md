@@ -1,9 +1,12 @@
 ---
-id: ADR-0042
-title: "ADR-0042: Branching strategy (development \u2192 main)"
+id: ADR-0042-platform-branching-strategy
+title: 'ADR-0042: Branching strategy (development → main)'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

@@ -2,8 +2,11 @@
 id: V1_04_CAPABILITY_MATRIX
 title: Capability Matrix – Golden Path IDP Infra
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

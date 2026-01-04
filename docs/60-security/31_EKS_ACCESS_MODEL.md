@@ -2,8 +2,11 @@
 id: 31_EKS_ACCESS_MODEL
 title: EKS Access Model (Living)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

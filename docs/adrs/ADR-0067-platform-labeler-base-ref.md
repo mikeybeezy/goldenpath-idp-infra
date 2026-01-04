@@ -1,9 +1,12 @@
 ---
-id: ADR-0067
+id: ADR-0067-platform-labeler-base-ref
 title: 'ADR-0067: Use base ref for labeler checkout'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

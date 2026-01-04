@@ -1,9 +1,12 @@
 ---
-id: ADR-0017
+id: ADR-0017-platform-policy-as-code
 title: 'ADR-0017: Policy as code for infrastructure and application changes'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

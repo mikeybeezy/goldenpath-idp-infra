@@ -2,8 +2,11 @@
 id: 35_RESOURCE_TAGGING
 title: Resource Tagging (Living)
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -16,8 +19,8 @@ lifecycle:
   breaking_change: false
 relates_to:
 - 01_GOVERNANCE
-- 01_TAG_SCOPED_POLICY_TEMPLATE
 - ADR-0037
+- ADR-0037-platform-resource-tagging-policy
 ---
 
 # Resource Tagging (Living)

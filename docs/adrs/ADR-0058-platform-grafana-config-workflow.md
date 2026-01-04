@@ -1,9 +1,12 @@
 ---
-id: ADR-0058
+id: ADR-0058-platform-grafana-config-workflow
 title: 'ADR-0058: Separate Grafana config workflow with readiness guard'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

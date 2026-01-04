@@ -1,6 +1,5 @@
 ---
-
-id: README
+id: GITOPS_KUSTOMIZE_BASES_README
 title: Kustomize Bases
 type: documentation
 category: gitops

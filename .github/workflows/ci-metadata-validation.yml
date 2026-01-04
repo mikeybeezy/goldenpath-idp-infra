@@ -1,11 +1,13 @@
-name: Docs - Metadata Validation
+name: Quality - Metadata Validation
 
 on:
   pull_request:
     paths:
-      - "docs/**"
+      - "**/*.md"
+      - "**/metadata.yaml"
+      - "**/metadata.yml"
       - "scripts/validate-metadata.py"
-      - ".github/workflows/ci-docs.yml"
+      - ".github/workflows/ci-metadata-validation.yml"
 
 permissions:
   contents: read
@@ -26,12 +28,8 @@ jobs:
         run: |
           pip install pyyaml==6.0.1
 
-      - name: Debug File Existence
-        run: |
-          ls -la docs/adrs/ || true
-          ls -la docs/changelog/entries/ || true
-
       - name: Run Metadata Validator
         run: |
           chmod +x scripts/validate-metadata.py
-          python3 scripts/validate-metadata.py docs
+          # Scan the whole repository
+          python3 scripts/validate-metadata.py .

@@ -2,23 +2,25 @@
 id: 03_IAM_AUDIT
 title: IAM Audit (Runbook)
 type: runbook
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
-  production_impact: medium
+  production_impact: high
   security_risk: access
-  coupling_risk: low
+  coupling_risk: medium
 reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
+  rollback_strategy: not-applicable
+  observability_tier: gold
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
 - 33_IAM_ROLES_AND_POLICIES
 - ADR-0035
-
+- ADR-0035-platform-iam-audit-cadence
 ---
 
 # IAM Audit (Runbook)

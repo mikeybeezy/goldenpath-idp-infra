@@ -2,8 +2,11 @@
 id: 12_GITOPS_AND_CICD
 title: GitOps and CI/CD
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,14 +18,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
 - 06_IDENTITY_AND_ACCESS
 - 16_INFRA_Build_ID_Strategy_Decision
 - 17_BUILD_RUN_FLAGS
-- 26_POST_APPLY_HEALTH_CHECKS
-- 29_CD_DEPLOYMENT_CONTRACT
 - ADR-0001
-
+- BOOTSTRAP_10_BOOTSTRAP_README
 ---
 
 # GitOps and CI/CD

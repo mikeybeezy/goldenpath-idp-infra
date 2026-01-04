@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - module:opentelemetry
+- module:opentelemetry
 risk_profile:
   production_impact: low
   security_risk: none
@@ -19,7 +19,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - ADR-0009
+- ADR-0009
 ---
 
 # Delivery Insights (CI/CD Observability)

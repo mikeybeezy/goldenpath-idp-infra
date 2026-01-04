@@ -2,8 +2,11 @@
 id: 27_REFACTORING_VALIDATION_GUIDE
 title: Refactoring Validation Guide
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

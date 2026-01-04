@@ -2,8 +2,11 @@
 id: 00_DESIGN_PHILOSOPHY
 title: GoldenPath Design Philosophy
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,13 +18,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
 - 00_DOC_INDEX
 - 01_GOVERNANCE
 - 02_PLATFORM_BOUNDARIES
 - 30_DOCUMENTATION_FRESHNESS
 - 43_OPERATING_PRINCIPLES
-
 ---
 
 # GoldenPath Design Philosophy

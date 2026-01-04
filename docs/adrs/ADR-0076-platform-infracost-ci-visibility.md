@@ -1,9 +1,12 @@
 ---
-id: ADR-0076
+id: ADR-0076-platform-infracost-ci-visibility
 title: 'ADR-0076: Lightweight CI cost visibility with Infracost'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

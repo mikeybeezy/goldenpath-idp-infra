@@ -2,8 +2,11 @@
 id: 08_SOURCE_OF_TRUTH
 title: Source of Truth (Stub)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,9 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
 - 12_GITOPS_AND_CICD
-
 ---
 
 # Source of Truth (Stub)

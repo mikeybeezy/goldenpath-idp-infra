@@ -1,5 +1,5 @@
 ---
-id: STAGING_ENV_README
+id: ENVS_STAGING_README
 title: Staging Environment
 type: documentation
 category: envs
@@ -7,9 +7,9 @@ version: '1.0'
 owner: platform-team
 status: active
 dependencies:
-  - MODULE_VPC
-  - MODULE_AWS_EKS
-  - MODULE_AWS_IAM
+- MODULE_VPC
+- MODULE_AWS_EKS
+- MODULE_AWS_IAM
 risk_profile:
   production_impact: low
   security_risk: none
@@ -21,8 +21,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - DEV_ENV_README
-  - PROD_ENV_README
+- DEV_ENV_README
+- PROD_ENV_README
 ---
 
 # Staging Environment

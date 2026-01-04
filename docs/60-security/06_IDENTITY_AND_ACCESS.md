@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - module:keycloak
-  - module:aws_iam
+- module:keycloak
+- module:aws_iam
 risk_profile:
   production_impact: high
   security_risk: high
@@ -20,10 +20,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - ADR-0005
-  - ADR-0032
-  - KEYCLOAK_CONFIG_README
-  - 08_GITHUB_AGENT_ROLES
+- ADR-0005
+- ADR-0032
+- KEYCLOAK_CONFIG_README
+- 08_GITHUB_AGENT_ROLES
 ---
 
 # Identity & Access Governance

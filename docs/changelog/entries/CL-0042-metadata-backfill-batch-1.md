@@ -1,18 +1,29 @@
 ---
-id: CL-0042
+id: CL-0042-metadata-backfill-batch-1
 title: Metadata Backfill Batch 1
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
 relates_to:
-
 - ADR-0001
 - ADR-0040
 - ADR-0082
 - ADR-0083
 - CL-0042
 - METADATA_STRATEGY
-
 ---
 
 # CL-0042: Metadata Backfill Batch 1

@@ -1,26 +1,31 @@
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: prod-fluent-bit
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: HELM_FLUENT_BIT
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: low
 spec:
   project: default
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
   sources:
-    - repoURL: https://fluent.github.io/helm-charts
-      chart: fluent-bit
-      targetRevision: 0.47.0
-      helm:
-        valueFiles:
-          - $values/gitops/helm/fluent-bit/values/prod.yaml
-    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
-      ref: values
+  - repoURL: https://fluent.github.io/helm-charts
+    chart: fluent-bit
+    targetRevision: 0.47.0
+    helm:
+      valueFiles:
+      - $values/gitops/helm/fluent-bit/values/prod.yaml
+  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    targetRevision: HEAD
+    ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

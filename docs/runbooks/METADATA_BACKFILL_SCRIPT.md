@@ -2,28 +2,27 @@
 id: METADATA_BACKFILL_SCRIPT
 title: Metadata Backfill Script - Usage & Operations
 type: runbook
-category: runbooks
-version: 1.0
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
 dependencies:
-  - scripts/backfill-metadata.py
-  - scripts/validate-metadata.py
+- chart:redis
+- module:aws_iam
+- module:vpc
 risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
+  production_impact: high
+  security_risk: access
+  coupling_risk: high
 reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
+  rollback_strategy: not-applicable
+  observability_tier: gold
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - ADR-0084
-  - CL-0043
-  - METADATA_STRATEGY
-  - RELATIONSHIP_EXTRACTION_SCRIPT
+- ADR-0084
+- CL-0043
 ---
 
 # Metadata Backfill Script - Usage & Operations

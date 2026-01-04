@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - chart:fluent-bit
-  - image:fluent-bit
+- chart:fluent-bit
+- image:fluent-bit
 risk_profile:
   production_impact: low
   security_risk: none
@@ -20,8 +20,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - HELM_LOKI
-  - HELM_KUBE_PROMETHEUS_STACK
+- HELM_LOKI
+- HELM_KUBE_PROMETHEUS_STACK
 ---
 
 # Fluent Bit Helm Deployment

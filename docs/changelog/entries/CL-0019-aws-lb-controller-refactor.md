@@ -1,9 +1,12 @@
 ---
-id: CL-0019
+id: CL-0019-aws-lb-controller-refactor
 title: 'CL-0019: AWS Load Balancer Controller refactor'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,10 +18,8 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
 - ADR-0070
 - CL-0019
-
 ---
 
 # CL-0019: AWS Load Balancer Controller refactor

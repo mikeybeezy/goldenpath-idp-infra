@@ -1,9 +1,12 @@
 ---
-id: ADR-0051
+id: ADR-0051-platform-reliability-metrics-contract-minimums
 title: 'ADR-0051: Minimal reliability metrics and contract minimums'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

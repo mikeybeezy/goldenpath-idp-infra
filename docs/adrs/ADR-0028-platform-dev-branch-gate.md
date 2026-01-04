@@ -1,9 +1,12 @@
 ---
-id: ADR-0028
+id: ADR-0028-platform-dev-branch-gate
 title: 'ADR-0028: Dev branch gate before main'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

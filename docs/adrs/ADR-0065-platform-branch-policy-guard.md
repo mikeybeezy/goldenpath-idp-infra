@@ -1,9 +1,12 @@
 ---
-id: ADR-0065
+id: ADR-0065-platform-branch-policy-guard
 title: 'ADR-0065: Restore branch policy guard for main'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

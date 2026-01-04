@@ -3,6 +3,10 @@ kind: Deployment
 metadata:
   name: "{{ values.app_name }}"
   namespace: "{{ values.namespace }}"
+  annotations:
+    goldenpath.idp/id: "{{ values.governance.id }}"
+    goldenpath.idp/owner: "{{ values.governance.owner }}"
+    goldenpath.idp/risk: "{{ values.governance.risk_profile.production_impact }}"
   labels:
     app.kubernetes.io/name: "{{ values.app_name }}"
     app.kubernetes.io/instance: "{{ values.app_name }}"

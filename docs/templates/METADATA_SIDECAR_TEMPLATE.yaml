@@ -1,0 +1,45 @@
+# GoldenPath IDP: Metadata Sidecar Template (v1.0)
+# Purpose: This file (metadata.yaml) provides governance data for infrastructure components.
+# Usage: Copy this to your chart or tool directory and fill in the values.
+
+---
+# Mandatory: Unique identifier (e.g., HELM_<CHART_NAME> or TOOL_<TOOL_NAME>)
+id: REPLACE_WITH_ID
+
+# Mandatory: Human-readable title
+title: "REPLACE_WITH_TITLE"
+
+# Mandatory: Resource type (chart | tooling | cluster | lib | app)
+type: chart
+
+# Mandatory: Responsible team (e.g., platform-team | squad-alpha)
+owner: platform-team
+
+# Mandatory: Support status (active | draft | deprecated | experimental)
+status: active
+
+# Optional: Direct dependencies on other managed items
+dependencies:
+  - service:eks
+  # - module:vpc
+
+# Mandatory: Impact and risk assessment
+risk_profile:
+  production_impact: high  # high | medium | low | none
+  security_risk: none      # Brief description of risk area
+  coupling_risk: medium    # high | medium | low
+
+# Mandatory: Operational expectations
+reliability:
+  rollback_strategy: "helm-rollback" # helm-rollback | git-revert | manual
+  observability_tier: silver        # gold | silver | bronze
+
+# Mandatory: Support roadmap
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+
+# Optional: List of related IDs (ADRs, Runbooks, Docs)
+relates_to:
+  - ADR-####
+---

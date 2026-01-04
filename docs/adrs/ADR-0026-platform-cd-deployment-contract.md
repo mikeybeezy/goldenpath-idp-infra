@@ -1,9 +1,12 @@
 ---
-id: ADR-0026
+id: ADR-0026-platform-cd-deployment-contract
 title: 'ADR-0026: CD deployment contract'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

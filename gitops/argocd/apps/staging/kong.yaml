@@ -1,48 +1,52 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: staging-kong
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: TOOL_KONG
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: high
 spec:
   project: default
   destination:
     namespace: kong-system
     server: https://kubernetes.default.svc
   sources:
-    - repoURL: https://charts.konghq.com
-      chart: kong
-      targetRevision: 2.47.0
-      helm:
-        valueFiles:
-          - $values/gitops/helm/kong/values/staging.yaml
-    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
-      ref: values
+  - repoURL: https://charts.konghq.com
+    chart: kong
+    targetRevision: 2.47.0
+    helm:
+      valueFiles:
+      - $values/gitops/helm/kong/values/staging.yaml
+  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    targetRevision: HEAD
+    ref: values
   ignoreDifferences:
-    - group: admissionregistration.k8s.io
-      kind: ValidatingWebhookConfiguration
-      jqPathExpressions:
-        - .webhooks[].clientConfig.caBundle
-    - group: admissionregistration.k8s.io
-      kind: MutatingWebhookConfiguration
-      jqPathExpressions:
-        - .webhooks[].clientConfig.caBundle
-    - group: ""
-      kind: Secret
-      name: staging-kong-kong-validation-webhook-ca-keypair
-      namespace: kong-system
-      jsonPointers:
-        - /data
-    - group: ""
-      kind: Secret
-      name: staging-kong-kong-validation-webhook-keypair
-      namespace: kong-system
-      jsonPointers:
-        - /data
+  - group: admissionregistration.k8s.io
+    kind: ValidatingWebhookConfiguration
+    jqPathExpressions:
+    - .webhooks[].clientConfig.caBundle
+  - group: admissionregistration.k8s.io
+    kind: MutatingWebhookConfiguration
+    jqPathExpressions:
+    - .webhooks[].clientConfig.caBundle
+  - group: ''
+    kind: Secret
+    name: staging-kong-kong-validation-webhook-ca-keypair
+    namespace: kong-system
+    jsonPointers:
+    - /data
+  - group: ''
+    kind: Secret
+    name: staging-kong-kong-validation-webhook-keypair
+    namespace: kong-system
+    jsonPointers:
+    - /data
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

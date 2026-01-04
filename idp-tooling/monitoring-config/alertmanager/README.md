@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - provider:alertmanager
+- provider:alertmanager
 risk_profile:
   production_impact: low
   security_risk: none
@@ -19,8 +19,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - HELM_ALERTMANAGER
-  - HELM_KUBE_PROMETHEUS_STACK
+- HELM_ALERTMANAGER
+- HELM_KUBE_PROMETHEUS_STACK
 ---
 
 Placeholder for idp-tooling/monitoring-config/alertmanager

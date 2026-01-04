@@ -18,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - USER_STORIES_INDEX
+- USER_STORIES_INDEX
 ---
 
 # US-0000: Short user story title

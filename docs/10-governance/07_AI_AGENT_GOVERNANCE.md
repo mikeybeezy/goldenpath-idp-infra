@@ -2,8 +2,11 @@
 id: 07_AI_AGENT_GOVERNANCE
 title: AI Agent Governance
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +18,9 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-
 - 04_PR_GUARDRAILS
 - 26_AI_AGENT_PROTOCOLS
 - AI_CHANGELOG
-
 ---
 
 # AI Agent Governance

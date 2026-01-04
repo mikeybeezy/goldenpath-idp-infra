@@ -1,27 +1,31 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: dev-backstage
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: HELM_BACKSTAGE
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: medium
 spec:
   project: default
   destination:
     namespace: backstage
     server: https://kubernetes.default.svc
   sources:
-    - repoURL: https://backstage.github.io/charts
-      chart: backstage
-      targetRevision: 1.12.0
-      helm:
-        valueFiles:
-          - $values/gitops/helm/backstage/values/dev.yaml
-    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
-      ref: values
+  - repoURL: https://backstage.github.io/charts
+    chart: backstage
+    targetRevision: 1.12.0
+    helm:
+      valueFiles:
+      - $values/gitops/helm/backstage/values/dev.yaml
+  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    targetRevision: HEAD
+    ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

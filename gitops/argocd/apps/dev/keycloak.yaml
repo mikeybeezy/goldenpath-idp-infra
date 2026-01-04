@@ -1,27 +1,31 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: dev-keycloak
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: TOOL_KEYCLOAK
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: high
 spec:
   project: default
   destination:
     namespace: keycloak
     server: https://kubernetes.default.svc
   sources:
-    - repoURL: https://charts.bitnami.com/bitnami
-      chart: keycloak
-      targetRevision: 22.1.6
-      helm:
-        valueFiles:
-          - $values/gitops/helm/keycloak/values/dev.yaml
-    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
-      ref: values
+  - repoURL: https://charts.bitnami.com/bitnami
+    chart: keycloak
+    targetRevision: 22.1.6
+    helm:
+      valueFiles:
+      - $values/gitops/helm/keycloak/values/dev.yaml
+  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    targetRevision: HEAD
+    ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

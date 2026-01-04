@@ -2,8 +2,11 @@
 id: pr_graph_body
 title: Change Type
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,9 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
 - ADR-0082
-
 ---
 
 Select at least one checkbox per section by changing `[ ]` to `[x]`.

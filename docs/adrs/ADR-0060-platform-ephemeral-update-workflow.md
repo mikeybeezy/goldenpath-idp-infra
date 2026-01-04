@@ -1,9 +1,12 @@
 ---
-id: ADR-0060
+id: ADR-0060-platform-ephemeral-update-workflow
 title: 'ADR-0060: Separate update workflow for existing ephemeral dev clusters'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

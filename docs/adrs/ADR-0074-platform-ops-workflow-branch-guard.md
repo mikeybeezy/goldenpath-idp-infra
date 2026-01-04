@@ -1,9 +1,12 @@
 ---
-id: ADR-0074
+id: ADR-0074-platform-ops-workflow-branch-guard
 title: 'ADR-0074: Ops workflow branch guard'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

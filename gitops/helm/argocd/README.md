@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - chart:argo-cd
+- chart:argo-cd
 risk_profile:
   production_impact: high
   security_risk: high
@@ -19,8 +19,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - ADR-0001
-  - BOOTSTRAP_README
+- ADR-0001
+- BOOTSTRAP_README
 ---
 
 # Argo CD Deployment

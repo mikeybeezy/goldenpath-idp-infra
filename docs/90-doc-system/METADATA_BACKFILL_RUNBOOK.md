@@ -1,9 +1,12 @@
 ---
-id: DOC-003
+id: METADATA_BACKFILL_RUNBOOK
 title: Metadata Backfill Runbook
 type: runbook
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,14 +18,12 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-
 - ADR-0082
 - ADR-0083
 - ADR-XXXX
 - CL-XXXX
 - METADATA_STRATEGY
 - METADATA_VALIDATION_GUIDE
-
 ---
 
 ## Metadata Backfill Runbook

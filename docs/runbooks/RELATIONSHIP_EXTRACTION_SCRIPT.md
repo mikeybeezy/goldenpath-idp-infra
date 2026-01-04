@@ -2,6 +2,41 @@
 id: RELATIONSHIP_EXTRACTION_SCRIPT
 title: Relationship Extraction Script - Usage & Operations
 type: runbook
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: high
+  security_risk: access
+  coupling_risk: high
+reliability:
+  rollback_strategy: rerun-teardown
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+- 21_CI_ENVIRONMENT_CONTRACT
+- ADR-0026
+- ADR-0030
+- ADR-0032
+- ADR-0033
+- ADR-0033-platform-ci-orchestrated-modes
+- ADR-0034
+- ADR-0047
+- ADR-0056
+- ADR-0067
+- ADR-0084
+- CL-0016
+- CL-0042
+- CL-0043
+---
+
+id: RELATIONSHIP_EXTRACTION_SCRIPT
+title: Relationship Extraction Script - Usage & Operations
+type: runbook
 category: runbooks
 version: 1.0
 owner: platform-team
@@ -25,6 +60,7 @@ relates_to:
 - ADR-0030
 - ADR-0032
 - ADR-0033
+- ADR-0033-platform-ci-orchestrated-modes
 - ADR-0034
 - ADR-0047
 - ADR-0056
@@ -35,7 +71,7 @@ relates_to:
 - CL-0043
 - METADATA_BACKFILL_SCRIPT
 - METADATA_STRATEGY
----
+------
 
 # Relationship Extraction Script - Usage & Operations
 

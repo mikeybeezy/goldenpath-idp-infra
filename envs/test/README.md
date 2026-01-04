@@ -1,6 +1,5 @@
 ---
-
-id: README
+id: ENVS_TEST_README
 title: Test Environment
 type: documentation
 category: envs

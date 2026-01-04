@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - module:terraform
+- module:terraform
 risk_profile:
   production_impact: low
   security_risk: none
@@ -19,8 +19,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - 16_INFRA_Build_ID_Strategy_Decision
-  - ADR-0021
+- 16_INFRA_Build_ID_Strategy_Decision
+- ADR-0021
 ---
 
 # PR Terraform Plan (Living Document)

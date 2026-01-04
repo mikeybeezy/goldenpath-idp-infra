@@ -1,5 +1,5 @@
 ---
-id: CL-0043
+id: CL-0043-complete-metadata-backfill
 title: 'CL-0043: Complete Metadata Backfill with Knowledge Graph'
 type: changelog
 category: changelog
@@ -18,7 +18,6 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
 - ADR-0034
 - ADR-0082
 - ADR-0083
@@ -26,7 +25,6 @@ relates_to:
 - CL-0042
 - CL-0043
 - METADATA_STRATEGY
-
 ---
 
 # CL-0043: Complete Metadata Backfill with Knowledge Graph

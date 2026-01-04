@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - 10_SERVICE_CATALOG
-  - SHARED_RESPONSIBILITY
+- 10_SERVICE_CATALOG
+- SHARED_RESPONSIBILITY
 ---
 
 # Platform Service Agreement

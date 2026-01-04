@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - TEARDOWN_README
-  - ORPHAN_CLEANUP
-  - 01_LIFECYCLE_POLICY
+- TEARDOWN_README
+- ORPHAN_CLEANUP
+- 01_LIFECYCLE_POLICY
 ---
 
 # Repo Decommissioning Runbook

@@ -1,9 +1,12 @@
 ---
-id: ADR-0041
+id: ADR-0041-platform-orphan-cleanup-deletion-order
 title: 'ADR-0041: Deterministic orphan cleanup deletion order'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -17,6 +20,7 @@ lifecycle:
 relates_to:
 - 15_TEARDOWN_AND_CLEANUP
 - ADR-0038
+- ADR-0038-platform-teardown-orphan-cleanup-gate
 - ADR-0041
 ---
 

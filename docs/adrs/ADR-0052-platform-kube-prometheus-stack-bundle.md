@@ -1,9 +1,12 @@
 ---
-id: ADR-0052
+id: ADR-0052-platform-kube-prometheus-stack-bundle
 title: 'ADR-0052: Use kube-prometheus-stack as the V1 monitoring bundle'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

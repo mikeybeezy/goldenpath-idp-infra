@@ -2,8 +2,11 @@
 id: 29_CD_DEPLOYMENT_CONTRACT
 title: CD Deployment Contract
 type: contract
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: high
   security_risk: none

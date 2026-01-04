@@ -1,9 +1,12 @@
 ---
-id: ADR-0014
+id: ADR-0014-platform-ci-local-preflight-checks
 title: 'ADR-0014: Local preflight checks before PRs'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

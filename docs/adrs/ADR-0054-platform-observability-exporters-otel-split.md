@@ -1,9 +1,12 @@
 ---
-id: ADR-0054
+id: ADR-0054-platform-observability-exporters-otel-split
 title: 'ADR-0054: Exporter vs OpenTelemetry split for platform observability'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -17,7 +20,9 @@ lifecycle:
 relates_to:
 - 05_OBSERVABILITY_DECISIONS
 - ADR-0049
+- ADR-0049-platform-pragmatic-observability-baseline
 - ADR-0052
+- ADR-0052-platform-kube-prometheus-stack-bundle
 - ADR-0054
 ---
 

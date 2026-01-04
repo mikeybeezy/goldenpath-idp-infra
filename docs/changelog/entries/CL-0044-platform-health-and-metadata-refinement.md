@@ -1,21 +1,24 @@
 ---
-id: CL-0044
-title: Platform Health Check and Metadata Refinement
+id: CL-0044-platform-health-and-metadata-refinement
+title: 'CL-0044: Platform Health Check and Metadata Refinement'
 type: changelog
-category: idp-tooling
-version: 1.0
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
-  production_impact: none
+  production_impact: low
   security_risk: none
-  coupling_risk: none
+  coupling_risk: low
 reliability:
-  rollback_strategy: delete-file
+  rollback_strategy: git-revert
   observability_tier: bronze
 lifecycle:
-  supported_until: 2028-01-01
+  supported_until: 2027-01-04
   breaking_change: false
+relates_to:
+- CL-0044
 ---
 
 # CL-0044: Platform Health Check and Metadata Refinement

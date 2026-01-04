@@ -1,5 +1,5 @@
 ---
-id: adr_template
+id: 02_adr_template
 title: 'ADR-XXXX: Template for Architecture Decision Records'
 type: template
 category: adrs
@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-  - ADR-0084
-  - 01_GOVERNANCE
+- ADR-0084
+- 01_GOVERNANCE
 ---
 
 # ADR-XXXX: Concise decision title

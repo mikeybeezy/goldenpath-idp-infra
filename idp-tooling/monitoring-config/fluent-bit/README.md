@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - chart:fluent-bit
+- chart:fluent-bit
 risk_profile:
   production_impact: low
   security_risk: none
@@ -19,8 +19,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - HELM_FLUENT_BIT
-  - IDP_TOOLING_MONITORING_CONFIG
+- HELM_FLUENT_BIT
+- IDP_TOOLING_MONITORING_CONFIG
 ---
 
 Placeholder for idp-tooling/monitoring-config/fluent-bit

@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - chart:loki
-  - image:loki
+- chart:loki
+- image:loki
 risk_profile:
   production_impact: low
   security_risk: none
@@ -20,8 +20,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - HELM_FLUENT_BIT
-  - HELM_KUBE_PROMETHEUS_STACK
+- HELM_FLUENT_BIT
+- HELM_KUBE_PROMETHEUS_STACK
 ---
 
 # Loki Helm Deployment

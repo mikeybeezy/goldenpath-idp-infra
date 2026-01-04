@@ -1,9 +1,12 @@
 ---
-id: CL-0024
+id: CL-0024-build-run-logs
 title: 'CL-0024: Build run log entries'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,9 +18,7 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
 - CL-0024
-
 ---
 
 # CL-0024: Build run log entries

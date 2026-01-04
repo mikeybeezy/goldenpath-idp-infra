@@ -1,9 +1,12 @@
 ---
-id: CL-0032
+id: CL-0032-ai-agent-governance
 title: 'Changelog: AI agent governance and auditability'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,10 +18,8 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
 - ADR-0079
 - CL-0032
-
 ---
 
 # Changelog: AI agent governance and auditability

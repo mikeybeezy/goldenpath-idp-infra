@@ -7,8 +7,8 @@ version: 2.0
 owner: platform-team
 status: active
 dependencies:
-  - module:terraform
-  - module:kubernetes
+- module:terraform
+- module:kubernetes
 risk_profile:
   production_impact: high
   security_risk: access
@@ -20,10 +20,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - TEARDOWN_README
-  - 07_TF_STATE_FORCE_UNLOCK
-  - 08_MANAGED_LB_CLEANUP
-  - CI_WORKFLOWS
+- TEARDOWN_README
+- 07_TF_STATE_FORCE_UNLOCK
+- 08_MANAGED_LB_CLEANUP
+- CI_WORKFLOWS
 ---
 
 # CI Teardown Recovery (v2)

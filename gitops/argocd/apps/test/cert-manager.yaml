@@ -1,35 +1,40 @@
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: test-cert-manager
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: HELM_CERT_MANAGER
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: medium
 spec:
   project: default
   destination:
     namespace: cert-manager
     server: https://kubernetes.default.svc
   sources:
-    - repoURL: https://charts.jetstack.io
-      chart: cert-manager
-      targetRevision: v1.14.4
-      helm:
-        valueFiles:
-          - $values/gitops/helm/cert-manager/values/test.yaml
-    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
-      ref: values
+  - repoURL: https://charts.jetstack.io
+    chart: cert-manager
+    targetRevision: v1.14.4
+    helm:
+      valueFiles:
+      - $values/gitops/helm/cert-manager/values/test.yaml
+  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    targetRevision: HEAD
+    ref: values
   ignoreDifferences:
-    - group: admissionregistration.k8s.io
-      kind: ValidatingWebhookConfiguration
-      jqPathExpressions:
-        - .webhooks[].clientConfig.caBundle
-    - group: admissionregistration.k8s.io
-      kind: MutatingWebhookConfiguration
-      jqPathExpressions:
-        - .webhooks[].clientConfig.caBundle
+  - group: admissionregistration.k8s.io
+    kind: ValidatingWebhookConfiguration
+    jqPathExpressions:
+    - .webhooks[].clientConfig.caBundle
+  - group: admissionregistration.k8s.io
+    kind: MutatingWebhookConfiguration
+    jqPathExpressions:
+    - .webhooks[].clientConfig.caBundle
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

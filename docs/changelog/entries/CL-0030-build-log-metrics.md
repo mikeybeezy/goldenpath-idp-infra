@@ -1,9 +1,12 @@
 ---
-id: CL-0030
+id: CL-0030-build-log-metrics
 title: 'CL-0030: Add Build Log Metrics and Roadmap Update'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,10 +18,8 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
-- BUILD-RUN-LOGS
 - CL-0030
-
+- DOCS_BUILD-RUN-LOGS_README
 ---
 
 # CL-0030: Add Build Log Metrics and Roadmap Update

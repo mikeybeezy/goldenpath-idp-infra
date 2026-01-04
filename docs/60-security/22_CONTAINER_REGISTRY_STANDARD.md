@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - ADR-0018
-  - 27_CI_IMAGE_SCANNING
+- ADR-0018
+- 27_CI_IMAGE_SCANNING
 ---
 
 # Container Registry Standard (Living Document)

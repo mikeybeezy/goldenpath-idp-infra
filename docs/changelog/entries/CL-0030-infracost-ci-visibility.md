@@ -1,9 +1,12 @@
 ---
-id: CL-0030
+id: CL-0030-infracost-ci-visibility
 title: 'CL-0030: Lightweight CI cost visibility (Infracost)'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,10 +18,8 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
 - ADR-0076
 - CL-0030
-
 ---
 
 # CL-0030: Lightweight CI cost visibility (Infracost)

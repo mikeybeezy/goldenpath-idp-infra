@@ -1,19 +1,27 @@
 ---
-id: CL-0041
-title: Argo CD app readiness runbook
+id: CL-0041-argocd-app-readiness-runbook
+title: CL-0041-argocd-app-readiness-runbook
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
-  security_risk: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
 relates_to:
-
 - 00_DOC_INDEX
 - 11_ARGOCD_APP_READINESS
 - CL-0041
-- RUNBOOKS
-
+- DOCS_RUNBOOKS_README
 ---
 
 ## CL-0041: Argo CD app readiness runbook

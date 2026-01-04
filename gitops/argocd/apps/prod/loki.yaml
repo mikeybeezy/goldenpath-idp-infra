@@ -1,27 +1,31 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: prod-loki
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: HELM_LOKI
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: low
 spec:
   project: default
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
   sources:
-    - repoURL: https://grafana.github.io/helm-charts
-      chart: loki-stack
-      targetRevision: 2.9.11
-      helm:
-        valueFiles:
-          - $values/gitops/helm/loki/values/prod.yaml
-    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
-      ref: values
+  - repoURL: https://grafana.github.io/helm-charts
+    chart: loki-stack
+    targetRevision: 2.9.11
+    helm:
+      valueFiles:
+      - $values/gitops/helm/loki/values/prod.yaml
+  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    targetRevision: HEAD
+    ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

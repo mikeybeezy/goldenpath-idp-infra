@@ -1,0 +1,25 @@
+---
+id: HELM_KONG
+title: Kong Ingress Gateway
+type: chart
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies:
+- module:vpc
+- service:eks
+risk_profile:
+  production_impact: high
+  security_risk: ingress-exposure
+  coupling_risk: high
+reliability:
+  rollback_strategy: helm-rollback
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: true
+relates_to:
+- ADR-0002
+- 12_GITOPS_AND_CICD
+---

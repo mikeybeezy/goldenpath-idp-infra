@@ -1,22 +1,26 @@
 ---
-id: ADR-0045
+id: ADR-0045-platform-teardown-lb-delete-default
 title: 'ADR-0045: Default LB delete when ENIs persist during teardown'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
 reliability:
   rollback_strategy: git-revert
-  observability_tier: silver
+  observability_tier: bronze
 lifecycle:
-  supported_until: 2028-01-04
+  supported_until: 2027-01-03
   breaking_change: false
 relates_to:
 - 15_TEARDOWN_AND_CLEANUP
 - ADR-0043
+- ADR-0043-platform-teardown-lb-eni-wait
 - ADR-0045
 ---
 

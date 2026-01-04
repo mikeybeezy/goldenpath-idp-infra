@@ -1,12 +1,15 @@
 ---
-id: CL-0016
+id: CL-0016-labeler-base-ref-checkout
 title: 'CL-0016: Labeler uses base ref checkout'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
-  security_risk: none
+  security_risk: low
   coupling_risk: low
 reliability:
   rollback_strategy: git-revert
@@ -15,10 +18,9 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
 - ADR-0067
+- ADR-0067-platform-labeler-base-ref
 - CL-0016
-
 ---
 
 # CL-0016: Labeler uses base ref checkout

@@ -1,9 +1,12 @@
 ---
-id: ADR-0034
+id: ADR-0034-platform-ci-environment-contract
 title: 'ADR-0034: CI Environment Contract'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,10 +18,9 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-
 - ADR-0011
+- ADR-0011-platform-ci-environment-contract
 - ADR-0034
-
 ---
 
 # ADR-0034: CI Environment Contract

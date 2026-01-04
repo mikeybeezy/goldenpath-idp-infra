@@ -1,9 +1,12 @@
 ---
-id: CL-0020
+id: CL-0020-golden-signals-dashboard
 title: 'CL-0020: Golden Signals Dashboard Standard'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +18,10 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
 - 09_PLATFORM_DASHBOARD_CATALOG
 - ADR-0066
+- ADR-0066-platform-dashboards-as-code
 - CL-0020
-
 ---
 
 # CL-0020: Golden Signals Dashboard Standard

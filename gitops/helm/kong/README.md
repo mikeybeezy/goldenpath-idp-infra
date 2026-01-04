@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - chart:kong
-  - image:kong
+- chart:kong
+- image:kong
 risk_profile:
   production_impact: low
   security_risk: none
@@ -20,8 +20,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - ADR-0002
-  - HELM_CERT_MANAGER
+- ADR-0002
+- HELM_CERT_MANAGER
 ---
 
 # Kong Helm Deployment

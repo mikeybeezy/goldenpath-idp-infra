@@ -1,9 +1,12 @@
 ---
-id: ADR-0081
+id: ADR-0081-platform-repo-wide-linting
 title: 'ADR-0081: Repo-wide linting for knowledge-graph hygiene'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,9 +18,7 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-
 - ADR-0081
-
 ---
 
 # ADR-0081: Repo-wide linting for knowledge-graph hygiene

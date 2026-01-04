@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - provider:grafana
+- provider:grafana
 risk_profile:
   production_impact: low
   security_risk: low
@@ -19,8 +19,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - HELM_KUBE_PROMETHEUS_STACK
-  - HELM_GRAFANA
+- HELM_KUBE_PROMETHEUS_STACK
+- HELM_GRAFANA
 ---
 
 # Grafana Configuration Module

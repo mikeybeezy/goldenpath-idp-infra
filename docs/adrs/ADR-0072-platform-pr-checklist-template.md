@@ -1,9 +1,12 @@
 ---
-id: ADR-0072
+id: ADR-0072-platform-pr-checklist-template
 title: 'ADR-0072: PR checklist template in PR gates guide'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

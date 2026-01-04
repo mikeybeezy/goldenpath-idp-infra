@@ -2,8 +2,11 @@
 id: 34_PLATFORM_SUCCESS_CHECKLIST
 title: Platform v1 Baseline Success Checklist (Living)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

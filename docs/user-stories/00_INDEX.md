@@ -1,5 +1,5 @@
 ---
-id: USER_STORIES_INDEX
+id: 00_INDEX
 title: User Story Index
 type: documentation
 category: user-stories
@@ -18,10 +18,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - ADR-0078
-  - CL-0031
-  - US-0001-governance-driven-repo-scaffolder
-  - US-0000-template
+- ADR-0078
+- CL-0031
+- US-0001-governance-driven-repo-scaffolder
+- US-0000-template
 ---
 
 # User Story Index

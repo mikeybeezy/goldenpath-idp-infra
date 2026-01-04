@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - 01_PLATFORM_SERVICE_AGREEMENT
-  - 14_MODULES_OVERVIEW
+- 01_PLATFORM_SERVICE_AGREEMENT
+- 14_MODULES_OVERVIEW
 ---
 
 # Service Catalog

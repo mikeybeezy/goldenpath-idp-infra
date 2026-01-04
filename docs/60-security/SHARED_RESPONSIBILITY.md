@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - 06_IDENTITY_AND_ACCESS
-  - 01_PLATFORM_SERVICE_AGREEMENT
+- 06_IDENTITY_AND_ACCESS
+- 01_PLATFORM_SERVICE_AGREEMENT
 ---
 
 #

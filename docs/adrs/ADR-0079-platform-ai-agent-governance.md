@@ -1,9 +1,12 @@
 ---
-id: ADR-0079
+id: ADR-0079-platform-ai-agent-governance
 title: 'ADR-0079: AI Agent Governance and Auditability'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,12 +18,10 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-
 - 07_AI_AGENT_GOVERNANCE
 - 26_AI_AGENT_PROTOCOLS
 - ADR-0079
 - AI_CHANGELOG
-
 ---
 
 # ADR-0079: AI Agent Governance and Auditability

@@ -2,8 +2,11 @@
 id: 39_GOLDEN_PATH_VALIDATION
 title: Golden Path Validation (Living)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

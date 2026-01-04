@@ -1,9 +1,12 @@
 ---
 id: 02_GOVERNANCE_MODEL
-title: "Governance Model \u2013 Golden Path IDP (Deprecated)"
+title: Governance Model – Golden Path IDP (Deprecated)
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: deprecated
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,12 +18,10 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-
 - 01_GOVERNANCE
 - 05_OBSERVABILITY_DECISIONS
 - 28_SECURITY_FLOOR_V1
 - 29_CD_DEPLOYMENT_CONTRACT
-
 ---
 
 # Governance Model – Golden Path IDP (Deprecated)

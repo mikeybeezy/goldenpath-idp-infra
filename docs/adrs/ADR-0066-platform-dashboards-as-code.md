@@ -1,9 +1,12 @@
 ---
-id: ADR-0066
+id: ADR-0066-platform-dashboards-as-code
 title: 'ADR-0066: Platform Dashboards as Code'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

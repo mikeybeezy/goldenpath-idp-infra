@@ -2,15 +2,18 @@
 id: 05_OBSERVABILITY_DECISIONS
 title: Observability Tooling Decisions
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
+  production_impact: medium
+  security_risk: access
+  coupling_risk: medium
 reliability:
   rollback_strategy: git-revert
-  observability_tier: bronze
+  observability_tier: gold
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
@@ -21,6 +24,7 @@ relates_to:
 - ADR-0054
 - ADR-0055
 - ADR-0056
+- ADR-0056-platform-loki-deployment-mode
 - ADR-0061
 ---
 

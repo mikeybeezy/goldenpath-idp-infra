@@ -1,5 +1,5 @@
 ---
-id: PULL_REQUEST_TEMPLATE
+id: pull_request_template
 title: Pull Request Template
 type: template
 category: github
@@ -18,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - 24_PR_GATES
-  - 04_PR_GUARDRAILS
+- 24_PR_GATES
+- 04_PR_GUARDRAILS
 ---
 
 Select at least one checkbox per section by changing `[ ]` to `[x]`.

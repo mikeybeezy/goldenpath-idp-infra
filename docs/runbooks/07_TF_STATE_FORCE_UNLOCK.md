@@ -7,8 +7,8 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - module:terraform
-  - module:dynamodb
+- module:terraform
+- module:dynamodb
 risk_profile:
   production_impact: high
   security_risk: access
@@ -20,8 +20,8 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - 32_TERRAFORM_STATE_AND_LOCKING
-  - CI_WORKFLOWS
+- 32_TERRAFORM_STATE_AND_LOCKING
+- CI_WORKFLOWS
 ---
 
 # Terraform State Force Unlock (Runbook)

@@ -2,8 +2,11 @@
 id: 37_V1_SCOPE_AND_TIMELINE
 title: V1 Scope and Timeline (Backstage + Platform Capabilities)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none

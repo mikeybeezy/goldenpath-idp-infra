@@ -1,9 +1,12 @@
 ---
-id: CL-0022
+id: CL-0022-pr-guardrails-template-copy
 title: 'CL-0022: PR guardrails template copy'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +18,9 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
 - 24_PR_GATES
 - ADR-0072
 - CL-0022
-
 ---
 
 # CL-0022: PR guardrails template copy

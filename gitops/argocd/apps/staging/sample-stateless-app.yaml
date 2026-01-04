@@ -1,9 +1,13 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: staging-sample-stateless-app
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: SCRIPTS_SAMPLE_STATELESS_APP_METADATA
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: low
 spec:
   project: default
   destination:
@@ -18,4 +22,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

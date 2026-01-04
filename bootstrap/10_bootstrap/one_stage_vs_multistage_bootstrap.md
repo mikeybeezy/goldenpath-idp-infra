@@ -1,5 +1,5 @@
 ---
-id: ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
+id: one_stage_vs_multistage_bootstrap
 title: One-Stage vs Multi-Stage Bootstrap
 type: documentation
 category: bootstrap
@@ -18,9 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - GOLDENPATH_IDP_BOOTSTRAP
-  - ADR-0013
-  - 18_BACKSTAGE_MVP
+- GOLDENPATH_IDP_BOOTSTRAP
+- ADR-0013
+- 18_BACKSTAGE_MVP
 ---
 
 # One-Stage vs Multi-Stage Bootstrap

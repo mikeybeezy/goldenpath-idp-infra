@@ -2,8 +2,11 @@
 id: 02_GRAFANA_ACCESS
 title: Grafana Access (Runbook)
 type: runbook
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -15,9 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
 - 31_EKS_ACCESS_MODEL
-
 ---
 
 # Grafana Access (Runbook)

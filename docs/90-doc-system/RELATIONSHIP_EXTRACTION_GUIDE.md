@@ -2,8 +2,8 @@
 id: RELATIONSHIP_EXTRACTION_GUIDE
 title: Relationship Extraction Guide
 type: documentation
-category: docs
-version: 1.0
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
 dependencies: []
@@ -21,10 +21,11 @@ relates_to:
 - 12_GITOPS_AND_CICD
 - 21_CI_ENVIRONMENT_CONTRACT
 - ADR-0026
+- ADR-0026-platform-cd-deployment-contract
 - ADR-0033
+- ADR-0033-platform-ci-orchestrated-modes
 - ADR-0034
 - ADR-0047
-- CI_WORKFLOWS
 ---
 
 # Relationship Extraction Guide
