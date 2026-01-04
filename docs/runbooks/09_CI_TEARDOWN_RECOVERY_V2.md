@@ -1,3 +1,22 @@
+---
+id: 09_CI_TEARDOWN_RECOVERY_V2
+title: CI Teardown Recovery (v2)
+type: runbook
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # CI Teardown Recovery (v2)
 
 Use this when teardown hangs or state locks block cleanup. This sequence

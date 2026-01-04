@@ -1,3 +1,22 @@
+---
+id: 00_DESIGN_PHILOSOPHY
+title: GoldenPath Design Philosophy
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # GoldenPath Design Philosophy
 
 Doc contract:

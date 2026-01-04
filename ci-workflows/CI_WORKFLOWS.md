@@ -1,3 +1,22 @@
+---
+id: CI_WORKFLOWS
+title: "CI Workflows Index (Living)"
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: medium
+  security_risk: none
+  coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # CI Workflows Index (Living)
 
 Doc contract:

@@ -1,3 +1,22 @@
+---
+id: 07_TF_STATE_FORCE_UNLOCK
+title: Terraform State Force Unlock (Runbook)
+type: runbook
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # Terraform State Force Unlock (Runbook)
 
 Use this only when a Terraform run left a stale lock and no other Terraform

@@ -1,3 +1,22 @@
+---
+id: 04_REPO_STRUCTURE
+title: Repository Structure & Workflow
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # Repository Structure & Workflow
 
 This document explains how the Golden Path IDP repository is organized and why each area exists. Use it as the canonical reference when adding new platform capabilities.

@@ -1,3 +1,22 @@
+---
+id: 01_EKS_ACCESS_RECOVERY
+title: EKS Access Recovery (Runbook)
+type: runbook
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # EKS Access Recovery (Runbook)
 
 This runbook provides the step-by-step procedure to restore access to an EKS

@@ -1,3 +1,22 @@
+---
+id: CL-0026
+title: "CL-0026: Day-one onboarding checklist"
+type: changelog
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to: []
+---
+
 # CL-0026: Day-one onboarding checklist
 
 Date: 2026-01-03

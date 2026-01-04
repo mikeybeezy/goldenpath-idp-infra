@@ -1,3 +1,22 @@
+---
+id: CHART_VERSIONS
+title: Helm Chart Versions (Argo-managed)
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # Helm Chart Versions (Argo-managed)
 
 This file centralizes Helm chart versions for Argo CD apps.

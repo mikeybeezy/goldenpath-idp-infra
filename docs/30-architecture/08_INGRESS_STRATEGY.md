@@ -1,3 +1,22 @@
+---
+id: 08_INGRESS_STRATEGY
+title: Ingress Front Door Strategy
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # Ingress Front Door Strategy
 
 See also: `docs/30-architecture/11_NETWORKING.md` for environment exposure and access model.

@@ -1,3 +1,22 @@
+---
+id: CL-0030
+title: "CL-0030: Add Build Log Metrics and Roadmap Update"
+type: changelog
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to: []
+---
+
 # CL-0030: Add Build Log Metrics and Roadmap Update
 
 Date: 2026-01-03

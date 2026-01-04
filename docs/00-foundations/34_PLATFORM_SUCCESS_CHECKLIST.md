@@ -1,3 +1,22 @@
+---
+id: 34_PLATFORM_SUCCESS_CHECKLIST
+title: Platform v1 Baseline Success Checklist (Living)
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # Platform v1 Baseline Success Checklist (Living)
 
 This checklist defines what “success without a key operator” looks like.

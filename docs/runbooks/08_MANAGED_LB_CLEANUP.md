@@ -1,3 +1,22 @@
+---
+id: 08_MANAGED_LB_CLEANUP
+title: Managed LB Resource Cleanup (Runbook)
+type: runbook
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # Managed LB Resource Cleanup (Runbook)
 
 Use this when the EKS cluster is gone but VPC deletion fails due to

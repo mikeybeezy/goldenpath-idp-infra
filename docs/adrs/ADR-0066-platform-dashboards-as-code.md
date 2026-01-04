@@ -1,3 +1,22 @@
+---
+id: ADR-0066
+title: "ADR-0066: Platform Dashboards as Code"
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to: []
+---
+
 # ADR-0066: Platform Dashboards as Code
 
 Filename: `ADR-0066-platform-dashboards-as-code.md`

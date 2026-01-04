@@ -1,3 +1,22 @@
+---
+id: CL-0034
+title: "Changelog: PR template enforcement and CI iteration"
+type: changelog
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to: []
+---
+
 # Changelog: PR template enforcement and CI iteration
 
 Date: 2026-01-03

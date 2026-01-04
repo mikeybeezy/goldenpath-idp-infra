@@ -1,3 +1,22 @@
+---
+id: goldenpath-idp-bootstrap
+title: Helm Bootstrap Runner (Non-Production)
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # Helm Bootstrap Runner (Non-Production)
 
 This document explains what `bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh` does and when to run it.

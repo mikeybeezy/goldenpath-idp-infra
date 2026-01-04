@@ -1,3 +1,22 @@
+---
+id: README
+title: WordPress on EFS (Reference)
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # WordPress on EFS (Reference)
 
 This directory contains a WordPress-on-EFS example with Golden Path scaffolds

@@ -1,3 +1,22 @@
+---
+id: US-0001-governance-driven-repo-scaffolder
+title: "US-0001: Governance-driven repo scaffolder"
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # US-0001: Governance-driven repo scaffolder
 
 Date: 2026-01-03

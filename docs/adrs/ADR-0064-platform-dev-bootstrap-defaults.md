@@ -1,3 +1,22 @@
+---
+id: ADR-0064
+title: "ADR-0064: Dev bootstrap defaults off for k8s resources and storage"
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to: []
+---
+
 # ADR-0064: Dev bootstrap defaults off for k8s resources and storage
 
 Filename: `ADR-0064-platform-dev-bootstrap-defaults.md`

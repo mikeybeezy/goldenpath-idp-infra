@@ -209,17 +209,26 @@ def main():
     parser.add_argument('--verbose', action='store_true', help='Show all files including skipped ones')
     args = parser.parse_args()
     
-    # Find all markdown files in docs/
-    all_md_files = glob.glob('docs/**/*.md', recursive=True)
+    # Find all markdown files in the repository (excluding .gemini and node_modules)
+    all_md_files = []
+    for pattern in ['**/*.md', '*.md']:
+        all_md_files.extend(glob.glob(pattern, recursive=True))
     
-    print(f"Found {len(all_md_files)} markdown files in docs/")
+    # Filter out excluded directories
+    excluded_paths = ['.gemini', 'node_modules', '.git']
+    all_md_files = [f for f in all_md_files if not any(exc in f for exc in excluded_paths)]
+    
+    # Remove duplicates and sort
+    all_md_files = sorted(set(all_md_files))
+    
+    print(f"Found {len(all_md_files)} markdown files in repository")
     print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")
     print("=" * 60)
     
     updated_count = 0
     skipped_count = 0
     
-    for filepath in sorted(all_md_files):
+    for filepath in all_md_files:
         if add_metadata_to_file(filepath, dry_run=args.dry_run, verbose=args.verbose):
             updated_count += 1
         else:
@@ -235,9 +244,9 @@ def main():
     else:
         print("\n✅ Metadata backfill complete!")
         print("   Next steps:")
-        print("   1. Review changes: git diff docs/")
+        print("   1. Review changes: git diff")
         print("   2. Validate: python3 scripts/validate-metadata.py docs")
-        print("   3. Commit: git add docs/ && git commit -m 'docs: complete metadata backfill'")
+        print("   3. Commit: git add . && git commit -m 'docs: complete metadata backfill'")
 
 
 if __name__ == '__main__':

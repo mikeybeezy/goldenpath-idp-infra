@@ -1,3 +1,22 @@
+---
+id: CL-0032
+title: "Changelog: AI agent governance and auditability"
+type: changelog
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to: []
+---
+
 # Changelog: AI agent governance and auditability
 
 Date: 2026-01-03
