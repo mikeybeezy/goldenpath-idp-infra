@@ -7,6 +7,6 @@ metadata:
     kubernetes.io/ingress.class: kong
 plugin: rate-limiting
 config:
-  minute: {{ values.rate_limit_per_min }}
+  minute: "{{ values.rate_limit_per_min }}"
   limit_by: consumer
   policy: local

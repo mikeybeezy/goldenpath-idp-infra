@@ -16,5 +16,5 @@ spec:
     app.kubernetes.io/name: "{{ values.app_name }}"
   ports:
     - name: http
-      port: {{ values.service_port }}
+      port: "{{ values.service_port }}"
       targetPort: http
