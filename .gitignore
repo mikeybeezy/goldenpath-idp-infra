@@ -46,3 +46,4 @@ logs/build-timings/
 chat_fil.txt
 envs/dev/grafana
 envs/dev/grafana-describe.txt
+scripts/__pycache__/
