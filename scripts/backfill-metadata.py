@@ -37,25 +37,25 @@ def extract_version(filepath):
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
-        
+
         # For Helm chart READMEs, look for version mentions
         if 'helm' in filepath.lower():
             # Pattern: version: X.Y.Z or appVersion: X.Y.Z
             version_match = re.search(r'(?:version|appVersion):\s*([\d\.]+)', content, re.IGNORECASE)
             if version_match:
                 return version_match.group(1)
-        
+
         # For ArgoCD mentions
         if 'argocd' in filepath.lower() or 'argo' in filepath.lower():
             version_match = re.search(r'(?:argocd|argo)[-\s]?(?:version)?:?\s*v?([\d\.]+)', content, re.IGNORECASE)
             if version_match:
                 return version_match.group(1)
-        
+
         # Look for explicit version line in frontmatter or content
         version_match = re.search(r'^version:\s*([\d\.]+)', content, re.MULTILINE)
         if version_match:
             return version_match.group(1)
-        
+
         # Default to 1.0 for docs without explicit versions
         return '1.0'
     except:
@@ -65,28 +65,28 @@ def extract_version(filepath):
 def extract_dependencies(filepath):
     """Extract dependencies from file content"""
     dependencies = []
-    
+
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
-        
+
         # For Terraform modules: extract module sources
         if filepath.endswith('README.md') and '/modules/' in filepath:
             # Look for terraform module references
             module_refs = re.findall(r'module\s+"([^"]+)"', content)
             dependencies.extend([f'module:{ref}' for ref in module_refs])
-        
+
         # For Helm charts: extract chart dependencies
         if 'helm' in filepath.lower():
             # Look for dependency charts
             chart_deps = re.findall(r'dependency:\s*([\w-]+)', content, re.IGNORECASE)
             dependencies.extend([f'chart:{dep}' for dep in chart_deps])
-        
+
         # For apps: extract image references
         if '/apps/' in filepath:
             image_refs = re.findall(r'image:\s*([^\s]+)', content)
             dependencies.extend([f'image:{img}' for img in image_refs[:3]])  # Limit to 3
-        
+
         # Remove duplicates
         return list(set(dependencies))
     except:
@@ -98,7 +98,7 @@ def extract_category(filepath):
     # docs/00-foundations/file.md → foundations
     # docs/10-governance/file.md → governance
     # modules/aws_eks/README.md → modules
-    
+
     if '/docs/' in filepath:
         # Extract the numbered directory
         match = re.search(r'docs/(\d+-[^/]+)', filepath)
@@ -107,14 +107,14 @@ def extract_category(filepath):
         # For docs root files
         if '/docs/' in filepath and filepath.count('/') == 2:
             return 'docs-root'
-    
+
     # For non-docs files, use parent directory
     parts = filepath.split('/')
     if len(parts) > 1:
         # modules/aws_eks/README.md → modules
         # apps/fast-api-app-template/README.md → apps
         return parts[0]
-    
+
     return 'root'
 
 
@@ -145,15 +145,15 @@ def determine_doc_type(filepath):
 def get_id_from_filepath(filepath):
     """Extract ID from filepath"""
     basename = os.path.basename(filepath).replace('.md', '')
-    
+
     # Changelog entries
     if '/changelog/entries/' in filepath and basename.startswith('CL-'):
         return basename.split('-')[0] + '-' + basename.split('-')[1]
-    
+
     # ADRs
     if '/adrs/' in filepath and basename.startswith('ADR-'):
         return basename.split('-')[0] + '-' + basename.split('-')[1]
-    
+
     # Default: use basename
     return basename
 
@@ -218,14 +218,14 @@ def generate_metadata(filepath, title, doc_type):
     lifecycle_date = get_lifecycle_date(filepath, doc_type)
     risk_profile = get_risk_profile(doc_type)
     obs_tier = get_observability_tier(doc_type)
-    
+
     # Quote title if it contains special characters
     if ':' in title and not title.startswith('"'):
         title = f'"{title}"'
-    
+
     # Format dependencies as YAML array
     deps_yaml = '[]' if not dependencies else '\n  - ' + '\n  - '.join(dependencies)
-    
+
     metadata = f"""---
 id: {doc_id}
 title: {title}
@@ -269,30 +269,30 @@ def add_metadata_to_file(filepath, dry_run=False, verbose=False):
         if verbose:
             print(f"⏭️  {filepath} (already has metadata)")
         return False
-    
+
     try:
         # Read current content
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
-        
+
         # Generate metadata
         title = get_title_from_file(filepath)
         doc_type = determine_doc_type(filepath)
         metadata = generate_metadata(filepath, title, doc_type)
-        
+
         if dry_run:
             print(f"🔍 Would add metadata to: {filepath}")
             print(f"   ID: {get_id_from_filepath(filepath)}, Type: {doc_type}")
             return True
-        
+
         # Write new content
         new_content = metadata + content
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(new_content)
-        
+
         print(f"✅ {filepath}")
         return True
-        
+
     except Exception as e:
         print(f"❌ Error processing {filepath}: {e}")
         return False
@@ -303,37 +303,37 @@ def main():
     parser.add_argument('--dry-run', action='store_true', help='Show what would be done without making changes')
     parser.add_argument('--verbose', action='store_true', help='Show all files including skipped ones')
     args = parser.parse_args()
-    
+
     # Find all markdown files in the repository (excluding .gemini and node_modules)
     all_md_files = []
     for pattern in ['**/*.md', '*.md']:
         all_md_files.extend(glob.glob(pattern, recursive=True))
-    
+
     # Filter out excluded directories
     excluded_paths = ['.gemini', 'node_modules', '.git']
     all_md_files = [f for f in all_md_files if not any(exc in f for exc in excluded_paths)]
-    
+
     # Remove duplicates and sort
     all_md_files = sorted(set(all_md_files))
-    
+
     print(f"Found {len(all_md_files)} markdown files in repository")
     print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")
     print("=" * 60)
-    
+
     updated_count = 0
     skipped_count = 0
-    
+
     for filepath in all_md_files:
         if add_metadata_to_file(filepath, dry_run=args.dry_run, verbose=args.verbose):
             updated_count += 1
         else:
             skipped_count += 1
-    
+
     print("=" * 60)
     print(f"✅ Updated: {updated_count}")
     print(f"⏭️  Skipped: {skipped_count}")
     print(f"📊 Total: {len(all_md_files)}")
-    
+
     if args.dry_run:
         print("\n🔍 This was a dry run. Run without --dry-run to apply changes.")
     else:

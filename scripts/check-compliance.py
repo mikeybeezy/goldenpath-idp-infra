@@ -11,11 +11,11 @@ def check_file(filepath):
         content = f.read()
 
     errors = []
-    
+
     # 1. Check for exactly --- terminators
     if not content.startswith('---'):
         return ["Missing frontmatter (must start with ---)"]
-    
+
     # Check for malformed terminators like ------
     if content.startswith('------'):
         errors.append("Frontmatter starts with more than 3 dashes (found ------)")
@@ -25,7 +25,7 @@ def check_file(filepath):
         matches = list(re.finditer(r'^---', content, re.MULTILINE))
         if len(matches) < 2:
             return ["Malformed or missing closing --- for frontmatter"]
-        
+
         # Check if the closing one is exactly ---
         header_text = content[matches[0].end():matches[1].start()].strip()
         closing_line = content[matches[1].start():matches[1].end() + 3] # check slightly ahead
@@ -47,7 +47,7 @@ def check_file(filepath):
         if 'dependencies' not in data:
             # Only warn for certain categories? No, let's check everywhere for now.
             pass
-        
+
         if 'relates_to' not in data:
              errors.append("Missing 'relates_to' field")
 
@@ -61,7 +61,7 @@ def check_file(filepath):
 def scan_repo(target_path='.'):
     compliant = 0
     inconsistent = 0
-    
+
     if os.path.isfile(target_path):
         if target_path.endswith('.md'):
             errors = check_file(target_path)
@@ -80,7 +80,7 @@ def scan_repo(target_path='.'):
     for root, dirs, files in os.walk(target_path):
         # Skip hidden and node_modules
         dirs[:] = [d for d in dirs if not d.startswith('.') and d != 'node_modules']
-        
+
         for file in files:
             if file.endswith('.md'):
                 filepath = os.path.join(root, file)
@@ -95,15 +95,15 @@ def scan_repo(target_path='.'):
                     # Progress indicator for large scans
                     if (compliant + inconsistent) % 50 == 0:
                         print(f"Progress: Checked {compliant + inconsistent} files...")
-    
+
     return compliant, inconsistent
 
 if __name__ == "__main__":
     import sys
     target = sys.argv[1] if len(sys.argv) > 1 else '.'
-    
+
     c, i = scan_repo(target)
-    
+
     if len(sys.argv) <= 1 or os.path.isdir(target):
         print("\n" + "="*40)
         print(f"Scan Complete for: {target}")
