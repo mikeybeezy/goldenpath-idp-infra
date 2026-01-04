@@ -6,7 +6,7 @@ on:
       - "**/*.md"
       - "**/metadata.yaml"
       - "**/metadata.yml"
-      - "scripts/validate-metadata.py"
+      - "scripts/validate_metadata.py"
       - ".github/workflows/ci-metadata-validation.yml"
 
 permissions:
@@ -30,6 +30,6 @@ jobs:
 
       - name: Run Metadata Validator
         run: |
-          chmod +x scripts/validate-metadata.py
+          chmod +x scripts/validate_metadata.py
           # Scan the whole repository
-          python3 scripts/validate-metadata.py .
+          python3 scripts/validate_metadata.py .
