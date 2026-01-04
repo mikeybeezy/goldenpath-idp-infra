@@ -1,3 +1,22 @@
+---
+id: 21_CI_ENVIRONMENT_CONTRACT
+title: CI Environment Contract
+type: contract
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: high
+  security_risk: none
+  coupling_risk: high
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # CI Environment Contract
 
 Doc contract:
