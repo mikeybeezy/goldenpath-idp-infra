@@ -214,7 +214,7 @@ title: "Your Title: With Colon"
 
 **Cause:** File in unexpected directory
 
-**Solution:** 
+**Solution:**
 1. Move file to correct directory, OR
 2. Manually override category in frontmatter
 

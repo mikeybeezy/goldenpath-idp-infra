@@ -67,7 +67,7 @@ The `backfill-metadata.py` script:
 
 ✅ **Already Completed:**
 - Batch 1: 14 files (contracts, onboarding, changelog meta) - COMMITTED
-- Build run logs: 6 files - COMMITTED  
+- Build run logs: 6 files - COMMITTED
 - PR #145 fixes: 40+ ADRs with quoted titles - COMMITTED
 
 ⏳ **Remaining:** ~161 files

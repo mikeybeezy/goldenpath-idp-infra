@@ -1,5 +1,5 @@
 ---
-id: ADR_TEMPLATE
+id: adr_template
 title: 'ADR-XXXX: Template for Architecture Decision Records'
 type: template
 category: adrs
