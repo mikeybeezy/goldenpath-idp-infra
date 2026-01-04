@@ -1,6 +1,6 @@
 ---
 id: ADR-0030
-title: ADR-0030: Pre-create IAM policies for IRSA controllers in V1
+title: "ADR-0030: Pre-create IAM policies for IRSA controllers in V1"
 type: adr
 owner: platform-team
 status: active

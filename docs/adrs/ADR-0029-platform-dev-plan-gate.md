@@ -1,6 +1,6 @@
 ---
 id: ADR-0029
-title: ADR-0029: Dev plan gate before dev apply
+title: "ADR-0029: Dev plan gate before dev apply"
 type: adr
 owner: platform-team
 status: active

@@ -1,6 +1,6 @@
 ---
 id: ADR-0040
-title: ADR-0040: Lifecycle-aware Terraform state keys for BuildId isolation
+title: "ADR-0040: Lifecycle-aware Terraform state keys for BuildId isolation"
 type: adr
 owner: platform-team
 status: active

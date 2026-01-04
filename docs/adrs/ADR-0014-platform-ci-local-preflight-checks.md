@@ -1,6 +1,6 @@
 ---
 id: ADR-0014
-title: ADR-0014: Local preflight checks before PRs
+title: "ADR-0014: Local preflight checks before PRs"
 type: adr
 owner: platform-team
 status: active

@@ -1,6 +1,6 @@
 ---
 id: ADR-0039
-title: ADR-0039: Tag-Scoped IAM Policy Template for Destructive Automation
+title: "ADR-0039: Tag-Scoped IAM Policy Template for Destructive Automation"
 type: adr
 owner: platform-team
 status: active

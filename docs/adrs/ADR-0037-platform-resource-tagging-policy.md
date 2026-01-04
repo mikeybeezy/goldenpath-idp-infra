@@ -1,6 +1,6 @@
 ---
 id: ADR-0037
-title: ADR-0037: Platform resource tagging policy
+title: "ADR-0037: Platform resource tagging policy"
 type: adr
 owner: platform-team
 status: active

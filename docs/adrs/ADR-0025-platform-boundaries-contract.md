@@ -1,6 +1,6 @@
 ---
 id: ADR-0025
-title: ADR-0025: Platform boundaries and contract
+title: "ADR-0025: Platform boundaries and contract"
 type: adr
 owner: platform-team
 status: active

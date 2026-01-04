@@ -1,6 +1,6 @@
 ---
 id: ADR-0033
-title: ADR-0033: CI orchestrated modes for infra lifecycle
+title: "ADR-0033: CI orchestrated modes for infra lifecycle"
 type: adr
 owner: platform-team
 status: active

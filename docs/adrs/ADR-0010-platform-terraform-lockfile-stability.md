@@ -1,6 +1,6 @@
 ---
 id: ADR-0010
-title: ADR-0010: Enforce Terraform lockfile stability in CI
+title: "ADR-0010: Enforce Terraform lockfile stability in CI"
 type: adr
 owner: platform-team
 status: active

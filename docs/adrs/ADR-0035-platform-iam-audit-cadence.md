@@ -1,6 +1,6 @@
 ---
 id: ADR-0035
-title: ADR-0035: IAM Audit Cadence for CI Roles
+title: "ADR-0035: IAM Audit Cadence for CI Roles"
 type: adr
 owner: platform-team
 status: active

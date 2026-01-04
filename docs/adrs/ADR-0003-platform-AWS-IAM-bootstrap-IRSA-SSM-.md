@@ -1,6 +1,6 @@
 ---
 id: ADR-0003
-title: ADR-0003: Use AWS IAM for bootstrap access, IRSA for pod-to-AWS access, and SSM for node break-glass
+title: "ADR-0003: Use AWS IAM for bootstrap access, IRSA for pod-to-AWS access, and SSM for node break-glass"
 type: adr
 owner: platform-team
 status: active

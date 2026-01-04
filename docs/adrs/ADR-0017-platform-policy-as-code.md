@@ -1,6 +1,6 @@
 ---
 id: ADR-0017
-title: ADR-0017: Policy as code for infrastructure and application changes
+title: "ADR-0017: Policy as code for infrastructure and application changes"
 type: adr
 owner: platform-team
 status: active

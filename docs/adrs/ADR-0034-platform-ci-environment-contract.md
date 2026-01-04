@@ -1,6 +1,6 @@
 ---
 id: ADR-0034
-title: ADR-0034: CI Environment Contract
+title: "ADR-0034: CI Environment Contract"
 type: adr
 owner: platform-team
 status: active

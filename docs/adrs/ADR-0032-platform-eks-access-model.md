@@ -1,6 +1,6 @@
 ---
 id: ADR-0032
-title: ADR-0032: EKS access model (bootstrap admin vs steady-state access)
+title: "ADR-0032: EKS access model (bootstrap admin vs steady-state access)"
 type: adr
 owner: platform-team
 status: active

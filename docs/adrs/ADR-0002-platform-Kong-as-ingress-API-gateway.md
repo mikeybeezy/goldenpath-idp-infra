@@ -1,6 +1,6 @@
 ---
 id: ADR-0002
-title: ADR-0002: Use Kong as the primary ingress/API gateway behind an internal NLB
+title: "ADR-0002: Use Kong as the primary ingress/API gateway behind an internal NLB"
 type: adr
 owner: platform-team
 status: active

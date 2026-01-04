@@ -1,6 +1,6 @@
 ---
 id: ADR-0023
-title: ADR-0023: CI image scanning standard
+title: "ADR-0023: CI image scanning standard"
 type: adr
 owner: platform-team
 status: active

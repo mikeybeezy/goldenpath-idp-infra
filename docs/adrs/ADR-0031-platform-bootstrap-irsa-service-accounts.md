@@ -1,6 +1,6 @@
 ---
 id: ADR-0031
-title: ADR-0031: Create IRSA service accounts during bootstrap
+title: "ADR-0031: Create IRSA service accounts during bootstrap"
 type: adr
 owner: platform-team
 status: active

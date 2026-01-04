@@ -1,6 +1,6 @@
 ---
 id: ADR-0026
-title: ADR-0026: CD deployment contract
+title: "ADR-0026: CD deployment contract"
 type: adr
 owner: platform-team
 status: active

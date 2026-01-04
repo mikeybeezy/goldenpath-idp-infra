@@ -1,6 +1,6 @@
 ---
 id: ADR-0022
-title: ADR-0022: Post-apply health checks for platform readiness
+title: "ADR-0022: Post-apply health checks for platform readiness"
 type: adr
 owner: platform-team
 status: active

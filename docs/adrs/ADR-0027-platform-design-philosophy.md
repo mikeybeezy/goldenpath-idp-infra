@@ -1,6 +1,6 @@
 ---
 id: ADR-0027
-title: ADR-0027: Platform design philosophy and reference implementation
+title: "ADR-0027: Platform design philosophy and reference implementation"
 type: adr
 owner: platform-team
 status: active

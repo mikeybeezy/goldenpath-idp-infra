@@ -1,6 +1,6 @@
 ---
 id: ADR-0038
-title: ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes
+title: "ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes"
 type: adr
 owner: platform-team
 status: active

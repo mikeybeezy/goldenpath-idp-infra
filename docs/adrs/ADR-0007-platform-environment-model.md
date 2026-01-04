@@ -1,6 +1,6 @@
 ---
 id: ADR-0007
-title: ADR-0007: Adopt an environment model that balances cost, iteration speed, and credible separation
+title: "ADR-0007: Adopt an environment model that balances cost, iteration speed, and credible separation"
 type: adr
 owner: platform-team
 status: active

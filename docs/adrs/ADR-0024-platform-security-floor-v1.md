@@ -1,6 +1,6 @@
 ---
 id: ADR-0024
-title: ADR-0024: Security floor for V1
+title: "ADR-0024: Security floor for V1"
 type: adr
 owner: platform-team
 status: active

@@ -1,6 +1,6 @@
 ---
 id: ADR-0021
-title: ADR-0021: PR Terraform plan with automated comments
+title: "ADR-0021: PR Terraform plan with automated comments"
 type: adr
 owner: platform-team
 status: active

@@ -1,6 +1,6 @@
 ---
 id: ADR-0016
-title: ADR-0016: CI environment separation and manual promotion gates
+title: "ADR-0016: CI environment separation and manual promotion gates"
 type: adr
 owner: platform-team
 status: active

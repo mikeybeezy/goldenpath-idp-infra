@@ -1,6 +1,6 @@
 ---
 id: ADR-0009
-title: ADR-0009: CI/CD observability via OpenTelemetry ("Delivery Insights")
+title: "ADR-0009: CI/CD observability via OpenTelemetry ("Delivery Insights")
 type: adr
 owner: platform-team
 status: active

@@ -1,6 +1,6 @@
 ---
 id: ADR-0001
-title: ADR-0001: Adopt Argo CD as GitOps controller for platform deployments
+title: "ADR-0001: Adopt Argo CD as GitOps controller for platform deployments"
 type: adr
 owner: platform-team
 status: active

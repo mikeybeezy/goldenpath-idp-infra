@@ -1,6 +1,6 @@
 ---
 id: ADR-0012
-title: ADR-0012: Repo decoupling options for infra and platform tooling
+title: "ADR-0012: Repo decoupling options for infra and platform tooling"
 type: adr
 owner: platform-team
 status: active

@@ -1,6 +1,6 @@
 ---
 id: ADR-0028
-title: ADR-0028: Dev branch gate before main
+title: "ADR-0028: Dev branch gate before main"
 type: adr
 owner: platform-team
 status: active

@@ -1,6 +1,6 @@
 ---
 id: ADR-0036
-title: ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown
+title: "ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown"
 type: adr
 owner: platform-team
 status: deprecated

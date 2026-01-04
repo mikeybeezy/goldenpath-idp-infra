@@ -1,6 +1,6 @@
 ---
 id: ADR-0013
-title: ADR-0013: Argo CD app management approach for current scale
+title: "ADR-0013: Argo CD app management approach for current scale"
 type: adr
 owner: platform-team
 status: active
