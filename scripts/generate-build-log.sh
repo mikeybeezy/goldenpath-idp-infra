@@ -29,7 +29,8 @@ else
   NEXT_SEQ=$(printf "%04d" $((10#$LAST_SEQ + 1)))
 fi
 
-LOG_FILE="${LOG_DIR}/BR-${NEXT_SEQ}-${BUILD_ID}.md"
+RUN_ID="BR-${NEXT_SEQ}"
+LOG_FILE="${LOG_DIR}/${RUN_ID}-${BUILD_ID}.md"
 
 echo "Generating log: ${LOG_FILE}"
 
@@ -46,25 +47,7 @@ TEARDOWN_DURATION="-"
 ARTIFACTS="See workflow run"
 SAFE_FLAGS="${FLAGS//|/-}"
 
-# 3. Replace Placeholders
-sed -i "s|YYYY-MM-DD|$(date -u +%Y-%m-%d)|g" "$LOG_FILE"
-sed -i "s|<build-id>|${BUILD_ID}|g" "$LOG_FILE"
-sed -i "s|<branch>|${GITHUB_REF_NAME:-unknown}|g" "$LOG_FILE"
-sed -i "s|<sha>|${GITHUB_SHA:-unknown}|g" "$LOG_FILE"
-sed -i "s|<workflow-name>|${WORKFLOW_NAME}|g" "$LOG_FILE"
-sed -i "s|<job-list>|${JOB_LIST}|g" "$LOG_FILE"
-sed -i "s|<url>|${RUN_URL}|g" "$LOG_FILE"
-sed -i "s|<config-source>|${CONFIG_SOURCE}|g" "$LOG_FILE"
-sed -i "s|<storage-addons>|${STORAGE_ADDONS}|g" "$LOG_FILE"
-sed -i "s|<irsa-strategy>|${IRSA_STRATEGY}|g" "$LOG_FILE"
-sed -i "s|<plan-delta>|${PLAN_DELTA}|g" "$LOG_FILE"
-sed -i "s|<build-seconds>|${BUILD_DURATION}|g" "$LOG_FILE"
-sed -i "s|<bootstrap-seconds>|${BOOTSTRAP_DURATION}|g" "$LOG_FILE"
-sed -i "s|<teardown-seconds>|${TEARDOWN_DURATION}|g" "$LOG_FILE"
-sed -i "s|<Outcome>|${OUTCOME}|g" "$LOG_FILE"
-sed -i "s|<artifacts>|${ARTIFACTS}|g" "$LOG_FILE"
-sed -i "s|<flags>|${SAFE_FLAGS}|g" "$LOG_FILE"
-
+# 3. Replace Placeholders (portable across macOS/Linux)
 if [[ -n "$ERROR_MSG" ]]; then
   NOTES="Automated capture: FAILED. Error: ${ERROR_MSG}"
   NOTES=${NOTES//|/-} # Sanitize
@@ -72,7 +55,62 @@ else
   NOTES="Automated capture from CI."
 fi
 
-sed -i "s|<notes>|${NOTES}|g" "$LOG_FILE"
+DATE_UTC="$(date -u +%Y-%m-%d)" \
+RUN_ID="${RUN_ID}" \
+BUILD_ID="${BUILD_ID}" \
+BRANCH_NAME="${GITHUB_REF_NAME:-unknown}" \
+COMMIT_SHA="${GITHUB_SHA:-unknown}" \
+WORKFLOW_NAME="${WORKFLOW_NAME}" \
+JOB_LIST="${JOB_LIST}" \
+RUN_URL="${RUN_URL}" \
+CONFIG_SOURCE="${CONFIG_SOURCE}" \
+STORAGE_ADDONS="${STORAGE_ADDONS}" \
+IRSA_STRATEGY="${IRSA_STRATEGY}" \
+PLAN_DELTA="${PLAN_DELTA}" \
+BUILD_DURATION="${BUILD_DURATION}" \
+BOOTSTRAP_DURATION="${BOOTSTRAP_DURATION}" \
+TEARDOWN_DURATION="${TEARDOWN_DURATION}" \
+OUTCOME="${OUTCOME}" \
+ARTIFACTS="${ARTIFACTS}" \
+SAFE_FLAGS="${SAFE_FLAGS}" \
+NOTES="${NOTES}" \
+LOG_FILE="${LOG_FILE}" \
+python - <<'PY'
+import os
+from pathlib import Path
+
+path = Path(os.environ["LOG_FILE"])
+content = path.read_text()
+
+repls = {
+    "YYYY-MM-DD": os.environ["DATE_UTC"],
+    "<run-id>": os.environ["RUN_ID"],
+    "<build-id>": os.environ["BUILD_ID"],
+    "<branch>": os.environ["BRANCH_NAME"],
+    "<sha>": os.environ["COMMIT_SHA"],
+    "<workflow-name>": os.environ["WORKFLOW_NAME"],
+    "<job-list>": os.environ["JOB_LIST"],
+    "<url>": os.environ["RUN_URL"],
+    "<config-source>": os.environ["CONFIG_SOURCE"],
+    "<storage-addons>": os.environ["STORAGE_ADDONS"],
+    "<irsa-strategy>": os.environ["IRSA_STRATEGY"],
+    "<plan-delta>": os.environ["PLAN_DELTA"],
+    "<build-seconds>": os.environ["BUILD_DURATION"],
+    "<bootstrap-seconds>": os.environ["BOOTSTRAP_DURATION"],
+    "<teardown-seconds>": os.environ["TEARDOWN_DURATION"],
+    "<Outcome>": os.environ["OUTCOME"],
+    "<artifacts>": os.environ["ARTIFACTS"],
+    "<flags>": os.environ["SAFE_FLAGS"],
+    "<notes>": os.environ["NOTES"],
+}
+
+for key, value in repls.items():
+    content = content.replace(key, value)
+
+path.write_text(content)
+PY
 
 echo "Log generated successfully."
-echo "new_log_path=${LOG_FILE}" >> "$GITHUB_OUTPUT"
+if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+  echo "new_log_path=${LOG_FILE}" >> "$GITHUB_OUTPUT"
+fi

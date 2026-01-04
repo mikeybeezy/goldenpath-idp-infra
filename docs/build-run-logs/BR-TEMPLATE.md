@@ -1,4 +1,12 @@
-# BR-XXXX-<build-id>
+---
+id: <run-id>
+title: Build run <build-id>
+type: runlog
+owner: platform-team
+status: active
+---
+
+# <run-id>: Build Run (<build-id>)
 
 Date (UTC): YYYY-MM-DD
 Build ID: <build-id>
