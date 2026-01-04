@@ -7,13 +7,15 @@ on:
       - "**/metadata.yaml"
       - "**/metadata.yml"
       - "scripts/validate_metadata.py"
+      - "scripts/standardize_metadata.py"
       - ".github/workflows/ci-metadata-validation.yml"
 
 permissions:
   contents: read
 
 jobs:
-  validate-metadata:
+  validate_metadata:
+    name: Metadata Validation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
