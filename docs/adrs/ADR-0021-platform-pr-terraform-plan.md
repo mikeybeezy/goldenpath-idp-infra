@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0021
-------
+---
 
 # ADR-0021: PR Terraform plan with automated comments
 

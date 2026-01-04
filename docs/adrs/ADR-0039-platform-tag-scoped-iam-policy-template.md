@@ -20,7 +20,7 @@ relates_to:
 - 35_RESOURCE_TAGGING
 - ADR-0037
 - ADR-0039
-------
+---
 
 # ADR-0039: Tag-Scoped IAM Policy Template for Destructive Automation
 

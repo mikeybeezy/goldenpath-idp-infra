@@ -19,7 +19,7 @@ relates_to:
 - ADR-0050
 - CHANGELOG
 - CL-####
-------
+---
 
 # ADR-0050: Label-gated changelog entries
 

@@ -15,14 +15,17 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 40_CHANGELOG_GOVERNANCE
 - CHANGELOG_TEMPLATE
 - CL-####
-------
+
+---
 
 # Changelog Labels (Living)
 
 Doc contract:
+
 - Purpose: Track changelog label rules and required entry format.
 - Owner: platform
 - Status: living

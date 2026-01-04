@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0023
-------
+---
 
 # ADR-0023: CI image scanning standard
 

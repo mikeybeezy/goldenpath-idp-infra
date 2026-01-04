@@ -19,7 +19,7 @@ relates_to:
 - 21_CI_ENVIRONMENT_CONTRACT
 - 29_CD_DEPLOYMENT_CONTRACT
 - ADR-0028
-------
+---
 
 # ADR-0028: Dev branch gate before main
 
@@ -94,55 +94,55 @@ Legend:
 [STATE] = S3 + DynamoDB backend
 -->    = trigger
 
-+---------------------------+
++---------------+
 |  Feature Branches (feat/*)|
 |  - Devs implement change  |
-+-------------+-------------+
++-------+-------+
               |
               | PR merge --> dev
               v
-+---------------------------+        [QUALITY GATE]
-|  dev branch (gate)        |  -------------------------+
++---------------+        [QUALITY GATE]
+|  dev branch (gate)        |  -------------+
 |  - Shared pre-merge gate  |                           |
-+-------------+-------------+                           |
++-------+-------+                           |
               |                                         |
               | manual trigger                          |
               v                                         |
-+---------------------------+                            |
++---------------+                            |
 |  [PLAN] infra-terraform   |                            |
 |  - OIDC: TF_AWS_IAM_ROLE  |                            |
 |  - init/plan (dev)        |                            |
-+-------------+-------------+                            |
++-------+-------+                            |
               |                                         |
               | manual trigger                          |
               v                                         |
-+---------------------------+                            |
++---------------+                            |
 |  [APPLY] infra-terraform  |                            |
 |  - OIDC: TF_AWS_IAM_ROLE  |                            |
 |    _DEV_APPLY             |                            |
 |  - apply dev              |                            |
-+-------------+-------------+                            |
++-------+-------+                            |
               |                                         |
               | success --> allow merge to main         |
               v                                         |
-+---------------------------+                            |
-|  main branch              | <--------------------------+
++---------------+                            |
+|  main branch              | <--------------+
 |  - Only after dev apply   |
-+-------------+-------------+
++-------+-------+
               |
               | optional promotion
               v
-+---------------------------+
++---------------+
 |  staging / prod gates     |
 |  - Manual promotion       |
 |  - Separate roles         |
-+---------------------------+
++---------------+
 
-+---------------------------+
++---------------+
 |  [STATE] Backend          |
 |  - S3 bucket (dev state)  |
 |  - DynamoDB lock table    |
-+---------------------------+
++---------------+
 ```
 
 ## Notes

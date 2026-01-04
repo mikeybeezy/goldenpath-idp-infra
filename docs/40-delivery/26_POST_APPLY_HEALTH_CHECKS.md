@@ -44,9 +44,9 @@ This document describes the health-check gate that runs after Terraform apply.
 ## ASCII flow
 
 ```text
-+--------------------+     +-----------------+     +-------------------------+
++-----------+     +-----------+     +-------------+
 | Terraform apply    | --> | Bootstrap phase | --> | Post-apply health checks |
-+--------------------+     +-----------------+     +-------------------------+
++-----------+     +-----------+     +-------------+
                                                          |   |      |
                                                          v   v      v
                                                     [EKS OK] [Argo OK] [Kong OK]

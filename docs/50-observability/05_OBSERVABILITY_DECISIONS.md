@@ -22,11 +22,12 @@ relates_to:
 - ADR-0055
 - ADR-0056
 - ADR-0061
-------
+---
 
 # Observability Tooling Decisions
 
 Doc contract:
+
 - Purpose: Record current observability tooling choices and defaults.
 - Owner: platform
 - Status: reference

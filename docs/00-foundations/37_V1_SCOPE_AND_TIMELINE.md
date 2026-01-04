@@ -17,11 +17,12 @@ lifecycle:
 relates_to:
 - 34_PLATFORM_SUCCESS_CHECKLIST
 - ROADMAP
-------
+---
 
 # V1 Scope and Timeline (Backstage + Platform Capabilities)
 
 Doc contract:
+
 - Purpose: Define V1 scope, timeline, and explicit deferrals.
 - Owner: platform
 - Status: living

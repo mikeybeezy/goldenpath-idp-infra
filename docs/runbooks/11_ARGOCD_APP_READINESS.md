@@ -30,6 +30,7 @@ relates_to:
 # Argo CD App Readiness Checklist
 
 Doc contract:
+
 - Purpose: Verify Argo CD apps can sync cleanly and required dependencies exist.
 - Owner: platform
 - Status: reference

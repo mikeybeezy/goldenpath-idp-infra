@@ -15,14 +15,17 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 12_GITOPS_AND_CICD
 - 29_CD_DEPLOYMENT_CONTRACT
 - 42_APP_TEMPLATE_LIVING
-------
+
+---
 
 # App Example Deployments (Argo CD + Helm + Kustomize)
 
 Doc contract:
+
 - Purpose: Describe how example apps are scaffolded and packaged for Argo CD, Helm, and Kustomize.
 - Owner: platform
 - Status: living

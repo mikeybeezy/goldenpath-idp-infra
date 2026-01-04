@@ -1,4 +1,5 @@
 ---
+
 id: README
 title: WordPress on EFS (Reference)
 type: documentation
@@ -18,7 +19,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to: []
-------
+---
 
 # WordPress on EFS (Reference)
 

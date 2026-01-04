@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0026
-------
+---
 
 # ADR-0026: CD deployment contract
 

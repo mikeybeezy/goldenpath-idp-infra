@@ -18,11 +18,12 @@ relates_to:
 - 01_GOVERNANCE
 - 01_TAG_SCOPED_POLICY_TEMPLATE
 - ADR-0037
-------
+---
 
 # Resource Tagging (Living)
 
 Doc contract:
+
 - Purpose: Define required tags and cleanup implications for platform resources.
 - Owner: platform
 - Status: living

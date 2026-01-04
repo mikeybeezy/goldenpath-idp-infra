@@ -17,11 +17,12 @@ lifecycle:
 relates_to:
 - 21_CI_ENVIRONMENT_CONTRACT
 - 37_V1_SCOPE_AND_TIMELINE
-------
+---
 
 # Branching Strategy (GoldenPath IDP)
 
 Doc contract:
+
 - Purpose: Define branch roles, promotion flow, and naming.
 - Owner: platform
 - Status: living

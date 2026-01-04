@@ -18,7 +18,7 @@ relates_to:
 - 21_CI_ENVIRONMENT_CONTRACT
 - ADR-0060
 - CI_WORKFLOWS
-------
+---
 
 # ADR-0060: Separate update workflow for existing ephemeral dev clusters
 
@@ -68,10 +68,12 @@ dev clusters. The workflow will:
 ## Scope
 
 Applies to:
+
 - Dev ephemeral clusters where the BuildId already exists.
 - Updates that must reuse the existing state key.
 
 Does not apply to:
+
 - New ephemeral cluster creation.
 - Persistent lifecycle clusters (for now).
 - Automated apply on merge.

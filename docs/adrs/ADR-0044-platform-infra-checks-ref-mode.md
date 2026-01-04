@@ -18,7 +18,7 @@ relates_to:
 - 21_CI_ENVIRONMENT_CONTRACT
 - ADR-0044
 - ADR-0046
-------
+---
 
 # ADR-0044: Configurable ref for infra checks dispatch
 
@@ -49,6 +49,7 @@ both. The default should remain simple, but we need a low-friction way to test
 base vs head behavior without introducing additional workflows.
 
 Constraints:
+
 - Avoid adding new workflow layers.
 - Keep the default behavior unchanged.
 
@@ -68,10 +69,12 @@ dispatch to when triggered from the PR plan workflow:
 ## Scope
 
 Applies to:
+
 - PR-driven infra checks dispatch in CI
 - Repo configuration via Actions variables
 
 Does not apply to:
+
 - Manual `infra-terraform.yml` runs
 - Apply workflows (which remain manual)
 

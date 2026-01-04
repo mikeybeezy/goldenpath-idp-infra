@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0014
-------
+---
 
 # ADR-0014: Local preflight checks before PRs
 

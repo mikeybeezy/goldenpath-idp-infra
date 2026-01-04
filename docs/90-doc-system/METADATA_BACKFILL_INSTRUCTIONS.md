@@ -56,16 +56,19 @@ The `backfill-metadata.py` script:
 ## Expected Results
 
 **Before running:**
+
 - 75 files with metadata
 - 161 files without metadata
 
 **After running:**
+
 - 236 files with metadata (100%)
 - 0 files without metadata
 
 ## Current Progress
 
 ✅ **Already Completed:**
+
 - Batch 1: 14 files (contracts, onboarding, changelog meta) - COMMITTED
 - Build run logs: 6 files - COMMITTED
 - PR #145 fixes: 40+ ADRs with quoted titles - COMMITTED
@@ -84,6 +87,7 @@ The `backfill-metadata.py` script:
 ### If validation fails after backfill
 
 Check for YAML syntax errors:
+
 ```bash
 python3 scripts/validate-metadata.py docs 2>&1 | grep -A 3 "ERROR"
 ```
@@ -91,6 +95,7 @@ python3 scripts/validate-metadata.py docs 2>&1 | grep -A 3 "ERROR"
 ### If some titles need manual adjustment
 
 Edit the files directly and re-validate:
+
 ```bash
 # Fix the file
 # Then validate

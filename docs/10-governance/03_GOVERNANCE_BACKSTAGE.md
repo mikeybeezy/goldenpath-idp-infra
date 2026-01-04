@@ -15,14 +15,17 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+
 - 01_GOVERNANCE
 - 18_BACKSTAGE_MVP
 - ADR-0008
-------
+
+---
 
 # Backstage Governance (Deprecated)
 
 Doc contract:
+
 - Purpose: Preserve the previous Backstage governance mapping for reference.
 - Owner: platform
 - Status: deprecated

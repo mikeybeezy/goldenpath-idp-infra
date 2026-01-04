@@ -47,13 +47,16 @@ The script scans the entire repository for markdown files and adds comprehensive
 ## How It Works
 
 ### 1. Discovery Phase
+
 ```python
 # Finds all .md files excluding .gemini and node_modules
 Scans: docs/, modules/, apps/, envs/, gitops/, bootstrap/, etc.
 ```
 
 ### 2. Analysis Phase
+
 For each file:
+
 - **Extracts title** from first `#` heading
 - **Determines type** from directory (adr, changelog, contract, runbook, policy, documentation)
 - **Extracts category** from directory structure (00-foundations, modules, apps, etc.)
@@ -61,13 +64,16 @@ For each file:
 - **Extracts dependencies** (Terraform modules, Helm charts, container images)
 
 ### 3. Generation Phase
+
 Creates YAML frontmatter with:
+
 - Quoted titles if they contain special characters (colons, brackets)
 - Type-appropriate risk profiles and observability tiers
 - Lifecycle dates based on document type
 - Empty `relates_to` array (populated by extract-relationships.py)
 
 ### 4. Skip Logic
+
 Skips files that already have `---` frontmatter (avoids duplicate metadata)
 
 ## Usage
@@ -111,6 +117,7 @@ Mode: LIVE
 ## Generated Metadata Example
 
 ### Before (File without metadata)
+
 ```markdown
 # AWS EKS Module
 
@@ -118,6 +125,7 @@ This module provisions an EKS cluster...
 ```
 
 ### After (With generated metadata)
+
 ```yaml
 ---
 id: AWS_EKS_README
@@ -151,6 +159,7 @@ This module provisions an EKS cluster...
 ## Field Extraction Logic
 
 ### Category Detection
+
 ```
 docs/00-foundations/file.md     → category: 00-foundations
 docs/20-contracts/file.md       → category: 20-contracts
@@ -159,6 +168,7 @@ apps/fast-api/README.md         → category: apps
 ```
 
 ### Version Extraction
+
 ```
 Helm charts: Looks for "version: X.Y.Z" or "appVersion: X.Y.Z"
 ArgoCD refs: Looks for "argocd version: X.Y.Z" patterns
@@ -166,6 +176,7 @@ Default: 1.0 for documentation
 ```
 
 ### Dependency Extraction
+
 ```
 Terraform modules: Extracts module "name" references
 Helm charts: Looks for chart dependency mentions
@@ -173,6 +184,7 @@ Apps: Extracts image: references (limited to 3)
 ```
 
 ### Type Detection
+
 ```
 /adrs/ directory        → adr
 /changelog/entries/     → changelog
@@ -202,6 +214,7 @@ python3 scripts/validate-metadata.py docs
 **Cause:** Title contains special characters (colons, brackets, quotes)
 
 **Solution:** Script automatically quotes titles, but if errors persist:
+
 ```bash
 # View the file
 cat docs/path/to/file.md | head -20
@@ -215,6 +228,7 @@ title: "Your Title: With Colon"
 **Cause:** File in unexpected directory
 
 **Solution:**
+
 1. Move file to correct directory, OR
 2. Manually override category in frontmatter
 
@@ -223,6 +237,7 @@ title: "Your Title: With Colon"
 **Cause:** Non-standard format in content
 
 **Solution:** Manually add dependencies:
+
 ```yaml
 dependencies:
   - module:vpc
@@ -235,6 +250,7 @@ dependencies:
 **Cause:** No version pattern found in content
 
 **Solution:** Manually set version in frontmatter:
+
 ```yaml
 version: 5.46.7
 ```
@@ -242,14 +258,18 @@ version: 5.46.7
 ## Integration with Other Tools
 
 ### 1. Relationship Extraction
+
 Run after backfill to populate `relates_to`:
+
 ```bash
 python3 scripts/backfill-metadata.py
 python3 scripts/extract-relationships.py
 ```
 
 ### 2. Metadata Validation (CI)
+
 Automatically validates metadata in CI:
+
 ```yaml
 # .github/workflows/metadata-validation.yml
 - name: Validate Metadata
@@ -257,7 +277,9 @@ Automatically validates metadata in CI:
 ```
 
 ### 3. Knowledge Graph Import
+
 Metadata enables import to graph databases:
+
 ```bash
 # Future: Export to Neo4j/ArangoDB
 python3 scripts/export-to-graph.py
@@ -268,6 +290,7 @@ python3 scripts/export-to-graph.py
 ### Adding New Document Types
 
 Edit `determine_doc_type()` function:
+
 ```python
 def determine_doc_type(filepath):
     if '/new-type/' in filepath:
@@ -278,6 +301,7 @@ def determine_doc_type(filepath):
 ### Adding New Dependency Patterns
 
 Edit `extract_dependencies()` function:
+
 ```python
 def extract_dependencies(filepath):
     # Add new pattern
@@ -292,7 +316,7 @@ Edit `get_risk_profile()` function to adjust defaults per type.
 ## Script Arguments
 
 | Argument | Description | Example |
-|----------|-------------|---------|
+|-------|-------|------|
 | `--dry-run` | Preview mode, no file changes | `python3 ... --dry-run` |
 | `--verbose` | Show skipped files | `python3 ... --verbose` |
 
@@ -326,6 +350,7 @@ Edit `get_risk_profile()` function to adjust defaults per type.
 ## Support
 
 For issues or questions:
+
 1. Check troubleshooting section above
 2. Review ADR-0084 for schema details
 3. Contact platform-team

@@ -26,15 +26,19 @@ Workflow: CI Teardown
 Workflow run URL: <url>
 
 ## Configuration
+
 Script: <script-version>
 Flags: <flags>
 
 ## Metrics
+
 Teardown duration (seconds): <seconds>
 Outcome: <Outcome>
 
 ## Orphan Analysis (Resource Counts)
+
 AWS orphans:
+
 - Target groups: <count>
 - ENI: <count>
 - VPC: <count>
@@ -52,9 +56,11 @@ AWS orphans:
 - EKS: <count>
 
 ## Ad Hoc Notes
+
 Ad hoc notes/observations: <notes>
 
 ## Analysis & Optimization Opportunities
+
 1. **Finding:** <finding>
    - *Impact:* <impact>
    - *Action:* <action>

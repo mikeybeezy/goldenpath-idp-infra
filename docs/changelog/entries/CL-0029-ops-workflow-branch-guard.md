@@ -15,9 +15,11 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - ADR-0074
 - CL-0029
-------
+
+---
 
 # CL-0029: Ops workflow branch guard
 

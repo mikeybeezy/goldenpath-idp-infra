@@ -15,9 +15,11 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - ADR-0068
 - CL-0017
-------
+
+---
 
 # CL-0017: Fix review cadence output delimiter
 

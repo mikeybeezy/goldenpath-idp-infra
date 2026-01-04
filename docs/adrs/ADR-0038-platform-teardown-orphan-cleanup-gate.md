@@ -20,7 +20,7 @@ relates_to:
 - ADR-0037
 - ADR-0038
 - ORPHAN_CLEANUP
-------
+---
 
 # ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes
 

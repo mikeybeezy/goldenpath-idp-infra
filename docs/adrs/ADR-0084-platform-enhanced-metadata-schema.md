@@ -18,13 +18,15 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - ADR-0082
 - ADR-0083
 - ADR-0084
 - CL-0042
 - CL-0043
 - METADATA_STRATEGY
-------
+
+---
 
 # ADR-0084: Enhanced Metadata Schema for Knowledge Graph
 
@@ -50,6 +52,7 @@ The existing METADATA_STRATEGY.md defined a baseline schema, but didn't include 
 Implement an enhanced metadata schema with the following fields:
 
 ### Core Identity
+
 - `id`: Unique identifier (ADR-0084, CL-0043, module name)
 - `title`: Document title (quoted if contains special characters)
 - `type`: Document type (adr, changelog, contract, runbook, policy, documentation, template)
@@ -57,14 +60,17 @@ Implement an enhanced metadata schema with the following fields:
 - `version`: Version number (extracted from Helm/ArgoCD or defaults to 1.0)
 
 ### Ownership & Status
+
 - `owner`: Responsible team (platform-team)
 - `status`: Current status (active, deprecated, archived, draft)
 
 ### Dependencies & Relationships
+
 - `dependencies`: Array of module/chart/image dependencies
 - `relates_to`: Array of related document IDs, PR references, workflow files
 
 ### Governance & Risk
+
 - `risk_profile`: Production impact, security risk, coupling risk
 - `reliability`: Rollback strategy, observability tier
 - `lifecycle`: Support date, breaking change flag
@@ -152,25 +158,31 @@ Implement an enhanced metadata schema with the following fields:
 ## Alternatives Considered
 
 ### Alternative 1: External Metadata Database
+
 Store metadata in separate JSON/YAML index files instead of frontmatter.
 
 **Rejected because:**
+
 - Metadata separated from content
 - Sync issues between metadata and files
 - More complex to maintain
 
 ### Alternative 2: Minimal Schema (No Category, Version, Dependencies)
+
 Use only the baseline from METADATA_STRATEGY.md.
 
 **Rejected because:**
+
 - Insufficient for Knowledge Graph queries
 - No dependency tracking
 - Category taxonomy enables better organization
 
 ### Alternative 3: Manual Curation Only
+
 No automation scripts, manually add metadata.
 
 **Rejected because:**
+
 - Not scalable for 300+ files
 - Inconsistent metadata quality
 - Time-intensive

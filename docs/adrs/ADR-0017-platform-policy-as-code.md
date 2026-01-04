@@ -18,7 +18,7 @@ relates_to:
 - 20_CI_ENVIRONMENT_SEPARATION
 - 21_CI_ENVIRONMENT_CONTRACT
 - ADR-0017
-------
+---
 
 # ADR-0017: Policy as code for infrastructure and application changes
 

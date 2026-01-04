@@ -20,7 +20,7 @@ relates_to:
 - 01_GOVERNANCE
 - 02_PLATFORM_BOUNDARIES
 - ADR-0027
-------
+---
 
 # ADR-0027: Platform design philosophy and reference implementation
 

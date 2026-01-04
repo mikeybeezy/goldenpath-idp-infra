@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0033
-------
+---
 
 # ADR-0033: CI orchestrated modes for infra lifecycle
 
@@ -52,10 +52,12 @@ Each mode enforces the correct phase ordering and input expectations.
 ## Scope
 
 Applies to:
+
 - CI bootstrap workflow
 - Infra lifecycle runs in dev/test/staging/prod
 
 Does not apply to:
+
 - Ad-hoc local runs (allowed but not the default path)
 
 ## Consequences

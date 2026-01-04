@@ -19,7 +19,7 @@ relates_to:
 - 20_CI_ENVIRONMENT_SEPARATION
 - ADR-0036
 - ADR-0038
-------
+---
 
 # ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown
 

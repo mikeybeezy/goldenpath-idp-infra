@@ -15,14 +15,17 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 00_DOC_INDEX
 - 23_NEW_JOINERS
 - 24_PR_GATES
-------
+
+---
 
 # Day-One Onboarding Checklist
 
 Doc contract:
+
 - Purpose: Provide the minimum inputs and artifacts to get productive fast.
 - Owner: platform
 - Status: living

@@ -15,9 +15,11 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+
 - ADR-0008
 - ADR-0009
-------
+
+---
 
 # ADR-0009: CI/CD observability via OpenTelemetry (“Delivery Insights”)
 

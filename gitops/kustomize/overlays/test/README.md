@@ -1,4 +1,5 @@
 ---
+
 id: README
 title: Readme
 type: documentation
@@ -18,6 +19,6 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to: []
-------
+---
 
 Placeholder for gitops/kustomize/overlays/test

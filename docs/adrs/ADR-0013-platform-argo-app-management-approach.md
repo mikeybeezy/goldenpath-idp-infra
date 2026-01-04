@@ -17,7 +17,7 @@ lifecycle:
 relates_to:
 - 07_REPO_DECOUPLING_OPTIONS
 - ADR-0013
-------
+---
 
 # ADR-0013: Argo CD app management approach for current scale
 

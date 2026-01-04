@@ -18,7 +18,7 @@ relates_to:
 - 15_TEARDOWN_AND_CLEANUP
 - ADR-0043
 - ADR-0045
-------
+---
 
 # ADR-0045: Default LB delete when ENIs persist during teardown
 
@@ -50,6 +50,7 @@ deletion and completes teardown. Making this the default removes repeated
 manual intervention and speeds up recovery.
 
 Constraints:
+
 - Deletion must be scoped to the cluster to avoid impacting unrelated LBs.
 - The behavior must remain auditable and predictable.
 
@@ -68,11 +69,13 @@ We will make LB deletion the default when ENIs persist:
 ## Scope
 
 Applies to:
+
 - Teardown script ENI wait behavior
 - CI teardown workflow inputs and defaults
 - Teardown documentation and IAM policy guidance
 
 Does not apply to:
+
 - Orphan cleanup deletion order
 - Manual deletion outside the cluster tag scope
 

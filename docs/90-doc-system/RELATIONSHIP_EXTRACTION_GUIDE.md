@@ -25,7 +25,7 @@ relates_to:
 - ADR-0034
 - ADR-0047
 - CI_WORKFLOWS
-------
+---
 
 # Relationship Extraction Guide
 
@@ -38,26 +38,31 @@ The `extract-relationships.py` script automatically populates the `relates_to` m
 ### Patterns Detected
 
 1. **"Related:" field** (in doc contract section)
+
    ```markdown
    - Related: docs/adrs/ADR-0026.md, docs/40-delivery/12_GITOPS_AND_CICD.md
    ```
 
 2. **Inline backtick references**
+
    ```markdown
    See `docs/adrs/ADR-0033-platform-ci-orchestrated-modes.md` for details.
    ```
 
 3. **ADR mentions**
+
    ```markdown
    This relates to ADR-0047 and the teardown workflow.
    ```
 
 4. **Markdown links**
+
    ```markdown
    See [CI Contract](../20-contracts/21_CI_ENVIRONMENT_CONTRACT.md)
    ```
 
 5. **ci-workflows, apps, bootstrap references**
+
    ```markdown
    Workflow defined in `ci-workflows/CI_WORKFLOWS.md`
    ```
@@ -65,6 +70,7 @@ The `extract-relationships.py` script automatically populates the `relates_to` m
 ### ID Conversion
 
 File paths are converted to document IDs:
+
 - `docs/adrs/ADR-0026-platform-cd-deployment-contract.md` → `ADR-0026`
 - `docs/40-delivery/12_GITOPS_AND_CICD.md` → `12_GITOPS_AND_CICD`
 - `ci-workflows/CI_WORKFLOWS.md` → `CI_WORKFLOWS`
@@ -72,6 +78,7 @@ File paths are converted to document IDs:
 ## Usage
 
 ### Step 1: Dry Run (Preview)
+
 ```bash
 python3 scripts/extract-relationships.py --dry-run
 ```
@@ -79,6 +86,7 @@ python3 scripts/extract-relationships.py --dry-run
 Shows what would change without modifying files.
 
 ### Step 2: Run the Extraction
+
 ```bash
 python3 scripts/extract-relationships.py
 ```
@@ -86,11 +94,13 @@ python3 scripts/extract-relationships.py
 Updates `relates_to` fields in all markdown files with detected relationships.
 
 ### Step 3: Review Changes
+
 ```bash
 git diff docs/ | grep "relates_to" -A 5
 ```
 
 ### Step 4: Commit
+
 ```bash
 git add docs/ ci-workflows/ apps/ bootstrap/ modules/ gitops/ idp-tooling/
 git commit -m "docs: populate document relationships for Knowledge Graph"
@@ -100,6 +110,7 @@ git push origin chore/metadata-backfill-batch-1
 ## Expected Results
 
 ### Before
+
 ```yaml
 ---
 id: 21_CI_ENVIRONMENT_CONTRACT
@@ -107,9 +118,11 @@ title: CI Environment Contract
 type: contract
 relates_to: []
 ---
+
 ```
 
 ### After
+
 ```yaml
 ---
 id: 21_CI_ENVIRONMENT_CONTRACT
@@ -127,6 +140,7 @@ relates_to:
 ## Coverage
 
 Based on analysis:
+
 - **~160 files** will get auto-detected relationships (70%)
 - **~50 files** will need manual curation (20%)
 - **~26 files** already have relationships (10%)
@@ -136,6 +150,7 @@ Based on analysis:
 ### If relationships aren't detected
 
 Check that your documents have:
+
 1. A "Related:" line in the doc contract
 2. Inline references with backticks
 3. Markdown links to other docs
@@ -153,6 +168,7 @@ python3 scripts/extract-relationships.py --dry-run --verbose
 ## Integration with Knowledge Graph
 
 These relationships enable:
+
 1. **Graph traversal** - Navigate between related docs
 2. **Impact analysis** - See what docs are affected by changes
 3. **Orphan detection** - Find docs with no relationships
@@ -161,6 +177,7 @@ These relationships enable:
 ## Manual Refinement
 
 After running the script, consider adding relationships for:
+
 - Module READMEs → Related ADRs
 - Templates → Documentation
 - Indexes → All items they list

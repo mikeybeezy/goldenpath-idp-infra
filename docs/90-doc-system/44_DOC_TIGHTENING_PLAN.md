@@ -15,6 +15,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 00_DOC_INDEX
 - 30_DOCUMENTATION_FRESHNESS
 - ADR-0001
@@ -28,11 +29,13 @@ relates_to:
 - ADR-0052
 - ADR-0056
 - ADR-0062
-------
+
+---
 
 # Documentation Tightening Plan (V1)
 
 Doc contract:
+
 - Purpose: Reduce duplication, make doc relationships explicit, and keep living docs current.
 - Owner: platform
 - Status: living

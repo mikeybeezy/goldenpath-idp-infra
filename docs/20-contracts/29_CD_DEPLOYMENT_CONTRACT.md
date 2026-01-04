@@ -18,11 +18,12 @@ relates_to:
 - 12_GITOPS_AND_CICD
 - 39_GOLDEN_PATH_VALIDATION
 - ADR-0026
-------
+---
 
 # CD Deployment Contract
 
 Doc contract:
+
 - Purpose: Define deployment contract and promotion expectations for GitOps delivery.
 - Owner: platform
 - Status: living

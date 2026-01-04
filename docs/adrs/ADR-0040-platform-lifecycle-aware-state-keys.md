@@ -19,7 +19,7 @@ relates_to:
 - 32_TERRAFORM_STATE_AND_LOCKING
 - 36_STATE_KEY_STRATEGY
 - ADR-0040
-------
+---
 
 # ADR-0040: Lifecycle-aware Terraform state keys for BuildId isolation
 
@@ -50,6 +50,7 @@ accidental reuse of resources. We need a clean-slate experience for ephemeral
 builds without losing the ability to update long-lived infrastructure.
 
 Constraints:
+
 - CI must enforce the correct state key without relying on operators to pass it.
 - BuildId must be required for ephemeral runs.
 - Persistent environments must keep a stable state key.
@@ -75,10 +76,12 @@ state key already exists. This avoids accidentally appending to an old build.
 ## Scope
 
 Applies to:
+
 - CI workflows in this repo for infra plan/apply/bootstrap/teardown.
 - Dev environment state (S3 + DynamoDB).
 
 Does not apply to:
+
 - Local runs unless the operator passes the same backend key manually.
 - Non-terraform tooling state (e.g., Argo, Helm).
 

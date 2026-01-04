@@ -17,7 +17,7 @@ lifecycle:
 relates_to:
 - 15_TEARDOWN_AND_CLEANUP
 - ADR-0048
-------
+---
 
 # ADR-0048: Versioned teardown runners with selectable entrypoint
 

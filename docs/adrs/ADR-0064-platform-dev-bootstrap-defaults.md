@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0064
-------
+---
 
 # ADR-0064: Dev bootstrap defaults off for k8s resources and storage
 
@@ -61,9 +61,11 @@ are satisfied.
 ## Scope
 
 Applies to:
+
 - Dev environment defaults in `envs/dev/terraform.tfvars`
 
 Does not apply to:
+
 - Staging/prod defaults
 - Manual, opt-in runs that explicitly enable these features
 

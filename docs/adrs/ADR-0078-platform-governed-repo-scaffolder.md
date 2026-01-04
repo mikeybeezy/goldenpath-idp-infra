@@ -18,7 +18,7 @@ relates_to:
 - 42_APP_TEMPLATE_LIVING
 - ADR-0062
 - ADR-0078
-------
+---
 
 # ADR-0078: Governance-driven app repository scaffolder
 

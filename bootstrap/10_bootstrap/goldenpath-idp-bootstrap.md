@@ -89,7 +89,7 @@ These defaults keep the node group stable and reduce early pressure:
 - `enable_ssh_break_glass` = `false`
 - `enable_storage_addons` = `true` (EBS/EFS/snapshot required for persistent monitoring data)
 - `SKIP_ARGO_SYNC_WAIT` = `true` (default, skips Argo app sync waits)
- - `COMPACT_OUTPUT` = `false` (set to `true` to reduce noisy command output)
+- `COMPACT_OUTPUT` = `false` (set to `true` to reduce noisy command output)
 
 The runner prints an Argo status summary at the end and warns if any app shows
 `HEALTH=Unknown`.

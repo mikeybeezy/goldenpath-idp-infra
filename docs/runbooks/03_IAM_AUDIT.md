@@ -15,9 +15,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 33_IAM_ROLES_AND_POLICIES
 - ADR-0035
-------
+
+---
 
 # IAM Audit (Runbook)
 
@@ -25,6 +27,7 @@ This runbook captures how to audit IAM usage for CI roles and reduce unused
 permissions over time.
 
 Use this when:
+
 - CI has stabilized and you want to tighten role permissions.
 - You need evidence of which actions were actually used.
 

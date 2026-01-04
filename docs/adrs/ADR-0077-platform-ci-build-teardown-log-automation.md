@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0077
-------
+---
 
 # ADR-0077: CI build/teardown log automation
 

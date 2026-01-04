@@ -20,7 +20,7 @@ relates_to:
 - 05_OBSERVABILITY_DECISIONS
 - ADR-0052
 - ADR-0061
-------
+---
 
 # ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform external)
 
@@ -72,6 +72,7 @@ in-cluster observability defaults.
 Applies to all platform-managed clusters and the V1 observability baseline.
 
 Does not apply to:
+
 - External/SaaS observability stacks.
 - Cloud primitives managed by Terraform.
 

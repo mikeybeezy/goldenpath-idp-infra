@@ -15,8 +15,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 31_EKS_ACCESS_MODEL
-------
+
+---
 
 # Grafana Access (Runbook)
 
@@ -24,6 +26,7 @@ This runbook explains how to access Grafana locally without exposing a public
 endpoint.
 
 Use this when:
+
 - Grafana is running but you cannot reach it externally.
 - You need temporary local access for setup or validation.
 - You want to avoid creating a public load balancer.

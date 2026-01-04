@@ -18,7 +18,7 @@ relates_to:
 - 05_OBSERVABILITY_DECISIONS
 - ADR-0049
 - ADR-0069
-------
+---
 
 # ADR-0069: Observability baseline for golden signals in production
 

@@ -18,7 +18,7 @@ relates_to:
 - 15_TEARDOWN_AND_CLEANUP
 - 41_STORAGE_AND_PERSISTENCE
 - ADR-0053
-------
+---
 
 # ADR-0053: Separate storage lifecycle from bootstrap and teardown
 

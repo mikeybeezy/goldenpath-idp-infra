@@ -15,6 +15,7 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - 00_DOC_INDEX
 - 01_LIFECYCLE_POLICY
 - 01_PLATFORM_SERVICE_AGREEMENT
@@ -22,7 +23,8 @@ relates_to:
 - 10_SERVICE_CATALOG
 - ADR-0071
 - CL-0021
-------
+
+---
 
 # CL-0021: Documentation Taxonomy Refactor
 

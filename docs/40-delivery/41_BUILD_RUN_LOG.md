@@ -15,12 +15,15 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 17_BUILD_RUN_FLAGS
-------
+
+---
 
 # Build Run Log (Living)
 
 Doc contract:
+
 - Purpose: Record build, bootstrap, and teardown run summaries with links for deeper detail.
 - Owner: platform
 - Status: living
@@ -47,7 +50,7 @@ If more detail is needed, use the workflow run link and log file paths.
 
 | Date (UTC) | Build ID | SHA | Build (s) | Bootstrap (s) | Teardown (s) | Status | Entry | Run URL |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-01-02 | 02-01-26-06 | cd190568def5677508a5804e82e73c3f1a3802b2 (build) / 4be3d33a7118b86457727b8cfd026da3f8deea38 (bootstrap) | 905 | 215 | - | success | docs/build-run-logs/BR-0001-02-01-26-06.md | build: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20662142526 / bootstrap: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20664240754 |
+| 2026-01-02 | 02-01-26-06 | cd190568def5677508a5804e82e73c3f1a3802b2 (build) / 4be3d33a7118b86457727b8cfd026da3f8deea38 (bootstrap) | 905 | 215 | - | success | docs/build-run-logs/BR-0001-02-01-26-06.md | build: <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20662142526> / bootstrap: <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20664240754> |
 
 ## Entry template
 
@@ -75,10 +78,7 @@ Ad hoc notes/observations:
 
 Detailed entry: docs/build-run-logs/BR-0001-02-01-26-06.md
 
-
-
-
-Tear don URL : https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20665012721/job/59335320116
+Tear don URL : <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20665012721/job/59335320116>
 
 SHA: 4be3d33a7118b86457727b8cfd026da3f8deea38
 

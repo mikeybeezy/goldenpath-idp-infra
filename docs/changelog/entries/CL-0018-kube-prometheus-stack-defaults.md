@@ -15,10 +15,12 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - ADR-0052
 - ADR-0053
 - CL-0018
-------
+
+---
 
 # CL-0018: Kube-prometheus-stack baseline and storage defaults
 

@@ -35,7 +35,7 @@ relates_to:
 - CL-0043
 - METADATA_BACKFILL_SCRIPT
 - METADATA_STRATEGY
-------
+---
 
 # Relationship Extraction Script - Usage & Operations
 
@@ -56,6 +56,7 @@ The script detects 13 relationship patterns in markdown content and populates `r
 ## How It Works
 
 ### 1. Document Index Phase
+
 ```python
 # Builds index of all document IDs in repository
 Scans: 304 markdown files
@@ -63,6 +64,7 @@ Creates: ID mapping (file path → document ID)
 ```
 
 ### 2. Content Analysis Phase
+
 For each file, extracts references using **13 detection patterns**:
 
 1. **"Related:" field** in doc contract
@@ -80,7 +82,9 @@ For each file, extracts references using **13 detection patterns**:
 13. **GitHub workflows** (`.github/workflows/file.yml`)
 
 ### 3. ID Conversion Phase
+
 Converts file paths to document IDs:
+
 ```
 docs/adrs/ADR-0026-platform-cd-deployment.md → ADR-0026
 docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md → 21_CI_ENVIRONMENT_CONTRACT
@@ -89,11 +93,13 @@ PR #107 → PR-107
 ```
 
 ### 4. Validation Phase
+
 - Checks if referenced IDs exist in repository index
 - Skips self-references
 - Removes duplicates
 
 ### 5. Update Phase
+
 - Merges with existing `relates_to` array
 - Sorts alphabetically
 - Skips if no changes detected
@@ -141,50 +147,65 @@ Mode: LIVE
 ## Detection Pattern Examples
 
 ### Pattern 1: "Related:" Field
+
 ```markdown
 - Related: docs/adrs/ADR-0026.md, docs/40-delivery/12_GITOPS.md
 ```
+
 **Extracts:** `ADR-0026`, `12_GITOPS_AND_CICD`
 
 ### Pattern 2: Inline Backtick References
+
 ```markdown
 See `docs/adrs/ADR-0033-platform-ci-orchestrated-modes.md` for details.
 ```
+
 **Extracts:** `ADR-0033`
 
 ### Pattern 3: ADR Mentions
+
 ```markdown
 This relates to ADR-0047 and the teardown workflow.
 ```
+
 **Extracts:** `ADR-0047`
 
 ### Pattern 4: Markdown Links
+
 ```markdown
 [CI Contract](../20-contracts/21_CI_ENVIRONMENT_CONTRACT.md)
 ```
+
 **Extracts:** `21_CI_ENVIRONMENT_CONTRACT`
 
 ### Pattern 7: Changelog Mentions
+
 ```markdown
 Related: CL-0042 and CL-0043
 ```
+
 **Extracts:** `CL-0042`, `CL-0043`
 
 ### Pattern 12: PR References
+
 ```markdown
 Related: PR #107, PR #126
 ```
+
 **Extracts:** `PR-107`, `PR-126`
 
 ### Pattern 13: GitHub Workflows
+
 ```markdown
 Workflow: `.github/workflows/pr-labeler.yml`
 ```
+
 **Extracts:** `workflow:pr-labeler`
 
 ## Metadata Transformation
 
 ### Before
+
 ```yaml
 ---
 id: 21_CI_ENVIRONMENT_CONTRACT
@@ -192,9 +213,11 @@ title: CI Environment Contract
 type: contract
 relates_to: []
 ---
+
 ```
 
 ### After
+
 ```yaml
 ---
 id: 21_CI_ENVIRONMENT_CONTRACT
@@ -234,6 +257,7 @@ grep -r "relates_to: \[\]" docs/ | wc -l
 **Cause:** Document doesn't use standard reference patterns
 
 **Solution:** Add explicit references:
+
 ```markdown
 - Related: docs/adrs/ADR-0026.md, docs/runbooks/05_GOLDEN_PATH.md
 ```
@@ -243,6 +267,7 @@ grep -r "relates_to: \[\]" docs/ | wc -l
 **Cause:** Referenced file doesn't exist or ID conversion failed
 
 **Check verbose mode:**
+
 ```bash
 python3 scripts/extract-relationships.py --dry-run --verbose
 ```
@@ -260,6 +285,7 @@ python3 scripts/extract-relationships.py --dry-run --verbose
 **Cause:** Multiple patterns detected same relationship
 
 **Solution:** Script auto-deduplicates, but verify with:
+
 ```bash
 # Check for duplicates in a file
 yq '.relates_to | unique' docs/path/to/file.md
@@ -324,13 +350,14 @@ relates_to:
 ## Script Arguments
 
 | Argument | Description | Example |
-|----------|-------------|---------|
+|-------|-------|------|
 | `--dry-run` | Preview mode, no file changes | `python3 ... --dry-run` |
 | `--verbose` | Show all files including skipped | `python3 ... --verbose` |
 
 ## Advanced Usage
 
 ### Finding Orphaned Documents
+
 ```bash
 # Find docs with no relationships
 python3 scripts/extract-relationships.py
@@ -338,6 +365,7 @@ grep -r "relates_to: \[\]" docs/
 ```
 
 ### Relationship Density Analysis
+
 ```python
 # Count relationships per file
 import yaml, glob
@@ -348,6 +376,7 @@ for f in glob.glob('docs/**/*.md', recursive=True):
 ```
 
 ### Exporting Relationship Graph
+
 ```bash
 # Future: Export to graph format
 python3 scripts/export-relationships-graph.py --format graphml
@@ -398,6 +427,7 @@ Add filter logic before adding to `relationships` set.
 ## Support
 
 For issues or questions:
+
 1. Check troubleshooting section above
 2. Review the 13 detection patterns
 3. Inspect verbose output for debugging

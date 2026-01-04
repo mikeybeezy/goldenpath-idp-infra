@@ -16,8 +16,10 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+
 - ADR-0007
-------
+
+---
 
 # ADR-0007: Adopt an environment model that balances cost, iteration speed, and credible separation
 

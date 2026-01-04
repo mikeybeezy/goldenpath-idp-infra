@@ -15,12 +15,15 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 00_DOC_INDEX
-------
+
+---
 
 # Documentation Freshness Mechanism
 
 Doc contract:
+
 - Purpose: Define how living docs are tracked and reviewed.
 - Owner: platform
 - Status: living

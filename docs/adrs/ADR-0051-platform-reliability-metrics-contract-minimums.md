@@ -22,7 +22,7 @@ relates_to:
 - 35_RESOURCE_TAGGING
 - 40_CHANGELOG_GOVERNANCE
 - ADR-0051
-------
+---
 
 # ADR-0051: Minimal reliability metrics and contract minimums
 

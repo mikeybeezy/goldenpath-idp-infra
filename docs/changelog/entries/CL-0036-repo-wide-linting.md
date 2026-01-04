@@ -15,9 +15,11 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - ADR-0081
 - CL-0036
-------
+
+---
 
 # Changelog: repo-wide linting for knowledge graph hygiene
 

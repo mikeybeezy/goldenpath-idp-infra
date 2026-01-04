@@ -37,6 +37,7 @@ We enabled Kong Manager for demo and validation. It is kept private (ClusterIP)
 and should be exposed only through an authenticated ingress.
 
 Temporary basic auth approach:
+
 - Keep the Manager service as ClusterIP.
 - Expose it via a Kong Ingress and attach a `basic-auth` plugin.
 - Create a KongConsumer with basic auth credentials for limited access.

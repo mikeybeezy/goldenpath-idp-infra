@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0015
-------
+---
 
 # ADR-0015: Use AWS OIDC for GitHub Actions authentication
 

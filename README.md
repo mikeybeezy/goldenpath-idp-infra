@@ -15,8 +15,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 18_BACKSTAGE_MVP
-------
+
+---
 
 # Golden Path IDP Infra
 
@@ -50,6 +52,7 @@ and file touchpoints.
 ## Step-by-Step Usage
 
 1. **Clone the repo**
+
    ```sh
    git clone <repo-url> && cd goldenpath-idp-infra
    ```
@@ -61,36 +64,46 @@ and file touchpoints.
    - `modules/aws_compute`: EC2 instance + network interface.
 
 3. **Pick an environment to work with**
+
    ```sh
    cd envs/dev   # replace dev with test/staging/prod if needed
    ```
+
    - `main.tf` wires the shared modules but now reads everything from variables, so you rarely edit this file.
    - `terraform.tfvars` is where you define the CIDR blocks, subnet objects, tags, and naming prefix for that environment.
    - `variables.tf` documents the inputs Terraform expects, making it easy to see what goes in the `tfvars`.
    - `backend.tf` is where you point to your remote state bucket/table.
 
 4. **Initialize Terraform for that environment**
+
    ```sh
    terraform init
    ```
+
    This downloads provider plugins and configures remote state.
 
 5. **Preview the changes**
+
    ```sh
    terraform plan -out plan.out
    ```
+
    Review the plan output; it shows exactly what AWS resources will be created or changed.
 
 6. **Apply when ready**
+
    ```sh
    terraform apply plan.out
    ```
+
    Terraform will create the VPC, subnets, route tables, and security groups defined for the environment. Confirm with `yes` when prompted.
 
 7. **Tear down (optional)**
+
    ```sh
    terraform destroy
    ```
+
    Use this when you need to clean up the environment to avoid AWS charges.
 
 ### Golden Commands (Makefile)
@@ -106,6 +119,7 @@ make apply ENV=dev
 Each target runs the corresponding `terraform -chdir=envs/$ENV <command>` under the hood, so swap `dev` for `test`, `staging`, or `prod` as needed.
 
 Step-by-step with the Makefile:
+
 1. Open a terminal and `cd` into the repo root (`goldenpath-idp-infra`).
 2. Pick an environment name (`dev`, `test`, `staging`, `prod`). Example uses `dev`.
 3. Run `make init ENV=dev` to execute `terraform -chdir=envs/dev init` (downloads providers/state).
@@ -114,8 +128,8 @@ Step-by-step with the Makefile:
 6. Swap `ENV=dev` for `ENV=test`, `staging`, or `prod` to repeat; the Makefile just saves you from typing the `-chdir` commands manually.
 
 Timing runs:
-- `make timed-apply`, `make timed-bootstrap`, and `make timed-teardown` write full output to `logs/build-timings/*.log` and append timing rows to `docs/build-timings.csv`.
 
+- `make timed-apply`, `make timed-bootstrap`, and `make timed-teardown` write full output to `logs/build-timings/*.log` and append timing rows to `docs/build-timings.csv`.
 
 ## Customizing the Infrastructure
 

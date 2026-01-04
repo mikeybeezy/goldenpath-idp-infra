@@ -15,9 +15,11 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+
 - ADR-0082
 - ADR-0083
-------
+
+---
 
 ## ADR-0083: Metadata Backfill Campaign Protocol
 
@@ -45,10 +47,12 @@ Adopt a single runbook-driven campaign with these rules:
 ## Consequences
 
 **Positive**
+
 - Consistent backfill process with clear rollback.
 - Reduced friction for future metadata enforcement.
 - Better provenance for AI-assisted governance.
 
 **Negative**
+
 - Some metadata gaps will remain until code-header validation is added.
 - Requires operator discipline to maintain audit notes.

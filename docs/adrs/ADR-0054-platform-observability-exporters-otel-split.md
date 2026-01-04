@@ -19,7 +19,7 @@ relates_to:
 - ADR-0049
 - ADR-0052
 - ADR-0054
-------
+---
 
 # ADR-0054: Exporter vs OpenTelemetry split for platform observability
 

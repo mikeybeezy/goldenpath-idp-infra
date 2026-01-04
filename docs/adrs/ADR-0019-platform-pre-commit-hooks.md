@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0019
-------
+---
 
 # ADR-0019: Pre-commit hooks as local quality gates
 

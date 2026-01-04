@@ -26,11 +26,13 @@ relates_to:
 # EC2 Compute Module
 
 ## Purpose
+
 Creates a dedicated ENI and an EC2 instance that uses that ENI as its primary
 network interface. Use this when you want explicit control over the ENI and
 its tags.
 
 ## Inputs
+
 - `name` (string): Name tag for the instance.
 - `ami_id` (string): AMI ID for the instance.
 - `instance_type` (string): EC2 instance type.
@@ -47,14 +49,17 @@ its tags.
 - `environment` (string, optional): Environment tag value.
 
 ## Outputs
+
 - `instance_id`: EC2 instance ID.
 - `private_ip`: Instance private IP.
 - `network_interface_id`: ENI ID.
 
 ## Notes
+
 - The instance is attached to the ENI via `primary_network_interface`.
 - Security groups must allow required inbound/outbound traffic.
 
 ## Failure modes
+
 - Invalid AMI ID or instance type.
 - Missing IAM permissions for EC2 or ENI creation.

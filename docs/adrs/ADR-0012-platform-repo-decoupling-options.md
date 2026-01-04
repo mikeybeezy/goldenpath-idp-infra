@@ -17,7 +17,7 @@ lifecycle:
 relates_to:
 - 07_REPO_DECOUPLING_OPTIONS
 - ADR-0012
-------
+---
 
 # ADR-0012: Repo decoupling options for infra and platform tooling
 

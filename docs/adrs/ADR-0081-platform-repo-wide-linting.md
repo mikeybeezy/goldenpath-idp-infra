@@ -15,8 +15,10 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
+
 - ADR-0081
-------
+
+---
 
 # ADR-0081: Repo-wide linting for knowledge-graph hygiene
 
@@ -39,11 +41,13 @@ app templates and Helm chart templates) via `.yamllint` ignore patterns.
 ## Consequences
 
 **Positive**
+
 - Early detection of schema and doc hygiene issues.
 - Consistent YAML/Markdown quality as the knowledge graph grows.
 - Less reliance on reviewers to catch formatting regressions.
 
 **Negative**
+
 - Initial cleanup effort and stricter CI gate.
 - Requires explicit ignores for templated YAML files.
 

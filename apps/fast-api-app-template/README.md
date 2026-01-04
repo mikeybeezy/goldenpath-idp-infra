@@ -35,6 +35,7 @@ manifests needed to deploy an application on the Golden Path.
 ## Ownership
 
 App-owned (teams edit):
+
 - deployment.yaml
 - service.yaml
 - servicemonitor.yaml
@@ -42,6 +43,7 @@ App-owned (teams edit):
 - config values inside ingress.yaml (host/path/service/ports)
 
 Platform-owned (teams request changes):
+
 - kong/* (auth plugin, rate limiting, consumers, secrets)
 - networkpolicy.yaml (default security posture)
 - rbac.yaml (only if the app needs Kubernetes API access)

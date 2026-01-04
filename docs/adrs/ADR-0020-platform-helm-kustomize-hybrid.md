@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0020
-------
+---
 
 # ADR-0020: Hybrid GitOps approach with Helm and Kustomize
 

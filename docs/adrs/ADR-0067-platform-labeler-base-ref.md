@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0067
-------
+---
 
 # ADR-0067: Use base ref for labeler checkout
 

@@ -15,6 +15,7 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+
 - 01_GOVERNANCE
 - 21_CI_ENVIRONMENT_CONTRACT
 - 27_REFACTORING_VALIDATION_GUIDE
@@ -25,11 +26,13 @@ relates_to:
 - ADR-0063
 - CL-####
 - CL-0002
-------
+
+---
 
 # PR Guardrails (GoldenPath IDP)
 
 Doc contract:
+
 - Purpose: Define PR guardrails, labels, and enforcement workflows.
 - Owner: platform
 - Status: living
@@ -63,6 +66,7 @@ The PR template requires explicit selections for:
 Enforced by `/.github/workflows/pr-guardrails.yml`.
 
 Template enforcement:
+
 - PR bodies must be based on `.github/pull_request_template.md`.
 - Guardrails fail if the template header is missing or the body contains
   escaped newlines (`\\n`).

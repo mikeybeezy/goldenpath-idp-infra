@@ -31,15 +31,18 @@ bootstrap, and how to run each without confusion.
 ## One-stage bootstrap (default)
 
 **Use case**
+
 - You want the fastest path to a working platform.
 - You can afford a temporary capacity bump during bootstrap.
 
 **Flow**
+
 1) Apply Terraform with bootstrap mode enabled (larger node group).
 2) Run the full bootstrap runner.
 3) Apply Terraform again with bootstrap mode disabled (scale down).
 
 **Commands**
+
 ```
 TF_VAR_bootstrap_mode=true terraform -chdir=envs/dev apply
 bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh goldenpath-dev-eks eu-west-2
@@ -49,15 +52,18 @@ TF_VAR_bootstrap_mode=false terraform -chdir=envs/dev apply
 ## Multi-stage bootstrap (careful/staged)
 
 **Use case**
+
 - You want to validate each step before moving on.
 - You are operating with tight capacity or strict change control.
 
 **Flow**
+
 1) Apply Terraform with bootstrap mode enabled (or keep normal size if patient).
 2) Run scripts in order and validate after each step.
 3) Scale down after everything is stable.
 
 **Commands**
+
 ```
 TF_VAR_bootstrap_mode=true terraform -chdir=envs/dev apply
 

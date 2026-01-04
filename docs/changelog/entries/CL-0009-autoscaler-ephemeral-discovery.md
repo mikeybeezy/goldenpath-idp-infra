@@ -15,15 +15,17 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - CL-0009
-------
+
+---
 
 # CL-0009: Autoscaler discovery for ephemeral clusters
 
 Date: 2025-12-31
 Owner: platform-team
 Scope: dev, EKS, cluster-autoscaler
-Related: https://github.com/mikeybeezy/goldenpath-idp-infra/pull/78
+Related: <https://github.com/mikeybeezy/goldenpath-idp-infra/pull/78>
 
 ## Summary
 

@@ -15,15 +15,18 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 07_TF_STATE_FORCE_UNLOCK
 - 21_CI_ENVIRONMENT_CONTRACT
 - 33_IAM_ROLES_AND_POLICIES
 - 36_STATE_KEY_STRATEGY
-------
+
+---
 
 # Terraform State and Locking (Living)
 
 Doc contract:
+
 - Purpose: Explain Terraform state storage, locking, and CI backend access.
 - Owner: platform
 - Status: living
@@ -36,6 +39,7 @@ CI roles connect to the backend.
 ## Why this exists
 
 Terraform uses a remote backend to:
+
 - keep state durable and shared between runs
 - prevent two applies from writing at the same time (state locking)
 

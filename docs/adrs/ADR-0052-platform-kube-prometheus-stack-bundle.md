@@ -19,7 +19,7 @@ relates_to:
 - 06_IDENTITY_AND_ACCESS
 - 41_STORAGE_AND_PERSISTENCE
 - ADR-0052
-------
+---
 
 # ADR-0052: Use kube-prometheus-stack as the V1 monitoring bundle
 

@@ -15,6 +15,7 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+
 - 00_DOC_INDEX
 - 01_TAG_SCOPED_POLICY_TEMPLATE
 - 01_adr_index
@@ -36,11 +37,13 @@ relates_to:
 - ADR-0039
 - ADR-0052
 - ADRS
-------
+
+---
 
 # Platform Governance Purpose
 
 Doc contract:
+
 - Purpose: Define governance principles and default platform decisions.
 - Owner: platform
 - Status: living

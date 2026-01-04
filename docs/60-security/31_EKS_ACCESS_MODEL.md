@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - 33_IAM_ROLES_AND_POLICIES
-------
+---
 
 # EKS Access Model (Living)
 
@@ -40,19 +40,19 @@ aws sts get-caller-identity --query "Arn" --output text
 
 ```text
                            AWS ACCOUNT
-+------------------------------------------------------------+
++------------------------------+
 |                                                            |
 |  [GitHub Actions OIDC]  --->  AssumeRole (CI Bootstrap)     |
 |                                        |                    |
 |                                        v                    |
 |                                 EKS Cluster Admin           |
 |                                                            |
-|  [Humans] ----------------->  Access Entry + Policy         |
+|  [Humans] ----------->  Access Entry + Policy         |
 |                                      (EKS API)              |
 |                                                            |
 |  [Workloads] -> ServiceAccount -> IRSA Role -> AWS APIs     |
 |                                                            |
-+------------------------------------------------------------+
++------------------------------+
 ```
 
 ---
@@ -131,9 +131,10 @@ provider "kubernetes" {
 ```
 
  This ensures that:
- 1.  **Zero Trust**: No long-lived secrets are stored in the state.
- 2.  **Robustness**: Authentication refreshes automatically if the apply takes longer than 15 minutes.
- 3.  **Traceability**: All API actions are logged in CloudTrail as the assumed IAM Role.
+
+ 1. **Zero Trust**: No long-lived secrets are stored in the state.
+ 2. **Robustness**: Authentication refreshes automatically if the apply takes longer than 15 minutes.
+ 3. **Traceability**: All API actions are logged in CloudTrail as the assumed IAM Role.
 
 ## Related docs
 

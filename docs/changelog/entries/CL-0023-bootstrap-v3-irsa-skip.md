@@ -15,9 +15,11 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - ADR-0073
 - CL-0023
-------
+
+---
 
 # CL-0023: Bootstrap v3 skips IRSA apply
 

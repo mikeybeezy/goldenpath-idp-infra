@@ -6,3 +6,24 @@ MD025: false
 
 # MD013: Line length - disabled for long URLs and metadata
 MD013: false
+
+# MD041: First line heading - disabled because we use frontmatter
+MD041: false
+
+# MD003: Heading style - disabled to allow flexibility
+MD003: false
+
+# MD033: Inline HTML - allowed for custom documentation components
+MD033: false
+
+# MD036: Emphasis as heading - allowed for existing ADR/Story templates
+MD036: false
+
+# MD040: Fenced code language - allowed for simple configuration snippets
+MD040: false
+
+# MD024: Duplicate heading - allowed for repetitive sections like 'Purpose'
+MD024: false
+
+# MD029: Ordered list prefix - allowed for non-standard list ordering
+MD029: false

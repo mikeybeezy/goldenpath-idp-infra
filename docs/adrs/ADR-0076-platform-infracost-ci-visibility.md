@@ -17,7 +17,7 @@ lifecycle:
 relates_to:
 - ADR-0076
 - CL-0030
-------
+---
 
 # ADR-0076: Lightweight CI cost visibility with Infracost
 

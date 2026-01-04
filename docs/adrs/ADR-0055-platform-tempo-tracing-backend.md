@@ -19,7 +19,7 @@ relates_to:
 - ADR-0049
 - ADR-0054
 - ADR-0055
-------
+---
 
 # ADR-0055: Tempo as the standard tracing backend (V1.1)
 

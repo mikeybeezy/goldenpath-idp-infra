@@ -15,9 +15,11 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - ADR-0080
 - CL-0033
-------
+
+---
 
 # Changelog: GitHub agent roles governance
 

@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0065
-------
+---
 
 # ADR-0065: Restore branch policy guard for main
 

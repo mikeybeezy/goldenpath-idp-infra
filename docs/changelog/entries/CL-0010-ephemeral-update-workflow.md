@@ -15,10 +15,12 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - ADR-0060
 - CI_WORKFLOWS
 - CL-0010
-------
+
+---
 
 # CL-0010: Dev ephemeral update workflow
 

@@ -28,9 +28,11 @@ relates_to:
 ## Metadata Validation Runbook
 
 ## Overview
+
 This guide explains the `validate-metadata.py` tool used in our CI/CD pipeline.
 
 ## The Script
+
 Located at: `scripts/validate-metadata.py`
 
 It scans the `docs/` directory and enforces the Schema defined in `METADATA_STRATEGY.md`.
@@ -38,6 +40,7 @@ It scans the `docs/` directory and enforces the Schema defined in `METADATA_STRA
 ## Usage
 
 ### Local Run
+
 ```bash
 # Scan entire doc tree
 python3 scripts/validate-metadata.py docs
@@ -47,6 +50,7 @@ python3 scripts/validate-metadata.py docs/adrs
 ```
 
 ### CI Integration
+
 This script runs automatically on Pull Requests affecting `docs/**`.
 
 ## Troubleshooting Errors
@@ -58,4 +62,5 @@ This script runs automatically on Pull Requests affecting `docs/**`.
 | `Invalid YAML` | Indentation or syntax error. | Check your spaces/colons. |
 
 ## Evolution
+
 If we add new required fields (e.g., `cost_center`), update the `REQUIRED_FIELDS` list in the python script.

@@ -18,7 +18,7 @@ relates_to:
 - 07_TF_STATE_FORCE_UNLOCK
 - 15_TEARDOWN_AND_CLEANUP
 - ADR-0057
-------
+---
 
 # ADR-0057: CI Terraform force-unlock workflow (break-glass)
 
@@ -66,10 +66,12 @@ environment and BuildId, with explicit confirmation and minimal privileges.
 ## Scope
 
 Applies to:
+
 - CI-driven Terraform runs for platform infra lifecycle (`build`, `teardown`,
   `teardown-resume`) where locks persist.
 
 Does not apply to:
+
 - Routine Terraform operations (no automatic unlocks).
 - Non-platform Terraform stacks.
 

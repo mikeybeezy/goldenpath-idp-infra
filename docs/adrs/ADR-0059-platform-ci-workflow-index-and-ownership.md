@@ -17,7 +17,7 @@ lifecycle:
 relates_to:
 - ADR-0059
 - CI_WORKFLOWS
-------
+---
 
 # ADR-0059: CI workflow index, ownership, and UI grouping
 
@@ -64,9 +64,11 @@ We will:
 ## Scope
 
 Applies to:
+
 - All workflows under `.github/workflows/`.
 
 Does not apply to:
+
 - External automation outside this repo.
 
 ---

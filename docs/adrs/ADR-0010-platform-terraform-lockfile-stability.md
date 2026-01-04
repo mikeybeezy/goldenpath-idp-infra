@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0010
-------
+---
 
 # ADR-0010: Enforce Terraform lockfile stability in CI
 

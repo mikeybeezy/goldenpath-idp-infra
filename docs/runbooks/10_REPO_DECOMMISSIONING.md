@@ -43,30 +43,36 @@ auditable trail.
 ## Steps
 
 1) Mark deprecated
+
 - Update `catalog-info.yaml` lifecycle to `deprecated`.
 - Add a note to README pointing to the replacement service (if any).
 
 2) Freeze changes
+
 - Disable CI triggers if needed (or block merges via branch protection).
 - Communicate a change freeze to the owning team.
 
 3) Remove runtime resources
+
 - Remove GitOps app definitions (Argo CD) for the service.
 - Run teardown for infra resources tied to the service.
 - Confirm no cloud resources remain (tag scans or runbooks).
 
 4) Remove secrets and tokens
+
 - Delete repo secrets:
   - `gh secret list -R org/name`
   - `gh secret delete <secret> -R org/name`
 
 5) Archive or delete repo
+
 - Archive (preferred for retention):
   - `gh repo archive org/name`
 - Delete (if policy allows):
   - `gh repo delete org/name --confirm`
 
 6) Record a tombstone
+
 - Record: repo name, owner, date, approver, teardown evidence.
 - Attach links to workflow runs and teardown logs.
 

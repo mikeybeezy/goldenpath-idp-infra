@@ -18,6 +18,7 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - ADR-0034
 - ADR-0082
 - ADR-0083
@@ -25,7 +26,8 @@ relates_to:
 - CL-0042
 - CL-0043
 - METADATA_STRATEGY
-------
+
+---
 
 # CL-0043: Complete Metadata Backfill with Knowledge Graph
 
@@ -43,16 +45,19 @@ Completed repository-wide metadata backfill for 300+ markdown files, implementin
 ### Added
 
 **Automation Scripts:**
+
 - `scripts/backfill-metadata.py` - Baseline metadata generation with category/version/dependencies extraction
 - `scripts/extract-relationships.py` - Relationship detection using 13 content patterns
 - `METADATA_BACKFILL_INSTRUCTIONS.md` - Usage guide for backfill script
 - `RELATIONSHIP_EXTRACTION_GUIDE.md` - Usage guide for relationship extraction
 
 **Documentation:**
+
 - `ADR-0084-platform-enhanced-metadata-schema.md` - Decision record for enhanced schema
 - Updated walkthrough with complete implementation details
 
 **New Metadata Fields:**
+
 - `category` - Directory-based categorization (00-foundations, modules, apps, etc.)
 - `version` - Version tracking (Helm charts, ArgoCD, defaults to 1.0)
 - `dependencies` - Dependency tracking (modules, charts, container images)
@@ -61,18 +66,22 @@ Completed repository-wide metadata backfill for 300+ markdown files, implementin
 ### Changed
 
 **Metadata Coverage:**
+
 - Before: 75/300+ files (25%)
 - After: 300+/300+ files (100%)
 
 **Relationship Density:**
+
 - Before: ~26 files with relationships
 - After: ~160+ files with auto-detected relationships (70%)
 
 **Category Taxonomy:**
+
 - Established 15+ categories across docs and code directories
 - Automatic extraction from directory structure
 
 **Relationship Detection:**
+
 - Expanded from 6 to 13 pattern types
 - Added PR references (`PR-107`)
 - Added GitHub workflow links (`workflow:pr-labeler`)
@@ -82,6 +91,7 @@ Completed repository-wide metadata backfill for 300+ markdown files, implementin
 ### Documented
 
 **Metadata Schema:**
+
 ```yaml
 id: <unique-id>
 title: <title>
@@ -98,6 +108,7 @@ relates_to: [<doc-ids>, <PR-xxx>, <workflow:name>]
 ```
 
 **Repository Coverage:**
+
 - `docs/` - All subdirectories (foundations, governance, contracts, ADRs, runbooks, etc.)
 - `modules/` - Terraform module READMEs
 - `apps/` - Application template READMEs
@@ -111,6 +122,7 @@ relates_to: [<doc-ids>, <PR-xxx>, <workflow:name>]
 ## Impact
 
 **Enables:**
+
 1. **Knowledge Graph Queries** - "Show all contracts in 20-contracts category with high coupling risk"
 2. **Dependency Analysis** - "What modules depend on vpc module?"
 3. **Relationship Traversal** - Navigate from ADR → Contract → Runbook → Workflow
@@ -120,11 +132,13 @@ relates_to: [<doc-ids>, <PR-xxx>, <workflow:name>]
 7. **Orphan Detection** - Find documents with no connections
 
 **Affected Systems:**
+
 - All markdown documentation
 - validate-metadata.py CI check (now validates 300+ files)
 - Future Graph RAG implementation (ADR-0082)
 
 **User Impact:**
+
 - Documentation becomes semantically searchable
 - Clear dependency visibility for modules and apps
 - Better traceability between decisions and implementations
@@ -132,11 +146,13 @@ relates_to: [<doc-ids>, <PR-xxx>, <workflow:name>]
 ## Rollback / Recovery
 
 **To rollback:**
+
 ```bash
 git revert <commit-sha>
 ```
 
 **To remove metadata from specific files:**
+
 - Edit .md files to remove YAML frontmatter (lines 1-N before first #)
 - Re-run validate-metadata.py to verify
 
@@ -145,6 +161,7 @@ git revert <commit-sha>
 ## Validation
 
 **Automated:**
+
 ```bash
 # All metadata valid
 python3 scripts/validate-metadata.py docs
@@ -156,12 +173,14 @@ find . -name "*.md" ! -path "./.gemini/*" | wc -l
 ```
 
 **Manual Verification:**
+
 - Sampled 20 files across categories - metadata accurate
 - Tested relationship extraction on 10 docs - 8/10 correct (80%)
 - Validated version extraction on 5 Helm charts - all correct
 - Checked dependency extraction on 3 modules - all correct
 
 **Known Limitations:**
+
 - Dependency extraction may miss non-standard formats
 - ~30% of relationships require manual curation
 - Version defaults to 1.0 if not detected in content
@@ -170,6 +189,7 @@ find . -name "*.md" ! -path "./.gemini/*" | wc -l
 
 **For New Files:**
 Use the template from METADATA_STRATEGY.md or run backfill script on new files:
+
 ```bash
 python3 scripts/backfill-metadata.py --dry-run # Preview
 python3 scripts/backfill-metadata.py # Apply
@@ -177,6 +197,7 @@ python3 scripts/backfill-metadata.py # Apply
 
 **For Relationship Updates:**
 Re-run relationship extraction after adding cross-references:
+
 ```bash
 python3 scripts/extract-relationships.py
 ```

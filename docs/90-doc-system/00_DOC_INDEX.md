@@ -15,12 +15,15 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 30_DOCUMENTATION_FRESHNESS
-------
+
+---
 
 # Documentation Index (Living)
 
 Doc contract:
+
 - Purpose: Track living docs and review metadata for freshness checks.
 - Owner: platform
 - Status: living

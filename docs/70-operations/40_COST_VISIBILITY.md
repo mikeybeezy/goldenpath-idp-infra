@@ -15,13 +15,16 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 06_COST_GOVERNANCE
 - ADR-0076
-------
+
+---
 
 # Cost Visibility (CI + Infracost)
 
 Doc contract:
+
 - Purpose: Describe the current cost visibility implementation and how to operate it.
 - Owner: platform
 - Status: living

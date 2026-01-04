@@ -17,7 +17,7 @@ lifecycle:
 relates_to:
 - ADR-0015
 - ADR-0032
-------
+---
 
 # ADR-0032: EKS access model (bootstrap admin vs steady-state access)
 
@@ -37,6 +37,7 @@ In our case, that is the GitHub Actions bootstrap role. This is useful for
 initial provisioning, but it is a risk if left as the only admin path.
 
 We need an explicit access model that:
+
 - keeps bootstrap deterministic,
 - allows human access in a controlled way,
 - supports least-privilege in steady state.
@@ -54,10 +55,12 @@ This is accepted for V1 but remains open to alternatives as the platform matures
 ## Scope
 
 Applies to:
+
 - Human access to EKS clusters
 - CI role access during bootstrap vs steady state
 
 Does not apply to:
+
 - In-cluster workload access (covered by IRSA)
 - External SSO integration (e.g., Keycloak)
 
@@ -65,19 +68,19 @@ Does not apply to:
 
 ```text
                            AWS ACCOUNT
-+------------------------------------------------------------+
++------------------------------+
 |                                                            |
 |  [GitHub Actions OIDC]  --->  AssumeRole (CI Bootstrap)     |
 |                                        |                    |
 |                                        v                    |
 |                                 EKS Cluster Admin           |
 |                                                            |
-|  [Humans] ----------------->  Access Entry + Policy         |
+|  [Humans] ----------->  Access Entry + Policy         |
 |                                      (EKS API)              |
 |                                                            |
 |  [Workloads] -> ServiceAccount -> IRSA Role -> AWS APIs     |
 |                                                            |
-+------------------------------------------------------------+
++------------------------------+
 ```
 
 ## Commands (placeholders)

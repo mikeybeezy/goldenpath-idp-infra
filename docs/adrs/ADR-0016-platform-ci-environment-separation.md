@@ -17,7 +17,7 @@ lifecycle:
 relates_to:
 - 01_GOVERNANCE
 - ADR-0016
-------
+---
 
 # ADR-0016: CI environment separation and manual promotion gates
 

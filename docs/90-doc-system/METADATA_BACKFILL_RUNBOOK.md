@@ -15,13 +15,15 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+
 - ADR-0082
 - ADR-0083
 - ADR-XXXX
 - CL-XXXX
 - METADATA_STRATEGY
 - METADATA_VALIDATION_GUIDE
-------
+
+---
 
 ## Metadata Backfill Runbook
 
@@ -29,13 +31,16 @@ Purpose: Backfill metadata for docs and Terraform with deterministic steps and
 audit trails, while keeping changes small and reversible.
 
 Scope:
+
 - Markdown under `docs/`.
 - Terraform resources in `*.tf`.
 
 Non-goals:
+
 - Enforce metadata for source code headers. That is a future phase.
 
 References:
+
 - `docs/90-doc-system/METADATA_STRATEGY.md`
 - `docs/90-doc-system/METADATA_VALIDATION_GUIDE.md`
 - `scripts/validate-metadata.py`
@@ -67,11 +72,13 @@ If the validator output format changes, manually review the report and create
 Use the following rules for each file:
 
 ID rules:
+
 - `docs/adrs/ADR-XXXX-*.md` -> `id: ADR-XXXX` (must match filename).
 - `docs/changelog/entries/CL-XXXX-*.md` -> `id: CL-XXXX`.
 - Otherwise -> `id: DOC-###` (use the next available number; scan for `id: DOC-`).
 
 Type rules:
+
 - `docs/adrs/` -> `adr`
 - `docs/changelog/entries/` -> `changelog`
 - `docs/runbooks/` -> `runbook`
@@ -79,10 +86,12 @@ Type rules:
 - Otherwise -> `topic`
 
 Owner rules:
+
 - If the file declares a team or author, use it.
 - Otherwise, default to `platform-team`.
 
 Status rules:
+
 - ADRs: map `Status: Accepted` -> `active`, `Deprecated` -> `deprecated`.
 - Otherwise, default to `active`.
 
@@ -148,6 +157,7 @@ receive structured headers in the audit note.
 ## Quality Gate
 
 Required:
+
 - `python3 scripts/validate-metadata.py docs` returns exit code 0.
 - `terraform validate` passes for the scoped directory.
 - `make plan ENV=dev` shows no destructive changes (tag-only updates).

@@ -20,7 +20,7 @@ relates_to:
 - 31_EKS_ACCESS_MODEL
 - 32_TERRAFORM_STATE_AND_LOCKING
 - 33_IAM_ROLES_AND_POLICIES
-------
+---
 
 # Platform v1 Baseline Success Checklist (Living)
 

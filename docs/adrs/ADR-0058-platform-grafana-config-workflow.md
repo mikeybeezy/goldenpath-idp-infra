@@ -17,7 +17,7 @@ lifecycle:
 relates_to:
 - 05_OBSERVABILITY_DECISIONS
 - ADR-0058
-------
+---
 
 # ADR-0058: Separate Grafana config workflow with readiness guard
 
@@ -64,10 +64,12 @@ Bootstrap will **not** invoke Grafana config by default.
 ## Scope
 
 Applies to:
+
 - Grafana dashboards, datasources, and alert rules managed via Terraform.
 - CI-driven platform configuration flows.
 
 Does not apply to:
+
 - Grafana deployment (handled by bootstrap/GitOps).
 - App-team owned dashboards managed outside platform scope.
 

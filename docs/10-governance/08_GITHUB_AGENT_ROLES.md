@@ -15,14 +15,17 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+
 - 04_PR_GUARDRAILS
 - 07_AI_AGENT_GOVERNANCE
 - 26_AI_AGENT_PROTOCOLS
-------
+
+---
 
 # GitHub Agent Roles (Apps and Service Accounts)
 
 Doc contract:
+
 - Purpose: Define how to grant AI/automation roles without human GitHub accounts.
 - Owner: platform
 - Status: living
@@ -49,12 +52,14 @@ access without creating new human accounts.
 Start with least privilege and expand only as required.
 
 Suggested baseline:
+
 - Contents: read/write (only if the agent must push commits).
 - Pull requests: read/write (open or update PRs).
 - Issues: read (labels, comments).
 - Metadata: read.
 
 Avoid by default:
+
 - Administration (only if required for branch protection updates).
 - Actions: write (only if workflow dispatch is needed).
 - Secrets: write (human-only unless explicitly approved).

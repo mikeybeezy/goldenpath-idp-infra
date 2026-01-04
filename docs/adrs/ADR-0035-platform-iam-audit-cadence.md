@@ -15,8 +15,10 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+
 - ADR-0035
-------
+
+---
 
 # ADR-0035: IAM Audit Cadence for CI Roles
 

@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0073
-------
+---
 
 # ADR-0073: Bootstrap v3 skips Terraform IRSA apply in Stage 3B
 

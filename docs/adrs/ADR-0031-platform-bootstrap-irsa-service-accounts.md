@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0031
-------
+---
 
 # ADR-0031: Create IRSA service accounts during bootstrap
 
@@ -50,10 +50,12 @@ accounts to already exist and will fail fast if they are missing.
 ## Scope
 
 Applies to:
+
 - `kube-system/aws-load-balancer-controller`
 - `kube-system/cluster-autoscaler`
 
 Does not apply to:
+
 - Other Kubernetes resources
 - Non-IRSA service accounts
 

@@ -17,11 +17,12 @@ lifecycle:
 relates_to:
 - 21_CI_ENVIRONMENT_CONTRACT
 - 34_PLATFORM_SUCCESS_CHECKLIST
-------
+---
 
 # Golden Path Validation (Living)
 
 Doc contract:
+
 - Purpose: Validate the end-to-end golden path flow.
 - Owner: platform
 - Status: living

@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0068
-------
+---
 
 # ADR-0068: Fix review cadence output delimiter
 

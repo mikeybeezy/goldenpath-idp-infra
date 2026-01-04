@@ -15,13 +15,16 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 07_AI_AGENT_GOVERNANCE
 - 26_AI_AGENT_PROTOCOLS
-------
+
+---
 
 # AI Change Log (Living)
 
 Doc contract:
+
 - Purpose: Record AI agent contributions with evidence and verification.
 - Owner: platform
 - Status: living

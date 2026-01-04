@@ -17,7 +17,7 @@ lifecycle:
 relates_to:
 - ADR-0074
 - CL-0029
-------
+---
 
 # ADR-0074: Ops workflow branch guard
 
@@ -43,12 +43,14 @@ We will restrict ops workflows to run only from `main` and `development`.
 ## Scope
 
 Applies to:
+
 - `.github/workflows/ci-bootstrap.yml`
 - `.github/workflows/ci-teardown.yml`
 - `.github/workflows/ci-orphan-cleanup.yml`
 - `.github/workflows/ci-managed-lb-cleanup.yml`
 
 Does not apply to:
+
 - Feature branch testing workflows (plan-only, linting, or documentation checks).
 
 ## Consequences

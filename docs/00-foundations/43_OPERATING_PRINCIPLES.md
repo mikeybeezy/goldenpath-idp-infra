@@ -15,15 +15,18 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
+
 - 05_OBSERVABILITY_DECISIONS
 - 16_INFRA_Build_ID_Strategy_Decision
 - 34_PLATFORM_SUCCESS_CHECKLIST
 - 44_PRINCIPLES_AND_FRAMEWORKS
-------
+
+---
 
 # Platform Operating Principles (Grove + Rumelt)
 
 Doc contract:
+
 - Purpose: Define operating principles and the versioned signal register.
 - Owner: platform
 - Status: living
@@ -41,6 +44,7 @@ docs/00-foundations/44_PRINCIPLES_AND_FRAMEWORKS.md.
 ## Strategy kernel (Rumelt)
 
 Every major platform initiative must state:
+
 - Diagnosis: the real constraint or failure mode.
 - Guiding policy: the stance we will take.
 - Coherent actions: the few aligned moves that enforce the stance.
@@ -50,34 +54,42 @@ If we cannot state all three, we are not ready to commit effort.
 ## Principles
 
 1) Output over activity
+
 - Measure outcomes: deploy frequency, lead time, teardown success rate, MTTR.
 - If it does not move an outcome, it is not a priority.
 
 2) Bottleneck first
+
 - The constraint sets throughput. Today that is build, promotion, and teardown.
 - Fix the slowest, riskiest stage before adding new surface area.
 
 3) Leverage before scale
+
 - Defaults, templates, and automation multiply every team.
 - Manual work does not scale and should be encoded into runbooks and scripts.
 
 4) Leading indicators beat lagging indicators
+
 - Track early signals: plan/apply success, teardown time, LB cleanup time.
 - Do not wait for incidents to learn.
 
 5) OKRs with explicit owners
+
 - Every reliability target has an owner and a timebox.
 - Example: teardown success >= 95% within 30 days.
 
 6) Task-relevant maturity
+
 - Novice teams need guardrails; expert teams need flexibility.
 - Defaults are strict; overrides are explicit and logged.
 
 7) Fast, reversible decisions
+
 - Small decisions are made quickly with clear rollback paths.
 - Big decisions go to ADRs with stated tradeoffs and the strategy kernel.
 
 8) Platform is a team game
+
 - Docs, runbooks, and onboarding are part of the product.
 - If users cannot operate it, it is not shipped.
 

@@ -17,7 +17,7 @@ lifecycle:
 relates_to:
 - ADR-0075
 - CL-0027
-------
+---
 
 # ADR-0075: App example deployments via Argo CD, Helm, and Kustomize
 

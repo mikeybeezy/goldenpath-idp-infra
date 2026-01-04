@@ -16,7 +16,7 @@ lifecycle:
   breaking_change: false
 relates_to:
 - ADR-0024
-------
+---
 
 # ADR-0024: Security floor for V1
 

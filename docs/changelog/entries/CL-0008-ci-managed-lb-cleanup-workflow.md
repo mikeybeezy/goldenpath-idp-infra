@@ -15,9 +15,11 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
+
 - 08_MANAGED_LB_CLEANUP
 - CL-0008
-------
+
+---
 
 # CL-0008: CI managed LB cleanup workflow
 
