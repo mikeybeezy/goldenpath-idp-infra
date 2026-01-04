@@ -36,7 +36,7 @@ Introduced the **Platform Metadata Fabric** to enable semantically linked docume
 ### Documentation System
 
 - **Strategy:** Defined `METADATA_STRATEGY.md` with the "Rich Schema" (Identity, Governance, Reliability).
-- **Validation:** Added `scripts/validate-metadata.py` to enforce schema compliance in CI.
+- **Validation:** Added `scripts/validate_metadata.py` to enforce schema compliance in CI.
 - **Runbook:** Added `METADATA_VALIDATION_GUIDE.md` for team onboarding.
 - **Decision:** Record `ADR-0082` justifying the custom validation approach.
 
@@ -48,5 +48,5 @@ Introduced the **Platform Metadata Fabric** to enable semantically linked docume
 
 ## Verification
 
-- Ran `validate-metadata.py` locally.
+- Ran `validate_metadata.py` locally.
 - Verified templates render correctly.

@@ -40,7 +40,7 @@ We will adopt an **Automated Remediation** strategy for metadata management.
 Any change to the metadata schema MUST be accompanied by a corresponding update to `scripts/standardize-metadata.py`. This script serves as the "Healer" for the repository.
 
 ### 2. Bulk Remediation vs. PR Blocking
-Instead of asking developers to backfill thousands of documents, the Platform Team will periodically run bulk remediation passes to bring the entire repository into compliance. PR blocking (via `validate-metadata.py`) will be used primarily to catch *new* non-compliant files, while existing files are maintained via script.
+Instead of asking developers to backfill thousands of documents, the Platform Team will periodically run bulk remediation passes to bring the entire repository into compliance. PR blocking (via `validate_metadata.py`) will be used primarily to catch *new* non-compliant files, while existing files are maintained via script.
 
 ### 3. Skeleton Merging
 The remediation script will use a "Skeleton Merge" approach:

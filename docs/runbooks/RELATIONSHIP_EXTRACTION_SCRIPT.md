@@ -277,7 +277,7 @@ After running, verify relationships are valid:
 
 ```bash
 # Validate metadata (checks for broken references)
-python3 scripts/validate-metadata.py docs
+python3 scripts/validate_metadata.py docs
 
 # View relationship count per file
 grep -r "relates_to:" docs/ | wc -l
@@ -348,7 +348,7 @@ python3 scripts/backfill-metadata.py
 python3 scripts/extract-relationships.py
 
 # 3. Validate
-python3 scripts/validate-metadata.py docs
+python3 scripts/validate_metadata.py docs
 
 # 4. Commit
 git add docs/

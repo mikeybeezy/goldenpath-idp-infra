@@ -132,7 +132,7 @@ relates_to: [<doc-ids>, <PR-xxx>, <workflow:name>]
 **Affected Systems:**
 
 - All markdown documentation
-- validate-metadata.py CI check (now validates 300+ files)
+- validate_metadata.py CI check (now validates 300+ files)
 - Future Graph RAG implementation (ADR-0082)
 
 **User Impact:**
@@ -152,7 +152,7 @@ git revert <commit-sha>
 **To remove metadata from specific files:**
 
 - Edit .md files to remove YAML frontmatter (lines 1-N before first #)
-- Re-run validate-metadata.py to verify
+- Re-run validate_metadata.py to verify
 
 **Not required** - Changes are additive (YAML frontmatter) and don't affect file functionality.
 
@@ -162,7 +162,7 @@ git revert <commit-sha>
 
 ```bash
 # All metadata valid
-python3 scripts/validate-metadata.py docs
+python3 scripts/validate_metadata.py docs
 # Expected: ✅ Passed: 236, Failed: 0
 
 # Coverage check

@@ -27,7 +27,7 @@ To ensure your Pull Request passes all CI gates (Metadata, Pre-commit, Super-Lin
 Ensure all markdown files have the required frontmatter schema and that the `id` field matches the filename.
 // turbo
 ```bash
-python3 scripts/validate-metadata.py
+python3 scripts/validate_metadata.py
 ```
 
 ### 2. Automated Formatting

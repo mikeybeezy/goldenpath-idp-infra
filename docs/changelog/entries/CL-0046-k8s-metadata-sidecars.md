@@ -27,7 +27,7 @@ This change extends the IDP's governance schema from documentation (Markdown) to
 
 ## Changes
 - **New Pattern**: Established the `metadata.yaml` sidecar standard for infrastructure components.
-- **Structural Enforcement**: Updated `scripts/validate-metadata.py` to mandate the presence of `metadata.yaml` in core zones (`gitops/helm/`, `idp-tooling/`, `envs/`).
+- **Structural Enforcement**: Updated `scripts/validate_metadata.py` to mandate the presence of `metadata.yaml` in core zones (`gitops/helm/`, `idp-tooling/`, `envs/`).
 - **Automated Remediation**: Upgraded `scripts/standardize-metadata.py` to automatically generate missing sidecars from templates.
 - **Mass Implementation**: Backfilled **22 new sidecars** across the GitOps tree (Loki, Grafana, Keycloak, etc.) and standardized 341 files.
 - **Verification**: Achieved 100% repository-wide structural and schema compliance.

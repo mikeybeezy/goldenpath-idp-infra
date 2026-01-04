@@ -50,7 +50,7 @@ Select at least one checkbox per section by changing `[ ]` to `[x]`.
 Testing/Validation details:
 
 - Plan/apply link: N/A (Strategy Doc)
-- Test command/run: `validate-metadata` (Verified locally)
+- Test command/run: `validate_metadata` (Verified locally)
 
 ## Risk & Rollback
 

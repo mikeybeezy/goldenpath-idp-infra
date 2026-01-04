@@ -44,13 +44,13 @@ References:
 
 - `docs/90-doc-system/METADATA_STRATEGY.md`
 - `docs/90-doc-system/METADATA_VALIDATION_GUIDE.md`
-- `scripts/validate-metadata.py`
+- `scripts/validate_metadata.py`
 
 ## Phase 0: Prep
 
 1. Sync with base and create a branch.
 2. Confirm the current validator scope:
-   - `validate-metadata.py` only checks `docs/adrs/`, `docs/changelog/entries/`,
+   - `validate_metadata.py` only checks `docs/adrs/`, `docs/changelog/entries/`,
      and `docs/10-governance/`.
 3. Decide the batch size (default: 10 files per commit).
 4. Create an audit note (optional but recommended):
@@ -61,7 +61,7 @@ References:
 ### Step 1: Discovery (Audit)
 
 ```bash
-python3 scripts/validate-metadata.py docs | tee audit_report.txt
+python3 scripts/validate_metadata.py docs | tee audit_report.txt
 grep '\\[MISSING\\]' audit_report.txt > missing_frontmatter.txt
 ```
 
@@ -104,7 +104,7 @@ Prepend a YAML block to each file using the schema in
 ### Step 4: Verify Per File
 
 ```bash
-python3 scripts/validate-metadata.py <file_path>
+python3 scripts/validate_metadata.py <file_path>
 ```
 
 If a file fails validation, revert the file and log it in the audit note.
@@ -159,7 +159,7 @@ receive structured headers in the audit note.
 
 Required:
 
-- `python3 scripts/validate-metadata.py docs` returns exit code 0.
+- `python3 scripts/validate_metadata.py docs` returns exit code 0.
 - `terraform validate` passes for the scoped directory.
 - `make plan ENV=dev` shows no destructive changes (tag-only updates).
 

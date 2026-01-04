@@ -50,7 +50,7 @@ Select at least one checkbox per section by changing `[ ]` to `[x]`.
 Testing/Validation details:
 
 - Plan/apply link: N/A
-- Test command/run: `python3 scripts/validate-metadata.py docs`
+- Test command/run: `python3 scripts/validate_metadata.py docs`
 
 ## Risk & Rollback
 

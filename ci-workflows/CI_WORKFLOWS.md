@@ -150,7 +150,7 @@ CI Workflows (GitHub Actions)
 
 ### Docs - Metadata Validation
 
-- Trigger: pull_request docs/**, scripts/validate-metadata.py
+- Trigger: pull_request docs/**, scripts/validate_metadata.py
 - Owner: platform
 - Inputs: none
 - Purpose: validate metadata frontmatter and references in docs

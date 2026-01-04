@@ -7,7 +7,7 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - scripts/validate-metadata.py
+  - scripts/validate_metadata.py
 risk_profile:
   production_impact: low
   security_risk: none
@@ -29,11 +29,11 @@ relates_to:
 
 ## Overview
 
-This guide explains the `validate-metadata.py` tool used in our CI/CD pipeline.
+This guide explains the `validate_metadata.py` tool used in our CI/CD pipeline.
 
 ## The Script
 
-Located at: `scripts/validate-metadata.py`
+Located at: `scripts/validate_metadata.py`
 
 It enforces the Schema defined in [METADATA_STRATEGY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/METADATA_STRATEGY.md) across all Markdown (`.md`) and Sidecar YAML (`metadata.yaml`) files.
 
@@ -43,10 +43,10 @@ It enforces the Schema defined in [METADATA_STRATEGY.md](file:///Users/mikesabla
 
 ```bash
 # Scan entire repository (Recommended)
-python3 scripts/validate-metadata.py .
+python3 scripts/validate_metadata.py .
 
 # Scan specific folder
-python3 scripts/validate-metadata.py gitops/helm
+python3 scripts/validate_metadata.py gitops/helm
 ```
 
 ### CI Integration

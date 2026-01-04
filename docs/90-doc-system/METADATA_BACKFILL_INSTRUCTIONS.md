@@ -32,7 +32,7 @@ python3 scripts/backfill-metadata.py --dry-run --verbose
 python3 scripts/backfill-metadata.py
 
 # 3. Validate the metadata
-python3 scripts/validate-metadata.py docs
+python3 scripts/validate_metadata.py docs
 
 # 4. Review the changes
 git diff docs/
@@ -92,7 +92,7 @@ The `backfill-metadata.py` script:
 Check for YAML syntax errors:
 
 ```bash
-python3 scripts/validate-metadata.py docs 2>&1 | grep -A 3 "ERROR"
+python3 scripts/validate_metadata.py docs 2>&1 | grep -A 3 "ERROR"
 ```
 
 ### If some titles need manual adjustment
@@ -102,7 +102,7 @@ Edit the files directly and re-validate:
 ```bash
 # Fix the file
 # Then validate
-python3 scripts/validate-metadata.py docs/path/to/file.md
+python3 scripts/validate_metadata.py docs/path/to/file.md
 ```
 
 ## Next Steps After Completion

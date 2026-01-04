@@ -26,12 +26,12 @@ relates_to:
 # ADR-0086: Federated Metadata Validation Strategy
 
 ## Context
-Our current metadata compliance engine (`validate-metadata.py`) is locked within the `goldenpath-idp-infra` repository. As the platform scales, new application repositories (workloads) are being created without consistent metadata, leading to gaps in the IDP Knowledge Graph and inaccurate Health Reports.
+Our current metadata compliance engine (`validate_metadata.py`) is locked within the `goldenpath-idp-infra` repository. As the platform scales, new application repositories (workloads) are being created without consistent metadata, leading to gaps in the IDP Knowledge Graph and inaccurate Health Reports.
 
 ## Decision
 We will decentralize the **execution** of metadata validation while centralizing the **definition** of the policy.
 
-1.  **Shared Action**: Extract `validate-metadata.py` into a standalone GitHub Action repo.
+1.  **Shared Action**: Extract `validate_metadata.py` into a standalone GitHub Action repo.
 2.  **Global pre-commit**: Mandate the inclusion of this hook in all "Golden Templates."
 3.  **Soft-fail Grace Period**: Initially implement as a warning (non-blocking) for 30 days before moving to hard-fail PR blocking.
 

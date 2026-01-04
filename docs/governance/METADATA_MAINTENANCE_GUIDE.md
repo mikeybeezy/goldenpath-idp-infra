@@ -43,7 +43,7 @@ python3 scripts/standardize-metadata.py
 This script will safely merge the new schema into all Markdown headers and `metadata.yaml` sidecars without affecting the body content.
 
 ### 3. Update the Validator
-Modify `scripts/validate-metadata.py`.
+Modify `scripts/validate_metadata.py`.
 - Add the new field to `REQUIRED_FIELDS`.
 - Add specific validation logic (e.g., regex checks for billing codes).
 

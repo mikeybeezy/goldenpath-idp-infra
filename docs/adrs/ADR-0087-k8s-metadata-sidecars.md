@@ -70,4 +70,4 @@ The metadata defined in these sidecars SHOULD be injected into the live Kubernet
 - **Positive**: Uniform governance across documentation and live infra.
 - **Positive**: Simplifies Backstage catalog integration (Sidecar → Catalog Info).
 - **Negative**: Extra files to manage in the `gitops/` directory.
-- **Dependency**: Requires `validate-metadata.py` to be updated to support YAML files.
+- **Dependency**: Requires `validate_metadata.py` to be updated to support YAML files.

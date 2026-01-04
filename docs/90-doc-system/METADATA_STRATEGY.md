@@ -94,4 +94,4 @@ tags = {
 
 1. **Standards:** Publish this schema.
 2. **Backfill:** Update Template files (`ADR-TEMPLATE.md`) and existing critical docs.
-3. **Enforcement:** Add `validate-metadata.py` to CI.
+3. **Enforcement:** Add `validate_metadata.py` to CI.

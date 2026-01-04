@@ -44,6 +44,6 @@ First batch of metadata backfill for governance, onboarding, and documentation s
 
 ## Impact
 
-- Enables `validate-metadata` CI check to pass
+- Enables `validate_metadata` CI check to pass
 - Establishes foundation for Graph RAG implementation
 - No functional changes to infrastructure or applications

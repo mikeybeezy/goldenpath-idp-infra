@@ -340,7 +340,7 @@ def main():
         print("\n✅ Metadata backfill complete!")
         print("   Next steps:")
         print("   1. Review changes: git diff")
-        print("   2. Validate: python3 scripts/validate-metadata.py docs")
+        print("   2. Validate: python3 scripts/validate_metadata.py docs")
         print("   3. Commit: git add . && git commit -m 'docs: complete metadata backfill'")
 
 

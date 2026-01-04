@@ -199,7 +199,7 @@ Default                 → documentation
 After running, validate all metadata:
 
 ```bash
-python3 scripts/validate-metadata.py docs
+python3 scripts/validate_metadata.py docs
 
 # Expected output for success:
 ✅ Passed: 236
@@ -272,7 +272,7 @@ Automatically validates metadata in CI:
 ```yaml
 # .github/workflows/metadata-validation.yml
 - name: Validate Metadata
-  run: python3 scripts/validate-metadata.py docs
+  run: python3 scripts/validate_metadata.py docs
 ```
 
 ### 3. Knowledge Graph Import
@@ -322,7 +322,7 @@ Edit `get_risk_profile()` function to adjust defaults per type.
 ## Best Practices
 
 1. **Always run dry-run first** to preview changes
-2. **Validate after running** with validate-metadata.py
+2. **Validate after running** with validate_metadata.py
 3. **Commit changes incrementally** if running on large repos
 4. **Review auto-generated dependencies** for accuracy
 5. **Run on new files** when adding documentation
