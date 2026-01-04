@@ -1,6 +1,34 @@
+---
+id: 12_GITOPS_AND_CICD
+title: GitOps and CI/CD
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 06_IDENTITY_AND_ACCESS
+- 16_INFRA_Build_ID_Strategy_Decision
+- 17_BUILD_RUN_FLAGS
+- 26_POST_APPLY_HEALTH_CHECKS
+- 29_CD_DEPLOYMENT_CONTRACT
+- ADR-0001
+
+---
+
 # GitOps and CI/CD
 
 Doc contract:
+
 - Purpose: Explain GitOps and CI/CD flow and Argo CD usage.
 - Owner: platform
 - Status: reference

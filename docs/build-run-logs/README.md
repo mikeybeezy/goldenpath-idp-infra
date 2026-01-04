@@ -1,3 +1,29 @@
+---
+id: BUILD_RUN_LOGS_README
+title: Build and Teardown Logs Documentation
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: not-applicable
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 41_BUILD_RUN_LOG
+- BR-TEMPLATE
+- BR_TEMPLATE
+- TD-TEMPLATE
+- TD_TEMPLATE
+
+---
+
 # Build Run Logs
 
 This directory holds per-run records for builds/bootstraps and teardowns.
@@ -12,11 +38,13 @@ This directory holds per-run records for builds/bootstraps and teardowns.
 ## When to add a new entry
 
 Create an entry when:
+
 - A build/bootstrap/teardown run is used for validation, demos, or promotion decisions.
 - A run exposes a failure mode, cleanup issue, or notable drift.
 - You need a durable reference beyond CI logs (timing, flags, or outcomes).
 
 Do not create an entry for:
+
 - Local experiments that are not part of shared validation.
 - Runs that duplicate an existing log without new findings.
 
@@ -33,10 +61,12 @@ these entries for deeper detail.
 ## Standard Fields
 
 Please copy the appropriate template when creating a new entry:
+
 - **Build/Bootstrap:** `docs/build-run-logs/BR-TEMPLATE.md`
 - **Teardown:** `docs/build-run-logs/TD-TEMPLATE.md`
 
 Key metrics to capture:
+
 - **Build ID / Commit:** Traceability to code.
 - **Plan Delta:** Number of resources added/changed/destroyed (Blast radius).
 - **Duration:** Precise times for Build vs. Bootstrap phases.

@@ -1,3 +1,29 @@
+---
+id: 10_DEV_BRANCH_APPLY
+title: 'Runbook: Dev Branch Infra Apply'
+type: runbook
+category: runbooks
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - module:terraform
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - CI_WORKFLOWS
+  - ADR-0028
+  - ADR-0029
+---
+
 # Runbook: Dev Branch Infra Apply
 
 Use this runbook to build an environment from the `development` branch.

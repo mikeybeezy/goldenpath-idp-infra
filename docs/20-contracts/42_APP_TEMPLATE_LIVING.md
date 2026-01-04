@@ -1,6 +1,31 @@
+---
+id: 42_APP_TEMPLATE_LIVING
+title: App Template Living Doc
+type: contract
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: medium
+  security_risk: none
+  coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 02_PLATFORM_BOUNDARIES
+- ADR-0062
+- FAST-API-APP-TEMPLATE
+
+---
+
 # App Template Living Doc
 
 Doc contract:
+
 - Purpose: Track the current app template structure and ownership boundaries.
 - Owner: platform
 - Status: living
@@ -35,6 +60,7 @@ apps/fast-api-app-template/
 ## Ownership Boundaries
 
 App-owned:
+
 - deployment.yaml
 - service.yaml
 - servicemonitor.yaml
@@ -42,6 +68,7 @@ App-owned:
 - ingress.yaml values (host/path/service/ports)
 
 Platform-owned:
+
 - kong/*
 - networkpolicy.yaml
 - rbac.yaml (only when needed)
@@ -49,6 +76,7 @@ Platform-owned:
 ## Scaffolder contract (governance metadata)
 
 Required inputs (Backstage + CI scaffolder):
+
 - `owner_team` (GitHub team slug, e.g., checkout-team)
 - `system` (Backstage system; optional)
 - `lifecycle` (experimental, production, deprecated)
@@ -56,10 +84,12 @@ Required inputs (Backstage + CI scaffolder):
 - `data_classification` (public, internal, confidential, restricted)
 
 Catalog fields:
+
 - `spec.owner` is set to `group:<owner_team>`
 - `spec.lifecycle` and annotations under `platform.goldenpath.dev/*`
 
 Workflow requirements:
+
 - `REPO_SCOPED_GH_TOKEN` secret with repo creation permissions.
 
 ## Change Log (Living)

@@ -1,6 +1,31 @@
+---
+id: 07_AI_AGENT_GOVERNANCE
+title: AI Agent Governance
+type: policy
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to:
+
+- 04_PR_GUARDRAILS
+- 26_AI_AGENT_PROTOCOLS
+- AI_CHANGELOG
+
+---
+
 # AI Agent Governance
 
 Doc contract:
+
 - Purpose: Define governance rules for AI agents integrated into GoldenPath IDP.
 - Owner: platform
 - Status: living
@@ -26,11 +51,13 @@ remain human.
 ## 2) Agent classes (tiered authority)
 
 **Tier 0 — Read / Reason**
+
 - Allowed: read repo, summarize docs, explain workflows, propose approaches.
 - Disallowed: writing files, opening PRs, executing workflows.
 - Use case: exploration and validation.
 
 **Tier 1 — Write, but isolated**
+
 - Allowed: create branches, generate code/docs, open PRs, update metadata,
   draft ADRs/runbooks.
 - Required: PR description links to a user story, ADR (or "ADR needed"), and
@@ -39,6 +66,7 @@ remain human.
 - Use case: scaffolding, refactors, documentation, templates.
 
 **Tier 2 — Execute safely**
+
 - Allowed: run tests/linters, terraform plan, render manifests, validate
   policies.
 - Required: execution logs attached to PR; no side effects outside ephemeral
@@ -47,6 +75,7 @@ remain human.
 - Use case: CI assistance and validation loops.
 
 **Tier 3 — High risk (human only)**
+
 - Only humans: terraform apply, destroy/teardown, IAM/auth changes, cluster
   lifecycle actions, policy enforcement changes.
 - AI may recommend, but must not execute without explicit instruction.

@@ -1,3 +1,25 @@
+---
+id: ADR-0045
+title: 'ADR-0045: Default LB delete when ENIs persist during teardown'
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+- 15_TEARDOWN_AND_CLEANUP
+- ADR-0043
+- ADR-0045
+---
+
 # ADR-0045: Default LB delete when ENIs persist during teardown
 
 Filename: `ADR-0045-platform-teardown-lb-delete-default.md`
@@ -28,6 +50,7 @@ deletion and completes teardown. Making this the default removes repeated
 manual intervention and speeds up recovery.
 
 Constraints:
+
 - Deletion must be scoped to the cluster to avoid impacting unrelated LBs.
 - The behavior must remain auditable and predictable.
 
@@ -46,11 +69,13 @@ We will make LB deletion the default when ENIs persist:
 ## Scope
 
 Applies to:
+
 - Teardown script ENI wait behavior
 - CI teardown workflow inputs and defaults
 - Teardown documentation and IAM policy guidance
 
 Does not apply to:
+
 - Orphan cleanup deletion order
 - Manual deletion outside the cluster tag scope
 

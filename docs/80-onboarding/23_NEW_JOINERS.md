@@ -1,6 +1,34 @@
+---
+id: 23_NEW_JOINERS
+title: New Joiners Guide
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 02_PLATFORM_BOUNDARIES
+- 13_COLLABORATION_GUIDE
+- 24_PR_GATES
+- 25_DAY_ONE_CHECKLIST
+- 26_AI_AGENT_PROTOCOLS
+- 38_BRANCHING_STRATEGY
+
+---
+
 # New Joiners Guide
 
 Doc contract:
+
 - Purpose: Define onboarding expectations and local setup steps.
 - Owner: platform
 - Status: living

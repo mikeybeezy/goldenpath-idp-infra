@@ -1,6 +1,34 @@
+---
+id: 15_TEARDOWN_AND_CLEANUP
+title: Teardown and Cleanup Commands
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 04_LB_FINALIZER_STUCK
+- 06_LB_ENI_ORPHANS
+- 09_CI_TEARDOWN_RECOVERY_V2
+- 10_INFRA_FAILURE_MODES
+- 16_INFRA_Build_ID_Strategy_Decision
+- ADR-0043
+
+---
+
 # Teardown and Cleanup Commands
 
 Doc contract:
+
 - Purpose: Provide teardown guidance and manual cleanup commands.
 - Owner: platform
 - Status: reference

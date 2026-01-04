@@ -1,3 +1,26 @@
+---
+id: ADR-0018
+title: "ADR-0018: Container registry standard \u2014 ECR default, GHCR supported,\
+  \ Docker Hub discouraged"
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to:
+- ADR-0007
+- ADR-0008
+- ADR-0018
+---
+
 # ADR-0018: Container registry standard — ECR default, GHCR supported, Docker Hub discouraged
 
 - **Status:** Proposed

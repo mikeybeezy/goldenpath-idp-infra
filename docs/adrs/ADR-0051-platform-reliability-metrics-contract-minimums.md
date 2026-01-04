@@ -1,3 +1,29 @@
+---
+id: ADR-0051
+title: 'ADR-0051: Minimal reliability metrics and contract minimums'
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+- 02_PLATFORM_BOUNDARIES
+- 17_BUILD_RUN_FLAGS
+- 21_CI_ENVIRONMENT_CONTRACT
+- 34_PLATFORM_SUCCESS_CHECKLIST
+- 35_RESOURCE_TAGGING
+- 40_CHANGELOG_GOVERNANCE
+- ADR-0051
+---
+
 # ADR-0051: Minimal reliability metrics and contract minimums
 
 - **Status:** Proposed

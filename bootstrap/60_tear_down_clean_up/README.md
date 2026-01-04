@@ -1,3 +1,32 @@
+---
+id: TEARDOWN_README
+title: Tear Down and Cleanup Scripts
+type: documentation
+category: bootstrap
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - module:kubernetes
+  - module:terraform
+risk_profile:
+  production_impact: high
+  security_risk: access
+  coupling_risk: high
+reliability:
+  rollback_strategy: not-applicable
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - BOOTSTRAP_README
+  - GOLDENPATH_IDP_BOOTSTRAP
+  - ADR-0036
+  - 15_TEARDOWN_AND_CLEANUP
+  - 17_BUILD_RUN_FLAGS
+---
+
 # Tear Down and Cleanup Scripts
 
 This folder contains cleanup helpers for AWS resources. Run them when Terraform
@@ -16,6 +45,7 @@ CI exposes the same choice as a workflow input.
 ## goldenpath-idp-teardown.sh (v1)
 
 What it does:
+
 - Updates kubeconfig for the target cluster.
 - Removes LoadBalancer services to release AWS LBs and SGs.
 - Drains and deletes node groups.
@@ -23,6 +53,7 @@ What it does:
 - Optionally runs tag-based orphan cleanup by BuildId.
 
 Safety:
+
 - Requires `TEARDOWN_CONFIRM=true` to run destructive steps.
 - You can skip parts with flags (see usage below).
 
@@ -158,6 +189,7 @@ TEARDOWN_CONFIRM=true CLEANUP_ORPHANS=true ORPHAN_CLEANUP_MODE=dry_run BUILD_ID=
 ## remove-k8s-service-accounts-from-state.sh
 
 What it does:
+
 - Removes `kubernetes_service_account_v1` entries from Terraform state.
 - Useful when the cluster is already gone and Terraform would otherwise fail.
 
@@ -170,11 +202,13 @@ bootstrap/60_tear_down_clean_up/remove-k8s-service-accounts-from-state.sh envs/d
 ## cleanup-iam.sh
 
 What it does:
+
 - Finds IAM roles and policies that start with `goldenpath-`.
 - Detaches policies, deletes inline policies, then deletes the roles.
 - Deletes local IAM policies with the same prefix.
 
 Safety:
+
 - Runs in **dry-run** mode by default.
 - Use `--yes` to actually delete.
 
@@ -188,10 +222,12 @@ bootstrap/60_tear_down_clean_up/cleanup-iam.sh --yes
 ## cleanup-orphans.sh
 
 What it does:
+
 - Deletes AWS resources tagged with a `BuildId` (EKS, LBs, EC2, NAT, subnets,
   EIPs, ENIs, route tables, SGs, IGWs, VPCs, IAM roles).
 
 Safety:
+
 - Never deletes the Terraform state S3 bucket or the DynamoDB lock table.
 
 Examples:
@@ -204,11 +240,13 @@ DRY_RUN=false bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <reg
 ## cleanup-managed-lb-resources.sh
 
 What it does:
+
 - Deletes AWS Load Balancer Controller managed LBs, ENIs, and security groups
   tagged with `elbv2.k8s.aws/cluster=<cluster>`.
 - Optionally narrows the scope with `service.k8s.aws/stack=<stack>`.
 
 Safety:
+
 - Runs in **dry-run** mode by default.
 - Deletes only resources tagged to the cluster (and optional stack).
 - `DELETE_CLUSTER_TAGGED_SGS=true` expands scope to any security group tagged
@@ -228,6 +266,7 @@ DELETE_CLUSTER_TAGGED_SGS=true DRY_RUN=false \
 ## pre-destroy-cleanup.sh
 
 What it does:
+
 - Deletes Kubernetes `LoadBalancer` services to release AWS LBs and SGs before
   destroying the VPC.
 
@@ -241,6 +280,7 @@ bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh <cluster> <region> --yes
 ## drain-nodegroup.sh
 
 What it does:
+
 - Cordon and drain nodes in a node group before replacement.
 
 Examples:

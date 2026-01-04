@@ -1,6 +1,36 @@
+---
+id: 11_ARGOCD_APP_READINESS
+title: Argo CD App Readiness Checklist
+type: runbook
+category: runbooks
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - chart:argo-cd
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: medium
+reliability:
+  rollback_strategy: rerun-validation
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 05_GOLDEN_PATH_VALIDATION
+  - 10_INFRA_FAILURE_MODES
+  - 29_CD_DEPLOYMENT_CONTRACT
+  - BOOTSTRAP_README
+  - ADR-0001
+  - ADR-0013
+---
+
 # Argo CD App Readiness Checklist
 
 Doc contract:
+
 - Purpose: Verify Argo CD apps can sync cleanly and required dependencies exist.
 - Owner: platform
 - Status: reference

@@ -1,11 +1,42 @@
+---
+id: MODULE_AWS_EKS
+title: EKS Cluster Terraform Module
+type: documentation
+category: modules
+version: 1.1
+owner: platform-team
+status: active
+dependencies:
+  - aws-provider
+  - kubernetes-provider
+  - helm-provider
+risk_profile:
+  production_impact: high
+  security_risk: medium
+  coupling_risk: high
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 09_ARCHITECTURE
+  - MODULE_VPC
+  - MODULE_AWS_IAM
+  - ADR-0032
+---
+
 # EKS Cluster Module
 
 ## Purpose
+
 Creates an EKS cluster, a managed node group, a cluster security group, IAM
 roles, and an OIDC provider. Installs core add-ons and optionally storage
 add-ons.
 
 ## Inputs
+
 - `cluster_name` (string): Cluster name.
 - `kubernetes_version` (string): EKS version.
 - `vpc_id` (string): VPC ID.
@@ -22,6 +53,7 @@ add-ons.
 - `environment` (string, optional): Environment tag.
 
 ## Outputs
+
 - `cluster_name`
 - `cluster_endpoint`
 - `cluster_security_group_id`
@@ -32,10 +64,12 @@ add-ons.
 - `oidc_provider_arn`
 
 ## Notes
+
 - Creates cluster and node IAM roles internally.
 - Core add-ons: `coredns`, `kube-proxy`, `vpc-cni`.
 - Storage add-ons are gated by `enable_storage_addons`.
 
 ## Failure modes
+
 - Private subnets missing NAT/endpoint routing (nodes fail to join).
 - Insufficient IAM permissions for EKS and IAM roles.

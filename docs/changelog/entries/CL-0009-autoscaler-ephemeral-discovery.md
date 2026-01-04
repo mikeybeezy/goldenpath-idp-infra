@@ -1,9 +1,31 @@
+---
+id: CL-0009
+title: 'CL-0009: Autoscaler discovery for ephemeral clusters'
+type: changelog
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to:
+
+- CL-0009
+
+---
+
 # CL-0009: Autoscaler discovery for ephemeral clusters
 
 Date: 2025-12-31
 Owner: platform-team
 Scope: dev, EKS, cluster-autoscaler
-Related: https://github.com/mikeybeezy/goldenpath-idp-infra/pull/78
+Related: <https://github.com/mikeybeezy/goldenpath-idp-infra/pull/78>
 
 ## Summary
 

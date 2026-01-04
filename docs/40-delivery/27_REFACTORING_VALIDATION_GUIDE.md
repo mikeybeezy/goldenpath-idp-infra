@@ -1,6 +1,27 @@
+---
+id: 27_REFACTORING_VALIDATION_GUIDE
+title: Refactoring Validation Guide
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+- 21_CI_ENVIRONMENT_CONTRACT
+---
+
 # Refactoring Validation Guide
 
 Doc contract:
+
 - Purpose: Standard Operating Procedure (SOP) for validating deep infrastructure refactors using ephemeral environments.
 - Owner: platform
 - Status: living
@@ -11,6 +32,7 @@ Doc contract:
 ## 1. When to use this guide
 
 Use this procedure when making "High Risk" changes such as:
+
 - Refactoring bootstrap logic.
 - Upgrading Kubernetes versions.
 - Changing core network modules (VPC, Subnets).
@@ -36,24 +58,24 @@ terraform -chdir=envs/dev plan
 
 The `Apply` workflow enforces that a successful `Plan` has run for the specific commit. Since we are testing a feature branch, we must trigger this manually.
 
-1.  Navigate to **Actions** -> **Plan - Infra Terraform Checks**.
-2.  **Use workflow from**: Select your branch (e.g., `feature/terraform-bootstrap`).
-3.  Run workflow with inputs:
-    *   `env`: **dev**
-    *   `lifecycle`: **ephemeral**
-    *   `build_id`: **<your-initials>-01**
-    *   `new_build`: **true**
-4.  **Wait for success (Green Tick).**
+1. Navigate to **Actions** -> **Plan - Infra Terraform Checks**.
+2. **Use workflow from**: Select your branch (e.g., `feature/terraform-bootstrap`).
+3. Run workflow with inputs:
+    - `env`: **dev**
+    - `lifecycle`: **ephemeral**
+    - `build_id`: **<your-initials>-01**
+    - `new_build`: **true**
+4. **Wait for success (Green Tick).**
 
 ### Phase 3: Ephemeral CI Environment (Apply)
 
-1.  Navigate to **Actions** -> **Infra Terraform Apply (dev)**.
-2.  **Use workflow from**: Select your branch (`feature/terraform-bootstrap`).
-3.  Run workflow with inputs:
-    *   `lifecycle`: **ephemeral**
-    *   `confirm_apply`: **apply**
-    *   `build_id`: **<your-initials>-01**
-    *   `new_build`: **true**
+1. Navigate to **Actions** -> **Infra Terraform Apply (dev)**.
+2. **Use workflow from**: Select your branch (`feature/terraform-bootstrap`).
+3. Run workflow with inputs:
+    - `lifecycle`: **ephemeral**
+    - `confirm_apply`: **apply**
+    - `build_id`: **<your-initials>-01**
+    - `new_build`: **true**
 
 **Why?** This creates a brand new EKS cluster from scratch using your code. If the bootstrap logic is broken, it will fail here, leaving `dev` untouched.
 
@@ -80,16 +102,17 @@ kubectl -n kong-system get svc
 
 To avoid unnecessary costs, destroy the environment immediately after verification.
 
-1.  Navigate to **Actions** -> **Teardown**.
-2.  **Use workflow from**: Select your branch again.
-3.  Run workflow with:
-    *   `lifecycle`: **ephemeral**
-    *   `build_id`: **<your-initials>-01**
-    *   `cleanup_orphans`: **true**
+1. Navigate to **Actions** -> **Teardown**.
+2. **Use workflow from**: Select your branch again.
+3. Run workflow with:
+    - `lifecycle`: **ephemeral**
+    - `build_id`: **<your-initials>-01**
+    - `cleanup_orphans`: **true**
 
 ## 3. Merge Criteria
 
 You may merge your PR when:
-1.  Ephemeral environment created successfully (Green CI).
-2.  Core addons (ArgoCD) are healthy.
-3.  Teardown completed successfully.
+
+1. Ephemeral environment created successfully (Green CI).
+2. Core addons (ArgoCD) are healthy.
+3. Teardown completed successfully.

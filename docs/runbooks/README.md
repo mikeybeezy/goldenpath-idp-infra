@@ -1,3 +1,40 @@
+---
+id: RUNBOOKS_README
+title: Runbooks Index
+type: documentation
+category: runbooks
+version: 1.0
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 01_EKS_ACCESS_RECOVERY
+  - 02_GRAFANA_ACCESS
+  - 03_IAM_AUDIT
+  - 04_LB_FINALIZER_STUCK
+  - 05_GOLDEN_PATH_VALIDATION
+  - 06_LB_ENI_ORPHANS
+  - 07_TF_STATE_FORCE_UNLOCK
+  - 08_MANAGED_LB_CLEANUP
+  - 09_CI_TEARDOWN_RECOVERY_V2
+  - 10_DEV_BRANCH_APPLY
+  - 10_REPO_DECOMMISSIONING
+  - 11_ARGOCD_APP_READINESS
+  - ORPHAN_CLEANUP
+  - METADATA_BACKFILL_SCRIPT
+  - RELATIONSHIP_EXTRACTION_SCRIPT
+---
+
 # Runbooks
 
 ## Index

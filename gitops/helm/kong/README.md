@@ -1,3 +1,29 @@
+---
+id: HELM_KONG
+title: Kong Ingress Controller Helm Chart (Values)
+type: documentation
+category: gitops
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - chart:kong
+  - image:kong
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - ADR-0002
+  - HELM_CERT_MANAGER
+---
+
 # Kong Helm Deployment
 
 Kong acts as the platform's ingress/API gateway, handling routing, auth, and policies for north-south traffic.
@@ -11,6 +37,7 @@ We enabled Kong Manager for demo and validation. It is kept private (ClusterIP)
 and should be exposed only through an authenticated ingress.
 
 Temporary basic auth approach:
+
 - Keep the Manager service as ClusterIP.
 - Expose it via a Kong Ingress and attach a `basic-auth` plugin.
 - Create a KongConsumer with basic auth credentials for limited access.

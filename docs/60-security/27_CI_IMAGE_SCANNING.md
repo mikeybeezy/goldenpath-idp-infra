@@ -1,3 +1,29 @@
+---
+id: 27_CI_IMAGE_SCANNING
+title: CI Image Scanning (Living Document)
+type: documentation
+category: 60-security
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - module:trivy
+risk_profile:
+  production_impact: medium
+  security_risk: high
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - ADR-0023
+  - 22_CONTAINER_REGISTRY_STANDARD
+  - CI_WORKFLOWS
+---
+
 # CI Image Scanning (Living Document)
 
 This document describes the default image scanning approach in CI.

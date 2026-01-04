@@ -1,3 +1,30 @@
+---
+id: 04_LB_FINALIZER_STUCK
+title: LoadBalancer Service Stuck on Finalizer
+type: runbook
+category: runbooks
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - module:kubernetes
+  - chart:aws-load-balancer-controller
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: low
+reliability:
+  rollback_strategy: rerun-teardown
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - TEARDOWN_README
+  - 08_MANAGED_LB_CLEANUP
+  - 15_TEARDOWN_AND_CLEANUP
+---
+
 # LoadBalancer Service Stuck on Finalizer
 
 ## Purpose

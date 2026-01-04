@@ -1,3 +1,26 @@
+---
+id: CL-0002
+title: 'CL-0002: Refactor Bootstrap to Terraform'
+type: changelog
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to:
+
+- ADR-0063
+- CL-0002
+
+---
+
 # CL-0002: Refactor Bootstrap to Terraform
 
 Date: 2026-01-01

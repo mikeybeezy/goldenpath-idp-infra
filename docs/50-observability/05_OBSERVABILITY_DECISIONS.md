@@ -1,6 +1,33 @@
+---
+id: 05_OBSERVABILITY_DECISIONS
+title: Observability Tooling Decisions
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+- 41_STORAGE_AND_PERSISTENCE
+- ADR-0049
+- ADR-0052
+- ADR-0054
+- ADR-0055
+- ADR-0056
+- ADR-0061
+---
+
 # Observability Tooling Decisions
 
 Doc contract:
+
 - Purpose: Record current observability tooling choices and defaults.
 - Owner: platform
 - Status: reference

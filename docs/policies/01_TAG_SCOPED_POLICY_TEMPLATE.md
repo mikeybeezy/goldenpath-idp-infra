@@ -1,3 +1,25 @@
+---
+id: 01_TAG_SCOPED_POLICY_TEMPLATE
+title: Tag-Scoped IAM Policy Template (Living)
+type: policy
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- 35_RESOURCE_TAGGING
+
+---
+
 # Tag-Scoped IAM Policy Template (Living)
 
 This document defines the standard template for **tag-scoped** IAM policies

@@ -1,3 +1,24 @@
+---
+id: ADR-0016
+title: 'ADR-0016: CI environment separation and manual promotion gates'
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to:
+- 01_GOVERNANCE
+- ADR-0016
+---
+
 # ADR-0016: CI environment separation and manual promotion gates
 
 - **Status:** Proposed

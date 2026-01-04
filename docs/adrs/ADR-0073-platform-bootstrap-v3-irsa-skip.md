@@ -1,3 +1,23 @@
+---
+id: ADR-0073
+title: 'ADR-0073: Bootstrap v3 skips Terraform IRSA apply in Stage 3B'
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+- ADR-0073
+---
+
 # ADR-0073: Bootstrap v3 skips Terraform IRSA apply in Stage 3B
 
 - **Status:** Proposed

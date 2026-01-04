@@ -1,3 +1,29 @@
+---
+id: 26_POST_APPLY_HEALTH_CHECKS
+title: Post-Apply Health Checks (Living Document)
+type: documentation
+category: 40-delivery
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - chart:argo-cd
+  - chart:kong
+  - module:kubernetes
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - ADR-0022
+---
+
 # Post-Apply Health Checks (Living Document)
 
 This document describes the health-check gate that runs after Terraform apply.
@@ -18,9 +44,9 @@ This document describes the health-check gate that runs after Terraform apply.
 ## ASCII flow
 
 ```text
-+--------------------+     +-----------------+     +-------------------------+
++-----------+     +-----------+     +-------------+
 | Terraform apply    | --> | Bootstrap phase | --> | Post-apply health checks |
-+--------------------+     +-----------------+     +-------------------------+
++-----------+     +-----------+     +-------------+
                                                          |   |      |
                                                          v   v      v
                                                     [EKS OK] [Argo OK] [Kong OK]

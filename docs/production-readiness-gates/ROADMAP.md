@@ -1,3 +1,29 @@
+---
+id: ROADMAP
+title: Platform TODO (Living)
+type: documentation
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+
+- ADR-0022
+- ADR-0028
+- ADR-0034
+- ADR-0035
+- ADR-0037
+
+---
+
 # Platform TODO (Living)
 
 Last updated: 2026-01-03

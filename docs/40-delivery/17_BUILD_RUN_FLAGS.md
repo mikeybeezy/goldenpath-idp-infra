@@ -1,3 +1,30 @@
+---
+id: 17_BUILD_RUN_FLAGS
+title: Build/Bootstrap/Teardown Flags (One‑Pager)
+type: documentation
+category: 40-delivery
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - module:terraform
+  - module:kubernetes
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 16_INFRA_Build_ID_Strategy_Decision
+  - BOOTSTRAP_README
+  - TEARDOWN_README
+---
+
 # Build/Bootstrap/Teardown Flags (One‑Pager)
 
 This page lists the runtime flags we use to drive automation. It is grouped by

@@ -1,3 +1,26 @@
+---
+id: ADR-0046
+title: 'ADR-0046: PR plan owns validation (no auto infra checks dispatch)'
+type: adr
+owner: platform-team
+status: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+- 21_CI_ENVIRONMENT_CONTRACT
+- 36_STATE_KEY_STRATEGY
+- ADR-0044
+- ADR-0046
+---
+
 # ADR-0046: PR plan owns validation (no auto infra checks dispatch)
 
 Filename: `ADR-0046-platform-pr-plan-validation-ownership.md`
@@ -28,6 +51,7 @@ lifecycle/build_id guards) inside the PR plan, so the extra dispatch is
 redundant for the default PR-driven flow.
 
 Constraints:
+
 - Keep the PR flow simple and deterministic.
 - Preserve an optional manual checks path for operators.
 - Avoid breaking apply guardrails that require a successful plan.
@@ -52,10 +76,12 @@ operators who want an extra validation pass.
 ## Scope
 
 Applies to:
+
 - PR-driven plan flow (`pr-terraform-plan.yml`)
 - CI docs that describe the PR → apply path
 
 Does not apply to:
+
 - Manual checks (`infra-terraform.yml`)
 - Apply workflows and their plan prerequisites
 
