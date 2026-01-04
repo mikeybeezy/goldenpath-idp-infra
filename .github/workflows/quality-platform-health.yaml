@@ -2,10 +2,10 @@ name: "Quality - Platform Health Check"
 
 on:
   push:
-    branches: [ development ]
+    branches: [development]
   schedule:
-    - cron: '0 0 * * *' # Run daily at midnight
-  workflow_dispatch: # Allow manual triggers
+    - cron: '0 0 * * *'  # Run daily at midnight
+  workflow_dispatch:  # Allow manual triggers
 
 jobs:
   health-check:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Platform Health Check
         run: |
-          python3 scripts/platform-health.py > PLATFORM_HEALTH.md
+          python3 scripts/platform_health.py > PLATFORM_HEALTH.md
           cat PLATFORM_HEALTH.md
 
       - name: Upload Health Report
