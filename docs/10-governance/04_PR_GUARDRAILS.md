@@ -65,7 +65,7 @@ PRs are labeled automatically based on touched paths:
 - `governance`: docs/10-governance, docs/20-contracts, docs/90-doc-system
 - `docs`: remaining docs paths
 - `changelog-required`: infra + governance domains
-- `adr-required`: infra + governance domains
+- `adr-required`: modules/bootstrap/gitops/workflows/scripts + governance domains
 
 Configured in `/.github/labeler.yml` and applied by
 `/.github/workflows/pr-labeler.yml`.
@@ -151,6 +151,7 @@ Use branch rulesets to enforce the development-only path:
 - Require at least one human approval.
 - Block force-pushes and deletions.
 - Optional: require linear history to avoid drift.
+- Exception: allow build-id branches (`build-<dd-mm-yy-NN>` or `build/<dd-mm-yy-NN>`) to merge to `main` for build validation.
 
 ## Future options (not enabled)
 
