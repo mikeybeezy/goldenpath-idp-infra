@@ -1,12 +1,4 @@
----
-id: <run-id>
-title: Teardown run <build-id>
-type: runlog
-owner: platform-team
-status: active
----
-
-# <run-id>: Teardown Run (<build-id>)
+# TD-XXXX-<build-id>
 
 Date (UTC): YYYY-MM-DD
 Build ID: <build-id>

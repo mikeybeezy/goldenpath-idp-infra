@@ -35,9 +35,6 @@ jobs:
     if: ${{ inputs.confirm_apply == 'apply' }}
     runs-on: ubuntu-latest
     environment: dev
-    outputs:
-      apply_duration: ${{ steps.timed_apply.outputs.duration }}
-      error_message: ${{ steps.timed_apply.outputs.error_message }}
     permissions:
       contents: read
       id-token: write
@@ -207,106 +204,13 @@ jobs:
           kubectl get pods -A || true
 
       - name: Terraform apply (dev)
-        id: timed_apply
         run: |
-          start_epoch=$(date -u +%s)
           var_args=(-var "cluster_lifecycle=${{ inputs.lifecycle }}")
           if [[ "${{ inputs.lifecycle }}" == "ephemeral" ]]; then
             var_args+=(-var "build_id=${{ inputs.build_id }}")
           fi
-          set +e
-          terraform -chdir=envs/dev apply -auto-approve -input=false -no-color "${var_args[@]}" 2>&1 | tee apply.log
-          status=${PIPESTATUS[0]}
-          end_epoch=$(date -u +%s)
-          duration=$((end_epoch - start_epoch))
-          echo "duration=${duration}" >> "$GITHUB_OUTPUT"
-          if [[ $status -ne 0 ]]; then
-            error_msg=$(tail -n 20 apply.log | tr '\n' ' ' | sed 's/"/\\"/g')
-            echo "error_message=${error_msg}" >> "$GITHUB_OUTPUT"
-            exit $status
-          fi
+          terraform -chdir=envs/dev apply -auto-approve -input=false -no-color "${var_args[@]}"
       - name: Runbook link
         if: always()
         run: |
           echo "Runbook: docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md" >> "${GITHUB_STEP_SUMMARY}"
-
-  log-generation:
-    runs-on: ubuntu-latest
-    needs: apply-dev
-    if: ${{ always() && inputs.build_id != '' }}
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Determine Outcome
-        id: outcome
-        run: |
-          if [[ "${{ needs.apply-dev.result }}" == "success" ]]; then
-            echo "outcome=Success" >> "$GITHUB_OUTPUT"
-          else
-            echo "outcome=Failure" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Generate Build Log
-        if: ${{ needs.apply-dev.result == 'success' || needs.apply-dev.result == 'failure' }}
-        id: generate
-        run: |
-          ./scripts/generate-build-log.sh \
-            "${{ inputs.build_id }}" \
-            "${{ needs.apply-dev.outputs.apply_duration }}" \
-            "-" \
-            "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-            "${{ steps.outcome.outputs.outcome }}" \
-            "LIFECYCLE=${{ inputs.lifecycle }} NEW_BUILD=${{ inputs.new_build }}" \
-            "${{ needs.apply-dev.outputs.error_message }}"
-
-      - name: Create or Update Log PR
-        if: ${{ steps.generate.outcome == 'success' }}
-        continue-on-error: true
-        uses: peter-evans/create-pull-request@v6
-        with:
-          branch: automation/build-run-logs
-          base: development
-          delete-branch: false
-          commit-message: "docs: auto-generate build log for build ${{ inputs.build_id }}"
-          title: "docs: update build-run logs (build ${{ inputs.build_id }})"
-          body: |
-            Select at least one checkbox per section by changing `[ ]` to `[x]`.
-
-            ## Change Type
-            - [ ] Feature
-            - [ ] Bug fix
-            - [ ] Infra change
-            - [x] Governance / Policy
-
-            ## Decision Impact
-            - [ ] Requires ADR
-            - [ ] Updates existing ADR
-            - [x] No architectural impact
-
-            ## Production Readiness
-            - [ ] Readiness checklist completed
-            - [x] No production impact
-
-            ## Testing / Validation
-            - [ ] Plan/apply link provided (paste below)
-            - [ ] Test command or run ID provided (paste below)
-            - [x] Not applicable
-
-            Testing/Validation details:
-            - Plan/apply link:
-            - Test command/run:
-
-            ## Risk & Rollback
-            - [ ] Rollback plan documented (link or notes below)
-            - [ ] Data migration required
-            - [ ] No data migration
-            - [x] Not applicable
-
-            Rollback notes/link:
-
-            ## Notes / Summary (optional)
-            - Automated build-run log capture from dev apply.

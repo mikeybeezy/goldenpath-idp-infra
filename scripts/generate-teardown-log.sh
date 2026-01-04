@@ -30,66 +30,42 @@ else
   NEXT_SEQ=$(printf "%04d" $((10#$LAST_SEQ + 1)))
 fi
 
-RUN_ID="TD-${NEXT_SEQ}"
-LOG_FILE="${LOG_DIR}/${RUN_ID}-${BUILD_ID}.md"
+LOG_FILE="${LOG_DIR}/TD-${NEXT_SEQ}-${BUILD_ID}.md"
 
 echo "Generating log: ${LOG_FILE}"
 
 # 2. Copy Template
 cp "$TEMPLATE" "$LOG_FILE"
 
-# 3. Replace Placeholders (portable across macOS/Linux)
+# 3. Replace Placeholders
+# Use | as delimiter for sed to avoid escaping / in URLs
 SAFE_FLAGS="${FLAGS//|/-}"
+sed -i "s|YYYY-MM-DD|$(date -u +%Y-%m-%d)|g" "$LOG_FILE"
+sed -i "s|<build-id>|${BUILD_ID}|g" "$LOG_FILE"
+sed -i "s|<branch>|${GITHUB_REF_NAME:-unknown}|g" "$LOG_FILE"
+sed -i "s|<sha>|${GITHUB_SHA:-unknown}|g" "$LOG_FILE"
+sed -i "s|<url>|${RUN_URL}|g" "$LOG_FILE"
+sed -i "s|<script-version>|Automated (See Flags)|g" "$LOG_FILE"
+sed -i "s|<flags>|${SAFE_FLAGS}|g" "$LOG_FILE"
+sed -i "s|<seconds>|${DURATION}|g" "$LOG_FILE"
+sed -i "s|<Outcome>|${OUTCOME}|g" "$LOG_FILE"
+
+# 4. Fill Metrics Placeholders with '0' (Automation defaults to '0 (auto)')
+sed -i "s|<count>|0 (auto)|g" "$LOG_FILE"
+sed -i "s|<finding>|N/A|g" "$LOG_FILE"
+sed -i "s|<impact>|N/A|g" "$LOG_FILE"
+sed -i "s|<action>|N/A|g" "$LOG_FILE"
+
 if [[ -n "$ERROR_MSG" ]]; then
   NOTES="Automated capture: FAILED. Error: ${ERROR_MSG}"
+  # Escape newlines or special chars for sed if necessary, but keep simple for now
+  # Replace | with - to avoid sed delimiter conflict
   NOTES=${NOTES//|/-}
 else
   NOTES="Automated capture from CI."
 fi
 
-DATE_UTC="$(date -u +%Y-%m-%d)" \
-RUN_ID="${RUN_ID}" \
-BUILD_ID="${BUILD_ID}" \
-BRANCH_NAME="${GITHUB_REF_NAME:-unknown}" \
-COMMIT_SHA="${GITHUB_SHA:-unknown}" \
-RUN_URL="${RUN_URL}" \
-SAFE_FLAGS="${SAFE_FLAGS}" \
-DURATION="${DURATION}" \
-OUTCOME="${OUTCOME}" \
-NOTES="${NOTES}" \
-LOG_FILE="${LOG_FILE}" \
-python - <<'PY'
-import os
-from pathlib import Path
-
-path = Path(os.environ["LOG_FILE"])
-content = path.read_text()
-
-repls = {
-    "YYYY-MM-DD": os.environ["DATE_UTC"],
-    "<run-id>": os.environ["RUN_ID"],
-    "<build-id>": os.environ["BUILD_ID"],
-    "<branch>": os.environ["BRANCH_NAME"],
-    "<sha>": os.environ["COMMIT_SHA"],
-    "<url>": os.environ["RUN_URL"],
-    "<script-version>": "Automated (See Flags)",
-    "<flags>": os.environ["SAFE_FLAGS"],
-    "<seconds>": os.environ["DURATION"],
-    "<Outcome>": os.environ["OUTCOME"],
-    "<count>": "0 (auto)",
-    "<finding>": "N/A",
-    "<impact>": "N/A",
-    "<action>": "N/A",
-    "<notes>": os.environ["NOTES"],
-}
-
-for key, value in repls.items():
-    content = content.replace(key, value)
-
-path.write_text(content)
-PY
+sed -i "s|<notes>|${NOTES}|g" "$LOG_FILE"
 
 echo "Log generated successfully."
-if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
-  echo "new_log_path=${LOG_FILE}" >> "$GITHUB_OUTPUT"
-fi
+echo "new_log_path=${LOG_FILE}" >> "$GITHUB_OUTPUT"

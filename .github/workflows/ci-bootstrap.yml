@@ -443,7 +443,6 @@ jobs:
     if: ${{ always() && inputs.build_id != '' }}
     permissions:
       contents: write
-      pull-requests: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -470,50 +469,10 @@ jobs:
             "BOOTSTRAP_VERSION=${{ inputs.bootstrap_version }} LIFECYCLE=${{ inputs.lifecycle }}" \
             "${{ needs.bootstrap.outputs.error_message }}"
 
-      - name: Create or Update Log PR
+      - name: Commit and Push Log
         if: ${{ steps.generate.outcome == 'success' }}
         continue-on-error: true
-        uses: peter-evans/create-pull-request@v6
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          branch: automation/build-run-logs
-          base: development
-          delete-branch: false
-          commit-message: "docs: auto-generate build log for build ${{ inputs.build_id }}"
-          title: "docs: update build-run logs (build ${{ inputs.build_id }})"
-          body: |
-            Select at least one checkbox per section by changing `[ ]` to `[x]`.
-
-            ## Change Type
-            - [ ] Feature
-            - [ ] Bug fix
-            - [ ] Infra change
-            - [x] Governance / Policy
-
-            ## Decision Impact
-            - [ ] Requires ADR
-            - [ ] Updates existing ADR
-            - [x] No architectural impact
-
-            ## Production Readiness
-            - [ ] Readiness checklist completed
-            - [x] No production impact
-
-            ## Testing / Validation
-            - [ ] Plan/apply link provided (paste below)
-            - [ ] Test command or run ID provided (paste below)
-            - [x] Not applicable
-
-            Testing/Validation details:
-            - Plan/apply link:
-            - Test command/run:
-
-            ## Risk & Rollback
-            - [ ] Rollback plan documented (link or notes below)
-            - [ ] Data migration required
-            - [ ] No data migration
-            - [x] Not applicable
-
-            Rollback notes/link:
-
-            ## Notes / Summary (optional)
-            - Automated build-run log capture from CI bootstrap.
+          commit_message: "docs: auto-generate build log for build ${{ inputs.build_id }}"
+          file_pattern: "docs/build-run-logs/BR-*.md"
