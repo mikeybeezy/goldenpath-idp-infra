@@ -24,9 +24,9 @@ relates_to:
 
 # CL-0058: Feature Testing Framework
 
-**Date:** 2026-01-05  
-**Type:** Process  
-**Category:** Testing  
+**Date:** 2026-01-05
+**Type:** Process
+**Category:** Testing
 **Status:** Active
 
 ## Summary

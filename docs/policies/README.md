@@ -22,9 +22,9 @@ relates_to: []
 
 # Policy Governance Framework
 
-**Version:** 1.0  
-**Owner:** Platform Team  
-**Last Updated:** 2026-01-05  
+**Version:** 1.0
+**Owner:** Platform Team
+**Last Updated:** 2026-01-05
 **Status:** Planned
 
 ## Overview

@@ -25,9 +25,9 @@ relates_to:
 
 # CL-0053: Daily Policy Enforcement Workflow
 
-**Date:** 2026-01-05  
-**Type:** Feature  
-**Category:** Governance  
+**Date:** 2026-01-05
+**Type:** Feature
+**Category:** Governance
 **Status:** Planned
 
 ## Summary

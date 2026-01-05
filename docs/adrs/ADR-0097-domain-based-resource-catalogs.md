@@ -146,14 +146,14 @@ GitHub Workflow (Self-Service)
     ├─→ ECR Workflow → docs/catalogs/ecr-catalog.yaml
     ├─→ RDS Workflow → docs/catalogs/rds-catalog.yaml
     └─→ S3 Workflow  → docs/catalogs/s3-catalog.yaml
-    
+
     ↓
 TERRAFORM (Per-Domain)
     ↓
     ├─→ ECR Module reads ecr-catalog.yaml
     ├─→ RDS Module reads rds-catalog.yaml
     └─→ S3 Module reads s3-catalog.yaml
-    
+
     ↓
 AWS RESOURCES
 

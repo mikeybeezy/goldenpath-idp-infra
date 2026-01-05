@@ -25,7 +25,7 @@ relates_to:
 
 # App Team Runbook: Push Image Guide
 
-**Audience:** Application Teams  
+**Audience:** Application Teams
 **Purpose:** How to push container images to ECR
 
 ---

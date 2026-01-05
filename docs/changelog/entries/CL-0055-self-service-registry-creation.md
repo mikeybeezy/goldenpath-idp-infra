@@ -27,9 +27,9 @@ relates_to:
 
 # CL-0055: Self-Service ECR Registry Creation Workflow
 
-**Date:** 2026-01-05  
-**Type:** Feature  
-**Category:** Governance  
+**Date:** 2026-01-05
+**Type:** Feature
+**Category:** Governance
 **Status:** Active
 
 ## Summary

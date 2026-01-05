@@ -27,7 +27,7 @@ relates_to:
 
 # App Team Runbook: Request ECR Registry
 
-**Audience:** Application Teams  
+**Audience:** Application Teams
 **Purpose:** How to request a new ECR container registry
 
 ---
@@ -175,19 +175,19 @@ After your registry is created:
 
 ## FAQ
 
-**Q: How long does it take?**  
+**Q: How long does it take?**
 A: Usually 1-2 hours (depends on platform team availability)
 
-**Q: Can I change the risk level later?**  
+**Q: Can I change the risk level later?**
 A: Yes, create another PR to update the catalog
 
-**Q: What if I chose the wrong risk level?**  
+**Q: What if I chose the wrong risk level?**
 A: Platform team will catch it during review and suggest the correct level
 
-**Q: Can I have multiple registries?**  
+**Q: Can I have multiple registries?**
 A: Yes! One per product/service is recommended
 
-**Q: What's the naming convention?**  
+**Q: What's the naming convention?**
 A: `product-name` or `service-name` (lowercase with hyphens)
 
 ---
