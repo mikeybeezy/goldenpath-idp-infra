@@ -1,3 +1,32 @@
+---
+id: APPS_FAST-API-APP-TEMPLATE_README
+title: App Template (Reference)
+type: template
+category: apps
+version: 1.0
+owner: platform-team
+status: active
+dependencies:
+  - image:python:3.11-slim
+  - chart:kube-prometheus-stack
+  - module:kong
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 42_APP_TEMPLATE_LIVING
+  - 02_PLATFORM_BOUNDARIES
+  - 18_BACKSTAGE_MVP
+  - 10_SERVICE_CATALOG
+---
+
 # App Template (Reference)
 
 This directory is a reference template for app teams. It bundles the default
@@ -6,6 +35,7 @@ manifests needed to deploy an application on the Golden Path.
 ## Ownership
 
 App-owned (teams edit):
+
 - deployment.yaml
 - service.yaml
 - servicemonitor.yaml
@@ -13,6 +43,7 @@ App-owned (teams edit):
 - config values inside ingress.yaml (host/path/service/ports)
 
 Platform-owned (teams request changes):
+
 - kong/* (auth plugin, rate limiting, consumers, secrets)
 - networkpolicy.yaml (default security posture)
 - rbac.yaml (only if the app needs Kubernetes API access)

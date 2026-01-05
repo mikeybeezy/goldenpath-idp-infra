@@ -1,6 +1,31 @@
+---
+id: 37_V1_SCOPE_AND_TIMELINE
+title: V1 Scope and Timeline (Backstage + Platform Capabilities)
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 34_PLATFORM_SUCCESS_CHECKLIST
+  - ROADMAP
+---
+
 # V1 Scope and Timeline (Backstage + Platform Capabilities)
 
 Doc contract:
+
 - Purpose: Define V1 scope, timeline, and explicit deferrals.
 - Owner: platform
 - Status: living

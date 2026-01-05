@@ -1,9 +1,12 @@
 ---
-id: ADR-0034
-title: ADR-0034: CI Environment Contract
+id: ADR-0034-platform-ci-environment-contract
+title: 'ADR-0034: CI Environment Contract'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,10 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0011
+  - ADR-0011-platform-ci-environment-contract
+  - ADR-0034
 ---
 
 # ADR-0034: CI Environment Contract
@@ -37,6 +43,7 @@ As the system evolved, pipeline behavior became increasingly influenced by envir
 - promotion and bootstrap behavior
 
 Without an explicit contract, these variables risk becoming:
+
 - implicit knowledge held by individuals
 - undocumented coupling between workflows and scripts
 - a source of non-deterministic or surprising behavior
@@ -48,23 +55,27 @@ This creates operational risk and makes delegation, refactoring, and onboarding 
 GoldenPath defines an explicit **CI Environment Contract**.
 
 All environment variables that influence CI pipeline behavior are treated as a **governed interface** between:
+
 - CI workflows
 - infrastructure provisioning
 - bootstrap scripts
 - GitOps reconciliation
 
 These variables must be:
+
 - explicitly named
 - documented
 - intentional
 
 Any change that alters CI behavior through environment variables requires:
+
 - an update to the CI Environment Contract document
 - an Architecture Decision Record if the change affects platform semantics
 
 ## Consequences
 
 ### Positive
+
 - CI behavior becomes predictable and repeatable.
 - Pipelines fail fast when required inputs are missing.
 - Knowledge moves from individual memory into durable artifacts.
@@ -72,6 +83,7 @@ Any change that alters CI behavior through environment variables requires:
 - The platform becomes easier to operate without the original author present.
 
 ### Tradeoffs
+
 - Slight upfront discipline when introducing or changing variables.
 - Additional documentation to maintain as the system evolves.
 

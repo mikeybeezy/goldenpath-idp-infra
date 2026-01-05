@@ -260,7 +260,7 @@ jobs:
       - name: Render template
         run: |
           set -euo pipefail
-          python scripts/render-template.py \
+          python scripts/render_template.py \
             "${TEMPLATE_DIR}" \
             /tmp/scaffold-repo \
             /tmp/scaffold-values.json \

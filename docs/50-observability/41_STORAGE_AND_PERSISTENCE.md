@@ -1,6 +1,33 @@
+---
+id: 41_STORAGE_AND_PERSISTENCE
+title: Storage and Persistence (Living)
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 01_GOVERNANCE
+  - ADR-0052
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0053
+---
+
 # Storage and Persistence (Living)
 
 Doc contract:
+
 - Purpose: Define storage defaults, persistence requirements, and tradeoffs.
 - Owner: platform
 - Status: living
@@ -29,11 +56,13 @@ expands on the storage principle in `docs/10-governance/01_GOVERNANCE.md` and th
 **Decision:** Use the cluster default StorageClass.
 
 Why:
+
 - Aligns with cluster-level policy and avoids hard-coding class names.
 - Works across clusters that may not expose `gp3` or use a custom default.
 - Centralizes policy control in cluster provisioning rather than chart values.
 
 Tradeoffs:
+
 - If the default is `gp2`, performance scales with size and can be lower for
   small volumes.
 - `gp3` offers predictable baseline IOPS and lower cost per GiB, but hard-coding
@@ -55,6 +84,7 @@ real usage and retention requirements.
 | prod | 100Gi | 20Gi | 20Gi | 30d |
 
 Tradeoffs:
+
 - Smaller volumes cost less and compact faster, but reduce retention and headroom.
 - Larger volumes extend retention and absorb spikes, but cost more and recover slower.
 

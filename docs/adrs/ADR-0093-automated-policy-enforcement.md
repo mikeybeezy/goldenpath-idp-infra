@@ -1,0 +1,105 @@
+---
+id: ADR-0093-automated-policy-enforcement
+title: 'ADR-0093: Automated Policy Enforcement Framework'
+type: adr
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: '2028-01-01'
+  breaking_change: false
+relates_to: []
+---
+
+# ADR-0093: Automated Policy Enforcement Framework
+
+## Status
+Accepted
+
+## Context
+
+We need policies to be enforceable, not just documentation. Manual enforcement doesn't scale and policies become stale without automation.
+
+## Decision
+
+### 1. Machine-Readable Policies
+
+Policies are defined as **YAML files** in `docs/policies/`, not just markdown.
+
+**Structure:**
+```yaml
+policy_id: POL-{DOMAIN}-{NUMBER}
+version: "1.0"
+status: "active"
+
+rules:
+  - rule_id: "{POLICY_ID}-R{NUMBER}"
+    enforcement: "automated|manual"
+    check_frequency: "on_creation|daily"
+    violation_action: "block|alert|log"
+```
+
+### 2. Three-Layer Enforcement
+
+**Layer 1: Prevention (Terraform Validation)**
+- Block non-compliant resources at creation time
+- Example: Validate naming conventions, metadata requirements
+
+**Layer 2: Detection (Daily Compliance Checks)**
+- GitHub Action queries AWS daily
+- Compare actual state to policy rules
+- Create GitHub issues for violations
+
+**Layer 3: Remediation (Automated Fixes)**
+- Safe fixes applied automatically (e.g., add lifecycle policy)
+- Unsafe fixes require manual approval (e.g., delete registry)
+
+### 3. Monitoring
+
+**Dashboard:** Grafana showing compliance rate, violations, trends (planned)
+
+**Reports:** Daily JSON report posted to Slack (planned)
+
+**Alerts:**
+- Critical: PagerDuty + Slack
+- High: GitHub Issue + Slack
+- Medium/Low: GitHub Issue
+
+### 4. Policy Lifecycle
+
+1. **Create:** Author YAML → PR review → Merge
+2. **Enforce:** Terraform validation + daily checks
+3. **Monitor:** Dashboard + reports
+4. **Review:** Quarterly review meeting
+5. **Update:** Update YAML → PR → Merge
+
+## Consequences
+
+**Pros:**
+- Policies are enforceable (code, not docs)
+- Measurable compliance (real-time visibility)
+- Proactive detection (before incidents)
+- Audit trail (for compliance frameworks)
+
+**Cons:**
+- Initial effort to build framework
+- Ongoing maintenance of policies and scripts
+- Potential for false positives
+- Alert fatigue if not tuned
+
+**Mitigations:**
+- Phased rollout (start with ECR, expand gradually)
+- Clear exception process
+- Alert tuning based on feedback
+
+## Related
+- [ADR-0092: ECR Registry Product Strategy](./ADR-0092-ecr-registry-product-strategy.md)

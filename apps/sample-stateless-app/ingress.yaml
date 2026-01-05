@@ -4,6 +4,9 @@ metadata:
   name: "{{ values.app_name }}"
   namespace: "{{ values.namespace }}"
   annotations:
+    goldenpath.idp/id: "{{ values.governance.id }}"
+    goldenpath.idp/owner: "{{ values.governance.owner }}"
+    goldenpath.idp/risk: "{{ values.governance.risk_profile.production_impact }}"
     kubernetes.io/ingress.class: kong
     konghq.com/strip-path: "false"
     konghq.com/methods: "GET, POST"
@@ -20,4 +23,4 @@ spec:
               service:
                 name: "{{ values.app_name }}"
                 port:
-                  number: {{ values.service_port }}
+                  number: "{{ values.service_port }}"

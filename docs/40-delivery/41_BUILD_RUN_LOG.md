@@ -1,6 +1,30 @@
+---
+id: 41_BUILD_RUN_LOG
+title: Build Run Log (Living)
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 17_BUILD_RUN_FLAGS
+---
+
 # Build Run Log (Living)
 
 Doc contract:
+
 - Purpose: Record build, bootstrap, and teardown run summaries with links for deeper detail.
 - Owner: platform
 - Status: living
@@ -59,10 +83,7 @@ Ad hoc notes/observations:
 
 Detailed entry: docs/build-run-logs/BR-0001-02-01-26-06.md
 
-
-
-
-Tear don URL : https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20665012721/job/59335320116
+Tear don URL : <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20665012721/job/59335320116>
 
 SHA: 4be3d33a7118b86457727b8cfd026da3f8deea38
 

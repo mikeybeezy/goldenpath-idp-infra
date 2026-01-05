@@ -1,11 +1,13 @@
-# Backstage Argo CD app template (copy per env).
-# Replace <env> and update values file path.
-
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: <env>-backstage
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: HELM_BACKSTAGE
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: medium
 spec:
   project: default
   destination:

@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+"""
+Purpose: Backstage-compatible Template Renderer
+Achievement: Renders `{{ values.* }}` placeholders in application templates. Updated
+             to support **Nested Key Resolution** (e.g. values.governance.id), enabling
+             the Closed-Loop Governance pipeline.
+Value: Allows platform documentation to drive infrastructure personality, ensuring
+       governance data is baked into every deployed resource.
+"""
 import argparse
 import pathlib
 import re
@@ -13,7 +21,7 @@ except ImportError:
     yaml = None
 
 
-VALUE_PATTERN = re.compile(r"{{\s*values\.([a-zA-Z0-9_]+)\s*}}")
+VALUE_PATTERN = re.compile(r"{{\s*values\.([a-zA-Z0-9._]+)\s*}}")
 
 
 def load_values(path):
@@ -31,10 +39,14 @@ def load_values(path):
 
 def render_text(text, values):
     def replace(match):
-        key = match.group(1)
-        if key in values:
-            return str(values[key])
-        return match.group(0)
+        path = match.group(1).split('.')
+        current = values
+        try:
+            for part in path:
+                current = current[part]
+            return str(current)
+        except (KeyError, TypeError):
+            return match.group(0)
 
     return VALUE_PATTERN.sub(replace, text)
 

@@ -1,3 +1,26 @@
+---
+id: CL-0005-teardown-finalizer-default-on
+title: 'CL-0005: Teardown finalizer removal default-on'
+type: changelog
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to:
+  - CL-0005
+---
+
 # CL-0005: Teardown finalizer removal default-on
 
 Date: 2025-12-31

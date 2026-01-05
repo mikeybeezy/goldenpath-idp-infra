@@ -3,6 +3,10 @@ kind: Deployment
 metadata:
   name: "{{ values.app_name }}"
   namespace: "{{ values.namespace }}"
+  annotations:
+    goldenpath.idp/id: "{{ values.governance.id }}"
+    goldenpath.idp/owner: "{{ values.governance.owner }}"
+    goldenpath.idp/risk: "{{ values.governance.risk_profile.production_impact }}"
   labels:
     app.kubernetes.io/name: "{{ values.app_name }}"
     app.kubernetes.io/instance: "{{ values.app_name }}"
@@ -12,7 +16,7 @@ metadata:
     platform.goldenpath.dev/env: "{{ values.env }}"
     platform.goldenpath.dev/build-id: "{{ values.build_id }}"
 spec:
-  replicas: {{ values.replicas }}
+  replicas: "{{ values.replicas }}"
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ values.app_name }}"
@@ -39,7 +43,7 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: {{ values.app_port }}
+              containerPort: "{{ values.app_port }}"
           env:
             - name: ENV
               value: "{{ values.env }}"

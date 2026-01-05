@@ -9,7 +9,7 @@ metadata:
     grafana_dashboard: "1"
     app: "{{ .Values.appName }}"
 data:
-  {{ .Values.appName }}-dashboard.json: |
+  "{{ .Values.appName }}-dashboard.json": |
     {
       "title": "{{ .Values.appName }} - Golden Signals",
       "tags": [ "golden-path", "{{ .Values.team }}", "{{ .Values.env }}" ],

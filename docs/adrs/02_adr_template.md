@@ -1,3 +1,27 @@
+---
+id: 02_adr_template
+title: 'ADR-XXXX: Template for Architecture Decision Records'
+type: template
+category: adrs
+version: 1.0
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+  - ADR-0084
+  - 01_GOVERNANCE
+---
+
 # ADR-XXXX: Concise decision title
 
 Filename: `ADR-XXXX-(platform|app)-short-title.md`

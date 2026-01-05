@@ -1,9 +1,35 @@
+---
+id: 03_IAM_AUDIT
+title: IAM Audit (Runbook)
+type: runbook
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: high
+  security_risk: access
+  coupling_risk: medium
+reliability:
+  rollback_strategy: not-applicable
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 33_IAM_ROLES_AND_POLICIES
+  - ADR-0035
+  - ADR-0035-platform-iam-audit-cadence
+---
+
 # IAM Audit (Runbook)
 
 This runbook captures how to audit IAM usage for CI roles and reduce unused
 permissions over time.
 
 Use this when:
+
 - CI has stabilized and you want to tighten role permissions.
 - You need evidence of which actions were actually used.
 

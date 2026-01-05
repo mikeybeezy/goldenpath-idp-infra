@@ -1,9 +1,12 @@
 ---
-id: ADR-0030
-title: ADR-0030: Pre-create IAM policies for IRSA controllers in V1
+id: ADR-0030-platform-precreated-iam-policies
+title: 'ADR-0030: Pre-create IAM policies for IRSA controllers in V1'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,9 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0015
+  - ADR-0030
 ---
 
 # ADR-0030: Pre-create IAM policies for IRSA controllers in V1
@@ -45,10 +50,12 @@ and will **not** create or manage the policies themselves in V1.
 ## Scope
 
 Applies to:
+
 - Cluster Autoscaler policy
 - AWS Load Balancer Controller policy
 
 Does not apply to:
+
 - AWS‑managed policies (e.g., EBS/EFS CSI driver)
 - Other IAM policies created by Terraform for core infra
 

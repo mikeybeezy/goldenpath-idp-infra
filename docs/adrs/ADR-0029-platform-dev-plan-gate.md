@@ -1,9 +1,12 @@
 ---
-id: ADR-0029
-title: ADR-0029: Dev plan gate before dev apply
+id: ADR-0029-platform-dev-plan-gate
+title: 'ADR-0029: Dev plan gate before dev apply'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,11 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - ADR-0028
+  - ADR-0028-platform-dev-branch-gate
+  - ADR-0029
 ---
 
 # ADR-0029: Dev plan gate before dev apply
@@ -70,33 +77,33 @@ Applies to dev apply in CI. This does not change non-dev plan behavior.
 
 ```text
 Current (problem):
-+------------------+     plan (any env)     +-------------------+
-|  Commit (SHA)    |  ------------------>  |  Plan Success?     |
-+------------------+                        +-------------------+
++---------+     plan (any env)     +----------+
+|  Commit (SHA)    |  --------->  |  Plan Success?     |
++---------+                        +----------+
                                                |
                                                | (no env check)
                                                v
-                                        +------------------+
+                                        +---------+
                                         | Apply DEV        |
                                         | (allowed)        |
-                                        +------------------+
+                                        +---------+
 
 Risk: a plan for staging/prod can unlock dev apply.
 
-------------------------------------------------------------
+------------------------------
 
 Recommended (fix):
-+------------------+     plan (DEV only)    +-------------------+
-|  Commit (SHA)    |  ------------------>  | Plan Success?      |
-+------------------+                        | env == dev        |
-                                            +-------------------+
++---------+     plan (DEV only)    +----------+
+|  Commit (SHA)    |  --------->  | Plan Success?      |
++---------+                        | env == dev        |
+                                            +----------+
                                                |
                                                | only if dev plan
                                                v
-                                        +------------------+
+                                        +---------+
                                         | Apply DEV        |
                                         | (allowed)        |
-                                        +------------------+
+                                        +---------+
 ```
 
 ## Follow-ups

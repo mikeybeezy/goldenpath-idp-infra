@@ -1,9 +1,12 @@
 ---
-id: ADR-0001
-title: ADR-0001: Adopt Argo CD as GitOps controller for platform deployments
+id: ADR-0001-platform-argocd-as-gitops-operator
+title: 'ADR-0001: Adopt Argo CD as GitOps controller for platform deployments'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,8 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0001
 ---
 
 # ADR-0001: Adopt Argo CD as GitOps controller for platform deployments

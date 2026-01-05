@@ -1,3 +1,26 @@
+---
+id: CL-0006-loki-single-binary-monitoring-namespace
+title: 'CL-0006: Loki single-binary default and monitoring namespace'
+type: changelog
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to:
+  - CL-0006
+---
+
 # CL-0006: Loki single-binary default and monitoring namespace
 
 Date: 2025-12-31

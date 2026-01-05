@@ -1,9 +1,12 @@
 ---
-id: ADR-0022
-title: ADR-0022: Post-apply health checks for platform readiness
+id: ADR-0022-platform-post-apply-health-checks
+title: 'ADR-0022: Post-apply health checks for platform readiness'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,8 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0022
 ---
 
 # ADR-0022: Post-apply health checks for platform readiness

@@ -1,3 +1,28 @@
+---
+id: ADR-0070-platform-terraform-aws-lb-controller
+title: 'ADR-0070: Terraform Management of AWS Load Balancer Controller'
+type: adr
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+  - ADR-0063
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - ADR-0070
+---
+
 # ADR-0070: Terraform Management of AWS Load Balancer Controller
 
 - **Status:** Proposed
@@ -23,9 +48,9 @@ However, this imperative step breaks the "single click" deployment model establi
 
 We will **move the installation of the AWS Load Balancer Controller into Terraform** as a `helm_release` resource within the `kubernetes_addons` module.
 
-1.  **Declarative Definition**: The controller will be defined in HCL, with `vpcId`, `clusterName`, and `region` passed as variables from the `aws_eks` and `vpc` modules.
-2.  **Explicit Dependency**: We will use Terraform `depends_on` to ensure the controller is fully installed before bootstrapping any applications that require a LoadBalancer (e.g., Kong).
-3.  **Removal of Scripts**: The legacy `10_aws_lb_controller.sh` script will be deleted.
+1. **Declarative Definition**: The controller will be defined in HCL, with `vpcId`, `clusterName`, and `region` passed as variables from the `aws_eks` and `vpc` modules.
+2. **Explicit Dependency**: We will use Terraform `depends_on` to ensure the controller is fully installed before bootstrapping any applications that require a LoadBalancer (e.g., Kong).
+3. **Removal of Scripts**: The legacy `10_aws_lb_controller.sh` script will be deleted.
 
 ---
 
@@ -33,10 +58,10 @@ We will **move the installation of the AWS Load Balancer Controller into Terrafo
 
 ### Positive
 
--   **Reliability**: The controller is guaranteed to be present if `terraform apply` succeeds.
--   **Configuration Accuracy**: VPC IDs and Region are passed directly from the source of truth (Terraform state) rather than relying on script arguments or environment variables.
--   **Architecture Preserved**: This does not change the runtime architecture (Kong -> Ingress -> AWS LB Controller -> ALB). It only changes the *installation method*.
+- **Reliability**: The controller is guaranteed to be present if `terraform apply` succeeds.
+- **Configuration Accuracy**: VPC IDs and Region are passed directly from the source of truth (Terraform state) rather than relying on script arguments or environment variables.
+- **Architecture Preserved**: This does not change the runtime architecture (Kong -> Ingress -> AWS LB Controller -> ALB). It only changes the *installation method*.
 
 ### Tradeoffs
 
--   **State Migration**: Existing clusters managed via script will need their Helm release imported into Terraform state or simply overwritten (Helm handles this gracefully).
+- **State Migration**: Existing clusters managed via script will need their Helm release imported into Terraform state or simply overwritten (Helm handles this gracefully).

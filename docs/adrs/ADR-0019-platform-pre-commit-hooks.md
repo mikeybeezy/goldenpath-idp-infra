@@ -1,9 +1,12 @@
 ---
-id: ADR-0019
-title: ADR-0019: Pre-commit hooks as local quality gates
+id: ADR-0019-platform-pre-commit-hooks
+title: 'ADR-0019: Pre-commit hooks as local quality gates'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,8 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0019
 ---
 
 # ADR-0019: Pre-commit hooks as local quality gates

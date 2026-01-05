@@ -1,6 +1,34 @@
+---
+id: 36_STATE_KEY_STRATEGY
+title: State Key Strategy (Living)
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: medium
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - 25_PR_TERRAFORM_PLAN
+  - 32_TERRAFORM_STATE_AND_LOCKING
+  - ADR-0040
+  - ADR-0040-platform-lifecycle-aware-state-keys
+---
+
 # State Key Strategy (Living)
 
 Doc contract:
+
 - Purpose: Define lifecycle-aware Terraform state key usage.
 - Owner: platform
 - Status: living

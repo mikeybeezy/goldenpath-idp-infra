@@ -1,9 +1,31 @@
+---
+id: V1_04_CAPABILITY_MATRIX
+title: Capability Matrix – Golden Path IDP Infra
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---
+
 # Capability Matrix – Golden Path IDP Infra
 
 Last updated: 2026-01-03
 
 | Capability | Description | Modules / Components | Status | Notes |
-| ------------ | ------------- | ---------------------- | -------- | ------- |
+| ------ | ------- | ------------- | ----- | ---- |
 | **Networking Core** | Foundational VPC, IGW, and basic routing for every environment. | `modules/vpc`, `modules/aws_route_table` | ✅ In place | VPC + optional public route table created per env; route-table reuse supported. |
 | **Subnet Topology** | Public/private subnets across AZs with consistent tagging. | `modules/aws_subnet` | ✅ In place | Driven entirely via `envs/<env>/terraform.tfvars`; supports multiple AZ entries. |
 | **Security Boundaries** | Base security groups for web/ingress traffic. | `modules/aws_sg` | ✅ In place | Allows HTTPS ingress + full egress; additional rules can be layered per env. |

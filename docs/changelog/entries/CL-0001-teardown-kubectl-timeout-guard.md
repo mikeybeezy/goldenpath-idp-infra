@@ -1,3 +1,26 @@
+---
+id: CL-0001-teardown-kubectl-timeout-guard
+title: 'CL-0001: Teardown kubectl timeout guard'
+type: changelog
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to:
+  - CL-0001
+---
+
 # CL-0001: Teardown kubectl timeout guard
 
 Date: 2025-12-31

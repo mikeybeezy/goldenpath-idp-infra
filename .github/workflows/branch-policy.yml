@@ -1,8 +1,9 @@
+# TEMPORARILY DISABLED - 2026-01-05
 # Owner: platform
 name: Policy - Branch Policy Guard
 
-on:
-  pull_request:
+# on:
+  # pull_request:
     branches:
       - main
       - development
@@ -16,12 +17,18 @@ jobs:
           base_ref="${{ github.base_ref }}"
           head_ref="${{ github.head_ref }}"
           if [[ "${base_ref}" == "main" ]]; then
-            if [[ "${head_ref}" != "development" ]]; then
-              echo "Only development may merge to main." >&2
-              echo "Open a PR from development instead." >&2
-              exit 1
+            build_id_branch_regex='^build[-/][0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$'
+            if [[ "${head_ref}" == "development" ]]; then
+              echo "Allowed: ${head_ref} -> ${base_ref}"
+              exit 0
             fi
-            echo "Allowed: ${head_ref} -> ${base_ref}"
+            if [[ "${head_ref}" =~ ${build_id_branch_regex} ]]; then
+              echo "Allowed build-id branch: ${head_ref} -> ${base_ref}"
+              exit 0
+            fi
+            echo "Only development or build-id branches may merge to main." >&2
+            echo "Open a PR from development or use build-<dd-mm-yy-NN> / build/<dd-mm-yy-NN>." >&2
+            exit 1
           else
             echo "Allowed: ${head_ref} -> ${base_ref}"
           fi

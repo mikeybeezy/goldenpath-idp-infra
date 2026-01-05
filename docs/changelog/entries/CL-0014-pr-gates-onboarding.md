@@ -1,3 +1,27 @@
+---
+id: CL-0014-pr-gates-onboarding
+title: 'CL-0014: PR gate onboarding guide'
+type: changelog
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to:
+  - 24_PR_GATES
+  - CL-0014
+---
+
 # CL-0014: PR gate onboarding guide
 
 Date: 2026-01-02

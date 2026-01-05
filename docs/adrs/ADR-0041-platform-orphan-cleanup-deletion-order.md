@@ -1,20 +1,27 @@
 ---
-id: ADR-0041
-title: ADR-0041: Deterministic orphan cleanup deletion order
+id: ADR-0041-platform-orphan-cleanup-deletion-order
+title: 'ADR-0041: Deterministic orphan cleanup deletion order'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
 reliability:
   rollback_strategy: git-revert
-  observability_tier: bronze
+  observability_tier: silver
 lifecycle:
-  supported_until: 2027-01-03
+  supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
+relates_to:
+  - 15_TEARDOWN_AND_CLEANUP
+  - ADR-0038
+  - ADR-0038-platform-teardown-orphan-cleanup-gate
+  - ADR-0041
 ---
 
 # ADR-0041: Deterministic orphan cleanup deletion order
@@ -46,6 +53,7 @@ that is still associated). We need a deterministic deletion order to make the
 cleanup routine reliable and predictable.
 
 Constraints:
+
 - Cleanup must remain BuildId-tagged and avoid state backends.
 - The routine should be safe for repeated runs (idempotent-ish).
 
@@ -77,10 +85,12 @@ runbook.
 ## Scope
 
 Applies to:
+
 - `bootstrap/60_tear_down_clean_up/cleanup-orphans.sh`
 - Orphan cleanup execution in CI and manual runs
 
 Does not apply to:
+
 - Terraform destroy (which follows provider dependency logic)
 - Manual cleanup outside the BuildId-tagged orphan scope
 

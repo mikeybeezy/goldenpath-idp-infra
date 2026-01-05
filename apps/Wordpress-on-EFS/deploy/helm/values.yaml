@@ -1,6 +1,7 @@
+# Managed by scripts/standardize-metadata.py
 appName: wordpress-efs
 namespace: apps-wordpress-efs
-appVersion: "6.5.2"
+appVersion: 6.5.2
 team: platform
 env: dev
 buildId: dev-0000
@@ -18,11 +19,21 @@ kongAuthPlugin: sample-auth
 kongRateLimitPlugin: sample-rate-limit
 storageClassName: gp3
 storageSize: 10Gi
-quotaRequestsCpu: "1"
+quotaRequestsCpu: '1'
 quotaRequestsMemory: 1Gi
-quotaLimitsCpu: "2"
+quotaLimitsCpu: '2'
 quotaLimitsMemory: 2Gi
 quotaRequestsStorage: 50Gi
 efsStorageClassName: efs-sc
 efsFileSystemId: fs-12345678
 efsStorageSize: 50Gi
+governance:
+  id: SCRIPTS_WORDPRESS_ON_EFS_METADATA
+  owner: platform-team
+  risk_profile:
+    production_impact: medium
+    security_risk: access
+    coupling_risk: medium
+  reliability:
+    rollback_strategy: manual
+    observability_tier: silver

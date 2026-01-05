@@ -1,3 +1,27 @@
+---
+id: ADR-0074-platform-ops-workflow-branch-guard
+title: 'ADR-0074: Ops workflow branch guard'
+type: adr
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+  - ADR-0074
+  - CL-0029
+---
+
 # ADR-0074: Ops workflow branch guard
 
 - **Status:** Accepted
@@ -22,12 +46,14 @@ We will restrict ops workflows to run only from `main` and `development`.
 ## Scope
 
 Applies to:
+
 - `.github/workflows/ci-bootstrap.yml`
 - `.github/workflows/ci-teardown.yml`
 - `.github/workflows/ci-orphan-cleanup.yml`
 - `.github/workflows/ci-managed-lb-cleanup.yml`
 
 Does not apply to:
+
 - Feature branch testing workflows (plan-only, linting, or documentation checks).
 
 ## Consequences

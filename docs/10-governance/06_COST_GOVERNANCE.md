@@ -2,8 +2,11 @@
 id: 06_COST_GOVERNANCE
 title: Cost Governance (Visibility First)
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,12 +17,17 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - 01_GOVERNANCE
+  - 35_RESOURCE_TAGGING
+  - 40_COST_VISIBILITY
+  - ADR-0076
 ---
 
 # Cost Governance (Visibility First)
 
 Doc contract:
+
 - Purpose: Define cost visibility guardrails and decision ownership.
 - Owner: platform
 - Status: living

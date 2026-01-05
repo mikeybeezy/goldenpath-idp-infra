@@ -1,3 +1,31 @@
+---
+id: ADR-0061-platform-observability-provisioning-boundary
+title: 'ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform
+  external)'
+type: adr
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+  - 01_GOVERNANCE
+  - 05_OBSERVABILITY_DECISIONS
+  - ADR-0052
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0061
+---
+
 # ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform external)
 
 - **Status:** Proposed
@@ -48,6 +76,7 @@ in-cluster observability defaults.
 Applies to all platform-managed clusters and the V1 observability baseline.
 
 Does not apply to:
+
 - External/SaaS observability stacks.
 - Cloud primitives managed by Terraform.
 

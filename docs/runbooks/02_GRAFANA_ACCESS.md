@@ -1,9 +1,33 @@
+---
+id: 02_GRAFANA_ACCESS
+title: Grafana Access (Runbook)
+type: runbook
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 31_EKS_ACCESS_MODEL
+---
+
 # Grafana Access (Runbook)
 
 This runbook explains how to access Grafana locally without exposing a public
 endpoint.
 
 Use this when:
+
 - Grafana is running but you cannot reach it externally.
 - You need temporary local access for setup or validation.
 - You want to avoid creating a public load balancer.

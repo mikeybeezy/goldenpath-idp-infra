@@ -1,20 +1,26 @@
 ---
-id: ADR-0044
-title: ADR-0044: Configurable ref for infra checks dispatch
+id: ADR-0044-platform-infra-checks-ref-mode
+title: 'ADR-0044: Configurable ref for infra checks dispatch'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
-status: deprecated
+status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
 reliability:
   rollback_strategy: git-revert
-  observability_tier: bronze
+  observability_tier: silver
 lifecycle:
-  supported_until: 2027-01-03
+  supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
+relates_to:
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - ADR-0044
+  - ADR-0046
 ---
 
 # ADR-0044: Configurable ref for infra checks dispatch
@@ -46,6 +52,7 @@ both. The default should remain simple, but we need a low-friction way to test
 base vs head behavior without introducing additional workflows.
 
 Constraints:
+
 - Avoid adding new workflow layers.
 - Keep the default behavior unchanged.
 
@@ -65,10 +72,12 @@ dispatch to when triggered from the PR plan workflow:
 ## Scope
 
 Applies to:
+
 - PR-driven infra checks dispatch in CI
 - Repo configuration via Actions variables
 
 Does not apply to:
+
 - Manual `infra-terraform.yml` runs
 - Apply workflows (which remain manual)
 

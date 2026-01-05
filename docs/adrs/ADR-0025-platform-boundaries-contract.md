@@ -1,9 +1,12 @@
 ---
-id: ADR-0025
-title: ADR-0025: Platform boundaries and contract
+id: ADR-0025-platform-boundaries-contract
+title: 'ADR-0025: Platform boundaries and contract'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,8 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0025
 ---
 
 # ADR-0025: Platform boundaries and contract

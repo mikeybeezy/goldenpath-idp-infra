@@ -1,9 +1,12 @@
 ---
-id: ADR-0024
-title: ADR-0024: Security floor for V1
+id: ADR-0024-platform-security-floor-v1
+title: 'ADR-0024: Security floor for V1'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,7 +17,8 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - ADR-0024
 ---
 
 # ADR-0024: Security floor for V1

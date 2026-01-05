@@ -1,6 +1,33 @@
+---
+id: 28_SECURITY_FLOOR_V1
+title: Security Floor V1 (Living Document)
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 01_GOVERNANCE
+  - 24_PRE_COMMIT_HOOKS
+  - 27_CI_IMAGE_SCANNING
+  - ADR-0024
+---
+
 # Security Floor V1 (Living Document)
 
 Doc contract:
+
 - Purpose: Define the minimum security baseline for V1.
 - Owner: platform
 - Status: living

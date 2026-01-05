@@ -2,8 +2,11 @@
 id: 35_RESOURCE_TAGGING
 title: Resource Tagging (Living)
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,12 +17,16 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - 01_GOVERNANCE
+  - ADR-0037
+  - ADR-0037-platform-resource-tagging-policy
 ---
 
 # Resource Tagging (Living)
 
 Doc contract:
+
 - Purpose: Define required tags and cleanup implications for platform resources.
 - Owner: platform
 - Status: living

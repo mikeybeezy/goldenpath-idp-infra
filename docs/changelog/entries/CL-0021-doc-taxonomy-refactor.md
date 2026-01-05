@@ -1,3 +1,33 @@
+---
+id: CL-0021-doc-taxonomy-refactor
+title: 'CL-0021: Documentation Taxonomy Refactor'
+type: changelog
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-04
+  breaking_change: false
+relates_to:
+  - 00_DOC_INDEX
+  - 01_LIFECYCLE_POLICY
+  - 01_PLATFORM_SERVICE_AGREEMENT
+  - 10_PLATFORM_REQUIREMENTS
+  - 10_SERVICE_CATALOG
+  - ADR-0071
+  - ADR-0071-doc-taxonomy-refactor
+  - CL-0021
+---
+
 # CL-0021: Documentation Taxonomy Refactor
 
 Date: 2026-01-02

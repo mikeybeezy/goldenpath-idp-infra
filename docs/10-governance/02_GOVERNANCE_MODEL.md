@@ -2,8 +2,11 @@
 id: 02_GOVERNANCE_MODEL
 title: Governance Model – Golden Path IDP (Deprecated)
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: deprecated
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,12 +17,17 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - 01_GOVERNANCE
+  - 05_OBSERVABILITY_DECISIONS
+  - 28_SECURITY_FLOOR_V1
+  - 29_CD_DEPLOYMENT_CONTRACT
 ---
 
 # Governance Model – Golden Path IDP (Deprecated)
 
 Doc contract:
+
 - Purpose: Record the previous V1 governance draft for reference.
 - Owner: platform
 - Status: deprecated

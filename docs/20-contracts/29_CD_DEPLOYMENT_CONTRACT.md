@@ -1,6 +1,32 @@
+---
+id: 29_CD_DEPLOYMENT_CONTRACT
+title: CD Deployment Contract
+type: contract
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: high
+  security_risk: none
+  coupling_risk: high
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 12_GITOPS_AND_CICD
+  - 39_GOLDEN_PATH_VALIDATION
+  - ADR-0026
+---
+
 # CD Deployment Contract
 
 Doc contract:
+
 - Purpose: Define deployment contract and promotion expectations for GitOps delivery.
 - Owner: platform
 - Status: living

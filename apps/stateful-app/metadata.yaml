@@ -1,0 +1,21 @@
+---
+id: SCRIPTS_STATEFUL_APP_METADATA
+title: metadata
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: medium
+  security_risk: none
+  coupling_risk: medium
+reliability:
+  rollback_strategy: kubectl-delete
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to: []
+---

@@ -13,7 +13,7 @@ metadata:
     platform.goldenpath.dev/build-id: "{{ .Values.buildId }}"
 spec:
   serviceName: "{{ .Values.appName }}"
-  replicas: {{ .Values.replicas }}
+  replicas: "{{ .Values.replicas }}"
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Values.appName }}"
@@ -40,7 +40,7 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: {{ .Values.appPort }}
+              containerPort: "{{ .Values.appPort }}"
           env:
             - name: ENV
               value: "{{ .Values.env }}"

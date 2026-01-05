@@ -1,3 +1,26 @@
+---
+id: Changelog-template
+title: 'CL-0001: <short title>'
+type: template
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - CL-0001
+---
+
 # CL-0001: <short title>
 
 Date: <YYYY-MM-DD>

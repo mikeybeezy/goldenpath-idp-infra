@@ -1,3 +1,31 @@
+---
+id: goldenpath-idp-bootstrap
+title: Helm Bootstrap Runner (Non-Production)
+type: documentation
+category: bootstrap
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
+  - ADR-0001
+  - ADR-0002
+  - ADR-0013
+  - ARGOCD_HELM_README
+  - 18_BACKSTAGE_MVP
+---
+
 # Helm Bootstrap Runner (Non-Production)
 
 This document explains what `bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh` does and when to run it.
@@ -61,7 +89,7 @@ These defaults keep the node group stable and reduce early pressure:
 - `enable_ssh_break_glass` = `false`
 - `enable_storage_addons` = `true` (EBS/EFS/snapshot required for persistent monitoring data)
 - `SKIP_ARGO_SYNC_WAIT` = `true` (default, skips Argo app sync waits)
- - `COMPACT_OUTPUT` = `false` (set to `true` to reduce noisy command output)
+- `COMPACT_OUTPUT` = `false` (set to `true` to reduce noisy command output)
 
 The runner prints an Argo status summary at the end and warns if any app shows
 `HEALTH=Unknown`.

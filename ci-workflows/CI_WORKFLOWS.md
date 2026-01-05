@@ -1,6 +1,77 @@
+---
+id: CI_WORKFLOWS
+title: CI Workflows Index (Living)
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 07_TF_STATE_FORCE_UNLOCK
+  - 08_MANAGED_LB_CLEANUP
+  - 09_CI_TEARDOWN_RECOVERY_V2
+  - 17_BUILD_RUN_FLAGS
+  - 18_BACKSTAGE_MVP
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - 30_DOCUMENTATION_FRESHNESS
+  - 39_GOLDEN_PATH_VALIDATION
+  - ADR-0028
+  - ADR-0028-platform-dev-branch-gate
+  - DOCS_CHANGELOG_README
+  - METADATA_VALIDATION_GUIDE
+  - ORPHAN_CLEANUP
+---
+
+id: CI_WORKFLOWS
+title: CI Workflows Index (Living)
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: medium
+  security_risk: none
+  coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+- 07_TF_STATE_FORCE_UNLOCK
+- 08_MANAGED_LB_CLEANUP
+- 09_CI_TEARDOWN_RECOVERY_V2
+- 17_BUILD_RUN_FLAGS
+- 18_BACKSTAGE_MVP
+- 21_CI_ENVIRONMENT_CONTRACT
+- 30_DOCUMENTATION_FRESHNESS
+- 39_GOLDEN_PATH_VALIDATION
+- ADR-0028
+- ADR-0028-platform-dev-branch-gate
+- CHANGELOG
+- DOCS_CHANGELOG_README
+- METADATA_VALIDATION_GUIDE
+- ORPHAN_CLEANUP
+------
+
 # CI Workflows Index (Living)
 
 Doc contract:
+
 - Purpose: Index CI workflows with owners, inputs, and runbooks.
 - Owner: platform
 - Status: living
@@ -52,6 +123,7 @@ CI Workflows (GitHub Actions)
 ## Policy
 
 ### Policy - Branch Policy Guard
+
 - Trigger: pull_request → main
 - Owner: platform
 - Inputs: none
@@ -59,6 +131,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/adrs/ADR-0028-platform-dev-branch-gate.md`
 
 ### Policy - Changelog Policy
+
 - Trigger: pull_request (label/edited/sync)
 - Owner: platform
 - Inputs: none
@@ -68,6 +141,7 @@ CI Workflows (GitHub Actions)
 ## Quality
 
 ### Quality - Doc Freshness Check
+
 - Trigger: pull_request docs/**; push main docs/**
 - Owner: platform
 - Inputs: none
@@ -75,13 +149,15 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md`
 
 ### Docs - Metadata Validation
-- Trigger: pull_request docs/**, scripts/validate-metadata.py
+
+- Trigger: pull_request docs/**, scripts/validate_metadata.py
 - Owner: platform
 - Inputs: none
 - Purpose: validate metadata frontmatter and references in docs
 - Runbook: `docs/90-doc-system/METADATA_VALIDATION_GUIDE.md`
 
 ### Quality - Pre-commit checks
+
 - Trigger: pull_request
 - Owner: platform
 - Inputs: none
@@ -89,6 +165,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `CONTRIBUTING.md`
 
 ### Quality - YAML Lint
+
 - Trigger: pull_request on .github/workflows/**
 - Owner: platform
 - Inputs: none
@@ -96,6 +173,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `CONTRIBUTING.md`
 
 ### Quality - Super Linter (Markdown)
+
 - Trigger: pull_request docs/**; push main docs/**
 - Owner: platform
 - Inputs: none
@@ -105,6 +183,7 @@ CI Workflows (GitHub Actions)
 ## Plan
 
 ### Plan - PR Terraform Plan
+
 - Trigger: pull_request (tf/tfvars)
 - Owner: platform
 - Inputs: none (reads envs/dev/terraform.tfvars)
@@ -112,6 +191,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`, `docs/40-delivery/39_GOLDEN_PATH_VALIDATION.md`
 
 ### Plan - Infra Terraform Checks
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: env, lifecycle, build_id, new_build, require_state
@@ -119,6 +199,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`
 
 ### Plan - Infra Terraform Plan Pipeline
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: env, lifecycle, build_id, new_build, require_state, region
@@ -128,6 +209,7 @@ CI Workflows (GitHub Actions)
 ## Apply
 
 ### Apply - Infra Terraform Apply (dev)
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: confirm_apply, lifecycle, build_id, new_build
@@ -135,6 +217,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`
 
 ### Apply - Infra Terraform Update (dev)
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: confirm_apply, build_id
@@ -142,6 +225,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`
 
 ### Apply - Infra Terraform Apply (test)
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: confirm_apply, lifecycle, build_id, new_build
@@ -149,6 +233,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`
 
 ### Apply - Infra Terraform Apply (staging)
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: confirm_apply, lifecycle, build_id, new_build
@@ -156,6 +241,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`
 
 ### Apply - Infra Terraform Apply (prod)
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: confirm_apply, lifecycle, build_id, new_build
@@ -165,6 +251,7 @@ CI Workflows (GitHub Actions)
 ## Bootstrap
 
 ### Bootstrap - CI Bootstrap (Stub)
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: env, region, cluster_name, lifecycle, config_source, tfvars_b64, build_id,
@@ -174,6 +261,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/40-delivery/39_GOLDEN_PATH_VALIDATION.md`, `docs/40-delivery/17_BUILD_RUN_FLAGS.md`
 
 ### Bootstrap - CI Backstage (Stub)
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: env, image_tag
@@ -183,6 +271,7 @@ CI Workflows (GitHub Actions)
 ## Ops / Recovery
 
 ### Ops - CI Teardown
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: env, region, cluster_name, build_id, lifecycle, teardown_version,
@@ -191,6 +280,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/runbooks/09_CI_TEARDOWN_RECOVERY_V2.md`
 
 ### Ops - CI Orphan Cleanup
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: env, build_id, region
@@ -198,6 +288,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/runbooks/ORPHAN_CLEANUP.md`
 
 ### Ops - CI Force Unlock
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: env, region, lifecycle, build_id, lock_id, confirm_unlock
@@ -205,6 +296,7 @@ CI Workflows (GitHub Actions)
 - Runbook: `docs/runbooks/07_TF_STATE_FORCE_UNLOCK.md`
 
 ### Ops - CI Managed LB Cleanup
+
 - Trigger: workflow_dispatch
 - Owner: platform
 - Inputs: env, region, cluster_name, build_id, lifecycle, stack_tag,

@@ -1,9 +1,13 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: prod-backstage
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: HELM_BACKSTAGE
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: medium
 spec:
   project: default
   destination:

@@ -1,6 +1,35 @@
+---
+id: 23_NEW_JOINERS
+title: New Joiners Guide
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 02_PLATFORM_BOUNDARIES
+  - 13_COLLABORATION_GUIDE
+  - 24_PR_GATES
+  - 25_DAY_ONE_CHECKLIST
+  - 26_AI_AGENT_PROTOCOLS
+  - 38_BRANCHING_STRATEGY
+---
+
 # New Joiners Guide
 
 Doc contract:
+
 - Purpose: Define onboarding expectations and local setup steps.
 - Owner: platform
 - Status: living
@@ -30,6 +59,7 @@ pre-commit run --all-files
 
 - Fix any issues reported by the hooks before opening a PR.
 - Review PR gates and how to unblock them in `docs/80-onboarding/24_PR_GATES.md`.
+- Review AI agent protocols in `docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md` (these rules apply to human collaborators too).
 
 ## Expectations
 

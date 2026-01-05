@@ -2,8 +2,11 @@
 id: 04_PR_GUARDRAILS
 title: PR Guardrails (GoldenPath IDP)
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,12 +17,58 @@ reliability:
 lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
-relates_to: []
+relates_to:
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - 27_REFACTORING_VALIDATION_GUIDE
+  - ADR-0044
+  - ADR-0044-platform-infra-checks-ref-mode
+  - ADR-0046
+  - ADR-0046-platform-pr-plan-validation-ownership
+  - ADR-0063
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - CL-0002
+  - CL-0002-bootstrap-refactor
 ---
+
+id: 04_PR_GUARDRAILS
+title: PR Guardrails (GoldenPath IDP)
+type: policy
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to:
+- 01_GOVERNANCE
+- 21_CI_ENVIRONMENT_CONTRACT
+- 27_REFACTORING_VALIDATION_GUIDE
+- 38_BRANCHING_STRATEGY
+- ADR-####
+- ADR-0044
+- ADR-0044-platform-infra-checks-ref-mode
+- ADR-0046
+- ADR-0046-platform-pr-plan-validation-ownership
+- ADR-0063
+- ADR-0063-platform-terraform-helm-bootstrap
+- CL-####
+- CL-0002
+- CL-0002-bootstrap-refactor
+------
 
 # PR Guardrails (GoldenPath IDP)
 
 Doc contract:
+
 - Purpose: Define PR guardrails, labels, and enforcement workflows.
 - Owner: platform
 - Status: living
@@ -53,6 +102,7 @@ The PR template requires explicit selections for:
 Enforced by `/.github/workflows/pr-guardrails.yml`.
 
 Template enforcement:
+
 - PR bodies must be based on `.github/pull_request_template.md`.
 - Guardrails fail if the template header is missing or the body contains
   escaped newlines (`\\n`).
@@ -65,7 +115,7 @@ PRs are labeled automatically based on touched paths:
 - `governance`: docs/10-governance, docs/20-contracts, docs/90-doc-system
 - `docs`: remaining docs paths
 - `changelog-required`: infra + governance domains
-- `adr-required`: infra + governance domains
+- `adr-required`: modules/bootstrap/gitops/workflows/scripts + governance domains
 
 Configured in `/.github/labeler.yml` and applied by
 `/.github/workflows/pr-labeler.yml`.
@@ -151,6 +201,7 @@ Use branch rulesets to enforce the development-only path:
 - Require at least one human approval.
 - Block force-pushes and deletions.
 - Optional: require linear history to avoid drift.
+- Exception: allow build-id branches (`build-<dd-mm-yy-NN>` or `build/<dd-mm-yy-NN>`) to merge to `main` for build validation.
 
 ## Future options (not enabled)
 

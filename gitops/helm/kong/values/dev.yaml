@@ -1,8 +1,17 @@
-# Values overrides for kong in dev environment
-
+# Managed by scripts/standardize-metadata.py
 proxy:
   service:
     type: LoadBalancer
     annotations:
-      service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+      service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+governance:
+  id: HELM_KONG
+  owner: platform-team
+  risk_profile:
+    production_impact: high
+    security_risk: ingress-exposure
+    coupling_risk: high
+  reliability:
+    rollback_strategy: helm-rollback
+    observability_tier: gold

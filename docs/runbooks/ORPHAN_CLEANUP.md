@@ -1,3 +1,29 @@
+---
+id: ORPHAN_CLEANUP
+title: Orphan Cleanup
+type: runbook
+category: runbooks
+version: 1.0
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: high
+  security_risk: access
+  coupling_risk: high
+reliability:
+  rollback_strategy: not-applicable
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - TEARDOWN_README
+  - 10_REPO_DECOMMISSIONING
+  - 15_TEARDOWN_AND_CLEANUP
+  - ADR-0036
+---
+
 # Orphan Cleanup
 
 ## Purpose

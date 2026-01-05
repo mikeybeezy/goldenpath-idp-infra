@@ -1,6 +1,66 @@
+---
+id: 21_CI_ENVIRONMENT_CONTRACT
+title: CI Environment Contract
+type: contract
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 33_IAM_ROLES_AND_POLICIES
+  - ADR-0030
+  - ADR-0030-platform-precreated-iam-policies
+  - ADR-0033
+  - ADR-0033-platform-ci-orchestrated-modes
+  - ADR-0034
+---
+
+id: 21_CI_ENVIRONMENT_CONTRACT
+title: CI Environment Contract
+type: contract
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: high
+  security_risk: none
+  coupling_risk: high
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: gold
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+- 17_BUILD_RUN_FLAGS
+- 20_CI_ENVIRONMENT_SEPARATION
+- 25_PR_TERRAFORM_PLAN
+- 33_IAM_ROLES_AND_POLICIES
+- ADR-0030
+- ADR-0030-platform-precreated-iam-policies
+- ADR-0033
+- ADR-0033-platform-ci-orchestrated-modes
+- ADR-0034
+- CI_WORKFLOWS
+------
+
 # CI Environment Contract
 
 Doc contract:
+
 - Purpose: Define the CI input contract and environment variables used by workflows.
 - Owner: platform
 - Status: living
@@ -235,12 +295,14 @@ immediately after bootstrap. It uses the same build ID and cluster naming
 resolution to target the correct environment.
 
 **Default cleanup behavior**
+
 - `cleanup_mode=delete` by default (set `dry_run` or `none` to override).
 - Cleanup targets resources tagged for the platform; untagged resources are out of scope.
 - Teardown role must allow `tag:GetResources` for orphan discovery.
 - Teardown resolves the backend state key from `lifecycle` + `build_id`.
 
 **Key inputs**
+
 - `teardown_version` – select teardown runner (`v1` default, `v2` optional).
 - `force_delete_lbs` – delete cluster-scoped LBs if ENIs persist (default `true`).
 - `lb_cleanup_max_wait` – cap LB/ENI wait loops before retry logic (default `900`).
@@ -275,6 +337,7 @@ State is stored in S3 and locked via DynamoDB. The plan role must be able to rea
 the state object and acquire a lock, even though it does not write infra.
 
 **Dev backend**
+
 - S3 bucket: `goldenpath-idp-dev-bucket`
 - Lock table: `goldenpath-idp-dev-db-key`
 - State keys:
@@ -432,55 +495,55 @@ Legend:
 [STATE] = S3 + DynamoDB backend
 -->    = trigger
 
-+---------------------------+
++---------------+
 |  Feature Branches (feat/*)|
 |  - Devs implement change  |
-+-------------+-------------+
++-------+-------+
               |
               | PR merge --> dev
               v
-+---------------------------+        [QUALITY GATE]
-|  dev branch (gate)        |  -------------------------+
++---------------+        [QUALITY GATE]
+|  dev branch (gate)        |  -------------+
 |  - Shared pre-merge gate  |                           |
-+-------------+-------------+                           |
++-------+-------+                           |
               |                                         |
               | manual trigger                          |
               v                                         |
-+---------------------------+                            |
++---------------+                            |
 |  [PLAN] infra-terraform   |                            |
 |  - OIDC: TF_AWS_IAM_ROLE  |                            |
 |  - init/plan (dev)        |                            |
-+-------------+-------------+                            |
++-------+-------+                            |
               |                                         |
               | manual trigger                          |
               v                                         |
-+---------------------------+                            |
++---------------+                            |
 |  [APPLY] infra-terraform  |                            |
 |  - OIDC: TF_AWS_IAM_ROLE  |                            |
 |    _DEV_APPLY             |                            |
 |  - apply dev              |                            |
-+-------------+-------------+                            |
++-------+-------+                            |
               |                                         |
               | success --> allow merge to main         |
               v                                         |
-+---------------------------+                            |
-|  main branch              | <--------------------------+
++---------------+                            |
+|  main branch              | <--------------+
 |  - Only after dev apply   |
-+-------------+-------------+
++-------+-------+
               |
               | optional promotion
               v
-+---------------------------+
++---------------+
 |  staging / prod gates     |
 |  - Manual promotion       |
 |  - Separate roles         |
-+---------------------------+
++---------------+
 
-+---------------------------+
++---------------+
 |  [STATE] Backend          |
 |  - S3 bucket (dev state)  |
 |  - DynamoDB lock table    |
-+---------------------------+
++---------------+
 
 ```
 
@@ -536,33 +599,33 @@ Dev apply must only proceed after the **latest successful dev plan**.
 
 ```text
 Current (problem):
-+------------------+     plan (any env)     +-------------------+
-|  Commit (SHA)    |  ------------------>  |  Plan Success?     |
-+------------------+                        +-------------------+
++---------+     plan (any env)     +----------+
+|  Commit (SHA)    |  --------->  |  Plan Success?     |
++---------+                        +----------+
                                                |
                                                | (no env check)
                                                v
-                                        +------------------+
+                                        +---------+
                                         | Apply DEV        |
                                         | (allowed)        |
-                                        +------------------+
+                                        +---------+
 
 Risk: a plan for staging/prod can unlock dev apply.
 
 ---
 
 Recommended (fix):
-+------------------+     plan (DEV only)    +-------------------+
-|  Latest dev plan |  ------------------>  | Plan Success?      |
-+------------------+                        | env == dev        |
-                                            +-------------------+
++---------+     plan (DEV only)    +----------+
+|  Latest dev plan |  --------->  | Plan Success?      |
++---------+                        | env == dev        |
+                                            +----------+
                                                |
                                                | only if dev plan
                                                v
-                                        +------------------+
+                                        +---------+
                                         | Apply DEV        |
                                         | (allowed)        |
-                                        +------------------+
+                                        +---------+
 
 ```
 

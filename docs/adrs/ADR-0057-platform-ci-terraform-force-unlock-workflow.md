@@ -1,20 +1,26 @@
 ---
-id: ADR-0057
-title: ADR-0057: CI Terraform force-unlock workflow (break-glass)
+id: ADR-0057-platform-ci-terraform-force-unlock-workflow
+title: 'ADR-0057: CI Terraform force-unlock workflow (break-glass)'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
 reliability:
   rollback_strategy: git-revert
-  observability_tier: bronze
+  observability_tier: silver
 lifecycle:
-  supported_until: 2027-01-03
+  supported_until: 2028-01-04
   breaking_change: false
-relates_to: []
+relates_to:
+  - 07_TF_STATE_FORCE_UNLOCK
+  - 15_TEARDOWN_AND_CLEANUP
+  - ADR-0057
 ---
 
 # ADR-0057: CI Terraform force-unlock workflow (break-glass)
@@ -63,10 +69,12 @@ environment and BuildId, with explicit confirmation and minimal privileges.
 ## Scope
 
 Applies to:
+
 - CI-driven Terraform runs for platform infra lifecycle (`build`, `teardown`,
   `teardown-resume`) where locks persist.
 
 Does not apply to:
+
 - Routine Terraform operations (no automatic unlocks).
 - Non-platform Terraform stacks.
 

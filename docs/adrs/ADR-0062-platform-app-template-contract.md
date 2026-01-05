@@ -1,3 +1,27 @@
+---
+id: ADR-0062-platform-app-template-contract
+title: 'ADR-0062: App template contract for team-owned deployments'
+type: adr
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
+relates_to:
+  - 01_GOVERNANCE
+  - ADR-0062
+---
+
 # ADR-0062: App template contract for team-owned deployments
 
 - **Status:** Proposed
