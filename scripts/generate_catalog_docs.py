@@ -31,7 +31,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any
 
-
 class CatalogGenerator:
     """Generate markdown documentation from YAML catalog"""
 
@@ -57,10 +56,10 @@ class CatalogGenerator:
             's3-buckets': 'buckets',
             'rds-instances': 'instances'
         }.get(self.domain, 'resources')
-        
+
         # Domain display name labels
         self.domain_label = self.domain.replace('-', ' ').title()
-        
+
         # Singularize resource key for labels
         if self.resource_key.endswith('ies'):
             self.resource_label = self.resource_key.replace('-', ' ').title()[:-3] + 'y'
@@ -120,7 +119,7 @@ class CatalogGenerator:
             return f"No {self.resource_key} found.\n"
 
         table = f"## {self.resource_label} Inventory\n\n"
-        
+
         if self.domain == 'container-registries':
             table += "| Registry | Owner | Risk | Status | Scanning | Lifecycle |\n"
             table += "|----------|-------|------|--------|----------|-----------|\n"
@@ -135,7 +134,7 @@ class CatalogGenerator:
             owner = metadata.get('owner', 'unknown')
             risk = metadata.get('risk', 'unknown')
             status = metadata.get('status', 'unknown')
-            
+
             # Risk emoji
             risk_emoji = {'low': '🟢', 'medium': '🟡', 'high': '🔴'}.get(risk, '⚪')
 
@@ -217,7 +216,7 @@ class CatalogGenerator:
     def generate_markdown(self) -> str:
         """Generate complete markdown document with platform frontmatter"""
         resources = self.catalog.get(self.resource_key, {})
-        
+
         # 1. Generate Platform Frontmatter
         md = "---\n"
         md += f"id: CAT_{self.domain.replace('-', '_').upper()}\n"
@@ -283,7 +282,6 @@ class CatalogGenerator:
 
         return md
 
-
 def main():
     parser = argparse.ArgumentParser(description="Generate platform catalog documentation")
     parser.add_argument("--catalog", default="docs/catalogs/ecr-catalog.yaml",
@@ -329,7 +327,6 @@ def main():
     except Exception as e:
         print(f"❌ Error: {e}", file=sys.stderr)
         sys.exit(3)
-
 
 if __name__ == "__main__":
     main()
