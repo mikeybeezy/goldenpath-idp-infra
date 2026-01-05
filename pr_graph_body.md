@@ -28,13 +28,13 @@ Select at least one checkbox per section by changing `[ ]` to `[x]`.
 - [x] Feature
 - [ ] Bug fix
 - [ ] Infra change
-- [x] Governance / Policy
+- [] Governance / Policy
 
 ## Decision Impact
 
-- [x] Requires ADR
+- [] Requires ADR
 - [ ] Updates existing ADR
-- [ ] No architectural impact
+- [x] No architectural impact
 
 ## Production Readiness
 
@@ -44,8 +44,8 @@ Select at least one checkbox per section by changing `[ ]` to `[x]`.
 ## Testing / Validation
 
 - [ ] Plan/apply link provided (paste below)
-- [x] Test command or run ID provided (paste below)
-- [ ] Not applicable
+- [ ] Test command or run ID provided (paste below)
+- [x] Not applicable
 
 Testing/Validation details:
 

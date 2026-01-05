@@ -4,22 +4,22 @@ owner: database-team
 last_updated: "2026-01-05"
 managed_by: database-team
 
-databases: {}
-  # Example structure:
-  # wordpress-db:
-  #   metadata:
-  #     id: RDS_WORDPRESS_DB
-  #     owner: app-team-wordpress
-  #     risk: high
-  #     environment: prod
-  #     created_date: "2026-01-05"
-  #     status: active
-  #   aws:
-  #     db_instance_identifier: wordpress-prod-db
-  #     region: eu-west-2
-  #     endpoint: wordpress-prod-db.abc123.eu-west-2.rds.amazonaws.com
-  #   configuration:
-  #     engine: postgres
-  #     engine_version: "15.3"
-  #     instance_class: db.t3.medium
-  #     storage_encrypted: true
+databases:
+# Example structure:
+# wordpress-db:
+# metadata:
+# id: RDS_WORDPRESS_DB
+# owner: app-team-wordpress
+# risk: high
+# environment: prod
+# created_date: "2026-01-05"
+# status: active
+# aws:
+# db_instance_identifier: wordpress-prod-db
+# region: eu-west-2
+# endpoint: wordpress-prod-db.abc123.eu-west-2.rds.amazonaws.com
+# configuration:
+# engine: postgres
+# engine_version: "15.3"
+# instance_class: db.t3.medium
+# storage_encrypted: true
