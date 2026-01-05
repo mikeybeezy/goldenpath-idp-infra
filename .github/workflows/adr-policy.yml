@@ -1,9 +1,8 @@
-# TEMPORARILY DISABLED - 2026-01-05
 # Owner: platform
 name: Policy - ADR Policy
 
-# on:
-  # pull_request:
+on:
+  pull_request:
     types:
       - opened
       - reopened
