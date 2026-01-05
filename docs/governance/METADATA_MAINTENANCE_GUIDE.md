@@ -47,9 +47,10 @@ Modify `scripts/validate_metadata.py`.
 - Add the new field to `REQUIRED_FIELDS`.
 - Add specific validation logic (e.g., regex checks for billing codes).
 
-### 4. Direct Action & Audit
-The CI/CD pipeline will immediately begin flagging resources that have the "placeholder" value.
-- **Developers**: Replace the default/placeholder value with real data during their next commit.
+### 4. PR Auto-Healing & Audit
+The CI/CD pipeline (`ci-metadata-validation.yml`) implements **Auto-Healing** (see ADR-0101).
+- **Automated Fixes**: If a PR touches files with outdated metadata, the CI will automatically run the remediator and commit the fixes back to the PR branch.
+- **Developers**: Replace the default/placeholder values injected by the auto-healer with real data.
 - **Platform Team**: Run `scripts/platform_health.py` to see a "Compliance Coverage" map of the new field across the organization.
 
 ## Key Principles

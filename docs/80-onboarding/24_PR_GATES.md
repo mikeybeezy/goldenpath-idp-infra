@@ -22,6 +22,7 @@ relates_to:
   - 04_PR_GUARDRAILS
   - 30_DOCUMENTATION_FRESHNESS
   - DOCS_CHANGELOG_README
+  - ADR-0101
 ---
 
 # PR Gates and How to Unblock Them
@@ -139,6 +140,21 @@ git push
 | Quality - Super Linter (Markdown) | Docs touched | Markdown lint | Fix markdown lint errors |
 | Quality - Yamllint | YAML touched | YAML lint | Fix YAML lint errors |
 | Plan - PR Terraform Plan | Infra paths | Terraform fmt/validate/plan | Fix plan errors or re-run after updates |
+
+## Conditional Bypass Labels (ADR-0101)
+
+Certain labels can bypass PR guardrails if conditions are met:
+
+| Label | Condition | Who Can Use |
+| --- | --- | --- |
+| `docs-only` | All changed files are `.md` | Anyone |
+| `typo-fix` | < 50 lines changed, text files only | Anyone |
+| `hotfix` | Target branch is `main` | Platform-team only |
+| `build_id` | Terraform files changed | Platform-team only |
+
+Labels are **validated, not trusted**. If the condition is not met, the check fails.
+
+Implemented by: `scripts/pr_guardrails.py`
 
 ## Where to look for details
 

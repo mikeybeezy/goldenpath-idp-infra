@@ -37,7 +37,8 @@ Flow:
 2. Open a PR early for visibility into `development`.
 3. Merge after checks pass.
 4. Promote via a PR from `development` to `main`.
-5. Delete the branch after merge.
+5. Ensure all quality gates are green (see [PR Gates and How to Unblock Them](./24_PR_GATES.md)).
+6. Delete the branch after merge.
 
 Examples:
 

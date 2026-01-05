@@ -84,6 +84,7 @@ Avoid by default:
 - App permissions reviewed and approved.
 - Branch protection on `main` enforces development-only merges.
 - PR checklist and label gates remain in effect.
+- Agents (GitHub Apps) can use conditional bypass labels (`build_id`, `docs-only`, etc.) if their changes meet the strict validation criteria (ADR-0101).
 
 ## Future options
 

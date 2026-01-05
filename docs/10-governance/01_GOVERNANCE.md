@@ -125,7 +125,7 @@ Governance is enforced:
 
 - At design time
 - Through defaults and templates
-- Via automation and guardrails
+- Via automation and guardrails (e.g., `scripts/pr_guardrails.py`, ADR-0101)
 
 Not through:
 
@@ -150,7 +150,7 @@ Destructive automation must use tag-scoped IAM policies; see
 
 Material platform behavior changes must be captured in a changelog entry when
 the PR is labeled `changelog-required`. The policy and label rules are defined
-in `docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md`.
+in `docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md`. Certain labels (e.g., `docs-only`, `typo-fix`) allow automated bypass if validated conditions are met (see ADR-0101).
 
 ## 7. Cost Visibility
 
