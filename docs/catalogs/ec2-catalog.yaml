@@ -1,0 +1,24 @@
+version: "1.0"
+domain: compute-ec2
+owner: platform-team
+last_updated: "2026-01-05"
+managed_by: platform-team
+
+instances: {}
+  # Example structure:
+  # bastion-host:
+  #   metadata:
+  #     id: EC2_BASTION_HOST
+  #     owner: platform-team
+  #     risk: high
+  #     environment: prod
+  #     created_date: "2026-01-05"
+  #     status: active
+  #   aws:
+  #     instance_id: i-1234567890abcdef0
+  #     region: eu-west-2
+  #     instance_type: t3.micro
+  #   configuration:
+  #     ami_id: ami-12345678
+  #     key_name: bastion-key
+  #     security_groups: [sg-12345678]

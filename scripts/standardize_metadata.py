@@ -11,6 +11,7 @@ Value: Eliminates manual backfills and "governance debt" while bridging the gap
 import os
 import re
 import yaml
+import copy
 from datetime import datetime
 
 # Standard owner and versions
@@ -130,7 +131,7 @@ def standardize_file(filepath):
     default_title = title_match.group(1) if title_match else filename_base
 
     # Base Data Merging
-    new_data = SKELETON.copy()
+    new_data = copy.deepcopy(SKELETON)
     if data:
         for key in data:
             if key in new_data and isinstance(new_data[key], dict) and isinstance(data[key], dict):

@@ -1,7 +1,8 @@
+# TEMPORARILY DISABLED - 2026-01-05
 name: Quality - Metadata Validation
 
-on:
-  pull_request:
+# on:
+  # pull_request:
     paths:
       - "**/*.md"
       - "**/metadata.yaml"

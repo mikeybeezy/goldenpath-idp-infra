@@ -1,0 +1,24 @@
+version: "1.0"
+domain: kubernetes-clusters
+owner: platform-team
+last_updated: "2026-01-05"
+managed_by: platform-team
+
+clusters: {}
+  # Example structure:
+  # goldenpath-prod:
+  #   metadata:
+  #     id: EKS_GOLDENPATH_PROD
+  #     owner: platform-team
+  #     risk: high
+  #     environment: prod
+  #     created_date: "2026-01-05"
+  #     status: active
+  #   aws:
+  #     cluster_name: goldenpath-prod
+  #     region: eu-west-2
+  #     version: "1.28"
+  #   configuration:
+  #     node_groups: 3
+  #     min_nodes: 3
+  #     max_nodes: 10

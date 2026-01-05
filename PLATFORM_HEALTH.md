@@ -5,7 +5,7 @@ type: documentation
 category: governance
 status: active
 owner: platform-team
-version: '2026-01-04'
+version: '2026-01-05'
 dependencies: []
 risk_profile:
   production_impact: low
@@ -21,27 +21,29 @@ relates_to: []
 ---
 
 # 🏥 Platform Health Report
-**Date Generated**: 2026-01-04 20:53:51
-**Total Tracked Resources**: 324
+**Date Generated**: 2026-01-05 10:14:45
+**Total Tracked Resources**: 360
 **Metadata Compliance**: 100.0%
 
 ## 📊 Lifecycle Distribution
-- **Active**: 321
-- **Draft**: 1
+- **Active**: 351
+- **Planned**: 1
+- **Draft**: 4
 - **Deprecated**: 2
+- **Accepted**: 2
 
 ## 🛡️ Risk Summary (Production Impact)
-- **High**: 27
-- **Medium**: 24
-- **Low**: 273
-- **None**: 0
+- **High**: 35
+- **Medium**: 28
+- **Low**: 296
+- **None**: 1
 
 ## 📂 Top Categories
-- **unknown**: 228
+- **unknown**: 240
 - **gitops**: 20
+- **modules**: 16
 - **apps**: 11
 - **runbooks**: 10
-- **idp-tooling**: 10
 
 ## 🚨 Operational Risks
 - **Orphaned Files (No Owner)**: 0

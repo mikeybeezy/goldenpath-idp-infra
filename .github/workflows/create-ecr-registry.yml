@@ -1,0 +1,198 @@
+name: Create ECR Registry
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        type: choice
+        required: true
+        options: [dev, test, staging, prod]
+      registry_name:
+        description: 'Registry name (e.g., wordpress-platform)'
+        required: true
+      owner:
+        description: 'Team owner (e.g., app-team-wordpress)'
+        required: true
+      risk:
+        description: 'Risk level'
+        type: choice
+        required: true
+        options: [low, medium, high]
+      id:
+        description: 'Registry ID (e.g., REGISTRY_WORDPRESS_PLATFORM)'
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  propose:
+    name: Propose Registry Creation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Validate inputs
+        run: |
+          # Validate registry name format
+          if ! echo "${{ inputs.registry_name }}" | grep -qE '^[a-z][a-z0-9-]*$'; then
+            echo "❌ Registry name must be lowercase with hyphens only"
+            exit 1
+          fi
+
+          # Validate ID format
+          if ! echo "${{ inputs.id }}" | grep -qE '^REGISTRY_[A-Z0-9_]+$'; then
+            echo "❌ ID must match format: REGISTRY_UPPERCASE_WITH_UNDERSCORES"
+            exit 1
+          fi
+
+          # Validate owner format
+          if ! echo "${{ inputs.owner }}" | grep -qE '^app-team-[a-z0-9-]+$'; then
+            echo "❌ Owner must match format: app-team-lowercase-with-dashes"
+            exit 1
+          fi
+
+          echo "✅ All inputs validated"
+
+      - name: Update catalog (idempotent)
+        run: |
+          set -euo pipefail
+          FILE="docs/catalogs/ecr-catalog.yaml"
+          NAME="${{ inputs.registry_name }}"
+          OWNER="${{ inputs.owner }}"
+          RISK="${{ inputs.risk }}"
+          ID="${{ inputs.id }}"
+          ENV="${{ inputs.environment }}"
+
+          # Ensure file exists with proper structure
+          if [ ! -f "$FILE" ]; then
+            cat > "$FILE" <<EOF
+          version: "1.0"
+          domain: "container-registries"
+          owner: "platform-team"
+          last_updated: "$(date -u +%Y-%m-%d)"
+          managed_by: "platform-team"
+          registries: {}
+          EOF
+          fi
+
+          # Add/update the registry entry
+          yq -i \
+            ".registries.\"$NAME\".metadata.id = \"$ID\" |
+             .registries.\"$NAME\".metadata.owner = \"$OWNER\" |
+             .registries.\"$NAME\".metadata.risk = \"$RISK\" |
+             .registries.\"$NAME\".metadata.status = \"pending\" |
+             .registries.\"$NAME\".metadata.created_date = \"$(date -u +%Y-%m-%d)\" |
+             .last_updated = \"$(date -u +%Y-%m-%d)\"" \
+            "$FILE"
+
+          echo "✅ Updated catalog for registry: $NAME"
+
+      - name: Update Terraform tfvars
+        run: |
+          set -euo pipefail
+          TFVARS="envs/${{ inputs.environment }}/terraform.tfvars"
+          NAME="${{ inputs.registry_name }}"
+          OWNER="${{ inputs.owner }}"
+          RISK="${{ inputs.risk }}"
+          ID="${{ inputs.id }}"
+
+          # Check if registry already exists in tfvars
+          if grep -q "\"$NAME\"" "$TFVARS" 2>/dev/null; then
+            echo "⚠️  Registry already exists in $TFVARS"
+          else
+            # Append new registry entry using printf to avoid YAML lint issues
+            printf '\n# Registry: %s\necr_repositories["%s"] = {\n  metadata = {\n    id    = "%s"\n    owner = "%s"\n    risk  = "%s"\n  }\n}\n' \
+              "$NAME" "$NAME" "$ID" "$OWNER" "$RISK" >> "$TFVARS"
+            echo "✅ Added registry to $TFVARS"
+          fi
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: "registry/create-${{ inputs.registry_name }}"
+          title: "🏗️ Create ECR Registry: ${{ inputs.registry_name }} (${{ inputs.environment }})"
+          commit-message: "registry: create ${{ inputs.registry_name }} in ${{ inputs.environment }}"
+          body: |
+            ## 🏗️ ECR Registry Creation Request
+
+            **Registry:** `${{ inputs.registry_name }}`
+            **Environment:** `${{ inputs.environment }}`
+            **Owner:** `${{ inputs.owner }}`
+            **Risk Level:** `${{ inputs.risk }}`
+            **ID:** `${{ inputs.id }}`
+
+            ---
+
+            ## 🔒 Security Controls (Auto-Applied)
+
+            Based on risk level **`${{ inputs.risk }}`**, the following security controls will be automatically configured:
+
+            ${{ inputs.risk == 'high' && '
+            ### 🔴 High Risk Configuration
+
+            - ✅ **Encryption:** KMS (customer-managed keys)
+            - ✅ **Tag Mutability:** IMMUTABLE (tags cannot be overwritten)
+            - ✅ **Image Retention:** Keep last 50 images
+            - ✅ **Image Scanning:** Enhanced scanning on every push
+
+            **Use for:** Production workloads, customer-facing services, PCI/HIPAA compliance
+            ' || inputs.risk == 'medium' && '
+            ### 🟡 Medium Risk Configuration
+
+            - ✅ **Encryption:** AES256 (AWS-managed)
+            - ✅ **Tag Mutability:** MUTABLE (tags can be overwritten)
+            - ✅ **Image Retention:** Keep last 30 images
+            - ✅ **Image Scanning:** Standard scanning on every push
+
+            **Use for:** Staging environments, internal tools, non-critical production
+            ' || '
+            ### 🟢 Low Risk Configuration
+
+            - ✅ **Encryption:** AES256 (AWS-managed)
+            - ✅ **Tag Mutability:** MUTABLE (tags can be overwritten)
+            - ✅ **Image Retention:** Keep last 20 images
+            - ✅ **Image Scanning:** Standard scanning on every push
+
+            **Use for:** Development environments, experiments, testing
+            ' }}
+
+            ---
+
+            ## 📋 Changes
+
+            - ✅ Added to registry catalog (`docs/catalogs/ecr-catalog.yaml`)
+            - ✅ Added to Terraform tfvars (`envs/${{ inputs.environment }}/terraform.tfvars`)
+
+            ---
+
+            ## 🚀 Next Steps
+
+            1. **Review** this PR and the security controls above
+            2. **Merge** to trigger Terraform apply
+            3. **Verify** registry creation in AWS Console
+            4. **Grant** IAM permissions to `${{ inputs.owner }}`
+            5. **Notify** `${{ inputs.owner }}` that registry is ready
+
+            ---
+
+            ## 📚 Governance
+
+            - **Policy:** [ADR-0092: ECR Registry Product Strategy](docs/adrs/ADR-0092-ecr-registry-product-strategy.md)
+            - **Enforcement:** [ADR-0093: Automated Policy Enforcement](docs/adrs/ADR-0093-automated-policy-enforcement.md)
+            - **Risk Policies:** Defined in `modules/aws_ecr/locals.tf`
+
+            /cc @platform-team
+          labels: |
+            ecr-registry
+            platform-team
+            ${{ inputs.environment }}

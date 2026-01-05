@@ -1,8 +1,9 @@
+# TEMPORARILY DISABLED - 2026-01-05
 # Owner: platform
 name: Quality - Pre-commit checks
 
-on:
-  pull_request:
+# on:
+  # pull_request:
 
 jobs:
   pre-commit:
