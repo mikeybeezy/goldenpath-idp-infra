@@ -22,7 +22,9 @@ lifecycle:
   breaking_change: false
 relates_to:
   - ADR-0093
+  - ADR-0101
   - CL-0053
+  - CL-0063
 ---
 
 # GitHub Actions Workflows
@@ -136,8 +138,25 @@ relates_to:
 **Trigger:** Pull requests
 
 ### ci-metadata-validation.yml
-**Purpose:** Validate metadata schema  
-**Trigger:** Pull requests
+**Purpose:** Validate and auto-heal metadata schema  
+**Trigger:** Pull requests (on `.md`, `.yaml`, `.yml` changes)  
+**What it does:**
+- Validates only files changed in the PR (scoped validation)
+- Auto-heals metadata issues using `standardize_metadata.py`
+- Auto-commits fixes with `[skip ci]` to prevent loops
+- Skips validation for exempt labels
+
+**Exempt Labels:**
+| Label | Use Case |
+| :--- | :--- |
+| `governance-exempt` | General bypass for platform exceptions |
+| `buildid` | CI/infrastructure pipeline PRs |
+| `docs-only` | Documentation-only changes |
+| `typo-fix` | Trivial text corrections |
+| `hotfix` | Emergency patches |
+
+**Status:** ✅ Active  
+**Related:** [ADR-0101](../docs/adrs/ADR-0101-pr-metadata-auto-heal.md)
 
 ### doc-freshness.yml
 **Purpose:** Check documentation freshness  
