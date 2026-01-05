@@ -27,9 +27,9 @@ relates_to:
 
 # CL-0054: Automated Registry Catalog Documentation
 
-**Date:** 2026-01-05  
-**Type:** Feature  
-**Category:** Governance  
+**Date:** 2026-01-05
+**Type:** Feature
+**Category:** Governance
 **Status:** Active
 
 ## Summary
@@ -44,7 +44,7 @@ Created automated script to generate human-readable markdown documentation from 
 
 ### Script Features
 
-**Input:** `docs/registry-catalog.yaml` (machine-readable)  
+**Input:** `docs/registry-catalog.yaml` (machine-readable)
 **Output:** `docs/REGISTRY_CATALOG.md` (human-readable)
 
 **Generated Documentation Includes:**

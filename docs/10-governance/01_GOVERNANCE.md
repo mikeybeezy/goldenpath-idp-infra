@@ -42,53 +42,6 @@ relates_to:
   - ADR-0052-platform-kube-prometheus-stack-bundle
   - DOCS_ADRS_README
 ---
-
-id: 01_GOVERNANCE
-title: Platform Governance Purpose
-type: policy
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
-relates_to:
-- 00_DOC_INDEX
-- 01_TAG_SCOPED_POLICY_TEMPLATE
-- 01_adr_index
-- 02_PLATFORM_BOUNDARIES
-- 05_OBSERVABILITY_DECISIONS
-- 06_COST_GOVERNANCE
-- 07_REPO_DECOUPLING_OPTIONS
-- 08_INGRESS_STRATEGY
-- 10_INFRA_FAILURE_MODES
-- 11_NETWORKING
-- 12_GITOPS_AND_CICD
-- 18_BACKSTAGE_MVP
-- 19_DELIVERY_INSIGHTS
-- 33_IAM_ROLES_AND_POLICIES
-- 35_RESOURCE_TAGGING
-- 40_CHANGELOG_GOVERNANCE
-- 41_STORAGE_AND_PERSISTENCE
-- ADR-0037
-- ADR-0037-platform-resource-tagging-policy
-- ADR-0039
-- ADR-0039-platform-tag-scoped-iam-policy-template
-- ADR-0052
-- ADR-0052-platform-kube-prometheus-stack-bundle
-- ADRS
-- DOCS_ADRS_README
-------
-
 # Platform Governance Purpose
 
 Doc contract:
@@ -172,7 +125,7 @@ Governance is enforced:
 
 - At design time
 - Through defaults and templates
-- Via automation and guardrails
+- Via automation and guardrails (e.g., `scripts/pr_guardrails.py`, ADR-0101)
 
 Not through:
 
@@ -197,7 +150,7 @@ Destructive automation must use tag-scoped IAM policies; see
 
 Material platform behavior changes must be captured in a changelog entry when
 the PR is labeled `changelog-required`. The policy and label rules are defined
-in `docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md`.
+in `docs/90-doc-system/40_CHANGELOG_GOVERNANCE.md`. Certain labels (e.g., `docs-only`, `typo-fix`) allow automated bypass if validated conditions are met (see ADR-0101).
 
 ## 7. Cost Visibility
 

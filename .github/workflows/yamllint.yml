@@ -1,10 +1,9 @@
-# TEMPORARILY DISABLED - 2026-01-05
 # Owner: platform
 name: Quality - YAML Lint
 
-# on:
-  # pull_request:
-  # push:
+on:
+  pull_request:
+  push:
     branches:
       - main
 

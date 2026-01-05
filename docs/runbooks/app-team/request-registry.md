@@ -22,12 +22,14 @@ lifecycle:
 relates_to:
   - ADR-0092
   - ADR-0096
+  - ADR-0100
   - CL-0055
+  - CL-0061
 ---
 
 # App Team Runbook: Request ECR Registry
 
-**Audience:** Application Teams  
+**Audience:** Application Teams
 **Purpose:** How to request a new ECR container registry
 
 ---
@@ -110,8 +112,10 @@ You'll need:
 - **Registry name:** Lowercase with hyphens (e.g., `wordpress-platform`)
 - **Owner:** Your team name (e.g., `app-team-wordpress`)
 - **Risk level:** Choose from low/medium/high (see above)
-- **Registry ID:** Uppercase with underscores (e.g., `REGISTRY_WORDPRESS_PLATFORM`)
 - **Environment:** dev/test/staging/prod
+
+> [!NOTE]
+> The **Registry ID** is now **auto-generated** from the registry name. You no longer need to provide it manually.
 
 ### Step 2: Run the Workflow
 
@@ -124,8 +128,8 @@ You'll need:
    Registry name: wordpress-platform
    Owner: app-team-wordpress
    Risk: high
-   ID: REGISTRY_WORDPRESS_PLATFORM
    ```
+   > The ID (`REGISTRY_WORDPRESS_PLATFORM`) is calculated automatically.
 5. Click **"Run workflow"**
 
 ### Step 3: Review the PR
@@ -134,6 +138,8 @@ The workflow creates a PR showing:
 - ✅ What registry will be created
 - ✅ What security controls will be applied
 - ✅ What changes will be made
+- ✅ **Day Zero Guidance** links to push images immediately
+- ✅ **Auto-updated catalog documentation**
 
 **Review the PR carefully** - it shows exactly what you're getting!
 
@@ -175,19 +181,19 @@ After your registry is created:
 
 ## FAQ
 
-**Q: How long does it take?**  
+**Q: How long does it take?**
 A: Usually 1-2 hours (depends on platform team availability)
 
-**Q: Can I change the risk level later?**  
+**Q: Can I change the risk level later?**
 A: Yes, create another PR to update the catalog
 
-**Q: What if I chose the wrong risk level?**  
+**Q: What if I chose the wrong risk level?**
 A: Platform team will catch it during review and suggest the correct level
 
-**Q: Can I have multiple registries?**  
+**Q: Can I have multiple registries?**
 A: Yes! One per product/service is recommended
 
-**Q: What's the naming convention?**  
+**Q: What's the naming convention?**
 A: `product-name` or `service-name` (lowercase with hyphens)
 
 ---

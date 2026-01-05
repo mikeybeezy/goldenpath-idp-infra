@@ -26,45 +26,11 @@ relates_to:
   - ADR-0046-platform-pr-plan-validation-ownership
   - ADR-0063
   - ADR-0063-platform-terraform-helm-bootstrap
+  - ADR-0101
   - CL-0002
   - CL-0002-bootstrap-refactor
+  - CL-0063
 ---
-
-id: 04_PR_GUARDRAILS
-title: PR Guardrails (GoldenPath IDP)
-type: policy
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
-relates_to:
-- 01_GOVERNANCE
-- 21_CI_ENVIRONMENT_CONTRACT
-- 27_REFACTORING_VALIDATION_GUIDE
-- 38_BRANCHING_STRATEGY
-- ADR-####
-- ADR-0044
-- ADR-0044-platform-infra-checks-ref-mode
-- ADR-0046
-- ADR-0046-platform-pr-plan-validation-ownership
-- ADR-0063
-- ADR-0063-platform-terraform-helm-bootstrap
-- CL-####
-- CL-0002
-- CL-0002-bootstrap-refactor
-------
-
 # PR Guardrails (GoldenPath IDP)
 
 Doc contract:
@@ -99,7 +65,20 @@ The PR template requires explicit selections for:
 - Testing / Validation (link + run/command or N/A)
 - Risk & Rollback (rollback plan / migration / N/A)
 
-Enforced by `/.github/workflows/pr-guardrails.yml`.
+Enforced by `/.github/workflows/pr-guardrails.yml` and `scripts/pr_guardrails.py`.
+
+### Conditional Bypass Labels (ADR-0101)
+
+Certain labels can bypass the checklist requirement if validated conditions are met:
+
+| Label | Condition | Who Can Use |
+| --- | --- | --- |
+| `docs-only` | All changed files are `.md` | Anyone |
+| `typo-fix` | < 50 lines changed, text files only | Anyone |
+| `hotfix` | Target branch is `main` | Platform-team only |
+| `build_id` | Terraform files changed | Platform-team only |
+
+Labels are **validated, not trusted**. If the condition is not met, the check fails.
 
 Template enforcement:
 

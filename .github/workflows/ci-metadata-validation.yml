@@ -1,8 +1,10 @@
-# TEMPORARILY DISABLED - 2026-01-05
 name: Quality - Metadata Validation
 
-# on:
-  # pull_request:
+on:
+  pull_request:
+    branches:
+      - main
+      - development
     paths:
       - "**/*.md"
       - "**/metadata.yaml"
@@ -12,7 +14,8 @@ name: Quality - Metadata Validation
       - ".github/workflows/ci-metadata-validation.yml"
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: read
 
 jobs:
   validate_metadata:
@@ -21,18 +24,101 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check Exempt Labels
+        id: exempt
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const exemptLabels = [
+              'build_id',
+              'docs-only',
+              'typo-fix',
+              'hotfix'
+            ];
+            const labels = context.payload.pull_request.labels.map(l => l.name);
+            const isExempt = labels.some(l => exemptLabels.includes(l));
+            core.setOutput('skip', isExempt ? 'true' : 'false');
+            if (isExempt) {
+              core.info(`✅ Skipping metadata validation (exempt label found: ${labels.filter(l => exemptLabels.includes(l)).join(', ')})`);
+            }
+
+      - name: Get Changed Files
+        id: changed
+        if: steps.exempt.outputs.skip != 'true'
+        run: |
+          FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(md|yaml|yml)$' || true)
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          if [ -z "$FILES" ]; then
+            echo "📭 No metadata files changed"
+          else
+            echo "📋 Changed files:"
+            echo "$FILES"
+          fi
 
       - name: Set up Python
+        if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
       - name: Install dependencies
+        if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
         run: |
           pip install pyyaml==6.0.1
 
-      - name: Run Metadata Validator
+      - name: Run Metadata Validator (Changed Files Only)
+        id: validate
+        if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
+        continue-on-error: true
         run: |
           chmod +x scripts/validate_metadata.py
-          # Scan the whole repository
-          python3 scripts/validate_metadata.py .
+          echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/validate_metadata.py
+
+      - name: Auto-Heal Metadata
+        id: heal
+        if: steps.validate.outcome == 'failure'
+        run: |
+          echo "🩹 Running auto-heal..."
+          python3 scripts/standardize_metadata.py
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "chore: auto-heal metadata [skip ci]"
+            git push
+            echo "healed=true" >> $GITHUB_OUTPUT
+            echo "✅ Metadata auto-healed and committed"
+          else
+            echo "healed=false" >> $GITHUB_OUTPUT
+            echo "📭 No changes needed after heal attempt"
+          fi
+
+      - name: Re-validate After Heal
+        if: steps.heal.outputs.healed == 'true'
+        run: |
+          echo "🔍 Re-validating after auto-heal..."
+          echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/validate_metadata.py
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Metadata Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.exempt.outputs.skip }}" == "true" ]; then
+            echo "⏭️ **Skipped** - Exempt label detected" >> $GITHUB_STEP_SUMMARY
+          elif [ -z "${{ steps.changed.outputs.files }}" ]; then
+            echo "📭 **No metadata files changed**" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.heal.outputs.healed }}" == "true" ]; then
+            echo "🩹 **Auto-healed** - Metadata standardized and committed" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.validate.outcome }}" == "success" ]; then
+            echo "✅ **Passed** - All metadata valid" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Failed** - Metadata issues detected" >> $GITHUB_STEP_SUMMARY
+          fi

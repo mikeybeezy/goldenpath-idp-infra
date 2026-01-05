@@ -33,10 +33,12 @@ Use short-lived branches and keep `main` deployable.
 
 Flow:
 
-1. Branch from `main`.
-2. Open a PR early for visibility.
-3. Squash-merge into `main`.
-4. Delete the branch after merge.
+1. Branch from `development`.
+2. Open a PR early for visibility into `development`.
+3. Merge after checks pass.
+4. Promote via a PR from `development` to `main`.
+5. Ensure all quality gates are green (see [PR Gates and How to Unblock Them](./24_PR_GATES.md)).
+6. Delete the branch after merge.
 
 Examples:
 

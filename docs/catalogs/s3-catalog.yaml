@@ -4,21 +4,21 @@ owner: platform-team
 last_updated: "2026-01-05"
 managed_by: platform-team
 
-buckets: {}
-  # Example structure:
-  # wordpress-assets:
-  #   metadata:
-  #     id: S3_WORDPRESS_ASSETS
-  #     owner: app-team-wordpress
-  #     risk: medium
-  #     environment: prod
-  #     created_date: "2026-01-05"
-  #     status: active
-  #   aws:
-  #     bucket_name: goldenpath-wordpress-assets-prod
-  #     region: eu-west-2
-  #     arn: arn:aws:s3:::goldenpath-wordpress-assets-prod
-  #   governance:
-  #     versioning: true
-  #     encryption: AES256
-  #     public_access_block: true
+buckets:
+# Example structure:
+# wordpress-assets:
+# metadata:
+# id: S3_WORDPRESS_ASSETS
+# owner: app-team-wordpress
+# risk: medium
+# environment: prod
+# created_date: "2026-01-05"
+# status: active
+# aws:
+# bucket_name: goldenpath-wordpress-assets-prod
+# region: eu-west-2
+# arn: arn:aws:s3:::goldenpath-wordpress-assets-prod
+# governance:
+# versioning: true
+# encryption: AES256
+# public_access_block: true

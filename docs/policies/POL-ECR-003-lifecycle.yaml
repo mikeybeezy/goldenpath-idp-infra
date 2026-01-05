@@ -4,7 +4,6 @@ name: ECR Lifecycle Retention Policy
 category: cost-optimization
 owner: platform-team
 status: active
-enforcement: automated
 
 description: |
   All ECR registries MUST have lifecycle policies to prevent unbounded storage costs.
@@ -69,6 +68,7 @@ rules:
     remediation: Add lifecycle rule to expire untagged images after 7 days
 
 enforcement:
+  strategy: automated
   prevention:
     - Terraform automatically applies lifecycle policies
     - Risk-based retention enforced via locals.tf

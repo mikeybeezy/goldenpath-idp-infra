@@ -4,7 +4,6 @@ name: ECR Image Scanning Policy
 category: security
 owner: security-team
 status: active
-enforcement: automated
 
 description: |
   All ECR registries MUST have image scanning enabled.
@@ -48,6 +47,7 @@ rules:
     remediation: Update base image or patch vulnerable packages
 
 enforcement:
+  strategy: automated
   prevention:
     - Terraform always enables scanning
     - Cannot disable via self-service

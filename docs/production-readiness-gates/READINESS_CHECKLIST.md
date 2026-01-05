@@ -25,6 +25,10 @@ relates_to:
   - ADR-0046
   - ADR-0063
   - CL-0002
+  - IDP_PRODUCT_FEATURES
+  - 00_DESIGN_PHILOSOPHY
+  - 34_PLATFORM_SUCCESS_CHECKLIST
+  - V1_04_CAPABILITY_MATRIX
 ---
 
 # V1_05: Platform Due-Diligence Scorecard

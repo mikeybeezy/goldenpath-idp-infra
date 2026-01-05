@@ -27,10 +27,10 @@ relates_to:
 
 # CL-0057: Domain-Based Resource Catalogs
 
-**Date:** 2026-01-05  
-**Type:** Refactor  
-**Category:** Architecture  
-**Status:** Active  
+**Date:** 2026-01-05
+**Type:** Refactor
+**Category:** Architecture
+**Status:** Active
 **Breaking Change:** Yes
 
 ## Summary
