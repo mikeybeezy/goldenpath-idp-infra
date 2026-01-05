@@ -1,9 +1,12 @@
 ---
-id: ADR-0033
+id: ADR-0033-platform-ci-orchestrated-modes
 title: 'ADR-0033: CI orchestrated modes for infra lifecycle'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,7 +18,7 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- ADR-0033
+  - ADR-0033
 ---
 
 # ADR-0033: CI orchestrated modes for infra lifecycle

@@ -1,9 +1,12 @@
 ---
-id: ADR-0083
+id: ADR-0083-platform-metadata-backfill-protocol
 title: Metadata Backfill Campaign Protocol
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,10 +18,8 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-
-- ADR-0082
-- ADR-0083
-
+  - ADR-0082
+  - ADR-0083
 ---
 
 ## ADR-0083: Metadata Backfill Campaign Protocol

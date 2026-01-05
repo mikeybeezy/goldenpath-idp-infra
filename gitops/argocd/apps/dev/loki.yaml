@@ -1,9 +1,13 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+# Managed by scripts/standardize-metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: dev-loki
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: HELM_LOKI
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: low
 spec:
   project: default
   destination:

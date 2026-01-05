@@ -1,5 +1,5 @@
 ---
-id: WORDPRESS_ENABLE_EFS
+id: enable-efs
 title: Enable EFS for WordPress on EKS
 type: documentation
 category: apps

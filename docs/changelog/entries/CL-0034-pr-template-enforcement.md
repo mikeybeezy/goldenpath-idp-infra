@@ -1,9 +1,12 @@
 ---
-id: CL-0034
+id: CL-0034-pr-template-enforcement
 title: 'Changelog: PR template enforcement and CI iteration'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,9 +18,7 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
-- CL-0034
-
+  - CL-0034
 ---
 
 # Changelog: PR template enforcement and CI iteration

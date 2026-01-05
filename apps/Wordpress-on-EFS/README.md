@@ -1,6 +1,5 @@
 ---
-
-id: README
+id: APPS_WORDPRESS-ON-EFS_README
 title: WordPress on EFS (Reference)
 type: documentation
 category: apps

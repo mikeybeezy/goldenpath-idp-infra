@@ -1,4 +1,37 @@
 ---
+id: BOOTSTRAP_10_BOOTSTRAP_README
+title: Bootstrap Entrypoint
+type: documentation
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies:
+  - chart:argo-cd
+  - chart:aws-load-balancer-controller
+  - chart:cert-manager
+  - chart:kong
+risk_profile:
+  production_impact: medium
+  security_risk: none
+  coupling_risk: medium
+reliability:
+  rollback_strategy: manual
+  observability_tier: silver
+lifecycle:
+  supported_until: 2028-01-01
+  breaking_change: false
+relates_to:
+  - 08_INGRESS_STRATEGY
+  - 12_GITOPS_AND_CICD
+  - 15_TEARDOWN_AND_CLEANUP
+  - 17_BUILD_RUN_FLAGS
+  - ADR-0001
+  - ADR-0002
+  - ADR-0013
+  - one_stage_vs_multistage_bootstrap
+---
+
 id: BOOTSTRAP_README
 title: Bootstrap Entrypoint
 type: documentation
@@ -7,10 +40,10 @@ version: 1.0
 owner: platform-team
 status: active
 dependencies:
-  - chart:argo-cd
-  - chart:aws-load-balancer-controller
-  - chart:cert-manager
-  - chart:kong
+- chart:argo-cd
+- chart:aws-load-balancer-controller
+- chart:cert-manager
+- chart:kong
 risk_profile:
   production_impact: high
   security_risk: access
@@ -22,18 +55,19 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - GOLDENPATH_IDP_BOOTSTRAP
-  - ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
-  - DEV_BASELINE_CHECKLIST
-  - TEARDOWN_README
-  - ADR-0001
-  - ADR-0002
-  - ADR-0013
-  - 12_GITOPS_AND_CICD
-  - 08_INGRESS_STRATEGY
-  - 15_TEARDOWN_AND_CLEANUP
-  - 17_BUILD_RUN_FLAGS
----
+- 08_INGRESS_STRATEGY
+- 12_GITOPS_AND_CICD
+- 15_TEARDOWN_AND_CLEANUP
+- 17_BUILD_RUN_FLAGS
+- ADR-0001
+- ADR-0002
+- ADR-0013
+- DEV_BASELINE_CHECKLIST
+- GOLDENPATH_IDP_BOOTSTRAP
+- ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
+- TEARDOWN_README
+- one_stage_vs_multistage_bootstrap
+------
 
 # Bootstrap Entrypoint
 
@@ -390,7 +424,6 @@ In order to access the server UI you have the following options:
 2. enable ingress in the values file `server.ingress.enabled` and either
       - Add the annotation for ssl passthrough: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-1-ssl-passthrough
       - Set the `configs.params."server.insecure"` in the values file and terminate SSL at your ingress: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-2-multiple-ingress-objects-and-hosts
-
 
 After reaching the UI the first time you can login with username: admin and the random password generated during the installation. You can find the password by running:
 

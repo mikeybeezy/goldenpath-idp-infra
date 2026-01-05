@@ -1,5 +1,5 @@
 ---
-id: SAMPLE_STATELESS_APP
+id: APPS_SAMPLE-STATELESS-APP_README
 title: Sample Stateless App (Reference)
 type: documentation
 category: apps

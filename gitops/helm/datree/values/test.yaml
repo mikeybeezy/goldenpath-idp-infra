@@ -1,1 +1,11 @@
-# Datree admission webhook overrides for test
+# Managed by scripts/standardize-metadata.py
+governance:
+  id: HELM_DATREE
+  owner: platform-team
+  risk_profile:
+    production_impact: low
+    security_risk: none
+    coupling_risk: low
+  reliability:
+    rollback_strategy: git-revert
+    observability_tier: bronze

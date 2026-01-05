@@ -2,8 +2,11 @@
 id: 06_REBUILD_SEQUENCE
 title: Rebuild Sequence (Stub)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,9 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 15_TEARDOWN_AND_CLEANUP
-
+  - 15_TEARDOWN_AND_CLEANUP
 ---
 
 # Rebuild Sequence (Stub)

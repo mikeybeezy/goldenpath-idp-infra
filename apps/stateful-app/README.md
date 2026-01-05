@@ -1,5 +1,5 @@
 ---
-id: STATEFUL_APP_README
+id: APPS_STATEFUL-APP_README
 title: Stateful App Template (Reference)
 type: template
 category: apps

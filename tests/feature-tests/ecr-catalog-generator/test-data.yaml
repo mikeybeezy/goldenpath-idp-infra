@@ -1,0 +1,31 @@
+version: "1.0"
+domain: container-registries
+owner: platform-team
+last_updated: "2026-01-05"
+managed_by: platform-team
+
+registries:
+  wordpress-platform:
+    metadata:
+      id: REGISTRY_WORDPRESS_PLATFORM
+      owner: app-team-wordpress
+      risk: high
+      environment: prod
+      created_date: "2026-01-05"
+      status: active
+  test-app-dev:
+    metadata:
+      id: REGISTRY_TEST_APP_DEV
+      owner: app-team-test
+      risk: low
+      environment: dev
+      created_date: "2026-01-05"
+      status: active
+  staging-api:
+    metadata:
+      id: REGISTRY_STAGING_API
+      owner: app-team-api
+      risk: medium
+      environment: staging
+      created_date: "2026-01-05"
+      status: active

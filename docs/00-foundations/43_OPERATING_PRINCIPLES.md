@@ -2,8 +2,11 @@
 id: 43_OPERATING_PRINCIPLES
 title: Platform Operating Principles (Grove + Rumelt)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,12 +18,10 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 05_OBSERVABILITY_DECISIONS
-- 16_INFRA_Build_ID_Strategy_Decision
-- 34_PLATFORM_SUCCESS_CHECKLIST
-- 44_PRINCIPLES_AND_FRAMEWORKS
-
+  - 05_OBSERVABILITY_DECISIONS
+  - 16_INFRA_Build_ID_Strategy_Decision
+  - 34_PLATFORM_SUCCESS_CHECKLIST
+  - 44_PRINCIPLES_AND_FRAMEWORKS
 ---
 
 # Platform Operating Principles (Grove + Rumelt)

@@ -2,25 +2,26 @@
 id: 41_STORAGE_AND_PERSISTENCE
 title: Storage and Persistence (Living)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
+  production_impact: medium
+  security_risk: access
+  coupling_risk: medium
 reliability:
   rollback_strategy: git-revert
-  observability_tier: bronze
+  observability_tier: gold
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 01_GOVERNANCE
-- 05_OBSERVABILITY_DECISIONS
-- ADR-0052
-- ADR-0053
-
+  - 01_GOVERNANCE
+  - ADR-0052
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0053
 ---
 
 # Storage and Persistence (Living)

@@ -2,8 +2,11 @@
 id: ROADMAP
 title: Platform TODO (Living)
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,13 +18,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- ADR-0022
-- ADR-0028
-- ADR-0034
-- ADR-0035
-- ADR-0037
-
+  - ADR-0022
+  - ADR-0028
+  - ADR-0034
+  - ADR-0035
+  - ADR-0037
 ---
 
 # Platform TODO (Living)

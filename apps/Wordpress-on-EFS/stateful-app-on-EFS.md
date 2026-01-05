@@ -1,5 +1,5 @@
 ---
-id: STATEFUL_APP_ON_EFS
+id: stateful-app-on-EFS
 title: Deploy WordPress with EFS Storage
 type: documentation
 category: apps

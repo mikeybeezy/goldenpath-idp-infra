@@ -1,9 +1,12 @@
 ---
-id: ADR-0038
+id: ADR-0038-platform-teardown-orphan-cleanup-gate
 title: 'ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +18,13 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- 15_TEARDOWN_AND_CLEANUP
-- ADR-0036
-- ADR-0037
-- ADR-0038
-- ORPHAN_CLEANUP
+  - 15_TEARDOWN_AND_CLEANUP
+  - ADR-0036
+  - ADR-0036-platform-orphan-cleanup-workflow
+  - ADR-0037
+  - ADR-0037-platform-resource-tagging-policy
+  - ADR-0038
+  - ORPHAN_CLEANUP
 ---
 
 # ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes

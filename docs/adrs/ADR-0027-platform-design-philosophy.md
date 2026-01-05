@@ -1,9 +1,12 @@
 ---
-id: ADR-0027
+id: ADR-0027-platform-design-philosophy
 title: 'ADR-0027: Platform design philosophy and reference implementation'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +18,11 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- 00_DESIGN_PHILOSOPHY
-- 00_DOC_INDEX
-- 01_GOVERNANCE
-- 02_PLATFORM_BOUNDARIES
-- ADR-0027
+  - 00_DESIGN_PHILOSOPHY
+  - 00_DOC_INDEX
+  - 01_GOVERNANCE
+  - 02_PLATFORM_BOUNDARIES
+  - ADR-0027
 ---
 
 # ADR-0027: Platform design philosophy and reference implementation

@@ -1,9 +1,12 @@
 ---
-id: ADR-0068
+id: ADR-0068-platform-review-cadence-output
 title: 'ADR-0068: Fix review cadence output delimiter'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- ADR-0068
+  - ADR-0068
 ---
 
 # ADR-0068: Fix review cadence output delimiter

@@ -1,9 +1,12 @@
 ---
-id: ADR-0075
+id: ADR-0075-app-example-deployments
 title: 'ADR-0075: App example deployments via Argo CD, Helm, and Kustomize'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,8 +18,8 @@ lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
 relates_to:
-- ADR-0075
-- CL-0027
+  - ADR-0075
+  - CL-0027
 ---
 
 # ADR-0075: App example deployments via Argo CD, Helm, and Kustomize

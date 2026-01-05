@@ -2,8 +2,11 @@
 id: 27_REFACTORING_VALIDATION_GUIDE
 title: Refactoring Validation Guide
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,7 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-- 21_CI_ENVIRONMENT_CONTRACT
+  - 21_CI_ENVIRONMENT_CONTRACT
 ---
 
 # Refactoring Validation Guide

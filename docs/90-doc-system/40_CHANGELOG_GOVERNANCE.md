@@ -2,8 +2,11 @@
 id: 40_CHANGELOG_GOVERNANCE
 title: Changelog Governance
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,14 +18,11 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 30_DOCUMENTATION_FRESHNESS
-- CHANGELOG
-- CHANGELOG_LABELS
-- CHANGELOG_TEMPLATE
-- CL-0001
-- CL-0002
-
+  - CHANGELOG_LABELS
+  - CL-0001
+  - CL-0002
+  - Changelog-template
+  - DOCS_CHANGELOG_README
 ---
 
 # Changelog Governance

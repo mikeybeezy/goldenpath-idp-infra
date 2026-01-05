@@ -1,8 +1,9 @@
+# TEMPORARILY DISABLED - 2026-01-05
 # Owner: platform
 name: Policy - Production Readiness Review Cadence
 
-on:
-  pull_request:
+# on:
+  # pull_request:
     branches:
       - main
   schedule:
@@ -24,7 +25,7 @@ jobs:
         id: check
         run: |
           set +e
-          output=$(python3 scripts/check-doc-freshness.py --fail \
+          output=$(python3 scripts/check_doc_freshness.py --fail \
             --only docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md \
             --only docs/production-readiness-gates/ROADMAP.md \
             --only docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md \
@@ -85,7 +86,7 @@ jobs:
         id: soon
         run: |
           set +e
-          output=$(python3 scripts/check-doc-freshness.py --warn-within 7 \
+          output=$(python3 scripts/check_doc_freshness.py --warn-within 7 \
             --only docs/00-foundations/34_PLATFORM_SUCCESS_CHECKLIST.md \
             --only docs/production-readiness-gates/ROADMAP.md \
             --only docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md \

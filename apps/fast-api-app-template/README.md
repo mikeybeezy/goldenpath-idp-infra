@@ -1,5 +1,5 @@
 ---
-id: FAST_API_APP_TEMPLATE
+id: APPS_FAST-API-APP-TEMPLATE_README
 title: App Template (Reference)
 type: template
 category: apps

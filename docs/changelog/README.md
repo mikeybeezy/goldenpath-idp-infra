@@ -1,9 +1,12 @@
 ---
-id: CHANGELOG_README
+id: DOCS_CHANGELOG_README
 title: Changelog Guidance (Label-Gated)
-type: documentation
+type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +18,9 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- CHANGELOG_TEMPLATE
-- CL-0001
-- CL-0002
-
+  - CL-0001
+  - CL-0002
+  - Changelog-template
 ---
 
 # Changelog Guidance (Label-Gated)

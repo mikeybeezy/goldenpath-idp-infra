@@ -1,5 +1,5 @@
 ---
-id: CL-0043
+id: CL-0043-complete-metadata-backfill
 title: 'CL-0043: Complete Metadata Backfill with Knowledge Graph'
 type: changelog
 category: changelog
@@ -18,15 +18,13 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
-- ADR-0034
-- ADR-0082
-- ADR-0083
-- ADR-0084
-- CL-0042
-- CL-0043
-- METADATA_STRATEGY
-
+  - ADR-0034
+  - ADR-0082
+  - ADR-0083
+  - ADR-0084
+  - CL-0042
+  - CL-0043
+  - METADATA_STRATEGY
 ---
 
 # CL-0043: Complete Metadata Backfill with Knowledge Graph
@@ -134,7 +132,7 @@ relates_to: [<doc-ids>, <PR-xxx>, <workflow:name>]
 **Affected Systems:**
 
 - All markdown documentation
-- validate-metadata.py CI check (now validates 300+ files)
+- validate_metadata.py CI check (now validates 300+ files)
 - Future Graph RAG implementation (ADR-0082)
 
 **User Impact:**
@@ -154,7 +152,7 @@ git revert <commit-sha>
 **To remove metadata from specific files:**
 
 - Edit .md files to remove YAML frontmatter (lines 1-N before first #)
-- Re-run validate-metadata.py to verify
+- Re-run validate_metadata.py to verify
 
 **Not required** - Changes are additive (YAML frontmatter) and don't affect file functionality.
 
@@ -164,7 +162,7 @@ git revert <commit-sha>
 
 ```bash
 # All metadata valid
-python3 scripts/validate-metadata.py docs
+python3 scripts/validate_metadata.py docs
 # Expected: ✅ Passed: 236, Failed: 0
 
 # Coverage check

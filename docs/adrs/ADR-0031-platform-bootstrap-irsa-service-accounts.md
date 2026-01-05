@@ -1,9 +1,12 @@
 ---
-id: ADR-0031
+id: ADR-0031-platform-bootstrap-irsa-service-accounts
 title: 'ADR-0031: Create IRSA service accounts during bootstrap'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,7 +18,7 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- ADR-0031
+  - ADR-0031
 ---
 
 # ADR-0031: Create IRSA service accounts during bootstrap

@@ -1,9 +1,12 @@
 ---
-id: README
+id: GOLDENPATH_IDP_ROOT_README
 title: Golden Path IDP Infra
 type: documentation
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,9 +18,7 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- 18_BACKSTAGE_MVP
-
+  - 18_BACKSTAGE_MVP
 ---
 
 # Golden Path IDP Infra

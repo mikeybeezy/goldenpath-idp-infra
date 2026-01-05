@@ -1,26 +1,25 @@
-# Values overrides for kube-prometheus-stack in dev
-
+# Managed by scripts/standardize-metadata.py
 prometheus:
   prometheusSpec:
     retention: 7d
     storageSpec:
       volumeClaimTemplate:
         spec:
-          accessModes: ["ReadWriteOnce"]
+          accessModes:
+            - ReadWriteOnce
           resources:
             requests:
               storage: 20Gi
-
 alertmanager:
   alertmanagerSpec:
     storage:
       volumeClaimTemplate:
         spec:
-          accessModes: ["ReadWriteOnce"]
+          accessModes:
+            - ReadWriteOnce
           resources:
             requests:
               storage: 5Gi
-
 grafana:
   persistence:
     enabled: true
@@ -30,3 +29,13 @@ grafana:
       type: loki
       access: proxy
       url: http://loki-gateway.monitoring.svc:3100
+governance:
+  id: HELM_KUBE_PROMETHEUS_STACK
+  owner: platform-team
+  risk_profile:
+    production_impact: medium
+    security_risk: data-visibility
+    coupling_risk: medium
+  reliability:
+    rollback_strategy: helm-rollback
+    observability_tier: gold

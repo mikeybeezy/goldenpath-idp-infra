@@ -1,5 +1,5 @@
 ---
-id: RUNBOOKS_README
+id: DOCS_RUNBOOKS_README
 title: Runbooks Index
 type: documentation
 category: runbooks

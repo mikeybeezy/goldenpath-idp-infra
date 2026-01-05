@@ -1,6 +1,7 @@
+# Managed by scripts/standardize-metadata.py
 appName: sample-stateless-app
 namespace: apps-sample-stateless
-appVersion: "1.0.0"
+appVersion: 1.0.0
 team: platform
 env: dev
 buildId: dev-0000
@@ -16,3 +17,13 @@ memoryLimit: 256Mi
 appHost: sample-stateless.dev.goldenpath.local
 kongAuthPlugin: sample-auth
 kongRateLimitPlugin: sample-rate-limit
+governance:
+  id: SCRIPTS_SAMPLE_STATELESS_APP_METADATA
+  owner: platform-team
+  risk_profile:
+    production_impact: low
+    security_risk: none
+    coupling_risk: low
+  reliability:
+    rollback_strategy: git-revert
+    observability_tier: bronze

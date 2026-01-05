@@ -1,5 +1,5 @@
 ---
-id: ADR-0084
+id: ADR-0084-platform-enhanced-metadata-schema
 title: 'ADR-0084: Enhanced Metadata Schema for Knowledge Graph'
 type: adr
 category: adrs
@@ -18,14 +18,12 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-
-- ADR-0082
-- ADR-0083
-- ADR-0084
-- CL-0042
-- CL-0043
-- METADATA_STRATEGY
-
+  - ADR-0082
+  - ADR-0083
+  - ADR-0084
+  - CL-0042
+  - CL-0043
+  - METADATA_STRATEGY
 ---
 
 # ADR-0084: Enhanced Metadata Schema for Knowledge Graph
@@ -132,7 +130,7 @@ Implement an enhanced metadata schema with the following fields:
 5. **Automated Maintenance**
    - Scripts can re-run on new files
    - Consistent metadata across repository
-   - Validation via CI (validate-metadata.py)
+   - Validation via CI (validate_metadata.py)
 
 ### Negative
 
@@ -192,7 +190,7 @@ No automation scripts, manually add metadata.
 1. Create backfill script with category, version, dependencies extraction
 2. Create relationship extraction script with 13 patterns
 3. Run scripts on all markdown files
-4. Validate with validate-metadata.py
+4. Validate with validate_metadata.py
 5. Document in changelog (CL-0043)
 6. Commit all changes
 

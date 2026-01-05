@@ -1,9 +1,12 @@
 ---
-id: ADR-0023
+id: ADR-0023-platform-ci-image-scanning
 title: 'ADR-0023: CI image scanning standard'
 type: adr
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,7 +18,7 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
-- ADR-0023
+  - ADR-0023
 ---
 
 # ADR-0023: CI image scanning standard

@@ -1,5 +1,5 @@
 ---
-id: PULL_REQUEST_TEMPLATE
+id: pull_request_template
 title: Pull Request Template
 type: template
 category: github

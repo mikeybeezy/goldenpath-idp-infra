@@ -1,5 +1,5 @@
 ---
-id: README
+id: DOCS_ADRS_README
 title: ADR Directory Guide
 type: documentation
 category: adrs

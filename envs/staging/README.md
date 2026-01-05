@@ -1,5 +1,5 @@
 ---
-id: STAGING_ENV_README
+id: ENVS_STAGING_README
 title: Staging Environment
 type: documentation
 category: envs

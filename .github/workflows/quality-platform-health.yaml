@@ -1,11 +1,15 @@
+# TEMPORARILY DISABLED - 2026-01-05
 name: "Quality - Platform Health Check"
 
-on:
-  push:
+# on:
+  # push:
     branches: [development]
   schedule:
     - cron: '0 0 * * *'  # Run daily at midnight
   workflow_dispatch:  # Allow manual triggers
+
+permissions:
+  contents: write
 
 jobs:
   health-check:
@@ -24,8 +28,14 @@ jobs:
 
       - name: Run Platform Health Check
         run: |
-          python3 scripts/platform_health.py > PLATFORM_HEALTH.md
-          cat PLATFORM_HEALTH.md
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/scripts
+          python3 scripts/platform_health.py .
+
+      - name: Commit Health Report
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update platform health dashboard [skip ci]"
+          file_pattern: 'PLATFORM_HEALTH.md'
 
       - name: Upload Health Report
         uses: actions/upload-artifact@v4

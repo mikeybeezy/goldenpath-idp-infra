@@ -1,47 +1,55 @@
 ---
 id: PLATFORM_HEALTH
-title: Platform Health Report
-type: report
-category: idp-tooling
-version: 1.0
-owner: platform-team
+title: Platform Health & Compliance Report
+type: documentation
+category: governance
 status: active
+owner: platform-team
+version: '2026-01-05'
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
-  coupling_risk: none
+  coupling_risk: low
 reliability:
-  rollback_strategy: delete-file
+  rollback_strategy: git-revert
   observability_tier: gold
 lifecycle:
-  supported_until: 2026-12-31
+  supported_until: '2028-01-01'
   breaking_change: false
+relates_to: []
 ---
 
 # 🏥 Platform Health Report
-**Date Generated**: 2026-01-04 16:38:21
-**Total Tracked Resources**: 307
-**Metadata Compliance**: 99.7%
+**Date Generated**: 2026-01-05 10:14:45
+**Total Tracked Resources**: 360
+**Metadata Compliance**: 100.0%
 
 ## 📊 Lifecycle Distribution
-- **Active**: 300
-- **Draft**: 1
-- **Deprecated**: 4
-- **Approved**: 1
+- **Active**: 351
+- **Planned**: 1
+- **Draft**: 4
+- **Deprecated**: 2
+- **Accepted**: 2
 
 ## 🛡️ Risk Summary (Production Impact)
-- **High**: 25
-- **Medium**: 23
-- **Low**: 257
-- **None**: 0
+- **High**: 35
+- **Medium**: 28
+- **Low**: 296
+- **None**: 1
 
 ## 📂 Top Categories
-- **unknown**: 209
+- **unknown**: 240
 - **gitops**: 20
-- **runbooks**: 12
+- **modules**: 16
 - **apps**: 11
-- **idp-tooling**: 10
+- **runbooks**: 10
 
 ## 🚨 Operational Risks
 - **Orphaned Files (No Owner)**: 0
 - **Stale Files (Past Lifecycle)**: 0
+
+## 💉 Closed-Loop Injection Coverage
+> [!NOTE]
+> **How it works**: This metric measures the percentage of 'Governance Sidecars' that have been successfully propagated into live deployment configurations (Helm values, ArgoCD manifests).
+- **Coverage**: 100.0% (29/29)

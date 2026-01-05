@@ -1,9 +1,12 @@
 ---
-id: CL-0033
+id: CL-0033-github-agent-roles
 title: 'Changelog: GitHub agent roles governance'
 type: changelog
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,10 +18,8 @@ lifecycle:
   supported_until: 2027-01-04
   breaking_change: false
 relates_to:
-
-- ADR-0080
-- CL-0033
-
+  - ADR-0080
+  - CL-0033
 ---
 
 # Changelog: GitHub agent roles governance

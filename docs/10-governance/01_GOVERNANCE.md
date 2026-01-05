@@ -2,8 +2,11 @@
 id: 01_GOVERNANCE
 title: Platform Governance Purpose
 type: policy
+category: unknown
+version: '1.0'
 owner: platform-team
 status: active
+dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,7 +18,50 @@ lifecycle:
   supported_until: 2027-01-03
   breaking_change: false
 relates_to:
+  - 00_DOC_INDEX
+  - 01_TAG_SCOPED_POLICY_TEMPLATE
+  - 01_adr_index
+  - 02_PLATFORM_BOUNDARIES
+  - 05_OBSERVABILITY_DECISIONS
+  - 06_COST_GOVERNANCE
+  - 07_REPO_DECOUPLING_OPTIONS
+  - 08_INGRESS_STRATEGY
+  - 10_INFRA_FAILURE_MODES
+  - 11_NETWORKING
+  - 12_GITOPS_AND_CICD
+  - 19_DELIVERY_INSIGHTS
+  - 33_IAM_ROLES_AND_POLICIES
+  - 35_RESOURCE_TAGGING
+  - 40_CHANGELOG_GOVERNANCE
+  - 41_STORAGE_AND_PERSISTENCE
+  - ADR-0037
+  - ADR-0037-platform-resource-tagging-policy
+  - ADR-0039
+  - ADR-0039-platform-tag-scoped-iam-policy-template
+  - ADR-0052
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - DOCS_ADRS_README
+---
 
+id: 01_GOVERNANCE
+title: Platform Governance Purpose
+type: policy
+category: unknown
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2027-01-03
+  breaking_change: false
+relates_to:
 - 00_DOC_INDEX
 - 01_TAG_SCOPED_POLICY_TEMPLATE
 - 01_adr_index
@@ -34,11 +80,14 @@ relates_to:
 - 40_CHANGELOG_GOVERNANCE
 - 41_STORAGE_AND_PERSISTENCE
 - ADR-0037
+- ADR-0037-platform-resource-tagging-policy
 - ADR-0039
+- ADR-0039-platform-tag-scoped-iam-policy-template
 - ADR-0052
+- ADR-0052-platform-kube-prometheus-stack-bundle
 - ADRS
-
----
+- DOCS_ADRS_README
+------
 
 # Platform Governance Purpose
 
