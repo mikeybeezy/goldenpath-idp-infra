@@ -2,6 +2,9 @@ name: Quality - Metadata Validation
 
 on:
   pull_request:
+    branches:
+      - main
+      - development
     paths:
       - "**/*.md"
       - "**/metadata.yaml"

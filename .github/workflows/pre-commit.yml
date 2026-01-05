@@ -3,6 +3,9 @@ name: Quality - Pre-commit checks
 
 on:
   pull_request:
+    branches:
+      - main
+      - development
 
 jobs:
   pre-commit:

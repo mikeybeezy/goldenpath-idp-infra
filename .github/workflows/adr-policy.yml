@@ -3,6 +3,9 @@ name: Policy - ADR Policy
 
 on:
   pull_request:
+    branches:
+      - main
+      - development
     types:
       - opened
       - reopened

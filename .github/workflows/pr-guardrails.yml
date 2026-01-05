@@ -3,6 +3,9 @@ name: Policy - PR Guardrails
 
 on:
   pull_request:
+    branches:
+      - main
+      - development
     types: [opened, edited, synchronize, reopened, ready_for_review]
 
 permissions:
