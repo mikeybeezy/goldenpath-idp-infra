@@ -39,4 +39,4 @@ All CI checks now pass for PR #156 targeting `development`. The repository now h
 ## References
 
 - ADR‑0098: Standardized PR Gates for ECR Pipeline
-- PR #156: https://github.com/mikeybeezy/goldenpath-idp-backstage/pull/156
+- PR #156: <https://github.com/mikeybeezy/goldenpath-idp-backstage/pull/156>

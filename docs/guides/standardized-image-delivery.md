@@ -6,7 +6,7 @@ This guide explains our "Golden Path" for delivery: how application teams build 
 ## The Build & Push Tool
 To keep things simple, the platform provides a single script: `ecr-build-push.sh`. Instead of developers writing complex deployment logic, they use this one tool to handle the entire lifecycle.
 
-### What the tool does:
+### What the tool does
 1.  **Auto-Login**: Securely authenticates with AWS without needing manual passwords.
 2.  **Reliable Building**: It builds your Docker image from your source code.
 3.  **Dual Tagging**: It tags every image twice:
@@ -17,7 +17,7 @@ To keep things simple, the platform provides a single script: `ecr-build-push.sh
 ## Security (OIDC)
 We use **OpenID Connect (OIDC)** for all automated builds. This is a "secretless" system—we don't store long-lived password keys in GitHub. Instead, AWS and GitHub "trust" each other for a few minutes while the build is running.
 
-### How it works in CI:
+### How it works in CI
 ```text
       GITHUB ACTIONS (CI)             AWS CLOUD (TRUST)             AWS ECR (STORAGE)
     ┌──────────────────────┐        ┌────────────────────┐        ┌──────────────────────┐

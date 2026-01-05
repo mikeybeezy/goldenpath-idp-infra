@@ -30,7 +30,7 @@ The previous ECR registry creation process required manual input for multiple re
 ## Decision
 We have implemented a standardized lifecycle for ECR registries that automates ID generation, ensures documentation synchronization, and centralizes security policy definitions.
 
-### Key Decisions:
+### Key Decisions
 1.  **Automated Identity**: Remove manual `id` input in the [create-ecr-registry.yml](.github/workflows/create-ecr-registry.yml) workflow. The ID is now auto-calculated from the registry name (e.g., `app-foo` -> `REGISTRY_APP_FOO`).
 2.  **Continuous Documentation Sync**: The registry creation workflow now triggers the documentation generator script as a mandatory step, ensuring Markdown and YAML catalogs never drift.
 3.  **Externalized Security Policies**: Move risk-based security settings (encryption, retention, scanning) out of hardcoded Python logic and into a shared [ecr-risk-settings.yaml](docs/policies/ecr-risk-settings.yaml). This file serves as the source of truth for both documentation and Terraform enforcement.

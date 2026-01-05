@@ -105,4 +105,3 @@ Created GitHub Actions workflow for self-service ECR registry creation requests.
 ## Related
 - [ADR-0095: Self-Service Registry Creation](../adrs/ADR-0095-self-service-registry-creation.md)
 - [ADR-0092: ECR Registry Product Strategy](../adrs/ADR-0092-ecr-registry-product-strategy.md)
-
