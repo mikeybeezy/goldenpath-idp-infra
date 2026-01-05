@@ -34,7 +34,7 @@ import json
 import re
 
 # Configuration
-PLATFORM_TEAM = ['mikesablaze', 'github-actions[bot]', 'dependabot[bot]']
+PLATFORM_TEAM = ['mikeybeezy', 'mikesablaze', 'github-actions[bot]', 'dependabot[bot]']
 TEMPLATE_HEADER = "Select at least one checkbox per section by changing `[ ]` to `[x]`."
 
 SECTIONS = [
