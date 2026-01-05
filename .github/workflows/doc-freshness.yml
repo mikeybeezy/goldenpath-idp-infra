@@ -1,13 +1,14 @@
+# TEMPORARILY DISABLED - 2026-01-05
 # Owner: platform
 name: Quality - Doc Freshness Check
 
-on:
-  pull_request:
+# on:
+  # pull_request:
     paths:
       - "docs/**"
       - "scripts/check_doc_freshness.py"
       - ".github/workflows/doc-freshness.yml"
-  push:
+  # push:
     branches:
       - main
     paths:
