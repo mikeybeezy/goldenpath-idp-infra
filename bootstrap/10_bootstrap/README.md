@@ -32,43 +32,6 @@ relates_to:
   - one_stage_vs_multistage_bootstrap
 ---
 
-id: BOOTSTRAP_README
-title: Bootstrap Entrypoint
-type: documentation
-category: bootstrap
-version: 1.0
-owner: platform-team
-status: active
-dependencies:
-- chart:argo-cd
-- chart:aws-load-balancer-controller
-- chart:cert-manager
-- chart:kong
-risk_profile:
-  production_impact: high
-  security_risk: access
-  coupling_risk: high
-reliability:
-  rollback_strategy: manual
-  observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
-relates_to:
-- 08_INGRESS_STRATEGY
-- 12_GITOPS_AND_CICD
-- 15_TEARDOWN_AND_CLEANUP
-- 17_BUILD_RUN_FLAGS
-- ADR-0001
-- ADR-0002
-- ADR-0013
-- DEV_BASELINE_CHECKLIST
-- GOLDENPATH_IDP_BOOTSTRAP
-- ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
-- TEARDOWN_README
-- one_stage_vs_multistage_bootstrap
-------
-
 # Bootstrap Entrypoint
 
 This directory is the single entrypoint that answers: how does a blank cluster

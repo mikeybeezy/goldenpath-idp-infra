@@ -189,6 +189,7 @@ def scan_directory(target_path):
 
     # 1. Validate Existing Files
     for filepath in files_to_check:
+        print(f"DEBUG: Checking {filepath}")
         data, error = extract_metadata(filepath)
 
         if error:

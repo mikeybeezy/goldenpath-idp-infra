@@ -25,23 +25,26 @@ relates_to:
 
 # App Team Runbook: Push Image Guide
 
-**Audience:** Application Teams  
+**Audience:** Application Teams
 **Purpose:** How to push container images to ECR
 
 ---
 
-## Quick Start
+## Quick Start (Recommended)
+
+The platform provide a standardized script to handle authentication, building, tagging, and pushing in one command:
 
 ```bash
-# 1. Authenticate with ECR
-aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.eu-west-2.amazonaws.com
-
-# 2. Tag your image
-docker tag my-app:latest <account-id>.dkr.ecr.eu-west-2.amazonaws.com/my-registry:latest
-
-# 3. Push
-docker push <account-id>.dkr.ecr.eu-west-2.amazonaws.com/my-registry:latest
+./scripts/ecr-build-push.sh \
+  --registry <account-id>.dkr.ecr.eu-west-2.amazonaws.com \
+  --name my-app \
+  --sha $(git rev-parse --short HEAD) \
+  --version 1.0.0
 ```
+
+---
+
+## Manual Steps
 
 ---
 
@@ -76,23 +79,51 @@ docker push <account-id>.dkr.ecr.eu-west-2.amazonaws.com/my-registry:latest
 
 ---
 
+## GitHub Actions Integration (OIDC)
+
+For secure, keyless authentication in GitHub Actions, use OIDC with the `aws-actions/configure-aws-credentials` action before running the script:
+
+```yaml
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Required for OIDC
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::<account-id>:role/<app-role-name>
+          aws-region: eu-west-2
+
+      - name: Build and Push
+        run: |
+          ./scripts/ecr-build-push.sh \
+            --registry <account-id>.dkr.ecr.eu-west-2.amazonaws.com \
+            --name my-app \
+            --sha ${{ github.sha }}
+```
+
+---
+
 ## Best Practices
 
-- ✅ Use semantic versioning tags (e.g., `v1.2.3`)
-- ✅ Tag with git commit SHA for traceability
-- ✅ Don't rely on `latest` tag in production
-- ✅ Scan images locally before pushing
+- ✅ **Use OIDC**: Never use long-lived IAM Secret Keys.
+- ✅ **Least Privilege**: Ensure the assumed role only has permissions for its specific repository.
+- ✅ **Standard Tooling**: Always use `ecr-build-push.sh` to ensure consistent tagging.
+- ✅ **SHAs over Latest**: Use Git SHAs for production deployments to ensure immutability.
 
 ---
 
 ## Troubleshooting
 
 **Authentication fails:**
-- Check AWS credentials are configured
-- Verify you have ECR permissions
-
-**Push denied:**
-- Contact platform team to verify IAM permissions
+- Verify `id-token: write` permission is present in the workflow.
+- Check that the OIDC Trust Relationship on the IAM Role allows your repository and branch.
+- Ensure the `aws-region` matches the registry region.
 
 ---
 

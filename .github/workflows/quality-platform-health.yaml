@@ -1,8 +1,7 @@
-# TEMPORARILY DISABLED - 2026-01-05
 name: "Quality - Platform Health Check"
 
-# on:
-  # push:
+on:
+  push:
     branches: [development]
   schedule:
     - cron: '0 0 * * *'  # Run daily at midnight

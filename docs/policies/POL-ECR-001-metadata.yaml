@@ -4,7 +4,6 @@ name: ECR Registry Metadata Policy
 category: governance
 owner: platform-team
 status: active
-enforcement: automated
 
 description: |
   All ECR registries MUST have complete metadata including ID, owner, and risk level.
@@ -60,6 +59,7 @@ rules:
     remediation: Set metadata.status to active, deprecated, or pending
 
 enforcement:
+  strategy: automated
   prevention:
     - Terraform preconditions validate metadata
     - GitHub Actions workflow validates inputs

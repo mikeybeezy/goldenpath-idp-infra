@@ -22,8 +22,8 @@ relates_to: []
 
 # Test Results: ECR Catalog Generator
 
-**Test Date:** 2026-01-05  
-**Status:** ✅ **PASSED**  
+**Test Date:** 2026-01-05
+**Status:** ✅ **PASSED**
 **Tester:** Platform Team
 
 ---

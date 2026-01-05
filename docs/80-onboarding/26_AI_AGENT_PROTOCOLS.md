@@ -150,7 +150,8 @@ all required checks are green.
 2. If a check fails, read the log and map it to a specific file or rule.
 3. Apply the smallest fix, re-run local checks, and push.
 4. Re-check status until all required checks pass.
-5. Confirm labels reflect the actual scope (avoid false ADR/changelog blocks).
+5. Use conditional bypass labels (`docs-only`, `typo-fix`) when applicable to unblock trivial changes, provided the specific conditions in [PR Gates and How to Unblock Them](./24_PR_GATES.md) are met (verified by `scripts/pr_guardrails.py`).
+6. Confirm labels reflect the actual scope (avoid false ADR/changelog blocks).
 6. Notify a human for merge approval once green.
 
 ## 11) Value preservation mechanisms

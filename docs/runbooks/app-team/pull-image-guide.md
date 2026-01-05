@@ -25,7 +25,7 @@ relates_to:
 
 # App Team Runbook: Pull Image Guide
 
-**Audience:** Application Teams  
+**Audience:** Application Teams
 **Purpose:** How to pull container images from ECR
 
 ---

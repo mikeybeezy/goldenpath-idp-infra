@@ -22,9 +22,9 @@ relates_to: []
 
 # Test Plan: ECR Catalog Generator
 
-**Feature:** Risk-Based Security Controls Display  
-**Date:** 2026-01-05  
-**Tester:** Platform Team  
+**Feature:** Risk-Based Security Controls Display
+**Date:** 2026-01-05
+**Tester:** Platform Team
 **Status:** ✅ Passed
 
 ---

@@ -51,11 +51,11 @@ If more detail is needed, use the workflow run link and log file paths.
 
 | Date (UTC) | Build ID | SHA | Build (s) | Bootstrap (s) | Teardown (s) | Status | Entry | Run URL |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-01-02 | 02-01-26-06 | cd190568def5677508a5804e82e73c3f1a3802b2 (build) / 4be3d33a7118b86457727b8cfd026da3f8deea38 (bootstrap) | 905 | 215 | - | success | docs/build-run-logs/BR-0001-02-01-26-06.md | build: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20662142526 / bootstrap: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20664240754 |
-| 2026-01-03 | 03-01-26-02 | 2e60175f2215f5883bfd3c5afc7a1154e1b7f73e | 938 | - | - | failure | docs/build-run-logs/BR-0003-03-01-26-02.md | build: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20683109446 |
-| 2026-01-03 | 11-11-11-11 | 2e60175f2215f5883bfd3c5afc7a1154e1b7f73e | 2576 | - | - | failure | docs/build-run-logs/BR-0004-11-11-11-11.md | build: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20683824002 |
-| 2026-01-03 | 03-01-26-02 | 2e60175f2215f5883bfd3c5afc7a1154e1b7f73e | - | - | 451 | success | docs/build-run-logs/TD-0003-03-01-26-02.md | teardown: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20684378611 |
-| 2026-01-03 | 11-11-11-11 | 2e60175f2215f5883bfd3c5afc7a1154e1b7f73e | - | - | 493 | success | docs/build-run-logs/TD-0004-11-11-11-11.md | teardown: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20684384284 |
+| 2026-01-02 | 02-01-26-06 | cd190568def5677508a5804e82e73c3f1a3802b2 (build) / 4be3d33a7118b86457727b8cfd026da3f8deea38 (bootstrap) | 905 | 215 | - | success | docs/build-run-logs/BR-0001-02-01-26-06.md | build: <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20662142526> / bootstrap: <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20664240754> |
+| 2026-01-03 | 03-01-26-02 | 2e60175f2215f5883bfd3c5afc7a1154e1b7f73e | 938 | - | - | failure | docs/build-run-logs/BR-0003-03-01-26-02.md | build: <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20683109446> |
+| 2026-01-03 | 11-11-11-11 | 2e60175f2215f5883bfd3c5afc7a1154e1b7f73e | 2576 | - | - | failure | docs/build-run-logs/BR-0004-11-11-11-11.md | build: <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20683824002> |
+| 2026-01-03 | 03-01-26-02 | 2e60175f2215f5883bfd3c5afc7a1154e1b7f73e | - | - | 451 | success | docs/build-run-logs/TD-0003-03-01-26-02.md | teardown: <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20684378611> |
+| 2026-01-03 | 11-11-11-11 | 2e60175f2215f5883bfd3c5afc7a1154e1b7f73e | - | - | 493 | success | docs/build-run-logs/TD-0004-11-11-11-11.md | teardown: <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20684384284> |
 
 ## Entry template
 
@@ -83,15 +83,15 @@ Ad hoc notes/observations:
 
 Detailed entry: docs/build-run-logs/BR-0001-02-01-26-06.md
 
-Tear don URL : <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20665012721/job/59335320116>
+Teardown URL: <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20665012721/job/59335320116>
 
 SHA: 4be3d33a7118b86457727b8cfd026da3f8deea38
 
-Script Used =  V2
+Script Used = V2
 
-Notes: Clean Teardowon,
+Notes: Clean Teardown,
 AWS orphans:
-TG = serval but could have accumlated across several builds, Target groups but we can try and capture them becuase use tags KEY= elbv2.k8s.aws/cluster VALUE=goldenpath-dev-eks-30-12-25-01
+TG = several but could have accumulated across several builds, Target groups but we can try and capture them because use tags KEY= elbv2.k8s.aws/cluster VALUE=goldenpath-dev-eks-30-12-25-01
 0 = ENI
 0 = VPC
 0 = NAT
@@ -102,7 +102,7 @@ TG = serval but could have accumlated across several builds, Target groups but w
 0 = SUBNET
 0 = RT
 0 = Volumes Need more data
-0 = SNAP SHOTS  need more data
+0 = SNAP SHOTS need more data
 0 = IGW
 0 = IAM roles
 0 = EKS

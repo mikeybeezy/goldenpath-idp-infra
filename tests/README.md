@@ -29,19 +29,19 @@ relates_to: []
 ## Feature Tests
 
 ### ECR Catalog Generator
-**Location:** [feature-tests/ecr-catalog-generator](./feature-tests/ecr-catalog-generator/)  
-**Status:** ✅ Passed  
-**Date:** 2026-01-05  
+**Location:** [feature-tests/ecr-catalog-generator](./feature-tests/ecr-catalog-generator/)
+**Status:** ✅ Passed
+**Date:** 2026-01-05
 **What:** Tests catalog generator displays risk-based security controls
 
 ### Risk-Based Policies (Planned)
-**Location:** `feature-tests/risk-based-policies/`  
-**Status:** Not yet tested  
+**Location:** `feature-tests/risk-based-policies/`
+**Status:** Not yet tested
 **What:** Validate Terraform applies correct controls based on risk level
 
 ### Self-Service Workflow (Planned)
-**Location:** `feature-tests/self-service-workflow/`  
-**Status:** Not yet tested  
+**Location:** `feature-tests/self-service-workflow/`
+**Status:** Not yet tested
 **What:** End-to-end test of registry creation via GitHub Actions
 
 ---
@@ -49,8 +49,8 @@ relates_to: []
 ## Integration Tests
 
 ### ECR Registry Creation (Planned)
-**Location:** `integration-tests/ecr-registry-creation/`  
-**Status:** Not yet tested  
+**Location:** `integration-tests/ecr-registry-creation/`
+**Status:** Not yet tested
 **What:** Full workflow from request → PR → Terraform → AWS
 
 ---

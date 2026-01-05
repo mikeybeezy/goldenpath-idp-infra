@@ -36,45 +36,6 @@ relates_to:
   - MODULES_VPC_README
 ---
 
-id: 14_MODULES_OVERVIEW
-title: Modules Overview
-type: documentation
-category: 30-architecture
-version: 1.0
-owner: platform-team
-status: active
-dependencies:
-- module:vpc
-- module:aws_subnet
-- module:aws_route_table
-- module:aws_sg
-- module:aws_eks
-- module:aws_iam
-- module:aws_compute
-- module:aws_nic
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
-relates_to:
-- 09_ARCHITECTURE
-- 10_SERVICE_CATALOG
-- MODULES_AWS_COMPUTE_README
-- MODULES_AWS_EKS_README
-- MODULES_AWS_IAM_README
-- MODULES_AWS_NIC_README
-- MODULES_AWS_ROUTE_TABLE_README
-- MODULES_AWS_SG_README
-- MODULES_AWS_SUBNET_README
-- MODULES_VPC_README
-------
-
 # Modules Overview
 
 This page summarizes each Terraform module and links to its README.

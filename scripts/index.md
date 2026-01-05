@@ -35,6 +35,7 @@ This directory contains the automation engine powering the GoldenPath IDP. These
 | :--- | :--- | :--- |
 | [`standardize_metadata.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/standardize_metadata.py) | **The Healer** | Automated schema remediation, sidecar generation, and **Metadata Injection**. |
 | [`validate_metadata.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/validate_metadata.py) | **The Quality Gate** | PR-level enforcement of metadata compliance, sidecar presence, and **Injection Verification**. |
+| [`pr_guardrails.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/pr_guardrails.py) | **The Bouncer** | Enforces PR checklist with conditional label bypass (docs-only, typo-fix, hotfix, build_id). |
 | [`extract_relationships.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/extract_relationships.py) | **The Graph Builder** | Programmatic extraction of document relationships and dependencies. |
 | [`platform_health.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/platform_health.py) | **The Reporter** | Generation of global health metrics and **Injection Coverage** auditing. |
 | [`render_template.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/render_template.py) | **The Renderer** | Backstage-compatible templating with **Nested Key Support**. |
@@ -51,10 +52,16 @@ This directory contains the automation engine powering the GoldenPath IDP. These
 - [`generate-teardown-log.sh`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate-teardown-log.sh): Captures managed-resource cleanup logs during teardown.
 - [`resolve-cluster-name.sh`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/resolve-cluster-name.sh): Dynamic discovery of EKS cluster context.
 
+## Resource Management & Delivery
+
+- [`generate_catalog_docs.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate_catalog_docs.py): **The Cataloger.** Generates domain-based Markdown catalogs (ECR, S3, etc.) from YAML source-of-truth.
+- [`ecr-build-push.sh`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/ecr-build-push.sh): **The Delivery Bot.** Standardized utility for OIDC-based image building, multi-tagging, and ECR pushing.
+
 ## Maintenance & Utilities
 
 - [`backfill_metadata.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/backfill_metadata.py): Legacy batch backfill utility.
 - [`check_compliance.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/check_compliance.py): Secondary audit tool for metadata syntax.
 - [`migrate_partial_metadata.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/migrate_partial_metadata.py): Handles schema transitions for complex fields.
+- [`fix_yaml_syntax.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/fix_yaml_syntax.py): Auto-fixes common YAML formatting errors in catalogs.
 - [`test_platform_health.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/test_platform_health.py): Unit tests for the health reporter.
 - [`reliability_metrics.sh`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/reliability_metrics.sh): Calculates MTTR/MTBF for platform components.

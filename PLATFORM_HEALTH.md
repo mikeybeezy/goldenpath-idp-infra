@@ -17,33 +17,35 @@ reliability:
 lifecycle:
   supported_until: '2028-01-01'
   breaking_change: false
-relates_to: []
+relates_to:
+  - platform_health.py
 ---
 
 # 🏥 Platform Health Report
-**Date Generated**: 2026-01-05 10:14:45
-**Total Tracked Resources**: 360
-**Metadata Compliance**: 100.0%
+**Date Generated**: 2026-01-05 23:16:35
+**Total Tracked Resources**: 374
+**Metadata Compliance**: 99.2%
 
 ## 📊 Lifecycle Distribution
-- **Active**: 351
-- **Planned**: 1
+- **Active**: 362
 - **Draft**: 4
+- **Accepted**: 4
 - **Deprecated**: 2
-- **Accepted**: 2
+- **Planned**: 1
+- **Released**: 1
 
 ## 🛡️ Risk Summary (Production Impact)
 - **High**: 35
 - **Medium**: 28
-- **Low**: 296
+- **Low**: 308
 - **None**: 1
 
 ## 📂 Top Categories
-- **unknown**: 240
+- **unknown**: 241
 - **gitops**: 20
+- **governance**: 16
 - **modules**: 16
 - **apps**: 11
-- **runbooks**: 10
 
 ## 🚨 Operational Risks
 - **Orphaned Files (No Owner)**: 0

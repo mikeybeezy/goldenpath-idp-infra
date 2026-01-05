@@ -26,37 +26,6 @@ relates_to:
   - ADR-0034
 ---
 
-id: 21_CI_ENVIRONMENT_CONTRACT
-title: CI Environment Contract
-type: contract
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
-risk_profile:
-  production_impact: high
-  security_risk: none
-  coupling_risk: high
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
-relates_to:
-- 17_BUILD_RUN_FLAGS
-- 20_CI_ENVIRONMENT_SEPARATION
-- 25_PR_TERRAFORM_PLAN
-- 33_IAM_ROLES_AND_POLICIES
-- ADR-0030
-- ADR-0030-platform-precreated-iam-policies
-- ADR-0033
-- ADR-0033-platform-ci-orchestrated-modes
-- ADR-0034
-- CI_WORKFLOWS
-------
-
 # CI Environment Contract
 
 Doc contract:
