@@ -127,9 +127,9 @@ Backstage aggregates all catalogs:
 catalog:
   locations:
     - type: url
-      target: https://github.com/.../docs/catalogs/ecr-catalog.yaml
+      target: <https://github.com/.../docs/catalogs/ecr-catalog.yaml>
     - type: url
-      target: https://github.com/.../docs/catalogs/rds-catalog.yaml
+      target: <https://github.com/.../docs/catalogs/rds-catalog.yaml>
 ```
 
 ## Architecture Diagram

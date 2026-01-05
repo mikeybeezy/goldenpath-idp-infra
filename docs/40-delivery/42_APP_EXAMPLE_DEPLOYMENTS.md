@@ -100,7 +100,7 @@ spec:
     namespace: apps-sample-stateless
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    repoURL: <https://github.com/mikeybeezy/goldenpath-idp-infra.git>
     targetRevision: development
     path: apps/sample-stateless-app/deploy/kustomize/overlays/dev
   syncPolicy:
@@ -127,7 +127,7 @@ spec:
     namespace: apps-sample-stateless
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    repoURL: <https://github.com/mikeybeezy/goldenpath-idp-infra.git>
     targetRevision: development
     path: apps/sample-stateless-app/deploy/helm
     helm:
@@ -149,7 +149,7 @@ Argo CD Application to reference them, for example:
 
 ```yaml
 source:
-  repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+  repoURL: <https://github.com/mikeybeezy/goldenpath-idp-infra.git>
   targetRevision: development
   path: apps/sample-stateless-app/deploy/helm
   helm:
