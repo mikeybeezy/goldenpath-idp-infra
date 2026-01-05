@@ -33,41 +33,6 @@ relates_to:
   - ORPHAN_CLEANUP
 ---
 
-id: CI_WORKFLOWS
-title: CI Workflows Index (Living)
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
-risk_profile:
-  production_impact: medium
-  security_risk: none
-  coupling_risk: medium
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
-relates_to:
-- 07_TF_STATE_FORCE_UNLOCK
-- 08_MANAGED_LB_CLEANUP
-- 09_CI_TEARDOWN_RECOVERY_V2
-- 17_BUILD_RUN_FLAGS
-- 18_BACKSTAGE_MVP
-- 21_CI_ENVIRONMENT_CONTRACT
-- 30_DOCUMENTATION_FRESHNESS
-- 39_GOLDEN_PATH_VALIDATION
-- ADR-0028
-- ADR-0028-platform-dev-branch-gate
-- CHANGELOG
-- DOCS_CHANGELOG_README
-- METADATA_VALIDATION_GUIDE
-- ORPHAN_CLEANUP
-------
-
 # CI Workflows Index (Living)
 
 Doc contract:

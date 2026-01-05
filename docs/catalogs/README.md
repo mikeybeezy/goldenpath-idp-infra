@@ -127,7 +127,9 @@ Developer Request
     ↓
 GitHub Workflow
     ↓
-Updates Domain Catalog (YAML)
+1. Updates Catalog YAML
+2. Runs generate_catalog_docs.py     <-- Atomic Sync
+3. Updates REGISTRY_CATALOG.md
     ↓
 Creates PR
     ↓
@@ -135,7 +137,7 @@ Platform Team Reviews
     ↓
 Merge PR
     ↓
-Terraform Reads Catalog
+Terraform Reads YAML Catalog
     ↓
 Creates AWS Resources
 ```

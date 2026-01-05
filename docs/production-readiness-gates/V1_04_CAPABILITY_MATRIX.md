@@ -17,7 +17,12 @@ reliability:
 lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
-relates_to: []
+relates_to:
+  - IDP_PRODUCT_FEATURES
+  - 00_DESIGN_PHILOSOPHY
+  - 34_PLATFORM_SUCCESS_CHECKLIST
+  - 37_V1_SCOPE_AND_TIMELINE
+  - READINESS_CHECKLIST
 ---
 
 # Capability Matrix – Golden Path IDP Infra

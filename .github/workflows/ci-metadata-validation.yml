@@ -35,8 +35,7 @@ jobs:
         with:
           script: |
             const exemptLabels = [
-              'governance-exempt',
-              'buildid',
+              'build_id',
               'docs-only',
               'typo-fix',
               'hotfix'

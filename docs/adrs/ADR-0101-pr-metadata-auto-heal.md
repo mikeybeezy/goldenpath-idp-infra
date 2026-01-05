@@ -42,13 +42,23 @@ The metadata validator now only checks files modified in the current PR, not the
 ### 2. Auto-Heal Before Blocking
 When metadata issues are detected, the workflow runs `standardize_metadata.py` to auto-fix issues and commits the changes. The PR continues without developer intervention.
 
-### 3. Exempt Label Bypass
-PRs with specific labels skip metadata validation entirely:
-- `governance-exempt` - General bypass for platform-approved exceptions
-- `buildid` - CI/infrastructure pipeline PRs
-- `docs-only` - Documentation-only changes
-- `typo-fix` - Trivial text corrections
-- `hotfix` - Emergency patches
+### 3. Conditional Label Bypass (Validated, Not Trusted)
+Labels are **claims** that must be **verified**. The workflow validates conditions before allowing bypass:
+
+| Label | Condition | Who Can Use |
+| :--- | :--- | :--- |
+| `docs-only` | All changed files are `.md` | Anyone (verifiable) |
+| `typo-fix` | < 50 lines changed, text files only | Anyone (verifiable) |
+| `hotfix` | Target branch is `main` | Platform-team only |
+| `build_id` | Terraform files changed | Platform-team only |
+
+**Removed:** `governance-exempt` was removed as it provided unconditional bypass (security risk).
+
+### 4. Python-Based Guardrails
+The PR guardrails logic was rewritten as `scripts/pr_guardrails.py` to:
+- Align with the platform's Python ecosystem
+- Enable local testing
+- Provide clear, structured error messages
 
 ## Consequences
 

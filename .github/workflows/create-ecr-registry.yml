@@ -19,9 +19,6 @@ on:
         type: choice
         required: true
         options: [low, medium, high]
-      id:
-        description: 'Registry ID (e.g., REGISTRY_WORDPRESS_PLATFORM)'
-        required: true
 
 permissions:
   contents: write
@@ -36,6 +33,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Calculate Registry ID
+        id: calc
+        run: |
+          # Convert wordpress-platform to REGISTRY_WORDPRESS_PLATFORM
+          NAME="${{ inputs.registry_name }}"
+          ID=$(echo "$NAME" | tr '-' '_' | tr '[:lower:]' '[:upper:]' | sed 's/^/REGISTRY_/')
+          echo "id=$ID" >> $GITHUB_OUTPUT
+          echo "✅ Calculated ID: $ID"
+
       - name: Install yq
         run: |
           sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
@@ -46,12 +52,6 @@ jobs:
           # Validate registry name format
           if ! echo "${{ inputs.registry_name }}" | grep -qE '^[a-z][a-z0-9-]*$'; then
             echo "❌ Registry name must be lowercase with hyphens only"
-            exit 1
-          fi
-
-          # Validate ID format
-          if ! echo "${{ inputs.id }}" | grep -qE '^REGISTRY_[A-Z0-9_]+$'; then
-            echo "❌ ID must match format: REGISTRY_UPPERCASE_WITH_UNDERSCORES"
             exit 1
           fi
 
@@ -70,7 +70,7 @@ jobs:
           NAME="${{ inputs.registry_name }}"
           OWNER="${{ inputs.owner }}"
           RISK="${{ inputs.risk }}"
-          ID="${{ inputs.id }}"
+          ID="${{ steps.calc.outputs.id }}"
           ENV="${{ inputs.environment }}"
 
           # Ensure file exists with proper structure
@@ -95,7 +95,7 @@ jobs:
              .last_updated = \"$(date -u +%Y-%m-%d)\"" \
             "$FILE"
 
-          echo "✅ Updated catalog for registry: $NAME"
+          echo "✅ Updated catalog for registry: $NAME (ID: $ID)"
 
       - name: Update Terraform tfvars
         run: |
@@ -104,7 +104,7 @@ jobs:
           NAME="${{ inputs.registry_name }}"
           OWNER="${{ inputs.owner }}"
           RISK="${{ inputs.risk }}"
-          ID="${{ inputs.id }}"
+          ID="${{ steps.calc.outputs.id }}"
 
           # Check if registry already exists in tfvars
           if grep -q "\"$NAME\"" "$TFVARS" 2>/dev/null; then
@@ -113,8 +113,22 @@ jobs:
             # Append new registry entry using printf to avoid YAML lint issues
             printf '\n# Registry: %s\necr_repositories["%s"] = {\n  metadata = {\n    id    = "%s"\n    owner = "%s"\n    risk  = "%s"\n  }\n}\n' \
               "$NAME" "$NAME" "$ID" "$OWNER" "$RISK" >> "$TFVARS"
-            echo "✅ Added registry to $TFVARS"
+            echo "✅ Added registry to $TFVARS (ID: $ID)"
           fi
+
+      - name: Validate Terraform Syntax
+        run: |
+          terraform fmt -check "envs/${{ inputs.environment }}/terraform.tfvars" || {
+            echo "❌ HCL Syntax Error in $TFVARS"
+            exit 1
+          }
+          echo "✅ HCL Syntax validated"
+
+      - name: Sync Catalog Documentation
+        run: |
+          pip install PyYAML
+          python3 scripts/generate_catalog_docs.py
+          echo "✅ Synced catalog documentation"
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v6
@@ -129,7 +143,7 @@ jobs:
             **Environment:** `${{ inputs.environment }}`
             **Owner:** `${{ inputs.owner }}`
             **Risk Level:** `${{ inputs.risk }}`
-            **ID:** `${{ inputs.id }}`
+            **ID:** `${{ steps.calc.outputs.id }}`
 
             ---
 
@@ -171,7 +185,14 @@ jobs:
             ## 📋 Changes
 
             - ✅ Added to registry catalog (`docs/catalogs/ecr-catalog.yaml`)
+            - ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
             - ✅ Added to Terraform tfvars (`envs/${{ inputs.environment }}/terraform.tfvars`)
+
+            ---
+
+            ## 📖 Day Zero Guidance
+
+            Once this registry is created, follow the [App Team: Push Image Guide](docs/runbooks/app-team/push-image-guide.md) to start building and pushing images.
 
             ---
 

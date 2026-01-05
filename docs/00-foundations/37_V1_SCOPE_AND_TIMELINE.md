@@ -20,6 +20,10 @@ lifecycle:
 relates_to:
   - 34_PLATFORM_SUCCESS_CHECKLIST
   - ROADMAP
+  - IDP_PRODUCT_FEATURES
+  - 00_DESIGN_PHILOSOPHY
+  - READINESS_CHECKLIST
+  - V1_04_CAPABILITY_MATRIX
 ---
 
 # V1 Scope and Timeline (Backstage + Platform Capabilities)

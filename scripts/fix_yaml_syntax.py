@@ -1,3 +1,20 @@
+#!/usr/bin/env python3
+"""
+YAML Syntax Fixer for Templates
+
+Purpose:
+    Automatically identifies and fixes common YAML syntax issues in template files,
+    specifically focusing on unquoted Jinja2/Backstage template placeholders.
+
+What it does:
+    1. Scans .yaml and .yml files in specified directories.
+    2. Enforces quoting on values containing {{ brackets }}.
+    3. Enforces quoting on keys containing {{ brackets }}.
+    4. Prevents common parsing errors when templates are used as raw YAML.
+
+Usage:
+    python3 scripts/fix_yaml_syntax.py [DIRECTORY]
+"""
 import re
 import os
 
