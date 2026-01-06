@@ -22,17 +22,17 @@ relates_to:
 ---
 
 # 🏥 Platform Health Report
-**Date Generated**: 2026-01-06 00:01:13
+**Date Generated**: 2026-01-06 00:01:33
 **Total Tracked Resources**: 374
 **Metadata Compliance**: 99.2%
 
 ## 📊 Lifecycle Distribution
 - **Active**: 362
-- **Released**: 1
-- **Planned**: 1
 - **Draft**: 4
-- **Deprecated**: 2
 - **Accepted**: 4
+- **Deprecated**: 2
+- **Planned**: 1
+- **Released**: 1
 
 ## 🛡️ Risk Summary (Production Impact)
 - **High**: 35
