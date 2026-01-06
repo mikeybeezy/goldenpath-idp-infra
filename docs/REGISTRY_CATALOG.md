@@ -1,5 +1,5 @@
 ---
-id: CAT_CONTAINER_REGISTRIES
+id: REGISTRY_CATALOG
 title: Container Registries Catalog
 type: documentation
 category: catalogs
