@@ -1,0 +1,12 @@
+# kong-consumer.yaml
+apiVersion: configuration.konghq.com/v1
+kind: KongConsumer
+metadata:
+ name: app-consumer             # Unique name for this consumer
+ namespace: -namespace
+ annotations:
+  kubernetes.io/ingress.class: kong
+username: app                # Username for this consumer
+custom_id: app           # Unique ID for this consumer
+credentials:
+ - user1-apikey                  # Name of the Secret containing the API key
