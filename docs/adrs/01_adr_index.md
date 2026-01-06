@@ -147,13 +147,15 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0033](ADR-0033-platform-ci-orchestrated-modes.md) | Platform | CI orchestrated modes for infra lifecycle | Accepted | 2025-12-28 | Explicit build+bootstrap, bootstrap-only, teardown modes. |
 | [ADR-0034](ADR-0034-platform-ci-environment-contract.md) | Platform | CI environment contract | Accepted | 2025-12-27 | Formalize CI environment variables as a governed interface. |
 | [ADR-0035](ADR-0035-platform-iam-audit-cadence.md) | Platform | IAM audit cadence for CI roles | Proposed | 2025-12-28 | Periodic IAM audits to tighten CI roles based on actual usage. |
+| [ADR-0036](ADR-0036-platform-orphan-cleanup-workflow.md) | Platform | Orphan Cleanup Is Manual and Decoupled From Teardown | Superseded | 2025-12-28 | Orphan cleanup is separate from teardown. |
 | [ADR-0037](ADR-0037-platform-resource-tagging-policy.md) | Platform | Platform resource tagging policy | Accepted | 2025-12-28 | Standard tag set for audit, cost, and cleanup consistency. |
 | [ADR-0038](ADR-0038-platform-teardown-orphan-cleanup-gate.md) | Platform | Gate orphan cleanup in CI teardown with explicit modes | Proposed | 2025-12-29 | Cleanup mode is explicit (`delete`, `dry_run`, `none`) with a default delete for ephemeral runs. |
 | [ADR-0039](ADR-0039-platform-tag-scoped-iam-policy-template.md) | Platform | Tag-scoped IAM policy template for destructive automation | Proposed | 2025-12-29 | Standard template for tag-scoped deletes; read-only discovery remains unscoped. |
 | [ADR-0040](ADR-0040-platform-lifecycle-aware-state-keys.md) | Platform | Lifecycle-aware Terraform state keys for BuildId isolation | Proposed | 2025-12-29 | Ephemeral runs use per-BuildId state keys; persistent uses a stable key. |
 | [ADR-0041](ADR-0041-platform-orphan-cleanup-deletion-order.md) | Platform | Deterministic orphan cleanup deletion order | Proposed | 2025-12-29 | Enforce a dependency-safe deletion order for tagged orphan cleanup. |
 | [ADR-0042](ADR-0042-platform-branching-strategy.md) | Platform | Branching strategy (development → main) | Proposed | 2025-12-29 | All changes merge into development first; only development promotes to main. |
-| [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) | Platform | Teardown waits for LoadBalancer ENIs before subnet delete | Proposed | 2025-12-30 | Add an ENI wait gate and break-glass LB delete to prevent subnet hangs. |
+| [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) | Platform | Teardown waits for LoadBalancer ENIs before subnet delete | Superseded | 2025-12-30 | Add an ENI wait gate and break-glass LB delete to prevent subnet hangs. |
+| [ADR-0044](ADR-0044-platform-infra-checks-ref-mode.md) | Platform | Configurable ref for infra checks dispatch | Superseded | 2025-12-30 | Allow selectable ref for infra-checks workflow dispatch. |
 | [ADR-0045](ADR-0045-platform-teardown-lb-delete-default.md) | Platform | Default LB delete when ENIs persist during teardown | Proposed | 2025-12-30 | Default to cluster-scoped LB deletion when ENIs linger. |
 | [ADR-0046](ADR-0046-platform-pr-plan-validation-ownership.md) | Platform | PR plan owns validation (no auto infra checks dispatch) | Proposed | 2025-12-30 | Remove infra-checks auto-dispatch; PR plan is the validation gate. |
 | [ADR-0047](ADR-0047-platform-teardown-destroy-timeout-retry.md) | Platform | Retry Terraform destroy after timeout with cluster-scoped LB cleanup | Proposed | 2025-12-30 | Cap destroy time, clean up cluster-tagged LBs, and retry once. |
@@ -172,6 +174,15 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0060](ADR-0060-platform-ephemeral-update-workflow.md) | Platform | Separate update workflow for existing ephemeral dev clusters | Proposed | 2025-12-31 | Manual update workflow with plan and state guards for existing BuildIds. |
 | [ADR-0061](ADR-0061-platform-observability-provisioning-boundary.md) | Platform | Observability provisioning boundary (Helm in-cluster, Terraform external) | Proposed | 2025-12-31 | Helm for in-cluster observability; Terraform for external/SaaS observability. |
 | [ADR-0062](ADR-0062-platform-app-template-contract.md) | Platform | App template contract for team-owned deployments | Proposed | 2025-12-31 | Reference app bundle with explicit platform vs app ownership. |
+| [ADR-0063](ADR-0063-platform-terraform-helm-bootstrap.md) | Platform | Terraform Helm Provider for Bootstrap | Active | 2026-01-03 | Adoption of Helm provider for bootstrap resources. |
+| [ADR-0064](ADR-0064-platform-dev-bootstrap-defaults.md) | Platform | Dev bootstrap defaults off for k8s resources and storage | Active | 2026-01-03 | Defaults set to off to reduce noise/cost in dev environments. |
+| [ADR-0065](ADR-0065-platform-branch-policy-guard.md) | Platform | Restore branch policy guard for main | Active | 2026-01-03 | Restoration of branch protection for the main branch. |
+| [ADR-0066](ADR-0066-platform-dashboards-as-code.md) | Platform | Platform Dashboards as Code | Active | 2026-01-03 | Standardization of Grafana dashboards via code. |
+| [ADR-0067](ADR-0067-platform-labeler-base-ref.md) | Platform | Use base ref for labeler checkout | Active | 2026-01-03 | Improvement to labeler workflow stability. |
+| [ADR-0068](ADR-0068-platform-review-cadence-output.md) | Platform | Fix review cadence output delimiter | Active | 2026-01-03 | Fix for review cadence logging output. |
+| [ADR-0069](ADR-0069-platform-observability-baseline-golden-signals.md) | Platform | Observability baseline for golden signals in production | Superseded | 2026-01-03 | Initial observability baseline (Superseded by ADR-0049). |
+| [ADR-0070](ADR-0070-platform-terraform-aws-lb-controller.md) | Platform | Terraform Management of AWS Load Balancer Controller | Active | 2026-01-03 | Infrastructure as code management for LB controllers. |
+| [ADR-0071](ADR-0071-doc-taxonomy-refactor.md) | Platform | Standardized Documentation Taxonomy | Active | 2026-01-03 | Refactor of documentation structure and naming. |
 | [ADR-0072](ADR-0072-platform-pr-checklist-template.md) | Platform | PR checklist template in PR gates guide | Proposed | 2026-01-02 | Copy PR checklist into PR gates doc to reduce guardrail friction. |
 | [ADR-0073](ADR-0073-platform-bootstrap-v3-irsa-skip.md) | Platform | Bootstrap v3 skips Terraform IRSA apply in Stage 3B | Proposed | 2026-01-02 | v3 bootstrap validates service accounts only to avoid IRSA plan failures. |
 | [ADR-0074](ADR-0074-platform-ops-workflow-branch-guard.md) | Platform | Ops workflows restricted to main and development | Accepted | 2026-01-03 | Guard ops workflows to reduce drift from feature branches. |
@@ -184,6 +195,18 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0081](ADR-0081-platform-repo-wide-linting.md) | Platform | Repo-wide linting for knowledge-graph hygiene | Proposed | 2026-01-03 | Run Markdown/YAML lint repo-wide with template ignores. |
 | [ADR-0082](ADR-0082-platform-metadata-validation.md) | Platform | Metadata validation strategy | Proposed | 2026-01-03 | Validate metadata frontmatter for governance and traceability. |
 | [ADR-0083](ADR-0083-platform-metadata-backfill-protocol.md) | Platform | Metadata backfill campaign protocol | Proposed | 2026-01-03 | Define deterministic backfill steps and audit artifacts. |
+| [ADR-0084](ADR-0084-platform-enhanced-metadata-schema.md) | Platform | Enhanced Metadata Schema for Knowledge Graph | Active | 2026-01-03 | Upgrading metadata schema to support graph-based reasoning. |
+| [ADR-0085](ADR-0085-score-implementation.md) | Platform | Implementing Score in V1 | Active | 2026-01-03 | Adoption of Score for workload specification. |
+| [ADR-0086](ADR-0086-federated-metadata-validation.md) | Platform | Federated Metadata Validation Strategy | Active | 2026-01-03 | Strategy for multi-repo metadata consistency. |
+| [ADR-0087](ADR-0087-k8s-metadata-sidecars.md) | Platform | Integration of Governance Metadata with Kubernetes Resources | Active | 2026-01-03 | Sidecar-based approach for K8s metadata propagation. |
+| [ADR-0088](ADR-0088-automated-metadata-remediation.md) | Platform | Automated Metadata Remediation over Manual Compliance | Active | 2026-01-03 | Preference for 'Healers' over 'Gaters' in governance. |
+| [ADR-0089](ADR-0089-closed-loop-metadata-injection.md) | Platform | Closed-Loop Metadata Injection | Active | 2026-01-03 | Propagation of metadata into live configurations. |
+| [ADR-0090](ADR-0090-automated-platform-health-dashboard.md) | Platform | Automated Platform Health Dashboard | Active | 2026-01-03 | Real-time visibility into platform compliance. |
+| [ADR-0092](ADR-0092-ecr-registry-product-strategy.md) | Platform | ECR Registry Product-Based Strategy | Active | 2026-01-05 | Shared responsibility model for container registries. |
+| [ADR-0093](ADR-0093-automated-policy-enforcement.md) | Platform | Automated Policy Enforcement Framework | Active | 2026-01-05 | Framework for non-blocking policy remediation. |
+| [ADR-0094](ADR-0094-automated-catalog-docs.md) | Platform | Automated Registry Catalog Documentation | Active | 2026-01-05 | Automatic generation of registry catalogs. |
+| [ADR-0095](ADR-0095-self-service-registry-creation.md) | Platform | Self-Service ECR Registry Creation Workflow | Active | 2026-01-05 | Empowering app teams to create registries via PR. |
+| [ADR-0096](ADR-0096-risk-based-ecr-controls.md) | Platform | Risk-Based ECR Security Controls | Accepted | 2026-01-05 | Tiered security controls based on registry risk level. |
 | [ADR-0097](ADR-0097-domain-based-resource-catalogs.md) | Platform | Domain-Based Resource Catalogs | Accepted | 2026-01-05 | Separate YAML files per resource domain for scalability. |
 | [ADR-0098](ADR-0098-standardized-pr-gates.md) | Platform | Standardized PR Gates | Accepted | 2026-01-05 | Formalizing build, policy, and security gates in CI. |
 | [ADR-0099](ADR-0100-standardized-iam-policy-management.md) | Platform | Standardized IAM Policy Management | Accepted | 2026-01-05 | Centralized, reusable IAM policies for infra components. |

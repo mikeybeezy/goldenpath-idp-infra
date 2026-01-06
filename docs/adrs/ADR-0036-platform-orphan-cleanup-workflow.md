@@ -5,7 +5,8 @@ type: adr
 category: unknown
 version: '1.0'
 owner: platform-team
-status: active
+status: superseded
+superseded_by: ADR-0038
 dependencies: []
 risk_profile:
   production_impact: low
