@@ -186,26 +186,35 @@ jobs:
         run: |
           echo "📝 Running targeted plan for module.ecr_repositories[\"${{ inputs.registry_name }}\"]..."
           
-          # We use -lock=false because we are only planning a subset and don't want to block CI
-          # We provide a dummy build_id if needed, but tfvars usually has it.
+          # We use -refresh=false because we are running with -backend=false
+          # This prevents Terraform from trying to reach out to a state file that isnt loaded.
           
           terraform -chdir=envs/${{ inputs.environment }} plan \
             -target="module.ecr_repositories[\"${{ inputs.registry_name }}\"]" \
             -lock=false \
-            -no-color > raw_plan.txt || echo "Plan failed" > raw_plan.txt
-          
-          # Extract only the resource changes for the PR body to keep it clean
-          # We look for the section starting with 'Terraform will perform the following actions:'
-          sed -n '/Terraform will perform the following actions:/,$p' raw_plan.txt > plan.txt
+            -refresh=false \
+            -no-color > plan_output.txt 2>&1 || {
+              echo "❌ Plan failed with error:"
+              cat plan_output.txt
+            }
           
           # Clean up for PR body (Markdown wrapper)
           echo "PLAN_BODY<<EOF" >> $GITHUB_ENV
           echo "<details><summary>📄 <strong>Targeted Terraform Plan</strong></summary>" >> $GITHUB_ENV
           echo "" >> $GITHUB_ENV
           echo "This plan was generated using a **bounded context** strategy (\`-target\`), focusing only on the new ECR repository." >> $GITHUB_ENV
+          echo "Note: state refresh was skipped (\`-refresh=false\`) because this is a shallow plan." >> $GITHUB_ENV
           echo "" >> $GITHUB_ENV
           echo "\`\`\`hcl" >> $GITHUB_ENV
-          cat plan.txt >> $GITHUB_ENV
+          
+          # If the output is too long, we keep the last 50 lines which are usually the plan summary
+          if [ $(wc -l < plan_output.txt) -gt 200 ]; then
+            echo "... [Plan output truncated for brevity] ..." >> $GITHUB_ENV
+            tail -n 200 plan_output.txt >> $GITHUB_ENV
+          else
+            cat plan_output.txt >> $GITHUB_ENV
+          fi
+          
           echo "\`\`\`" >> $GITHUB_ENV
           echo "</details>" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
