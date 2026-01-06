@@ -183,28 +183,28 @@ jobs:
       - name: Inline Terraform Plan (Targeted)
         id: plan
         run: |
-          # Create a dummy backend config for local planning if needed, or just plan with -lock=false
-          # We use -lock=false because we are only planning a subset and don't want to block CI
-          # We also use -target to limit the scope strictly to the new registry
-          
           echo "📝 Running targeted plan for module.ecr_repositories[\"${{ inputs.registry_name }}\"]..."
           
-          PLAN_OUTPUT=$(terraform -chdir=envs/${{ inputs.environment }} plan \
-            -target="module.ecr_repositories[\"${{ inputs.registry_name }}\"]" \
-            -var="owner_team=${{ inputs.owner }}" \
-            -var="cluster_lifecycle=persistent" \
-            -lock=false \
-            -no-color || echo "Plan failed")
+          # We use -lock=false because we are only planning a subset and don't want to block CI
+          # We provide a dummy build_id if needed, but tfvars usually has it.
           
-          # Truncate if too long (GitHub limit) but keep the important part
-          echo "$PLAN_OUTPUT" > plan.txt
+          terraform -chdir=envs/${{ inputs.environment }} plan \
+            -target="module.ecr_repositories[\"${{ inputs.registry_name }}\"]" \
+            -lock=false \
+            -no-color > raw_plan.txt || echo "Plan failed" > raw_plan.txt
+          
+          # Extract only the resource changes for the PR body to keep it clean
+          # We look for the section starting with 'Terraform will perform the following actions:'
+          sed -n '/Terraform will perform the following actions:/,$p' raw_plan.txt > plan.txt
           
           # Clean up for PR body (Markdown wrapper)
           echo "PLAN_BODY<<EOF" >> $GITHUB_ENV
-          echo "<details><summary>📄 <strong>Terraform Plan Output</strong></summary>" >> $GITHUB_ENV
+          echo "<details><summary>📄 <strong>Targeted Terraform Plan</strong></summary>" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "This plan was generated using a **bounded context** strategy (\`-target\`), focusing only on the new ECR repository." >> $GITHUB_ENV
           echo "" >> $GITHUB_ENV
           echo "\`\`\`hcl" >> $GITHUB_ENV
-          cat plan.txt | grep -v "Refreshing state..." | tail -n +1 >> $GITHUB_ENV
+          cat plan.txt >> $GITHUB_ENV
           echo "\`\`\`" >> $GITHUB_ENV
           echo "</details>" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
