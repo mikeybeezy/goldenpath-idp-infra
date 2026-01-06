@@ -1,8 +1,9 @@
+```
 ---
 id: ADR-0111
 title: 'ADR-0111: Automated Documentation Auto-Healing'
-type: documentation
-category: adrs
+type: adr
+category: documentation
 version: 1.0
 owner: platform-team
 status: accepted
@@ -20,7 +21,7 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: silver
 lifecycle:
-  supported_until: 2028-01-04
+  supported_until: 2027-01-06
   breaking_change: false
 relates_to:
   - ADR-0101

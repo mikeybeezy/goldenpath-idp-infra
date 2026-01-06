@@ -1,13 +1,12 @@
 ---
 id: ADR-0112
 title: 'ADR-0112: Automated ADR Index Generation'
-type: decision
+type: adr
 category: architecture
 version: 1.0
 owner: platform-team
-status: proposed
+status: accepted
 risk_profile:
-  production_impact: low
   production_impact: medium
   security_risk: low
   coupling_risk: medium
@@ -22,6 +21,8 @@ relates_to:
   - ADR-0110
   - ADR-0111
 ---
+
+# ADR-0112: Automated ADR Index Generation
 
 ## Context
 As the number of Architecture Decision Records (ADRs) grows (currently 100+), keeping the `01_adr_index.md` in sync manually has become error-prone. We frequently observe drift in statuses, dates, and related links. While we have a standardized metadata schema, the index remains a manual "View" that requires constant reconciliation.
