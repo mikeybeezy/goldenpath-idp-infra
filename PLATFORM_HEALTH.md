@@ -23,19 +23,20 @@ relates_to:
 ---
 
 # 🏥 Platform Health Report
-**Date Generated**: 2026-01-06 12:59:11
-**Total Tracked Resources**: 385
-**Metadata Compliance**: 97.9%
+**Date Generated**: 2026-01-06 13:13:14
+**Total Tracked Resources**: 388
+**Metadata Compliance**: 98.7%
 
 ## 📊 Lifecycle Distribution
-- **Active**: 368
+- **Active**: 369
 - **Draft**: 4
+- **Superseded**: 2
 - **Accepted**: 7
-- **Proposed**: 1
 - **Deprecated**: 2
 - **Planned**: 1
 - **Released**: 1
 - **Approved**: 1
+- **Passed**: 1
 
 ## 🛡️ Risk Summary (Production Impact)
 - **High**: 35
@@ -46,8 +47,8 @@ relates_to:
 ## 📂 Top Categories
 - **unknown**: 244
 - **gitops**: 20
+- **governance**: 17
 - **modules**: 16
-- **governance**: 15
 - **apps**: 11
 
 ## 🚨 Operational Risks
