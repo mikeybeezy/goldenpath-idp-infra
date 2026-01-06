@@ -147,8 +147,9 @@ def generate_report(target_dir='.'):
     lines.append(f"  - {os.path.basename(__file__)}")
     lines.append("---")
     lines.append("")
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     lines.append("# 🏥 Platform Health Report")
-    lines.append(f"**Date Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    lines.append(f"**Date Generated**: {timestamp}")
     lines.append(f"**Total Tracked Resources**: {stats['total_files']}")
     compliance = ((stats['total_files'] - len(stats['missing_metadata'])) / stats['total_files'] * 100) if stats['total_files'] > 0 else 0
     lines.append(f"**Metadata Compliance**: {compliance:.1f}%")
@@ -198,10 +199,19 @@ def generate_report(target_dir='.'):
     report_content = "\n".join(lines)
     print(report_content)
 
-    # Persist to file
+    # Persist live dashboard
+    warning_header = "<!-- 🛑 AUTOMATED REPORT - DO NOT EDIT MANUALLY 🛑 -->\n"
     with open('PLATFORM_HEALTH.md', 'w', encoding='utf-8') as f:
-        f.write(report_content)
+        f.write(warning_header + report_content + '\n')
     print(f"\n✅ Report persisted to PLATFORM_HEALTH.md")
+
+    # Persist immutable audit log (Append Only)
+    os.makedirs('docs/governance/reports', exist_ok=True)
+    audit_log_path = 'docs/governance/reports/HEALTH_AUDIT_LOG.md'
+    timestamped_entry = f"\n\n--- \n## Audit Record: {timestamp}\n" + report_content
+    with open(audit_log_path, 'a', encoding='utf-8') as f:
+        f.write(timestamped_entry)
+    print(f"✅ Audit record appended to {audit_log_path}")
 
 if __name__ == "__main__":
     generate_report()

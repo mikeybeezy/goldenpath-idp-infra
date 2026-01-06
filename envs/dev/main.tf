@@ -277,9 +277,10 @@ provider "helm" {
 
 module "kubernetes_addons" {
   source = "../../modules/kubernetes_addons"
-  count  = var.eks_config.enabled ? 1 : 0
+  count  = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
 
   path_to_app_manifests = "${path.module}/../../gitops/argocd/apps/dev"
+  argocd_values         = file("${path.module}/../../gitops/helm/argocd/values/dev.yaml")
 
   # AWS Load Balancer Controller specific inputs
   vpc_id       = module.vpc.vpc_id
@@ -293,4 +294,12 @@ module "kubernetes_addons" {
     kubernetes_service_account_v1.aws_load_balancer_controller,
     aws_eks_access_policy_association.terraform_admin
   ]
+}
+
+module "ecr_repositories" {
+  source   = "../../modules/aws_ecr"
+  for_each = var.ecr_repositories
+
+  name     = each.key
+  metadata = each.value.metadata
 }

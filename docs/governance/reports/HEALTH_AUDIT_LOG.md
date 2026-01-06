@@ -1,4 +1,7 @@
-<!-- 🛑 AUTOMATED REPORT - DO NOT EDIT MANUALLY 🛑 -->
+
+
+--- 
+## Audit Record: 2026-01-06 00:27:33
 ---
 id: PLATFORM_HEALTH
 title: Platform Health & Compliance Report
@@ -23,29 +26,29 @@ relates_to:
 ---
 
 # 🏥 Platform Health Report
-**Date Generated**: 2026-01-06 00:40:00
-**Total Tracked Resources**: 373
-**Metadata Compliance**: 98.7%
+**Date Generated**: 2026-01-06 00:27:33
+**Total Tracked Resources**: 374
+**Metadata Compliance**: 99.2%
 
 ## 📊 Lifecycle Distribution
-- **Active**: 361
-- **Draft**: 4
-- **Accepted**: 4
-- **Deprecated**: 2
-- **Planned**: 1
+- **Active**: 362
 - **Released**: 1
+- **Planned**: 1
+- **Draft**: 4
+- **Deprecated**: 2
+- **Accepted**: 4
 
 ## 🛡️ Risk Summary (Production Impact)
 - **High**: 35
 - **Medium**: 28
-- **Low**: 307
+- **Low**: 308
 - **None**: 1
 
 ## 📂 Top Categories
 - **unknown**: 241
 - **gitops**: 20
+- **governance**: 16
 - **modules**: 16
-- **governance**: 15
 - **apps**: 11
 
 ## 🚨 Operational Risks

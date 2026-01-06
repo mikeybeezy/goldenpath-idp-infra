@@ -119,3 +119,14 @@ bootstrap_node_group = {
   desired_size = 4
   max_size     = 7
 }
+
+# Registry Catalog
+ecr_repositories = {
+  "test-app-dev" = {
+    metadata = {
+      id    = "REGISTRY_TEST_APP_DEV"
+      owner = "app-team-test"
+      risk  = "low"
+    }
+  }
+}
