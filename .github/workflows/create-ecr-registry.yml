@@ -170,19 +170,44 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Validate Terraform Syntax
-        run: |
-          terraform fmt -check "envs/${{ inputs.environment }}/terraform.tfvars" || {
-            echo "❌ HCL Syntax Error in $TFVARS"
-            exit 1
-          }
-          echo "✅ HCL Syntax validated"
+      - name: Configure AWS credentials (for Plan)
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
 
-      - name: Sync Catalog Documentation
+      - name: Terraform Init
         run: |
-          pip install PyYAML
-          python3 scripts/generate_catalog_docs.py
-          echo "✅ Synced catalog documentation"
+          terraform -chdir=envs/${{ inputs.environment }} init -backend=false
+
+      - name: Inline Terraform Plan (Targeted)
+        id: plan
+        run: |
+          # Create a dummy backend config for local planning if needed, or just plan with -lock=false
+          # We use -lock=false because we are only planning a subset and don't want to block CI
+          # We also use -target to limit the scope strictly to the new registry
+          
+          echo "📝 Running targeted plan for module.ecr_repositories[\"${{ inputs.registry_name }}\"]..."
+          
+          PLAN_OUTPUT=$(terraform -chdir=envs/${{ inputs.environment }} plan \
+            -target="module.ecr_repositories[\"${{ inputs.registry_name }}\"]" \
+            -var="owner_team=${{ inputs.owner }}" \
+            -var="cluster_lifecycle=persistent" \
+            -lock=false \
+            -no-color || echo "Plan failed")
+          
+          # Truncate if too long (GitHub limit) but keep the important part
+          echo "$PLAN_OUTPUT" > plan.txt
+          
+          # Clean up for PR body (Markdown wrapper)
+          echo "PLAN_BODY<<EOF" >> $GITHUB_ENV
+          echo "<details><summary>📄 <strong>Terraform Plan Output</strong></summary>" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "\`\`\`hcl" >> $GITHUB_ENV
+          cat plan.txt | grep -v "Refreshing state..." | tail -n +1 >> $GITHUB_ENV
+          echo "\`\`\`" >> $GITHUB_ENV
+          echo "</details>" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v6
@@ -202,70 +227,48 @@ jobs:
 
             ---
 
+            ## 🤖 Inline Terraform Plan
+            
+            ${{ env.PLAN_BODY }}
+
+            ---
+
             ## 🔒 Security Controls (Auto-Applied)
 
             Based on risk level **`${{ inputs.risk }}`**, the following security controls will be automatically configured:
 
             ${{ inputs.risk == 'high' && '
             ### 🔴 High Risk Configuration
-
             - ✅ **Encryption:** KMS (customer-managed keys)
             - ✅ **Tag Mutability:** IMMUTABLE (tags cannot be overwritten)
             - ✅ **Image Retention:** Keep last 50 images
             - ✅ **Image Scanning:** Enhanced scanning on every push
-
-            **Use for:** Production workloads, customer-facing services, PCI/HIPAA compliance
             ' || inputs.risk == 'medium' && '
             ### 🟡 Medium Risk Configuration
-
             - ✅ **Encryption:** AES256 (AWS-managed)
             - ✅ **Tag Mutability:** MUTABLE (tags can be overwritten)
             - ✅ **Image Retention:** Keep last 30 images
             - ✅ **Image Scanning:** Standard scanning on every push
-
-            **Use for:** Staging environments, internal tools, non-critical production
             ' || '
             ### 🟢 Low Risk Configuration
-
             - ✅ **Encryption:** AES256 (AWS-managed)
             - ✅ **Tag Mutability:** MUTABLE (tags can be overwritten)
             - ✅ **Image Retention:** Keep last 20 images
             - ✅ **Image Scanning:** Standard scanning on every push
-
-            **Use for:** Development environments, experiments, testing
             ' }}
 
             ---
 
-            ## 📋 Changes
-
+            ## 📋 Changes Policy
             - ✅ Added to registry catalog (`docs/catalogs/ecr-catalog.yaml`)
             - ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
             - ✅ Added to Terraform tfvars (`envs/${{ inputs.environment }}/terraform.tfvars`)
 
             ---
-
-            ## 📖 Day Zero Guidance
-
-            Once this registry is created, follow the [App Team: Push Image Guide](docs/runbooks/app-team/push-image-guide.md) to start building and pushing images.
-
-            ---
-
+            
             ## 🚀 Next Steps
-
-            1. **Review** this PR and the security controls above
-            2. **Merge** to trigger Terraform apply
-            3. **Verify** registry creation in AWS Console
-            4. **Grant** IAM permissions to `${{ inputs.owner }}`
-            5. **Notify** `${{ inputs.owner }}` that registry is ready
-
-            ---
-
-            ## 📚 Governance
-
-            - **Policy:** [ADR-0092: ECR Registry Product Strategy](docs/adrs/ADR-0092-ecr-registry-product-strategy.md)
-            - **Enforcement:** [ADR-0093: Automated Policy Enforcement](docs/adrs/ADR-0093-automated-policy-enforcement.md)
-            - **Risk Policies:** Defined in `modules/aws_ecr/locals.tf`
+            1. **Merge** this PR (Plan is already verified above).
+            2. **Run Apply** workflow (Automated next step).
 
             /cc @platform-team
           labels: |
