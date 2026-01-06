@@ -84,6 +84,18 @@ The auto-healing system is designed to be **Zero-Ops**, requiring no manual secr
 - **Workflow Permissions**: The workflow explicitly requests `contents: write` for the individual job, ensuring the bot can push updates to PR branches without having broad repository-wide admin rights.
 - **Non-Recursive CI**: Commits by this bot use the default GITHUB_TOKEN, which intentionally does not trigger further CI runs, preventing infinite recursive "auto-heal" loops.
 
+## ⏱️ Latency & Cycle Time
+
+The "Time-to-Sync" for documentation is tied to the GitHub Actions execution lifecycle:
+
+- **Trigger Event**: A `git push` to any branch with an active Pull Request targeting `main` or `development`.
+- **Detection Lag**: Typical CI startup time (10–15 seconds).
+- **Execution Time**: The auto-healing scripts run in < 1 second.
+- **Commit Cycle**: The bot usually pushes the documentation fix within **30–60 seconds** of your initial push.
+
+> [!TIP]
+> **Real-time verification**: You don't need to wait for the bot! You can always run `python3 scripts/generate_script_index.py` locally before pushing to ensure your PR starts "Green."
+
 ## 🚦 Operational Rules
 - **Automatic**: No manual action is required. If drift is detected, the bot commits the fix.
 - **Atomic**: The healer only updates index files; it never touches logic or configuration.
