@@ -1,0 +1,15 @@
+# Owner: platform-team
+# Purpose: Ensure human oversight for critical infrastructure and automation
+
+# Global owners for everything that isn't specifically claimed
+*       @mikeybeezy
+
+# Automation & Governance
+.github/workflows/    @mikeybeezy
+scripts/              @mikeybeezy
+docs/governance/      @mikeybeezy
+docs/adrs/            @mikeybeezy
+
+# Infrastructure
+envs/                 @mikeybeezy
+modules/              @mikeybeezy
