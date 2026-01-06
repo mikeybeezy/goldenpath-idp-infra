@@ -1,3 +1,25 @@
+---
+id: 2026-01-06_0510_streamlined-ecr-provisioning
+title: 'Walkthrough: Streamlined ECR Provisioning'
+type: documentation
+category: walkthrough
+version: '1.0'
+owner: platform-team
+status: active
+dependencies: []
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: '2028-01-01'
+  breaking_change: false
+relates_to: []
+---
+
 # Walkthrough: Streamlined ECR Provisioning
 
 I have implemented a comprehensive, streamlined, and deterministic ECR provisioning flow that consolidates planning and deployment into a single, automated experience.
