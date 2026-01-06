@@ -177,9 +177,13 @@ jobs:
           aws-region: eu-west-2
           role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
 
-      - name: Terraform Init
+      - name: Terraform Init (Stateless Override)
         run: |
-          terraform -chdir=envs/${{ inputs.environment }} init -backend=false
+          # We override the backend to local to allow "init" and "plan" to work without S3 connectivity.
+          # This is the secret to a fast, deterministic, "Bounded Context" plan.
+          echo 'terraform { backend "local" {} }' > envs/${{ inputs.environment }}/backend_override.tf
+          
+          terraform -chdir=envs/${{ inputs.environment }} init -input=false
 
       - name: Inline Terraform Plan (Targeted)
         id: plan
@@ -218,6 +222,9 @@ jobs:
           echo "\`\`\`" >> $GITHUB_ENV
           echo "</details>" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+
+      - name: Cleanup Override
+        run: rm envs/${{ inputs.environment }}/backend_override.tf
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v6
