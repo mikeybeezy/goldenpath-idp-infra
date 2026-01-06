@@ -1,5 +1,5 @@
 ---
-id: ADR-0087-k8s-metadata-sidecars
+id: ADR-0087
 title: 'ADR-0087: Integration of Governance Metadata with Kubernetes Resources'
 type: adr
 category: unknown

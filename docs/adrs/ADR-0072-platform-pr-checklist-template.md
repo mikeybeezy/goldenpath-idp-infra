@@ -1,5 +1,5 @@
 ---
-id: ADR-0072-platform-pr-checklist-template
+id: ADR-0072
 title: 'ADR-0072: PR checklist template in PR gates guide'
 type: adr
 category: unknown

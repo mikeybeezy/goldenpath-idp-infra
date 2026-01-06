@@ -1,5 +1,5 @@
 ---
-id: ADR-0023-platform-ci-image-scanning
+id: ADR-0023
 title: 'ADR-0023: CI image scanning standard'
 type: adr
 category: unknown

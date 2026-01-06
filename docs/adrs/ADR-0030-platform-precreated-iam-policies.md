@@ -1,5 +1,5 @@
 ---
-id: ADR-0030-platform-precreated-iam-policies
+id: ADR-0030
 title: 'ADR-0030: Pre-create IAM policies for IRSA controllers in V1'
 type: adr
 category: unknown

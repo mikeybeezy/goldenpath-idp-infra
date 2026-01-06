@@ -1,5 +1,5 @@
 ---
-id: ADR-0082-platform-metadata-validation
+id: ADR-0082
 title: Platform Metadata Validation Strategy
 type: adr
 category: unknown

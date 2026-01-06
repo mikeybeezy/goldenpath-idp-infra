@@ -1,5 +1,5 @@
 ---
-id: ADR-0056-platform-loki-deployment-mode
+id: ADR-0056
 title: 'ADR-0056: Loki deployment mode for V1'
 type: adr
 category: unknown

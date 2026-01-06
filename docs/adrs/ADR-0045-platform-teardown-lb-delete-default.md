@@ -1,5 +1,5 @@
 ---
-id: ADR-0045-platform-teardown-lb-delete-default
+id: ADR-0045
 title: 'ADR-0045: Default LB delete when ENIs persist during teardown'
 type: adr
 category: unknown

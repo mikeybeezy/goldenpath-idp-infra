@@ -1,5 +1,5 @@
 ---
-id: ADR-0054-platform-observability-exporters-otel-split
+id: ADR-0054
 title: 'ADR-0054: Exporter vs OpenTelemetry split for platform observability'
 type: adr
 category: unknown

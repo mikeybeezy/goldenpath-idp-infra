@@ -1,5 +1,5 @@
 ---
-id: ADR-0097-domain-based-resource-catalogs
+id: ADR-0097
 title: 'ADR-0097: Domain-Based Resource Catalogs'
 type: adr
 category: architecture

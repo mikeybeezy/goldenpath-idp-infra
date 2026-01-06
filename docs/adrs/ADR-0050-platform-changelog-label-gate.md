@@ -1,5 +1,5 @@
 ---
-id: ADR-0050-platform-changelog-label-gate
+id: ADR-0050
 title: 'ADR-0050: Label-gated changelog entries'
 type: adr
 category: unknown

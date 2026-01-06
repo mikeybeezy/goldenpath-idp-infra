@@ -1,5 +1,5 @@
 ---
-id: ADR-0046-platform-pr-plan-validation-ownership
+id: ADR-0046
 title: 'ADR-0046: PR plan owns validation (no auto infra checks dispatch)'
 type: adr
 category: unknown

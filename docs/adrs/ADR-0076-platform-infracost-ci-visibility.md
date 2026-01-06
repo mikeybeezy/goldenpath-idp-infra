@@ -1,5 +1,5 @@
 ---
-id: ADR-0076-platform-infracost-ci-visibility
+id: ADR-0076
 title: 'ADR-0076: Lightweight CI cost visibility with Infracost'
 type: adr
 category: unknown

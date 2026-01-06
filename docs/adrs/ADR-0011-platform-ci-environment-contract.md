@@ -1,5 +1,5 @@
 ---
-id: ADR-0011-platform-ci-environment-contract
+id: ADR-0011
 title: 'ADR-0011: CI Environment Contract (Superseded)'
 type: adr
 category: unknown

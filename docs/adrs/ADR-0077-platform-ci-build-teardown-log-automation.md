@@ -1,5 +1,5 @@
 ---
-id: ADR-0077-platform-ci-build-teardown-log-automation
+id: ADR-0077
 title: 'ADR-0077: CI build/teardown log automation'
 type: adr
 category: unknown

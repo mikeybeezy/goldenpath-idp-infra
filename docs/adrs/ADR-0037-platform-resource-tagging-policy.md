@@ -1,5 +1,5 @@
 ---
-id: ADR-0037-platform-resource-tagging-policy
+id: ADR-0037
 title: 'ADR-0037: Platform resource tagging policy'
 type: adr
 category: unknown

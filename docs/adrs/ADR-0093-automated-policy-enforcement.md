@@ -1,5 +1,5 @@
 ---
-id: ADR-0093-automated-policy-enforcement
+id: ADR-0093
 title: 'ADR-0093: Automated Policy Enforcement Framework'
 type: adr
 category: unknown

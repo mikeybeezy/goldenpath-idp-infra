@@ -1,5 +1,5 @@
 ---
-id: ADR-0012-platform-repo-decoupling-options
+id: ADR-0012
 title: 'ADR-0012: Repo decoupling options for infra and platform tooling'
 type: adr
 category: unknown

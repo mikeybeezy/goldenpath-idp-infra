@@ -1,5 +1,5 @@
 ---
-id: ADR-0049-platform-pragmatic-observability-baseline
+id: ADR-0049
 title: 'ADR-0049: Pragmatic observability baseline for V1 (RED + Golden Signals)'
 type: adr
 category: unknown

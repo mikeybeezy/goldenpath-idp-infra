@@ -1,5 +1,5 @@
 ---
-id: ADR-0086-federated-metadata-validation
+id: ADR-0086
 title: 'ADR-0086: Federated Metadata Validation Strategy'
 type: adr
 category: unknown

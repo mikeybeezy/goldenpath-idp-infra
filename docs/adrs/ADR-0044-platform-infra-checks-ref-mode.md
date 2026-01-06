@@ -1,5 +1,5 @@
 ---
-id: ADR-0044-platform-infra-checks-ref-mode
+id: ADR-0044
 title: 'ADR-0044: Configurable ref for infra checks dispatch'
 type: adr
 category: unknown

@@ -58,15 +58,24 @@ def generate_index_content():
         if meta:
             all_metadata.append(meta)
     
-    # Sort by ID (numerical sort)
-    all_metadata.sort(key=lambda x: x.get('id', ''))
+    # Sort by ID (numerical sort) and normalize
+    normalized_metadata = []
+    for m in all_metadata:
+        raw_id = m.get('id', '')
+        # Enforce ADR-XXXX format
+        id_match = re.search(r'ADR-[0-9]{4}', raw_id)
+        if id_match:
+            m['id'] = id_match.group(0)
+            normalized_metadata.append(m)
+    
+    normalized_metadata.sort(key=lambda x: x.get('id', ''))
     
     # Generate Table
     table_lines = []
-    for m in all_metadata:
-        adr_id = m.get('id', 'XXXX')
+    for m in normalized_metadata:
+        adr_id = m['id']
         domain = m.get('category', 'Platform').capitalize()
-        title = m.get('title', 'Untitled').replace('ADR-' + adr_id[4:] + ': ', '').strip("'\" ")
+        title = m.get('title', 'Untitled').replace(adr_id + ': ', '').strip("'\" ")
         status = m.get('status', 'Proposed').capitalize()
         date = m.get('date', '') or m.get('created_date', '2026-01-0? ')
         summary = m.get('summary', '')
@@ -77,7 +86,7 @@ def generate_index_content():
     table_content = "\n".join(table_lines)
     
     # Generate relates_to list
-    relate_lines = [f"  - {m.get('id')}" for m in all_metadata if m.get('id')]
+    relate_lines = [f"  - {m['id']}" for m in normalized_metadata]
     relate_content = "\n".join(relate_lines)
     
     return table_content, relate_content

@@ -1,5 +1,5 @@
 ---
-id: ADR-0020-platform-helm-kustomize-hybrid
+id: ADR-0020
 title: 'ADR-0020: Hybrid GitOps approach with Helm and Kustomize'
 type: adr
 category: unknown

@@ -1,5 +1,5 @@
 ---
-id: ADR-0029-platform-dev-plan-gate
+id: ADR-0029
 title: 'ADR-0029: Dev plan gate before dev apply'
 type: adr
 category: unknown

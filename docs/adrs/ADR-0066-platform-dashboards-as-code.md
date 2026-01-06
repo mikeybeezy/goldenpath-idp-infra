@@ -1,5 +1,5 @@
 ---
-id: ADR-0066-platform-dashboards-as-code
+id: ADR-0066
 title: 'ADR-0066: Platform Dashboards as Code'
 type: adr
 category: unknown

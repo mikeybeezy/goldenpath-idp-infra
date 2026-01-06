@@ -1,5 +1,5 @@
 ---
-id: ADR-0042-platform-branching-strategy
+id: ADR-0042
 title: 'ADR-0042: Branching strategy (development → main)'
 type: adr
 category: unknown

@@ -1,5 +1,5 @@
 ---
-id: ADR-0096-risk-based-ecr-controls
+id: ADR-0096
 title: 'ADR-0096: Risk-Based ECR Security Controls'
 type: adr
 category: governance

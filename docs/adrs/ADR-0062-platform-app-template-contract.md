@@ -1,5 +1,5 @@
 ---
-id: ADR-0062-platform-app-template-contract
+id: ADR-0062
 title: 'ADR-0062: App template contract for team-owned deployments'
 type: adr
 category: unknown

@@ -1,5 +1,5 @@
 ---
-id: ADR-0008-app-backstage-portal
+id: ADR-0008
 title: 'ADR-0008: Use Backstage as the developer portal and the V1 demo application
   for env promotion'
 type: adr

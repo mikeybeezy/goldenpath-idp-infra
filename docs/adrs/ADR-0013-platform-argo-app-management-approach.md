@@ -1,5 +1,5 @@
 ---
-id: ADR-0013-platform-argo-app-management-approach
+id: ADR-0013
 title: 'ADR-0013: Argo CD app management approach for current scale'
 type: adr
 category: unknown

@@ -1,5 +1,5 @@
 ---
-id: ADR-0081-platform-repo-wide-linting
+id: ADR-0081
 title: 'ADR-0081: Repo-wide linting for knowledge-graph hygiene'
 type: adr
 category: unknown

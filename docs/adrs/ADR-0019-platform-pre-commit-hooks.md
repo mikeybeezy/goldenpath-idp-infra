@@ -1,5 +1,5 @@
 ---
-id: ADR-0019-platform-pre-commit-hooks
+id: ADR-0019
 title: 'ADR-0019: Pre-commit hooks as local quality gates'
 type: adr
 category: unknown

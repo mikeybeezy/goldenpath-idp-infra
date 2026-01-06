@@ -1,5 +1,5 @@
 ---
-id: ADR-0070-platform-terraform-aws-lb-controller
+id: ADR-0070
 title: 'ADR-0070: Terraform Management of AWS Load Balancer Controller'
 type: adr
 category: unknown

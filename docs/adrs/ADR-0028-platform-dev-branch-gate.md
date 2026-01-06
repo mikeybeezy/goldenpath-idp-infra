@@ -1,5 +1,5 @@
 ---
-id: ADR-0028-platform-dev-branch-gate
+id: ADR-0028
 title: 'ADR-0028: Dev branch gate before main'
 type: adr
 category: unknown

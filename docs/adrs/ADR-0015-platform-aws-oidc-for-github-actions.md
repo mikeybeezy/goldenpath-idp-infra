@@ -1,5 +1,5 @@
 ---
-id: ADR-0015-platform-aws-oidc-for-github-actions
+id: ADR-0015
 title: 'ADR-0015: Use AWS OIDC for GitHub Actions authentication'
 type: adr
 category: unknown

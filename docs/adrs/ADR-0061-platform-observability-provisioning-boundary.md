@@ -1,5 +1,5 @@
 ---
-id: ADR-0061-platform-observability-provisioning-boundary
+id: ADR-0061
 title: 'ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform
   external)'
 type: adr

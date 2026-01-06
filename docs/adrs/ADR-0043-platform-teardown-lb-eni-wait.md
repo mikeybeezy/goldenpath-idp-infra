@@ -1,5 +1,5 @@
 ---
-id: ADR-0043-platform-teardown-lb-eni-wait
+id: ADR-0043
 title: 'ADR-0043: Teardown waits for LoadBalancer ENIs before subnet delete'
 type: adr
 category: unknown

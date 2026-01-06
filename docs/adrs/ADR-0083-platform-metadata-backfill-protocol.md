@@ -1,5 +1,5 @@
 ---
-id: ADR-0083-platform-metadata-backfill-protocol
+id: ADR-0083
 title: Metadata Backfill Campaign Protocol
 type: adr
 category: unknown

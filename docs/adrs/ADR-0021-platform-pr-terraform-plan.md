@@ -1,5 +1,5 @@
 ---
-id: ADR-0021-platform-pr-terraform-plan
+id: ADR-0021
 title: 'ADR-0021: PR Terraform plan with automated comments'
 type: adr
 category: unknown
