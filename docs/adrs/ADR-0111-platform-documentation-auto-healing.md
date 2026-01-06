@@ -39,9 +39,9 @@ relates_to:
 
 ## Context
 
-Our platform uses automated indexing scripts (`generate_script_index.py`, `generate_workflow_index.py`) to maintain documentation portals (`scripts/index.md`, `ci-workflows/CI_WORKFLOWS.md`). 
+Our platform uses automated indexing scripts (`generate_script_index.py`, `generate_workflow_index.py`) to maintain documentation portals (`scripts/index.md`, `ci-workflows/CI_WORKFLOWS.md`).
 
-Currently, these scripts are passive; they rely on developers or manual agents to run them. This has led to frequent "Documentation Drift" where new scripts or workflows are added but the indices are not updated. 
+Currently, these scripts are passive; they rely on developers or manual agents to run them. This has led to frequent "Documentation Drift" where new scripts or workflows are added but the indices are not updated.
 
 While we have validation in CI, it merely flags the error, requiring manual intervention to fix.
 

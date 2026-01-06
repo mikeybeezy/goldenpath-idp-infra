@@ -55,20 +55,20 @@ def calculate_v1_readiness(health_stats, adr_stats, comp_rate, coverage):
     W_ADR = 0.20
     W_ORPHANS = 0.15
     W_STALE = 0.15
-    
+
     # Components
     metadata_score = comp_rate / 100.0
     injection_score = coverage / 100.0
     adr_score = (adr_stats['active'] / adr_stats['total']) if adr_stats['total'] > 0 else 0
     orphan_score = max(0, 1 - (len(health_stats['orphans']) / max(1, health_stats['total_files'])))
     stale_score = max(0, 1 - (len(health_stats['stale_files']) / max(1, health_stats['total_files'])))
-    
-    total = (metadata_score * W_METADATA + 
-             injection_score * W_INJECTION + 
-             adr_score * W_ADR + 
-             orphan_score * W_ORPHANS + 
+
+    total = (metadata_score * W_METADATA +
+             injection_score * W_INJECTION +
+             adr_score * W_ADR +
+             orphan_score * W_ORPHANS +
              stale_score * W_STALE)
-    
+
     return total * 100
 
 def get_script_stats():
@@ -140,15 +140,15 @@ def calculate_maturity(stats):
     impact_weights = {'high': 5, 'medium': 2, 'low': 1, 'none': 0, 'unknown': 1}
     total_weight = 0
     penalty_weight = 0
-    
+
     # Weight by production impact
     for impact, count in stats['risk_profile']['production_impact'].items():
         total_weight += count * impact_weights.get(impact, 1)
-    
+
     # Penalize for orphans and stale files (weighted by high impact)
     penalty_weight += len(stats['orphans']) * 3
     penalty_weight += len(stats['stale_files']) * 2
-    
+
     if total_weight == 0: return 100
     score = max(0, min(100, 100 * (1 - (penalty_weight / total_weight))))
     return score
@@ -210,7 +210,7 @@ def generate_report(target_dir='.'):
                 owner = data.get('owner', 'unknown')
                 if owner == 'unknown' or not owner: stats['orphans'].append(filepath)
                 else: stats['owners'][owner] = stats['owners'].get(owner, 0) + 1
-                
+
                 # Stale check
                 lifecycle = data.get('lifecycle', {})
                 if isinstance(lifecycle, dict):
@@ -242,12 +242,12 @@ def generate_report(target_dir='.'):
     compliance_data = get_compliance_stats()
     changelog_stats = get_changelog_stats()
     maturity_score = calculate_maturity(stats)
-    
+
     comp_rate = ((stats['total_files'] - len(stats['missing_metadata'])) / stats['total_files'] * 100) if stats['total_files'] > 0 else 0
     total_inj = stats['injection_coverage']['total_mandated']
     injected = stats['injection_coverage']['total_injected']
     coverage = (injected / total_inj * 100) if total_inj > 0 else 0
-    
+
     v1_readiness = calculate_v1_readiness(stats, adr_stats, comp_rate, coverage)
 
     # Step 3: Layout Generation
@@ -264,22 +264,22 @@ def generate_report(target_dir='.'):
     lines.append(f"  - {os.path.basename(__file__)}")
     lines.append("---")
     lines.append("")
-    
+
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     lines.append("# 🏥 Platform Health Command Center")
     lines.append(f"**Generated**: `{timestamp}` | **V1 Readiness**: `{v1_readiness:.1f}%` | **Overall Maturity**: `{maturity_score:.1f}%`")
-    
+
     lines.append("\n## 🏁 V1 Platform Readiness Gate")
     lines.append("> [!IMPORTANT]")
     lines.append(f"> The platform is currently **{v1_readiness:.1f}%** ready for V1 production rollout.")
-    
+
     lines.append("\n| Milestone | Status | Readiness |")
     lines.append("| :--- | :--- | :--- |")
     lines.append(f"| **Metadata Integrity** | {'✅' if comp_rate > 95 else '⚠️'} | {comp_rate:.1f}% |")
     lines.append(f"| **Injection Integrity** | {'✅' if coverage > 95 else '⚠️'} | {coverage:.1f}% |")
     lines.append(f"| **Architecture Maturity** | {'✅' if adr_stats['active'] == adr_stats['total'] else '🚧'} | {adr_stats['active']}/{adr_stats['total']} Active |")
     lines.append(f"| **Changelog Activity** | ✅ | {changelog_stats['total']} Entries |")
-    
+
     if len(trends) > 1:
         lines.append("\n## 📈 Governance Velocity (Historical Trend)")
         lines.append("```mermaid")
@@ -298,7 +298,7 @@ def generate_report(target_dir='.'):
     lines.append(f"| **CI Workflows** | {workflow_stats['total']} | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |")
     lines.append(f"| **Change Logs** | {changelog_stats['total']} | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |")
     lines.append(f"| **Tracked Resources** | {stats['total_files']} | Repository Scan |")
-    
+
     lines.append("\n## 🗂️ Catalog Inventory")
     lines.append("| Catalog | Entity Count |")
     lines.append("| :--- | :--- |")
@@ -317,7 +317,7 @@ def generate_report(target_dir='.'):
     comp_rate = ((stats['total_files'] - len(stats['missing_metadata'])) / stats['total_files'] * 100) if stats['total_files'] > 0 else 0
     lines.append(f"- **Metadata Compliance**: `{comp_rate:.1f}%`")
     lines.append(f"- **Risk-Weighted Score**: `{maturity_score:.1f}%`")
-    
+
     if compliance_data:
         lines.append(f"- **Infrastructure Drift**: `{100 - compliance_data.get('compliance_rate', 0):.1f}%` (via `compliance-report.json`)")
 
@@ -330,7 +330,7 @@ def generate_report(target_dir='.'):
     lines.append("\n## 🚨 Operational Risks")
     lines.append(f"- **Orphaned (No Owner)**: {len(stats['orphans'])}")
     lines.append(f"- **Stale (Past Lifecycle)**: {len(stats['stale_files'])}")
-    
+
     lines.append("\n---")
     lines.append("### 📬 Strategic Guidance")
     lines.append("- **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.")
@@ -341,7 +341,7 @@ def generate_report(target_dir='.'):
     os.makedirs('docs/governance/reports', exist_ok=True)
     with open('PLATFORM_HEALTH.md', 'w') as f:
         f.write("<!-- 🛑 AUTOMATED REPORT - DO NOT EDIT MANUALLY 🛑 -->\n" + content)
-    
+
     with open('docs/governance/reports/HEALTH_AUDIT_LOG.md', 'a') as f:
         f.write(f"\n\n---\n### Audit: {timestamp}\n{content}")
 

@@ -1,6 +1,6 @@
 
 
---- 
+---
 ## Audit Record: 2026-01-06 00:27:33
 ---
 id: PLATFORM_HEALTH
@@ -60,7 +60,7 @@ relates_to:
 > **How it works**: This metric measures the percentage of 'Governance Sidecars' that have been successfully propagated into live deployment configurations (Helm values, ArgoCD manifests).
 - **Coverage**: 100.0% (29/29)
 
---- 
+---
 ## Audit Record: 2026-01-06 11:24:44
 ---
 id: PLATFORM_HEALTH
