@@ -34,7 +34,7 @@ Every resource in the GoldenPath (from documentation to Helm charts) is tracked 
 - **Persistent Visibility**: Automated generation of [**`PLATFORM_HEALTH.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md) that maps ownership, risk, and compliance across 300+ components.
 - **Continuous Auditing**: The dashboard is automatically updated on every change and daily at midnight, providing a stateful record of platform maturity.
 - **Injection Coverage**: Unique tracking of how well metadata is propagated into live cluster resources, identifying "Dark Infrastructure" gaps in real-time.
-- **Immutable Audit Log**: Transitioned from a mutable "Live-View" only model to a high-integrity dual-state architecture, maintaining an append-only [**`HEALTH_AUDIT_LOG.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/reports/HEALTH_AUDIT_LOG.md) for historical compliance and audit trails.
+- **Automated Audit Log**: Transitioned from a mutable "Live-View" only model to a high-integrity dual-state architecture, maintaining an append-only [**`HEALTH_AUDIT_LOG.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/reports/HEALTH_AUDIT_LOG.md) for historical compliance and audit trails.
 - **Knowledge Graph Integration**: Every component knows its dependencies, allowing for automated impact analysis and relationship mapping.
 
 ## 2. Infrastructure Metadata Sidecars (Sidecar-as-Standard)
