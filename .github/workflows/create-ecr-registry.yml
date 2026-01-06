@@ -109,11 +109,12 @@ jobs:
           import os
           import sys
 
-          tfvars_path = f"envs/{os.environ[\"INPUT_ENVIRONMENT\"]}/terraform.tfvars"
-          name = os.environ["INPUT_REGISTRY_NAME"]
-          owner = os.environ["INPUT_OWNER"]
-          risk = os.environ["INPUT_RISK"]
-          reg_id = os.environ["INPUT_ID"]
+          env = os.environ.get("INPUT_ENVIRONMENT")
+          tfvars_path = "envs/" + env + "/terraform.tfvars"
+          name = os.environ.get("INPUT_REGISTRY_NAME")
+          owner = os.environ.get("INPUT_OWNER")
+          risk = os.environ.get("INPUT_RISK")
+          reg_id = os.environ.get("INPUT_ID")
 
           # HCL Entry to insert
           new_entry = f"""
@@ -130,18 +131,15 @@ jobs:
               with open(tfvars_path, "r") as f:
                   content = f.read()
               
-              # Simple check if entry already exists (naive text check)
               if f"\"{name}\"" in content and "ecr_repositories" in content:
                   print(f"⚠️  Registry {name} appears to already exist in {tfvars_path}")
                   sys.exit(0)
 
               if "ecr_repositories = {" in content:
-                  # Find start of block
                   start_idx = content.find("ecr_repositories = {")
                   brace_count = 0
                   insert_idx = -1
                   
-                  # Walk forward to find matching closing brace
                   for i in range(start_idx, len(content)):
                       if content[i] == "{":
                           brace_count += 1
@@ -152,7 +150,6 @@ jobs:
                               break
                   
                   if insert_idx != -1:
-                      # Insert before the last brace
                       new_content = content[:insert_idx] + new_entry + content[insert_idx:]
                       with open(tfvars_path, "w") as f:
                           f.write(new_content)
@@ -161,7 +158,6 @@ jobs:
                       print("❌ Error: Could not parse ecr_repositories block structure.")
                       sys.exit(1)
               else:
-                  # Create new block if missing
                   with open(tfvars_path, "a") as f:
                       f.write(f"\n# Registry Catalog\necr_repositories = {{\n{new_entry}\n}}\n")
                   print(f"✅ Created new ecr_repositories block with {name}.")
