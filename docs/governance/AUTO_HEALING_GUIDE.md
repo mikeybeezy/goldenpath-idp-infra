@@ -67,11 +67,11 @@ The indexing scripts do not "run" the code they scan.
 ### 2. Limited File Scope
 The bot is cryptographically restricted (via the workflow definition) to only modify two files: `scripts/index.md` and `ci-workflows/CI_WORKFLOWS.md`. It cannot touch `.tf`, `.py`, or `.sh` logic.
 
-### 3. Human-in-the-Loop (Mandatory Oversight)
-Automation is for **drafting**, not **approving**.
-- **The PR Gate**: The bot pushes code *to* the PR, but it cannot approve the PR itself.
-- **CODEOWNERS Enforcement**: Per **[.github/CODEOWNERS](file:///Users/mikesablaze/goldenpath-idp-infra/.github/CODEOWNERS)**, all changes to `scripts/` or `.github/` require an explicit human approval from the Platform Team before merging.
-- **Diff Visibility**: Every bot commit is a discrete "chore" commit that is visible in the PR history for human audit.
+### 3. Human-in-the-Loop (HITL) Mandate
+Automation is for **drafting**, not **authorizing**.
+- **The Mandatory Signature**: Per the **[CODEOWNERS Policy](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/CODEOWNERS_POLICY.md)**, every bot-generated commit requires an explicit human approval (thumbs-up) from the `platform-team` before it can be merged.
+- **Verification Gate**: The PR will remain blocked until a human has inspected the bot's diff for side-effects.
+- **No Self-Approval**: The bot is technically barred from merging its own changes, ensuring a separation of concerns between "Generation" and "Verification."
 
 ### 4. GITHUB_TOKEN Restrictions
 The workflow uses a short-lived, least-privilege `GITHUB_TOKEN` scoped only to `contents: write` for the specific repository, preventing lateral movement or broader account exploitation.
