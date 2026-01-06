@@ -55,9 +55,9 @@ jobs:
             exit 1
           fi
 
-          # Validate owner format
-          if ! echo "${{ inputs.owner }}" | grep -qE '^app-team-[a-z0-9-]+$'; then
-            echo "❌ Owner must match format: app-team-lowercase-with-dashes"
+          # Validate owner format (relaxed)
+          if ! echo "${{ inputs.owner }}" | grep -qE '^[a-z0-9-]+$'; then
+            echo "❌ Owner must be lowercase alphanumeric with dashes (e.g. platform-team, michael-babs)"
             exit 1
           fi
 
