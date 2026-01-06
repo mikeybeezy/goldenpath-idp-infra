@@ -123,7 +123,6 @@ relates_to:
   - ADR-0103
   - ADR-0104
   - ADR-0110
-  - ADR-0111
   - ADR-0112
 <!-- ADR_RELATE_END -->
 ---
@@ -245,11 +244,10 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0100](ADR-0100-standardized-ecr-lifecycle-and-documentation.md) | Governance | Standardized ECR Lifecycle and Documentation | Accepted | 2026-01-0?  | The previous ECR registry creation process required manual input for multiple redundant fields (name and ID) and suffered from a "drift gap" where the human-readable [REGISTRY_CATALOG.md](docs/REGI... |
 | [ADR-0101](ADR-0101-pr-metadata-auto-heal.md) | Governance | PR Metadata Auto-Heal and Scoped Validation | Active | 2026-01-0?  | The platform's metadata validation workflow was blocking PRs due to: 1. **Full-repo scanning**: Any `.md` file change triggered validation of the entire repository, causing unrelated failures 2. **... |
 | [ADR-0102](ADR-0102-terraform-fast-validation.md) | Architecture | Layer 2 Terraform Validation (Fast Feedback Loop) | Accepted | 2026-01-06 | Currently, Terraform validation primarily occurs during the `env=dev` integration tests (`infra-terraform-apply-dev.yml`) or via `pr-terraform-plan.yml`. These workflows require AWS credentials, ba... |
-| [ADR-0103](ADR-0103-automated-workflow-docs.md) | Platform | Automated CI Workflow Documentation | Superseded | 2026-01-06 | As the complexity of the platform grows, the number of GitHub Actions workflows has increased significantly (>30 workflows). Maintaining a manual index of these workflows (`ci-workflows/CI_WORKFLOW... |
-| [ADR-0104](ADR-0104-automated-script-docs.md) | Platform | Automated Script Documentation | Superseded | 2026-01-06 | The platform relies on a large suite of Python and Shell scripts (~25) for governance, documentation, and delivery. Maintaining a manual index of these scripts (`scripts/index.md`) is tedious and e... |
+| [ADR-0103](ADR-0103-automated-workflow-docs.md) | Documentation | Automated CI Workflow Documentation | Superseded | 2026-01-06 | As the complexity of the platform grows, the number of GitHub Actions workflows has increased significantly (>30 workflows). Maintaining a manual index of these workflows (`ci-workflows/CI_WORKFLOW... |
+| [ADR-0104](ADR-0104-automated-script-docs.md) | Documentation | Automated Script Documentation | Superseded | 2026-01-06 | The platform relies on a large suite of Python and Shell scripts (~25) for governance, documentation, and delivery. Maintaining a manual index of these scripts (`scripts/index.md`) is tedious and e... |
 | [ADR-0110](ADR-0110-idp-knowledge-graph-architecture.md) | Architecture | IDP Knowledge Graph Node Architecture | Accepted | 2026-01-06 | The GoldenPath IDP currently uses disconnected YAML sidecars (`metadata.yaml`) to track component attributes. While metadata compliance is high (98.7%), we lacks a structured way to understand **re... |
-| [ADR-0111](ADR-0111-platform-documentation-auto-healing.md) | Adrs | Automated Documentation Auto-Healing | Accepted | 2026-01-0?  | Our platform uses automated indexing scripts (`generate_script_index.py`, `generate_workflow_index.py`) to maintain documentation portals (`scripts/index.md`, `ci-workflows/CI_WORKFLOWS.md`). |
-| [ADR-0112](ADR-0112-automated-adr-index-generation.md) | Architecture | Automated ADR Index Generation | Proposed | 2026-01-0?  | As the number of Architecture Decision Records (ADRs) grows (currently 100+), keeping the `01_adr_index.md` in sync manually has become error-prone. We frequently observe drift in statuses, dates, ... |
+| [ADR-0112](ADR-0112-automated-adr-index-generation.md) | Architecture | Automated ADR Index Generation | Accepted | 2026-01-06 | As the number of Architecture Decision Records (ADRs) grows (currently 100+), keeping the `01_adr_index.md` in sync manually has become error-prone. We frequently observe drift in statuses, dates, ... |
 <!-- ADR_TABLE_END -->
 
 ---

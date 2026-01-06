@@ -58,8 +58,8 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | :--- | :--- |
 | [backfill_metadata.py](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/scripts/backfill_metadata.py) | Metadata Backfill Script |
 | [fix_yaml_syntax.py](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/scripts/fix_yaml_syntax.py) | YAML Syntax Fixer for Templates |
+| [generate_adr_index.py](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/scripts/generate_adr_index.py) | ADR Index Generator (Iteration 1) |
 | [migrate_partial_metadata.py](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/scripts/migrate_partial_metadata.py) | Migrate partial metadata to enhanced schema |
 | [reliability-metrics.sh](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/scripts/reliability-metrics.sh) | Shell script utility. |
-| [shadow_script.py](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/scripts/shadow_script.py) | Shadow Script for HITL Verification |
 | [sync_backstage_entities.py](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/scripts/sync_backstage_entities.py) | Backstage Entity Sync Utility |
 | [test_hotfix.py](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/scripts/test_hotfix.py) | Purpose: Unit tests for PR Guardrails Hotfix Logic. |
