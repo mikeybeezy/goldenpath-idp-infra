@@ -177,13 +177,21 @@ jobs:
           aws-region: eu-west-2
           role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
 
-      - name: Terraform Init (Stateless Override)
+      - name: Terraform Init (Stateless File Swap)
         run: |
-          # We override the backend to local to allow "init" and "plan" to work without S3 connectivity.
-          # This is the secret to a fast, deterministic, "Bounded Context" plan.
-          echo 'terraform { backend "local" {} }' > envs/${{ inputs.environment }}/backend_override.tf
+          # We swap the backend file entirely to avoid any S3 validation during the plan.
+          # This is the most deterministic way to perform a "Bounded Context" plan.
           
-          terraform -chdir=envs/${{ inputs.environment }} init -input=false
+          ENV_DIR="envs/${{ inputs.environment }}"
+          mv "${ENV_DIR}/backend.tf" "${ENV_DIR}/backend.tf.bak"
+          
+          cat <<EOF > "${ENV_DIR}/backend.tf"
+          terraform {
+            backend "local" {}
+          }
+          EOF
+          
+          terraform -chdir="${ENV_DIR}" init -input=false
 
       - name: Inline Terraform Plan (Targeted)
         id: plan
@@ -223,8 +231,10 @@ jobs:
           echo "</details>" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Cleanup Override
-        run: rm envs/${{ inputs.environment }}/backend_override.tf
+      - name: Restore Real Backend
+        run: |
+          ENV_DIR="envs/${{ inputs.environment }}"
+          mv "${ENV_DIR}/backend.tf.bak" "${ENV_DIR}/backend.tf"
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v6
