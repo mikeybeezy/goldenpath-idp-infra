@@ -108,6 +108,12 @@ This is the single rolling backlog. Add items here before starting work.
 | 064 | P2 | ECR | Test OIDC-based ecr-build-push.sh script | platform | Open | S | Q1 | Run end-to-end test with sample app and verify dual-tagging | scripts/ecr-build-push.sh, docs/guides/standardized-image-delivery.md, ADR-0100 | Validate OIDC authentication, multi-tagging (SHA + version), and push reliability before app team adoption |
 | 065 | P2 | GitOps | Automate "Terraform Apply" on Pull Request Merge | platform | Done | M | Q2 | Expand pattern to other core modules (IAM, VPC) | .github/workflows/ecr-auto-apply.yml | Eliminate manual "ClickOps" step after merging config changes |
 | 066 | P2 | Docs | Test & Harden Doc Index Generators (Removal logic) | platform | Done | S | Q1 | Monitor for drift in future additions | scripts/generate_workflow_index.py, scripts/generate_script_index.py | Ensure documentation self-heals when tools or workflows are deprecated/deleted |
+| 067 | P2 | ECR | Decommission ECR Registry Workflow | platform | Open | S | Q1 | Create `decommission-ecr-registry.yml` with safety guardrails | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Enable safe, automated removal of registries |
+| 068 | P1 | ECR | Image Creation and Standardized Tagging | platform | Open | S | Q1 | Implement hashing and semantic version tagging in `ecr-build-push.sh` | ADR-0100 | Ensure images are traceable and immutable |
+| 069 | P2 | ECR | Automated Image Deletion (Stale/Untagged) | platform | Open | S | Q1 | Configure lifecycle policies for automated cleanup | envs/dev/main.tf | Prevent ECR storage cost bloat |
+| 070 | P1 | ECR | Standardized Image Pull/Push (OIDC) | platform | Open | S | Q1 | Roll out `ecr-build-push.sh` to all app templates | ADR-0100 | Secure, passwordless image delivery as standard |
+| 071 | P3 | ECR | Image Version Decommissioning Process | platform | Open | S | Q2 | Define archival strategy for sunsetting old images | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Manage long-term image supply chain technical debt |
+| 072 | P2 | Gov | Shared Responsibility Notifications (Lifecycle Events) | platform | Open | M | Q1 | Build notification trigger for Slack/Email after Create/Delete | docs/10-governance/38_SHARED_RESPONSIBILITY.md | Clarify ownership boundaries immediately after resource changes |
 
 ## Rules
 
