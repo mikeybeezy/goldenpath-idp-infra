@@ -1,0 +1,42 @@
+## 🏗️ ECR Registry Creation Request
+
+**Registry:** `new-app-16`
+**Environment:** `dev`
+**Owner:** `michael-babs-16`
+**Risk Level:** `low`
+**ID:** `REGISTRY_NEW_APP_16`
+
+---
+
+## 🤖 Inline Terraform Plan
+
+<details><summary>📄 <strong>Targeted Terraform Plan</strong></summary>
+
+This plan was generated using a **bounded context** strategy (`-target`), focusing only on the new ECR repository.
+Note: state refresh was skipped because this is a shallow plan.
+
+```hcl
+PLAN_CONTENT_PLACEHOLDER
+```
+</details>
+
+---
+
+## 🔒 Security Controls (Auto-Applied)
+
+SECURITY_CONTROLS_PLACEHOLDER
+
+---
+
+## 📋 Changes Policy
+- ✅ Added to registry catalog (`docs/catalogs/ecr-catalog.yaml`)
+- ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
+- ✅ Added to Terraform tfvars (`envs/dev/terraform.tfvars`)
+
+---
+
+## 🚀 Next Steps
+1. **Merge** this PR (Plan is already verified above).
+2. **Run Apply** workflow (Automated next step).
+
+/cc @platform-team
