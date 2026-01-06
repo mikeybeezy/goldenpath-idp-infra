@@ -137,4 +137,12 @@ ecr_repositories = {
       risk  = "low"
     }
   }
+
+  "my-reg-app-3" = {
+    metadata = {
+      id    = "REGISTRY_MY_REG_APP_3"
+      owner = "michaelbabs-3"
+      risk  = "medium"
+    }
+  }
 }
