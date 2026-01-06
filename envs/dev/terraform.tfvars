@@ -130,6 +130,14 @@ ecr_repositories = {
     }
   }
 
+  "new-wp-reg-2" = {
+    metadata = {
+      id    = "REGISTRY_NEW_WP_REG_2"
+      owner = "michael-babs-2"
+      risk  = "low"
+    }
+  }
+
   "new-app-16" = {
     metadata = {
       id    = "REGISTRY_NEW_APP_16"
