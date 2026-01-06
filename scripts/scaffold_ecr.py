@@ -38,7 +38,7 @@ def generate_tfvars_entry(app_name, app_id, owner, risk):
 
 def update_tfvars(environment, entry):
     tfvars_path = f"envs/{environment}/terraform.tfvars"
-    
+
     # Ensure file exists
     if not os.path.exists(tfvars_path):
         with open(tfvars_path, "w") as f:
@@ -53,7 +53,7 @@ def update_tfvars(environment, entry):
         if line.strip().startswith("ecr_repositories = {"):
             start_index = i
             break
-            
+
     if start_index == -1:
         # Append new block if not found
         with open(tfvars_path, "a") as f:
@@ -64,22 +64,22 @@ def update_tfvars(environment, entry):
     # Find the matching closing brace
     # Simple heuristic: Identify the closing brace corresponding to the opening one
     # Assuming standard indentation (closing brace on its own line)
-    
+
     insert_index = -1
     brace_count = 0
     found_start = False
-    
+
     # Re-scan to track braces carefully
     for i, line in enumerate(lines):
         if i < start_index: continue
-        
+
         brace_count += line.count("{")
         brace_count -= line.count("}")
-        
+
         if brace_count == 0:
             insert_index = i
             break
-            
+
     if insert_index != -1:
         # Insert before the closing brace
         lines.insert(insert_index, entry)

@@ -39,7 +39,7 @@ jobs:
       - name: Run Script Indexer (Auto-Heal)
         run: |
           python3 scripts/generate_script_index.py
-      
+
       - name: Run Workflow Indexer (Auto-Heal)
         run: |
           python3 scripts/generate_workflow_index.py

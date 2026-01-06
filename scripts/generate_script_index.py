@@ -31,7 +31,7 @@ def get_docstring(file_path):
             return "Shell script utility."
     except Exception:
         return "No description available."
-        
+
     return "No description available."
 
 def get_category(filename):
@@ -48,20 +48,20 @@ def generate_index():
         name = os.path.basename(file_path)
         if name in ["__init__.py", "generate_script_index.py"]:
             continue
-            
+
         category = get_category(name)
         description = get_docstring(file_path)
         # Taking just the first line of docstring for brevity in table
         if description:
             description = description.split('\n')[0]
-            
+
         scripts.append({
             "name": name,
             "category": category,
             "path": file_path,
             "description": description
         })
-        
+
     # Generate MD
     lines = [
         "---",
@@ -85,11 +85,11 @@ def generate_index():
         "This directory contains the automation engine powering the GoldenPath IDP.",
         ""
     ]
-    
+
     # Sort scripts by category then name
     sorted_scripts = sorted(scripts, key=lambda x: (x['category'], x['name']))
     current_cat = None
-    
+
     for script in sorted_scripts:
         if script['category'] != current_cat:
             current_cat = script['category']
@@ -97,31 +97,31 @@ def generate_index():
             lines.append("")
             lines.append("| Script | Description |")
             lines.append("| :--- | :--- |")
-            
+
         link = f"[{script['name']}](file://{os.path.abspath(script['path'])})"
         desc = script['description'] or "Utility script"
         lines.append(f"| {link} | {desc} |")
-        
+
         # Add spacing after table if category changes (logic requires peeking or simpler structure)
         # Simplified: tables will just run together if not careful, so let's break tables by category
-    
+
     # Clean up empty lines between tables
     final_content = []
     in_table = False
     for line in lines:
         if line.startswith("| Script"):
-            if in_table: final_content.append("") 
+            if in_table: final_content.append("")
             in_table = True
         if line.startswith("##"):
             in_table = False
             final_content.append("")
         final_content.append(line)
-        
+
     return "\n".join(final_content)
 
 if __name__ == "__main__":
     import sys
-    
+
     # Check mode: Fail if any script is missing a description
     if "--validate" in sys.argv:
         missing_docs = []
@@ -133,13 +133,13 @@ if __name__ == "__main__":
             desc = get_docstring(file_path)
             if not desc or desc.startswith("No description"):
                 missing_docs.append(name)
-        
+
         # Drift Check
         current_content = ""
         if os.path.exists(OUTPUT_FILE):
             with open(OUTPUT_FILE, "r") as f:
                 current_content = f.read()
-        
+
         generated_content = generate_index()
         is_drifted = (current_content.strip() != generated_content.strip())
 

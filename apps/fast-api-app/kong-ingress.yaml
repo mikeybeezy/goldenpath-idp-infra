@@ -7,7 +7,7 @@ metadata:
    konghq.com/strip-path: "false"
   #  konghq.com/plugins: grade-demo-auth-plugin, grade-demo-ratelimit   # Plugin names referenced in KongPlugin resources
    kubernetes.io/ingress.class: kong
-   konghq.com/methods: "GET, POST"  
+   konghq.com/methods: "GET, POST"
 spec:
  ingressClassName: kong
  rules:

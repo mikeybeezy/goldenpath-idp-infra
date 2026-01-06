@@ -23,14 +23,14 @@ def extract_metadata(file_path):
     """Extract YAML frontmatter and context summary from an ADR file."""
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
-    
+
     # Extract YAML
     yaml_match = re.search(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
     if not yaml_match:
         return None
-    
+
     metadata = yaml.safe_load(yaml_match.group(1))
-    
+
     # Extract Summary (First non-empty paragraph under ## Context)
     summary = "No context provided."
     context_match = re.search(r'## Context\s*\n+(.*?)(?=\n##|\Z)', content, re.DOTALL)
@@ -52,12 +52,12 @@ def generate_index_content():
     """Scan ADR files and generate table and relate_to list."""
     adr_files = [f for f in os.listdir(ADR_DIR) if f.startswith("ADR-") and f.endswith(".md")]
     all_metadata = []
-    
+
     for filename in adr_files:
         meta = extract_metadata(os.path.join(ADR_DIR, filename))
         if meta:
             all_metadata.append(meta)
-    
+
     # Sort by ID (numerical sort) and normalize
     normalized_metadata = []
     for m in all_metadata:
@@ -67,9 +67,9 @@ def generate_index_content():
         if id_match:
             m['id'] = id_match.group(0)
             normalized_metadata.append(m)
-    
+
     normalized_metadata.sort(key=lambda x: x.get('id', ''))
-    
+
     # Generate Table
     table_lines = []
     for m in normalized_metadata:
@@ -79,41 +79,41 @@ def generate_index_content():
         status = m.get('status', 'Proposed').capitalize()
         date = m.get('date', '') or m.get('created_date', '2026-01-0? ')
         summary = m.get('summary', '')
-        
+
         line = f"| [{adr_id}]({m['filename']}) | {domain} | {title} | {status} | {date} | {summary} |"
         table_lines.append(line)
-    
+
     table_content = "\n".join(table_lines)
-    
+
     # Generate relates_to list
     relate_lines = [f"  - {m['id']}" for m in normalized_metadata]
     relate_content = "\n".join(relate_lines)
-    
+
     return table_content, relate_content
 
 def update_index_file(table_content, relate_content, validate_only=False):
     """Inject generated content into the index file."""
     with open(INDEX_FILE, 'r', encoding='utf-8') as f:
         content = f.read()
-    
+
     # Inject Table
     table_pattern = re.compile(f"{re.escape(TABLE_START)}.*?{re.escape(TABLE_END)}", re.DOTALL)
     new_table = f"{TABLE_START}\n{table_content}\n{TABLE_END}"
-    
+
     # Inject Relates
     relate_pattern = re.compile(f"{re.escape(RELATE_START)}.*?{re.escape(RELATE_END)}", re.DOTALL)
     new_relate = f"{RELATE_START}\n{relate_content}\n{RELATE_END}"
-    
+
     new_content = table_pattern.sub(new_table, content)
     new_content = relate_pattern.sub(new_relate, new_content)
-    
+
     if validate_only:
         if new_content != content:
             print("Drift detected in ADR Index!")
             return False
         print("ADR Index is up to date.")
         return True
-    
+
     with open(INDEX_FILE, 'w', encoding='utf-8') as f:
         f.write(new_content)
     print("Successfully updated ADR Index.")
