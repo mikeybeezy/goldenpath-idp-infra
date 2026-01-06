@@ -29,7 +29,6 @@ relates_to:
   - ADR-0009
   - ADR-0010
   - ADR-0011
-  - ADR-0011-platform-ci-environment-contract
   - ADR-0012
   - ADR-0013
   - ADR-0014
@@ -81,7 +80,15 @@ relates_to:
   - ADR-0060
   - ADR-0061
   - ADR-0062
+  - ADR-0063
+  - ADR-0064
+  - ADR-0065
+  - ADR-0066
+  - ADR-0067
+  - ADR-0068
   - ADR-0069
+  - ADR-0070
+  - ADR-0071
   - ADR-0072
   - ADR-0073
   - ADR-0074
@@ -94,6 +101,28 @@ relates_to:
   - ADR-0081
   - ADR-0082
   - ADR-0083
+  - ADR-0084
+  - ADR-0085
+  - ADR-0086
+  - ADR-0087
+  - ADR-0088
+  - ADR-0089
+  - ADR-0090
+  - ADR-0092
+  - ADR-0093
+  - ADR-0094
+  - ADR-0095
+  - ADR-0096
+  - ADR-0097
+  - ADR-0098
+  - ADR-0099
+  - ADR-0100
+  - ADR-0101
+  - ADR-0102
+  - ADR-0103
+  - ADR-0104
+  - ADR-0110
+  - ADR-0111
 ---
 
 # ADR Index (GoldenPath IDP)
