@@ -1,4 +1,3 @@
-```
 ---
 id: ADR-0111
 title: 'ADR-0111: Automated Documentation Auto-Healing'
