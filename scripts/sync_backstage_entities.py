@@ -36,10 +36,10 @@ class BackstageSync:
 
         for name, res in resources.items():
             metadata = res.get('metadata', {})
-            
+
             # Sanitize name for Backstage (lowercase, alphanumeric, hyphens)
             entity_name = name.lower().replace('_', '-')
-            
+
             entity = {
                 'apiVersion': 'backstage.io/v1alpha1',
                 'kind': 'Resource',

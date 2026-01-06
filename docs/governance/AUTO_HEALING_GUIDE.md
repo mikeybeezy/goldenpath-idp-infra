@@ -65,7 +65,7 @@ To maintain a high-integrity developer portal (Backstage) and a clear operationa
 The PR gate is managed by the `.github/workflows/ci-index-auto-heal.yml` workflow and relies on a **Success/Failure contract**:
 
 1.  **Strict Validation**: The workflow runs `generate_script_index.py --validate` and `generate_workflow_index.py --validate`.
-2.  **Exit Code Policy**: 
+2.  **Exit Code Policy**:
     - **Exit 0**: The index matches the physical files. The gate turns **GREEN** ✅.
     - **Exit 1**: Drift is detected. The workflow attempts to auto-heal.
 3.  **The "Safety Loop"**: After the bot commits the updated indices, the workflow runs the validation **one final time**.
@@ -82,7 +82,7 @@ The PR gate is managed by the `.github/workflows/ci-index-auto-heal.yml` workflo
 To prevent the automated bot from being used as an injection vector for malicious content, we employ a **Defense in Depth** strategy:
 
 ### 1. Zero-Execution Parsing
-The indexing scripts do not "run" the code they scan. 
+The indexing scripts do not "run" the code they scan.
 - **Python**: Uses `ast.parse` to look at the document tree without execution.
 - **YAML**: Uses `yaml.safe_load` which blocks the execution of arbitrary Python objects or tags.
 

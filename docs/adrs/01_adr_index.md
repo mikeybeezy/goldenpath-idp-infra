@@ -256,16 +256,16 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 
 ## Superseded ADRs
 
-- [ADR-0069](ADR-0069-platform-observability-baseline-golden-signals.md) — superseded by `ADR-0049-platform-pragmatic-observability-baseline.md`.
-- [ADR-0036](ADR-0036-platform-orphan-cleanup-workflow.md) — superseded by `ADR-0038-platform-teardown-orphan-cleanup-gate.md`.
-- [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) — superseded by `ADR-0045-platform-teardown-lb-delete-default.md`.
-- [ADR-0044](ADR-0044-platform-infra-checks-ref-mode.md) — superseded by `ADR-0046-platform-pr-plan-validation-ownership.md`.
-- [ADR-0103](ADR-0103-automated-workflow-docs.md) — superseded by `ADR-0111-platform-documentation-auto-healing.md`.
-- [ADR-0104](ADR-0104-automated-script-docs.md) — superseded by `ADR-0111-platform-documentation-auto-healing.md`.
+- [ADR-0069](ADR-0069-platform-observability-baseline-golden-signals.md) — superseded by`ADR-0049-platform-pragmatic-observability-baseline.md`.
+- [ADR-0036](ADR-0036-platform-orphan-cleanup-workflow.md) — superseded by`ADR-0038-platform-teardown-orphan-cleanup-gate.md`.
+- [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) — superseded by`ADR-0045-platform-teardown-lb-delete-default.md`.
+- [ADR-0044](ADR-0044-platform-infra-checks-ref-mode.md) — superseded by`ADR-0046-platform-pr-plan-validation-ownership.md`.
+- [ADR-0103](ADR-0103-automated-workflow-docs.md) — superseded by`ADR-0111-platform-documentation-auto-healing.md`.
+- [ADR-0104](ADR-0104-automated-script-docs.md) — superseded by`ADR-0111-platform-documentation-auto-healing.md`.
 
 Legacy aliases (kept to preserve historical links):
 
-- `docs/adrs/ADR-0011-platform-ci-environment-contract.md` → `ADR-0034-platform-ci-environment-contract.md`
+-`docs/adrs/ADR-0011-platform-ci-environment-contract.md`→`ADR-0034-platform-ci-environment-contract.md`
 
 ---
 
@@ -274,17 +274,17 @@ Legacy aliases (kept to preserve historical links):
 When introducing a new ADR:
 
 - Follow the Domain convention (Platform or Application).
-- Use the filename pattern: `ADR-XXXX-(platform|app)-short-title.md`.
+- Use the filename pattern:`ADR-XXXX-(platform|app)-short-title.md`.
 - Add the entry to the Active ADRs table with its Domain.
 
 ---
 
 ## Conventions
 
-- **Numbering:** `ADR-0001`, `ADR-0002`, … (sequential, never reused)
-- **Filename:** `ADR-XXXX-(platform|app)-short-title.md`
-- **Domain:** `Platform` or `Application`
-- **Status values:** `Proposed`, `Accepted`, `Deprecated`, `Superseded`
+- **Numbering:**`ADR-0001`,`ADR-0002`, … (sequential, never reused)
+- **Filename:**`ADR-XXXX-(platform|app)-short-title.md`
+- **Domain:**`Platform`or`Application`
+- **Status values:**`Proposed`,`Accepted`,`Deprecated`,`Superseded`
 - **Changing a decision:** write a new ADR that **supersedes** the old one and link both.
 
 ---
@@ -293,7 +293,7 @@ When introducing a new ADR:
 
 1. Copy the standard template.
 
-2. Create `docs/adrs/ADR-XXXX-(platform|app)-title.md`.
+2. Create`docs/adrs/ADR-XXXX-(platform|app)-title.md`.
 
 3. Fill in Domain, context, decision, tradeoffs, and follow-ups.
 

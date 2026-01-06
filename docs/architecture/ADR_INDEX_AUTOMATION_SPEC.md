@@ -45,11 +45,11 @@ relates_to: []        # Optional: Semantic edges for Knowledge Graph
 
 ### 1. Generator Core (`scripts/generate_adr_index.py`)
 - **Scanner**: Recursively discovers all `ADR-*.md` files in the `docs/adrs/` directory.
-- **Parser**: 
+- **Parser**:
     - Extracts YAML frontmatter using `PyYAML`.
     - Sanitizes titles and IDs.
     - Extracts the summary by taking the first non-empty paragraph under the `## Context` header.
-- **Renderer**: 
+- **Renderer**:
     - Sorts records chronologically and by ID.
     - Formats the results into the standard Markdown table.
     - Updates the `relates_to` manifest in the index header.

@@ -61,7 +61,7 @@ graph TD
 ```
 
 ### 2. Schema Evolution & Versioning
-The graph is designed to be **extensible**. 
+The graph is designed to be **extensible**.
 
 - **Versioning**: Edges can be versioned or renamed. If we move from `USED_BY` to `CONSUMES`, we run a migration script across the Knowledge Graph without altering the underlying metadata.
 - **Domain Extension**: We will start with the "Supply Chain" domain (Registry/App/Image) and later extend to "Networking" (VPC/Security Groups) or "Compute" (EKS/Nodes) as we build new automation healers.
@@ -79,10 +79,10 @@ This ADR is currently in the **Planning** phase. We will begin implementation by
 ## Consequences
 
 ### Positive
-*   **Autonomous Reasoning**: Agents can navigate the graph to identify orphaned resources or security gaps.
-*   **Impact Analysis**: Instant visibility into the blast radius of infrastructure changes.
-*   **Born-Governed Integrity**: Every node is explicitly linked to a policy or ADR.
+-   **Autonomous Reasoning**: Agents can navigate the graph to identify orphaned resources or security gaps.
+-   **Impact Analysis**: Instant visibility into the blast radius of infrastructure changes.
+-   **Born-Governed Integrity**: Every node is explicitly linked to a policy or ADR.
 
 ### Negative
-*   **Complexity**: Increased complexity in the extraction and validation scripts.
-*   **Schema Rigidity**: Nodes must follow a strict schema to be queryable by agents.
+-   **Complexity**: Increased complexity in the extraction and validation scripts.
+-   **Schema Rigidity**: Nodes must follow a strict schema to be queryable by agents.

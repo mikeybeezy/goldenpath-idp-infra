@@ -21,7 +21,7 @@ Use this if your local changes are stable and you want them to be part of the hi
 
 1. **Stage** changes: `git add .`
 2. **Commit**: `git commit -m "docs/feat: progress update"`
-3. **Rebase**: `git pull --rebase origin development` 
+3. **Rebase**: `git pull --rebase origin development`
    *   *Git will "unplug" your new commit, apply the remote ones, and then "re-plug" your commit on top.*
 
 ### Option 3: Hard Reset (The "Nuclear" Move)

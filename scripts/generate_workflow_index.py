@@ -40,15 +40,15 @@ def parse_workflows():
                     if line.startswith("# Owner:"):
                         owner = line.split(":", 1)[1].strip()
                         break
-                
+
                 # Parse YAML
                 data = yaml.safe_load(raw_content)
                 if not data or 'name' not in data:
                     continue
-                
+
                 name = data['name']
                 category = get_category(name)
-                
+
                 triggers = []
                 if 'on' in data:
                     if isinstance(data['on'], dict):
@@ -57,7 +57,7 @@ def parse_workflows():
                         triggers = data['on']
                     elif isinstance(data['on'], str):
                         triggers = [data['on']]
-                
+
                 inputs = []
                 if 'workflow_dispatch' in data.get('on', {}) and data['on']['workflow_dispatch']:
                      inputs = list(data['on']['workflow_dispatch'].get('inputs', {}).keys())
@@ -76,14 +76,14 @@ def parse_workflows():
 
 def generate_ascii_tree(workflows_by_category):
     lines = ["```text", "CI Workflows (GitHub Actions)", ""]
-    
+
     sorted_categories = sorted(workflows_by_category.keys())
-    
+
     for i, category in enumerate(sorted_categories):
         is_last_cat = (i == len(sorted_categories) - 1)
         prefix = "└─" if is_last_cat else "├─"
         lines.append(f"{prefix} {category}")
-        
+
         items = sorted(workflows_by_category[category], key=lambda x: x['name'])
         for j, wf in enumerate(items):
             is_last_item = (j == len(items) - 1)
@@ -93,12 +93,12 @@ def generate_ascii_tree(workflows_by_category):
                 sub_prefix = "│" + sub_prefix
             else:
                 sub_prefix = " " + sub_prefix
-            
+
             lines.append(f"{sub_prefix} {wf['name']}")
-        
+
         if not is_last_cat:
             lines.append("│")
-    
+
     lines.append("```")
     return "\n".join(lines)
 
@@ -107,7 +107,7 @@ def generate_markdown(workflows):
     by_category = defaultdict(list)
     for wf in workflows:
         by_category[wf['category']].append(wf)
-    
+
     content = [
         "---",
         "id: CI_WORKFLOWS",
@@ -129,12 +129,12 @@ def generate_markdown(workflows):
         "---",
         ""
     ]
-    
+
     # Detailed sections
     for category in sorted(by_category.keys()):
         content.append(f"## {category}")
         content.append("")
-        
+
         for wf in sorted(by_category[category], key=lambda x: x['name']):
             content.append(f"### {wf['name']}")
             content.append(f"- **File**: `{wf['file']}`")
@@ -143,21 +143,21 @@ def generate_markdown(workflows):
             if wf['inputs']:
                 content.append(f"- **Inputs**: {', '.join(wf['inputs'])}")
             content.append("")
-            
+
     return "\n".join(content)
 
 if __name__ == "__main__":
     import sys
-    
+
     wfs = parse_workflows()
     generated_content = generate_markdown(wfs)
-    
+
     if "--validate" in sys.argv:
         current_content = ""
         if os.path.exists(OUTPUT_FILE):
             with open(OUTPUT_FILE, "r") as f:
                 current_content = f.read()
-        
+
         if current_content.strip() != generated_content.strip():
             print(f"❌ Drift Detected: {OUTPUT_FILE} is out of sync with physical workflows.")
             sys.exit(1)

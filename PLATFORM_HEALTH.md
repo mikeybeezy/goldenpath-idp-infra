@@ -7,60 +7,69 @@ category: governance
 status: active
 owner: platform-team
 version: '2026-01-06'
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: gold
-lifecycle:
-  supported_until: '2028-01-01'
-  breaking_change: false
 relates_to:
   - platform_health.py
 ---
 
-# 🏥 Platform Health Report
-**Date Generated**: 2026-01-06 15:06:19
-**Total Tracked Resources**: 390
-**Metadata Compliance**: 98.2%
+# 🏥 Platform Health Command Center
+**Generated**: `2026-01-06 16:13:13` | **V1 Readiness**: `98.4%` | **Overall Maturity**: `100.0%`
 
-## 📊 Lifecycle Distribution
-- **Active**: 366
-- **Draft**: 4
-- **Superseded**: 6
-- **Accepted**: 8
-- **Deprecated**: 2
-- **Planned**: 1
-- **Released**: 1
-- **Approved**: 1
-- **Passed**: 1
+## 🏁 V1 Platform Readiness Gate
+> [!IMPORTANT]
+> The platform is currently **98.4%** ready for V1 production rollout.
 
-## 🛡️ Risk Summary (Production Impact)
-- **High**: 35
-- **Medium**: 29
-- **Low**: 318
-- **None**: 4
+| Milestone | Status | Readiness |
+| :--- | :--- | :--- |
+| **Metadata Integrity** | ✅ | 98.2% |
+| **Injection Integrity** | ✅ | 100.0% |
+| **Architecture Maturity** | 🚧 | 100/106 Active |
+| **Changelog Activity** | ✅ | 70 Entries |
 
-## 📂 Top Categories
-- **unknown**: 240
-- **gitops**: 20
-- **governance**: 18
-- **modules**: 16
-- **apps**: 11
+## 📈 Governance Velocity (Historical Trend)
+```mermaid
+xychart-beta
+    title "V1 Readiness Trend (Last 10 Runs)"
+    x-axis ["Run -3", "Run -1"]
+    y-axis "Readiness %" 0 --> 100
+    line [100.0, 100.0, 100.0]
+```
+
+## 🏹 Knowledge Graph Vitality
+| Metric | Count | Source |
+| :--- | :--- | :--- |
+| **Architecture Decisions** | 106 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
+| **Automation Scripts** | 25 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
+| **CI Workflows** | 34 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
+| **Change Logs** | 70 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 391 | Repository Scan |
+
+## 🗂️ Catalog Inventory
+| Catalog | Entity Count |
+| :--- | :--- |
+| Ecr | 10 |
+
+## 🛡️ Risk & Maturity Visualization
+```mermaid
+pie title Production Impact distribution
+    "HIGH" : 35
+    "MEDIUM" : 29
+    "LOW" : 321
+    "NONE" : 4
+```
+
+## ⚖️ Governance Maturity
+- **Metadata Compliance**: `98.2%`
+- **Risk-Weighted Score**: `100.0%`
+- **Infrastructure Drift**: `100.0%` (via `compliance-report.json`)
+
+## 💉 Injection Coverage
+- **Sidecar Coverage**: `100.0%` (29/29)
 
 ## 🚨 Operational Risks
-- **Orphaned Files (No Owner)**: 0
-- **Stale Files (Past Lifecycle)**: 0
+- **Orphaned (No Owner)**: 0
+- **Stale (Past Lifecycle)**: 0
 
-## 💉 Closed-Loop Injection Coverage
-> [!NOTE]
-> **How it works**: This metric measures the percentage of 'Governance Sidecars' that have been successfully propagated into live deployment configurations (Helm values, ArgoCD manifests).
-- **Coverage**: 100.0% (29/29)
-
-## ⚠️ Known Coverage Gaps
-While currently tracked resources are 100% compliant, the following areas are currently **untracked** (Dark Infrastructure) and valid targets for future governance phases:
-- **Terraform Modules (`envs/**`)**: Currently lack `metadata.yaml` sidecars (relying on AWS tags instead).
-- **Automation Scripts (`scripts/*.sh`, `Makefile`)**: Governance headers (In-File) are planned for Phase 3.
+---
+### 📬 Strategic Guidance
+- **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.
+- **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.

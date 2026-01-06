@@ -68,10 +68,10 @@ We will move from **"Files with tags"** to **"Entities with Edges"**.
 
 ## 🧬 Schema Evolution Strategy
 
-The Knowledge Graph is a **Living System**. 
+The Knowledge Graph is a **Living System**.
 - **Core Nodes** (Registry, App, Team) are stable foundations.
 - **Extended Nodes** (Dockerfile, Image) bridge specific domains (Supply Chain).
-- **Future Nodes** (e.g., `Secret`, `Database`, `Network`) will be introduced as the "Healer" scripts learn to mine those areas. 
+- **Future Nodes** (e.g., `Secret`, `Database`, `Network`) will be introduced as the "Healer" scripts learn to mine those areas.
 
 Labels are **versioned**. If we move from `USED_BY` to `CONSUMES`, we run a migration script to update the "Edges" without breaking the "Nodes".
 
@@ -121,18 +121,18 @@ While **Scripts** (the "Healers") mine the data and build the graph, we introduc
 ### [Docs & Research]
 
 #### [NEW] [docs/adrs/ADR-0110-idp-knowledge-graph-architecture.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0110-idp-knowledge-graph-architecture.md)
-*   Define the formal schema for the Knowledge Graph.
-*   Document the transition from `metadata.yaml` to JSON-LD or Graph-compatible structures.
+-   Define the formal schema for the Knowledge Graph.
+-   Document the transition from `metadata.yaml` to JSON-LD or Graph-compatible structures.
 
 ### [Tooling]
 
 #### [MODIFY] [scripts/extract_relationships.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/extract_relationships.py)
-*   Upgrade to handle complex node types.
-*   Implement "Edge Discovery" logic (e.g., parsing Terraform `depends_on` to create `DEPENDS_ON` edges in the graph).
+-   Upgrade to handle complex node types.
+-   Implement "Edge Discovery" logic (e.g., parsing Terraform `depends_on` to create `DEPENDS_ON` edges in the graph).
 
 #### [NEW] [scripts/graph_validator.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/graph_validator.py)
-*   Ensure that every `Infra` node has a mandatory `OWNED_BY` relationship to an `Identity` node.
-*   Verify that `Service` nodes mapped to `High Risk` have required `Security Policy` nodes linked.
+-   Ensure that every `Infra` node has a mandatory `OWNED_BY` relationship to an `Identity` node.
+-   Verify that `Service` nodes mapped to `High Risk` have required `Security Policy` nodes linked.
 
 ## Verification Plan
 
