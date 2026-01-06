@@ -1,5 +1,6 @@
 version: "1.0"
 id: POL-ECR-001
+policy_id: POL-ECR-001
 name: ECR Registry Metadata Policy
 category: governance
 owner: platform-team

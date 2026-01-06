@@ -1,5 +1,6 @@
 version: "1.0"
 id: POL-ECR-003
+policy_id: POL-ECR-003
 name: ECR Lifecycle Retention Policy
 category: cost-optimization
 owner: platform-team
