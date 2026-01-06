@@ -18,6 +18,7 @@ dependencies:
 
 This directory contains the automation engine powering the GoldenPath IDP.
 
+
 ## Delivery
 
 | Script | Description |
@@ -59,4 +60,5 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [fix_yaml_syntax.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/fix_yaml_syntax.py) | YAML Syntax Fixer for Templates |
 | [migrate_partial_metadata.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/migrate_partial_metadata.py) | Migrate partial metadata to enhanced schema |
 | [reliability-metrics.sh](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/reliability-metrics.sh) | Shell script utility. |
+| [sync_backstage_entities.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/sync_backstage_entities.py) | Backstage Entity Sync Utility |
 | [test_hotfix.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/test_hotfix.py) | Purpose: Unit tests for PR Guardrails Hotfix Logic. |

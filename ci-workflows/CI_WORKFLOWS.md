@@ -20,6 +20,7 @@ CI Workflows (GitHub Actions)
 │   ├─ Bootstrap - CI Backstage (Stub)
 │   ├─ Bootstrap - CI Bootstrap (Stub)
 │   ├─ Create ECR Registry
+│   ├─ Quality - Backstage Entity Sync
 │   └─ Scaffold App Repository
 │
 ├─ Guardrails / Policy (PR)
@@ -75,6 +76,11 @@ CI Workflows (GitHub Actions)
 
 ### Create ECR Registry
 - **File**: `create-ecr-registry.yml`
+- **Owner**: platform
+- **Triggers**: 
+
+### Quality - Backstage Entity Sync
+- **File**: `ci-backstage-sync.yml`
 - **Owner**: platform
 - **Triggers**: 
 
