@@ -49,3 +49,10 @@ registries:
       risk: low
       status: pending
       created_date: "2026-01-06"
+  new-app-14:
+    metadata:
+      id: REGISTRY_NEW_APP_14
+      owner: michael-babs-14
+      risk: low
+      status: pending
+      created_date: "2026-01-06"
