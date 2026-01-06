@@ -63,6 +63,24 @@ The index file employs HTML comments as injection markers to allow the generator
 ### 3. Guardrail Workflow (`ci-index-auto-heal.yml`)
 Integrated into the **Documentation Auto-Healing** pipeline. Every PR that modifies an ADR is checked for index drift. If drift is detected, the healer regenerates the index and commits it to the PR branch (requiring human HITL approval).
 
+## Automation Lifecycle
+
+```mermaid
+graph TD
+    A["<b>1. Creation</b><br/>Human creates ADR-XXXX.md<br/>fills in YAML & Context"] --> B["<b>2. PR Trigger</b><br/>PR opened targeting 'development'<br/>CI Workflow fires"]
+    B --> C["<b>3. Extraction (The Engine)</b><br/>scripts/generate_adr_index.py<br/>scans docs/adrs/"]
+    C --> D["<b>4. Hardening & Parsing</b><br/>Normalizes IDs (ADR-XXXX)<br/>Extracts Context summary"]
+    D --> E["<b>5. Injection (Safe Zone)</b><br/>Content injected between<br/>HTML markers in 01_adr_index.md"]
+    E --> F["<b>6. Auto-Healing</b><br/>CI Bot commits sync changes<br/>to your PR branch"]
+```
+
+### Execution Steps
+1. **Extraction**: The script parses `docs/adrs/ADR-*.md` for YAML metadata and the first paragraph under `## Context`.
+2. **Normalization**: IDs are strictly enforced to the `ADR-XXXX` format.
+3. **Summarization**: Context text is truncated to 200 characters for optimal table readability.
+4. **Injection**: Validated strings are injected into the markers in `01_adr_index.md`.
+5. **Auto-Remediation**: GitHub Actions committed the rectified index if drift is found.
+
 ## Roadmap
 - **Iteration 1**: Git-native file-to-file automation (Current).
 - **Iteration 2**: Transition to **Backstage Portal** as the primary discovery layer, using the Knowledge Graph nodes generated from these ADRs.

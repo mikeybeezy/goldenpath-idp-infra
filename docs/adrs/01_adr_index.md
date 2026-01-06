@@ -125,6 +125,8 @@ relates_to:
   - ADR-0110
   - ADR-0111
   - ADR-0112
+  - ADR-8888
+  - ADR-8889
 <!-- ADR_RELATE_END -->
 ---
 
@@ -250,6 +252,8 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0110](ADR-0110-idp-knowledge-graph-architecture.md) | Architecture | IDP Knowledge Graph Node Architecture | Accepted | 2026-01-06 | The GoldenPath IDP currently uses disconnected YAML sidecars (`metadata.yaml`) to track component attributes. While metadata compliance is high (98.7%), we lacks a structured way to understand **re... |
 | [ADR-0111](ADR-0111-platform-documentation-auto-healing.md) | Adrs | Automated Documentation Auto-Healing | Accepted | 2026-01-0?  | Our platform uses automated indexing scripts (`generate_script_index.py`, `generate_workflow_index.py`) to maintain documentation portals (`scripts/index.md`, `ci-workflows/CI_WORKFLOWS.md`). |
 | [ADR-0112](ADR-0112-automated-adr-index-generation.md) | Architecture | Automated ADR Index Generation | Proposed | 2026-01-0?  | As the number of Architecture Decision Records (ADRs) grows (currently 100+), keeping the `01_adr_index.md` in sync manually has become error-prone. We frequently observe drift in statuses, dates, ... |
+| [ADR-8888](ADR-8888-no-context.md) | Unknown | Missing Context Test | Proposed | 2026-01-06 | No context provided. |
+| [ADR-8889](ADR-8889-long-context.md) | Unknown | Long Context Test | Proposed | 2026-01-06 | This is a very long paragraph that should definitely be truncated by the generate_adr_index script because it exceeds the 200 character limit that we have established for the table summary column s... |
 <!-- ADR_TABLE_END -->
 
 ---
@@ -300,3 +304,4 @@ When introducing a new ADR:
 4. Open a PR.
 
 5. Update this index.
+<!-- MANUAL_CHECK -->
