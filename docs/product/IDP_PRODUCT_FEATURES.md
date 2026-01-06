@@ -62,21 +62,27 @@ The IDP ensures that every new service is compliant from Day 0 by embedding gove
 ## 6. Automated Knowledge Graph
 The platform programmatically maps relationships between thousands of resources, transforming static docs into a dynamic graph.
 - **Relationship Discovery**: The **`extract_relationships.py`** engine automatically identifies ADR dependencies, changelog links, and cross-component mentions.
-- **Impact Analysis**: Programmatic tracking allows engineers to see exactly which components or environments are affected by a change before it is merged.
+- **Impact Analysis**: Programmatic tracking allows engineers to see exactly which components or environments are engagement affected by a change before it is merged.
 
-## 7. Single-Submission Repository Scaffolding
+## 7. Self-Healing Documentation
+The IDP's documentation is no longer a static artifact; it is a live representation of the platform's state, driven directly by the code.
+- **Automated Indexes**: Workflows (`CI_WORKFLOWS.md`) and Scripts (`scripts/index.md`) are auto-generated from source code, ensuring zero documentation drift.
+- **Source-Driven Truth**: Documentation accurately reflects the current state of governance, infrastructure, and delivery pipelines without manual intervention.
+- **Categorized & Visualized**: Automated tools parse, categorize, and even visualize complex systems (like ASCII workflow trees), making the platform easier to navigate and understand.
+
+## 8. Single-Submission Repository Scaffolding
 The IDP enables "Push-Button" repository creation, transforming a single form submission into a fully provisioned, governed GitHub repository.
 - **Unified Onboarding**: Using the **`repo-scaffold-app.yml`** workflow or Backstage Software Templates, developers Fill out a single form to automate repo creation, branch protection, and team permissions.
 - **Render-on-the-Fly**: The **`render_template.py`** engine dynamically injects governance IDs and service metadata into the scaffolded code before it is even pushed to GitHub.
 
-## 8. Self-Service Cloud Resource Provisioning
+## 9. Self-Service Cloud Resource Provisioning
 The IDP transforms manual cloud resource requests into governed, one-click workflows—eliminating configuration errors and ensuring security compliance from Day Zero.
 - **Atomic Catalog Sync**: Resource catalogs (YAML) and human-readable documentation (Markdown) update together in the same PR, preventing documentation drift.
 - **Risk-Based Security Automation**: Security controls (encryption, mutability, retention, scanning) are auto-applied based on declared risk levels—compliance is enforced, not optional.
 - **Domain-Agnostic Engine**: A single catalog generator supports multiple AWS resource types (ECR, S3, RDS), enabling rapid expansion to new services.
 - **Day Zero Guidance**: Every provisioning PR includes direct links to operational runbooks, ensuring developers know exactly how to use newly created resources.
 
-## 9. Workload-Centric Abstractions (Planned)
+## 10. Workload-Centric Abstractions (Planned)
 Future evolution focuses on the "Score" implementation to allow developers to define **WHAT** they need, hiding the complexity of **HOW** it is provisioned.
 - **Zero-YAML Onboarding**: Moving away from complex K8s manifests toward workload-centric descriptors.
 
