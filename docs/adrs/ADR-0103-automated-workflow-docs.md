@@ -7,7 +7,7 @@ owner: platform-team
 created_date: 2026-01-06
 supersedes: []
 relates_to:
-  - ADR-0071 (Doc Taxonomy)
+  - ADR-0071
   - ci-workflows/CI_WORKFLOWS.md
 ---
 

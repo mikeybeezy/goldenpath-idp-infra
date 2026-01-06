@@ -7,7 +7,7 @@ owner: platform-team
 created_date: 2026-01-06
 supersedes: []
 relates_to:
-  - ADR-0103 (CI Documentation)
+  - ADR-0103
   - scripts/index.md
 ---
 

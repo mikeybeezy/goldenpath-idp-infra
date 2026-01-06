@@ -1,5 +1,5 @@
 ---
-id: ADR-0111-platform-documentation-auto-healing
+id: ADR-0111
 title: 'ADR-0111: Automated Documentation Auto-Healing'
 type: documentation
 category: adrs
