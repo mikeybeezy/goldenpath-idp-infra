@@ -9,6 +9,7 @@ on:
     paths:
       - 'scripts/**'
       - '.github/workflows/**'
+      - 'docs/adrs/**'
 
 permissions:
   contents: write
@@ -43,12 +44,16 @@ jobs:
         run: |
           python3 scripts/generate_workflow_index.py
 
+      - name: Run ADR Indexer (Auto-Heal)
+        run: |
+          python3 scripts/generate_adr_index.py
+
       - name: Commit and Push Changes
         run: |
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add scripts/index.md ci-workflows/CI_WORKFLOWS.md
+            git add scripts/index.md ci-workflows/CI_WORKFLOWS.md docs/adrs/01_adr_index.md
             git commit -m "chore: auto-heal documentation indices [skip ci]"
             git push origin ${{ github.head_ref }}
             echo "✅ Documentation indices auto-healed and committed"
@@ -60,3 +65,4 @@ jobs:
         run: |
           python3 scripts/generate_script_index.py --validate
           python3 scripts/generate_workflow_index.py --validate
+          python3 scripts/generate_adr_index.py --validate

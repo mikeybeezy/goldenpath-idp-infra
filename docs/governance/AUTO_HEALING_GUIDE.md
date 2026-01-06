@@ -86,16 +86,22 @@ The indexing scripts do not "run" the code they scan.
 - **Python**: Uses `ast.parse` to look at the document tree without execution.
 - **YAML**: Uses `yaml.safe_load` which blocks the execution of arbitrary Python objects or tags.
 
-### 2. Limited File Scope
-The bot is cryptographically restricted (via the workflow definition) to only modify two files: `scripts/index.md` and `ci-workflows/CI_WORKFLOWS.md`. It cannot touch `.tf`, `.py`, or `.sh` logic.
+### 2. Automated Indexing
+The system maintains the following indices in real-time:
+ - **Script Index**: [scripts/index.md](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md)
+ - **Workflow Index**: [.github/workflows/index.md](file:///Users/mikesablaze/goldenpath-idp-infra/.github/workflows/index.md)
+ - **ADR Index**: [docs/adrs/01_adr_index.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md)
 
-### 3. Human-in-the-Loop (HITL) Mandate
+### 3. Limited File Scope
+The bot is cryptographically restricted (via the workflow definition) to only modify three files: `scripts/index.md`, `ci-workflows/CI_WORKFLOWS.md`, and `docs/adrs/01_adr_index.md`. It cannot touch `.tf`, `.py`, or `.sh` logic.
+
+### 4. Human-in-the-Loop (HITL) Mandate
 Automation is for **drafting**, not **authorizing**.
 - **The Mandatory Signature**: Per the **[CODEOWNERS Policy](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/CODEOWNERS_POLICY.md)**, every bot-generated commit requires an explicit human approval (thumbs-up) from the `platform-team` before it can be merged.
 - **Verification Gate**: The PR will remain blocked until a human has inspected the bot's diff for side-effects.
 - **No Self-Approval**: The bot is technically barred from merging its own changes, ensuring a separation of concerns between "Generation" and "Verification."
 
-### 4. GITHUB_TOKEN Restrictions
+### 5. GITHUB_TOKEN Restrictions
 The workflow uses a short-lived, least-privilege `GITHUB_TOKEN` scoped only to `contents: write` for the specific repository, preventing lateral movement or broader account exploitation.
 
 ## 🤖 Bot & Token Management
