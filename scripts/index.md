@@ -18,7 +18,6 @@ dependencies:
 
 This directory contains the automation engine powering the GoldenPath IDP.
 
-
 ## Delivery
 
 | Script | Description |
