@@ -1,16 +1,15 @@
 ---
 id: IDP_PRODUCT_FEATURES
-title: 'GoldenPath IDP: Core Product Features'
-type: product
-category: unknown
-version: '1.0'
-owner: platform-team
+title: IDP Product Features & Capability Roadmap
+type: documentation
+category: product
 status: active
-dependencies: []
+owner: platform-team
+version: '1.0'
 risk_profile:
   production_impact: low
   security_risk: none
-  coupling_risk: medium
+  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
@@ -18,20 +17,17 @@ lifecycle:
   supported_until: 2028-01-01
   breaking_change: false
 relates_to:
-  - 00_DESIGN_PHILOSOPHY
-  - 34_PLATFORM_SUCCESS_CHECKLIST
-  - 37_V1_SCOPE_AND_TIMELINE
-  - READINESS_CHECKLIST
-  - V1_04_CAPABILITY_MATRIX
+  - ADR-0027
+  - ADR-0092
+  - PLATFORM_HEALTH.md
 ---
 
-# GoldenPath IDP: Core Product Features
+# IDP Product Features & Capability Roadmap
 
-The GoldenPath IDP transforms complex AWS/EKS infrastructure into a developer-centric product. Unlike raw infrastructure, the IDP focuses on **Discoverability, Self-Healing, and Lifecycle Management**.
+The Golden Path IDP is built on the principle of **"Governance as a Service,"** where infrastructure management, security compliance, and developer experience are unified into a single, automated lifecycle.
 
-## 1. Automated Platform Health Dashboard
-Every resource in the GoldenPath (from documentation to Helm charts) is tracked via a standardized governance schema, surfacing in a persistent "Living Dashboard."
-- **Persistent Visibility**: Automated generation of [**`PLATFORM_HEALTH.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md) that maps ownership, risk, and compliance across 300+ components.
+## 1. Multi-State Platform Health Dashboard
+The platform provides a real-time, high-integrity view of its own health and governance posture through the [**`PLATFORM_HEALTH.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md) dashboard.
 - **Continuous Auditing**: The dashboard is automatically updated on every change and daily at midnight, providing a stateful record of platform maturity.
 - **Injection Coverage**: Unique tracking of how well metadata is propagated into live cluster resources, identifying "Dark Infrastructure" gaps in real-time.
 - **Automated Audit Log**: Transitioned from a mutable "Live-View" only model to a high-integrity dual-state architecture, maintaining an append-only [**`HEALTH_AUDIT_LOG.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/reports/HEALTH_AUDIT_LOG.md) for historical compliance and audit trails.
@@ -53,6 +49,11 @@ The IDP features a fully automated governance engine that bridges the gap betwee
 Quality is enforced at the source, ensuring that no resource enters the platform without its "Identification Card."
 - **Shift-Left Validation**: Pre-commit hooks and GitHub Actions ensure 100% metadata compliance, correct ADR formatting, and changelog presence.
 - **Zero-Trust Metadata**: All IDs are validated against the repository's path-based naming convention, preventing ID shadowing.
+
+## 5. Automated CI/CD Guardrails
+The platform protects the production environment by enforcing strict gates on every change.
+- **Policy as Code**: ADRs are automatically validated for schema compliance and status consistency.
+- **Plan Enforcement**: Terraform plans must be attached and validated before any infrastructure change is allowed.
 
 ## 6. Automated Validation & Quality Gates
 The platform enforces its own rules through self-testing mechanisms, preventing technical debt from accumulating.
@@ -88,7 +89,12 @@ The IDP transforms manual cloud resource requests into governed, one-click workf
 - **Domain-Agnostic Engine**: A single catalog generator supports multiple AWS resource types (ECR, S3, RDS), enabling rapid expansion to new services.
 - **Day Zero Guidance**: Every provisioning PR includes direct links to operational runbooks, ensuring developers know exactly how to use newly created resources.
 
-## 12. Workload-Centric Abstractions (Planned)
+## 12. FinOps / Cost Visibility
+The platform empowers engineers to be financially responsible by making cost impact visible *before* resources are provisioned.
+- **Infracost Integration**: Automated cost estimation runs on every Terraform PR, surfacing the exact weekly/monthly cost impact of infrastructure changes.
+- **Non-blocking Signals**: Developers get immediate feedback via PR comments, enabling "Cost Aware" decision making without slowing down velocity.
+
+## 13. Workload-Centric Abstractions (Planned)
 Future evolution focuses on the "Score" implementation to allow developers to define **WHAT** they need, hiding the complexity of **HOW** it is provisioned.
 - **Zero-YAML Onboarding**: Moving away from complex K8s manifests toward workload-centric descriptors.
 

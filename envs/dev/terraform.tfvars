@@ -145,4 +145,44 @@ ecr_repositories = {
       risk  = "low"
     }
   }
+
+  "new-app-15" = {
+    metadata = {
+      id    = "REGISTRY_NEW_APP_15"
+      owner = "michael-babs-15"
+      risk  = "low"
+    }
+  }
+
+  "new-app-14" = {
+    metadata = {
+      id    = "REGISTRY_NEW_APP_14"
+      owner = "michael-babs-14"
+      risk  = "low"
+    }
+  }
+
+  "new-app-13" = {
+    metadata = {
+      id    = "REGISTRY_NEW_APP_13"
+      owner = "michael-babs-13"
+      risk  = "low"
+    }
+  }
+
+  "new-app-10" = {
+    metadata = {
+      id    = "REGISTRY_NEW_APP_10"
+      owner = "michael-babs-10"
+      risk  = "low"
+    }
+  }
+
+  "my-reg-app-3" = {
+    metadata = {
+      id    = "REGISTRY_MY_REG_APP_3"
+      owner = "michael-babs-3"
+      risk  = "low"
+    }
+  }
 }
