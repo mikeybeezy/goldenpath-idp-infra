@@ -27,10 +27,10 @@ relates_to:
 The Golden Path IDP is built on the principle of **"Governance as a Service,"** where infrastructure management, security compliance, and developer experience are unified into a single, automated lifecycle.
 
 ## 1. Multi-State Platform Health Dashboard
-The platform provides a real-time, high-integrity view of its own health and governance posture through the [****](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md) dashboard.
+The platform provides a real-time, high-integrity view of its own health and governance posture through the [**`PLATFORM_HEALTH.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md) dashboard.
 - **Continuous Auditing**: The dashboard is automatically updated on every change and daily at midnight, providing a stateful record of platform maturity.
 - **Injection Coverage**: Unique tracking of how well metadata is propagated into live cluster resources, identifying "Dark Infrastructure" gaps in real-time.
-- **Automated Audit Log**: Transitioned from a mutable "Live-View" only model to a high-integrity dual-state architecture, maintaining an append-only [****](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/reports/HEALTH_AUDIT_LOG.md) for historical compliance and audit trails.
+- **Automated Audit Log**: Transitioned from a mutable "Live-View" only model to a high-integrity dual-state architecture, maintaining an append-only [**`HEALTH_AUDIT_LOG.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/reports/HEALTH_AUDIT_LOG.md) for historical compliance and audit trails.
 - **Knowledge Graph Integration**: Every component knows its dependencies, allowing for automated impact analysis and relationship mapping.
 
 ## 2. Infrastructure Metadata Sidecars (Sidecar-as-Standard)
