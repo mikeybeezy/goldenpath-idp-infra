@@ -1,5 +1,5 @@
 ---
-id: ADR-0098-standardized-pr-gates
+id: ADR-0098
 title: 'ADR-0098: Standardized PR Gates for ECR Pipeline'
 type: decision
 category: adrs

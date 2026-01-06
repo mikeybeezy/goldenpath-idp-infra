@@ -1,5 +1,5 @@
 ---
-id: ADR-0073-platform-bootstrap-v3-irsa-skip
+id: ADR-0073
 title: 'ADR-0073: Bootstrap v3 skips Terraform IRSA apply in Stage 3B'
 type: adr
 category: unknown

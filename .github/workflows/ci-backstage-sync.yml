@@ -1,0 +1,47 @@
+name: Quality - Backstage Entity Sync
+
+on:
+  push:
+    branches:
+      - development
+    paths:
+      - 'docs/catalogs/ecr-catalog.yaml'
+      - 'scripts/sync_backstage_entities.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync_backstage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install pyyaml==6.0.1
+
+      - name: Generate Backstage Entities
+        run: |
+          python3 scripts/sync_backstage_entities.py
+
+      - name: Commit and Push Changes
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add docs/catalogs/backstage-entities.yaml
+            git commit -m "chore: sync backstage entities [skip ci]"
+            git push origin development
+          else
+            echo "No changes to commit"
+          fi

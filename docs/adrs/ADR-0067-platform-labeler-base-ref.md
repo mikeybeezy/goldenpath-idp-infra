@@ -1,5 +1,5 @@
 ---
-id: ADR-0067-platform-labeler-base-ref
+id: ADR-0067
 title: 'ADR-0067: Use base ref for labeler checkout'
 type: adr
 category: unknown

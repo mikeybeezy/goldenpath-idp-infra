@@ -1,5 +1,5 @@
 ---
-id: ADR-0080-platform-github-agent-roles
+id: ADR-0080
 title: 'ADR-0080: GitHub App Roles for AI/Automation Access'
 type: adr
 category: unknown

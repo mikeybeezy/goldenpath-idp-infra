@@ -1,11 +1,12 @@
 ---
-id: ADR-0044-platform-infra-checks-ref-mode
+id: ADR-0044
 title: 'ADR-0044: Configurable ref for infra checks dispatch'
 type: adr
 category: unknown
 version: '1.0'
 owner: platform-team
-status: active
+status: superseded
+superseded_by: ADR-0046
 dependencies: []
 risk_profile:
   production_impact: low

@@ -1,5 +1,5 @@
 ---
-id: ADR-0009-app-delivery-insights
+id: ADR-0009
 title: 'ADR-0009: CI/CD observability via OpenTelemetry ("Delivery Insights")'
 type: adr
 category: unknown

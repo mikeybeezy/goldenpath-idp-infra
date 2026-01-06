@@ -1,5 +1,5 @@
 ---
-id: ADR-0074-platform-ops-workflow-branch-guard
+id: ADR-0074
 title: 'ADR-0074: Ops workflow branch guard'
 type: adr
 category: unknown

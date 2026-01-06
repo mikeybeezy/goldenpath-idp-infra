@@ -1,5 +1,5 @@
 ---
-id: ADR-0041-platform-orphan-cleanup-deletion-order
+id: ADR-0041
 title: 'ADR-0041: Deterministic orphan cleanup deletion order'
 type: adr
 category: unknown

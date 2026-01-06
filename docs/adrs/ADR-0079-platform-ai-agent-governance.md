@@ -1,5 +1,5 @@
 ---
-id: ADR-0079-platform-ai-agent-governance
+id: ADR-0079
 title: 'ADR-0079: AI Agent Governance and Auditability'
 type: adr
 category: unknown

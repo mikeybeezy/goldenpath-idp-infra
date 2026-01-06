@@ -1,5 +1,5 @@
 ---
-id: ADR-0092-ecr-registry-product-strategy
+id: ADR-0092
 title: 'ADR-0092: ECR Registry Product-Based Strategy & Shared Responsibility Model'
 type: adr
 category: unknown

@@ -1,5 +1,5 @@
 ---
-id: ADR-0035-platform-iam-audit-cadence
+id: ADR-0035
 title: 'ADR-0035: IAM Audit Cadence for CI Roles'
 type: adr
 category: unknown

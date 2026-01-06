@@ -1,5 +1,5 @@
 ---
-id: ADR-0088-automated-metadata-remediation
+id: ADR-0088
 title: 'ADR-0088: Automated Metadata Remediation over Manual Compliance'
 type: adr
 category: unknown

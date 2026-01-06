@@ -1,5 +1,5 @@
 ---
-id: ADR-0065-platform-branch-policy-guard
+id: ADR-0065
 title: 'ADR-0065: Restore branch policy guard for main'
 type: adr
 category: unknown

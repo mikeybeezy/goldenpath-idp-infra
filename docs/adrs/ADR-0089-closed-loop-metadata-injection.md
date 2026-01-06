@@ -1,5 +1,5 @@
 ---
-id: ADR-0089-closed-loop-metadata-injection
+id: ADR-0089
 title: 'ADR-0089: Closed-Loop Metadata Injection'
 type: adr
 category: unknown

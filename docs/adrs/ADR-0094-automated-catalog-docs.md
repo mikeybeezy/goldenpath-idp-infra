@@ -1,5 +1,5 @@
 ---
-id: ADR-0094-automated-catalog-docs
+id: ADR-0094
 title: 'ADR-0094: Automated Registry Catalog Documentation'
 type: adr
 category: unknown

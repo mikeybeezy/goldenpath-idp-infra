@@ -1,5 +1,5 @@
 ---
-id: ADR-0068-platform-review-cadence-output
+id: ADR-0068
 title: 'ADR-0068: Fix review cadence output delimiter'
 type: adr
 category: unknown

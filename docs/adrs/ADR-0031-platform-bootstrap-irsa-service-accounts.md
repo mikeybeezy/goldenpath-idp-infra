@@ -1,5 +1,5 @@
 ---
-id: ADR-0031-platform-bootstrap-irsa-service-accounts
+id: ADR-0031
 title: 'ADR-0031: Create IRSA service accounts during bootstrap'
 type: adr
 category: unknown

@@ -1,5 +1,5 @@
 ---
-id: ADR-0071-doc-taxonomy-refactor
+id: ADR-0071
 title: 'ADR-0071: Standardized Documentation Taxonomy'
 type: adr
 category: unknown

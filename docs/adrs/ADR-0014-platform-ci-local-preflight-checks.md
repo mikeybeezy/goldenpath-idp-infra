@@ -1,5 +1,5 @@
 ---
-id: ADR-0014-platform-ci-local-preflight-checks
+id: ADR-0014
 title: 'ADR-0014: Local preflight checks before PRs'
 type: adr
 category: unknown

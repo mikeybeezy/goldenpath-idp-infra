@@ -1,5 +1,5 @@
 ---
-id: ADR-0085-score-implementation
+id: ADR-0085
 title: 'ADR-0085: Implementing Score in V1'
 type: adr
 category: unknown

@@ -1,5 +1,5 @@
 ---
-id: ADR-0078-platform-governed-repo-scaffolder
+id: ADR-0078
 title: 'ADR-0078: Governance-driven app repository scaffolder'
 type: adr
 category: unknown

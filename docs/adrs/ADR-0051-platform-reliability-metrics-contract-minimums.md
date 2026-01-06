@@ -1,5 +1,5 @@
 ---
-id: ADR-0051-platform-reliability-metrics-contract-minimums
+id: ADR-0051
 title: 'ADR-0051: Minimal reliability metrics and contract minimums'
 type: adr
 category: unknown

@@ -1,5 +1,5 @@
 ---
-id: ADR-0063-platform-terraform-helm-bootstrap
+id: ADR-0063
 title: 'ADR-0063: Terraform Helm Provider for Bootstrap'
 type: adr
 category: unknown

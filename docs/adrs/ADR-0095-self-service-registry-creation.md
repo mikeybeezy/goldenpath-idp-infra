@@ -1,5 +1,5 @@
 ---
-id: ADR-0095-self-service-registry-creation
+id: ADR-0095
 title: 'ADR-0095: Self-Service ECR Registry Creation Workflow'
 type: adr
 category: unknown

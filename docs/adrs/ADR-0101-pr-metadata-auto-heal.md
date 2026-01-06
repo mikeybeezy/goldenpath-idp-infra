@@ -1,5 +1,5 @@
 ---
-id: ADR-0101-pr-metadata-auto-heal
+id: ADR-0101
 title: 'ADR-0101: PR Metadata Auto-Heal and Scoped Validation'
 type: adr
 category: governance

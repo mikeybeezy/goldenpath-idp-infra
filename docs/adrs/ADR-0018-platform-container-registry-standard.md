@@ -1,5 +1,5 @@
 ---
-id: ADR-0018-platform-container-registry-standard
+id: ADR-0018
 title: 'ADR-0018: Container registry standard — ECR default, GHCR supported, Docker
   Hub discouraged'
 type: adr

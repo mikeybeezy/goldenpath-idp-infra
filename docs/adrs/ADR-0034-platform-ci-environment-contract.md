@@ -1,5 +1,5 @@
 ---
-id: ADR-0034-platform-ci-environment-contract
+id: ADR-0034
 title: 'ADR-0034: CI Environment Contract'
 type: adr
 category: unknown

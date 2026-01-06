@@ -1,5 +1,5 @@
 ---
-id: ADR-0003-platform-AWS-IAM-bootstrap-IRSA-SSM-
+id: ADR-0003
 title: 'ADR-0003: Use AWS IAM for bootstrap access, IRSA for pod-to-AWS access, and
   SSM for node break-glass'
 type: adr

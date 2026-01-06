@@ -1,5 +1,5 @@
 ---
-id: ADR-0027-platform-design-philosophy
+id: ADR-0027
 title: 'ADR-0027: Platform design philosophy and reference implementation'
 type: adr
 category: unknown

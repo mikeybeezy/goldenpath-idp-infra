@@ -1,5 +1,5 @@
 ---
-id: ADR-0057-platform-ci-terraform-force-unlock-workflow
+id: ADR-0057
 title: 'ADR-0057: CI Terraform force-unlock workflow (break-glass)'
 type: adr
 category: unknown

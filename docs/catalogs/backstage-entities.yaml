@@ -1,0 +1,94 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: wordpress-platform
+  title: wordpress-platform
+  description: ECR Registry for wordpress-platform
+  annotations:
+    goldenpath-idp.io/risk: high
+    goldenpath-idp.io/environment: prod
+    goldenpath-idp.io/status: active
+    goldenpath-idp.io/id: REGISTRY_WORDPRESS_PLATFORM
+  labels:
+    owner: app-team-wordpress
+spec:
+  type: container-registry
+  owner: app-team-wordpress
+  lifecycle: active
+  system: container-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: test-app-dev
+  title: test-app-dev
+  description: ECR Registry for test-app-dev
+  annotations:
+    goldenpath-idp.io/risk: low
+    goldenpath-idp.io/environment: dev
+    goldenpath-idp.io/status: active
+    goldenpath-idp.io/id: REGISTRY_TEST_APP_DEV
+  labels:
+    owner: app-team-test
+spec:
+  type: container-registry
+  owner: app-team-test
+  lifecycle: active
+  system: container-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: staging-api
+  title: staging-api
+  description: ECR Registry for staging-api
+  annotations:
+    goldenpath-idp.io/risk: medium
+    goldenpath-idp.io/environment: staging
+    goldenpath-idp.io/status: active
+    goldenpath-idp.io/id: REGISTRY_STAGING_API
+  labels:
+    owner: app-team-api
+spec:
+  type: container-registry
+  owner: app-team-api
+  lifecycle: active
+  system: container-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: new-wp-reg-2
+  title: new-wp-reg-2
+  description: ECR Registry for new-wp-reg-2
+  annotations:
+    goldenpath-idp.io/risk: low
+    goldenpath-idp.io/environment: unknown
+    goldenpath-idp.io/status: pending
+    goldenpath-idp.io/id: REGISTRY_NEW_WP_REG_2
+  labels:
+    owner: michael-babs-2
+spec:
+  type: container-registry
+  owner: michael-babs-2
+  lifecycle: pending
+  system: container-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: new-app-16
+  title: new-app-16
+  description: ECR Registry for new-app-16
+  annotations:
+    goldenpath-idp.io/risk: low
+    goldenpath-idp.io/environment: unknown
+    goldenpath-idp.io/status: pending
+    goldenpath-idp.io/id: REGISTRY_NEW_APP_16
+  labels:
+    owner: michael-babs-16
+spec:
+  type: container-registry
+  owner: michael-babs-16
+  lifecycle: pending
+  system: container-infrastructure

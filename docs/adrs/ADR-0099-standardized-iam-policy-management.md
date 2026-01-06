@@ -1,5 +1,5 @@
 ---
-id: ADR-0099-standardized-iam-policy-management
+id: ADR-0099
 title: 'ADR-0099: Standardized IAM Policy Management'
 type: adr
 category: security

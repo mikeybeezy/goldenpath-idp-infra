@@ -1,5 +1,5 @@
 ---
-id: ADR-0039-platform-tag-scoped-iam-policy-template
+id: ADR-0039
 title: 'ADR-0039: Tag-Scoped IAM Policy Template for Destructive Automation'
 type: adr
 category: unknown

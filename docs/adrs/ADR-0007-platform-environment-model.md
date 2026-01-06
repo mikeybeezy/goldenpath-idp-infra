@@ -1,5 +1,5 @@
 ---
-id: ADR-0007-platform-environment-model
+id: ADR-0007
 title: 'ADR-0007: Adopt an environment model that balances cost, iteration speed,
   and credible separation'
 type: adr

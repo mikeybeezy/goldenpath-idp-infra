@@ -1,5 +1,5 @@
 ---
-id: ADR-0055-platform-tempo-tracing-backend
+id: ADR-0055
 title: 'ADR-0055: Tempo as the standard tracing backend (V1.1)'
 type: adr
 category: unknown

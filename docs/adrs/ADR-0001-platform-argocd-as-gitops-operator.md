@@ -1,5 +1,5 @@
 ---
-id: ADR-0001-platform-argocd-as-gitops-operator
+id: ADR-0001
 title: 'ADR-0001: Adopt Argo CD as GitOps controller for platform deployments'
 type: adr
 category: unknown

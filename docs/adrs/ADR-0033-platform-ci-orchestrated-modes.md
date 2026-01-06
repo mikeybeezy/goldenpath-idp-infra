@@ -1,5 +1,5 @@
 ---
-id: ADR-0033-platform-ci-orchestrated-modes
+id: ADR-0033
 title: 'ADR-0033: CI orchestrated modes for infra lifecycle'
 type: adr
 category: unknown

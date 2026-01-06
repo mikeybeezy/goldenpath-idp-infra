@@ -1,5 +1,5 @@
 ---
-id: ADR-0075-app-example-deployments
+id: ADR-0075
 title: 'ADR-0075: App example deployments via Argo CD, Helm, and Kustomize'
 type: adr
 category: unknown

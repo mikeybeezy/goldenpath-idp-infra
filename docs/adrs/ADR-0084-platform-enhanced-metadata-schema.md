@@ -1,5 +1,5 @@
 ---
-id: ADR-0084-platform-enhanced-metadata-schema
+id: ADR-0084
 title: 'ADR-0084: Enhanced Metadata Schema for Knowledge Graph'
 type: adr
 category: adrs

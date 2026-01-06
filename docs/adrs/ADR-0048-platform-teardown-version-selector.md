@@ -1,5 +1,5 @@
 ---
-id: ADR-0048-platform-teardown-version-selector
+id: ADR-0048
 title: 'ADR-0048: Versioned teardown runners with selectable entrypoint'
 type: adr
 category: unknown

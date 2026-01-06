@@ -1,5 +1,5 @@
 ---
-id: ADR-0010-platform-terraform-lockfile-stability
+id: ADR-0010
 title: 'ADR-0010: Enforce Terraform lockfile stability in CI'
 type: adr
 category: unknown

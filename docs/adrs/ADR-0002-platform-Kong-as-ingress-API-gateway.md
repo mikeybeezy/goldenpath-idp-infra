@@ -1,5 +1,5 @@
 ---
-id: ADR-0002-platform-Kong-as-ingress-API-gateway
+id: ADR-0002
 title: 'ADR-0002: Use Kong as the primary ingress/API gateway behind an internal NLB'
 type: adr
 category: unknown

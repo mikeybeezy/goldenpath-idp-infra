@@ -1,5 +1,5 @@
 ---
-id: ADR-0022-platform-post-apply-health-checks
+id: ADR-0022
 title: 'ADR-0022: Post-apply health checks for platform readiness'
 type: adr
 category: unknown

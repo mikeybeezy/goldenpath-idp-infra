@@ -1,5 +1,5 @@
 ---
-id: ADR-0047-platform-teardown-destroy-timeout-retry
+id: ADR-0047
 title: 'ADR-0047: Retry Terraform destroy after timeout with cluster-scoped LB cleanup'
 type: adr
 category: unknown

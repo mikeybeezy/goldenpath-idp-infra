@@ -1,5 +1,5 @@
 ---
-id: ADR-0059-platform-ci-workflow-index-and-ownership
+id: ADR-0059
 title: 'ADR-0059: CI workflow index, ownership, and UI grouping'
 type: adr
 category: unknown

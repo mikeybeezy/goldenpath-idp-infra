@@ -1,5 +1,6 @@
 version: "1.0"
 id: POL-ECR-002
+policy_id: POL-ECR-002
 name: ECR Image Scanning Policy
 category: security
 owner: security-team

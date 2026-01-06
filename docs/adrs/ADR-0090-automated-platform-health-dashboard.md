@@ -1,5 +1,5 @@
 ---
-id: ADR-0090-automated-platform-health-dashboard
+id: ADR-0090
 title: 'ADR-0090: Automated Platform Health Dashboard'
 type: adr
 category: unknown

@@ -1,5 +1,5 @@
 ---
-id: ADR-0064-platform-dev-bootstrap-defaults
+id: ADR-0064
 title: 'ADR-0064: Dev bootstrap defaults off for k8s resources and storage'
 type: adr
 category: unknown

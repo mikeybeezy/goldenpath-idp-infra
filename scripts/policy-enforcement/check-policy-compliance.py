@@ -84,8 +84,12 @@ class PolicyLoader:
                 continue
 
             with open(policy_file) as f:
-                policy = yaml.safe_load(f)
-                policies[policy['policy_id']] = policy
+                try:
+                    for policy in yaml.safe_load_all(f):
+                        if policy and isinstance(policy, dict) and 'policy_id' in policy:
+                            policies[policy['policy_id']] = policy
+                except yaml.YAMLError:
+                    print(f"DEBUG: Skipping {policy_file.name} - YAML error")
 
         return policies
 
