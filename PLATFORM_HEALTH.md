@@ -23,7 +23,7 @@ relates_to:
 ---
 
 # 🏥 Platform Health Report
-**Date Generated**: 2026-01-06 14:53:05
+**Date Generated**: 2026-01-06 14:59:38
 **Total Tracked Resources**: 390
 **Metadata Compliance**: 98.2%
 
@@ -41,12 +41,12 @@ relates_to:
 
 ## 🛡️ Risk Summary (Production Impact)
 - **High**: 35
-- **Medium**: 28
-- **Low**: 317
+- **Medium**: 29
+- **Low**: 318
 - **None**: 4
 
 ## 📂 Top Categories
-- **unknown**: 242
+- **unknown**: 240
 - **gitops**: 20
 - **governance**: 18
 - **modules**: 16
