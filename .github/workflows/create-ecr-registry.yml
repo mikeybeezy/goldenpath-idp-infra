@@ -98,23 +98,78 @@ jobs:
           echo "✅ Updated catalog for registry: $NAME (ID: $ID)"
 
       - name: Update Terraform tfvars
+        env:
+          INPUT_ENVIRONMENT: ${{ inputs.environment }}
+          INPUT_REGISTRY_NAME: ${{ inputs.registry_name }}
+          INPUT_OWNER: ${{ inputs.owner }}
+          INPUT_RISK: ${{ inputs.risk }}
+          INPUT_ID: ${{ steps.calc.outputs.id }}
         run: |
-          set -euo pipefail
-          TFVARS="envs/${{ inputs.environment }}/terraform.tfvars"
-          NAME="${{ inputs.registry_name }}"
-          OWNER="${{ inputs.owner }}"
-          RISK="${{ inputs.risk }}"
-          ID="${{ steps.calc.outputs.id }}"
+          python3 -c '
+          import os
+          import sys
 
-          # Check if registry already exists in tfvars
-          if grep -q "\"$NAME\"" "$TFVARS" 2>/dev/null; then
-            echo "⚠️  Registry already exists in $TFVARS"
-          else
-            # Append new registry entry using printf to avoid YAML lint issues
-            printf '\n# Registry: %s\necr_repositories["%s"] = {\n  metadata = {\n    id    = "%s"\n    owner = "%s"\n    risk  = "%s"\n  }\n}\n' \
-              "$NAME" "$NAME" "$ID" "$OWNER" "$RISK" >> "$TFVARS"
-            echo "✅ Added registry to $TFVARS (ID: $ID)"
-          fi
+          tfvars_path = f"envs/{os.environ[\"INPUT_ENVIRONMENT\"]}/terraform.tfvars"
+          name = os.environ["INPUT_REGISTRY_NAME"]
+          owner = os.environ["INPUT_OWNER"]
+          risk = os.environ["INPUT_RISK"]
+          reg_id = os.environ["INPUT_ID"]
+
+          # HCL Entry to insert
+          new_entry = f"""
+            "{name}" = {{
+              metadata = {{
+                id    = "{reg_id}"
+                owner = "{owner}"
+                risk  = "{risk}"
+              }}
+            }}
+          """
+
+          try:
+              with open(tfvars_path, "r") as f:
+                  content = f.read()
+              
+              # Simple check if entry already exists (naive text check)
+              if f"\"{name}\"" in content and "ecr_repositories" in content:
+                  print(f"⚠️  Registry {name} appears to already exist in {tfvars_path}")
+                  sys.exit(0)
+
+              if "ecr_repositories = {" in content:
+                  # Find start of block
+                  start_idx = content.find("ecr_repositories = {")
+                  brace_count = 0
+                  insert_idx = -1
+                  
+                  # Walk forward to find matching closing brace
+                  for i in range(start_idx, len(content)):
+                      if content[i] == "{":
+                          brace_count += 1
+                      elif content[i] == "}":
+                          brace_count -= 1
+                          if brace_count == 0:
+                              insert_idx = i
+                              break
+                  
+                  if insert_idx != -1:
+                      # Insert before the last brace
+                      new_content = content[:insert_idx] + new_entry + content[insert_idx:]
+                      with open(tfvars_path, "w") as f:
+                          f.write(new_content)
+                      print(f"✅ Injected {name} into existing ecr_repositories block.")
+                  else:
+                      print("❌ Error: Could not parse ecr_repositories block structure.")
+                      sys.exit(1)
+              else:
+                  # Create new block if missing
+                  with open(tfvars_path, "a") as f:
+                      f.write(f"\n# Registry Catalog\necr_repositories = {{\n{new_entry}\n}}\n")
+                  print(f"✅ Created new ecr_repositories block with {name}.")
+
+          except Exception as e:
+              print(f"❌ Error updating tfvars: {e}")
+              sys.exit(1)
+          '
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
