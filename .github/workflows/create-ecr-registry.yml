@@ -116,6 +116,9 @@ jobs:
             echo "✅ Added registry to $TFVARS (ID: $ID)"
           fi
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
       - name: Validate Terraform Syntax
         run: |
           terraform fmt -check "envs/${{ inputs.environment }}/terraform.tfvars" || {
