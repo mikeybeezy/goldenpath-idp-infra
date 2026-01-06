@@ -58,6 +58,25 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
+  name: new-wp-reg-2
+  title: new-wp-reg-2
+  description: ECR Registry for new-wp-reg-2
+  annotations:
+    goldenpath-idp.io/risk: low
+    goldenpath-idp.io/environment: unknown
+    goldenpath-idp.io/status: pending
+    goldenpath-idp.io/id: REGISTRY_NEW_WP_REG_2
+  labels:
+    owner: michael-babs-2
+spec:
+  type: container-registry
+  owner: michael-babs-2
+  lifecycle: pending
+  system: container-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
   name: new-app-16
   title: new-app-16
   description: ECR Registry for new-app-16
