@@ -43,6 +43,7 @@ documents, and artifacts you need before you start making changes.
 - Current priority list and expected outcomes for the week.
 - One known-good run and one known-bad run (URLs + SHAs + build_id).
 - Primary communication channel for the platform team.
+- **Critical**: Create PR permissions enabled for Actions (see [GITHUB_WORKFLOW_PERMISSIONS.md](GITHUB_WORKFLOW_PERMISSIONS.md)).
 
 ## Read first (fast context)
 

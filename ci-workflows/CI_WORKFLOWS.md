@@ -46,6 +46,7 @@ CI Workflows (GitHub Actions)
 │   └─ Ops - CI Teardown
 │
 ├─ Terraform Apply
+│   ├─ Apply - ECR Auto-Apply
 │   ├─ Apply - Infra Terraform Apply (dev branch)
 │   ├─ Apply - Infra Terraform Apply (dev)
 │   ├─ Apply - Infra Terraform Apply (prod)
@@ -182,6 +183,11 @@ CI Workflows (GitHub Actions)
 - **Triggers**: 
 
 ## Terraform Apply
+
+### Apply - ECR Auto-Apply
+- **File**: `ecr-auto-apply.yml`
+- **Owner**: platform
+- **Triggers**: 
 
 ### Apply - Infra Terraform Apply (dev branch)
 - **File**: `infra-terraform-apply-dev-branch.yml`

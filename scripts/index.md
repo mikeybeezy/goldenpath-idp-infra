@@ -18,7 +18,6 @@ dependencies:
 
 This directory contains the automation engine powering the GoldenPath IDP.
 
-
 ## Delivery
 
 | Script | Description |
@@ -28,18 +27,18 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [generate-teardown-log.sh](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate-teardown-log.sh) | Shell script utility. |
 | [render_template.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/render_template.py) | Purpose: Backstage-compatible Template Renderer |
 | [resolve-cluster-name.sh](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/resolve-cluster-name.sh) | Shell script utility. |
-| [scaffold_ecr.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/scaffold_ecr.py) | No description provided. |
+| [scaffold_ecr.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/scaffold_ecr.py) | Purpose: Standardized ECR Repository Scaffolding. |
 
 ## Documentation
 
 | Script | Description |
 | :--- | :--- |
-| [check_doc_freshness.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/check_doc_freshness.py) | No description provided. |
-| [check_doc_index_contract.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/check_doc_index_contract.py) | No description provided. |
+| [check_doc_freshness.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/check_doc_freshness.py) | Purpose: Doc Freshness Auditor. |
+| [check_doc_index_contract.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/check_doc_index_contract.py) | Purpose: Documentation Index Contract Validator. |
 | [extract_relationships.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/extract_relationships.py) | Purpose: Automated Relationship & Dependency Extractor |
 | [format_docs.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/format_docs.py) | Purpose: Global Formatting & Whitespace Normalizer |
 | [generate_catalog_docs.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate_catalog_docs.py) | Multi-Domain Platform Catalog Generator |
-| [generate_workflow_index.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate_workflow_index.py) | No description provided. |
+| [generate_workflow_index.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate_workflow_index.py) | Purpose: Auto-generate CI Workflows Index (CI_WORKFLOWS.md). |
 
 ## Governance
 
@@ -60,4 +59,4 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [fix_yaml_syntax.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/fix_yaml_syntax.py) | YAML Syntax Fixer for Templates |
 | [migrate_partial_metadata.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/migrate_partial_metadata.py) | Migrate partial metadata to enhanced schema |
 | [reliability-metrics.sh](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/reliability-metrics.sh) | Shell script utility. |
-| [test_hotfix.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/test_hotfix.py) | No description provided. |
+| [test_hotfix.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/test_hotfix.py) | Purpose: Unit tests for PR Guardrails Hotfix Logic. |
