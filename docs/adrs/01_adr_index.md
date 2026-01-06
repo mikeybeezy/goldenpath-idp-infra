@@ -125,7 +125,6 @@ relates_to:
   - ADR-0110
   - ADR-0111
   - ADR-0112
-  - ADR-0113
 <!-- ADR_RELATE_END -->
 ---
 
@@ -251,7 +250,6 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0110](ADR-0110-idp-knowledge-graph-architecture.md) | Architecture | IDP Knowledge Graph Node Architecture | Accepted | 2026-01-06 | The GoldenPath IDP currently uses disconnected YAML sidecars (`metadata.yaml`) to track component attributes. While metadata compliance is high (98.7%), we lacks a structured way to understand **re... |
 | [ADR-0111](ADR-0111-platform-documentation-auto-healing.md) | Adrs | Automated Documentation Auto-Healing | Accepted | 2026-01-0?  | Our platform uses automated indexing scripts (`generate_script_index.py`, `generate_workflow_index.py`) to maintain documentation portals (`scripts/index.md`, `ci-workflows/CI_WORKFLOWS.md`). |
 | [ADR-0112](ADR-0112-automated-adr-index-generation.md) | Architecture | Automated ADR Index Generation | Proposed | 2026-01-0?  | As the number of Architecture Decision Records (ADRs) grows (currently 100+), keeping the `01_adr_index.md` in sync manually has become error-prone. We frequently observe drift in statuses, dates, ... |
-| [ADR-0113](ADR-0113-platform-hitl-test.md) | Governance | Platform HITL Testing Protocol | Proposed | 2026-01-06 | As we move toward a more automated documentation governance model, we need a standard protocol for "Human-in-the-Loop" (HITL) verification of bot-generated changes. This ensures that while the spee... |
 <!-- ADR_TABLE_END -->
 
 ---
