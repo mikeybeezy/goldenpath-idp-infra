@@ -58,7 +58,8 @@ CI Workflows (GitHub Actions)
 │  ├─ Docs - Metadata Validation
 │  ├─ Quality - Pre-commit checks
 │  ├─ Quality - YAML Lint
-│  └─ Quality - Super Linter (Markdown)
+│  ├─ Quality - Super Linter (Markdown)
+│  └─ Quality - Terraform Lint
 │
 ├─ Terraform Plan
 │  ├─ Plan - PR Terraform Plan
@@ -144,6 +145,14 @@ CI Workflows (GitHub Actions)
 - Inputs: none
 - Purpose: markdown lint (currently disabled)
 - Runbook: `docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md`
+
+### Quality - Terraform Lint
+
+- Trigger: pull_request on **/*.tf
+- Owner: platform
+- Inputs: none
+- Purpose: fast offline validation (fmt + validate)
+- Runbook: `docs/adrs/ADR-0102-terraform-fast-validation.md`
 
 ## Plan
 
