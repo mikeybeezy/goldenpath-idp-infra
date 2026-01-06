@@ -215,57 +215,71 @@ jobs:
           # Log to console so user can see progress
           cat plan_output.txt
           
-          # Build the PR body file
-          cat <<EOF > pr_body.txt
+          # Build the PR body file (stripping the leading spaces used for YAML alignment)
+          cat <<'EOF' | sed 's/^          //' > pr_body.raw
           ## 🏗️ ECR Registry Creation Request
-
-          **Registry:** \`${{ inputs.registry_name }}\`
-          **Environment:** \`${{ inputs.environment }}\`
-          **Owner:** \`${{ inputs.owner }}\`
-          **Risk Level:** \`${{ inputs.risk }}\`
-          **ID:** \`${{ steps.calc.outputs.id }}\`
-
+          
+          **Registry:** `${{ inputs.registry_name }}`
+          **Environment:** `${{ inputs.environment }}`
+          **Owner:** `${{ inputs.owner }}`
+          **Risk Level:** `${{ inputs.risk }}`
+          **ID:** `${{ steps.calc.outputs.id }}`
+          
           ---
-
+          
           ## 🤖 Inline Terraform Plan
           
           <details><summary>📄 <strong>Targeted Terraform Plan</strong></summary>
-
-          This plan was generated using a **bounded context** strategy (\`-target\`), focusing only on the new ECR repository.
+          
+          This plan was generated using a **bounded context** strategy (`-target`), focusing only on the new ECR repository.
           Note: state refresh was skipped because this is a shallow plan.
-
-          \`\`\`hcl
-          $(cat plan_output.txt | tail -n 500)
-          \`\`\`
+          
+          ```hcl
+          PLAN_CONTENT_PLACEHOLDER
+          ```
           </details>
-
+          
           ---
-
+          
           ## 🔒 Security Controls (Auto-Applied)
           
-          $(if [ "${{ inputs.risk }}" == "high" ]; then
-            echo "### 🔴 High Risk\n- ✅ KMS Encryption\n- ✅ Tag Immutability\n- ✅ Retention: 50\n- ✅ Enhanced Scanning"
-          elif [ "${{ inputs.risk }}" == "medium" ]; then
-            echo "### 🟡 Medium Risk\n- ✅ AES256\n- ✅ Tag Mutability\n- ✅ Retention: 30\n- ✅ Standard Scanning"
-          else
-            echo "### 🟢 Low Risk\n- ✅ AES256\n- ✅ Tag Mutability\n- ✅ Retention: 20\n- ✅ Standard Scanning"
-          fi)
-
+          SECURITY_CONTROLS_PLACEHOLDER
+          
           ---
-
+          
           ## 📋 Changes Policy
-          - ✅ Added to registry catalog (\`docs/catalogs/ecr-catalog.yaml\`)
+          - ✅ Added to registry catalog (`docs/catalogs/ecr-catalog.yaml`)
           - ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
-          - ✅ Added to Terraform tfvars (\`envs/${{ inputs.environment }}/terraform.tfvars\`)
-
+          - ✅ Added to Terraform tfvars (`envs/${{ inputs.environment }}/terraform.tfvars`)
+          
           ---
           
           ## 🚀 Next Steps
           1. **Merge** this PR (Plan is already verified above).
           2. **Run Apply** workflow (Automated next step).
-
+          
           /cc @platform-team
           EOF
+
+          # Replace placeholders with actual content
+          cp pr_body.raw pr_body.txt
+          
+          # Insert plan content (last 500 lines to avoid PR overflow)
+          sed -i '/PLAN_CONTENT_PLACEHOLDER/r plan_output.txt' pr_body.txt
+          sed -i 's/PLAN_CONTENT_PLACEHOLDER//' pr_body.txt
+          
+          # Insert security controls
+          RISK="${{ inputs.risk }}"
+          if [ "$RISK" == "high" ]; then
+            CONTROLS="### 🔴 High Risk\n- ✅ KMS Encryption\n- ✅ Tag Immutability\n- ✅ Retention: 50\n- ✅ Enhanced Scanning"
+          elif [ "$RISK" == "medium" ]; then
+            CONTROLS="### 🟡 Medium Risk\n- ✅ AES256\n- ✅ Tag Mutability\n- ✅ Retention: 30\n- ✅ Standard Scanning"
+          else
+            CONTROLS="### 🟢 Low Risk\n- ✅ AES256\n- ✅ Tag Mutability\n- ✅ Retention: 20\n- ✅ Standard Scanning"
+          fi
+          sed -i "s|SECURITY_CONTROLS_PLACEHOLDER|$CONTROLS|" pr_body.txt
+          
+          echo "✅ PR body generated in pr_body.txt"
 
       - name: Restore Real Backend
         run: |
