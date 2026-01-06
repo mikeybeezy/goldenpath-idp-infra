@@ -129,4 +129,12 @@ ecr_repositories = {
       risk  = "low"
     }
   }
+
+  "new-app-14" = {
+    metadata = {
+      id    = "REGISTRY_NEW_APP_14"
+      owner = "michael-babs-14"
+      risk  = "low"
+    }
+  }
 }
