@@ -255,3 +255,15 @@ variable "eks_config" {
     }
   }
 }
+
+variable "ecr_repositories" {
+  description = "Map of ECR repositories to create."
+  type = map(object({
+    metadata = object({
+      id    = string
+      owner = string
+      risk  = optional(string, "medium")
+    })
+  }))
+  default = {}
+}

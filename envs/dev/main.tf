@@ -294,3 +294,12 @@ module "kubernetes_addons" {
     aws_eks_access_policy_association.terraform_admin
   ]
 }
+
+module "ecr_repositories" {
+  source   = "../../modules/aws_ecr"
+  for_each = var.ecr_repositories
+
+  name     = each.key
+  metadata = each.value.metadata
+}
+
