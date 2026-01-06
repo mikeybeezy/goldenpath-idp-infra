@@ -55,9 +55,12 @@ CI Workflows (GitHub Actions)
 │   ├─ Apply - Infra Terraform Apply (test)
 │   └─ Apply - Infra Terraform Update (dev)
 │
-└─ Terraform Plan
-    ├─ Plan - Infra Terraform Plan Pipeline
-    └─ Plan - PR Terraform Plan
+├─ Terraform Plan
+│   ├─ Plan - Infra Terraform Plan Pipeline
+│   └─ Plan - PR Terraform Plan
+│
+└─ Uncategorized
+    └─ Quality - Documentation Auto-Healing
 ```
 
 ---
@@ -234,5 +237,12 @@ CI Workflows (GitHub Actions)
 
 ### Plan - PR Terraform Plan
 - **File**: `pr-terraform-plan.yml`
+- **Owner**: platform
+- **Triggers**: 
+
+## Uncategorized
+
+### Quality - Documentation Auto-Healing
+- **File**: `ci-index-auto-heal.yml`
 - **Owner**: platform
 - **Triggers**: 

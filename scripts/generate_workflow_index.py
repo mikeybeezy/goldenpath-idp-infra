@@ -147,8 +147,25 @@ def generate_markdown(workflows):
     return "\n".join(content)
 
 if __name__ == "__main__":
+    import sys
+    
     wfs = parse_workflows()
-    md = generate_markdown(wfs)
+    generated_content = generate_markdown(wfs)
+    
+    if "--validate" in sys.argv:
+        current_content = ""
+        if os.path.exists(OUTPUT_FILE):
+            with open(OUTPUT_FILE, "r") as f:
+                current_content = f.read()
+        
+        if current_content.strip() != generated_content.strip():
+            print(f"❌ Drift Detected: {OUTPUT_FILE} is out of sync with physical workflows.")
+            sys.exit(1)
+        else:
+            print(f"✅ {OUTPUT_FILE} is up-to-date.")
+            sys.exit(0)
+
+    # Normal mode: Generate file
     with open(OUTPUT_FILE, "w") as f:
-        f.write(md)
+        f.write(generated_content)
     print(f"✅ Generated {OUTPUT_FILE} with {len(wfs)} workflows.")

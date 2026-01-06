@@ -134,13 +134,25 @@ if __name__ == "__main__":
             if not desc or desc.startswith("No description"):
                 missing_docs.append(name)
         
-        if missing_docs:
-            print("❌ Governance Failure: The following scripts are missing docstrings/headers:")
-            for s in missing_docs:
-                print(f"   - {s}")
+        # Drift Check
+        current_content = ""
+        if os.path.exists(OUTPUT_FILE):
+            with open(OUTPUT_FILE, "r") as f:
+                current_content = f.read()
+        
+        generated_content = generate_index()
+        is_drifted = (current_content.strip() != generated_content.strip())
+
+        if missing_docs or is_drifted:
+            if missing_docs:
+                print("❌ Governance Failure: The following scripts are missing docstrings/headers:")
+                for s in missing_docs:
+                    print(f"   - {s}")
+            if is_drifted:
+                print(f"❌ Drift Detected: {OUTPUT_FILE} is out of sync with physical scripts.")
             sys.exit(1)
         else:
-            print("✅ All scripts are properly documented.")
+            print("✅ All scripts are documented and index is up-to-date.")
             sys.exit(0)
 
     # Normal mode: Generate file
