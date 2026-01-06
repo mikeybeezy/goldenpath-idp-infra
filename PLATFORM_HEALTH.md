@@ -23,14 +23,14 @@ relates_to:
 ---
 
 # 🏥 Platform Health Report
-**Date Generated**: 2026-01-06 01:42:54
-**Total Tracked Resources**: 375
+**Date Generated**: 2026-01-06 01:44:19
+**Total Tracked Resources**: 377
 **Metadata Compliance**: 98.7%
 
 ## 📊 Lifecycle Distribution
-- **Active**: 362
+- **Active**: 363
 - **Draft**: 4
-- **Accepted**: 5
+- **Accepted**: 6
 - **Deprecated**: 2
 - **Planned**: 1
 - **Released**: 1
@@ -39,10 +39,10 @@ relates_to:
 - **High**: 35
 - **Medium**: 28
 - **Low**: 306
-- **None**: 2
+- **None**: 3
 
 ## 📂 Top Categories
-- **unknown**: 242
+- **unknown**: 243
 - **gitops**: 20
 - **modules**: 16
 - **governance**: 15
