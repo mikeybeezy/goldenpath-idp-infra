@@ -198,38 +198,74 @@ jobs:
         run: |
           echo "📝 Running targeted plan for module.ecr_repositories[\"${{ inputs.registry_name }}\"]..."
           
-          # We use -refresh=false because we are running with -backend=false
-          # This prevents Terraform from trying to reach out to a state file that isnt loaded.
+          ENV_DIR="envs/${{ inputs.environment }}"
           
-          terraform -chdir=envs/${{ inputs.environment }} plan \
+          # We use -refresh=false because we are running with a blank local state.
+          # This ensures we see everything as "to be created" (+).
+          terraform -chdir="${ENV_DIR}" plan \
             -target="module.ecr_repositories[\"${{ inputs.registry_name }}\"]" \
             -lock=false \
             -refresh=false \
             -no-color > plan_output.txt 2>&1 || {
               echo "❌ Plan failed with error:"
               cat plan_output.txt
+              exit 1
             }
           
-          # Clean up for PR body (Markdown wrapper)
-          echo "PLAN_BODY<<EOF" >> $GITHUB_ENV
-          echo "<details><summary>📄 <strong>Targeted Terraform Plan</strong></summary>" >> $GITHUB_ENV
-          echo "" >> $GITHUB_ENV
-          echo "This plan was generated using a **bounded context** strategy (\`-target\`), focusing only on the new ECR repository." >> $GITHUB_ENV
-          echo "Note: state refresh was skipped (\`-refresh=false\`) because this is a shallow plan." >> $GITHUB_ENV
-          echo "" >> $GITHUB_ENV
-          echo "\`\`\`hcl" >> $GITHUB_ENV
+          # Log to console so user can see progress
+          cat plan_output.txt
           
-          # If the output is too long, we keep the last 50 lines which are usually the plan summary
-          if [ $(wc -l < plan_output.txt) -gt 200 ]; then
-            echo "... [Plan output truncated for brevity] ..." >> $GITHUB_ENV
-            tail -n 200 plan_output.txt >> $GITHUB_ENV
+          # Build the PR body file
+          cat <<EOF > pr_body.txt
+          ## 🏗️ ECR Registry Creation Request
+
+          **Registry:** \`${{ inputs.registry_name }}\`
+          **Environment:** \`${{ inputs.environment }}\`
+          **Owner:** \`${{ inputs.owner }}\`
+          **Risk Level:** \`${{ inputs.risk }}\`
+          **ID:** \`${{ steps.calc.outputs.id }}\`
+
+          ---
+
+          ## 🤖 Inline Terraform Plan
+          
+          <details><summary>📄 <strong>Targeted Terraform Plan</strong></summary>
+
+          This plan was generated using a **bounded context** strategy (\`-target\`), focusing only on the new ECR repository.
+          Note: state refresh was skipped because this is a shallow plan.
+
+          \`\`\`hcl
+          $(cat plan_output.txt | tail -n 500)
+          \`\`\`
+          </details>
+
+          ---
+
+          ## 🔒 Security Controls (Auto-Applied)
+          
+          $(if [ "${{ inputs.risk }}" == "high" ]; then
+            echo "### 🔴 High Risk\n- ✅ KMS Encryption\n- ✅ Tag Immutability\n- ✅ Retention: 50\n- ✅ Enhanced Scanning"
+          elif [ "${{ inputs.risk }}" == "medium" ]; then
+            echo "### 🟡 Medium Risk\n- ✅ AES256\n- ✅ Tag Mutability\n- ✅ Retention: 30\n- ✅ Standard Scanning"
           else
-            cat plan_output.txt >> $GITHUB_ENV
-          fi
+            echo "### 🟢 Low Risk\n- ✅ AES256\n- ✅ Tag Mutability\n- ✅ Retention: 20\n- ✅ Standard Scanning"
+          fi)
+
+          ---
+
+          ## 📋 Changes Policy
+          - ✅ Added to registry catalog (\`docs/catalogs/ecr-catalog.yaml\`)
+          - ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
+          - ✅ Added to Terraform tfvars (\`envs/${{ inputs.environment }}/terraform.tfvars\`)
+
+          ---
           
-          echo "\`\`\`" >> $GITHUB_ENV
-          echo "</details>" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          ## 🚀 Next Steps
+          1. **Merge** this PR (Plan is already verified above).
+          2. **Run Apply** workflow (Automated next step).
+
+          /cc @platform-team
+          EOF
 
       - name: Restore Real Backend
         run: |
@@ -243,61 +279,7 @@ jobs:
           branch: "registry/create-${{ inputs.registry_name }}"
           title: "🏗️ Create ECR Registry: ${{ inputs.registry_name }} (${{ inputs.environment }})"
           commit-message: "registry: create ${{ inputs.registry_name }} in ${{ inputs.environment }}"
-          body: |
-            ## 🏗️ ECR Registry Creation Request
-
-            **Registry:** `${{ inputs.registry_name }}`
-            **Environment:** `${{ inputs.environment }}`
-            **Owner:** `${{ inputs.owner }}`
-            **Risk Level:** `${{ inputs.risk }}`
-            **ID:** `${{ steps.calc.outputs.id }}`
-
-            ---
-
-            ## 🤖 Inline Terraform Plan
-            
-            ${{ env.PLAN_BODY }}
-
-            ---
-
-            ## 🔒 Security Controls (Auto-Applied)
-
-            Based on risk level **`${{ inputs.risk }}`**, the following security controls will be automatically configured:
-
-            ${{ inputs.risk == 'high' && '
-            ### 🔴 High Risk Configuration
-            - ✅ **Encryption:** KMS (customer-managed keys)
-            - ✅ **Tag Mutability:** IMMUTABLE (tags cannot be overwritten)
-            - ✅ **Image Retention:** Keep last 50 images
-            - ✅ **Image Scanning:** Enhanced scanning on every push
-            ' || inputs.risk == 'medium' && '
-            ### 🟡 Medium Risk Configuration
-            - ✅ **Encryption:** AES256 (AWS-managed)
-            - ✅ **Tag Mutability:** MUTABLE (tags can be overwritten)
-            - ✅ **Image Retention:** Keep last 30 images
-            - ✅ **Image Scanning:** Standard scanning on every push
-            ' || '
-            ### 🟢 Low Risk Configuration
-            - ✅ **Encryption:** AES256 (AWS-managed)
-            - ✅ **Tag Mutability:** MUTABLE (tags can be overwritten)
-            - ✅ **Image Retention:** Keep last 20 images
-            - ✅ **Image Scanning:** Standard scanning on every push
-            ' }}
-
-            ---
-
-            ## 📋 Changes Policy
-            - ✅ Added to registry catalog (`docs/catalogs/ecr-catalog.yaml`)
-            - ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
-            - ✅ Added to Terraform tfvars (`envs/${{ inputs.environment }}/terraform.tfvars`)
-
-            ---
-            
-            ## 🚀 Next Steps
-            1. **Merge** this PR (Plan is already verified above).
-            2. **Run Apply** workflow (Automated next step).
-
-            /cc @platform-team
+          body-path: pr_body.txt
           labels: |
             ecr-registry
             platform-team
