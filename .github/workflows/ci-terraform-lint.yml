@@ -30,7 +30,7 @@ jobs:
           # We skip .terraform (plugins) and .git
           find . -type f -name "*.tf" -not -path "*/.terraform/*" -not -path "*/.git/*" -exec dirname {} \; | sort -u | while read -r dir; do
             echo "🔍 Validating: $dir"
-            
+
             # Use subshell to maintain CWD
             (
               cd "$dir"

@@ -45,7 +45,7 @@ jobs:
           # We read the lifecycle and build_id directly from the tfvars committed to the repo
           LIFECYCLE=$(grep "cluster_lifecycle" envs/dev/terraform.tfvars | cut -d'"' -f2)
           BUILD_ID=$(grep "build_id" envs/dev/terraform.tfvars | cut -d'"' -f2)
-          
+
           if [[ "$LIFECYCLE" == "ephemeral" ]]; then
             STATE_KEY="envs/dev/builds/${BUILD_ID}/terraform.tfstate"
           else
@@ -67,6 +67,6 @@ jobs:
         run: |
           NAME="${{ steps.extract.outputs.name }}"
           echo "🎬 Applying changes for registry: $NAME"
-          
+
           terraform -chdir=envs/dev apply -auto-approve -input=false -no-color \
             -target="module.ecr_repositories[\"$NAME\"]"
