@@ -16,30 +16,48 @@ The GoldenPath IDP currently uses disconnected YAML sidecars (`metadata.yaml`) t
 ## Decision
 We will adopt a **Node-based Knowledge Graph Architecture**. Every component tracked by the platform will be treated as an **Entity Node**, and every connection (dependencies, ownership, compliance) will be treated as a **Relationship Edge**.
 
-### 1. The Five Pillars of Nodes
-We will categorize all nodes into five primary domains:
+### 1. The Practical Node Schema
+We will focus on essential node types that represent the living state of our platform:
 
 ```mermaid
 graph TD
-    A["Identity (Who)"] --> B["Team/User"]
-    C["Product (What)"] --> D["Repo/Service/App"]
-    E["Infra (Where)"] --> F["ECR/EKS/S3/VPC"]
-    G["Gov (Why)"] --> H["ADR/Policy/Gate"]
-    I["Ops (How)"] --> J["Workflow/Apply/Run"]
-    
-    B -- OWNS --> D
-    D -- DEPENDS_ON --> F
-    D -- IMPLEMENTS --> H
-    F -- PROVISIONED_BY --> J
+    Registry["Registry (ECR)"]
+    App["Application (Service)"]
+    Infra["Infra (EKS/VPC)"]
+    DF["Dockerfile (Source)"]
+    Img["Image (Artifact)"]
+    Workflow["Workflow (Automation)"]
+    Env["Environment (Context)"]
+    Team["Team (Owner)"]
+    ADR["ADR (Decision)"]
+    Policy["Policy (Rule)"]
+
+    App -- DEFINED_BY --> DF
+    App -- PRODUCES --> Img
+    App -- HOSTED_ON --> Infra
+    Img -- STORED_IN --> Registry
+    Img -- BUILT_BY --> Workflow
+    Registry -- OWNED_BY --> Team
+    Registry -- GOVERNED_BY --> Policy
+    Registry -- DECIDED_BY --> ADR
+    Registry -- AFFECTS --> Env
+    Infra -- OWNED_BY --> Team
+    Infra -- CREATED_VIA --> Workflow
+    any["Any Node"] -- DEPENDS_ON --> any2["Any Node"]
 ```
 
-### 3. The Autonomous Agent Layer
-To leverage this graph, we define the **"Graph Reasoner"** agent persona. This agent doesn't just "see" files; it "understands" the topology of the platform.
+### 2. Schema Evolution & Versioning
+The graph is designed to be **extensible**. 
 
-### Agent Actions
-*   **Knowledge Synthesis**: Answering natural language questions about the platform state.
-*   **Proactive Healing**: Automatically opening PRs when the graph reveals a compliance gap (e.g., a service without an owner).
-*   **Impact Prediction**: Simulation of changes before they are applied by traversing the graph edges.
+- **Versioning**: Edges can be versioned or renamed. If we move from `USED_BY` to `CONSUMES`, we run a migration script across the Knowledge Graph without altering the underlying metadata.
+- **Domain Extension**: We will start with the "Supply Chain" domain (Registry/App/Image) and later extend to "Networking" (VPC/Security Groups) or "Compute" (EKS/Nodes) as we build new automation healers.
+- **Soft Schema**: We use a "Flexible Schema" approach where nodes can have arbitrary properties, but core identity fields are strictly enforced.
+
+### 3. Advanced Evolutionary Patterns (Improvements)
+To reach the full potential of the IDP, we will incorporate:
+- **Telemetry Integration**: Linking nodes to live cloud state (e.g., storage metrics, scan results).
+- **Temporal Dimensions**: Tracking graph state changes over time to provide historical context.
+- **Human-in-the-Loop Verification**: Allowing manual sign-offs (e.g., security approval) to be represented as explicit edges in the graph.
 
 ## Status: Proposed
 This ADR is currently in the **Planning** phase. We will begin implementation by upgrading `extract_relationships.py`.
