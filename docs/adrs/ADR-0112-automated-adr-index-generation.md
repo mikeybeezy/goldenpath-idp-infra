@@ -8,20 +8,20 @@ owner: platform-team
 status: proposed
 risk_profile:
   production_impact: low
-  security_risk: none
-  coupling_risk: low
+  production_impact: medium
+  security_risk: low
+  coupling_risk: medium
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
 lifecycle:
-  supported_until: 2028-01-06
+  supported_until: 2027-01-06
   breaking_change: false
+date: 2026-01-06
 relates_to:
+  - ADR-0110
   - ADR-0111
-  - 01_adr_index
 ---
-
-# ADR-0112: Automated ADR Index Generation
 
 ## Context
 As the number of Architecture Decision Records (ADRs) grows (currently 100+), keeping the `01_adr_index.md` in sync manually has become error-prone. We frequently observe drift in statuses, dates, and related links. While we have a standardized metadata schema, the index remains a manual "View" that requires constant reconciliation.

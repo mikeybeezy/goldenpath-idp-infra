@@ -53,7 +53,10 @@ def extract_metadata(filepath):
         if not frontmatter_match:
             return None, "Malformed or unterminated frontmatter"
 
-        data = yaml.safe_load(frontmatter_match.group(1))
+        raw_frontmatter = frontmatter_match.group(1)
+        # Strip HTML comments to allow automated markers like <!-- ADR_RELATE_START -->
+        clean_frontmatter = re.sub(r'<!--.*?-->', '', raw_frontmatter)
+        data = yaml.safe_load(clean_frontmatter)
         return data, None
     except yaml.YAMLError as e:
         return None, f"Invalid YAML: {e}"
@@ -86,7 +89,10 @@ def validate_schema(data, filepath):
              if doc_id.upper() in ['README', 'INDEX']:
                   errors.append(f"{filename} files must have a descriptive ID (not just '{doc_id}')")
         elif doc_id != filename_base:
-             errors.append(f"ID mismatch: '{doc_id}' found in header but filename is '{filename_base}'")
+             # Standardized ADR ID pattern (ADR-XXXX) matches filename ADR-XXXX-description.md
+             is_adr_match = re.match(r'^ADR-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
+             if not is_adr_match:
+                  errors.append(f"ID mismatch: '{doc_id}' found in header but filename is '{filename_base}'")
 
     if 'owner' in data:
         if not data['owner']:
