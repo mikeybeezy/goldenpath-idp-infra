@@ -76,6 +76,14 @@ Automation is for **drafting**, not **authorizing**.
 ### 4. GITHUB_TOKEN Restrictions
 The workflow uses a short-lived, least-privilege `GITHUB_TOKEN` scoped only to `contents: write` for the specific repository, preventing lateral movement or broader account exploitation.
 
+## 🤖 Bot & Token Management
+The auto-healing system is designed to be **Zero-Ops**, requiring no manual secret management or external bot accounts.
+
+- **The Bot Identity**: We use the built-in `github-actions[bot]`. It requires no separate account or SSH keys.
+- **Token Scope**: We utilize the ephemeral `${{ secrets.GITHUB_TOKEN }}`. This token is automatically generated for the lifecycle of the workflow and destroyed immediately after.
+- **Workflow Permissions**: The workflow explicitly requests `contents: write` for the individual job, ensuring the bot can push updates to PR branches without having broad repository-wide admin rights.
+- **Non-Recursive CI**: Commits by this bot use the default GITHUB_TOKEN, which intentionally does not trigger further CI runs, preventing infinite recursive "auto-heal" loops.
+
 ## 🚦 Operational Rules
 - **Automatic**: No manual action is required. If drift is detected, the bot commits the fix.
 - **Atomic**: The healer only updates index files; it never touches logic or configuration.
