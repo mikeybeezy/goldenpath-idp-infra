@@ -70,179 +70,179 @@ CI Workflows (GitHub Actions)
 ### Bootstrap - CI Backstage (Stub)
 - **File**: `ci-backstage.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Bootstrap - CI Bootstrap (Stub)
 - **File**: `ci-bootstrap.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Create ECR Registry
 - **File**: `create-ecr-registry.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Quality - Backstage Entity Sync
 - **File**: `ci-backstage-sync.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Scaffold App Repository
 - **File**: `repo-scaffold-app.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ## Guardrails / Policy (PR)
 
 ### Daily Policy Enforcement
 - **File**: `policy-enforcement.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Plan - Infra Terraform Checks
 - **File**: `infra-terraform.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Policy - ADR Policy
 - **File**: `adr-policy.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Policy - Branch Policy Guard
 - **File**: `branch-policy.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Policy - Changelog Policy
 - **File**: `changelog-policy.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Policy - PR Guardrails
 - **File**: `pr-guardrails.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Policy - PR Labeler
 - **File**: `pr-labeler.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Policy - Production Readiness Review Cadence
 - **File**: `production-readiness-review.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Quality - Doc Freshness Check
 - **File**: `doc-freshness.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Quality - Metadata Validation
 - **File**: `ci-metadata-validation.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Quality - Platform Health Check
 - **File**: `quality-platform-health.yaml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Quality - Pre-commit checks
 - **File**: `pre-commit.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Quality - Super Linter (Markdown)
 - **File**: `super-linter.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Quality - Terraform Lint
 - **File**: `ci-terraform-lint.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Quality - YAML Lint
 - **File**: `yamllint.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ## Teardown / Recovery
 
 ### Ops - CI Force Unlock
 - **File**: `ci-force-unlock.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Ops - CI Managed LB Cleanup
 - **File**: `ci-managed-lb-cleanup.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Ops - CI Orphan Cleanup
 - **File**: `ci-orphan-cleanup.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Ops - CI Teardown
 - **File**: `ci-teardown.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ## Terraform Apply
 
 ### Apply - ECR Auto-Apply
 - **File**: `ecr-auto-apply.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Apply - Infra Terraform Apply (dev branch)
 - **File**: `infra-terraform-apply-dev-branch.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Apply - Infra Terraform Apply (dev)
 - **File**: `infra-terraform-apply-dev.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Apply - Infra Terraform Apply (prod)
 - **File**: `infra-terraform-apply-prod.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Apply - Infra Terraform Apply (staging)
 - **File**: `infra-terraform-apply-staging.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Apply - Infra Terraform Apply (test)
 - **File**: `infra-terraform-apply-test.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Apply - Infra Terraform Update (dev)
 - **File**: `infra-terraform-update-dev.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ## Terraform Plan
 
 ### Plan - Infra Terraform Plan Pipeline
 - **File**: `infra-terraform-dev-pipeline.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ### Plan - PR Terraform Plan
 - **File**: `pr-terraform-plan.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
 
 ## Uncategorized
 
 ### Quality - Documentation Auto-Healing
 - **File**: `ci-index-auto-heal.yml`
 - **Owner**: platform
-- **Triggers**:
+- **Triggers**: 
