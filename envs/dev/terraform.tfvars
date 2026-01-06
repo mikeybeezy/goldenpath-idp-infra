@@ -129,4 +129,12 @@ ecr_repositories = {
       risk  = "low"
     }
   }
+
+  "new-wp-reg-2" = {
+    metadata = {
+      id    = "REGISTRY_NEW_WP_REG_2"
+      owner = "michael-babs-2"
+      risk  = "low"
+    }
+  }
 }
