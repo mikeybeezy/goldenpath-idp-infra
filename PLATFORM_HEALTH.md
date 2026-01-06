@@ -23,14 +23,15 @@ relates_to:
 ---
 
 # 🏥 Platform Health Report
-**Date Generated**: 2026-01-06 05:14:51
-**Total Tracked Resources**: 381
+**Date Generated**: 2026-01-06 09:19:11
+**Total Tracked Resources**: 382
 **Metadata Compliance**: 98.7%
 
 ## 📊 Lifecycle Distribution
 - **Active**: 366
 - **Draft**: 4
 - **Accepted**: 7
+- **Proposed**: 1
 - **Deprecated**: 2
 - **Planned**: 1
 - **Released**: 1
