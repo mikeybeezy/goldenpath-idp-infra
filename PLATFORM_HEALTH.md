@@ -23,7 +23,7 @@ relates_to:
 ---
 
 # 🏥 Platform Health Report
-**Date Generated**: 2026-01-06 14:59:38
+**Date Generated**: 2026-01-06 15:00:53
 **Total Tracked Resources**: 390
 **Metadata Compliance**: 98.2%
 
@@ -31,8 +31,7 @@ relates_to:
 - **Active**: 366
 - **Draft**: 4
 - **Superseded**: 6
-- **Accepted**: 7
-- **Proposed**: 1
+- **Accepted**: 8
 - **Deprecated**: 2
 - **Planned**: 1
 - **Released**: 1
