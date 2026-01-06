@@ -153,6 +153,9 @@ jobs:
             -backend-config="encrypt=true"
 
       - name: Terraform apply (dev update)
+        env:
+          TF_VAR_admin_arns: '["${{ secrets.TF_AWS_IAM_ROLE_DEV }}", "${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}"]'
+          TF_VAR_enable_k8s_resources: "true"
         run: |
           terraform -chdir=envs/dev apply -auto-approve -input=false -no-color \
             -var "cluster_lifecycle=ephemeral" \
