@@ -33,13 +33,13 @@ graph TD
     F -- PROVISIONED_BY --> J
 ```
 
-### 2. Implementation Methodology
-*   **Node Extraction**: Continue using `metadata.yaml` as the source of truth, but expand the parser to recognize "Entity References" (e.g., `relates_to: ADR-0110`).
-*   **Relationship Discovery**: Scripts will infer relationships from:
-    1.  Terraform `depends_on` and `module` calls.
-    2.  Helm chart dependencies.
-    3.  `relates_to` cross-references in metadata.
-    4.  Git repository structure.
+### 3. The Autonomous Agent Layer
+To leverage this graph, we define the **"Graph Reasoner"** agent persona. This agent doesn't just "see" files; it "understands" the topology of the platform.
+
+### Agent Actions
+*   **Knowledge Synthesis**: Answering natural language questions about the platform state.
+*   **Proactive Healing**: Automatically opening PRs when the graph reveals a compliance gap (e.g., a service without an owner).
+*   **Impact Prediction**: Simulation of changes before they are applied by traversing the graph edges.
 
 ## Status: Proposed
 This ADR is currently in the **Planning** phase. We will begin implementation by upgrading `extract_relationships.py`.
