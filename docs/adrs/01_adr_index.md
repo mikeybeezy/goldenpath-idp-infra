@@ -184,6 +184,16 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0081](ADR-0081-platform-repo-wide-linting.md) | Platform | Repo-wide linting for knowledge-graph hygiene | Proposed | 2026-01-03 | Run Markdown/YAML lint repo-wide with template ignores. |
 | [ADR-0082](ADR-0082-platform-metadata-validation.md) | Platform | Metadata validation strategy | Proposed | 2026-01-03 | Validate metadata frontmatter for governance and traceability. |
 | [ADR-0083](ADR-0083-platform-metadata-backfill-protocol.md) | Platform | Metadata backfill campaign protocol | Proposed | 2026-01-03 | Define deterministic backfill steps and audit artifacts. |
+| [ADR-0097](ADR-0097-domain-based-resource-catalogs.md) | Platform | Domain-Based Resource Catalogs | Accepted | 2026-01-05 | Separate YAML files per resource domain for scalability. |
+| [ADR-0098](ADR-0098-standardized-pr-gates.md) | Platform | Standardized PR Gates | Accepted | 2026-01-05 | Formalizing build, policy, and security gates in CI. |
+| [ADR-0099](ADR-0100-standardized-iam-policy-management.md) | Platform | Standardized IAM Policy Management | Accepted | 2026-01-05 | Centralized, reusable IAM policies for infra components. |
+| [ADR-0100](ADR-0100-standardized-ecr-lifecycle-and-documentation.md) | Platform | Standardized ECR Lifecycle and Documentation | Accepted | 2026-01-05 | Unified metadata and lifecycle rules for ECR registries. |
+| [ADR-0101](ADR-0101-pr-metadata-auto-heal.md) | Platform | PR Metadata Auto-Heal and Scoped Validation | Accepted | 2026-01-06 | Scoping validation and adding auto-correction for metadata. |
+| [ADR-0102](ADR-0102-terraform-fast-validation.md) | Platform | Terraform Fast Validation | Accepted | 2026-01-06 | Optimizing CI/CD with fast-fail terraform validation. |
+| [ADR-0103](ADR-0103-automated-workflow-docs.md) | Platform | Automated CI Workflow Documentation | Superseded | 2026-01-06 | Auto-generate workflow indices (Superseded by ADR-0111). |
+| [ADR-0104](ADR-0104-automated-script-docs.md) | Platform | Automated Script Documentation | Superseded | 2026-01-06 | Auto-generate script indices (Superseded by ADR-0111). |
+| [ADR-0110](ADR-0110-idp-knowledge-graph-architecture.md) | Platform | IDP Knowledge Graph Node Architecture | Accepted | 2026-01-06 | Unified, interlinked entity nodes for reasoning. |
+| [ADR-0111](ADR-0111-platform-documentation-auto-healing.md) | Platform | Automated Documentation Auto-Healing | Accepted | 2026-01-06 | Active, automated doc index reconciliation in CI. |
 
 ---
 
@@ -193,6 +203,8 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 - [ADR-0036](ADR-0036-platform-orphan-cleanup-workflow.md) — superseded by `ADR-0038-platform-teardown-orphan-cleanup-gate.md`.
 - [ADR-0043](ADR-0043-platform-teardown-lb-eni-wait.md) — superseded by `ADR-0045-platform-teardown-lb-delete-default.md`.
 - [ADR-0044](ADR-0044-platform-infra-checks-ref-mode.md) — superseded by `ADR-0046-platform-pr-plan-validation-ownership.md`.
+- [ADR-0103](ADR-0103-automated-workflow-docs.md) — superseded by `ADR-0111-platform-documentation-auto-healing.md`.
+- [ADR-0104](ADR-0104-automated-script-docs.md) — superseded by `ADR-0111-platform-documentation-auto-healing.md`.
 
 Legacy aliases (kept to preserve historical links):
 

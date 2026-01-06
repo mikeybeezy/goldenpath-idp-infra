@@ -1,3 +1,15 @@
+---
+id: 2026-01-06_auto-heal-hitl-test
+title: Feature Test Record - Documentation Auto-Healing (HITL)
+type: test-record
+category: testing
+version: '1.0'
+owner: platform-team
+status: passed
+relates_to:
+  - ADR-0111
+---
+
 # Feature Test Record: Documentation Auto-Healing (HITL)
 
 **Test Date**: 2026-01-06

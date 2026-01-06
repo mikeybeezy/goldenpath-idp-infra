@@ -1,3 +1,15 @@
+---
+id: CODEOWNERS_POLICY
+title: Policy - Code Ownership & Human-in-the-Loop (HITL)
+type: policy
+category: governance
+version: '1.0'
+owner: platform-team
+status: active
+relates_to:
+  - ADR-0111
+---
+
 # 🛡️ Policy: Code Ownership & Human-in-the-Loop (HITL)
 
 **Status**: Active | **Owner**: Platform-Team | **Last Updated**: 2026-01-06

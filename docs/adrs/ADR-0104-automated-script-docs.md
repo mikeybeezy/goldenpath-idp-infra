@@ -1,7 +1,8 @@
 ---
 id: ADR-0104
 title: Automated Script Documentation
-status: accepted
+status: superseded
+superseded_by: ADR-0111
 owner: platform-team
 created_date: 2026-01-06
 supersedes: []

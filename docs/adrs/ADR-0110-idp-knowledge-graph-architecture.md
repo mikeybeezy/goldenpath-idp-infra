@@ -1,7 +1,10 @@
 ---
 id: ADR-0110
 title: IDP Knowledge Graph Node Architecture
-status: proposed
+status: accepted
+supersedes: []
+relates_to:
+  - ADR-0097
 date: 2026-01-06
 owner: platform-team
 type: decision
@@ -59,7 +62,7 @@ To reach the full potential of the IDP, we will incorporate:
 - **Temporal Dimensions**: Tracking graph state changes over time to provide historical context.
 - **Human-in-the-Loop Verification**: Allowing manual sign-offs (e.g., security approval) to be represented as explicit edges in the graph.
 
-## Status: Proposed
+## Status: Accepted (Evolving ADR-0097)
 This ADR is currently in the **Planning** phase. We will begin implementation by upgrading `extract_relationships.py`.
 
 ## Consequences

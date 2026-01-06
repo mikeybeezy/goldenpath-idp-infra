@@ -5,8 +5,11 @@ type: documentation
 category: adrs
 version: 1.0
 owner: platform-team
-status: active
+status: accepted
 dependencies:
+  - ADR-0103
+  - ADR-0104
+supersedes:
   - ADR-0103
   - ADR-0104
 risk_profile:
@@ -25,7 +28,7 @@ relates_to:
 
 # ADR-0111: Automated Documentation Auto-Healing
 
-- **Status:** Accepted
+- **Status:** Accepted (Supersedes ADR-0103, ADR-0104)
 - **Date:** 2026-01-06
 - **Owners:** `platform-team`
 - **Domain:** Platform

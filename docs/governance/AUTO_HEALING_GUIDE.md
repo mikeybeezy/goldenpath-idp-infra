@@ -1,3 +1,15 @@
+---
+id: AUTO_HEALING_GUIDE
+title: Governance - Documentation Auto-Healing Guide
+type: guide
+category: governance
+version: '1.0'
+owner: platform-team
+status: active
+relates_to:
+  - ADR-0111
+---
+
 # 🛡️ Governance: Documentation Auto-Healing Guide
 
 **Status**: Active | **Owner**: Platform-Team | **Last Updated**: 2026-01-06
