@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Purpose: Documentation Index Contract Validator.
+Verifies that index files (like index.md) exist and adhere to platform linking standards.
+"""
 import os
 import sys
 

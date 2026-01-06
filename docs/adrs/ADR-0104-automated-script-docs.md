@@ -1,0 +1,37 @@
+---
+id: ADR-0104
+title: Automated Script Documentation
+status: accepted
+owner: platform-team
+created_date: 2026-01-06
+supersedes: []
+relates_to:
+  - ADR-0103 (CI Documentation)
+  - scripts/index.md
+---
+
+# ADR-0104: Automated Script Documentation
+
+## Context
+The platform relies on a large suite of Python and Shell scripts (~25) for governance, documentation, and delivery. Maintaining a manual index of these scripts (`scripts/index.md`) is tedious and error-prone, leading to stale documentation where new utility scripts (like `test_hotfix.py` or `generate_workflow_index.py`) are undocumented.
+
+## Decision
+We will automate the generation of the Platform Automation Scripts Index using a Python script (`scripts/generate_script_index.py`).
+
+1.  **Dynamic Discovery**: Scans `scripts/*.py` and `scripts/*.sh` to find all tools.
+2.  **Metadata Extraction**: Extracts the first line of the docstring (Python) or header comment (Shell) as the description.
+3.  **Categorization**: Maps filenames to logical categories (Governance, Delivery, Documentation, Utilities) based on keywords.
+4.  **Linking**: Automatically generates absolute file links for easy navigation.
+
+## Consequences
+### Positive
+- **Completeness**: Every script in the directory is indexed by default.
+- **Accuracy**: Descriptions are pulled directly from the code, encouraging better inline documentation.
+- **Consistency**: The index format is uniform across all categories.
+
+### Negative
+- **Descriptions**: Scripts without docstrings will show "No description provided," requiring developers to improve code comments.
+
+## Implementation
+- Generator: `scripts/generate_script_index.py`
+- Output: `scripts/index.md`

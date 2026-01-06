@@ -25,6 +25,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Verify Script Index & Documentation
+        run: python3 scripts/generate_script_index.py --validate
+
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
       - name: Runbook link
