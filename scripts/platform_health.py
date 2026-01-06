@@ -200,7 +200,7 @@ def generate_report(target_dir='.'):
 
     # Persist to file
     with open('PLATFORM_HEALTH.md', 'w', encoding='utf-8') as f:
-        f.write(report_content)
+        f.write(report_content + '\n')
     print(f"\n✅ Report persisted to PLATFORM_HEALTH.md")
 
 if __name__ == "__main__":

@@ -147,12 +147,14 @@ behavior is to check CI status after every PR create/edit and iterate until
 all required checks are green.
 
 1. Check PR status after every push or label change.
-2. If a check fails, read the log and map it to a specific file or rule.
-3. Apply the smallest fix, re-run local checks, and push.
-4. Re-check status until all required checks pass.
-5. Use conditional bypass labels (`docs-only`, `typo-fix`) when applicable to unblock trivial changes, provided the specific conditions in [PR Gates and How to Unblock Them](./24_PR_GATES.md) are met (verified by `scripts/pr_guardrails.py`).
-6. Confirm labels reflect the actual scope (avoid false ADR/changelog blocks).
-6. Notify a human for merge approval once green.
+2. Target `development` for feature work to bypass structural governance gates.
+3. Target `main` ONLY for promotion/deployment PRs where full compliance is required.
+4. If a check fails, read the log and map it to a specific file or rule.
+5. Apply the smallest fix, re-run local checks, and push.
+6. Re-check status until all required checks pass.
+7. Use conditional bypass labels (`docs-only`, `typo-fix`) when applicable to unblock trivial changes, provided the specific conditions in [PR Gates and How to Unblock Them](./24_PR_GATES.md) are met (verified by `scripts/pr_guardrails.py`).
+8. Confirm labels reflect the actual scope (avoid false ADR/changelog blocks).
+9. Notify a human for merge approval once green.
 
 ## 11) Value preservation mechanisms
 

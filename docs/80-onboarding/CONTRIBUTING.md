@@ -34,9 +34,9 @@ Use short-lived branches and keep `main` deployable.
 Flow:
 
 1. Branch from `development`.
-2. Open a PR early for visibility into `development`.
-3. Merge after checks pass.
-4. Promote via a PR from `development` to `main`.
+2. Open a PR early for visibility into `development`. Focus on functionality; governance is relaxed on this branch.
+3. Merge after quality checks (linting) pass.
+4. Promote via a PR from `development` to `main`. This is where all **Quality Gates** are enforced (ADR, Changelog, Schema).
 5. Ensure all quality gates are green (see [PR Gates and How to Unblock Them](./24_PR_GATES.md)).
 6. Delete the branch after merge.
 

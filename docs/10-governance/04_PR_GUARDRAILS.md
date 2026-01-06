@@ -46,7 +46,10 @@ recommended best practices for keeping the platform safe and auditable.
 
 ## Scope
 
-Applies to all pull requests targeting `development` or `main`.
+The governance model uses a **Dual-Speed** approach to balance developer velocity with production safety:
+
+- **Strict Enforcement (`main`)**: All guardrails, policies, and metadata schemas are strictly enforced. PRs must be perfectly compliant.
+- **Experimental Flow (`development`)**: Governance is relaxed. Only basic quality (linting, formatting) is enforced to allow rapid prototyping and iteration.
 
 ## Guardrails in place
 
