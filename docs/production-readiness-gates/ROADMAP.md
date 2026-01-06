@@ -107,6 +107,7 @@ This is the single rolling backlog. Add items here before starting work.
 | 063 | P2 | Governance | Explore GitHub App agent roles | platform | Open | S | Q1 | Define minimal permissions and installation flow | docs/10-governance/08_GITHUB_AGENT_ROLES.md | Avoid new human accounts while preserving auditability |
 | 064 | P2 | ECR | Test OIDC-based ecr-build-push.sh script | platform | Open | S | Q1 | Run end-to-end test with sample app and verify dual-tagging | scripts/ecr-build-push.sh, docs/guides/standardized-image-delivery.md, ADR-0100 | Validate OIDC authentication, multi-tagging (SHA + version), and push reliability before app team adoption |
 | 065 | P2 | GitOps | Automate "Terraform Apply" on Pull Request Merge | platform | Open | M | Q2 | Implement event-based trigger (push to main) that runs Apply | .github/workflows/infra-terraform-apply-dev.yml | Eliminate manual "ClickOps" step after merging config changes |
+| 066 | P2 | Docs | Test & Harden Doc Index Generators (Removal logic) | platform | Open | S | Q1 | Create unit tests and verify that deleting source files correctly cleans them from the index | scripts/generate_workflow_index.py, scripts/generate_script_index.py | Ensure documentation self-heals when tools or workflows are deprecated/deleted |
 
 ## Rules
 
