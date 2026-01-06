@@ -1,3 +1,8 @@
+
+"""
+Purpose: Auto-generate CI Workflows Index (CI_WORKFLOWS.md).
+Parses GitHub Actions YAML to categorize and document all workflows to prevent drift.
+"""
 import os
 import yaml
 import glob

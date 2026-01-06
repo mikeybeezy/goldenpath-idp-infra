@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Purpose: Doc Freshness Auditor.
+Checks file modification ages and flags documentation that is older than its configured review cadence.
+"""
 import argparse
 import datetime as dt
 import os

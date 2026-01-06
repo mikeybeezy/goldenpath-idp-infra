@@ -120,6 +120,30 @@ def generate_index():
     return "\n".join(final_content)
 
 if __name__ == "__main__":
+    import sys
+    
+    # Check mode: Fail if any script is missing a description
+    if "--validate" in sys.argv:
+        missing_docs = []
+        # Re-run scanning logic only (inefficient but simple reuse)
+        for file_path in glob.glob(f"{SCRIPTS_DIR}/*.py") + glob.glob(f"{SCRIPTS_DIR}/*.sh"):
+            name = os.path.basename(file_path)
+            if name in ["__init__.py", "generate_script_index.py"]:
+                continue
+            desc = get_docstring(file_path)
+            if not desc or desc.startswith("No description"):
+                missing_docs.append(name)
+        
+        if missing_docs:
+            print("❌ Governance Failure: The following scripts are missing docstrings/headers:")
+            for s in missing_docs:
+                print(f"   - {s}")
+            sys.exit(1)
+        else:
+            print("✅ All scripts are properly documented.")
+            sys.exit(0)
+
+    # Normal mode: Generate file
     content = generate_index()
     with open(OUTPUT_FILE, "w") as f:
         f.write(content)
