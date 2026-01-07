@@ -2,11 +2,9 @@
 id: TEST_INDEX
 title: Platform Testing Index
 type: documentation
-category: testing
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,15 +12,55 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: '2028-01-01'
-  breaking_change: false
+schema_version: 1
 relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: testing
+version: '1.0'
+supported_until: '2028-01-01'
+breaking_change: false
 ---
 
 # Platform Testing Index
 
 **Purpose:** Track all feature tests, integration tests, and validation results
+
+---
+
+## Unit Tests
+
+### Metadata Inheritance Engine
+**Location:** [unit/test_metadata_inheritance.py](./unit/test_metadata_inheritance.py)
+**Status:** ✅ 3/3 Passing
+**Coverage:** `MetadataConfig` core inheritance logic
+**CI:** Automated via [python-tests.yml](../../.github/workflows/python-tests.yml)
+
+### Metadata Validation Engine
+**Location:** [unit/test_validate_metadata.py](./unit/test_validate_metadata.py)
+**Status:** ✅ 7/7 Passing
+**Coverage:** 
+- Injection verification (inline & governance block patterns)
+- YAML/Markdown frontmatter extraction
+- Error handling
+
+**CI:** Automated via [python-tests.yml](../../.github/workflows/python-tests.yml)
+
+### Value Quantification Logger
+**Location:** [unit/test_vq_logger.py](./unit/test_vq_logger.py)
+**Status:** ✅ 3/3 Passing
+**Coverage:**
+- ROI ledger reads
+- Script value metadata lookup
+- Numeric validation
+
+**CI:** Automated via [python-tests.yml](../../.github/workflows/python-tests.yml)
 
 ---
 
@@ -55,6 +93,25 @@ relates_to: []
 
 ---
 
+## Running Tests
+
+### Unit Tests (Automated in CI)
+```bash
+# Run all unit tests
+python3 -m unittest discover -s tests/unit -p "test_*.py" -v
+
+# Run specific test module
+python3 tests/unit/test_metadata_inheritance.py -v
+```
+
+### Test Coverage Stats
+- **Total Modules:** 3
+- **Total Tests:** 13
+- **Pass Rate:** 100%
+- **CI Integration:** ✅ GitHub Actions
+
+---
+
 ## Test Guidelines
 
 **When to add a test:**
@@ -75,3 +132,4 @@ feature-tests/<feature-name>/
 **Naming convention:**
 - Feature tests: `feature-tests/<feature-name>/`
 - Integration tests: `integration-tests/<workflow-name>/`
+- Unit tests: `tests/unit/test_<module>.py`

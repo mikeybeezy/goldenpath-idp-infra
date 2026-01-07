@@ -1,25 +1,18 @@
 ---
-id: ADR-0102
+id: ADR-0102-terraform-fast-validation
 title: Layer 2 Terraform Validation (Fast Feedback Loop)
-status: accepted
-type: decision
-category: architecture
-version: 1.0
-owner: platform-team
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
+type: adr
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-04
-  breaking_change: false
+lifecycle: active
+version: 1.0
 relates_to:
   - ADR-0034
   - CL-0064
 date: 2026-01-06
+supported_until: 2028-01-04
+breaking_change: false
 ---
 
 # ADR-0102: Layer 2 Terraform Validation (Fast Feedback Loop)

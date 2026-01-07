@@ -1,12 +1,16 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: "wordpress-efs-quota"
-  namespace: "apps-wordpress-efs"
+  name: wordpress-efs-quota
+  namespace: apps-wordpress-efs
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 spec:
   hard:
-    requests.cpu: "1"
-    requests.memory: "1Gi"
-    limits.cpu: "2"
-    limits.memory: "2Gi"
-    requests.storage: "50Gi"
+    requests.cpu: '1'
+    requests.memory: 1Gi
+    limits.cpu: '2'
+    limits.memory: 2Gi
+    requests.storage: 50Gi

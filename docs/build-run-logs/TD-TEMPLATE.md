@@ -2,11 +2,8 @@
 id: TD-TEMPLATE
 title: Teardown Log Template
 type: template
-category: unknown
-version: '1.0'
 owner: platform-team
 status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,11 +11,14 @@ risk_profile:
 reliability:
   rollback_strategy: not-applicable
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+category: platform
+version: '1.0'
+dependencies: []
 relates_to:
   - BR-TEMPLATE
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # TD-XXXX-<build-id>

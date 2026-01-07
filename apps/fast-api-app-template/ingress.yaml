@@ -1,26 +1,28 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: "{{ values.app_name }}"
-  namespace: "{{ values.namespace }}"
+  name: '{{ values.app_name }}'
+  namespace: '{{ values.namespace }}'
   annotations:
-    goldenpath.idp/id: "{{ values.governance.id }}"
-    goldenpath.idp/owner: "{{ values.governance.owner }}"
-    goldenpath.idp/risk: "{{ values.governance.risk_profile.production_impact }}"
+    goldenpath.idp/id: APPS_FAST_API_APP_TEMPLATE_METADATA
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: '{{ values.governance.risk_profile.production_impact }}'
     kubernetes.io/ingress.class: kong
-    konghq.com/strip-path: "false"
-    konghq.com/methods: "GET, POST"
-    konghq.com/plugins: "{{ values.kong_auth_plugin }},{{ values.kong_rate_limit_plugin }}"
+    konghq.com/strip-path: 'false'
+    konghq.com/methods: GET, POST
+    konghq.com/plugins: '{{ values.kong_auth_plugin }},{{ values.kong_rate_limit_plugin
+      }}'
 spec:
   ingressClassName: kong
   rules:
-    - host: "{{ values.app_host }}"
+    - host: '{{ values.app_host }}'
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: "{{ values.app_name }}"
+                name: '{{ values.app_name }}'
                 port:
-                  number: "{{ values.service_port }}"
+                  number: '{{ values.service_port }}'

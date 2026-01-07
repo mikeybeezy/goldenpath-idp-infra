@@ -1,96 +1,47 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: platform-health-dashboard
   namespace: monitoring
   labels:
-    grafana_dashboard: "1"
+    grafana_dashboard: '1'
+  annotations:
+    goldenpath.idp/id: HELM_DASHBOARDS_METADATA
+    goldenpath.idp/owner: platform-team
 data:
-  platform-health.json: |
-    {
-      "title": "Platform - GitOps & Critical Components",
-      "tags": [ "platform", "argocd" ],
-      "timezone": "browser",
-      "schemaVersion": 30,
-      "refresh": "1m",
-      "editable": false,
-      "panels": [
-        {
-          "type": "row",
-          "title": "GitOps Health (ArgoCD)",
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }
-        },
-        {
-          "title": "Degraded Applications",
-          "type": "stat",
-          "gridPos": { "h": 6, "w": 8, "x": 0, "y": 1 },
-          "targets": [
-            {
-              "expr": "count(argocd_app_info{health_status!=\"Healthy\"}) or vector(0)",
-              "legendFormat": "Apps"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 1 }
-            ]
-          }
-        },
-        {
-          "title": "Out of Sync Applications",
-          "type": "stat",
-          "gridPos": { "h": 6, "w": 8, "x": 8, "y": 1 },
-          "targets": [
-            {
-              "expr": "count(argocd_app_info{sync_status!=\"Synced\"}) or vector(0)",
-              "legendFormat": "Apps"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "orange", "value": 1 }
-            ]
-          }
-        },
-        {
-          "type": "row",
-          "title": "Critical Addons",
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 7 }
-        },
-        {
-          "title": "Ingress Controller Availability",
-          "type": "stat",
-          "gridPos": { "h": 6, "w": 12, "x": 0, "y": 8 },
-          "targets": [
-            {
-              "expr": "sum(kube_deployment_status_replicas_available{deployment=\"ingress-nginx-controller\"}) / sum(kube_deployment_spec_replicas{deployment=\"ingress-nginx-controller\"}) * 100",
-              "legendFormat": "Availability %"
-            }
-          ],
-          "unit": "percent",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "red", "value": null },
-              { "color": "green", "value": 100 }
-            ]
-          }
-        },
-        {
-          "title": "External Secrets Errors",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 14 },
-          "targets": [
-            {
-              "expr": "sum(rate(external_secret_status_condition{status=\"False\"}[5m]))",
-              "legendFormat": "Sync Errors"
-            }
-          ],
-          "unit": "short"
-        }
-      ]
-    }
+  platform-health.json: "{\n  \"title\": \"Platform - GitOps & Critical Components\"\
+    ,\n  \"tags\": [ \"platform\", \"argocd\" ],\n  \"timezone\": \"browser\",\n \
+    \ \"schemaVersion\": 30,\n  \"refresh\": \"1m\",\n  \"editable\": false,\n  \"\
+    panels\": [\n    {\n      \"type\": \"row\",\n      \"title\": \"GitOps Health\
+    \ (ArgoCD)\",\n      \"gridPos\": { \"h\": 1, \"w\": 24, \"x\": 0, \"y\": 0 }\n\
+    \    },\n    {\n      \"title\": \"Degraded Applications\",\n      \"type\": \"\
+    stat\",\n      \"gridPos\": { \"h\": 6, \"w\": 8, \"x\": 0, \"y\": 1 },\n    \
+    \  \"targets\": [\n        {\n          \"expr\": \"count(argocd_app_info{health_status!=\\\
+    \"Healthy\\\"}) or vector(0)\",\n          \"legendFormat\": \"Apps\"\n      \
+    \  }\n      ],\n      \"thresholds\": {\n        \"mode\": \"absolute\",\n   \
+    \     \"steps\": [\n          { \"color\": \"green\", \"value\": null },\n   \
+    \       { \"color\": \"red\", \"value\": 1 }\n        ]\n      }\n    },\n   \
+    \ {\n      \"title\": \"Out of Sync Applications\",\n      \"type\": \"stat\"\
+    ,\n      \"gridPos\": { \"h\": 6, \"w\": 8, \"x\": 8, \"y\": 1 },\n      \"targets\"\
+    : [\n        {\n          \"expr\": \"count(argocd_app_info{sync_status!=\\\"\
+    Synced\\\"}) or vector(0)\",\n          \"legendFormat\": \"Apps\"\n        }\n\
+    \      ],\n      \"thresholds\": {\n        \"mode\": \"absolute\",\n        \"\
+    steps\": [\n          { \"color\": \"green\", \"value\": null },\n          {\
+    \ \"color\": \"orange\", \"value\": 1 }\n        ]\n      }\n    },\n    {\n \
+    \     \"type\": \"row\",\n      \"title\": \"Critical Addons\",\n      \"gridPos\"\
+    : { \"h\": 1, \"w\": 24, \"x\": 0, \"y\": 7 }\n    },\n    {\n      \"title\"\
+    : \"Ingress Controller Availability\",\n      \"type\": \"stat\",\n      \"gridPos\"\
+    : { \"h\": 6, \"w\": 12, \"x\": 0, \"y\": 8 },\n      \"targets\": [\n       \
+    \ {\n          \"expr\": \"sum(kube_deployment_status_replicas_available{deployment=\\\
+    \"ingress-nginx-controller\\\"}) / sum(kube_deployment_spec_replicas{deployment=\\\
+    \"ingress-nginx-controller\\\"}) * 100\",\n          \"legendFormat\": \"Availability\
+    \ %\"\n        }\n      ],\n      \"unit\": \"percent\",\n      \"thresholds\"\
+    : {\n        \"mode\": \"absolute\",\n        \"steps\": [\n          { \"color\"\
+    : \"red\", \"value\": null },\n          { \"color\": \"green\", \"value\": 100\
+    \ }\n        ]\n      }\n    },\n    {\n      \"title\": \"External Secrets Errors\"\
+    ,\n      \"type\": \"timeseries\",\n      \"gridPos\": { \"h\": 8, \"w\": 24,\
+    \ \"x\": 0, \"y\": 14 },\n      \"targets\": [\n        {\n          \"expr\"\
+    : \"sum(rate(external_secret_status_condition{status=\\\"False\\\"}[5m]))\",\n\
+    \          \"legendFormat\": \"Sync Errors\"\n        }\n      ],\n      \"unit\"\
+    : \"short\"\n    }\n  ]\n}\n"

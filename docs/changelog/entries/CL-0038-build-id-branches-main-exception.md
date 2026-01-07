@@ -2,11 +2,6 @@
 id: CL-0038-build-id-branches-main-exception
 title: Allow build-id branches to merge to main
 type: changelog
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: low
@@ -14,11 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-04
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - CL-0038
+supported_until: 2027-01-04
+breaking_change: false
 ---
 
 ## CL-0038: Allow build-id branches to merge to main

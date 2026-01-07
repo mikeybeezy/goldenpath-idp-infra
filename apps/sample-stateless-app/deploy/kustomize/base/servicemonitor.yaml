@@ -1,18 +1,22 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: "sample-stateless-app"
-  namespace: "apps-sample-stateless"
+  name: sample-stateless-app
+  namespace: apps-sample-stateless
   labels:
     release: kube-prometheus-stack
-    app.kubernetes.io/name: "sample-stateless-app"
+    app.kubernetes.io/name: sample-stateless-app
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: "sample-stateless-app"
+      app.kubernetes.io/name: sample-stateless-app
   namespaceSelector:
     matchNames:
-      - "apps-sample-stateless"
+      - apps-sample-stateless
   endpoints:
     - port: http
       path: /metrics

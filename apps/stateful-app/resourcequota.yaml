@@ -1,12 +1,16 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: "{{ values.app_name }}-quota"
-  namespace: "{{ values.namespace }}"
+  name: '{{ values.app_name }}-quota'
+  namespace: '{{ values.namespace }}'
+  annotations:
+    goldenpath.idp/id: APPS_STATEFUL_APP_METADATA
+    goldenpath.idp/owner: platform-team
 spec:
   hard:
-    requests.cpu: "{{ values.quota_requests_cpu }}"
-    requests.memory: "{{ values.quota_requests_memory }}"
-    limits.cpu: "{{ values.quota_limits_cpu }}"
-    limits.memory: "{{ values.quota_limits_memory }}"
-    requests.storage: "{{ values.quota_requests_storage }}"
+    requests.cpu: '{{ values.quota_requests_cpu }}'
+    requests.memory: '{{ values.quota_requests_memory }}'
+    limits.cpu: '{{ values.quota_limits_cpu }}'
+    limits.memory: '{{ values.quota_limits_memory }}'
+    requests.storage: '{{ values.quota_requests_storage }}'

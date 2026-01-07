@@ -1,23 +1,12 @@
 ---
-id: ADR-0095
+id: ADR-0095-self-service-registry-creation
 title: 'ADR-0095: Self-Service ECR Registry Creation Workflow'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: '2028-01-01'
-  breaking_change: false
-relates_to: []
+lifecycle: active
+version: '1.0'
+supported_until: '2028-01-01'
+breaking_change: false
 ---
 
 # ADR-0095: Self-Service ECR Registry Creation Workflow

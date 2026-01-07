@@ -2,8 +2,31 @@
 id: CI_WORKFLOWS
 title: CI Workflows Index (Auto-Generated)
 type: documentation
+domain: platform-core
+applies_to: []
 owner: platform-team
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: governance
 status: active
+supported_until: '2028-01-01'
 last_updated: 2026-01-06
 ---
 
@@ -33,10 +56,10 @@ CI Workflows (GitHub Actions)
 │   ├─ Policy - PR Labeler
 │   ├─ Policy - Production Readiness Review Cadence
 │   ├─ Quality - Doc Freshness Check
+│   ├─ Quality - Docs & Config Linter
 │   ├─ Quality - Metadata Validation
 │   ├─ Quality - Platform Health Check
 │   ├─ Quality - Pre-commit checks
-│   ├─ Quality - Super Linter (Markdown)
 │   ├─ Quality - Terraform Lint
 │   └─ Quality - YAML Lint
 │
@@ -139,6 +162,11 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**: 
 
+### Quality - Docs & Config Linter
+- **File**: `super-linter.yml`
+- **Owner**: platform
+- **Triggers**: 
+
 ### Quality - Metadata Validation
 - **File**: `ci-metadata-validation.yml`
 - **Owner**: platform
@@ -151,11 +179,6 @@ CI Workflows (GitHub Actions)
 
 ### Quality - Pre-commit checks
 - **File**: `pre-commit.yml`
-- **Owner**: platform
-- **Triggers**: 
-
-### Quality - Super Linter (Markdown)
-- **File**: `super-linter.yml`
 - **Owner**: platform
 - **Triggers**: 
 

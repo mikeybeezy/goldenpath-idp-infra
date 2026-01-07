@@ -2,11 +2,6 @@
 id: CL-0035-super-linter-reenabled
 title: 'Changelog: re-enable super-linter and require lint checks'
 type: changelog
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,11 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-04
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - CL-0035
+supported_until: 2027-01-04
+breaking_change: false
 ---
 
 # Changelog: re-enable super-linter and require lint checks

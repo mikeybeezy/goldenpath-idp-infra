@@ -1,11 +1,7 @@
 ---
-id: CL-0061
+id: CL-0061-ecr-workflow-optimizations
 title: ECR Workflow and Documentation Optimizations
 type: changelog
-category: governance
-status: active
-owner: platform-team
-version: '1.0'
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,11 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - ADR-0100
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # CL-0061: ECR Workflow and Documentation Optimizations
@@ -26,13 +23,13 @@ Implemented a comprehensive series of optimizations to the ECR registry creation
 
 ## Changes
 
-### 🏗️ Workflow Updates (`.github/workflows/create-ecr-registry.yml`)
+###  Workflow Updates (`.github/workflows/create-ecr-registry.yml`)
 - **Automated Registry IDs**: Removed manual `id` input; replaced with automated calculation logic.
 - **Documentation Auto-Sync**: Added mandatory documentation generation step to ensure `REGISTRY_CATALOG.md` is updated in the same PR.
 - **HCL Validation**: Added `terraform fmt` check to guard the integrity of `terraform.tfvars`.
 - **Developer UX**: Added deep-links to the [Push Image Guide](docs/runbooks/app-team/push-image-guide.md) in the PR body.
 
-### 🛠️ Scripting & Governance
+###  Scripting & Governance
 - **Refactored `generate_catalog_docs.py`**:
     - Converted to a domain-agnostic engine capable of documenting multiple resource types.
     - Added support for loading security policies from external YAML files.

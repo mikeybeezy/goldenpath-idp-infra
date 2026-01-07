@@ -1,0 +1,20 @@
+---
+id: APPS_ADRS_METADATA
+title: metadata
+type: adr
+status: accepted
+domain: platform-core
+applies_to:
+  - infra
+owner: platform-team
+category: architecture
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+lifecycle:
+  supported_until: '2028-01-01'

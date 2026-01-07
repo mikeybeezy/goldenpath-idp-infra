@@ -2,14 +2,11 @@
 id: MODULES_AWS_EKS_README
 title: EKS Cluster Terraform Module
 type: documentation
-category: modules
-version: 1.1
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - aws-provider
-  - kubernetes-provider
-  - helm-provider
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: medium
@@ -17,14 +14,29 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 09_ARCHITECTURE
   - MODULE_VPC
   - MODULE_AWS_IAM
   - ADR-0032
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+status: active
+version: 1.1
+dependencies:
+  - aws-provider
+  - kubernetes-provider
+  - helm-provider
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # EKS Cluster Module

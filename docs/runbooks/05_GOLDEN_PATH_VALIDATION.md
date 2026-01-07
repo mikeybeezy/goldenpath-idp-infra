@@ -2,13 +2,11 @@
 id: 05_GOLDEN_PATH_VALIDATION
 title: 'Runbook: Golden Path Validation'
 type: runbook
-category: runbooks
-version: 1.0
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - module:terraform
-  - module:kubernetes
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -16,14 +14,28 @@ risk_profile:
 reliability:
   rollback_strategy: rerun-validation
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - BOOTSTRAP_README
   - TEARDOWN_README
   - 39_GOLDEN_PATH_VALIDATION
   - CI_WORKFLOWS
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: runbooks
+status: active
+version: 1.0
+dependencies:
+  - module:terraform
+  - module:kubernetes
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Runbook: Golden Path Validation

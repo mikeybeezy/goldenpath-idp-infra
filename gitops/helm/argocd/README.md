@@ -2,12 +2,11 @@
 id: HELM_ARGOCD
 title: Argo CD Helm Chart (Values)
 type: documentation
-category: gitops
-version: 1.0
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - chart:argo-cd
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: high
@@ -15,12 +14,25 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - ADR-0001
   - BOOTSTRAP_README
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: delivery
+status: active
+version: 1.0
+dependencies:
+  - chart:argo-cd
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Argo CD Deployment

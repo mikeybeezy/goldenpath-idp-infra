@@ -1,9 +1,12 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+# Managed by scripts/standardize_metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: dev-wordpress-efs
   namespace: argocd
+  annotations:
+    goldenpath.idp/id: APPS_DEV_METADATA
+    goldenpath.idp/owner: None
 spec:
   project: default
   destination:

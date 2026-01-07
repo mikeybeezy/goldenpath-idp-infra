@@ -1,4 +1,4 @@
-# Managed by scripts/standardize-metadata.py
+# Managed by scripts/standardize_metadata.py
 configs:
   cm:
     resource.customizations: "cert-manager.io/Certificate:\n  health.lua: |\n    hs\
@@ -34,12 +34,7 @@ configs:
       \ {}\n    hs.status = \"Healthy\"\n    hs.message = \"Assumed healthy\"\n  \
       \  return hs\n"
 governance:
-  id: HELM_ARGOCD
-  owner: platform-team
-  risk_profile:
-    production_impact: high
-    security_risk: cluster-admin-access
-    coupling_risk: high
-  reliability:
-    rollback_strategy: helm-rollback
-    observability_tier: gold
+  id: HELM_ARGOCD_METADATA
+  owner: null
+  risk_profile: null
+  reliability: null

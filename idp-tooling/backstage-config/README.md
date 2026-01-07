@@ -2,25 +2,18 @@
 id: IDP_TOOLING_BACKSTAGE_CONFIG
 title: Backstage Configuration Module
 type: documentation
-category: idp-tooling
-version: 1.0
-owner: platform-team
-status: active
-dependencies:
-  - provider:backstage
 risk_profile:
   production_impact: low
   security_risk: medium
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
 relates_to:
   - HELM_BACKSTAGE
   - ADR-0008
+version: 1.0
+dependencies:
+  - provider:backstage
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Backstage Configuration Module

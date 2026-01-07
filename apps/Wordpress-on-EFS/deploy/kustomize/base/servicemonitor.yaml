@@ -1,18 +1,22 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: "wordpress-efs"
-  namespace: "apps-wordpress-efs"
+  name: wordpress-efs
+  namespace: apps-wordpress-efs
   labels:
     release: kube-prometheus-stack
-    app.kubernetes.io/name: "wordpress-efs"
+    app.kubernetes.io/name: wordpress-efs
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: "wordpress-efs"
+      app.kubernetes.io/name: wordpress-efs
   namespaceSelector:
     matchNames:
-      - "apps-wordpress-efs"
+      - apps-wordpress-efs
   endpoints:
     - port: http
       path: /metrics

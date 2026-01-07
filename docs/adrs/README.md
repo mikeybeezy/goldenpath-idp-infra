@@ -1,26 +1,19 @@
 ---
 id: DOCS_ADRS_README
 title: ADR Directory Guide
-type: documentation
-category: adrs
-version: 1.0
-owner: platform-team
+type: adr
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-04
-  breaking_change: false
+lifecycle: active
+version: 1.0
 relates_to:
   - ADR_TEMPLATE
   - 01_GOVERNANCE
   - 07_AI_AGENT_GOVERNANCE
+supported_until: 2028-01-04
+breaking_change: false
 ---
 
 # ADR-XXXX: Concise decision title

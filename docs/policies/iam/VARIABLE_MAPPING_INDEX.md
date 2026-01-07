@@ -1,29 +1,22 @@
 ---
 id: VARIABLE_MAPPING_INDEX
 title: IAM Policy-to-Variable Mapping Index
-type: documentation
-category: security
-status: active
-owner: platform-team
-version: '1.0'
+type: policy
+lifecycle: active
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
-relates_to: []
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
-# 🗺️ IAM Policy-to-Variable Mapping Index
+#  IAM Policy-to-Variable Mapping Index
 
 This index provides the definitive mapping between raw JSON policy fragments and the Terraform variables used to deploy them.
 
-## 📋 Mapping Table
+##  Mapping Table
 
 | Policy File (JSON) | Terraform Variable | Target Role / Usage |
 |:---|:---|:---|
@@ -34,7 +27,7 @@ This index provides the definitive mapping between raw JSON policy fragments and
 
 ---
 
-## 🛠️ Implementation Pattern
+##  Implementation Pattern
 
 ### 1. The JSON Source
 Policies are kept as "pure" JSON to allow for easy validation and direct usage in the AWS CLI or Console if needed.
@@ -60,6 +53,6 @@ resource "aws_iam_policy" "ecr_mgmt" {
 
 ---
 
-## 🔍 Validation
+##  Validation
 - **JSON Linting**: All files in this directory are linted via `pre-commit` hooks.
 - **Traceability**: Changes to JSON files must be cross-referenced in the `README.md` mapping above.

@@ -1,12 +1,8 @@
 ---
-id: ADR-0084
+id: ADR-0084-platform-enhanced-metadata-schema
 title: 'ADR-0084: Enhanced Metadata Schema for Knowledge Graph'
 type: adr
-category: adrs
-version: 1.0
-owner: platform-team
 status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,9 +10,8 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+version: 1.0
 relates_to:
   - ADR-0082
   - ADR-0083
@@ -24,6 +19,8 @@ relates_to:
   - CL-0042
   - CL-0043
   - METADATA_STRATEGY
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # ADR-0084: Enhanced Metadata Schema for Knowledge Graph

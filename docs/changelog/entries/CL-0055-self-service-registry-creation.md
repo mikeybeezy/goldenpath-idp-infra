@@ -2,13 +2,6 @@
 id: CL-0055-self-service-registry-creation
 title: 'CL-0055: Self-Service ECR Registry Creation Workflow'
 type: changelog
-category: governance
-version: '1.0'
-owner: platform-team
-status: active
-dependencies:
-  - github-actions
-  - yq
 risk_profile:
   production_impact: low
   security_risk: low
@@ -16,13 +9,17 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2027-01-05
-  breaking_change: false
+version: '1.0'
+dependencies:
+  - github-actions
+  - yq
+lifecycle: active
 relates_to:
   - ADR-0095
   - ADR-0092
   - CL-0055
+supported_until: 2027-01-05
+breaking_change: false
 ---
 
 # CL-0055: Self-Service ECR Registry Creation Workflow
@@ -84,7 +81,7 @@ Created GitHub Actions workflow for self-service ECR registry creation requests.
 - ✅ Workflow created
 - ✅ ADR documented
 - ✅ Validation rules implemented
-- ⏳ User documentation (pending)
+-  User documentation (pending)
 
 ## Next Steps
 

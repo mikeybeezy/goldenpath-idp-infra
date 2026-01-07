@@ -1,10 +1,7 @@
 ---
-id: ADR-0101
+id: ADR-0101-pr-metadata-auto-heal
 title: 'ADR-0101: PR Metadata Auto-Heal and Scoped Validation'
 type: adr
-category: governance
-version: '1.0'
-owner: platform-team
 status: active
 risk_profile:
   production_impact: low
@@ -13,12 +10,13 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - ADR-0098
   - CL-0063
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # ADR-0101: PR Metadata Auto-Heal and Scoped Validation

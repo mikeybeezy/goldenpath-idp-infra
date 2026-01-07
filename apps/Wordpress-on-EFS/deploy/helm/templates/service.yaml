@@ -1,16 +1,20 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Values.appName }}"
-  namespace: "{{ .Values.namespace }}"
+  name: '{{ .Values.appName }}'
+  namespace: '{{ .Values.namespace }}'
   labels:
-    app.kubernetes.io/name: "{{ .Values.appName }}"
-    app.kubernetes.io/instance: "{{ .Values.appName }}"
+    app.kubernetes.io/name: '{{ .Values.appName }}'
+    app.kubernetes.io/instance: '{{ .Values.appName }}'
+  annotations:
+    goldenpath.idp/id: APPS_TEMPLATES_METADATA
+    goldenpath.idp/owner: None
 spec:
   clusterIP: None
   selector:
-    app.kubernetes.io/name: "{{ .Values.appName }}"
+    app.kubernetes.io/name: '{{ .Values.appName }}'
   ports:
     - name: http
-      port: "{{ .Values.servicePort }}"
+      port: '{{ .Values.servicePort }}'
       targetPort: http

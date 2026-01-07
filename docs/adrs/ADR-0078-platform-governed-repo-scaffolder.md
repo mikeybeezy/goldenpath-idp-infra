@@ -1,27 +1,17 @@
 ---
-id: ADR-0078
+id: ADR-0078-platform-governed-repo-scaffolder
 title: 'ADR-0078: Governance-driven app repository scaffolder'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - 42_APP_TEMPLATE_LIVING
   - ADR-0062
   - ADR-0062-platform-app-template-contract
   - ADR-0078
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 # ADR-0078: Governance-driven app repository scaffolder

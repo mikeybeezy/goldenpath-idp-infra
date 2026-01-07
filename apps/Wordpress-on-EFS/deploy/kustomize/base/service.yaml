@@ -1,3 +1,4 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,6 +7,9 @@ metadata:
   labels:
     app.kubernetes.io/name: wordpress-efs
     app.kubernetes.io/instance: wordpress-efs
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 spec:
   clusterIP: None
   selector:

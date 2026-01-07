@@ -1,15 +1,19 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: "{{ values.app_name }}-data"
-  namespace: "{{ values.namespace }}"
+  name: '{{ values.app_name }}-data'
+  namespace: '{{ values.namespace }}'
   labels:
-    app.kubernetes.io/name: "{{ values.app_name }}"
-    app.kubernetes.io/instance: "{{ values.app_name }}"
+    app.kubernetes.io/name: '{{ values.app_name }}'
+    app.kubernetes.io/instance: '{{ values.app_name }}'
+  annotations:
+    goldenpath.idp/id: APPS_STATEFUL_APP_METADATA
+    goldenpath.idp/owner: platform-team
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "{{ values.storage_class_name }}"
+  storageClassName: '{{ values.storage_class_name }}'
   resources:
     requests:
-      storage: "{{ values.storage_size }}"
+      storage: '{{ values.storage_size }}'

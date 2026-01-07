@@ -1,12 +1,16 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: "stateful-app-quota"
-  namespace: "apps-stateful"
+  name: stateful-app-quota
+  namespace: apps-stateful
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 spec:
   hard:
-    requests.cpu: "500m"
-    requests.memory: "512Mi"
-    limits.cpu: "1"
-    limits.memory: "1Gi"
-    requests.storage: "20Gi"
+    requests.cpu: 500m
+    requests.memory: 512Mi
+    limits.cpu: '1'
+    limits.memory: 1Gi
+    requests.storage: 20Gi

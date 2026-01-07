@@ -2,12 +2,11 @@
 id: METADATA_VALIDATION_GUIDE
 title: Metadata Validation Runbook
 type: runbook
-category: 90-doc-system
-version: 1.0
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - scripts/validate_metadata.py
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,14 +14,27 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - METADATA_BACKFILL_SCRIPT
   - RELATIONSHIP_EXTRACTION_SCRIPT
   - ADR-0084
   - METADATA_STRATEGY
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: governance
+status: active
+version: 1.0
+dependencies:
+  - scripts/validate_metadata.py
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 ## Metadata Validation Runbook

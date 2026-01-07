@@ -1,11 +1,9 @@
 ---
-id: 2026-01-06_auto-heal-hitl-test
+id: test-record
 title: Feature Test Record - Documentation Auto-Healing (HITL)
 type: test-record
-category: testing
-version: '1.0'
-owner: platform-team
 status: passed
+category: testing
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,11 +11,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - ADR-0111
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Feature Test Record: Documentation Auto-Healing (HITL)
@@ -27,14 +26,14 @@ relates_to:
 **PR Reference**: [PR #172](https://github.com/mikeybeezy/goldenpath-idp-infra/pull/172)
 **Tester**: Platform Team (Human-in-the-Loop)
 
-## 📋 Scenario
+##  Scenario
 Verify that the `Quality - Documentation Auto-Healing` workflow correctly detects documentation drift and performs automated corrections that require human approval before merging.
 
 ### 🧪 Test Components
 1.  **Script Auto-Heal**: Added `scripts/shadow_script.py` without updating `scripts/index.md`.
 2.  **Workflow Auto-Heal**: Added `.github/workflows/shadow-workflow.yml` without updating `ci-workflows/CI_WORKFLOWS.md`.
 
-## 🚀 Execution & Results
+##  Execution & Results
 
 ### Phase 1: Script Drift Detection
 - **Action**: Pushed `scripts/shadow_script.py` to `test/auto-heal-hitl-verification`.
@@ -53,10 +52,10 @@ Verify that the `Quality - Documentation Auto-Healing` workflow correctly detect
 - **Enforcement**: PR remained blocked by `CODEOWNERS` until human approval was granted.
 - **Finality**: PR was manually merged, completing the trust cycle.
 
-## 🛡️ Security Observations
+##  Security Observations
 - **Least Privilege**: The bot only modified the two targeted index files.
 - **Safe Parsing**: Scripts successfully extracted metadata from new files without execution.
 - **No Loops**: `[skip ci]` tags prevented recursive workflow triggers.
 
-## 🏁 Conclusion
+##  Conclusion
 The Documentation Auto-Healing system is fully functional and adheres to the **Defense in Depth** governance model. No further manual indexing is required for standard script or workflow additions.

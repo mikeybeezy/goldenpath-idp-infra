@@ -1,15 +1,12 @@
 ---
 id: 09_ARCHITECTURE
 title: Architecture Overview
-type: documentation
-category: 30-architecture
-version: 1.0
-owner: platform-team
+type: adr
 status: active
-dependencies:
-  - module:vpc
-  - module:aws_eks
-  - module:aws_iam
+domain: platform-core
+applies_to:
+  - infra
+owner: platform-team
 risk_profile:
   production_impact: low
   security_risk: none
@@ -17,12 +14,18 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+category: architecture
+version: 1.0
+dependencies:
+  - module:vpc
+  - module:aws_eks
+  - module:aws_iam
 relates_to:
   - 14_MODULES_OVERVIEW
   - 07_REPO_DECOUPLING_OPTIONS
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Architecture Overview

@@ -1,7 +1,11 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: efs-psv-eks
+  annotations:
+    goldenpath.idp/id: APPS_WP_DEPLOYMENT_METADATA
+    goldenpath.idp/owner: None
 spec:
   capacity:
     storage: 20Gi

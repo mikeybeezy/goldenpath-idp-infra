@@ -1,23 +1,14 @@
 ---
-id: ADR-0099
+id: ADR-0099-standardized-iam-policy-management
 title: 'ADR-0099: Standardized IAM Policy Management'
 type: adr
-category: security
 status: active
-owner: platform-team
+lifecycle: active
 version: '1.0'
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
 relates_to:
   - 33_IAM_ROLES_AND_POLICIES
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # ADR-0099: Standardized IAM Policy Management

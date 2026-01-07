@@ -2,11 +2,6 @@
 id: CL-0010-ephemeral-update-workflow
 title: 'CL-0010: Dev ephemeral update workflow'
 type: changelog
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,13 +9,14 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-04
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - ADR-0060
   - ADR-0060-platform-ephemeral-update-workflow
   - CL-0010
+supported_until: 2027-01-04
+breaking_change: false
 ---
 
 # CL-0010: Dev ephemeral update workflow

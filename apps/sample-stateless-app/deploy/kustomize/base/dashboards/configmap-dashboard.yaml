@@ -1,121 +1,61 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "sample-stateless-app-dashboard"
-  namespace: "apps-sample-stateless"
+  name: sample-stateless-app-dashboard
+  namespace: apps-sample-stateless
   annotations:
-    k8s-sidecar-target-directory: "/tmp/dashboards/sample-stateless-app"
+    k8s-sidecar-target-directory: /tmp/dashboards/sample-stateless-app
+    goldenpath.idp/id: APPS_DASHBOARDS_METADATA
+    goldenpath.idp/owner: platform-team
   labels:
-    grafana_dashboard: "1"
-    app: "sample-stateless-app"
+    grafana_dashboard: '1'
+    app: sample-stateless-app
 data:
-  sample-stateless-app-dashboard.json: |
-    {
-      "title": "sample-stateless-app - Golden Signals",
-      "tags": [ "golden-path", "platform", "dev" ],
-      "timezone": "browser",
-      "schemaVersion": 30,
-      "refresh": "1m",
-      "editable": false,
-      "panels": [
-        {
-          "type": "row",
-          "title": "Application Health (Golden Signals)",
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }
-        },
-        {
-          "title": "Request Rate (RPS)",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 1 },
-          "targets": [
-            {
-              "expr": "sum(rate(http_requests_total{app=\"sample-stateless-app\", namespace=\"apps-sample-stateless\"}[2m])) by (method)",
-              "legendFormat": "{{method}}"
-            }
-          ],
-          "unit": "reqps"
-        },
-        {
-          "title": "Error Rate (%)",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 1 },
-          "targets": [
-            {
-              "expr": "sum(rate(http_requests_total{app=\"sample-stateless-app\", namespace=\"apps-sample-stateless\", status=~\"5.*\"}[2m])) / sum(rate(http_requests_total{app=\"sample-stateless-app\", namespace=\"apps-sample-stateless\"}[2m])) * 100",
-              "legendFormat": "5xx Errors"
-            }
-          ],
-          "unit": "percent",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 1 }
-            ]
-          }
-        },
-        {
-          "title": "Latency (P95)",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 1 },
-          "targets": [
-            {
-              "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{app=\"sample-stateless-app\", namespace=\"apps-sample-stateless\"}[5m])) by (le))",
-              "legendFormat": "P95"
-            }
-          ],
-          "unit": "s"
-        },
-        {
-          "type": "row",
-          "title": "Infrastructure Saturation",
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 }
-        },
-        {
-          "title": "CPU Usage",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 10 },
-          "targets": [
-            {
-              "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"sample-stateless-app-.*\", namespace=\"apps-sample-stateless\"}[2m])) by (pod)",
-              "legendFormat": "{{pod}}"
-            }
-          ],
-          "unit": "short"
-        },
-        {
-          "title": "Memory Usage",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 10 },
-          "targets": [
-            {
-              "expr": "sum(container_memory_usage_bytes{pod=~\"sample-stateless-app-.*\", namespace=\"apps-sample-stateless\"}) by (pod)",
-              "legendFormat": "{{pod}}"
-            }
-          ],
-          "unit": "bytes"
-        },
-        {
-          "type": "row",
-          "title": "Log Investigation (Recent Errors)",
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 18 }
-        },
-        {
-          "type": "logs",
-          "title": "Recent Application Logs",
-          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 19 },
-          "targets": [
-            {
-              "expr": "{app=\"sample-stateless-app\", namespace=\"apps-sample-stateless\"} |= \"error\"",
-              "legendFormat": ""
-            }
-          ],
-          "options": {
-            "showTime": true,
-            "showLabels": false,
-            "wrapLogMessage": true,
-            "sortOrder": "Descending"
-          }
-        }
-      ]
-    }
+  sample-stateless-app-dashboard.json: "{\n  \"title\": \"sample-stateless-app - Golden\
+    \ Signals\",\n  \"tags\": [ \"golden-path\", \"platform\", \"dev\" ],\n  \"timezone\"\
+    : \"browser\",\n  \"schemaVersion\": 30,\n  \"refresh\": \"1m\",\n  \"editable\"\
+    : false,\n  \"panels\": [\n    {\n      \"type\": \"row\",\n      \"title\": \"\
+    Application Health (Golden Signals)\",\n      \"gridPos\": { \"h\": 1, \"w\":\
+    \ 24, \"x\": 0, \"y\": 0 }\n    },\n    {\n      \"title\": \"Request Rate (RPS)\"\
+    ,\n      \"type\": \"timeseries\",\n      \"gridPos\": { \"h\": 8, \"w\": 8, \"\
+    x\": 0, \"y\": 1 },\n      \"targets\": [\n        {\n          \"expr\": \"sum(rate(http_requests_total{app=\\\
+    \"sample-stateless-app\\\", namespace=\\\"apps-sample-stateless\\\"}[2m])) by\
+    \ (method)\",\n          \"legendFormat\": \"{{method}}\"\n        }\n      ],\n\
+    \      \"unit\": \"reqps\"\n    },\n    {\n      \"title\": \"Error Rate (%)\"\
+    ,\n      \"type\": \"timeseries\",\n      \"gridPos\": { \"h\": 8, \"w\": 8, \"\
+    x\": 8, \"y\": 1 },\n      \"targets\": [\n        {\n          \"expr\": \"sum(rate(http_requests_total{app=\\\
+    \"sample-stateless-app\\\", namespace=\\\"apps-sample-stateless\\\", status=~\\\
+    \"5.*\\\"}[2m])) / sum(rate(http_requests_total{app=\\\"sample-stateless-app\\\
+    \", namespace=\\\"apps-sample-stateless\\\"}[2m])) * 100\",\n          \"legendFormat\"\
+    : \"5xx Errors\"\n        }\n      ],\n      \"unit\": \"percent\",\n      \"\
+    thresholds\": {\n        \"mode\": \"absolute\",\n        \"steps\": [\n     \
+    \     { \"color\": \"green\", \"value\": null },\n          { \"color\": \"red\"\
+    , \"value\": 1 }\n        ]\n      }\n    },\n    {\n      \"title\": \"Latency\
+    \ (P95)\",\n      \"type\": \"timeseries\",\n      \"gridPos\": { \"h\": 8, \"\
+    w\": 8, \"x\": 16, \"y\": 1 },\n      \"targets\": [\n        {\n          \"\
+    expr\": \"histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{app=\\\
+    \"sample-stateless-app\\\", namespace=\\\"apps-sample-stateless\\\"}[5m])) by\
+    \ (le))\",\n          \"legendFormat\": \"P95\"\n        }\n      ],\n      \"\
+    unit\": \"s\"\n    },\n    {\n      \"type\": \"row\",\n      \"title\": \"Infrastructure\
+    \ Saturation\",\n      \"gridPos\": { \"h\": 1, \"w\": 24, \"x\": 0, \"y\": 9\
+    \ }\n    },\n    {\n      \"title\": \"CPU Usage\",\n      \"type\": \"timeseries\"\
+    ,\n      \"gridPos\": { \"h\": 8, \"w\": 12, \"x\": 0, \"y\": 10 },\n      \"\
+    targets\": [\n        {\n          \"expr\": \"sum(rate(container_cpu_usage_seconds_total{pod=~\\\
+    \"sample-stateless-app-.*\\\", namespace=\\\"apps-sample-stateless\\\"}[2m]))\
+    \ by (pod)\",\n          \"legendFormat\": \"{{pod}}\"\n        }\n      ],\n\
+    \      \"unit\": \"short\"\n    },\n    {\n      \"title\": \"Memory Usage\",\n\
+    \      \"type\": \"timeseries\",\n      \"gridPos\": { \"h\": 8, \"w\": 12, \"\
+    x\": 12, \"y\": 10 },\n      \"targets\": [\n        {\n          \"expr\": \"\
+    sum(container_memory_usage_bytes{pod=~\\\"sample-stateless-app-.*\\\", namespace=\\\
+    \"apps-sample-stateless\\\"}) by (pod)\",\n          \"legendFormat\": \"{{pod}}\"\
+    \n        }\n      ],\n      \"unit\": \"bytes\"\n    },\n    {\n      \"type\"\
+    : \"row\",\n      \"title\": \"Log Investigation (Recent Errors)\",\n      \"\
+    gridPos\": { \"h\": 1, \"w\": 24, \"x\": 0, \"y\": 18 }\n    },\n    {\n     \
+    \ \"type\": \"logs\",\n      \"title\": \"Recent Application Logs\",\n      \"\
+    gridPos\": { \"h\": 10, \"w\": 24, \"x\": 0, \"y\": 19 },\n      \"targets\":\
+    \ [\n        {\n          \"expr\": \"{app=\\\"sample-stateless-app\\\", namespace=\\\
+    \"apps-sample-stateless\\\"} |= \\\"error\\\"\",\n          \"legendFormat\":\
+    \ \"\"\n        }\n      ],\n      \"options\": {\n        \"showTime\": true,\n\
+    \        \"showLabels\": false,\n        \"wrapLogMessage\": true,\n        \"\
+    sortOrder\": \"Descending\"\n      }\n    }\n  ]\n}\n"

@@ -2,10 +2,11 @@
 id: PR-156-STABILIZATION-CHECKLIST
 title: 'PR #156: Stabilization & Compliance Checklist'
 type: documentation
-category: governance
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,13 +14,24 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - ADR-0098
   - CL-0059
   - 24_PR_GATES
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: governance
+status: active
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # PR #156: Stabilization & Compliance Checklist

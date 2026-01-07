@@ -1,15 +1,19 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: Service
 metadata:
-  name: "sample-stateless-app"
-  namespace: "apps-sample-stateless"
+  name: sample-stateless-app
+  namespace: apps-sample-stateless
   labels:
-    app.kubernetes.io/name: "sample-stateless-app"
-    app.kubernetes.io/instance: "sample-stateless-app"
+    app.kubernetes.io/name: sample-stateless-app
+    app.kubernetes.io/instance: sample-stateless-app
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: "sample-stateless-app"
+    app.kubernetes.io/name: sample-stateless-app
   ports:
     - name: http
       port: 80

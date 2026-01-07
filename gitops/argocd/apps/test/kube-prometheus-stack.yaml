@@ -1,12 +1,12 @@
-# Managed by scripts/standardize-metadata.py
+# Managed by scripts/standardize_metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: test-kube-prometheus-stack
   namespace: argocd
   annotations:
-    goldenpath.idp/id: HELM_PROMETHEUS
-    goldenpath.idp/owner: platform-team
+    goldenpath.idp/id: APPS_TEST_METADATA
+    goldenpath.idp/owner: None
     goldenpath.idp/risk: low
 spec:
   project: default

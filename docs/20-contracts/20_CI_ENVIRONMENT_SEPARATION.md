@@ -2,11 +2,8 @@
 id: 20_CI_ENVIRONMENT_SEPARATION
 title: CI Environment Separation (Living Document)
 type: contract
-category: unknown
-version: '1.0'
 owner: platform-team
 status: active
-dependencies: []
 risk_profile:
   production_impact: high
   security_risk: none
@@ -14,13 +11,16 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+category: platform
+version: '1.0'
+dependencies: []
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0016
   - CI_WORKFLOWS
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # CI Environment Separation (Living Document)

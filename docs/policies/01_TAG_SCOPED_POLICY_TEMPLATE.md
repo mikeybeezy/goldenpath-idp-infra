@@ -2,11 +2,7 @@
 id: 01_TAG_SCOPED_POLICY_TEMPLATE
 title: Tag-Scoped IAM Policy Template (Living)
 type: policy
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -14,11 +10,11 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
 relates_to:
   - 35_RESOURCE_TAGGING
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Tag-Scoped IAM Policy Template (Living)

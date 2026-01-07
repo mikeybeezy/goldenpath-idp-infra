@@ -1,14 +1,7 @@
 ---
-id: ADR-0097
+id: ADR-0097-domain-based-resource-catalogs
 title: 'ADR-0097: Domain-Based Resource Catalogs'
 type: adr
-category: architecture
-version: '1.0'
-owner: platform-team
-status: accepted
-dependencies:
-  - terraform
-  - backstage
 risk_profile:
   production_impact: low
   security_risk: none
@@ -16,13 +9,17 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-05
-  breaking_change: true
+lifecycle: active
+version: '1.0'
+dependencies:
+  - terraform
+  - backstage
 relates_to:
   - ADR-0092
   - ADR-0094
   - CL-0057
+supported_until: 2028-01-05
+breaking_change: true
 ---
 
 # ADR-0097: Domain-Based Resource Catalogs
@@ -87,7 +84,7 @@ Each catalog follows this structure:
 ```yaml
 # docs/catalogs/ecr-catalog.yaml
 version: "1.0"
-domain: container-registries
+domain: delivery
 owner: platform-team
 last_updated: "2026-01-05"
 managed_by: platform-team
@@ -224,12 +221,12 @@ Reads all catalogs → Unified service catalog
 
 | Aspect | Single Catalog | Domain-Based | Winner |
 |--------|---------------|--------------|--------|
-| **Simplicity** | ✅ One file | ❌ Multiple files | Single |
-| **Scalability** | ❌ Gets huge | ✅ Stays small | Domain |
-| **Ownership** | ❌ Shared | ✅ Distributed | Domain |
-| **Performance** | ❌ Parse all | ✅ Parse needed | Domain |
-| **Merge Conflicts** | ❌ High risk | ✅ Low risk | Domain |
-| **Discovery** | ✅ Easy | ❌ Need index | Single |
+| **Simplicity** |  One file |  Multiple files | Single |
+| **Scalability** |  Gets huge |  Stays small | Domain |
+| **Ownership** |  Shared |  Distributed | Domain |
+| **Performance** |  Parse all |  Parse needed | Domain |
+| **Merge Conflicts** |  High risk |  Low risk | Domain |
+| **Discovery** |  Easy |  Need index | Single |
 
 **Overall:** Domain-based wins 4-2
 

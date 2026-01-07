@@ -2,11 +2,11 @@
 id: ROADMAP
 title: Platform TODO (Living)
 type: documentation
-category: unknown
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,15 +14,27 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - ADR-0022
   - ADR-0028
   - ADR-0034
   - ADR-0035
   - ADR-0037
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+status: active
+version: '1.0'
+dependencies: []
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Platform TODO (Living)
@@ -38,17 +50,61 @@ This is the single rolling backlog. Add items here before starting work.
 - P2: important, can wait
 - P3: nice-to-have
 
+---
+
+## 💎 Value Quantification (VQ) Strategy
+
+This roadmap is driven by **Value-Led Prioritization**. Every item is classified by its **VQ Bucket** to ensure we protect the core while moving fast on user-facing capabilities.
+
+### 🛡️ VQ Buckets
+
+| Bucket | Focus | Philosophy |
+| :--- | :--- | :--- |
+| **🔴 HV / HQ** | **Platform Core** | "Slow is smooth." Protect trust, safety, and auditability at all costs. |
+| **🟡 HV / LQ** | **Product Surface** | "Good enough beats elegant later." Ship rough, reversible user features. |
+| **🔵 MV / HQ** | **Quiet Multipliers** | "Bound and freeze." Build once, lock it, and stop touching. |
+| **⚫ LV / LQ** | **Actively Resist** | Every "No" buys clarity. resist over-customization and premature logic. |
+
+---
+
+## 🏗️ 90-Day Evolution Plan
+
+### Phase 1: Stabilize the Core (HV / HQ)
+**Goal**: Make the platform boring, predictable, and trustworthy.
+**Outcome**: *"I can step away and nothing degrades."*
+- **Focus**: Metadata inheritance, approval routing, deterministic teardown, immutable audit trails.
+
+### Phase 2: Make Power Legible (HV / LQ)
+**Goal**: Show what’s possible without over-engineering.
+**Outcome**: *"Users can see and use the platform's value immediately."*
+- **Focus**: Scaffolder templates, automation health dashboards, service catalog UX.
+
+### Phase 3: Optionality & Leverage (MV / HQ)
+**Goal**: Prepare for scale without committing to it.
+**Outcome**: *"Quiet multipliers that prepare us for V2/Enterprise growth."*
+- **Focus**: Schema versioning, knowledge graph exports, policy-to-CI routing.
+
+---
+
 ## Items
 
-| ID | Priority | Area | Summary | Owner | Status | Effort | Target | Next step | References | Why |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 001 | P1 | CI | Defer health-check wiring until multi-env bring-up/teardown is stable | platform | Open | M | Q1 | Stabilize multi-env CI lifecycle | docs/40-delivery/26_POST_APPLY_HEALTH_CHECKS.md, docs/adrs/ADR-0022-platform-post-apply-health-checks.md | Avoid false failures before CI lifecycle is proven |
-| 002 | P3 | Security | Introduce SBOM generation for production releases | platform | Open | M |  | Define approach (e.g., Syft/CycloneDX) | docs/60-security/28_SECURITY_FLOOR_V1.md | Future supply-chain hardening |
+| ID | Priority | VQ Class | Area | Summary | Owner | Status | Effort | Target | Next step | Why |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 001 | P1 | **🔴 HV/HQ** | CI | Defer health-check wiring until multi-envbring-up stable | platform | Open | M | Q1 | Stabilize multi-env lifecycle | Avoid false failures |
+| 007 | P1 | **🔴 HV/HQ** | Governance | Switch on dev-branch gate in GitHub rulesets | platform | Open | S | Q1 | Configure rulesets | Enforce promote path |
+| 036 | P1 | **🔴 HV/HQ** | Governance | Backfill and tag all existing IAM policies | platform | Open | M | Q1 | Audit policies | Enable reliable audits |
+| 050 | P1 | **🔴 HV/HQ** | Environments | Enable EKS in test, staging, and prod envs | platform | Open | M | Q1 | Validate `eks_config` | Multi-env parity |
+| 052 | P1 | **🔴 HV/HQ** | GitOps | Add GitOps manifests per environment | platform | Open | M | Q1 | Create app manifests | Consistent deployment |
+| 043 | P1 | **🟡 HV/LQ** | Observability | Build RED + Golden Signals dashboards (v1) | platform | Open | M | Q1 | Create dashboards | V1 visibility baseline |
+| 051 | P1 | **🟡 HV/LQ** | Apps | Add stateful app template (Scaffold) | platform | Open | M | Q1 | Define template | Golden Path for stateful |
+| 045 | P2 | **🟡 HV/LQ** | Cost | Implement Infracost + Backstage Integration | platform | Open | M | Q2 | Add CI step | Surface cost leading indicators |
+| 065 | P2 | **🔵 MV/HQ** | GitOps | Automate PR Merge Apply (VPC/IAM) | platform | Done | M | Q2 | Expand pattern | Eliminate manual ClickOps |
+| 073 | P1 | **🔵 MV/HQ** | Governance | Field Test: Automated Governance & VQ Enforcement in Onboarding | platform | Open | S | Q1 | Conduct live onboarding drill | Validate friction vs. value of hard-gates |
+| 002 | P3 | **⚫ LV/LQ** | Security | SBOM generation for production releases | platform | Open | M |  | Define approach | Future supply-chain hardening |
 | 003 | P2 | CI | Add CI environment contract validator (hard-fail) | platform | Open | S |  | Define required vars and gating point | docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0034-platform-ci-environment-contract.md | Enforce required inputs before apply |
 | 004 | P2 | GitOps | Configure Argo Rollouts in bootstrap (install + health checks) | platform | Open | M |  | Decide install path and add Argo health checks | docs/20-contracts/29_CD_DEPLOYMENT_CONTRACT.md | Optional rollout safety for V1+ |
 | 005 | P2 | Docs | Test doc freshness validator with overdue and missing metadata cases | platform | Open | S |  | Run validator with `--today` and confirm warnings | docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md | Validate mechanism before enforcement |
 | 006 | P3 | Docs | Decide if doc freshness check should become a hard gate | platform | Open | S |  | Evaluate after tests and initial adoption | docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md | Avoid over-enforcement in V1 |
-| 007 | P1 | Governance | Switch on dev-branch gate in GitHub rulesets | platform | Open | S |  | Configure `dev` and `main` rulesets | docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0028-platform-dev-branch-gate.md | Enforce value-preserving promotion path |
 | 008 | P2 | Security | Tighten dev apply IAM policy after successful apply | platform | Open | M |  | Reduce broad permissions to least privilege | docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md | Start broad, then restrict once stable |
 | 009 | P2 | CI | Add PR build_id validation (fail fast before merge) | platform | Open | S |  | Add PR workflow check for build_id format | .github/workflows/infra-terraform-apply-dev.yml | Catch missing/invalid build IDs earlier |
 | 010 | P3 | Repo | Remove duplicate CLUSTER/REGION defaults in Makefile | platform | Open | S |  | Keep a single source of truth for defaults | Makefile | Reduce confusion about which defaults are used |
@@ -61,7 +117,6 @@ This is the single rolling backlog. Add items here before starting work.
 | 017 | P2 | CI | Re-enable Super Linter when CI stabilizes | platform | Open | S |  | Restore workflow to reduce doc regressions | .github/workflows/super-linter.yml | Disabled temporarily because it slowed the workflow |
 | 018 | P2 | CI | Add stricter linting gate for merges to dev | platform | Open | M |  | Define required lint checks for dev gate | .github/workflows/yamllint.yml | Catch workflow YAML issues before merge |
 | 019 | P2 | Security | Tighten teardown permissions after higher envs stabilize | platform | Open | M |  | Scope teardown IAM actions by tags | IAM apply role policy | Start broad to unblock CI, restrict once stable |
-| 036 | P1 | Governance | Clear technical debt and tag all existing IAM policies | platform | Open | M |  | Audit IAM policies and backfill required tags | docs/10-governance/35_RESOURCE_TAGGING.md, docs/adrs/ADR-0037-platform-resource-tagging-policy.md | Enable tag-scoped cleanup and reliable audits |
 | 020 | P2 | Docs | Create infrastructure architecture diagram | platform | Open | M |  | Define scope and system boundaries | docs/30-architecture/09_ARCHITECTURE.md | Consolidate platform topology for onboarding and reviews |
 | 021 | P2 | Docs | Create infra networking diagram | platform | Open | M |  | Capture VPC, subnets, routes, NAT/IGW | docs/30-architecture/11_NETWORKING.md | Make network flows and boundaries explicit |
 | 022 | P2 | Docs | Create bootstrap process flow diagram | platform | Open | M |  | Map bootstrap stages + dependencies | docs/40-delivery/17_BUILD_RUN_FLAGS.md | Visualize bootstrap sequence and gates |

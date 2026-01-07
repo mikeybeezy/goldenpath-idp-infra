@@ -1,12 +1,14 @@
-# kong-consumer.yaml
+# Managed by scripts/standardize_metadata.py
 apiVersion: configuration.konghq.com/v1
 kind: KongConsumer
 metadata:
- name: app-consumer             # Unique name for this consumer
- namespace: -namespace
- annotations:
-  kubernetes.io/ingress.class: kong
-username: app                # Username for this consumer
-custom_id: app           # Unique ID for this consumer
+  name: app-consumer
+  namespace: -namespace
+  annotations:
+    kubernetes.io/ingress.class: kong
+    goldenpath.idp/id: APPS_FAST_API_APP_METADATA
+    goldenpath.idp/owner: platform-team
+username: app
+custom_id: app
 credentials:
- - user1-apikey                  # Name of the Secret containing the API key
+  - user1-apikey

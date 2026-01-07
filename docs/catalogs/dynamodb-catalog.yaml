@@ -1,5 +1,5 @@
 version: "1.0"
-domain: databases-dynamodb
+domain: platform-core
 owner: database-team
 last_updated: "2026-01-05"
 managed_by: database-team

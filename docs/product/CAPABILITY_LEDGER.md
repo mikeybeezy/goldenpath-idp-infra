@@ -1,11 +1,12 @@
 ---
-id: IDP_PRODUCT_FEATURES
-title: IDP Product Features & Capability Roadmap
+id: CAPABILITY_LEDGER
+title: IDP Capability Ledger
 type: documentation
-category: product
-status: active
+domain: platform-core
+applies_to: []
 owner: platform-team
-version: '1.0'
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,16 +14,27 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - ADR-0027
   - ADR-0092
   - PLATFORM_HEALTH.md
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+status: active
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
-# IDP Product Features & Capability Roadmap
+# IDP Capability Ledger
 
 The Golden Path IDP is built on the principle of **"Governance as a Service,"** where infrastructure management, security compliance, and developer experience are unified into a single, automated lifecycle.
 
@@ -39,10 +51,10 @@ The platform strictly forbids "Dark Infrastructure." Every component in the GitO
 - **Sidecar-as-Standard**: Every new resource is automatically provisioned with a standardized governance sidecar.
 
 ## 3. Closed-Loop Governance (Heal, Inject, Verify, Report)
-The IDP features a fully automated governance engine that bridges the gap between static documentation and live cluster resources.
-- **HEAL**: The **`standardize_metadata.py`** engine (The Healer) performs automated schema remediation and sidecar generation, ensuring 100% repository compliance.
+The IDP features a fully automated, **Schema-First** governance engine that bridges the gap between static documentation and live cluster resources.
+- **HEAL**: The **`standardize_metadata.py`** engine (The Healer) performs automated schema remediation and sidecar generation, dynamically driven by the repository's metadata schemas.
 - **INJECT**: The **Governance Injection Pass** automatically propagates metadata (Owner, ID, Risk) from sidecars into Helm `values.yaml` and ArgoCD manifest annotations.
-- **VERIFY**: Quality Gates (**`validate_metadata.py`**) verify "Injection Integrity," ensuring that governance data is successfully baked into the deployment configuration.
+- **VERIFY**: Quality Gates (**`validate_metadata.py`**) verify "Injection Integrity," ensuring that governance data is successfully baked into the deployment configuration as defined by the canonical schemas.
 - **REPORT**: The **`platform_health.py`** reporter audits the entire estate, surfacing **"Injection Coverage"** metrics and identifying any remaining "Dark Infrastructure" gaps.
 
 ## 4. Federated Quality Gates
@@ -60,10 +72,13 @@ The platform enforces its own rules through self-testing mechanisms, preventing 
 - **Script Governance**: The **`generate_script_index.py --validate`** gate ensures no automation script enters the repo without proper documentation headers.
 - **Workflow Auditing**: CI pipelines are automatically indexed, and any "orphaned" or undocumented workflows are flagged.
 - **Terraform Linting**: A "Layer 2" offline validation gate blocks malformed Infrastructure-as-Code before it ever reaches the cloud.
+- **Enum Consistency Enforcement**: The **`validate_enums.py`** gate ensures that all metadata (Status, Risk, Type) adheres to the platform's unified [Queryable Intelligence enums](file:///Users/mikesablaze/goldenpath-idp-infra/schemas/metadata/enums.yaml), eliminating semantic drift.
 
 ## 7. "Born Governed" Service Scaffolding
 The IDP ensures that every new service is compliant from Day 0 by embedding governance into the core scaffolding process.
-- **Template-First Compliance**: All Backstage templates come pre-configured with `metadata.yaml` sidecars and automated annotation injection.
+- **Scaffolding Logic**: Automatically creates a new repository with a production-ready Node.js foundation for ECR services.
+- **Governance-First Compliance**: Injects a `metadata.yaml` sidecar and `catalog-info.yaml` so the service is immediately compliant and visible in the [health dashboard](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md).
+- **One-Click Deployment**: Seamlessly integrates with GitHub and the Backstage Software Scaffolder for zero-manual-setup on-boarding.
 - **Zero-Manual-Setup**: Developers don't need to "add" governance later; services are born with ownership, risk, and reliability data already baked in.
 
 ## 8. Automated Knowledge Graph
@@ -94,9 +109,46 @@ The platform empowers engineers to be financially responsible by making cost imp
 - **Infracost Integration**: Automated cost estimation runs on every Terraform PR, surfacing the exact weekly/monthly cost impact of infrastructure changes.
 - **Non-blocking Signals**: Developers get immediate feedback via PR comments, enabling "Cost Aware" decision making without slowing down velocity.
 
-## 13. Workload-Centric Abstractions (Planned)
+## 13. Config-Driven Metadata Governance
+The platform has decoupled its governance logic from source code, moving the "Rules of the Platform" into human-readable YAML schemas.
+- **Schema-First Control Plane**: Architects can add new metadata requirements or change valid enum values (e.g., adding a new team) by editing a single YAML file in `schemas/metadata/`, without touching any Python code.
+- **Dynamic Standardization**: The remediation engine dynamically adapts its document "Skeletons" based on the latest schemas, ensuring that auto-healing is always perfectly aligned with current policy.
+- **Zero-Code Evolution**: This allows the platform's governance model to evolve at high velocity, enabling O(1) schema updates across thousands of repository resources.
+
+## 14. Contextual Metadata Auto-Healing
+The IDP features an "Architecturally Aware" remediation engine that maintains repository integrity without developer intervention.
+- **Contextual Inferencing**: The **`standardize_metadata.py`** engine intelligently maps legacy placeholders (like `unknown`) to precise architectural pillars (Delivery, Security, Observability) based on a file's location in the platform tree.
+- **Functional Type Resolution**: Automatically upgrades generic records to high-fidelity artifact types (ADR, Contract, Runbook), ensuring the [IDP Knowledge Graph](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md) remains accurate and searchable.
+- **Automated Compliance**: Corrects 100% of enum violations and metadata gaps in a single, automated pass, eliminating governance debt at its source.
+
+## 16. Zero-Touch Auto-Healing
+The IDP ensures total governance coverage by automatically initializing metadata for any new platform asset without developer intervention.
+- **Automated Discovery**: Any new directory created in a governed zone is automatically detected by the CI gate.
+- **Contextual Inheritance**: The engine walks up the platform tree to inherit ownership, domain, and risk profiles from parent directories.
+- **Zero-Manual-Setup**: Automatically generates and initializes a high-fidelity `metadata.yaml` sidecar and commits it back to the PR branch, ensuring the asset is "Born Governed."
+
+## 15. Workload-Centric Abstractions (Planned)
 Future evolution focuses on the "Score" implementation to allow developers to define **WHAT** they need, hiding the complexity of **HOW** it is provisioned.
 - **Zero-YAML Onboarding**: Moving away from complex K8s manifests toward workload-centric descriptors.
+
+## 17. Human-In-The-Loop (HITL) Governance & De-Friction
+The platform prioritizes developer velocity by replacing "Automatic Policing" with "Guided Remediation," ensuring that governance is a path of least resistance rather than a blocker.
+
+- **Config-Driven Access Control**: Access lists for sensitive bypasses (hotfixes, build-ids) are externalized to a governed [**`access.yaml`**](file:///Users/mikesablaze/goldenpath-idp-infra/schemas/governance/access.yaml) configuration.
+  - **Value**: Zero-friction onboarding for new team members.
+  - **Cognitive Load Eliminated**: Removes the need to modify source code to update team membership, centralizing "who is allowed to do what" into a single, visible file.
+
+- **Soft Enum Validation**: The validation engine now supports a `--soft` warning mode for non-production environments.
+  - **Value**: Decouples governance vocabulary growth from infrastructure stability.
+  - **Cognitive Load Eliminated**: Eliminates hard CI blocks for minor metadata typos or newly proposed tags, providing actionable guidance (via [RB-0015](file:///Users/mikesablaze/goldenpath-idp-infra/docs/runbooks/RB-0015-extending-governance-vocabulary.md)) instead of silent failures.
+
+- **Human-In-The-Loop (HITL) Healing**: Replaced race-condition-prone "Auto-Push" bots with actionable local commands (`bin/governance heal`).
+  - **Value**: Returns control to the developer and eliminates git merge conflicts caused by CI.
+  - **Cognitive Load Eliminated**: Ends the "Git Push War" where CI and developers fight over the same branch, reducing frustration and manual rebase cycles.
+
+- **Environment Parity CLI**: The [**`bin/governance`**](file:///Users/mikesablaze/goldenpath-idp-infra/bin/governance) suite provides 1:1 parity between a developer's laptop and the CI environment.
+  - **Value**: "Born Green" development where issues are caught *before* they ever reach a PR.
+  - **Cognitive Load Eliminated**: Eliminates the "Passes locally, fails in CI" syndrome, saving hours of debugging time by ensuring the local environment is always correctly configured with dependencies and hooks.
 
 ---
 

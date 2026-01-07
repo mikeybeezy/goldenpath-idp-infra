@@ -1,12 +1,15 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
- name: grade-demo-ratelimit    # Must match name in Ingress annotation
- namespace: grade-demo
- annotations:
-  kubernetes.io/ingress.class: kong
+  name: grade-demo-ratelimit
+  namespace: grade-demo
+  annotations:
+    kubernetes.io/ingress.class: kong
+    goldenpath.idp/id: APPS_FAST_API_APP_METADATA
+    goldenpath.idp/owner: platform-team
 config:
- minute: 5     # Number of requests allowed per minute
- limit_by: consumer
- policy: local
+  minute: 5
+  limit_by: consumer
+  policy: local
 plugin: rate-limiting

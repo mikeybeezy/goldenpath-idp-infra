@@ -2,11 +2,11 @@
 id: 02_GRAFANA_ACCESS
 title: Grafana Access (Runbook)
 type: runbook
-category: unknown
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -14,11 +14,23 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 31_EKS_ACCESS_MODEL
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: runbooks
+status: active
+version: '1.0'
+dependencies: []
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Grafana Access (Runbook)

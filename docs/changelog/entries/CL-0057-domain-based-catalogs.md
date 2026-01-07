@@ -2,13 +2,6 @@
 id: CL-0057-domain-based-catalogs
 title: 'CL-0057: Domain-Based Resource Catalogs'
 type: changelog
-category: architecture
-version: '1.0'
-owner: platform-team
-status: active
-dependencies:
-  - terraform
-  - github-actions
 risk_profile:
   production_impact: low
   security_risk: none
@@ -16,13 +9,17 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-05
-  breaking_change: true
+version: '1.0'
+dependencies:
+  - terraform
+  - github-actions
+lifecycle: active
 relates_to:
   - ADR-0097
   - ADR-0092
   - ADR-0094
+supported_until: 2028-01-05
+breaking_change: true
 ---
 
 # CL-0057: Domain-Based Resource Catalogs

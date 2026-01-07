@@ -1,32 +1,36 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .Values.appName }}"
-  namespace: "{{ .Values.namespace }}"
+  name: '{{ .Values.appName }}'
+  namespace: '{{ .Values.namespace }}'
   labels:
-    app.kubernetes.io/name: "{{ .Values.appName }}"
-    app.kubernetes.io/instance: "{{ .Values.appName }}"
-    app.kubernetes.io/managed-by: "argocd"
-    app.kubernetes.io/version: "{{ .Values.appVersion }}"
-    platform.goldenpath.dev/team: "{{ .Values.team }}"
-    platform.goldenpath.dev/env: "{{ .Values.env }}"
-    platform.goldenpath.dev/build-id: "{{ .Values.buildId }}"
+    app.kubernetes.io/name: '{{ .Values.appName }}'
+    app.kubernetes.io/instance: '{{ .Values.appName }}'
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/version: '{{ .Values.appVersion }}'
+    platform.goldenpath.dev/team: '{{ .Values.team }}'
+    platform.goldenpath.dev/env: '{{ .Values.env }}'
+    platform.goldenpath.dev/build-id: '{{ .Values.buildId }}'
+  annotations:
+    goldenpath.idp/id: APPS_TEMPLATES_METADATA
+    goldenpath.idp/owner: None
 spec:
-  replicas: "{{ .Values.replicas }}"
+  replicas: '{{ .Values.replicas }}'
   selector:
     matchLabels:
-      app.kubernetes.io/name: "{{ .Values.appName }}"
+      app.kubernetes.io/name: '{{ .Values.appName }}'
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: "{{ .Values.appName }}"
-        app.kubernetes.io/instance: "{{ .Values.appName }}"
-        app.kubernetes.io/version: "{{ .Values.appVersion }}"
-        platform.goldenpath.dev/team: "{{ .Values.team }}"
-        platform.goldenpath.dev/env: "{{ .Values.env }}"
-        platform.goldenpath.dev/build-id: "{{ .Values.buildId }}"
+        app.kubernetes.io/name: '{{ .Values.appName }}'
+        app.kubernetes.io/instance: '{{ .Values.appName }}'
+        app.kubernetes.io/version: '{{ .Values.appVersion }}'
+        platform.goldenpath.dev/team: '{{ .Values.team }}'
+        platform.goldenpath.dev/env: '{{ .Values.env }}'
+        platform.goldenpath.dev/build-id: '{{ .Values.buildId }}'
     spec:
-      serviceAccountName: "{{ .Values.serviceAccountName }}"
+      serviceAccountName: '{{ .Values.serviceAccountName }}'
       terminationGracePeriodSeconds: 30
       securityContext:
         runAsNonRoot: true
@@ -34,22 +38,22 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
       containers:
-        - name: "{{ .Values.appName }}"
-          image: "{{ .Values.appImage }}"
+        - name: '{{ .Values.appName }}'
+          image: '{{ .Values.appImage }}'
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: "{{ .Values.appPort }}"
+              containerPort: '{{ .Values.appPort }}'
           env:
             - name: ENV
-              value: "{{ .Values.env }}"
+              value: '{{ .Values.env }}'
           resources:
             requests:
-              cpu: "{{ .Values.cpuRequest }}"
-              memory: "{{ .Values.memoryRequest }}"
+              cpu: '{{ .Values.cpuRequest }}'
+              memory: '{{ .Values.memoryRequest }}'
             limits:
-              cpu: "{{ .Values.cpuLimit }}"
-              memory: "{{ .Values.memoryLimit }}"
+              cpu: '{{ .Values.cpuLimit }}'
+              memory: '{{ .Values.memoryLimit }}'
           readinessProbe:
             httpGet:
               path: /health

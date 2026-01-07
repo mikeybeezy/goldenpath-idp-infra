@@ -1,25 +1,15 @@
 ---
-id: ADR-0100
+id: ADR-0100-standardized-ecr-lifecycle-and-documentation
 title: Standardized ECR Lifecycle and Documentation
 type: adr
-category: governance
-status: accepted
-owner: platform-team
+lifecycle: active
 version: '1.0'
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
 relates_to:
   - ADR-0092
   - ADR-0093
   - ADR-0097
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # ADR-0100: Standardized ECR Lifecycle and Documentation

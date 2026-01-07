@@ -1,25 +1,4 @@
 ---
-id: HELM_KUBE_PROMETHEUS_STACK
-title: Kube-Prometheus-Stack (Observability)
-type: chart
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies:
-  - module:vpc
-  - service:eks
-risk_profile:
-  production_impact: medium
-  security_risk: data-visibility
-  coupling_risk: medium
-reliability:
-  rollback_strategy: helm-rollback
-  observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: true
-relates_to:
-  - ADR-0052
-  - 05_OBSERVABILITY_DECISIONS
----
+id: HELM_KUBE_PROMETHEUS_STACK_METADATA
+title: metadata
+type: documentation

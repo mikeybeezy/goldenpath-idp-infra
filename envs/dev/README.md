@@ -2,27 +2,16 @@
 id: ENVS_DEV_README
 title: Dev Environment
 type: documentation
-category: envs
+relates_to:
+  - STAGING_ENV_README
+  - PROD_ENV_README
 version: 1.0
-owner: platform-team
-status: active
 dependencies:
   - MODULE_VPC
   - MODULE_AWS_EKS
   - MODULE_AWS_IAM
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
-relates_to:
-  - STAGING_ENV_README
-  - PROD_ENV_README
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Dev Environment

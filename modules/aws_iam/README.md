@@ -2,12 +2,11 @@
 id: MODULES_AWS_IAM_README
 title: EKS IAM Terraform Module
 type: documentation
-category: modules
-version: 1.1
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - aws-provider
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: medium
@@ -15,13 +14,26 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 09_ARCHITECTURE
   - 06_IDENTITY_AND_ACCESS
   - ADR-0031
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+status: active
+version: 1.1
+dependencies:
+  - aws-provider
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # EKS IAM Module

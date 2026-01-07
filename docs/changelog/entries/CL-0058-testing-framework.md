@@ -2,11 +2,6 @@
 id: CL-0058-testing-framework
 title: 'CL-0058: Feature Testing Framework'
 type: changelog
-category: testing
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
 risk_profile:
   production_impact: none
   security_risk: none
@@ -14,12 +9,13 @@ risk_profile:
 reliability:
   rollback_strategy: not-applicable
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-05
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - CL-0056
   - CL-0057
+supported_until: 2028-01-05
+breaking_change: false
 ---
 
 # CL-0058: Feature Testing Framework

@@ -2,13 +2,6 @@
 id: CL-0056-risk-based-ecr-controls
 title: 'CL-0056: Risk-Based ECR Security Controls'
 type: changelog
-category: governance
-version: '1.0'
-owner: platform-team
-status: active
-dependencies:
-  - terraform
-  - aws-ecr
 risk_profile:
   production_impact: medium
   security_risk: low
@@ -16,14 +9,18 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2027-01-05
-  breaking_change: false
+version: '1.0'
+dependencies:
+  - terraform
+  - aws-ecr
+lifecycle: active
 relates_to:
   - ADR-0096
   - ADR-0092
   - ADR-0093
   - CL-0056
+supported_until: 2027-01-05
+breaking_change: false
 ---
 
 # CL-0056: Risk-Based ECR Security Controls

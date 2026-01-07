@@ -1,15 +1,19 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: "stateful-app-efs"
-  namespace: "apps-stateful"
+  name: stateful-app-efs
+  namespace: apps-stateful
   labels:
-    app.kubernetes.io/name: "stateful-app"
-    app.kubernetes.io/instance: "stateful-app"
+    app.kubernetes.io/name: stateful-app
+    app.kubernetes.io/instance: stateful-app
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: "efs-sc"
+  storageClassName: efs-sc
   resources:
     requests:
-      storage: "20Gi"
+      storage: 20Gi

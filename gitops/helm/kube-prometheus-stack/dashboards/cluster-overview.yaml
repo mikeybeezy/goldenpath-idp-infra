@@ -1,100 +1,49 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: platform-cluster-overview-dashboard
   namespace: monitoring
   labels:
-    grafana_dashboard: "1"
+    grafana_dashboard: '1'
+  annotations:
+    goldenpath.idp/id: HELM_DASHBOARDS_METADATA
+    goldenpath.idp/owner: platform-team
 data:
-  cluster-overview.json: |
-    {
-      "title": "Platform - Cluster Overview",
-      "tags": [ "platform", "infrastructure" ],
-      "timezone": "browser",
-      "schemaVersion": 30,
-      "refresh": "1m",
-      "editable": false,
-      "panels": [
-        {
-          "type": "row",
-          "title": "Cluster Capacity",
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }
-        },
-        {
-          "title": "Cluster CPU Saturation",
-          "type": "gauge",
-          "gridPos": { "h": 6, "w": 6, "x": 0, "y": 1 },
-          "targets": [
-            {
-              "expr": "sum(rate(container_cpu_usage_seconds_total{image!=\"\"}[5m])) / sum(kube_node_status_allocatable{resource=\"cpu\"}) * 100",
-              "legendFormat": "CPU %"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "orange", "value": 75 },
-              { "color": "red", "value": 90 }
-            ]
-          }
-        },
-        {
-          "title": "Cluster Memory Saturation",
-          "type": "gauge",
-          "gridPos": { "h": 6, "w": 6, "x": 6, "y": 1 },
-          "targets": [
-            {
-              "expr": "sum(container_memory_working_set_bytes{image!=\"\"}) / sum(kube_node_status_allocatable{resource=\"memory\"}) * 100",
-              "legendFormat": "Memory %"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "orange", "value": 80 },
-              { "color": "red", "value": 95 }
-            ]
-          }
-        },
-        {
-          "title": "Nodes Ready",
-          "type": "stat",
-          "gridPos": { "h": 6, "w": 6, "x": 12, "y": 1 },
-          "targets": [
-            {
-              "expr": "sum(kube_node_status_condition{condition=\"Ready\", status=\"true\"})",
-              "legendFormat": "Nodes"
-            }
-          ]
-        },
-        {
-          "type": "row",
-          "title": "Workload Health",
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 7 }
-        },
-        {
-          "title": "Pods Not Ready",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
-          "targets": [
-            {
-              "expr": "sum(kube_pod_status_phase{phase!=\"Running\", phase!=\"Succeeded\"}) by (namespace)",
-              "legendFormat": "{{namespace}}"
-            }
-          ]
-        },
-        {
-          "title": "Container Restarts (High Churn)",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
-          "targets": [
-            {
-              "expr": "topk(5, sum(changes(kube_pod_container_status_restarts_total[1h])) by (namespace, pod))",
-              "legendFormat": "{{namespace}}/{{pod}}"
-            }
-          ]
-        }
-      ]
-    }
+  cluster-overview.json: "{\n  \"title\": \"Platform - Cluster Overview\",\n  \"tags\"\
+    : [ \"platform\", \"infrastructure\" ],\n  \"timezone\": \"browser\",\n  \"schemaVersion\"\
+    : 30,\n  \"refresh\": \"1m\",\n  \"editable\": false,\n  \"panels\": [\n    {\n\
+    \      \"type\": \"row\",\n      \"title\": \"Cluster Capacity\",\n      \"gridPos\"\
+    : { \"h\": 1, \"w\": 24, \"x\": 0, \"y\": 0 }\n    },\n    {\n      \"title\"\
+    : \"Cluster CPU Saturation\",\n      \"type\": \"gauge\",\n      \"gridPos\":\
+    \ { \"h\": 6, \"w\": 6, \"x\": 0, \"y\": 1 },\n      \"targets\": [\n        {\n\
+    \          \"expr\": \"sum(rate(container_cpu_usage_seconds_total{image!=\\\"\\\
+    \"}[5m])) / sum(kube_node_status_allocatable{resource=\\\"cpu\\\"}) * 100\",\n\
+    \          \"legendFormat\": \"CPU %\"\n        }\n      ],\n      \"thresholds\"\
+    : {\n        \"mode\": \"absolute\",\n        \"steps\": [\n          { \"color\"\
+    : \"green\", \"value\": null },\n          { \"color\": \"orange\", \"value\"\
+    : 75 },\n          { \"color\": \"red\", \"value\": 90 }\n        ]\n      }\n\
+    \    },\n    {\n      \"title\": \"Cluster Memory Saturation\",\n      \"type\"\
+    : \"gauge\",\n      \"gridPos\": { \"h\": 6, \"w\": 6, \"x\": 6, \"y\": 1 },\n\
+    \      \"targets\": [\n        {\n          \"expr\": \"sum(container_memory_working_set_bytes{image!=\\\
+    \"\\\"}) / sum(kube_node_status_allocatable{resource=\\\"memory\\\"}) * 100\"\
+    ,\n          \"legendFormat\": \"Memory %\"\n        }\n      ],\n      \"thresholds\"\
+    : {\n        \"mode\": \"absolute\",\n        \"steps\": [\n          { \"color\"\
+    : \"green\", \"value\": null },\n          { \"color\": \"orange\", \"value\"\
+    : 80 },\n          { \"color\": \"red\", \"value\": 95 }\n        ]\n      }\n\
+    \    },\n    {\n      \"title\": \"Nodes Ready\",\n      \"type\": \"stat\",\n\
+    \      \"gridPos\": { \"h\": 6, \"w\": 6, \"x\": 12, \"y\": 1 },\n      \"targets\"\
+    : [\n        {\n          \"expr\": \"sum(kube_node_status_condition{condition=\\\
+    \"Ready\\\", status=\\\"true\\\"})\",\n          \"legendFormat\": \"Nodes\"\n\
+    \        }\n      ]\n    },\n    {\n      \"type\": \"row\",\n      \"title\"\
+    : \"Workload Health\",\n      \"gridPos\": { \"h\": 1, \"w\": 24, \"x\": 0, \"\
+    y\": 7 }\n    },\n    {\n      \"title\": \"Pods Not Ready\",\n      \"type\"\
+    : \"timeseries\",\n      \"gridPos\": { \"h\": 8, \"w\": 12, \"x\": 0, \"y\":\
+    \ 8 },\n      \"targets\": [\n        {\n          \"expr\": \"sum(kube_pod_status_phase{phase!=\\\
+    \"Running\\\", phase!=\\\"Succeeded\\\"}) by (namespace)\",\n          \"legendFormat\"\
+    : \"{{namespace}}\"\n        }\n      ]\n    },\n    {\n      \"title\": \"Container\
+    \ Restarts (High Churn)\",\n      \"type\": \"timeseries\",\n      \"gridPos\"\
+    : { \"h\": 8, \"w\": 12, \"x\": 12, \"y\": 8 },\n      \"targets\": [\n      \
+    \  {\n          \"expr\": \"topk(5, sum(changes(kube_pod_container_status_restarts_total[1h]))\
+    \ by (namespace, pod))\",\n          \"legendFormat\": \"{{namespace}}/{{pod}}\"\
+    \n        }\n      ]\n    }\n  ]\n}\n"

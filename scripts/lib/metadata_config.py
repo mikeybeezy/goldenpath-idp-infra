@@ -1,0 +1,177 @@
+import os
+import yaml
+from typing import Any, Dict, List, Optional
+
+class MetadataConfig:
+    """
+    Central configuration manager for metadata governance.
+    Loads enums and schemas to provide a config-driven interface for scripts.
+    """
+    def __init__(self, schemas_dir: str = "schemas/metadata", enums_file: str = "schemas/metadata/enums.yaml"):
+        self.schemas_dir = schemas_dir
+        self.enums_file = enums_file
+        self.enums = self._load_enums()
+        self.schemas = self._load_schemas()
+        self.access_file = "schemas/governance/access.yaml"
+
+    def _load_enums(self) -> Dict[str, List[Any]]:
+        try:
+            with open(self.enums_file, "r") as f:
+                return yaml.safe_load(f) or {}
+        except Exception as e:
+            print(f"⚠️ Warning: Could not load enums from {self.enums_file}: {e}")
+            return {}
+
+    def _load_schemas(self) -> Dict[str, Dict[str, Any]]:
+        schemas = {}
+        if not os.path.isdir(self.schemas_dir):
+            return schemas
+            
+        for f in os.listdir(self.schemas_dir):
+            if f.endswith(".schema.yaml"):
+                kind = f.replace(".schema.yaml", "")
+                try:
+                    with open(os.path.join(self.schemas_dir, f), "r") as s:
+                        schemas[kind] = yaml.safe_load(s) or {}
+                except Exception as e:
+                    print(f"⚠️ Warning: Could not load schema {f}: {e}")
+        return schemas
+
+    def get_enum_values(self, enum_name: str) -> List[Any]:
+        return self.enums.get(enum_name, [])
+
+    def get_schema(self, kind: str) -> Optional[Dict[str, Any]]:
+        return self.schemas.get(kind)
+
+    def get_access_config(self) -> Dict[str, Any]:
+        """
+        Loads the access control list from the governance directory.
+        """
+        try:
+            if os.path.exists(self.access_file):
+                with open(self.access_file, "r") as f:
+                    return yaml.safe_load(f) or {}
+            print(f"⚠️ Warning: Access file {self.access_file} not found.")
+        except Exception as e:
+            print(f"⚠️ Error loading access config: {e}")
+        return {}
+
+    def get_required_fields(self, kind: str) -> List[str]:
+        schema = self.get_schema(kind)
+        if schema:
+            return schema.get("required", [])
+        return []
+
+    def validate_field(self, kind: str, field: str, value: Any) -> List[str]:
+        """
+        Validates a single field against the schema and enums.
+        Returns a list of error messages (empty if valid).
+        """
+        errors = []
+        schema = self.get_schema(kind)
+        if not schema:
+            return errors
+
+        props = schema.get("properties", {})
+        if field not in props:
+            return errors # Field not defined in schema, skipping deep validation
+
+        field_schema = props[field]
+        
+        # Check enum_from constraint
+        enum_name = field_schema.get("enum_from")
+        if enum_name:
+            allowed = self.get_enum_values(enum_name)
+            if value not in allowed:
+                errors.append(f"Value '{value}' for field '{field}' is not in allowed enums for '{enum_name}'")
+
+        # Check type constraint for arrays
+        if field_schema.get("type") == "array" and isinstance(value, list):
+            items_schema = field_schema.get("items", {})
+            item_enum_name = items_schema.get("enum_from")
+            if item_enum_name:
+                allowed = self.get_enum_values(item_enum_name)
+                for item in value:
+                    if item not in allowed:
+                        errors.append(f"Item '{item}' in field '{field}' is not in allowed enums for '{item_enum_name}'")
+
+        return errors
+
+    def get_skeleton(self, kind: str) -> Dict[str, Any]:
+        """
+        Generates a default skeleton for a specific document kind based on its schema.
+        """
+        schema = self.get_schema(kind)
+        if not schema:
+            return {}
+
+        skeleton = {}
+        props = schema.get("properties", {})
+        for field, details in props.items():
+            if "default" in details:
+                skeleton[field] = details["default"]
+            elif details.get("type") == "array":
+                skeleton[field] = []
+            elif details.get("type") == "object":
+                skeleton[field] = {}
+            elif field in ['id', 'title', 'type', 'owner', 'risk_profile', 'reliability', 'value_quantification']:
+                # Mandatory identity/ownership fields and specific object fields should be present even if empty
+                if details.get("type") == "object":
+                    skeleton[field] = {}
+                else:
+                    skeleton[field] = ""
+        return skeleton
+
+    def find_parent_metadata(self, filepath: str) -> Optional[Dict[str, Any]]:
+        """
+        Walks up the directory tree to find the nearest parent metadata.yaml.
+        """
+        abs_filepath = os.path.abspath(filepath)
+        current_dir = os.path.dirname(abs_filepath)
+        root_dir = os.getcwd()
+        
+        # print(f"DEBUG: find_parent for {abs_filepath}")
+        # print(f"DEBUG: root_dir: {root_dir}")
+
+        while current_dir.startswith(root_dir):
+            parent_metadata_file = os.path.join(current_dir, "metadata.yaml")
+            # print(f"DEBUG: checking {parent_metadata_file}")
+            
+            # Don't load self as parent if we are a metadata.yaml
+            if parent_metadata_file != abs_filepath and os.path.exists(parent_metadata_file):
+                # print(f"DEBUG: MATCH FOUND at {parent_metadata_file}")
+                try:
+                    with open(parent_metadata_file, "r") as f:
+                        data = yaml.safe_load(f)
+                        if isinstance(data, dict):
+                            return data
+                except Exception as e:
+                    # print(f"DEBUG: error loading parent {e}")
+                    pass
+            
+            # Move up
+            next_dir = os.path.dirname(current_dir)
+            if next_dir == current_dir or current_dir == root_dir:
+                break
+            current_dir = next_dir
+        return None
+
+    def get_effective_metadata(self, filepath: str, local_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Merges local metadata with inherited parent defaults.
+        """
+        parent_data = self.find_parent_metadata(filepath)
+        if not parent_data:
+            return local_data
+
+        # Inherit non-identity fields if missing locally
+        effective = parent_data.copy()
+        for k, v in local_data.items():
+            if v is not None and v != "" and v != {} and v != []:
+                effective[k] = v
+        
+        # Identity (ID) should NEVER be inherited
+        if 'id' not in local_data:
+            effective.pop('id', None)
+            
+        return effective

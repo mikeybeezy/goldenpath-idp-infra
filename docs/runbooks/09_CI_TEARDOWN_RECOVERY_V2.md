@@ -2,13 +2,11 @@
 id: 09_CI_TEARDOWN_RECOVERY_V2
 title: CI Teardown Recovery (v2)
 type: runbook
-category: runbooks
-version: 2.0
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - module:terraform
-  - module:kubernetes
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -16,14 +14,28 @@ risk_profile:
 reliability:
   rollback_strategy: rerun-teardown
   observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - TEARDOWN_README
   - 07_TF_STATE_FORCE_UNLOCK
   - 08_MANAGED_LB_CLEANUP
   - CI_WORKFLOWS
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: runbooks
+status: active
+version: 2.0
+dependencies:
+  - module:terraform
+  - module:kubernetes
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # CI Teardown Recovery (v2)

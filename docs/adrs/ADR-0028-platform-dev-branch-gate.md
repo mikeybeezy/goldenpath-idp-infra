@@ -1,27 +1,17 @@
 ---
-id: ADR-0028
+id: ADR-0028-platform-dev-branch-gate
 title: 'ADR-0028: Dev branch gate before main'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - 01_GOVERNANCE
   - 21_CI_ENVIRONMENT_CONTRACT
   - 29_CD_DEPLOYMENT_CONTRACT
   - ADR-0028
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 # ADR-0028: Dev branch gate before main

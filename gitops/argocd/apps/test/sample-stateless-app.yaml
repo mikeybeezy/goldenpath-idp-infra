@@ -1,11 +1,11 @@
-# Managed by scripts/standardize-metadata.py
+# Managed by scripts/standardize_metadata.py
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: test-sample-stateless-app
   namespace: argocd
   annotations:
-    goldenpath.idp/id: SCRIPTS_SAMPLE_STATELESS_APP_METADATA
+    goldenpath.idp/id: APPS_SAMPLE_STATELESS_APP_METADATA
     goldenpath.idp/owner: platform-team
     goldenpath.idp/risk: low
 spec:

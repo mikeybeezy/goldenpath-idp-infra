@@ -2,14 +2,9 @@
 id: GITHUB_WORKFLOWS_INDEX
 title: GitHub Actions Workflows Index
 type: documentation
-category: ci-cd
-version: '1.0'
-owner: platform-team
-status: active
-dependencies:
-  - github-actions
-  - terraform
-  - aws-cli
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: medium
@@ -17,14 +12,27 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - ADR-0093
   - ADR-0101
   - CL-0053
   - CL-0063
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+version: '1.0'
+dependencies:
+  - github-actions
+  - terraform
+  - aws-cli
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # GitHub Actions Workflows

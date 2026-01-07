@@ -1,23 +1,26 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: "sample-stateless-app"
-  namespace: "apps-sample-stateless"
+  name: sample-stateless-app
+  namespace: apps-sample-stateless
   annotations:
     kubernetes.io/ingress.class: kong
-    konghq.com/strip-path: "false"
-    konghq.com/methods: "GET, POST"
-    konghq.com/plugins: "sample-auth,sample-rate-limit"
+    konghq.com/strip-path: 'false'
+    konghq.com/methods: GET, POST
+    konghq.com/plugins: sample-auth,sample-rate-limit
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 spec:
   ingressClassName: kong
   rules:
-    - host: "sample-stateless.dev.goldenpath.local"
+    - host: sample-stateless.dev.goldenpath.local
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: "sample-stateless-app"
+                name: sample-stateless-app
                 port:
                   number: 80

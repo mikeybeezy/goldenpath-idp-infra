@@ -1,15 +1,19 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: "wordpress-efs-efs"
-  namespace: "apps-wordpress-efs"
+  name: wordpress-efs-efs
+  namespace: apps-wordpress-efs
   labels:
-    app.kubernetes.io/name: "wordpress-efs"
-    app.kubernetes.io/instance: "wordpress-efs"
+    app.kubernetes.io/name: wordpress-efs
+    app.kubernetes.io/instance: wordpress-efs
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: "efs-sc"
+  storageClassName: efs-sc
   resources:
     requests:
-      storage: "50Gi"
+      storage: 50Gi

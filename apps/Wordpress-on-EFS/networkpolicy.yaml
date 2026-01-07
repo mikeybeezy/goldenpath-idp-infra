@@ -1,12 +1,16 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: "{{ values.app_name }}-default"
-  namespace: "{{ values.namespace }}"
+  name: '{{ values.app_name }}-default'
+  namespace: '{{ values.namespace }}'
+  annotations:
+    goldenpath.idp/id: APPS_WORDPRESS_ON_EFS_METADATA
+    goldenpath.idp/owner: platform-team
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: "{{ values.app_name }}"
+      app.kubernetes.io/name: '{{ values.app_name }}'
   policyTypes:
     - Ingress
     - Egress
@@ -14,10 +18,10 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: "kong-system"
+              kubernetes.io/metadata.name: kong-system
       ports:
         - protocol: TCP
-          port: "{{ values.service_port }}"
+          port: '{{ values.service_port }}'
   egress:
     - to:
         - namespaceSelector: {}

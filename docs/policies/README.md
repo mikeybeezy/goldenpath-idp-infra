@@ -1,23 +1,15 @@
 ---
 id: SCRIPTS_POLICIES
 title: Policy Governance Framework
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
+type: policy
+lifecycle: active
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: '2028-01-01'
-  breaking_change: false
-relates_to: []
+version: '1.0'
+supported_until: '2028-01-01'
+breaking_change: false
 ---
 
 # Policy Governance Framework
@@ -93,10 +85,10 @@ GitHub Action queries AWS daily, compares to policy rules, creates issues for vi
 Load policies from docs/policies/*.yaml
   ↓
 For each ECR registry in AWS:
-  ├─ Check POL-ECR-001-R03: Has required metadata? ✅/❌
-  ├─ Check POL-ECR-002-R01: Scanning enabled? ✅/❌
-  ├─ Check POL-ECR-003-R01: Lifecycle policy exists? ✅/❌
-  └─ Check POL-ECR-002-R04: CVEs remediated within SLA? ✅/❌
+  ├─ Check POL-ECR-001-R03: Has required metadata? ✅/
+  ├─ Check POL-ECR-002-R01: Scanning enabled? ✅/
+  ├─ Check POL-ECR-003-R01: Lifecycle policy exists? ✅/
+  └─ Check POL-ECR-002-R04: CVEs remediated within SLA? ✅/
   ↓
 Generate compliance report:
   - 5/6 registries compliant (83%)
@@ -130,10 +122,10 @@ Safe fixes applied automatically (e.g., add lifecycle policy). Unsafe fixes requ
    Load policies from docs/policies/*.yaml
      ↓
    For each ECR registry in AWS:
-     ├─ Check POL-ECR-001-R03: Has required metadata? ✅/❌
-     ├─ Check POL-ECR-002-R01: Scanning enabled? ✅/❌
-     ├─ Check POL-ECR-003-R01: Lifecycle policy exists? ✅/❌
-     └─ Check POL-ECR-002-R04: CVEs remediated within SLA? ✅/❌
+     ├─ Check POL-ECR-001-R03: Has required metadata? ✅/
+     ├─ Check POL-ECR-002-R01: Scanning enabled? ✅/
+     ├─ Check POL-ECR-003-R01: Lifecycle policy exists? ✅/
+     └─ Check POL-ECR-002-R04: CVEs remediated within SLA? ✅/
      ↓
    Generate compliance report:
      - 5/6 registries compliant (83%)

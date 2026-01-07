@@ -2,12 +2,11 @@
 id: 08_MANAGED_LB_CLEANUP
 title: Managed LB Resource Cleanup (Runbook)
 type: runbook
-category: runbooks
-version: 1.0
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - chart:aws-load-balancer-controller
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -15,14 +14,27 @@ risk_profile:
 reliability:
   rollback_strategy: not-applicable
   observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - TEARDOWN_README
   - 04_LB_FINALIZER_STUCK
   - 15_TEARDOWN_AND_CLEANUP
   - CI_WORKFLOWS
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: runbooks
+status: active
+version: 1.0
+dependencies:
+  - chart:aws-load-balancer-controller
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Managed LB Resource Cleanup (Runbook)

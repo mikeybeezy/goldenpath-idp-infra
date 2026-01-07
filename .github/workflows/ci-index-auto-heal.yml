@@ -36,33 +36,23 @@ jobs:
         run: |
           pip install pyyaml==6.0.1
 
-      - name: Run Script Indexer (Auto-Heal)
+      - name: Validate Indices (No Drift Allowed)
         run: |
-          python3 scripts/generate_script_index.py
+          rc=0
+          python3 scripts/generate_script_index.py --validate || rc=1
+          python3 scripts/generate_workflow_index.py --validate || rc=1
+          python3 scripts/generate_adr_index.py --validate || rc=1
+          exit $rc
 
-      - name: Run Workflow Indexer (Auto-Heal)
+      - name: Report Drift
+        if: failure()
         run: |
-          python3 scripts/generate_workflow_index.py
-
-      - name: Run ADR Indexer (Auto-Heal)
-        run: |
-          python3 scripts/generate_adr_index.py
-
-      - name: Commit and Push Changes
-        run: |
-          if ! git diff --quiet; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add scripts/index.md ci-workflows/CI_WORKFLOWS.md docs/adrs/01_adr_index.md
-            git commit -m "chore: auto-heal documentation indices [skip ci]"
-            git push origin ${{ github.head_ref }}
-            echo "✅ Documentation indices auto-healed and committed"
-          else
-            echo "📭 No drift detected in documentation indices"
-          fi
-
-      - name: Verify Final State (No Drift)
-        run: |
-          python3 scripts/generate_script_index.py --validate
-          python3 scripts/generate_workflow_index.py --validate
-          python3 scripts/generate_adr_index.py --validate
+          echo "## ❌ Index Drift Detected" >> $GITHUB_STEP_SUMMARY
+          echo "Your PR includes new files but the global indexes (ADRs, Scripts, Workflows) were not updated." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🛠️ Local Remediation" >> $GITHUB_STEP_SUMMARY
+          echo "Please run the following command to update your branch and then push the changes:" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo 'bin/governance heal indexes' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          exit 1

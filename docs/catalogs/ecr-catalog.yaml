@@ -1,9 +1,10 @@
 version: "1.0"
-domain: container-registries
+domain: delivery
 owner: platform-team
 last_updated: "2026-01-06"
 managed_by: platform-team
-registries:
+physical_registry: "goldenpath-idp-main"
+repositories:
   wordpress-platform:
     metadata:
       id: REGISTRY_WORDPRESS_PLATFORM

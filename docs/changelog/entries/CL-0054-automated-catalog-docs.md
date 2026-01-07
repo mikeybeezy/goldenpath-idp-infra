@@ -2,13 +2,6 @@
 id: CL-0054-automated-catalog-docs
 title: 'CL-0054: Automated Registry Catalog Documentation'
 type: changelog
-category: governance
-version: '1.0'
-owner: platform-team
-status: active
-dependencies:
-  - python3
-  - pyyaml
 risk_profile:
   production_impact: low
   security_risk: none
@@ -16,13 +9,17 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-05
-  breaking_change: false
+version: '1.0'
+dependencies:
+  - python3
+  - pyyaml
+lifecycle: active
 relates_to:
   - ADR-0094
   - ADR-0092
   - CL-0054
+supported_until: 2027-01-05
+breaking_change: false
 ---
 
 # CL-0054: Automated Registry Catalog Documentation
@@ -79,8 +76,8 @@ python scripts/generate_catalog_docs.py [--catalog FILE] [--output FILE] [--verb
 
 - ✅ Script created
 - ✅ ADR documented
-- ⏳ GitHub Action automation (future)
-- ⏳ Initial catalog YAML (pending)
+-  GitHub Action automation (future)
+-  Initial catalog YAML (pending)
 
 ## Next Steps
 

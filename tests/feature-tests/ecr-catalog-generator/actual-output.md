@@ -2,11 +2,9 @@
 id: actual-output
 title: ECR Registry Catalog
 type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,10 +12,19 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: '2028-01-01'
-  breaking_change: false
+schema_version: 1
 relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+version: '1.0'
+supported_until: '2028-01-01'
+breaking_change: false
 ---
 
 # ECR Registry Catalog
@@ -34,7 +41,7 @@ relates_to: []
 **Risk Distribution:**
 - 🟢 Low: 1
 - 🟡 Medium: 1
-- 🔴 High: 1
+-  High: 1
 
 **Last Updated:** 2026-01-05
 **Managed By:** platform-team
@@ -45,21 +52,21 @@ relates_to: []
 
 | Registry | Owner | Risk | Status | Scanning | Lifecycle |
 |----------|-------|------|--------|----------|-----------|
-| `staging-api` | app-team-api | 🟡 medium | active | ❌ | ❌ |
-| `test-app-dev` | app-team-test | 🟢 low | active | ❌ | ❌ |
-| `wordpress-platform` | app-team-wordpress | 🔴 high | active | ❌ | ❌ |
+| `staging-api` | app-team-api | 🟡 medium | active |  |  |
+| `test-app-dev` | app-team-test | 🟢 low | active |  |  |
+| `wordpress-platform` | app-team-wordpress |  high | active |  |  |
 
 ---
 
 ## Registry Details
 
-## 🔴 High Risk Registries
+##  High Risk Registries
 
 ### wordpress-platform
 
 **ID:** `REGISTRY_WORDPRESS_PLATFORM`
 **Owner:** app-team-wordpress
-**Risk:** 🔴 high
+**Risk:**  high
 **Status:** active
 **Created:** 2026-01-05
 

@@ -53,6 +53,7 @@ class CatalogGenerator:
         # Map domain to the key used for resources in the YAML
         self.resource_key = {
             'container-registries': 'registries',
+            'delivery': 'repositories', # Aligned with new hierarchical ECR catalog
             's3-buckets': 'buckets',
             'rds-instances': 'instances'
         }.get(self.domain, 'resources')
@@ -97,19 +98,20 @@ class CatalogGenerator:
         high = sum(1 for r in resources.values()
                   if r.get('metadata', {}).get('risk') == 'high')
 
-        return f"""## Summary
+        summary = f"**Total {self.resource_key.title()}:** {total}\n"
+        summary += f"**Active:** {active} | **Deprecated:** {deprecated}\n\n"
 
-**Total {self.resource_key.title()}:** {total}
-**Active:** {active} | **Deprecated:** {deprecated}
+        if 'physical_registry' in self.catalog:
+             summary += f"⚓ **Physical Registry:** `{self.catalog['physical_registry']}`\n\n"
 
-**Risk Distribution:**
-- 🟢 Low: {low}
-- 🟡 Medium: {medium}
-- 🔴 High: {high}
-
-**Last Updated:** {self.catalog.get('last_updated', 'Unknown')}
-**Managed By:** {self.catalog.get('managed_by', 'platform-team')}
-"""
+        summary += "**Risk Distribution:**\n"
+        summary += f"- 🟢 Low: {low}\n"
+        summary += f"- 🟡 Medium: {medium}\n"
+        summary += f"- 🔴 High: {high}\n\n"
+        summary += f"**Last Updated:** {self.catalog.get('last_updated', 'Unknown')}\n"
+        summary += f"**Managed By:** {self.catalog.get('managed_by', 'platform-team')}\n"
+        
+        return f"## Summary\n\n{summary}"
 
     def generate_inventory_table(self) -> str:
         """Generate resource inventory table"""
@@ -219,10 +221,10 @@ class CatalogGenerator:
 
         # 1. Generate Platform Frontmatter
         md = "---\n"
-        md += f"id: CAT_{self.domain.replace('-', '_').upper()}\n"
+        md += f"id: REGISTRY_CATALOG\n"
         md += f"title: {self.domain_label} Catalog\n"
         md += "type: documentation\n"
-        md += "category: catalogs\n"
+        md += "category: catalog\n"
         md += f"status: active\n"
         md += f"owner: {self.catalog.get('owner', 'platform-team')}\n"
         md += "version: '1.0'\n"
@@ -233,9 +235,9 @@ class CatalogGenerator:
         md += "reliability:\n"
         md += "  rollback_strategy: git-revert\n"
         md += "  observability_tier: silver\n"
-        md += "lifecycle:\n"
-        md += f"  supported_until: 2028-01-01\n"
-        md += "  breaking_change: false\n"
+        md += "lifecycle: active\n"
+        md += f"supported_until: 2028-01-01\n"
+        md += "breaking_change: false\n"
         md += "relates_to:\n"
         md += f"  - ADR-0097\n"
         md += f"  - ADR-0100\n"

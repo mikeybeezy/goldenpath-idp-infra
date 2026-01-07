@@ -1,3 +1,34 @@
+---
+id: GIT_TROUBLESHOOTING
+title: 'Runbook: Resolving Git Rebase Conflicts (Uncommitted Changes)'
+type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: runbooks
+status: active
+supported_until: '2028-01-01'
+---
+
 # Runbook: Resolving Git Rebase Conflicts (Uncommitted Changes)
 
 ## Problem
@@ -7,7 +38,7 @@ This occurs when you attempt to sync with the remote branch while holding local,
 
 ---
 
-## 🛠️ Remediation Steps
+##  Remediation Steps
 
 ### Option 1: Stashing (The "Hide and Sync" Move)
 Use this if you are NOT ready to commit your current work but need the latest remote updates.
@@ -32,5 +63,5 @@ Use this ONLY if you want to discard all local changes and mirror the server exa
 
 ---
 
-## 💡 Why Rebase?
+##  Why Rebase?
 We use `--rebase` to maintain a **linear history**. This prevents "Merge branch..." commits from cluttering the Knowledge Graph and makes architectural audits much simpler.

@@ -2,11 +2,6 @@
 id: CL-0011-app-template-contract
 title: 'CL-0011: App template contract and reference bundle'
 type: changelog
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,14 +9,15 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-04
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - 42_APP_TEMPLATE_LIVING
   - ADR-0062
   - ADR-0062-platform-app-template-contract
   - CL-0011
+supported_until: 2027-01-04
+breaking_change: false
 ---
 
 # CL-0011: App template contract and reference bundle

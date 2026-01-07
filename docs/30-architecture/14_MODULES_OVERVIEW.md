@@ -1,11 +1,22 @@
 ---
 id: 14_MODULES_OVERVIEW
 title: Modules Overview
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
+type: adr
 status: active
+domain: platform-core
+applies_to:
+  - infra
+owner: platform-team
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle: active
+category: architecture
+version: '1.0'
 dependencies:
   - module:aws_compute
   - module:aws_eks
@@ -15,16 +26,6 @@ dependencies:
   - module:aws_sg
   - module:aws_subnet
   - module:vpc
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
 relates_to:
   - MODULES_AWS_COMPUTE_README
   - MODULES_AWS_EKS_README
@@ -34,6 +35,8 @@ relates_to:
   - MODULES_AWS_SG_README
   - MODULES_AWS_SUBNET_README
   - MODULES_VPC_README
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Modules Overview

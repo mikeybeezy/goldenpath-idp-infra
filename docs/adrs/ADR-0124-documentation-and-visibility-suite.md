@@ -1,0 +1,34 @@
+---
+id: ADR-0124
+title: 'ADR-0124: Documentation & Visibility Suite'
+type: adr
+lifecycle: active
+schema_version: 1
+---
+
+# ADR-0124: Documentation & Visibility Suite
+
+## Status
+
+Accepted (Backfill)
+
+## Context
+
+Maintaining a large documentation-as-code repository requires automated validation of freshness, structure, and relationships. These tools were built to prevent "Doc Drift" and ensure the Knowledge Graph remains accurate.
+
+## Decision
+
+We officially adopt the following scripts as the core Documentation & Visibility Suite:
+
+1.  **`format_docs.py`**: Ensures consistent whitespace and layout across the markdown corpus.
+2.  **`check_doc_freshness.py`**: Identifies stale documents based on metadata and commit history.
+3.  **`check_doc_index_contract.py`**: Enforces the "Index Policy" (every directory must have an index).
+4.  **`extract_relationships.py`**: Populates the Knowledge Graph by parsing `relates_to` and `supersedes` metadata.
+5.  **`generate_governance_vocab.py`**: Generates the human-readable [GOVERNANCE_VOCABULARY.md](../../governance/GOVERNANCE_VOCABULARY.md).
+6.  **`sync_backstage_entities.py`**: Mirrors internal metadata to Backstage YAML entities.
+
+## Consequences
+
+- **Positive**: High documentation quality and navigability.
+- **Positive**: Automated alignment between the repo and the Backstage Catalog.
+- **Negative**: Adds overhead to CI runs (mitigated by only running on doc changes).

@@ -2,11 +2,11 @@
 id: 10_REPO_DECOMMISSIONING
 title: Repo Decommissioning Runbook
 type: runbook
-category: runbooks
-version: 1.0
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -14,13 +14,25 @@ risk_profile:
 reliability:
   rollback_strategy: not-applicable
   observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - TEARDOWN_README
   - ORPHAN_CLEANUP
   - 01_LIFECYCLE_POLICY
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: runbooks
+status: active
+version: 1.0
+dependencies: []
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Repo Decommissioning Runbook

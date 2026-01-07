@@ -2,11 +2,11 @@
 id: 2026-01-04_2252_trusted-delivery-pipeline-phase-4
 title: 'Walkthrough: Automated Platform Health Dashboard (Phase 2)'
 type: documentation
-category: unknown
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,32 +14,44 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: '2028-01-01'
-  breaking_change: false
+schema_version: 1
 relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+status: active
+version: '1.0'
+dependencies: []
+supported_until: '2028-01-01'
+breaking_change: false
 ---
 
 # Walkthrough: Automated Platform Health Dashboard (Phase 2)
 
 This task successfully transition the Platform Health Dashboard from a transient CI artifact to a persistent, auditable, and fully governed component of the GoldenPath IDP.
 
-## 🏥 Persistent Health Dashboard
+##  Persistent Health Dashboard
 The `PLATFORM_HEALTH.md` file is now automatically generated, persisted to the repository, and updated on every push to the development branch. It provides a real-time view of metadata compliance, risk profiles, and injection coverage.
 
 render_diffs(file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md)
 
-## 📊 Key Achievements
+##  Key Achievements
 - **100% Metadata Compliance**: All 352 tracked resources successfully pass the metadata validation schema.
 - **100% Injection Coverage**: I achieved 100% coverage for "Governance Injection," ensuring that governance metadata is correctly propagated into all associated Helm values and ArgoCD manifests.
 - **Closed-Loop Automation Enhancement**: The `platform_health.py` script now supports canonical metadata injection and persistent report generation.
 
-## 🛠️ Infrastructure & Documentation
+##  Infrastructure & Documentation
 - **ADR-0090**: Formally documents the decision for a persistent and persistent health dashboard.
 - **PLATFORM_HEALTH_GUIDE.md**: Provides a living guide for platform engineers to maintain and extend health reporting.
 - **Workflow Automation**: Updated `.github/workflows/quality-platform-health.yaml` to handle automated commits of the health report.
 
-## ⚖️ CI Gate Resolution
+##  CI Gate Resolution
 I resolved all critical PR check failures:
 - **YAML Lint Fixed**: Standardized indentation and quoted all template placeholders in the `apps/` directory and `metadata.yaml` files.
 - **Script Standardization**: Renamed and updated all workflow references to use `snake_case` Python scripts (e.g., `validate_metadata.py`).
@@ -53,4 +65,4 @@ I resolved all critical PR check failures:
 - `infracost`: ✅ SUCCESS (Verified via manual workflow dispatch)
 
 ---
-**Status**: Ready for Merge 🚀
+**Status**: Ready for Merge 

@@ -1,24 +1,4 @@
 ---
-id: HELM_ARGOCD
-title: Argo CD GitOps Operator
-type: chart
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies:
-  - service:eks
-risk_profile:
-  production_impact: high
-  security_risk: cluster-admin-access
-  coupling_risk: high
-reliability:
-  rollback_strategy: helm-rollback
-  observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: true
-relates_to:
-  - ADR-0001
-  - 12_GITOPS_AND_CICD
----
+id: HELM_ARGOCD_METADATA
+title: metadata
+type: documentation

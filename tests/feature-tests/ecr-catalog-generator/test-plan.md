@@ -2,11 +2,9 @@
 id: test-plan
 title: 'Test Plan: ECR Catalog Generator'
 type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,10 +12,19 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: '2028-01-01'
-  breaking_change: false
+schema_version: 1
 relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+version: '1.0'
+supported_until: '2028-01-01'
+breaking_change: false
 ---
 
 # Test Plan: ECR Catalog Generator

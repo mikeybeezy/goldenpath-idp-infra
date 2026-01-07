@@ -1,12 +1,8 @@
 ---
-id: ADR-0088
+id: ADR-0088-automated-metadata-remediation
 title: 'ADR-0088: Automated Metadata Remediation over Manual Compliance'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,13 +10,14 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - ADR-0082
   - ADR-0084
   - METADATA_MAINTENANCE_GUIDE
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # ADR-0088: Automated Metadata Remediation over Manual Compliance

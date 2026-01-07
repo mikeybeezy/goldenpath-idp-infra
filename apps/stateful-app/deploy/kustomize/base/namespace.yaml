@@ -1,6 +1,10 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: Namespace
 metadata:
   name: apps-stateful
   labels:
     kubernetes.io/metadata.name: apps-stateful
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None

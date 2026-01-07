@@ -1,0 +1,8 @@
+# Platform Team Membership (Governed by platform-team)
+platform_team:
+  - mikeybeezy
+  - mikesablaze
+
+service_accounts:
+  - github-actions[bot]
+  - dependabot[bot]

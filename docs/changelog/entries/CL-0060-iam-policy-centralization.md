@@ -2,10 +2,6 @@
 id: CL-0060-iam-policy-centralization
 title: 'CL-0060: IAM Policy Centralization'
 type: changelog
-category: security
-status: active
-owner: platform-team
-version: '1.0'
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,11 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - ADR-0099
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # CL-0060: IAM Policy Centralization

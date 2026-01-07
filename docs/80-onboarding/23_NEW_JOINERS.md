@@ -1,22 +1,7 @@
 ---
 id: 23_NEW_JOINERS
 title: New Joiners Guide
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+type: runbook
 relates_to:
   - 02_PLATFORM_BOUNDARIES
   - 13_COLLABORATION_GUIDE
@@ -24,6 +9,10 @@ relates_to:
   - 25_DAY_ONE_CHECKLIST
   - 26_AI_AGENT_PROTOCOLS
   - 38_BRANCHING_STRATEGY
+status: active
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # New Joiners Guide
@@ -43,30 +32,33 @@ This guide outlines the minimum setup expected for contributors to GoldenPath ID
 - Install the project tooling listed in `docs/80-onboarding/13_COLLABORATION_GUIDE.md`.
 - Review the day-one checklist in `docs/80-onboarding/25_DAY_ONE_CHECKLIST.md`.
 - Review the platform/team boundary in `docs/20-contracts/02_PLATFORM_BOUNDARIES.md`.
-- Install pre-commit and enable hooks:
+- Initialize your local environment:
 
-```text
-pre-commit install
+```bash
+bin/governance setup
 ```
 
 ## Before your first PR
 
-- Run all hooks locally to validate your setup:
+- Run all hooks and linters locally to validate your setup:
 
-```text
-pre-commit run --all-files
+```bash
+bin/governance lint
 ```
 
-- Fix any issues reported by the hooks before opening a PR.
+- Fix any issues reported by the tools before opening a PR.
 - Review PR gates and how to unblock them in `docs/80-onboarding/24_PR_GATES.md`.
 - Review AI agent protocols in `docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md` (these rules apply to human collaborators too).
+- **Internalize VQ**: Your first task is to read [**VQ Principles & Philosophy**](../product/VQ_PRINCIPLES.md) and identify the VQ bucket (**HV/HQ**, etc.) for your first contribution.
 
-## Expectations
+## Expectations (The Value Provider Mindset)
 
-- Pre-commit hooks are required for local commits.
-- CI remains the source of truth; hooks are the fast preflight gate.
-- Pre-commit runs on pull requests and should be required in branch protection.
-- PRs merge into `development` first; `main` only accepts merges from `development`.
+We don't just "commit code" here; we **reclaim hours**.
+
+- **Value-Led PRs**: Every PR you open is expected to include a VQ classification in the PR body. This ensures we focus on high-impact work and avoid over-engineering low-value targets.
+- **Pre-commit hooks** are required for local commits.
+- **CI remains the source of truth**; hooks are the fast preflight gate.
+- **Merge Path**: PRs merge into `development` first; `main` only accepts merges from `development`.
 
 ## Branching and PR flow
 

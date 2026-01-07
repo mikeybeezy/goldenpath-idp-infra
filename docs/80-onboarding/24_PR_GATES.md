@@ -1,28 +1,17 @@
 ---
 id: 24_PR_GATES
 title: PR Gates and How to Unblock Them
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+type: runbook
 relates_to:
   - 00_DOC_INDEX
   - 04_PR_GUARDRAILS
   - 30_DOCUMENTATION_FRESHNESS
   - DOCS_CHANGELOG_README
   - ADR-0101
+status: active
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # PR Gates and How to Unblock Them
@@ -74,12 +63,12 @@ and contribution.
 2. Identify required gates from change scope (labels, ADR, changelog, doc freshness).
 3. Prepare PR content: short summary, checklist selections, testing notes/links.
 4. Add required artifacts (ADR, changelog, doc index updates).
-5. Run local guardrails (`pre-commit run --all-files`, formatters/linters as needed).
+5. Run local guardrails (`bin/governance lint`, `bin/governance audit`).
 6. Commit, push, and open PR using `.github/pull_request_template.md` (CLI:
    `gh pr create -F .github/pull_request_template.md`) with checklist completed.
 7. Check CI/guardrail results immediately; if any fail, follow the triage loop
    below.
-8. Re-run local guardrails after fixes and re-push until all checks pass.
+8. Re-run local guardrails (`bin/governance lint`) after fixes and re-push until all checks pass.
 9. If checks appear stuck or a retarget is not picked up, add a no-op commit to retrigger.
 10. Confirm all required checks are green and approvals are in place.
 11. If opening a second PR (for example, `development -> main`), repeat steps 2-10.

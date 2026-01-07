@@ -1,12 +1,16 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: "stateful-app-default"
-  namespace: "apps-stateful"
+  name: stateful-app-default
+  namespace: apps-stateful
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: "stateful-app"
+      app.kubernetes.io/name: stateful-app
   policyTypes:
     - Ingress
     - Egress
@@ -14,7 +18,7 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: "kong-system"
+              kubernetes.io/metadata.name: kong-system
       ports:
         - protocol: TCP
           port: 80

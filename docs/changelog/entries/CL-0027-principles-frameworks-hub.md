@@ -2,11 +2,6 @@
 id: CL-0027-principles-frameworks-hub
 title: 'CL-0027: Principles and frameworks hub'
 type: changelog
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,11 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-04
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - CL-0027
+supported_until: 2027-01-04
+breaking_change: false
 ---
 
 # CL-0027: Principles and frameworks hub

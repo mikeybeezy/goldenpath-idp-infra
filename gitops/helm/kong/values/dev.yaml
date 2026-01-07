@@ -1,4 +1,4 @@
-# Managed by scripts/standardize-metadata.py
+# Managed by scripts/standardize_metadata.py
 proxy:
   service:
     type: LoadBalancer
@@ -6,12 +6,7 @@ proxy:
       service.beta.kubernetes.io/aws-load-balancer-type: nlb
       service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
 governance:
-  id: HELM_KONG
-  owner: platform-team
-  risk_profile:
-    production_impact: high
-    security_risk: ingress-exposure
-    coupling_risk: high
-  reliability:
-    rollback_strategy: helm-rollback
-    observability_tier: gold
+  id: HELM_KONG_METADATA
+  owner: null
+  risk_profile: null
+  reliability: null

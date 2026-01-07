@@ -1,10 +1,13 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
-  name: "{{ values.kong_auth_plugin }}"
-  namespace: "{{ values.namespace }}"
+  name: '{{ values.kong_auth_plugin }}'
+  namespace: '{{ values.namespace }}'
   annotations:
     kubernetes.io/ingress.class: kong
+    goldenpath.idp/id: APPS_KONG_METADATA
+    goldenpath.idp/owner: None
 plugin: key-auth
 config:
   key_names:

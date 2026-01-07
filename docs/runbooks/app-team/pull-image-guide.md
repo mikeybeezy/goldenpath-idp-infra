@@ -2,13 +2,11 @@
 id: pull-image-guide
 title: 'App Team Runbook: Pull Image Guide'
 type: runbook
-category: app-team
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: draft
-dependencies:
-  - docker
-  - aws-cli
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -16,11 +14,25 @@ risk_profile:
 reliability:
   rollback_strategy: not-applicable
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-05
-  breaking_change: false
+schema_version: 1
 relates_to:
   - RUNBOOK_REQUEST_ECR_REGISTRY
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: runbooks
+status: draft
+version: '1.0'
+dependencies:
+  - docker
+  - aws-cli
+supported_until: 2028-01-05
+breaking_change: false
 ---
 
 # App Team Runbook: Pull Image Guide

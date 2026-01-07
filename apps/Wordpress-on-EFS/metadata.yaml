@@ -1,21 +1,5 @@
 ---
-id: SCRIPTS_WORDPRESS_ON_EFS_METADATA
+id: APPS_WORDPRESS_ON_EFS_METADATA
 title: metadata
 type: documentation
-category: unknown
-version: '1.0'
 owner: platform-team
-status: active
-dependencies: []
-risk_profile:
-  production_impact: medium
-  security_risk: access
-  coupling_risk: medium
-reliability:
-  rollback_strategy: manual
-  observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
-relates_to: []
----

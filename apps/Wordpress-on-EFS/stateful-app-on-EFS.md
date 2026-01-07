@@ -2,14 +2,10 @@
 id: stateful-app-on-EFS
 title: Deploy WordPress with EFS Storage
 type: documentation
-category: apps
-version: 1.0
-owner: platform-team
-status: active
-dependencies:
-  - module:efs
-  - chart:wordpress
-  - chart:mysql
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: high
@@ -17,14 +13,29 @@ risk_profile:
 reliability:
   rollback_strategy: helm-rollback
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - WORDPRESS_ON_EFS_README
   - WORDPRESS_ENABLE_EFS
   - STATEFUL_APP_PVC
   - STATEFUL_APP_README
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+status: active
+version: 1.0
+dependencies:
+  - module:efs
+  - chart:wordpress
+  - chart:mysql
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # create namespace

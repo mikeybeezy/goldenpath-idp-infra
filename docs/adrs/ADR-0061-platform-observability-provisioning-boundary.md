@@ -1,29 +1,22 @@
 ---
-id: ADR-0061
+id: ADR-0061-platform-observability-provisioning-boundary
 title: 'ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform
   external)'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-04
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - 01_GOVERNANCE
   - 05_OBSERVABILITY_DECISIONS
   - ADR-0052
   - ADR-0052-platform-kube-prometheus-stack-bundle
   - ADR-0061
+supported_until: 2028-01-04
+breaking_change: false
 ---
 
 # ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform external)

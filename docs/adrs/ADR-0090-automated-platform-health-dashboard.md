@@ -1,23 +1,12 @@
 ---
-id: ADR-0090
+id: ADR-0090-automated-platform-health-dashboard
 title: 'ADR-0090: Automated Platform Health Dashboard'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
-relates_to: []
+lifecycle: active
+version: '1.0'
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 # ADR-0090: Automated Platform Health Dashboard

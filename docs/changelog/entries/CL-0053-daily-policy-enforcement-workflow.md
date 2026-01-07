@@ -2,11 +2,7 @@
 id: CL-0053-daily-policy-enforcement-workflow
 title: 'CL-0053: Daily Policy Enforcement Workflow'
 type: changelog
-category: governance
-version: '1.0'
-owner: platform-team
 status: planned
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,13 +10,14 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-05
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - ADR-0093
   - ADR-0092
   - CL-0053
+supported_until: 2027-01-05
+breaking_change: false
 ---
 
 # CL-0053: Daily Policy Enforcement Workflow
@@ -75,10 +72,10 @@ Added GitHub Action workflow for automated daily policy compliance checks agains
 ## Implementation Status
 
 - ✅ Workflow file created
-- ⏳ Policy loading script (pending)
-- ⏳ Compliance check script (pending)
-- ⏳ Report generation script (pending)
-- ⏳ Slack webhook integration (pending)
+-  Policy loading script (pending)
+-  Compliance check script (pending)
+-  Report generation script (pending)
+-  Slack webhook integration (pending)
 
 ## Next Steps
 
