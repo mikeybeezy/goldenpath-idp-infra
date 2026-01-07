@@ -12,16 +12,16 @@ relates_to:
 ---
 
 # 🏥 Platform Health Command Center
-**Generated**: `2026-01-07 08:29:32` | **V1 Readiness**: `95.5%` | **Mean Confidence**: `⭐ (1.1/5.0)`
-**Realized Value**: `4.0 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Generated**: `2026-01-07 08:51:16` | **V1 Readiness**: `95.1%` | **Mean Confidence**: `⭐ (1.1/5.0)`
+**Realized Value**: `4.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## 🏁 V1 Platform Readiness Gate
 > [!IMPORTANT]
-> The platform is currently **95.5%** ready for V1 production rollout.
+> The platform is currently **95.1%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 99.3% |
+| **Metadata Integrity** | ✅ | 97.7% |
 | **Injection Integrity** | ✅ | 100.0% |
 | **Architecture Maturity** | 🚧 | 93/119 Active |
 | **Changelog Activity** | ✅ | 86 Entries |
@@ -60,7 +60,7 @@ pie title Production Impact distribution
 ```
 
 ## ⚖️ Governance Maturity
-- **Metadata Compliance**: `99.3%`
+- **Metadata Compliance**: `97.7%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## 💉 Injection Coverage
@@ -68,14 +68,14 @@ pie title Production Impact distribution
 
 ## 💎 Project Realized Value (Heartbeat)
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **4.0 hours**.
-- **ROI Ledger**: [.goldenpath/value_ledger.json](file:///Users/mikesablaze/goldenpath-idp-infra/.goldenpath/value_ledger.json)
+> Total realized value reclaimed through automation heartbeats: **4.4 hours**.
+- **ROI Ledger**: [.goldenpath/value_ledger.json](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/.goldenpath/value_ledger.json)
 
 ## 💳 Financial Governance (Cloud Cost)
 > [!NOTE]
 > Current monthly infrastructure run rate: **$1,250.00 USD**.
 - **Estimated Annual**: `$15,000.00 USD`
-- **Cost Ledger**: [.goldenpath/cost_ledger.json](file:///Users/mikesablaze/goldenpath-idp-infra/.goldenpath/cost_ledger.json)
+- **Cost Ledger**: [.goldenpath/cost_ledger.json](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/.goldenpath/cost_ledger.json)
 - **Tooling**: Infracost (CI-integrated)
 
 ## 🚨 Operational Risks
