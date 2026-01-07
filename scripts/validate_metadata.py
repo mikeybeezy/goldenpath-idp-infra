@@ -69,22 +69,22 @@ def validate_schema(data, filepath):
     Validates the parsed data against the schema.
     """
     errors = []
-    
+
     # 0. Inheritance & Safety Valve
     effective_data = cfg.get_effective_metadata(filepath, data)
     is_exempt = effective_data.get('exempt') is True
     doc_type = effective_data.get('type', 'documentation')
-    
+
     # Leak Protection: Block exempt scratchpads from production
     if is_exempt and ('envs/prod/' in filepath or 'apps/prod' in filepath):
          errors.append("❌ LEAK PROTECTION: Resources marked as 'exempt: true' cannot be deployed to Production environments.")
-    
+
     # 1. Check Required Fields from Schema
     schema = cfg.get_schema(doc_type)
     if not schema and doc_type in ['policy', 'runbook', 'strategy', 'implementation-plan', 'report']:
         # These all share the general documentation schema
         schema = cfg.get_schema('documentation')
-        
+
     if schema:
         required_fields = schema.get("required", [])
     else:
@@ -95,7 +95,7 @@ def validate_schema(data, filepath):
         # Skip detail fields for exempt resources
         if is_exempt and field in ['risk_profile', 'reliability', 'lifecycle']:
              continue
-             
+
         if field not in effective_data:
             errors.append(f"Missing required field: '{field}' (Inherited check included)")
         elif field in ['risk_profile', 'reliability'] and not isinstance(effective_data[field], dict):
@@ -125,7 +125,7 @@ def validate_schema(data, filepath):
              # Standardized ADR/CL ID pattern matching ADR-XXXX/CL-XXXX prefixes
              is_adr_match = re.match(r'^ADR-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
              is_cl_match = re.match(r'^CL-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
-             
+
              if not (is_adr_match or is_cl_match):
                   errors.append(f"ID mismatch: '{doc_id}' found in header but filename is '{filename_base}'")
 
@@ -168,7 +168,7 @@ def verify_injection(base_dir, expected_id):
                     if target_name in f and f.endswith(('.yaml', '.yml')):
                         if 'gitops/helm' in base_dir and 'apps/' not in root: is_match = True
                         elif 'apps/' in base_dir and 'apps/' in root: is_match = True
-                    
+
                     if is_match:
                         candidates.append(os.path.join(root, f))
 
@@ -182,11 +182,11 @@ def verify_injection(base_dir, expected_id):
         try:
             with open(cand, 'r', encoding='utf-8') as f:
                 content = f.read()
-            
+
             # Pattern 1: Inline ID (K8s manifests, ArgoCD apps)
             if f"id: {expected_id}" in content or f'id: "{expected_id}"' in content or f"goldenpath.idp/id: {expected_id}" in content:
                 return True
-            
+
             # Pattern 2: Helm values governance block (e.g., 'governance:\n  id: HELM_LOKI_METADATA')
             # This handles the gitops/helm/*/values/*.yaml pattern
             if "governance:" in content:

@@ -23,14 +23,14 @@ Optimized the PR metadata validation workflow to reduce friction and improve vel
 
 ## Changes
 
-###  Workflow Updates
+### Workflow Updates
 
 #### `.github/workflows/ci-metadata-validation.yml`
 - **Scoped Validation**: Now validates only files changed in the PR, not the entire repo
 - **Auto-Heal**: Runs `standardize_metadata.py` to fix issues and auto-commits
 - **Exempt Labels**: PRs with specific labels bypass validation entirely
 
-###  Exempt Labels
+### Exempt Labels
 | Label | Use Case |
 | :--- | :--- |
 | `governance-exempt` | General bypass for platform exceptions |

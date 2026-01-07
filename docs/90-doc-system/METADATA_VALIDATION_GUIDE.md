@@ -25,7 +25,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: governance
@@ -47,7 +47,7 @@ This guide explains the `validate_metadata.py` tool used in our CI/CD pipeline.
 
 Located at: `scripts/validate_metadata.py`
 
-It enforces the Schema defined in [METADATA_STRATEGY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/METADATA_STRATEGY.md) across all Markdown (`.md`) and Sidecar YAML (`metadata.yaml`) files.
+It enforces the Schema defined in [METADATA_STRATEGY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/METADATA_STRATEGY.md) across all Markdown (`.md`) and Sidecar YAML (`metadata.yaml`) files.
 
 ## Usage
 

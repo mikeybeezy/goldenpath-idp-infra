@@ -93,7 +93,7 @@ jobs:
               await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: `🚨 Policy Compliance Violations Detected`,
+                title: ` Policy Compliance Violations Detected`,
                 body: `## Policy Compliance Report
 
             **Date:** ${report.timestamp}

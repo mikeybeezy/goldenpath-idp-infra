@@ -1,9 +1,9 @@
 # Test Plan Template
 
-**Feature/Component:** [Name of what you're testing]  
-**Created:** YYYY-MM-DD  
-**Created By:** [Your name]  
-**Test Type:** [ ] Unit [ ] Feature [ ] Integration [ ] Smoke  
+**Feature/Component:** [Name of what you're testing]
+**Created:** YYYY-MM-DD
+**Created By:** [Your name]
+**Test Type:** [ ] Unit [ ] Feature [ ] Integration [ ] Smoke
 **Status:** [ ] Draft [ ] Ready [ ] In Progress [ ] Complete
 
 ---
@@ -64,7 +64,7 @@ step 2
 ## 5. Test Cases
 
 ### Test Case 1: [Description]
-**Objective:** [What this case validates]  
+**Objective:** [What this case validates]
 **Priority:** [ ] Critical [ ] High [ ] Medium [ ] Low
 
 **Steps:**
@@ -91,13 +91,13 @@ step 2
 
 ## 6. Success Criteria
 
-### Overall Success Defined As:
+### Overall Success Defined As
 - [ ] All critical test cases pass
 - [ ] No blocking issues found
 - [ ] Performance acceptable (if applicable)
 - [ ] Documentation complete
 
-### Acceptable Failure Rate:
+### Acceptable Failure Rate
 [e.g., "0 failures for critical paths, up to 10% for edge cases"]
 
 ---

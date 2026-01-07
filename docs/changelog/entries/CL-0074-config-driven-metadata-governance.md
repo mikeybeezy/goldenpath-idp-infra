@@ -25,7 +25,7 @@ breaking_change: false
 Decoupled metadata standardization and validation logic from hardcoded Python scripts, moving the source of truth to YAML schemas and enums.
 
 ## Changes
-- **New Governance Framework**: Published [**`CONFIG_DRIVEN_METADATA.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/CONFIG_DRIVEN_METADATA.md).
+- **New Governance Framework**: Published [**`CONFIG_DRIVEN_METADATA.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/CONFIG_DRIVEN_METADATA.md).
 - **Core Engine Implementation**: Created [**`metadata_config.py`**](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/lib/metadata_config.py) to unify schema loading.
 - **Refactored Validators**: Updated index/schema validators to use config-driven logic.
 - **Refactored Healer**: Updated `standardize_metadata.py` to use dynamic schema skeletons.

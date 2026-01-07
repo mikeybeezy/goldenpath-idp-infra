@@ -47,10 +47,10 @@ jobs:
       - name: Report Drift
         if: failure()
         run: |
-          echo "## ❌ Index Drift Detected" >> $GITHUB_STEP_SUMMARY
+          echo "##  Index Drift Detected" >> $GITHUB_STEP_SUMMARY
           echo "Your PR includes new files but the global indexes (ADRs, Scripts, Workflows) were not updated." >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🛠️ Local Remediation" >> $GITHUB_STEP_SUMMARY
+          echo "###  Local Remediation" >> $GITHUB_STEP_SUMMARY
           echo "Please run the following command to update your branch and then push the changes:" >> $GITHUB_STEP_SUMMARY
           echo '```bash' >> $GITHUB_STEP_SUMMARY
           echo 'bin/governance heal indexes' >> $GITHUB_STEP_SUMMARY

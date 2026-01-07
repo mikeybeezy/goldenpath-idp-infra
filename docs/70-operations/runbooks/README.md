@@ -1,0 +1,72 @@
+---
+id: DOCS_RUNBOOKS_README
+title: Runbooks Index
+type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: medium
+  security_risk: access
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+schema_version: 1
+relates_to:
+  - 01_EKS_ACCESS_RECOVERY
+  - 02_GRAFANA_ACCESS
+  - 03_IAM_AUDIT
+  - 04_LB_FINALIZER_STUCK
+  - 05_GOLDEN_PATH_VALIDATION
+  - 06_LB_ENI_ORPHANS
+  - 07_TF_STATE_FORCE_UNLOCK
+  - 08_MANAGED_LB_CLEANUP
+  - 09_CI_TEARDOWN_RECOVERY_V2
+  - 10_DEV_BRANCH_APPLY
+  - 10_REPO_DECOMMISSIONING
+  - 11_ARGOCD_APP_READINESS
+  - ORPHAN_CLEANUP
+  - METADATA_BACKFILL_SCRIPT
+  - RELATIONSHIP_EXTRACTION_SCRIPT
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: runbooks
+status: active
+version: 1.0
+dependencies: []
+supported_until: 2028-01-01
+breaking_change: false
+---
+
+# Runbooks
+
+## Index
+
+- `docs/70-operations/runbooks/01_EKS_ACCESS_RECOVERY.md` — Restore EKS access and refresh kubeconfig.
+- `docs/70-operations/runbooks/02_GRAFANA_ACCESS.md` — Port-forward Grafana and retrieve admin credentials.
+- `docs/70-operations/runbooks/03_IAM_AUDIT.md` — Audit CI IAM role usage and tighten permissions.
+- `docs/70-operations/runbooks/04_LB_FINALIZER_STUCK.md` — Remove stuck LoadBalancer Service finalizers during teardown.
+- `docs/70-operations/runbooks/05_GOLDEN_PATH_VALIDATION.md` — Validate PR → apply → bootstrap → teardown end-to-end.
+- `docs/70-operations/runbooks/06_LB_ENI_ORPHANS.md` — Recover subnet deletes blocked by LoadBalancer ENIs.
+- `docs/70-operations/runbooks/07_TF_STATE_FORCE_UNLOCK.md` — Break-glass Terraform state unlock.
+- `docs/70-operations/runbooks/08_MANAGED_LB_CLEANUP.md` — Remove LBC-managed LBs, ENIs, and SGs by cluster tag.
+- `docs/70-operations/runbooks/09_CI_TEARDOWN_RECOVERY_V2.md` — CI-only recovery sequence for v2 teardown hangs and state locks.
+- `docs/70-operations/runbooks/10_DEV_BRANCH_APPLY.md` — Build an environment from the `development` branch apply workflow.
+- `docs/70-operations/runbooks/10_REPO_DECOMMISSIONING.md` — Archive/delete repos with teardown evidence and audit trail.
+- `docs/70-operations/runbooks/11_ARGOCD_APP_READINESS.md` — Argo CD app readiness checklist and dependency checks.
+- `docs/70-operations/runbooks/RB-0012-leak-protection-management.md` — Preventing ungoverned assets from leaking into Production.
+- `docs/70-operations/runbooks/RB-0013-metadata-and-enum-alignment.md` — Commands and logic for resolving metadata drift.
+- `docs/70-operations/runbooks/RB-0014-repo-health-and-hygiene.md` — Platform Owner's guide to maintaining repo health.
+- `docs/70-operations/runbooks/RB-0015-extending-governance-vocabulary.md` — How to add new values to the system enums.
+- `docs/70-operations/runbooks/ORPHAN_CLEANUP.md` — Delete BuildId-tagged orphaned resources safely.
+
+Operational runbooks for GoldenPath (incident response, recovery, and routine ops).

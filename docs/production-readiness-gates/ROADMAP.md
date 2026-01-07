@@ -26,7 +26,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: platform
@@ -37,11 +37,9 @@ supported_until: 2028-01-01
 breaking_change: false
 ---
 
-# Platform TODO (Living)
-
-Last updated: 2026-01-03
-
-This is the single rolling backlog. Add items here before starting work.
+# 🏥 Platform Health Command Center
+**Generated**: `2026-01-07 08:29:32` | **V1 Readiness**: `95.5%` | **Mean Confidence**: `⭐ (1.1/5.0)`
+Add items here before starting work.
 
 ## Priority legend
 
@@ -52,34 +50,35 @@ This is the single rolling backlog. Add items here before starting work.
 
 ---
 
-## 💎 Value Quantification (VQ) Strategy
+## Value Quantification (VQ) Strategy
 
 This roadmap is driven by **Value-Led Prioritization**. Every item is classified by its **VQ Bucket** to ensure we protect the core while moving fast on user-facing capabilities.
 
-### 🛡️ VQ Buckets
+### VQ Buckets
 
 | Bucket | Focus | Philosophy |
 | :--- | :--- | :--- |
-| **🔴 HV / HQ** | **Platform Core** | "Slow is smooth." Protect trust, safety, and auditability at all costs. |
-| **🟡 HV / LQ** | **Product Surface** | "Good enough beats elegant later." Ship rough, reversible user features. |
-| **🔵 MV / HQ** | **Quiet Multipliers** | "Bound and freeze." Build once, lock it, and stop touching. |
-| **⚫ LV / LQ** | **Actively Resist** | Every "No" buys clarity. resist over-customization and premature logic. |
+| **🔴 HV/HQ** | **Platform Core** | "Slow is smooth." Protect trust, safety, and auditability at all costs. |
+| **🟡 HV/LQ** | **Product Surface** | "Good enough beats elegant later." Ship rough, reversible user features. |
+| **🔵 MV/HQ** | **Quiet Multipliers** | "Bound and freeze." Build once, lock it, and stop touching. |
+| **⚫ LV/LQ** | **Actively Resist** | Every "No" buys clarity. resist over-customization and premature logic. |
 
 ---
 
-## 🏗️ 90-Day Evolution Plan
+## 90-Day Evolution Plan
 
-### Phase 1: Stabilize the Core (HV / HQ)
-**Goal**: Make the platform boring, predictable, and trustworthy.
-**Outcome**: *"I can step away and nothing degrades."*
+### Phase 1: Stabilize the Core (🔴 HV/HQ)
+- **Phase 2 (Make Power Legible)**: Focus on **🟡 HV/LQ**. Build scaffolds and visibility.
+- **Phase 3 (Multipliers)**: Focus on **🔵 MV/HQ**. Build quiet scaling levers.
+- **Maintenance**: Focus on **⚫ LV/LQ**. Pruning and hygiene.
 - **Focus**: Metadata inheritance, approval routing, deterministic teardown, immutable audit trails.
 
-### Phase 2: Make Power Legible (HV / LQ)
+### Phase 2: Make Power Legible (🟡 HV/LQ)
 **Goal**: Show what’s possible without over-engineering.
 **Outcome**: *"Users can see and use the platform's value immediately."*
 - **Focus**: Scaffolder templates, automation health dashboards, service catalog UX.
 
-### Phase 3: Optionality & Leverage (MV / HQ)
+### Phase 3: Optionality & Leverage (🔵 MV/HQ)
 **Goal**: Prepare for scale without committing to it.
 **Outcome**: *"Quiet multipliers that prepare us for V2/Enterprise growth."*
 - **Focus**: Schema versioning, knowledge graph exports, policy-to-CI routing.
@@ -130,19 +129,19 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 | 030 | P2 | Docs | Create rollback/incident flow diagram | platform | Open | M |  | Show GitOps revert + recovery steps | docs/20-contracts/29_CD_DEPLOYMENT_CONTRACT.md | Standardize rollback expectations |
 | 031 | P2 | Docs | Create cost + lifecycle overview diagram | platform | Open | M |  | Compare ephemeral vs persistent lifecycles | docs/30-architecture/07_REPO_DECOUPLING_OPTIONS.md | Set expectations for cost and uptime |
 | 032 | P2 | Security | Establish periodic IAM audit cadence for CI roles | platform | Open | S |  | Define CloudTrail + Access Analyzer review process | docs/adrs/ADR-0035-platform-iam-audit-cadence.md | Reduce permissions over time based on actual usage |
-| 033 | P2 | Security | Create IAM audit runbook (CloudTrail + Access Analyzer) | platform | Open | S |  | Document exact CLI/Athena queries and steps | docs/runbooks/03_IAM_AUDIT.md | Make IAM reviews repeatable |
-| 034 | P2 | Security | Run first IAM audit after stability milestone | platform | Open | M |  | Execute runbook and tighten policies | docs/runbooks/03_IAM_AUDIT.md | Validate audit cadence in practice |
+| 033 | P2 | Security | Create IAM audit runbook (CloudTrail + Access Analyzer) | platform | Open | S |  | Document exact CLI/Athena queries and steps | docs/70-operations/runbooks/03_IAM_AUDIT.md | Make IAM reviews repeatable |
+| 034 | P2 | Security | Run first IAM audit after stability milestone | platform | Open | M |  | Execute runbook and tighten policies | docs/70-operations/runbooks/03_IAM_AUDIT.md | Validate audit cadence in practice |
 | 035 | P2 | Security | Define multi-account IAM boundaries per environment (V2) | platform | Open | M |  | Map env → account and scope roles per account | docs/60-security/33_IAM_ROLES_AND_POLICIES.md | Prepare for teams using separate AWS accounts |
 | 037 | P1 | Teardown | Define teardown reliability SLO (p95 < 20m, p99 < 45m; break-glass <5%) | platform | Open | S | Q1 | Capture in V1 scope and validation checklist | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md, docs/40-delivery/39_GOLDEN_PATH_VALIDATION.md | Sets acceptance bar for deterministic teardown |
 | 038 | P1 | Teardown | Run 5–10 teardown cycles and record durations + break-glass usage | platform | Open | M | Q1 | Track runs and summarize results | docs/40-delivery/39_GOLDEN_PATH_VALIDATION.md | Confirms SLO in practice |
 | 039 | P1 | Teardown | If SLO missed, record known limitation and create V1.1 follow-up | platform | Open | S | Q1 | Add known limitation + V1.1 entry | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | Time-boxed hardening without blocking V1 |
-| 040 | P2 | Ops | Add AWS Support escalation criteria for ENI >48h | platform | Open | S | Q1 | Add runbook section | docs/runbooks/06_LB_ENI_ORPHANS.md | Clear path when cleanup stalls |
+| 040 | P2 | Ops | Add AWS Support escalation criteria for ENI >48h | platform | Open | S | Q1 | Add runbook section | docs/70-operations/runbooks/06_LB_ENI_ORPHANS.md | Clear path when cleanup stalls |
 | 041 | P2 | Observability | Track teardown duration + break-glass usage in pipeline metrics | platform | Open | M | Q1 | Extend pipeline metrics | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | Measure reliability over time |
 | 042 | P1 | Observability | Define RED label contract (service/env/version/team/build_id) | platform | Done | S | Q1 | Implement in dashboards + alerts | docs/50-observability/05_OBSERVABILITY_DECISIONS.md | Consistent metrics for dashboards and alerts |
 | 043 | P1 | Observability | Build RED + Golden Signals dashboards with minimal alerts | platform | Open | M | Q1 | Create dashboards and alert rules | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | V1 visibility baseline for operators |
 | 044 | P2 | Observability | Capture V1.1 trace plan (OTel + Tempo) | platform | Open | S | Q2 | Define data path and sampling | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md | Make trace adoption explicit and time-boxed |
 | 045 | P2 | Cost | Implement Infracost + Backstage Integration | platform | Open | M | Q2 | Add `infracost` step to CI | docs/production-readiness-gates/ROADMAP.md | Surface cost impact in PRs and Backstage (Leading Indicator) |
-| 046 | P2 | Teardown | Targeted cleanup for orphans (Kong TGs + Balancers) | platform | Open | S | Q1 | Scan by cluster/build_id/kong tags | docs/runbooks/06_LB_ENI_ORPHANS.md | Prevent quota exhaustion from ghost ingress resources |
+| 046 | P2 | Teardown | Targeted cleanup for orphans (Kong TGs + Balancers) | platform | Open | S | Q1 | Scan by cluster/build_id/kong tags | docs/70-operations/runbooks/06_LB_ENI_ORPHANS.md | Prevent quota exhaustion from ghost ingress resources |
 | 047 | P3 | Teardown | Implement async Node Group deletion | platform | Open | M | Q2 | Trigger delete via CLI before Terraform | docs/40-delivery/17_BUILD_RUN_FLAGS.md | Reduce teardown duration by parallelizing slow steps |
 | 048 | P2 | Cost | Validate orphaned EBS PVCs (tag scan) | platform | Open | S | Q1 | Scan `tag:kubernetes.io/created-for/pvc/name` in `teardown.sh` | docs/30-architecture/07_REPO_DECOUPLING_OPTIONS.md | Prevent hidden costs from persistent PVCs |
 | 049 | P2 | Cost | Add Infracost baseline diff vs main for PRs | platform | Open | S | Q2 | Compare `main` vs PR plan costs | .github/workflows/pr-terraform-plan.yml | Show cost deltas, not just totals |
@@ -151,7 +150,7 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 | 052 | P1 | GitOps | Add GitOps app manifests for stateless + stateful apps per env | platform | Open | M | Q1 | Create `gitops/argocd/apps/<env>/<app>.yaml` | gitops/argocd/apps/<env> | Consistent deployment across envs (added 2026-01-03) |
 | 053 | P1 | Observability | Validate OOTB app + platform observability across all envs | platform | Open | M | Q1 | Run env verification checklist + record results | docs/50-observability/05_OBSERVABILITY_DECISIONS.md, docs/production-readiness-gates/READINESS_CHECKLIST.md | Confirm observability parity beyond dev (added 2026-01-03) |
 | 054 | P2 | Teardown | Unified Teardown Recovery Protocol | platform | Open | M | Q1 | Create `force-cleanup` action + auto-retry in CI | docs/production-readiness-gates/ROADMAP.md | Consolidate orphan/LB cleanup into a single reliability hammer |
-| 055 | P2 | Governance | Repository lifecycle policy + runbook | platform | Open | S | Q1 | Publish policy + runbook; align with scaffolder inputs | docs/10-governance/05_REPOSITORY_LIFECYCLE.md, docs/runbooks/10_REPO_DECOMMISSIONING.md | Define deterministic repo lifecycle and decommissioning |
+| 055 | P2 | Governance | Repository lifecycle policy + runbook | platform | Open | S | Q1 | Publish policy + runbook; align with scaffolder inputs | docs/10-governance/05_REPOSITORY_LIFECYCLE.md, docs/70-operations/runbooks/10_REPO_DECOMMISSIONING.md | Define deterministic repo lifecycle and decommissioning |
 | 056 | P2 | Governance | Validate repo lifecycle workflow (3+ drills) | platform | Open | M | Q1 | Run 3 scaffold runs + 1 decommission drill; record evidence links | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Ensure solution goes beyond documentation |
 | 057 | P3 | Governance | Log repo creation + decommission duration | platform | Open | S | Q1 | Capture duration metrics from scaffolder + decommission drills | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Track end-to-end lifecycle automation time |
 | 058 | P3 | Governance | Track scaffold/decommission success rate | platform | Open | S | Q1 | Record pass/fail % for lifecycle runs | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Reliability signal for automation |

@@ -26,7 +26,7 @@ class MetadataConfig:
         schemas = {}
         if not os.path.isdir(self.schemas_dir):
             return schemas
-            
+
         for f in os.listdir(self.schemas_dir):
             if f.endswith(".schema.yaml"):
                 kind = f.replace(".schema.yaml", "")
@@ -77,7 +77,7 @@ class MetadataConfig:
             return errors # Field not defined in schema, skipping deep validation
 
         field_schema = props[field]
-        
+
         # Check enum_from constraint
         enum_name = field_schema.get("enum_from")
         if enum_name:
@@ -129,14 +129,14 @@ class MetadataConfig:
         abs_filepath = os.path.abspath(filepath)
         current_dir = os.path.dirname(abs_filepath)
         root_dir = os.getcwd()
-        
+
         # print(f"DEBUG: find_parent for {abs_filepath}")
         # print(f"DEBUG: root_dir: {root_dir}")
 
         while current_dir.startswith(root_dir):
             parent_metadata_file = os.path.join(current_dir, "metadata.yaml")
             # print(f"DEBUG: checking {parent_metadata_file}")
-            
+
             # Don't load self as parent if we are a metadata.yaml
             if parent_metadata_file != abs_filepath and os.path.exists(parent_metadata_file):
                 # print(f"DEBUG: MATCH FOUND at {parent_metadata_file}")
@@ -148,7 +148,7 @@ class MetadataConfig:
                 except Exception as e:
                     # print(f"DEBUG: error loading parent {e}")
                     pass
-            
+
             # Move up
             next_dir = os.path.dirname(current_dir)
             if next_dir == current_dir or current_dir == root_dir:
@@ -169,9 +169,9 @@ class MetadataConfig:
         for k, v in local_data.items():
             if v is not None and v != "" and v != {} and v != []:
                 effective[k] = v
-        
+
         # Identity (ID) should NEVER be inherited
         if 'id' not in local_data:
             effective.pop('id', None)
-            
+
         return effective

@@ -23,7 +23,7 @@ breaking_change: false
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Governance / Operations
-- **Related:** `docs/10-governance/01_GOVERNANCE.md`, `docs/10-governance/35_RESOURCE_TAGGING.md`, `docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md`, `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`
+- **Related:** `docs/10-governance/01_GOVERNANCE.md`, `docs/10-governance/35_RESOURCE_TAGGING.md`, `docs/10-governance/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md`, `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`
 
 ---
 
@@ -53,7 +53,7 @@ We will adopt a **tag-scoped IAM policy template** for destructive automation.
 
 - Delete actions must be scoped to `BuildId` and `Environment` tags.
 - Read-only discovery actions remain unscoped.
-- The template lives in `docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md`.
+- The template lives in `docs/10-governance/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md`.
 
 ---
 

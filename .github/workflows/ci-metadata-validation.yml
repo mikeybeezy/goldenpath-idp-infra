@@ -55,9 +55,9 @@ jobs:
           echo "$FILES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           if [ -z "$FILES" ]; then
-            echo "📭 No metadata files changed"
+            echo " No metadata files changed"
           else
-            echo "📋 Changed files:"
+            echo " Changed files:"
             echo "$FILES"
           fi
 
@@ -114,13 +114,13 @@ jobs:
           echo "## Quality Guardrails Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ steps.exempt.outputs.skip }}" == "true" ]; then
-            echo "⏭️ **Skipped** - Exempt label detected" >> $GITHUB_STEP_SUMMARY
+            echo " **Skipped** - Exempt label detected" >> $GITHUB_STEP_SUMMARY
           elif [ -z "${{ steps.changed.outputs.files }}" ]; then
-            echo "📭 **No metadata or documentation files changed**" >> $GITHUB_STEP_SUMMARY
+            echo " **No metadata or documentation files changed**" >> $GITHUB_STEP_SUMMARY
           elif [ "${{ steps.report.outputs.drift }}" == "true" ]; then
-            echo "❌ **Governance Drift Detected**" >> $GITHUB_STEP_SUMMARY
+            echo " **Governance Drift Detected**" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "### 🛠️ Local Remediation" >> $GITHUB_STEP_SUMMARY
+            echo "###  Local Remediation" >> $GITHUB_STEP_SUMMARY
             echo "Please run the following command to fix your branch and then push the changes:" >> $GITHUB_STEP_SUMMARY
             echo '```bash' >> $GITHUB_STEP_SUMMARY
             echo 'bin/governance heal .' >> $GITHUB_STEP_SUMMARY
@@ -128,5 +128,5 @@ jobs:
           elif [ "${{ steps.validate.outcome }}" == "success" ] && [ "${{ steps.emoji.outcome }}" == "success" ] && [ "${{ steps.enums.outcome }}" == "success" ] && [ "${{ steps.routing.outcome }}" == "success" ]; then
             echo "✅ **Passed** - All metadata, enums, routing, and visual standards valid" >> $GITHUB_STEP_SUMMARY
           else
-            echo "❌ **Failed** - Unexpected CI error" >> $GITHUB_STEP_SUMMARY
+            echo " **Failed** - Unexpected CI error" >> $GITHUB_STEP_SUMMARY
           fi

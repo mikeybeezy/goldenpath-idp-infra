@@ -44,7 +44,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: governance
@@ -156,7 +156,7 @@ preserves velocity by making ownership and lifecycle status explicit.
 The canonical tag set lives in `docs/10-governance/35_RESOURCE_TAGGING.md` and is formalized
 in `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`.
 Destructive automation must use tag-scoped IAM policies; see
-`docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md` and
+`docs/10-governance/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md` and
 `docs/adrs/ADR-0039-platform-tag-scoped-iam-policy-template.md`.
 
 ## 6. Changelog Accountability

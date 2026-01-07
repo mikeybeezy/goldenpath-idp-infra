@@ -28,7 +28,7 @@ We will implement three levels of automated VQ enforcement and mission recovery:
 
 1.  **Agent First-Boot Protocol**: Every AI agent must read [**`docs/80-onboarding/AGENT_FIRST_BOOT.md`**](../80-onboarding/AGENT_FIRST_BOOT.md) as a mandatory context anchor before beginning work.
 2.  **Mission Recovery (Pulse)**: Implement `bin/governance pulse` to provide an instant, terminal-based summary of the Platform Mission and VQ strategy.
-3.  **Hard Guardrails**: Update `scripts/pr_guardrails.py` to auto-detect AI-authored PRs and reject any that miss a valid `VQ Class` (e.g., `HV/HQ`) in the PR body.
+3.  **Hard Guardrails**: Update `scripts/pr_guardrails.py` to auto-detect AI-authored PRs and reject any that miss a valid `VQ Class` (e.g., `🔴 HV/HQ`) in the PR body.
 
 ## Consequences
 

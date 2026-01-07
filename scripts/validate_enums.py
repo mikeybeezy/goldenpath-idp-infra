@@ -50,7 +50,7 @@ def validate_value(file_path: str, field_path: str, value: Any, allowed: List[st
         return
     if not allowed:
         return
-        
+
     if isinstance(value, list):
         for idx, item in enumerate(value):
             if item not in allowed:
@@ -61,7 +61,7 @@ def validate_value(file_path: str, field_path: str, value: Any, allowed: List[st
 
 def scan_file(filepath: str, enums: Dict[str, Any], checks: List[Tuple[str, str, List[str]]], errors: List[str]):
     kind_ext = "yaml" if filepath.endswith((".yml", ".yaml")) else "mdfm"
-    
+
     try:
         if kind_ext == "yaml":
             with open(filepath, "r", encoding="utf-8") as f:
@@ -123,7 +123,7 @@ def main() -> int:
         ("mdfm", "reliability.observability_tier", tier_list),
         ("mdfm", "risk_profile.production_impact", impact_list),
         ("mdfm", "risk_profile.security_risk", sec_risk_list),
-        
+
         ("yaml", "owner", owner_list),
         ("yaml", "domain", domain_list),
         ("yaml", "reliability.observability_tier", tier_list),
@@ -131,7 +131,7 @@ def main() -> int:
     ]
 
     errors: List[str] = []
-    
+
     if args.files:
         for f in args.files:
             if os.path.isfile(f) and f.endswith((".md", ".yaml", ".yml")):
@@ -160,11 +160,11 @@ def main() -> int:
             print(f" - {e}", file=sys.stderr)
         if len(errors) > 50:
             print(f" ... and {len(errors)-50} more", file=sys.stderr)
-        
+
         print("\n💡 ACTION REQUIRED:", file=sys.stderr)
         print("To resolve this, you can propose a new value by opening a PR for 'schemas/metadata/enums.yaml'.", file=sys.stderr)
-        print("See Runbook: docs/runbooks/RB-0015-extending-governance-vocabulary.md", file=sys.stderr)
-        
+        print("See Runbook: docs/70-operations/runbooks/RB-0015-extending-governance-vocabulary.md", file=sys.stderr)
+
         return 0 if args.soft else 1
 
     print("✅ Enum validation passed.")

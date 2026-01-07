@@ -48,3 +48,7 @@ envs/dev/grafana
 envs/dev/grafana-describe.txt
 scripts/__pycache__/
 .venv
+
+# Antigravity artifacts (Must ALWAYS be tracked)
+!docs/antig-walkthroughs/
+!docs/antig-implementations/

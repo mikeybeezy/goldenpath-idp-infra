@@ -21,7 +21,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: MV/HQ
+  vq_class: 🔵 MV/HQ
   impact_tier: tier-2
   potential_savings_hours: 1.0
 category: platform

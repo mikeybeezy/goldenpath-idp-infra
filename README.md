@@ -22,7 +22,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: platform
@@ -33,9 +33,23 @@ supported_until: 2028-01-01
 breaking_change: false
 ---
 
-# Golden Path IDP Infra
+# GoldenPath IDP Infrastructure
 
-This repository contains Terraform modules and environment definitions that provision the baseline cloud infrastructure for the Golden Path Internal Developer Platform (IDP). The code is designed to be approachable—even if you are still in college or just getting started with Terraform.
+Welcome to the core configuration and governance engine for the GoldenPath Internal Developer Platform (IDP).
+
+---
+
+### Quick Links
+- [** START HERE (5-Min Onboarding)**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/80-onboarding/00_START_HERE.md)
+- [** Platform Dashboards Index**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_DASHBOARDS.md)
+- [** Current Platform Health**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md)
+
+---
+
+## Repository Architecture
+This repository manages the "Platform as a Product" through high-fidelity metadata, automated governance, and Value Quantification (VQ).
+
+This repository contains Terraform modules and environment definitions that provision the baseline cloud infrastructure for the Golden Path Internal Developer Platform (IDP).
 
 ## Repository Layout
 

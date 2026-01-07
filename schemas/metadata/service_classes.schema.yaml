@@ -1,6 +1,6 @@
-# This schema validates a service class request 
+# This schema validates a service class request
 # record (works for Backstage templates, catalog requests,
-# or a GitHub workflow form that writes YAML into docs/catalogs/ or similar).
+# or a GitHub workflow form that writes YAML into docs/20-contracts/catalogs/ or similar).
 # schemas/metadata/service_classes.schema.yaml
 version: 1
 type: object

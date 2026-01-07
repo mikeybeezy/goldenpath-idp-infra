@@ -17,13 +17,13 @@ breaking_change: false
 Active
 
 ## Context
-Previously, IAM JSON policy fragments were scattered across documentation files or placed loosely in the `docs/policies/` directory. This made it difficult to:
+Previously, IAM JSON policy fragments were scattered across documentation files or placed loosely in the `docs/10-governance/policies/` directory. This made it difficult to:
 1.  Verify exactly what permissions were assigned to specific Terraform variables.
 2.  Maintain a clear mapping between governance requirements and technical implementation.
 3.  Reuse policy logic across different environments or roles.
 
 ## Decision
-We will centralize all machine-readable IAM policy fragments into a dedicated directory: `docs/policies/iam/`.
+We will centralize all machine-readable IAM policy fragments into a dedicated directory: `docs/10-governance/policies/iam/`.
 
 1.  **Strict File Format**: All policies must be valid JSON to ensure compatibility with Terraform's `file()` function and CI/CD linting.
 2.  **Mapping Index**: A `VARIABLE_MAPPING_INDEX.md` will be maintained in the `iam/` directory, explicitly linking each JSON file to its corresponding Terraform variable and intended use case.

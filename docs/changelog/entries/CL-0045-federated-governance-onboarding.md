@@ -25,5 +25,5 @@ breaking_change: false
 
 ## Changes
 - **ADR-0086**: Published the formal decision to federate metadata validation across all engineering repositories.
-- **Strategy Document**: Created `docs/governance/FEDERATED_METADATA_STRATEGY.md` to guide teams on onboarding.
+- **Strategy Document**: Created `docs/10-governance/FEDERATED_METADATA_STRATEGY.md` to guide teams on onboarding.
 - **Runbook**: Added CLI instructions for local validation in non-infrastructure repos.

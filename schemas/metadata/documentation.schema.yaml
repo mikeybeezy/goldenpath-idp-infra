@@ -118,7 +118,7 @@ properties:
     type: string
     description: "YYYY-MM-DD. Often directory-level for doc sets or policies."
     pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
-    
+
   last_governance_review:
     type: string
     description: "YYYY-MM-DD. Used for Active Governance TTL."
@@ -179,13 +179,13 @@ properties:
     description: "Granular metrics used to justify technical work and support resource allocation."
     additionalProperties: false
     default:
-      vq_class: LV/LQ
+      vq_class:  ⚫ LV/LQ
       impact_tier: low
       potential_savings_hours: 0.0
     properties:
       vq_class:
         type: string
-        description: "The Value/Quality classification (e.g., HV/HQ = High Value, High Quality)."
+        description: "The Value/Quality classification (e.g.,  🔴 HV/HQ = High Value, High Quality)."
         enum_from: vq_class
       impact_tier:
         type: string
@@ -195,10 +195,10 @@ properties:
           - tier-2
           - tier-3
           - low
-          - HV/HQ
-          - HV/LQ
-          - MV/HQ
-          - LV/LQ
+          -  🔴 HV/HQ
+          - 🟡 HV/LQ
+          -  🔵 MV/HQ
+          -  ⚫ LV/LQ
       potential_savings_hours:
         type: number
         description: "Estimated hours saved per use or per successful 'Heal'."

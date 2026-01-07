@@ -23,18 +23,18 @@ Implemented a comprehensive series of optimizations to the ECR registry creation
 
 ## Changes
 
-###  Workflow Updates (`.github/workflows/create-ecr-registry.yml`)
+### Workflow Updates (`.github/workflows/create-ecr-registry.yml`)
 - **Automated Registry IDs**: Removed manual `id` input; replaced with automated calculation logic.
 - **Documentation Auto-Sync**: Added mandatory documentation generation step to ensure `REGISTRY_CATALOG.md` is updated in the same PR.
 - **HCL Validation**: Added `terraform fmt` check to guard the integrity of `terraform.tfvars`.
-- **Developer UX**: Added deep-links to the [Push Image Guide](docs/runbooks/app-team/push-image-guide.md) in the PR body.
+- **Developer UX**: Added deep-links to the [Push Image Guide](docs/70-operations/runbooks/app-team/push-image-guide.md) in the PR body.
 
-###  Scripting & Governance
+### Scripting & Governance
 - **Refactored `generate_catalog_docs.py`**:
     - Converted to a domain-agnostic engine capable of documenting multiple resource types.
     - Added support for loading security policies from external YAML files.
     - Improved pluralization/singularization logic for resource labels.
-- **Centralized Policies**: Created `docs/policies/ecr-risk-settings.yaml` as the single source of truth for risk-based security controls.
+- **Centralized Policies**: Created `docs/10-governance/policies/ecr-risk-settings.yaml` as the single source of truth for risk-based security controls.
 - **New Build Script**: Created `scripts/ecr-build-push.sh` to standardize Docker builds, multi-tagging (Git SHA + Version), and ECR pushes for app teams.
 
 ## Verification

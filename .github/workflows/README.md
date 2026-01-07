@@ -49,7 +49,7 @@ breaking_change: false
 - Creates GitHub issues for violations
 - Sends Slack alerts
 
-**Status:** ⏳ Planned (workflow created, scripts pending)
+**Status:**  Planned (workflow created, scripts pending)
 
 ### create-ecr-registry.yml
 **Purpose:** Self-service ECR registry creation

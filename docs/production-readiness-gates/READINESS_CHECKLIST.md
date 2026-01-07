@@ -32,7 +32,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: platform
@@ -124,7 +124,7 @@ Evidence:
 
 - docs/50-observability/05_OBSERVABILITY_DECISIONS.md
 - docs/50-observability/41_STORAGE_AND_PERSISTENCE.md
-- docs/runbooks/README.md
+- docs/70-operations/runbooks/README.md
 
 Gaps:
 
@@ -223,7 +223,7 @@ Recommendations:
 
 Evidence:
 
-- docs/runbooks/README.md
+- docs/70-operations/runbooks/README.md
 - docs/80-onboarding/23_NEW_JOINERS.md
 - docs/90-doc-system/00_DOC_INDEX.md
 

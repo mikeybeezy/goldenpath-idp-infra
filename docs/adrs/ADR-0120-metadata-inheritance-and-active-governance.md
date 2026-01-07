@@ -40,10 +40,10 @@ We will implement **Cascading Metadata Inheritance** paired with an **Active Gov
 ## Consequences
 
 ### Positive
-*   **Boilerplate Reduction**: ~85% reduction in redundant metadata lines.
-*   **Fluidity**: Operations (like team reorgs) become O(1) parent updates.
-*   **V1 Robustness**: The platform "watches itself," ensuring the Knowledge Graph never drifts from reality.
+- **Boilerplate Reduction**: ~85% reduction in redundant metadata lines.
+- **Fluidity**: Operations (like team reorgs) become O(1) parent updates.
+- **V1 Robustness**: The platform "watches itself," ensuring the Knowledge Graph never drifts from reality.
 
 ### Tradeoffs
-*   **Validation Overhead**: Scripts must now search up the tree (O(depth)).
-*   **Change Control**: Evolution follows strict conservative/additive rules to prevent breaking the catalog.
+- **Validation Overhead**: Scripts must now search up the tree (O(depth)).
+- **Change Control**: Evolution follows strict conservative/additive rules to prevent breaking the catalog.

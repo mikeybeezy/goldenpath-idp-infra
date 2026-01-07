@@ -1,0 +1,13 @@
+id: GOVERNANCE_TRACEABILITY_TEST
+title: Governance Traceability Test Scenario
+type: documentation
+owner: platform-team
+lifecycle: active
+reliability:
+  maturity: 3
+  rollback_strategy: git-revert
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: critical
+tags: [governance, traceability, audit]
+schema_version: 1

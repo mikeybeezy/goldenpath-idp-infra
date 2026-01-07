@@ -27,7 +27,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: platform
@@ -63,7 +63,7 @@ It is a living guide for planning and execution.
 
 This V1 scope is aligned with **Phase 1 (Stabilize the Core)** of our [**VQ Strategy**](../production-readiness-gates/ROADMAP.md). Our primary success metric for V1 is: *"I can step away and nothing degrades."*
 
-Every V1 feature is classified as **🔴 HV / HQ** (High Value / High Quality). We move slowly here to ensure trust, safety, and determinism.
+Every V1 feature is classified as **🔴 HV/HQ** (High Value / High Quality). We move slowly here to ensure trust, safety, and determinism.
 
 ---
 

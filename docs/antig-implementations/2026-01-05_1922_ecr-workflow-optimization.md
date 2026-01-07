@@ -3,7 +3,7 @@ id: 2026-01-05_1922_ecr-workflow-optimization
 title: 'Implementation Plan: ECR Workflow Optimization'
 type: implementation-plan
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: governance
@@ -19,7 +19,7 @@ This plan outlines the steps to optimize the ECR registry creation process, enha
 
 ## Proposed Tasks
 
-###  Workflow Updates (`create-ecr-registry.yml`)
+### Workflow Updates (`create-ecr-registry.yml`)
 - [x] **Task 1: Auto-generate Registry IDs**
     - *Action:* Remove the manual `id` input; auto-calculate it from the name.
 - [x] **Task 2: Automatic Documentation Sync**
@@ -27,15 +27,15 @@ This plan outlines the steps to optimize the ECR registry creation process, enha
 - [x] **Task 3: HCL Validation**
     - *Action:* Add a check to ensure `terraform.tfvars` remains valid HCL after appending.
 
-###  Script Refactors (`generate_catalog_docs.py`)
+### Script Refactors (`generate_catalog_docs.py`)
 - [x] **Task 4: Externalize Security Policies**
-    - *Action:* Move risk-based settings to a shared `docs/policies/ecr-risk-settings.yaml`.
+    - *Action:* Move risk-based settings to a shared `docs/10-governance/policies/ecr-risk-settings.yaml`.
 - [x] **Task 5: Generalize for Multi-Catalog**
     - *Action:* Refactor script to handle other resource domains (S3, RDS).
 
-###  User Experience & Tooling
+### User Experience & Tooling
 - [x] **Task 6: PR Guidance Injection**
-    - *Action:* Add deep-links to the [Push Image Guide](file:///Users/mikesablaze/goldenpath-idp-infra/docs/runbooks/app-team/push-image-guide.md) in the PR body.
+    - *Action:* Add deep-links to the [Push Image Guide](file:///Users/mikesablaze/goldenpath-idp-infra/docs/70-operations/runbooks/app-team/push-image-guide.md) in the PR body.
 - [x] **Task 7: Image Creation & Tagging Script**
     - *Action:* Create a standardized script (e.g., `scripts/ecr-build-push.sh`) to handle building, multi-tagging (Git SHA + SemVer), and pushing.
 

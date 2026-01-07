@@ -21,7 +21,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: platform
@@ -51,7 +51,7 @@ Defines the **Structural Contract** for all platform artifacts, including:
 
 ---
 
-##  The "Enforcement Engine" (Validation)
+## The "Enforcement Engine" (Validation)
 
 We implemented an automated gate to ensure zero drift.
 
@@ -62,17 +62,17 @@ This script transforms the enums from a text file into an **executable quality g
 
 ---
 
-##  Visibility & Promotion
+## Visibility & Promotion
 
 We've promoted these new capabilities to ensure they are recognized as core platform features.
 
-- **[ADR-0113](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0113-platform-queryable-intelligence-enums.md)**: Formalized the architecture decision.  
-- **[IDP_PRODUCT_FEATURES.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/product/IDP_PRODUCT_FEATURES.md)**: Added "Enum Consistency Enforcement" to the Capability Roadmap.  
+- **[ADR-0113](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0113-platform-queryable-intelligence-enums.md)**: Formalized the architecture decision.
+- **[IDP_PRODUCT_FEATURES.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/00-foundations/product/IDP_PRODUCT_FEATURES.md)**: Added "Enum Consistency Enforcement" to the Capability Roadmap.
 - **[scripts/index.md](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md)**: Indexed the new validator for easy discovery.
 
 ---
 
-##  Professional Standard: Emoji Usage Policy
+## Professional Standard: Emoji Usage Policy
 
 We've established a strict standard for visual communication to reduce cognitive load while maintaining professional neutrality.
 
@@ -83,7 +83,7 @@ We've established a strict standard for visual communication to reduce cognitive
 
 ---
 
-##  Verification Results
+## Verification Results
 
 | Test | Status | Note |
 | :--- | :--- | :--- |
@@ -95,7 +95,7 @@ We've established a strict standard for visual communication to reduce cognitive
 
 ---
 
-##  Deep Validation: The Enhanced Engine
+## Deep Validation: The Enhanced Engine
 
 We've upgraded the "Governed by Default" logic to support recursive metadata validation.
 
@@ -107,4 +107,4 @@ We've upgraded the "Governed by Default" logic to support recursive metadata val
 > [!NOTE]
 > This upgrade ensures that even complex governance attributes are strictly managed across the Knowledge Graph.
 
-This work completes the **"Born Governed"** initiative by ensuring that "Governed" means adhering to a strict, queryable standard. 
+This work completes the **"Born Governed"** initiative by ensuring that "Governed" means adhering to a strict, queryable standard.

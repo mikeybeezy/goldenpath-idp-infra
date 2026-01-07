@@ -95,13 +95,13 @@ def standardize_file(filepath):
 
     # 2. GET EFFECTIVE CONTEXT (Inheritance)
     effective_data = cfg.get_effective_metadata(filepath, data or {})
-    
+
     # 3. CONTEXTUAL HEALING (Mapping logic based on location)
     rel_path = os.path.relpath(filepath, '.')
-    
+
     doc_type = effective_data.get('type') or get_type_from_path(filepath)
     category = effective_data.get('category', 'platform')
-    
+
     # Aggressive contextual mapping
     if 'docs/adrs' in rel_path or 'docs/30-architecture' in rel_path:
         category, doc_type = 'architecture', 'adr'
@@ -119,7 +119,7 @@ def standardize_file(filepath):
     skeleton = cfg.get_skeleton(doc_type)
     if not skeleton and doc_type in ['policy', 'runbook', 'strategy', 'implementation-plan', 'report']:
         skeleton = cfg.get_skeleton('documentation')
-        
+
     if not skeleton:
         skeleton = {'id': '', 'title': '', 'type': 'documentation', 'owner': OWNER, 'status': 'active'}
 
@@ -147,7 +147,7 @@ def standardize_file(filepath):
             new_id = f"{prefix}_{os.path.basename(rel_dir).replace('-', '_').upper()}"
             if filename_base in ['index', 'metadata']:
                 new_id = f"{new_id}_{filename_base.upper()}"
-        
+
         current_id = str(new_data.get('id', '')).upper()
         if not current_id or current_id in ['README', 'METADATA', 'INDEX']:
             new_data['id'] = new_id
@@ -183,7 +183,7 @@ def standardize_file(filepath):
     new_content = re.sub(r'\n{3,}', '\n\n', new_content)
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(new_content)
-    
+
     print(f"✅ Standardized: {filepath}")
 
     # CLOSED-LOOP GOVERNANCE: Inject metadata into associated K8s resources
@@ -218,7 +218,7 @@ def inject_governance(sidecar_path, data):
                     if 'gitops/helm' in sidecar_path and 'apps/' not in root: is_match = True
                     elif 'apps/' in sidecar_path and 'apps/' in root: is_match = True
                     elif 'idp-tooling' in sidecar_path: is_match = False # Tooling usually doesn't have an ArgoCD app itself
-                
+
                 if is_match:
                     candidates.append(os.path.join(root, f))
 
@@ -255,12 +255,12 @@ def inject_governance(sidecar_path, data):
 
 def main():
     targets = sys.argv[1:] if len(sys.argv) > 1 else ['.']
-    
+
     for target in targets:
         if not os.path.exists(target):
             print(f"⚠️ Warning: Target {target} not found.")
             continue
-            
+
         if os.path.isfile(target):
             standardize_file(target)
             continue
@@ -272,7 +272,7 @@ def main():
             # Structural check: Create missing metadata.yaml in mandated zones
             path_parts = norm_root.split(os.sep)
             is_mandated = any(zone in norm_root for zone in SIDECAR_MANDATED_ZONES)
-            
+
             if is_mandated and len(path_parts) >= 2:
                 if 'metadata.yaml' not in files and 'metadata.yml' not in files:
                     sidecar_path = os.path.join(root, 'metadata.yaml')

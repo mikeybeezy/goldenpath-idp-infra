@@ -23,7 +23,7 @@ Resolved the "metadata limbo" issue where auto-generated Markdown files lacked p
 
 ## Changes
 
-###  Script Updates
+### Script Updates
 
 #### `generate_catalog_docs.py`
 - **Added Frontmatter Injection**: The script now automatically injects complete platform metadata into generated catalog files
@@ -37,7 +37,7 @@ Resolved the "metadata limbo" issue where auto-generated Markdown files lacked p
 - **Self-Referencing**: Uses `os.path.basename(__file__)` to dynamically include the script filename in `relates_to`
 - **Generated Files**: `PLATFORM_HEALTH.md` now explicitly lists `platform_health.py` as its source
 
-###  Documentation Updates
+### Documentation Updates
 - **[ADR-0100](../adrs/ADR-0100-standardized-ecr-lifecycle-and-documentation.md)**: Added sections 7 & 8 documenting the "Atomic Documentation Sync" and "Metadata Inheritance & Governance" principles
 - **[Catalog README](../catalogs/README.md)**: Updated the workflow diagram to show when documentation synchronization occurs
 - **[Standardized Image Delivery Guide](../guides/standardized-image-delivery.md)**: Created comprehensive guide for OIDC-based image delivery

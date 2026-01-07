@@ -209,7 +209,7 @@ def get_observability_tier(doc_type):
     skeleton = cfg.get_skeleton(doc_type)
     if skeleton and 'reliability' in skeleton:
         return skeleton['reliability'].get('observability_tier', 'bronze')
-        
+
     if doc_type in ['contract', 'policy']:
         return 'gold'
     elif doc_type in ['adr', 'runbook']:
@@ -224,7 +224,7 @@ def generate_metadata(filepath, title, doc_type):
     category = extract_category(filepath)
     version = extract_version(filepath)
     dependencies = extract_dependencies(filepath)
-    
+
     # Get base skeleton from schema
     skeleton = cfg.get_skeleton(doc_type)
     if not skeleton:
@@ -261,7 +261,7 @@ lifecycle:
             'breaking_change': False
         }
     })
-    
+
     # Construct New Content
     fm = yaml.dump(new_data, sort_keys=False, default_flow_style=False, allow_unicode=True, indent=2)
     return f"---\n{fm}---\n\n"

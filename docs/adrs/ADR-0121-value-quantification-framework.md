@@ -23,7 +23,7 @@ As the Golden Path Platform grows, engineering efforts often become "invisible" 
 ## Decision
 We will implement a **Value Quantification (VQ) Framework** that integrates directly with our existing metadata governance model.
 
-### Key Components:
+### The 4 VQ Rules
 1.  **Metadata Tagging**: Every automation script and workflow will carry a `value_quantification` object in its metadata sidecar (`metadata.yaml`).
 2.  **Impact Tiers**: Assets will be categorized into `tier-1` (Mission Critical), `tier-2`, `tier-3`, or `low` based on their business impact.
 3.  **Reclaim Metrics**: We will track `potential_savings_hours` per asset usage to calculate the aggregate "Engineering Reclaim" provided by the platform.

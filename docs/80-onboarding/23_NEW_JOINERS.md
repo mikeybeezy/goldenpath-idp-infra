@@ -2,6 +2,7 @@
 id: 23_NEW_JOINERS
 title: New Joiners Guide
 type: runbook
+applies_to: []
 relates_to:
   - 02_PLATFORM_BOUNDARIES
   - 13_COLLABORATION_GUIDE
@@ -9,6 +10,11 @@ relates_to:
   - 25_DAY_ONE_CHECKLIST
   - 26_AI_AGENT_PROTOCOLS
   - 38_BRANCHING_STRATEGY
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+category: platform
 status: active
 version: '1.0'
 supported_until: 2028-01-01
@@ -49,11 +55,11 @@ bin/governance lint
 - Fix any issues reported by the tools before opening a PR.
 - Review PR gates and how to unblock them in `docs/80-onboarding/24_PR_GATES.md`.
 - Review AI agent protocols in `docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md` (these rules apply to human collaborators too).
-- **Internalize VQ**: Your first task is to read [**VQ Principles & Philosophy**](../product/VQ_PRINCIPLES.md) and identify the VQ bucket (**HV/HQ**, etc.) for your first contribution.
+- **Internalize VQ**: Your first task is to read [**VQ Principles & Philosophy**](../product/VQ_PRINCIPLES.md) and identify the VQ bucket (**🔴 HV/HQ**, etc.) for your first contribution.
 
 ## Expectations (The Value Provider Mindset)
 
-We don't just "commit code" here; we **reclaim hours**.
+We don't just "commit code" here; we **reclaim time**.
 
 - **Value-Led PRs**: Every PR you open is expected to include a VQ classification in the PR body. This ensures we focus on high-impact work and avoid over-engineering low-value targets.
 - **Pre-commit hooks** are required for local commits.

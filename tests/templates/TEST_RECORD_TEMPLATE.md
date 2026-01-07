@@ -1,10 +1,10 @@
 # Test Record Template
 
-**Test Name:** [Descriptive name]  
-**Date:** YYYY-MM-DD  
-**Tester:** [Your name]  
-**Test Type:** Unit / Feature / Integration / Smoke  
-**Status:** ✅ PASS / ❌ FAIL / ⚠️ PARTIAL / 🚧 BLOCKED
+**Test Name:** [Descriptive name]
+**Date:** YYYY-MM-DD
+**Tester:** [Your name]
+**Test Type:** Unit / Feature / Integration / Smoke
+**Status:** ✅ PASS /  FAIL / ⚠️ PARTIAL /  BLOCKED
 
 ---
 
@@ -22,8 +22,8 @@
 
 ## Test Plan Reference
 
-**Test Plan:** [Link to test-plan.md]  
-**Original Objectives:** [Brief restatement]  
+**Test Plan:** [Link to test-plan.md]
+**Original Objectives:** [Brief restatement]
 **Changes from Plan:** [Any deviations from original plan]
 
 ---
@@ -62,8 +62,8 @@ pip freeze | grep -E "yaml|requests|pytest"
 ## Test Execution
 
 ### Test Case 1: [Name]
-**Status:** ✅ PASS / ❌ FAIL / ⚠️ PARTIAL / 🚧 BLOCKED  
-**Duration:** XX seconds  
+**Status:** ✅ PASS /  FAIL / ⚠️ PARTIAL /  BLOCKED
+**Duration:** XX seconds
 **Priority:** Critical / High / Medium / Low
 
 **Steps Executed:**
@@ -122,8 +122,8 @@ pip freeze | grep -E "yaml|requests|pytest"
 ## Issues Found
 
 ### Issue 1: [Title]
-**Severity:** Critical / High / Medium / Low  
-**Status:** [ ] Open [ ] Fixed [ ] Deferred  
+**Severity:** Critical / High / Medium / Low
+**Status:** [ ] Open [ ] Fixed [ ] Deferred
 **GitHub Issue:** #XXX
 
 **Description:**
@@ -254,17 +254,17 @@ cleanup command 2
 - [ ] Documentation complete
 
 ### Peer Review
-**Reviewed By:** _______________  
-**Review Date:** YYYY-MM-DD  
+**Reviewed By:** _______________
+**Review Date:** YYYY-MM-DD
 **Review Status:** [ ] Approved [ ] Changes Requested
 
 **Reviewer Comments:**
 [Comments here]
 
 ### Final Sign-off
-**Test Complete:** [ ] Yes [ ] No  
-**Ready for Production:** [ ] Yes [ ] No [ ] N/A  
-**Signed Off By:** _______________  
+**Test Complete:** [ ] Yes [ ] No
+**Ready for Production:** [ ] Yes [ ] No [ ] N/A
+**Signed Off By:** _______________
 **Date:** YYYY-MM-DD
 
 ---

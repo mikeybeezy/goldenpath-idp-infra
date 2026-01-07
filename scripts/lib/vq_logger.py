@@ -13,12 +13,12 @@ LEDGER_FILE = LEDGER_DIR / "value_ledger.json"
 def get_script_value(script_name):
     """
     Look up the potential savings for a script from its metadata.
-    Searches the scripts/ directory for the script's own frontmatter 
+    Searches the scripts/ directory for the script's own frontmatter
     or its parent metadata.yaml.
     """
     scripts_dir = REPO_ROOT / "scripts"
     script_path = scripts_dir / script_name
-    
+
     # 1. Try script's own frontmatter (if it's a .py file)
     if script_name.endswith('.py') and script_path.exists():
         try:
@@ -54,7 +54,7 @@ def log_heartbeat(script_name):
     """Log a successful execution of a script to the value ledger."""
     try:
         LEDGER_DIR.mkdir(parents=True, exist_ok=True)
-        
+
         # Load existing ledger
         if LEDGER_FILE.exists():
             with open(LEDGER_FILE, 'r') as f:
@@ -67,24 +67,24 @@ def log_heartbeat(script_name):
 
         # Calculate value
         value = get_script_value(script_name)
-        
+
         # Update ledger
         entry = {
             "timestamp": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
             "script": script_name,
             "reclaimed_hours": value
         }
-        
+
         ledger["total_reclaimed_hours"] = round(ledger.get("total_reclaimed_hours", 0.0) + value, 2)
         ledger["history"].append(entry)
-        
+
         # Keep history manageable (last 100 entries)
         if len(ledger["history"]) > 100:
             ledger["history"] = ledger["history"][-100:]
 
         with open(LEDGER_FILE, 'w') as f:
             json.dump(ledger, f, indent=2)
-            
+
         return True, f"Logged {value} hours for {script_name}"
     except Exception as e:
         return False, str(e)

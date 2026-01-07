@@ -30,11 +30,11 @@ We officially adopt the **IDP Automation Confidence Matrix** as the standard for
 
 ### Maturity Ratings
 Scripts will be assigned a **Confidence Rating** (1-5 stars) based on these areas:
-- **⭐ (1 Star)**: Lint-clean only.
-- **⭐⭐ (2 Stars)**: Documented and Owned.
-- **⭐⭐⭐ (3 Stars)**: Tested and Safe (Idempotency + Dry-run).
-- **⭐⭐⭐⭐ (4 Stars)**: Field-Tested (Field verification record).
-- **⭐⭐⭐⭐⭐ (5 Stars)**: Immutable Core (Full observability + Multi-env parity).
+- **(1 Star)**: Lint-clean only.
+- **(2 Stars)**: Documented and Owned.
+- **(3 Stars)**: Tested and Safe (Idempotency + Dry-run).
+- **(4 Stars)**: Field-Tested (Field verification record).
+- **(5 Stars)**: Immutable Core (Full observability + Multi-env parity).
 
 ## Consequences
 

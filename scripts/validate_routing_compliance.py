@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Purpose: Decision Routing Compliance Validator
-Achievement: Enforces mandatory artifacts (ADRs, Changelogs) based on 
+Achievement: Enforces mandatory artifacts (ADRs, Changelogs) based on
              impacted domains and components defined in agent-routing.yaml.
 Value: Automates architectural rigor for "Born Governed" platform shifts.
 """
@@ -36,7 +36,7 @@ def get_file_metadata(filepath: str) -> Dict[str, Any]:
     """Extract domain and owner from MD frontmatter or YAML sidecars."""
     if not os.path.exists(filepath):
         return {}
-        
+
     if filepath.endswith((".yml", ".yaml")):
         doc = load_yaml(filepath)
         if isinstance(doc, dict):
@@ -73,7 +73,7 @@ def main():
             present_artifacts.add("adr")
         if "docs/changelog/entries/CL-" in f:
             present_artifacts.add("changelog")
-        
+
         # Identify impacted domains/components via metadata
         meta = get_file_metadata(f)
         domain = meta.get("domain")
@@ -119,7 +119,7 @@ def main():
         for err in errors:
             print(f"❌ {err}")
         sys.exit(1)
-    
+
     print("✅ Governance compliance verified.")
     sys.exit(0)
 

@@ -28,7 +28,7 @@ jobs:
           BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
           REGISTRY_NAME=$(echo "$BRANCH_NAME" | sed 's/registry\/create-//')
           echo "name=$REGISTRY_NAME" >> $GITHUB_OUTPUT
-          echo "🚀 Targeted Registry: $REGISTRY_NAME"
+          echo " Targeted Registry: $REGISTRY_NAME"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -52,7 +52,7 @@ jobs:
             STATE_KEY="envs/dev/terraform.tfstate"
           fi
           echo "key=$STATE_KEY" >> $GITHUB_OUTPUT
-          echo "📍 Using State Key: $STATE_KEY"
+          echo " Using State Key: $STATE_KEY"
 
       - name: Terraform Init
         run: |
@@ -66,7 +66,7 @@ jobs:
       - name: Terraform Apply (Targeted)
         run: |
           NAME="${{ steps.extract.outputs.name }}"
-          echo "🎬 Applying changes for registry: $NAME"
+          echo " Applying changes for registry: $NAME"
 
           terraform -chdir=envs/dev apply -auto-approve -input=false -no-color \
             -target="module.ecr_repositories[\"$NAME\"]"

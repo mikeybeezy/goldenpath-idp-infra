@@ -34,7 +34,7 @@ from typing import Dict, List, Any
 class CatalogGenerator:
     """Generate markdown documentation from YAML catalog"""
 
-    def __init__(self, catalog_path: str, policy_path: str = "docs/policies/ecr-risk-settings.yaml"):
+    def __init__(self, catalog_path: str, policy_path: str = "docs/10-governance/policies/ecr-risk-settings.yaml"):
         self.catalog_path = Path(catalog_path)
         self.policy_path = Path(policy_path)
         self.catalog = None
@@ -110,7 +110,7 @@ class CatalogGenerator:
         summary += f"- 🔴 High: {high}\n\n"
         summary += f"**Last Updated:** {self.catalog.get('last_updated', 'Unknown')}\n"
         summary += f"**Managed By:** {self.catalog.get('managed_by', 'platform-team')}\n"
-        
+
         return f"## Summary\n\n{summary}"
 
     def generate_inventory_table(self) -> str:
@@ -286,11 +286,11 @@ class CatalogGenerator:
 
 def main():
     parser = argparse.ArgumentParser(description="Generate platform catalog documentation")
-    parser.add_argument("--catalog", default="docs/catalogs/ecr-catalog.yaml",
+    parser.add_argument("--catalog", default="docs/20-contracts/catalogs/ecr-catalog.yaml",
                        help="Path to YAML catalog")
     parser.add_argument("--output", default="docs/REGISTRY_CATALOG.md",
                        help="Output markdown file")
-    parser.add_argument("--policies", default="docs/policies/ecr-risk-settings.yaml",
+    parser.add_argument("--policies", default="docs/10-governance/policies/ecr-risk-settings.yaml",
                        help="Path to YAML policies")
     parser.add_argument("--verbose", action="store_true", help="Verbose logging")
     args = parser.parse_args()

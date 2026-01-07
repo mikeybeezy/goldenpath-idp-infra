@@ -79,8 +79,8 @@ class BackstageSync:
 
 def main():
     parser = argparse.ArgumentParser(description="Sync ECR catalog to Backstage entities")
-    parser.add_argument("--catalog", default="docs/catalogs/ecr-catalog.yaml", help="Path to ECR catalog")
-    parser.add_argument("--output", default="docs/catalogs/backstage-entities.yaml", help="Output path for Backstage entities")
+    parser.add_argument("--catalog", default="docs/20-contracts/catalogs/ecr-catalog.yaml", help="Path to ECR catalog")
+    parser.add_argument("--output", default="docs/20-contracts/catalogs/backstage-entities.yaml", help="Output path for Backstage entities")
     args = parser.parse_args()
 
     try:

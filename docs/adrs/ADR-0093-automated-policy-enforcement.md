@@ -22,7 +22,7 @@ We need policies to be enforceable, not just documentation. Manual enforcement d
 
 ### 1. Machine-Readable Policies
 
-Policies are defined as **YAML files** in `docs/policies/`, not just markdown.
+Policies are defined as **YAML files** in `docs/10-governance/policies/`, not just markdown.
 
 **Structure:**
 ```yaml

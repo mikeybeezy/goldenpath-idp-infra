@@ -27,7 +27,7 @@ Architected and implemented a repository-wide governance routing engine that ens
 ## Changes
 - **Conclusive Matrix**: Established [**`agent-routing.yaml`**](file:///Users/mikesablaze/goldenpath-idp-infra/schemas/routing/agent-routing.yaml) as the source of truth for reviewer and artifact requirements.
 - **Automation Engine**: Created [**`validate_routing_compliance.py`**](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/validate_routing_compliance.py).
-- **Platform-wide Strategy**: Published the [**`DECISION_ROUTING_STRATEGY.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/DECISION_ROUTING_STRATEGY.md).
+- **Platform-wide Strategy**: Published the [**`DECISION_ROUTING_STRATEGY.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/DECISION_ROUTING_STRATEGY.md).
 - **CI Gate**: Integrated routing compliance into the mandatory PR quality workflow.
 
 ## Verification

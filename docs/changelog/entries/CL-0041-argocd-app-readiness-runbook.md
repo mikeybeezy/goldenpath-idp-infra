@@ -31,8 +31,8 @@ Add a runtime checklist for Argo CD app readiness and dependency checks.
 
 ## Changes
 
-- Added `docs/runbooks/11_ARGOCD_APP_READINESS.md`.
-- Indexed the runbook in `docs/runbooks/README.md` and
+- Added `docs/70-operations/runbooks/11_ARGOCD_APP_READINESS.md`.
+- Indexed the runbook in `docs/70-operations/runbooks/README.md` and
   `docs/90-doc-system/00_DOC_INDEX.md`.
 
 ## Impact

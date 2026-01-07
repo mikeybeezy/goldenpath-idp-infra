@@ -124,7 +124,7 @@ def get_catalog_stats():
 
 def get_historical_trends():
     trends = []
-    path = 'docs/governance/reports/HEALTH_AUDIT_LOG.md'
+    path = 'docs/10-governance/reports/HEALTH_AUDIT_LOG.md'
     if os.path.exists(path):
         try:
             with open(path, 'r', encoding='utf-8') as f:
@@ -212,7 +212,7 @@ def generate_report(target_dir='.'):
                     data, error = None, str(e)
             else:
                 data, error = parse_frontmatter(filepath)
-            
+
             if error:
                 if is_md: stats['missing_metadata'].append(filepath)
                 continue
@@ -226,17 +226,17 @@ def generate_report(target_dir='.'):
                 stats['categories'][cat] = stats['categories'].get(cat, 0) + 1
                 status = str(effective_data.get('status', 'unknown')).lower()
                 stats['status'][status] = stats['status'].get(status, 0) + 1
-                
+
                 risk = effective_data.get('risk_profile', {})
                 if isinstance(risk, dict):
                     impact = risk.get('production_impact', 'unknown')
                     if impact in stats['risk_profile']['production_impact']:
                         stats['risk_profile']['production_impact'][impact] += 1
-                
+
                 owner = effective_data.get('owner', 'unknown')
-                if owner == 'unknown' or not owner: 
+                if owner == 'unknown' or not owner:
                     stats['orphans'].append(filepath)
-                else: 
+                else:
                     stats['owners'][owner] = stats['owners'].get(owner, 0) + 1
 
                 # Maturity tracking
@@ -261,17 +261,17 @@ def generate_report(target_dir='.'):
                 norm_root = os.path.relpath(root, target_dir)
                 parent_dir = os.path.dirname(norm_root.rstrip('/'))
                 MANDATED_ZONES = ['gitops/helm', 'idp-tooling', 'envs', 'apps']
-                
+
                 # Only count DIRECT children of mandated zones, not nested subdirs
                 # e.g., gitops/helm/loki ✅ but gitops/helm/loki/values ❌
                 is_direct_child = parent_dir in MANDATED_ZONES
-                
+
                 if is_direct_child:
                     stats['injection_coverage']['total_mandated'] += 1
                     if data and 'id' in data:
-                        if verify_injection(root, data['id']): 
+                        if verify_injection(root, data['id']):
                             stats['injection_coverage']['total_injected'] += 1
-                        else: 
+                        else:
                             stats['injection_coverage']['gaps'].append(filepath)
 
     # Step 2: Multi-Source Ingestion
@@ -291,7 +291,7 @@ def generate_report(target_dir='.'):
     total_inj = stats['injection_coverage']['total_mandated']
     injected = stats['injection_coverage']['total_injected']
     coverage = (injected / total_inj * 100) if total_inj > 0 else 0
-    
+
     mean_confidence = (sum(stats['maturity_scores']) / len(stats['maturity_scores'])) if stats['maturity_scores'] else 1.0
 
     v1_readiness = calculate_v1_readiness(stats, adr_stats, comp_rate, coverage)
@@ -397,11 +397,11 @@ def generate_report(target_dir='.'):
 
     # Persist Final Dashboard
     content = "\n".join(lines)
-    os.makedirs('docs/governance/reports', exist_ok=True)
+    os.makedirs('docs/10-governance/reports', exist_ok=True)
     with open('PLATFORM_HEALTH.md', 'w') as f:
         f.write("<!-- 🛑 AUTOMATED REPORT - DO NOT EDIT MANUALLY 🛑 -->\n" + content)
 
-    with open('docs/governance/reports/HEALTH_AUDIT_LOG.md', 'a') as f:
+    with open('docs/10-governance/reports/HEALTH_AUDIT_LOG.md', 'a') as f:
         f.write(f"\n\n---\n### Audit: {timestamp}\n{content}")
 
 if __name__ == "__main__":

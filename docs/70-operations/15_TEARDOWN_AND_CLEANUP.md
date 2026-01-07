@@ -27,7 +27,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: compliance
@@ -46,7 +46,7 @@ Doc contract:
 - Owner: platform
 - Status: reference
 - Review cadence: as needed
-- Related: docs/70-operations/10_INFRA_FAILURE_MODES.md, docs/runbooks/09_CI_TEARDOWN_RECOVERY_V2.md, docs/runbooks/06_LB_ENI_ORPHANS.md, docs/runbooks/04_LB_FINALIZER_STUCK.md, docs/adrs/ADR-0043-platform-teardown-lb-eni-wait.md
+- Related: docs/70-operations/10_INFRA_FAILURE_MODES.md, docs/70-operations/runbooks/09_CI_TEARDOWN_RECOVERY_V2.md, docs/70-operations/runbooks/06_LB_ENI_ORPHANS.md, docs/70-operations/runbooks/04_LB_FINALIZER_STUCK.md, docs/adrs/ADR-0043-platform-teardown-lb-eni-wait.md
 
 Last updated: 2025-12-29
 
@@ -175,7 +175,7 @@ LoadBalancer ENI wait (prevents stuck subnet deletes):
 - CI exposes this as the `force_delete_lbs` workflow input (default `true`).
 - Ensure the teardown role can call `elasticloadbalancing:DeleteLoadBalancer`,
   `elasticloadbalancing:DescribeTags`, and `ec2:DescribeNetworkInterfaces` (see
-  `docs/policies/ci-teardown-extra-permissions.json`).
+  `docs/10-governance/policies/ci-teardown-extra-permissions.json`).
 - Recovery note: if a partial teardown left ENIs behind, re-run teardown with
   `FORCE_DELETE_LBS=true` after confirming only disposable LBs remain.
 
@@ -186,7 +186,7 @@ ENI consistency constraints:
 - ENI counts per LB vary with load and can change during teardown.
 - Tag coverage on ENIs is not guaranteed; cluster scoping should be enforced on LBs.
 
-Runbook: `docs/runbooks/06_LB_ENI_ORPHANS.md`
+Runbook: `docs/70-operations/runbooks/06_LB_ENI_ORPHANS.md`
 
 ```bash
 

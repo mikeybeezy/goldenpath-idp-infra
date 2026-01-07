@@ -37,8 +37,8 @@ documents, and artifacts you need before you start making changes.
 ## Read first (fast context)
 
 - docs/adrs/01_adr_index.md
-- docs/product/VQ_PRINCIPLES.md (**Read this first**)
-- docs/product/VQ_TAGGING_GUIDE.md
+- docs/00-foundations/product/VQ_PRINCIPLES.md (**Read this first**)
+- docs/00-foundations/product/VQ_TAGGING_GUIDE.md
 - docs/80-onboarding/23_NEW_JOINERS.md
 - docs/80-onboarding/24_PR_GATES.md
 - docs/40-delivery/38_BRANCHING_STRATEGY.md

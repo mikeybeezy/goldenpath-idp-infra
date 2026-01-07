@@ -29,7 +29,7 @@ def search_in_dir(query, directory):
     matches = []
     if not os.path.exists(directory):
         return matches
-        
+
     for file_path in glob.glob(os.path.join(directory, "*.md")):
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
@@ -47,7 +47,7 @@ def check_script(script_path):
 
     adr_matches = search_in_dir(name, ADRS_DIR)
     cl_matches = search_in_dir(name, CLS_DIR)
-    
+
     is_compliant = len(adr_matches) > 0 and len(cl_matches) > 0
     return is_compliant, adr_matches, cl_matches
 
@@ -80,10 +80,10 @@ def main():
         total += 1
         name = os.path.basename(script)
         is_ok, adrs, cls = check_script(script)
-        
+
         status = "✅" if is_ok else "❌"
         print(f"{status} {name:<35} | ADRs: {len(adrs):<2} | CLs: {len(cls):<2}")
-        
+
         if is_ok:
             compliant += 1
         else:
@@ -99,7 +99,7 @@ def main():
         print("\n❌ Traceability Failures:")
         for fail in failures:
             print(f"  - {fail}")
-        
+
         if validate_mode:
             sys.exit(1)
     else:

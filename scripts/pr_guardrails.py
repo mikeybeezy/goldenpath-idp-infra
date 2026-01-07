@@ -148,10 +148,10 @@ def validate_vq_classification(body: str) -> tuple[bool, str]:
     """Ensure PR body has a valid VQ bucket classification (HV/HQ, etc)."""
     vq_pattern = re.compile(r"VQ Class: (HV/HQ|HV/LQ|MV/HQ|LV/LQ)", re.IGNORECASE)
     match = vq_pattern.search(body)
-    
+
     if not match:
         return False, "Missing VQ Classification (e.g., 'VQ Class: HV/HQ')."
-    
+
     return True, f"✅ VQ Classification found: {match.group(1).upper()}"
 
 def validate_script_traceability(files: list) -> list[str]:
@@ -159,13 +159,13 @@ def validate_script_traceability(files: list) -> list[str]:
     import subprocess
     errors = []
     scripts = [f for f in files if f.startswith('scripts/') and (f.endswith('.py') or f.endswith('.sh'))]
-    
+
     for script in scripts:
         script_name = os.path.basename(script)
         # Skip exempt scripts
         if script_name in ["check_script_traceability.py", "__init__.py"]:
             continue
-            
+
         print(f"   🕵️ Checking traceability for {script_name}...")
         result = subprocess.run(
             [sys.executable, "scripts/check_script_traceability.py", "--script", script_name, "--validate"],
@@ -173,7 +173,7 @@ def validate_script_traceability(files: list) -> list[str]:
         )
         if result.returncode != 0:
             errors.append(f"Script Traceability Failure for {script_name}. Ensure it is mentioned in an ADR and CL entry.")
-            
+
     return errors
 
 def validate_checklist(body: str, author: str, files: list) -> list[str]:
@@ -190,7 +190,7 @@ def validate_checklist(body: str, author: str, files: list) -> list[str]:
     # Mandatory VQ for Agents (and recommended for all)
     is_agent = any(agent_sig in author.lower() for agent_sig in ['antigravity', 'agent', 'bot', 'service-account'])
     vq_valid, vq_msg = validate_vq_classification(body)
-    
+
     if is_agent and not vq_valid:
         errors.append(f"AI Agents MUST provide Value Quantification: {vq_msg}")
     elif vq_valid:

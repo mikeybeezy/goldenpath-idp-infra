@@ -25,7 +25,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: compliance
@@ -44,7 +44,7 @@ Doc contract:
 - Owner: platform
 - Status: living
 - Review cadence: 90d
-- Related: docs/70-operations/36_STATE_KEY_STRATEGY.md, docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md, docs/runbooks/07_TF_STATE_FORCE_UNLOCK.md
+- Related: docs/70-operations/36_STATE_KEY_STRATEGY.md, docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md, docs/70-operations/runbooks/07_TF_STATE_FORCE_UNLOCK.md
 
 This document explains where Terraform state lives, how locking works, and how
 CI roles connect to the backend.

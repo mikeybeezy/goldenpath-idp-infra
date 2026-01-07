@@ -11,7 +11,7 @@ import re
 import argparse
 
 # Approved Set (from EMOJI_POLICY.md)
-APPROVED_EMOJIS = ["⚠️", "🚫", "✅", "🔒", "🧪", "🧭", "📌"]
+APPROVED_EMOJIS = ["🔴", "🟡", "🔵", "⚫", "⚠️", "🚫", "✅", "🔒", "🔬", "🧪", "🧭", "📌", "🚀", "🛡️", "🏥", "🏆", "📈", "🏛️", "📊", "🏗️", "💎", "🤖", "🎯", "⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐", "📘", "📖", "⚡", "🚧", "🛠️"]
 
 # Authoritative directories (No emojis allowed at all)
 NO_EMOJI_ROOTS = [
@@ -35,7 +35,7 @@ EMOJI_REGEX = re.compile(
     "\U0001f900-\U0001f9ff"  # supplemental symbols
     "\u200d"                # zero width joiner
     "\uFE0F"                # variation selector
-    "]+", 
+    "]+",
     flags=re.UNICODE
 )
 
@@ -59,7 +59,14 @@ def scan_file(filepath, dry_run=False):
     new_content = content
     violations = []
 
+    # VQ Indicators are allowed everywhere as core platform standards
+    VQ_INDICATORS = ["🔴", "🟡", "🔵", "⚫"]
+
     for emoji in set(found_emojis):
+        # Skip check for VQ indicators
+        if emoji in VQ_INDICATORS:
+            continue
+
         # 1. Authoritative check
         if is_authoritative:
             violations.append(f"Emoji '{emoji}' not allowed in authoritative document.")
@@ -73,7 +80,7 @@ def scan_file(filepath, dry_run=False):
         print(f"❌ Policy Violation in {filepath}:")
         for v in violations:
             print(f"   - {v}")
-        
+
         if not dry_run:
             with open(filepath, 'w', encoding='utf-8') as f:
                 f.write(new_content)
@@ -101,7 +108,7 @@ def main():
         for root, _, files in os.walk(args.root):
             if ".git" in root or "node_modules" in root:
                 continue
-                
+
             for file in files:
                 if file.endswith(('.md', '.yaml', '.yml')):
                     filepath = os.path.join(root, file)

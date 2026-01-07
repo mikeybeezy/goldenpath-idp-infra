@@ -39,7 +39,7 @@ Activated the Infracost integration for the `Plan - PR Terraform Plan` workflow.
 - **Manual Trigger**: Added `workflow_dispatch` event to the workflow to allow for ad-hoc validation and cost checks without commits.
 
 ### Documentation
-- **Product Features**: Added "FinOps / Cost Visibility" to [IDP_PRODUCT_FEATURES.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/product/IDP_PRODUCT_FEATURES.md).
+- **Product Features**: Added "FinOps / Cost Visibility" to [IDP_PRODUCT_FEATURES.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/00-foundations/product/IDP_PRODUCT_FEATURES.md).
 - **ADR Status**: Updated [ADR-0076](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0076-platform-infracost-ci-visibility.md) to "Implemented".
 
 ## Validation

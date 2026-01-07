@@ -163,7 +163,7 @@ service_classes:
   - secrets-management
 
 vq_class:
-  - HV/HQ
-  - HV/LQ
-  - MV/HQ
-  - LV/LQ
+  -  🔴 HV/HQ
+  - 🟡 HV/LQ
+  -  🔵 MV/HQ
+  -  ⚫ LV/LQ

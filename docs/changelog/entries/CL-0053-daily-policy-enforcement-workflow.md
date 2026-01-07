@@ -42,7 +42,7 @@ Added GitHub Action workflow for automated daily policy compliance checks agains
 **Trigger:** Daily at 09:00 UTC + manual dispatch
 
 **Process:**
-1. Load policies from `docs/policies/*.yaml`
+1. Load policies from `docs/10-governance/policies/*.yaml`
 2. Query all ECR registries via AWS API
 3. Check each registry against policy rules:
    - POL-ECR-001-R03: Required metadata present

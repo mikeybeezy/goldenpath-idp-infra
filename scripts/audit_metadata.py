@@ -30,7 +30,7 @@ def audit_repo(root_dir="."):
     }
 
     mandated_zones = ['apps', 'docs', 'gitops', 'envs', 'runbooks']
-    
+
     for zone in mandated_zones:
         zone_path = os.path.join(root_dir, zone)
         if not os.path.isdir(zone_path):
@@ -41,12 +41,12 @@ def audit_repo(root_dir="."):
                 if f.endswith(('.md', '.yaml', '.yml')) and f != 'metadata.yaml':
                     stats["total_files"] += 1
                     filepath = os.path.join(root, f)
-                    
+
                     try:
                         # Extract metadata
                         with open(filepath, 'r') as file:
                             content = file.read()
-                            
+
                         # Simplified frontmatter extraction
                         data = {}
                         if filepath.endswith('.md'):
@@ -55,15 +55,22 @@ def audit_repo(root_dir="."):
                                 if len(parts) >= 3:
                                     data = yaml.safe_load(parts[1]) or {}
                         else:
-                            data = yaml.safe_load(content) or {}
+                            # Support multi-document YAML (take first document for metadata)
+                            try:
+                                docs = list(yaml.safe_load_all(content))
+                                if docs:
+                                    data = docs[0] or {}
+                            except Exception:
+                                # Fallback to single load if all_load fails for some reason
+                                data = yaml.safe_load(content) or {}
 
                         # Check inheritance
                         parent = cfg.find_parent_metadata(filepath)
                         effective = cfg.get_effective_metadata(filepath, data)
-                        
+
                         if data.get('exempt'):
                             stats["exempt_files"] += 1
-                        
+
                         # Count explicit vs inherited (simplified: if present in effective but not in local)
                         for k in effective:
                             if k not in data:
@@ -76,14 +83,14 @@ def audit_repo(root_dir="."):
 
     return stats
 
-def save_report(stats, output_path="docs/governance/reports"):
+def save_report(stats, output_path="docs/10-governance/reports"):
     os.makedirs(output_path, exist_ok=True)
     date_str = datetime.now().strftime("%Y-%m-%d")
     report_file = os.path.join(output_path, f"compliance_snapshot_{date_str}.json")
-    
+
     with open(report_file, 'w') as f:
         json.dump(stats, f, indent=2)
-    
+
     print(f"✅ Audit complete. Snapshot saved to: {report_file}")
 
 if __name__ == "__main__":

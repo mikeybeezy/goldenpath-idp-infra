@@ -8,7 +8,7 @@ reliability:
 relates_to:
   - ADR-0110
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: architecture
@@ -40,7 +40,7 @@ We will move from **"Files with tags"** to **"Entities with Edges"**.
 | **ADR** | Decisions / Architecture | The "Why" behind the state. |
 | **Policy** | Governance Rules | The guardrails (Security/Compliance). |
 
-##  Evolution: Generic Proposal vs. Practical Suggestion
+## Evolution: Generic Proposal vs. Practical Suggestion
 
 | Aspect | Initial Proposal (Generic) | Your Suggestion (Practical) |
 | :--- | :--- | :--- |
@@ -63,7 +63,7 @@ We will move from **"Files with tags"** to **"Entities with Edges"**.
 | **Infra** | `CREATED_VIA` | Workflow |
 | **Any Node** | `DEPENDS_ON` | Any Node |
 
-##  Schema Evolution Strategy
+## Schema Evolution Strategy
 
 The Knowledge Graph is a **Living System**.
 - **Core Nodes** (Registry, App, Team) are stable foundations.
@@ -72,7 +72,7 @@ The Knowledge Graph is a **Living System**.
 
 Labels are **versioned**. If we move from `USED_BY` to `CONSUMES`, we run a migration script to update the "Edges" without breaking the "Nodes".
 
-##  Advanced Evolutionary Patterns (Improvements)
+## Advanced Evolutionary Patterns (Improvements)
 
 Beyond static mapping, we can improve the graph with:
 
@@ -86,7 +86,7 @@ Beyond static mapping, we can improve the graph with:
     - `Security-Team` ---**VERIFIED**---> `Image`.
     - This creates a cryptographic or audit-trail bridge between automated builds and human safety gates.
 
-##  The Agent Layer
+## The Agent Layer
 
 While **Scripts** (the "Healers") mine the data and build the graph, we introduce a **Dedicated System Agent** to act as the primary operator of the Knowledge Graph.
 
@@ -102,7 +102,7 @@ While **Scripts** (the "Healers") mine the data and build the graph, we introduc
 - **Workflows** (`.github/workflows/`) -> `CREATED_VIA`, `DECOMMISSIONED_VIA`.
 - **Environments** (`envs/`) -> `Promotion`, `Blast-radius context`.
 
-##  Path to Intelligence: Foundation vs Evolution
+## Path to Intelligence: Foundation vs Evolution
 
 | Feature | Current (High-Integrity Foundation) | Proposed (Intelligence Layer) |
 | :--- | :--- | :--- |

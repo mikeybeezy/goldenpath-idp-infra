@@ -23,7 +23,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: architecture
@@ -75,10 +75,10 @@ The index file employs HTML comments as injection markers to allow the generator
 ### 3. Guardrail Workflow (`ci-index-auto-heal.yml`)
 Integrated into the **Documentation Auto-Healing** pipeline. Every PR that modifies an ADR is checked for index drift. If drift is detected, the healer regenerates the index and commits it to the PR branch.
 
-##  Governance: Human-in-the-Loop (HITL)
+## Governance: Human-in-the-Loop (HITL)
 Automation is for **drafting**, not **authorizing**.
 
-1. **Mandatory Signature**: Per the **[CODEOWNERS Policy](file:///Users/mikesablaze/goldenpath-idp-infra/docs/governance/CODEOWNERS_POLICY.md)**, every bot-generated commit requires an explicit human approval (thumbs-up) from the `platform-team` before it can be merged.
+1. **Mandatory Signature**: Per the **[CODEOWNERS Policy](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/CODEOWNERS_POLICY.md)**, every bot-generated commit requires an explicit human approval (thumbs-up) from the `platform-team` before it can be merged.
 2. **Verification Gate**: The PR remains blocked until a human has inspected the bot's diff for side-effects.
 3. **No Self-Approval**: The bot is technically barred from merging its own changes, ensuring a separation of concerns between "Generation" and "Verification."
 

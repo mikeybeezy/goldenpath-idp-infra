@@ -24,7 +24,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: governance
@@ -43,7 +43,7 @@ Doc contract:
 - Owner: platform
 - Status: living
 - Review cadence: 90d
-- Related: docs/10-governance/01_GOVERNANCE.md, docs/runbooks/10_REPO_DECOMMISSIONING.md, docs/adrs/ADR-0078-platform-governed-repo-scaffolder.md
+- Related: docs/10-governance/01_GOVERNANCE.md, docs/70-operations/runbooks/10_REPO_DECOMMISSIONING.md, docs/adrs/ADR-0078-platform-governed-repo-scaffolder.md
 
 This policy defines how repositories enter, live within, and exit the
 organization. A repo is governed only if its **creation and decommissioning**

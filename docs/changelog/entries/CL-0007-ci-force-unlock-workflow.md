@@ -22,7 +22,7 @@ breaking_change: false
 Date: 2025-12-31
 Owner: platform
 Scope: terraform/ci
-Related: .github/workflows/ci-force-unlock.yml, docs/runbooks/07_TF_STATE_FORCE_UNLOCK.md
+Related: .github/workflows/ci-force-unlock.yml, docs/70-operations/runbooks/07_TF_STATE_FORCE_UNLOCK.md
 
 ## Summary
 

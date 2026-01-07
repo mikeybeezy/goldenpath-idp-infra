@@ -112,7 +112,7 @@ Read and align on priorities before proposing work:
 
 1. `docs/production-readiness-gates/ROADMAP.md`
 2. `docs/80-onboarding/13_COLLABORATION_GUIDE.md`
-3. `docs/product/VQ_PRINCIPLES.md` (**Mandatory: Internalize VQ strategy before proposing moves**)
+3. `docs/00-foundations/product/VQ_PRINCIPLES.md` (**Mandatory: Internalize VQ strategy before proposing moves**)
 
 ## 7) Standard interfaces
 

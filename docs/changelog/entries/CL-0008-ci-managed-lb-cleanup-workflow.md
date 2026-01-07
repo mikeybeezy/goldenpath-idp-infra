@@ -23,7 +23,7 @@ breaking_change: false
 Date: 2025-12-31
 Owner: platform
 Scope: CI teardown recovery
-Related: `.github/workflows/ci-managed-lb-cleanup.yml`, `docs/runbooks/08_MANAGED_LB_CLEANUP.md`
+Related: `.github/workflows/ci-managed-lb-cleanup.yml`, `docs/70-operations/runbooks/08_MANAGED_LB_CLEANUP.md`
 
 ## Summary
 

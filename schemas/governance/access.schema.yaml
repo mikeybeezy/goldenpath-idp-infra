@@ -6,7 +6,7 @@ properties:
     items:
       type: string
     description: "List of GitHub usernames allowed to use platform-only bypasses (hotfix, build_id)."
-  
+
   service_accounts:
     type: array
     items:

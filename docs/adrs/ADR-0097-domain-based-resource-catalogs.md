@@ -55,7 +55,7 @@ docs/
 ### Future State (Option 2: Domain-Based)
 
 ```
-docs/catalogs/
+docs/20-contracts/catalogs/
 ├── ecr-catalog.yaml
 ├── rds-catalog.yaml
 ├── s3-catalog.yaml
@@ -69,7 +69,7 @@ docs/catalogs/
 ### Catalog Structure
 
 ```
-docs/catalogs/
+docs/20-contracts/catalogs/
 ├── README.md              # Index of all catalogs
 ├── ecr-catalog.yaml       # Container registries
 ├── rds-catalog.yaml       # Databases (future)
@@ -82,7 +82,7 @@ docs/catalogs/
 Each catalog follows this structure:
 
 ```yaml
-# docs/catalogs/ecr-catalog.yaml
+# docs/20-contracts/catalogs/ecr-catalog.yaml
 version: "1.0"
 domain: delivery
 owner: platform-team
@@ -105,7 +105,7 @@ Each Terraform module reads its domain catalog:
 ```hcl
 # envs/dev/main.tf
 locals {
-  ecr_catalog = yamldecode(file("../../docs/catalogs/ecr-catalog.yaml"))
+  ecr_catalog = yamldecode(file("../../docs/20-contracts/catalogs/ecr-catalog.yaml"))
 }
 
 module "ecr_repositories" {
@@ -124,9 +124,9 @@ Backstage aggregates all catalogs:
 catalog:
   locations:
     - type: url
-      target: <https://github.com/.../docs/catalogs/ecr-catalog.yaml>
+      target: <https://github.com/.../docs/20-contracts/catalogs/ecr-catalog.yaml>
     - type: url
-      target: <https://github.com/.../docs/catalogs/rds-catalog.yaml>
+      target: <https://github.com/.../docs/20-contracts/catalogs/rds-catalog.yaml>
 ```
 
 ## Architecture Diagram
@@ -140,9 +140,9 @@ DEVELOPERS
     ↓
 GitHub Workflow (Self-Service)
     ↓
-    ├─→ ECR Workflow → docs/catalogs/ecr-catalog.yaml
-    ├─→ RDS Workflow → docs/catalogs/rds-catalog.yaml
-    └─→ S3 Workflow  → docs/catalogs/s3-catalog.yaml
+    ├─→ ECR Workflow → docs/20-contracts/catalogs/ecr-catalog.yaml
+    ├─→ RDS Workflow → docs/20-contracts/catalogs/rds-catalog.yaml
+    └─→ S3 Workflow  → docs/20-contracts/catalogs/s3-catalog.yaml
 
     ↓
 TERRAFORM (Per-Domain)
@@ -204,11 +204,11 @@ Reads all catalogs → Unified service catalog
 ### Mitigations
 
 **Catalog Discovery:**
-- Create `docs/catalogs/README.md` as index
+- Create `docs/20-contracts/catalogs/README.md` as index
 - Backstage auto-discovers via config
 
 **Migration Path:**
-1. Create `docs/catalogs/` directory
+1. Create `docs/20-contracts/catalogs/` directory
 2. Move `registry-catalog.yaml` → `ecr-catalog.yaml`
 3. Update all references (workflows, Terraform)
 4. Update documentation
@@ -233,8 +233,8 @@ Reads all catalogs → Unified service catalog
 ## Implementation
 
 ### Phase 1: Structure
-- Create `docs/catalogs/` directory
-- Create `docs/catalogs/README.md` index
+- Create `docs/20-contracts/catalogs/` directory
+- Create `docs/20-contracts/catalogs/README.md` index
 - Move `registry-catalog.yaml` → `ecr-catalog.yaml`
 
 ### Phase 2: Update References

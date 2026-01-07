@@ -4,7 +4,7 @@ This ledger tracks the verification results for every script in the repository. 
 
 ---
 
-## 📋 Certification Requirements (The Five Pillars)
+## Certification Requirements (The Five Pillars)
 
 | Pillar | Requirement | Verification Method |
 | :--- | :--- | :--- |
@@ -16,45 +16,45 @@ This ledger tracks the verification results for every script in the repository. 
 
 ---
 
-## 📊 Script Certification Status
+## Script Certification Status
 
 | Script | Logic | Safety | Context | Human | System | Rating |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| `validate_metadata.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐⭐ |
-| `standardize_metadata.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐⭐ |
-| `platform_health.py` | ✅ | ⚠️ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `check_script_traceability.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `validate_enums.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `pr_guardrails.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `audit_metadata.py` | ✅ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐⭐ |
-| `backfill_metadata.py` | ✅ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐⭐ |
-| `check_compliance.py` | ✅ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐⭐ |
-| `check_doc_freshness.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `check_doc_index_contract.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `ecr-build-push.sh` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `enforce_emoji_policy.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `extract_relationships.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `fix_yaml_syntax.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `format_docs.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `generate-build-log.sh` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `generate-teardown-log.sh` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `generate_adr_index.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `generate_catalog_docs.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `generate_governance_vocab.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `generate_script_index.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `generate_workflow_index.py" | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `lib/metadata_config.py` | ✅ | N/A | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `lib/vq_logger.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `migrate_partial_metadata.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `policy-enforcement/check-policy-compliance.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `reliability-metrics.sh` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `render_template.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `resolve-cluster-name.sh` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `scaffold_ecr.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `sync_backstage_entities.py" | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
-| `test_hotfix.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `test_platform_health.py` | ✅ | ✅ | ✅ | ✅ | ✅ | ⭐⭐⭐ |
-| `validate_routing_compliance.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ | ⭐ |
+| `validate_metadata.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `standardize_metadata.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `platform_health.py` | ✅ | ⚠️ | ✅ | ✅ | ✅ |  |
+| `check_script_traceability.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `validate_enums.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `pr_guardrails.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `audit_metadata.py` | ✅ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `backfill_metadata.py` | ✅ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `check_compliance.py` | ✅ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `check_doc_freshness.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `check_doc_index_contract.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `ecr-build-push.sh` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `enforce_emoji_policy.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `extract_relationships.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `fix_yaml_syntax.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `format_docs.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `generate-build-log.sh` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `generate-teardown-log.sh` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `generate_adr_index.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `generate_catalog_docs.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `generate_governance_vocab.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `generate_script_index.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `generate_workflow_index.py" | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `lib/metadata_config.py` | ✅ | N/A | ✅ | ✅ | ✅ |  |
+| `lib/vq_logger.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `migrate_partial_metadata.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `policy-enforcement/check-policy-compliance.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `reliability-metrics.sh` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `render_template.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `resolve-cluster-name.sh` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `scaffold_ecr.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `sync_backstage_entities.py" | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
+| `test_hotfix.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `test_platform_health.py` | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `validate_routing_compliance.py` | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |  |
 
 ---
-**Legend**: ✅ = Certified | ⚠️ = Needs Audit | ❌ = Failed | N/A = Not Applicable
+**Legend**: ✅ = Certified | ⚠️ = Needs Audit |  = Failed | N/A = Not Applicable

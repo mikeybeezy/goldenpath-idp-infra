@@ -23,7 +23,7 @@ Established a rigorous testing and validation framework (Confidence Matrix) to c
 - **Implemented** the Five-Star Maturity Rating Scale (Experimental to Golden Core).
 - **Defined** Five Testing Surface Areas: Logic, Safety, Context, Human, and System.
 - **Updated** `documentation.schema.yaml` to include a mandatory `maturity` field.
-- **Enhanced** `platform_health.py`: Now calculates and displays "Mean Confidence Score" (⭐⭐⭐) and flags experimental scripts.
+- **Enhanced** `platform_health.py`: Now calculates and displays "Mean Confidence Score" () and flags experimental scripts.
 - **Created** `docs/antig-implementations/AUTOMATION_VERIFICATION_LOG.txt`: A high-fidelity, 11-column audit log for script certification.
 - **Instituted** an Artifact Hard-Gate: Verification requires captured steps/observations in the `tests/` directory.
 

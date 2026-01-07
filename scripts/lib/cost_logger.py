@@ -14,7 +14,7 @@ def log_cost_estimate(monthly_cost, currency="USD", source="manual"):
     """
     try:
         LEDGER_DIR.mkdir(parents=True, exist_ok=True)
-        
+
         if LEDGER_FILE.exists():
             with open(LEDGER_FILE, 'r') as f:
                 ledger = json.load(f)
@@ -31,18 +31,18 @@ def log_cost_estimate(monthly_cost, currency="USD", source="manual"):
             "monthly_cost": float(monthly_cost),
             "source": source
         }
-        
+
         ledger["current_monthly_estimate"] = float(monthly_cost)
         ledger["last_updated"] = entry["timestamp"]
         ledger["history"].append(entry)
-        
+
         # Keep history manageable
         if len(ledger["history"]) > 50:
             ledger["history"] = ledger["history"][-50:]
 
         with open(LEDGER_FILE, 'w') as f:
             json.dump(ledger, f, indent=2)
-            
+
         return True, f"Logged ${monthly_cost} {currency} monthly estimate."
     except Exception as e:
         return False, str(e)

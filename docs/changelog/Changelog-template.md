@@ -56,7 +56,7 @@ Related: <ADR/PR/Issue links>
 
 ### Documented
 
-- <docs/runbooks/ADR updates>
+- <docs/70-operations/runbooks/ADR updates>
 
 ### Known limitations
 

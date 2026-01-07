@@ -15,7 +15,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: tier-1
   potential_savings_hours: 1.0
 category: governance

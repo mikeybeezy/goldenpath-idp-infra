@@ -35,10 +35,10 @@ Flow:
 
 All Pull Requests are reviewed through the lens of [**VQ Principles**](../product/VQ_PRINCIPLES.md).
 
-- **Is it HV/HQ?** (Core/Governance/Trust): Requires deep review, high-test coverage, and zero-compromise on auditability. 🔴
-- **Is it HV/LQ?** (UX/Dashboard/README): Prioritize velocity. If it works and is reversible, ship it. 🟡
-- **Is it MV/HQ?** (Levers/Multipliers): Build safely, then freeze. 🔵
-- **Is it LV/LQ?** (Bloat/Noise): Actively resist. 🕵️‍♂️
+- **Is it 🔴 HV/HQ?** (Core/Governance/Trust): Requires deep review, high-test coverage, and zero-compromise on auditability.
+- **Is it 🟡 HV/LQ?** (UX/Dashboard/README): Prioritize velocity. If it works and is reversible, ship it. 🟡
+- **Is it 🔵 MV/HQ?** (Levers/Multipliers): Build safely, then freeze.
+- **Is it ⚫ LV/LQ?** (Bloat/Noise): Actively resist.
 
 Examples:
 

@@ -3,7 +3,7 @@
 ECR Catalog Synchronization & Reconciliation Utility
 
 Purpose:
-    Reconciles the logical repositories defined in docs/catalogs/ecr-catalog.yaml
+    Reconciles the logical repositories defined in docs/20-contracts/catalogs/ecr-catalog.yaml
     with the physical reality of AWS ECR. Detects discrepancies between the
     governance layer and infrastructure.
 
@@ -20,7 +20,7 @@ import argparse
 from pathlib import Path
 
 # Constants
-CATALOG_PATH = "docs/catalogs/ecr-catalog.yaml"
+CATALOG_PATH = "docs/20-contracts/catalogs/ecr-catalog.yaml"
 
 def get_physical_repositories():
     """Fetches repository list from AWS ECR."""
@@ -94,5 +94,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="ECR Catalog Sync Utility")
     parser.add_argument("--dry-run", action="store_true", default=True)
     args = parser.parse_args()
-    
+
     sync_catalog(dry_run=args.dry_run)

@@ -23,7 +23,7 @@ breaking_change: false
 Centralized all raw IAM JSON policy fragments into a dedicated governance directory and established a mapping index for Terraform variables.
 
 ## Changes
-- **New Directory**: Created `docs/policies/iam/` for all machine-readable governance fragments.
+- **New Directory**: Created `docs/10-governance/policies/iam/` for all machine-readable governance fragments.
 - **Combined ECR Policy**: Created `ecr-combined-policy.json` covering both registry management and image pushing.
 - **Migration**: Moved existing CI teardown and IAM read JSON policies to the new centralized home.
 - **Mapping Index**: Created `VARIABLE_MAPPING_INDEX.md` to map policies to infrastructure variables.

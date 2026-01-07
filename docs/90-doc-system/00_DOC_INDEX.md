@@ -22,7 +22,7 @@ superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: platform
@@ -95,5 +95,5 @@ It is used by the doc freshness validator to flag stale or missing reviews.
 | docs/20-contracts/01_PLATFORM_SERVICE_AGREEMENT.md | platform | 90d | 2026-01-02 | Platform SLA/SLO agreement |
 | docs/20-contracts/10_SERVICE_CATALOG.md | platform | 90d | 2026-01-02 | Supported services and add-ons |
 | docs/70-operations/01_LIFECYCLE_POLICY.md | platform | 90d | 2026-01-02 | Lifecycle and upgrade policy |
-| docs/runbooks/10_REPO_DECOMMISSIONING.md | platform | 90d | 2026-01-03 | Repo decommissioning runbook and tombstone template |
-| docs/runbooks/11_ARGOCD_APP_READINESS.md | platform | 90d | 2026-01-03 | Argo CD app readiness checklist and dependency checks |
+| docs/70-operations/runbooks/10_REPO_DECOMMISSIONING.md | platform | 90d | 2026-01-03 | Repo decommissioning runbook and tombstone template |
+| docs/70-operations/runbooks/11_ARGOCD_APP_READINESS.md | platform | 90d | 2026-01-03 | Argo CD app readiness checklist and dependency checks |

@@ -24,7 +24,7 @@ case "$1" in
         echo "🚀 GOVERNANCE PULSE: Platform Mission & VQ Strategy"
         echo "--------------------------------------------------"
         echo "💎 CORE VALUE: We don't just build features; we reclaim hours."
-        
+
         # Realized ROI (Value Heartbeat)
         LEDGER="$PROJECT_ROOT/.goldenpath/value_ledger.json"
         if [ -f "$LEDGER" ]; then
@@ -43,11 +43,19 @@ case "$1" in
         echo "3. Auditability is Non-Negotiable"
         echo "4. Accept Friction (to prevent ambiguity)"
         echo ""
-        echo "📖 Re-centering complete. See docs/product/VQ_PRINCIPLES.md for details."
+        echo "📖 Re-centering complete. See docs/00-foundations/product/VQ_PRINCIPLES.md for details."
         ;;
     docs)
         echo "📖 Opening Onboarding Index..."
         cat "$PROJECT_ROOT/docs/80-onboarding/23_NEW_JOINERS.md" | head -n 40
+        ;;
+    test)
+        if [ "$2" == "scaffold" ]; then
+            python3 "$PROJECT_ROOT/scripts/scaffold_test.py" "${@:3}"
+        else
+            echo "🧪 Running Platform Unit Tests..."
+            python3 -m unittest discover -s "$PROJECT_ROOT/tests/unit" -p "test_*.py" -v
+        fi
         ;;
     setup)
         echo "🛠️  Setting up local governance environment..."
@@ -58,7 +66,7 @@ case "$1" in
     lint)
         echo "🔍 Running YAML lint..."
         yamllint "$PROJECT_ROOT" -c "$PROJECT_ROOT/.yamllint"
-        
+
         if command -v markdownlint-cli2 >/dev/null 2>&1; then
             echo "🔍 Running Markdown lint..."
             markdownlint-cli2 "$PROJECT_ROOT/**/*.md" --config "$PROJECT_ROOT/.markdownlint.json"
@@ -76,7 +84,7 @@ case "$1" in
         python3 "$PROJECT_ROOT/scripts/audit_metadata.py"
         ;;
     vocab)
-        cat "$PROJECT_ROOT/docs/governance/GOVERNANCE_VOCABULARY.md"
+        cat "$PROJECT_ROOT/docs/10-governance/GOVERNANCE_VOCABULARY.md"
         ;;
     *)
         show_help
