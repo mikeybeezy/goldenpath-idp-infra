@@ -1,6 +1,6 @@
 # Testing Templates - Quick Start Guide
 
-**Purpose:** Standardized templates for consistent, repeatable testing  
+**Purpose:** Standardized templates for consistent, repeatable testing
 **Last Updated:** 2026-01-07
 
 ---
@@ -104,7 +104,7 @@
 - Remove sections that don't apply
 - Add custom sections if needed
 
-❌ **DON'T modify** the source templates in `/tests/templates/`:
+ **DON'T modify** the source templates in `/tests/templates/`:
 - These are your starting point
 - Keep them generic
 - Your changes would affect everyone

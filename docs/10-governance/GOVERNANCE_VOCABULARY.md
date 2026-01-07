@@ -226,4 +226,3 @@ This document is auto-generated from `schemas/metadata/enums.yaml`. These are th
 | `networking-vpc` | Allowed value |
 | `compute-vms` | Allowed value |
 | `secrets-management` | Allowed value |
-

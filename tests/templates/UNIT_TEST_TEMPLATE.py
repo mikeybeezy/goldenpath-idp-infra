@@ -11,7 +11,7 @@ from scripts.your_module import your_function
 class TestYourModule(unittest.TestCase):
     """
     Tests for [Module Name]
-    
+
     Purpose: [Brief description of what this module does]
     Coverage: [What aspects are being tested]
     """
@@ -19,7 +19,7 @@ class TestYourModule(unittest.TestCase):
     def setUp(self):
         """
         Setup run before EACH test method.
-        
+
         Use this to:
         - Create test fixtures
         - Initialize test data
@@ -31,7 +31,7 @@ class TestYourModule(unittest.TestCase):
     def tearDown(self):
         """
         Cleanup run after EACH test method.
-        
+
         Use this to:
         - Delete temporary files
         - Reset state
@@ -44,7 +44,7 @@ class TestYourModule(unittest.TestCase):
     def setUpClass(cls):
         """
         Setup run ONCE before all tests in this class.
-        
+
         Use this for expensive operations that can be shared:
         - Database connections
         - Loading large datasets
@@ -56,7 +56,7 @@ class TestYourModule(unittest.TestCase):
     def tearDownClass(cls):
         """
         Cleanup run ONCE after all tests in this class.
-        
+
         Use this to:
         - Close class-level resources
         - Final cleanup
@@ -70,28 +70,28 @@ class TestYourModule(unittest.TestCase):
     def test_function_with_valid_input_returns_expected_result(self):
         """
         Test that [function] with [valid input] returns [expected result].
-        
+
         This tests the happy path / normal operation.
         """
         # Arrange - Set up test data
         input_data = "test_value"
         expected_output = "expected_result"
-        
+
         # Act - Call the function being tested
         actual_output = your_function(input_data)
-        
+
         # Assert - Verify the result
         self.assertEqual(actual_output, expected_output)
 
     def test_function_with_invalid_input_raises_error(self):
         """
         Test that [function] with [invalid input] raises [specific error].
-        
+
         This tests error handling.
         """
         # Arrange
         invalid_input = None
-        
+
         # Act & Assert
         with self.assertRaises(ValueError):
             your_function(invalid_input)
@@ -99,31 +99,31 @@ class TestYourModule(unittest.TestCase):
     def test_function_with_edge_case_handles_correctly(self):
         """
         Test that [function] handles [edge case] correctly.
-        
+
         Edge cases: empty strings, None, very large numbers, etc.
         """
         # Arrange
         edge_case_input = ""
         expected_behavior = "default_value"
-        
+
         # Act
         result = your_function(edge_case_input)
-        
+
         # Assert
         self.assertEqual(result, expected_behavior)
 
     def test_function_with_multiple_conditions_all_pass(self):
         """
         Test that [function] meets multiple success criteria.
-        
+
         Use this when you need to verify multiple aspects.
         """
         # Arrange
         test_input = "complex_input"
-        
+
         # Act
         result = your_function(test_input)
-        
+
         # Assert - Multiple assertions
         self.assertIsNotNone(result)
         self.assertIsInstance(result, str)
@@ -133,16 +133,16 @@ class TestYourModule(unittest.TestCase):
     def test_function_behavior_is_consistent(self):
         """
         Test that [function] returns same result with same input (idempotency).
-        
+
         Important for functions that should be deterministic.
         """
         # Arrange
         test_input = "consistent_input"
-        
+
         # Act
         result1 = your_function(test_input)
         result2 = your_function(test_input)
-        
+
         # Assert
         self.assertEqual(result1, result2)
 

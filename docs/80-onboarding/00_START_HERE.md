@@ -4,7 +4,7 @@ Welcome to the **GoldenPath IDP Infra** repository. This guide is designed to ge
 
 ---
 
-## 👨‍💻 For Humans: The "Quick 3"
+## For Humans: The "Quick 3"
 If you are a new engineer or operator, do this first:
 
 1.  **Environment Setup**:
@@ -59,5 +59,5 @@ To maintain platform velocity without breaking things, internalize these 3 princ
 
 ---
 
-**Certified By:** Platform Governance Office  
+**Certified By:** Platform Governance Office
 **Last Updated:** 2026-01-07

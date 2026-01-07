@@ -122,7 +122,7 @@ The "Time-to-Sync" for documentation is tied to the GitHub Actions execution lif
 - **Commit Cycle**: The bot usually pushes the documentation fix within **30–60 seconds** of your initial push.
 
 > [!TIP]
-> ** Pro Tip for Zero Latency**:
+> **Pro Tip for Zero Latency**:
 > If you want to see the documentation changes instantly before you even push, you can run the scripts locally in your terminal:
 > `python3 scripts/generate_script_index.py && python3 scripts/generate_workflow_index.py`
 

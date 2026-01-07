@@ -40,7 +40,7 @@ Engineering work that is "invisible" is work that is at risk of being defunded o
 - We do not "update schemas"; we **limit governance debt**.
 - We do not "build features"; we **provision capabilities**.
 
-### VQ Principles:
+### VQ Principles
 1. **Trust is Default**: Anything that enforces trust, safety, or determinism is High Quality by default.
 2. **Rough UX is OK**: Anything user-facing but reversible may ship rough.
 3. **Auditability is Non-Negotiable**: No feature may degrade auditability for ease of use.

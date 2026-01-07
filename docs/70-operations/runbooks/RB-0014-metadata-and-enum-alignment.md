@@ -46,9 +46,9 @@ This runbook addresses failures related to **Metadata Quality Gates**. These iss
 
 ## Common Symptoms
 
-*   ` Enum validation failed`: You used a value (e.g., `owner: rogue-team`) not found in `enums.yaml`.
-*   ` [MISSING/MALFORMED]`: Required fields are empty or improperly formatted.
-*   ` [INJECTION FAILURE]`: The `id` in your sidecar doesn't match the K8s resource labels.
+*   `Enum validation failed`: You used a value (e.g., `owner: rogue-team`) not found in `enums.yaml`.
+*   `[MISSING/MALFORMED]`: Required fields are empty or improperly formatted.
+*   `[INJECTION FAILURE]`: The `id` in your sidecar doesn't match the K8s resource labels.
 
 ## Recovery Procedures
 

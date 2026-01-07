@@ -52,7 +52,7 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Resource Provisioning**: Governed workflows for AWS ECR, S3, RDS, and VPC components.
 - **CI/CD Guardrails**: Automated branch policies and PR gates to protect the main development branch.
 
-## 🧠 Observability & Intelligence
+## Observability & Intelligence
 *Providing visibility into the state, cost, and architecture of the entire platform.*
 
 - **Platform Health Dashboard**: A real-time audit of governance coverage and infrastructure health.
@@ -60,7 +60,7 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Self-Healing Documentation**: Zero-drift documentation that updates itself based on source code changes.
 - **FinOps / Cost Visibility**: Pre-provisioning cost signals that make infrastructure spend visible in PRs.
 
-## 🧱 Foundations (Internal)
+## Foundations (Internal)
 *The core engineering systems that power the Golden Path experience.*
 
 - **Enum Consistency**: Unified vocabulary across all metadata and automation engines.

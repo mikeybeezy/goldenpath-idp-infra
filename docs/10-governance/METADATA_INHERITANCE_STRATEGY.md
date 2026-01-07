@@ -60,11 +60,11 @@ To ensure users "don't have to think about it," the platform implements an autom
 
 1.  **Discovery**: Whenever a new directory is created in a `SIDECAR_MANDATED_ZONE` (e.g., `apps/`, `gitops/helm/`), the CI gate detects the missing `metadata.yaml`.
 2.  **Inheritance Lookup**: The `standardize_metadata.py` script walks up the tree to the nearest parent.
-3.  **Automated Injection**: 
+3.  **Automated Injection**:
     - The script generates a local `metadata.yaml`.
     - It injects a unique, deterministic `id`.
     - It pre-populates the file with inherited `owner`, `domain`, and `reliability` data.
-4.  **Auto-Commit**: The CI pipeline automatically commits this "initialization" back to the PR branch. 
+4.  **Auto-Commit**: The CI pipeline automatically commits this "initialization" back to the PR branch.
 
 **Result**: A developer simply creates a folder; the platform governs it.
 

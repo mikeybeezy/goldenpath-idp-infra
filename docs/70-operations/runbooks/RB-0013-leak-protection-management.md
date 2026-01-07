@@ -58,8 +58,7 @@ supported_until: '2028-01-01'
 
 ## The Trigger
 
-You will encounter this runbook if your CI pipeline fails with the following error:
-` LEAK PROTECTION: Resources marked as 'exempt: true' cannot be deployed to Production environments.`
+You will encounter this runbook if your CI pipeline fails with the following: Search for `LEAK PROTECTION` in the infra repo logs.
 
 ## Action Steps
 
@@ -68,17 +67,23 @@ Check the CI logs to find the exact path of the file that triggered the block. I
 *   `envs/prod/`
 *   `apps/prod/`
 *   `gitops/argocd/apps/prod/`
+*   `scripts/scaffold_test.py`
+*   `scripts/enforce_emoji_policy.py`
 
 ### 2. Determine Intent
 *   **Case A: This asset MUST be in Production.**
-    - If the asset is ready for prime time, you must switch it from "Experimental" to "Governed."
-    - Open the `metadata.yaml` (or the frontmatter of the `.md` file).
-    - Change `exempt: true` to `exempt: false` (or remove the field entirely).
-    - Ensure all mandated fields (owner, domain, risk_profile) are correctly populated.
+    * If the asset is ready for prime time, you must switch it from "Experimental" to "Governed."
+    * Open the `metadata.yaml` (or the frontmatter of the `.md` file).
+    * Verify `metadata.yaml` exists in the directory.
+    * Run `python3 scripts/validate_metadata.py`.
+    * Check `PLAN_OUTPUT.txt` for compliance tags.
+    * Ensure the `domain` matches the directory structure.
+    * Change `exempt: true` to `exempt: false` (or remove the field entirely).
+    * Ensure all mandated fields (owner, domain, risk_profile) are correctly populated.
 
 *   **Case B: This asset was copied by mistake.**
-    - Delete the file from the Production path.
-    - If it was intended for testing, move it to `envs/dev/` or `apps/test/`.
+    * Delete the file from the Production path.
+    * If it was intended for testing, move it to `envs/dev/` or `apps/test/`.
 
 ### 3. Verification
 Run the validation locally before pushing:

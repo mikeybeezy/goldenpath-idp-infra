@@ -45,7 +45,7 @@ To track the value of your automation, we use the `value_quantification` object 
 
 **How this maps to your platform (concrete)**
 
-**🔴 High Value + High Quality (TOP PRIORITY) 🔴 HV/HQ** 
+**🔴 High Value + High Quality (TOP PRIORITY) 🔴 HV/HQ**
 
 These must be done slow enough to be right.
 
@@ -95,7 +95,7 @@ Examples:
 Rule: If it doesn’t compound, don’t carry it.
 
 
-## 🐍 1. Tagging Python Scripts
+## 1. Tagging Python Scripts
 Scripts are tagged using an adjacent `metadata.yaml` or a directory-level default.
 
 ### Example: [standardize_metadata.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/metadata.yaml)
@@ -124,7 +124,7 @@ value_quantification:
 
 ---
 
-## 🔍 3. Why Tag Both?
+## 3. Why Tag Both?
 - **Scripts** represent "Architectural Force Multipliers" (O(1) fixes).
 - **Workflows** represent "Developer Lifecycle Reclaim" (Time saved per PR).
 

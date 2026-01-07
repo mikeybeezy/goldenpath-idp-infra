@@ -49,7 +49,7 @@ A shared library that connects the schemas to the enforcement scripts.
 
 1. **Schema Discovery**: When a script runs, it identifies the "Kind" of a file (e.g., `adr`).
 2. **Schema Loading**: It loads the corresponding `adr.schema.yaml`.
-3. **Dynamic Enforcement**: 
+3. **Dynamic Enforcement**:
    - **Validation**: Ensures every required field from the schema is present and valid according to the enums.
    - **Standardization**: Injects missing fields based on the `default` values defined in the schema.
 

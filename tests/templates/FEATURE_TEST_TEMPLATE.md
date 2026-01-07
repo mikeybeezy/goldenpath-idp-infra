@@ -1,8 +1,8 @@
 # Feature Test Template
 
-**Feature Name:** [Name of the feature being tested]  
-**Test Date:** YYYY-MM-DD  
-**Tester:** [Your name]  
+**Feature Name:** [Name of the feature being tested]
+**Test Date:** YYYY-MM-DD
+**Tester:** [Your name]
 **Status:** [ ] Planning [ ] In Progress [ ] Complete
 
 ---
@@ -170,12 +170,12 @@ command to execute
 
 | Step | Status | Notes |
 |------|--------|-------|
-| 1. [Step name] | ✅ / ❌ | [Brief note] |
-| 2. [Step name] | ✅ / ❌ | [Brief note] |
-| 3. [Step name] | ✅ / ❌ | [Brief note] |
+| 1. [Step name] | ✅ /  | [Brief note] |
+| 2. [Step name] | ✅ /  | [Brief note] |
+| 3. [Step name] | ✅ /  | [Brief note] |
 
 ### Overall Result
-**Status:** ✅ PASS / ❌ FAIL / ⚠️ PARTIAL
+**Status:** ✅ PASS /  FAIL / ⚠️ PARTIAL
 
 **Summary:** [1-2 sentences on outcome]
 
@@ -225,6 +225,6 @@ command to execute
 - [ ] **Issues Filed:** Yes / No / N/A
 - [ ] **Ready for Production:** Yes / No
 
-**Tested By:** _______________  
-**Verified By:** _______________  
+**Tested By:** _______________
+**Verified By:** _______________
 **Date:** YYYY-MM-DD

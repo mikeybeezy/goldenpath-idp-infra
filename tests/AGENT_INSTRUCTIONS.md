@@ -32,7 +32,7 @@ Update the top-level [**`tests/README.md`**](file:///Users/mikesablaze/goldenpat
 
 ---
 
-## 📋 Required Artifacts for Every Test
+## Required Artifacts for Every Test
 
 | Artifact | Location | Purpose |
 | :--- | :--- | :--- |
@@ -58,12 +58,12 @@ When documenting a test, you MUST certify the maturity of the component:
 ---
 
 ## 🚫 Common Agent Pitfalls (Do Not Do These)
-- ❌ **Do not skip the Test Plan.** Testing is a forethought, not an afterthought.
-- ❌ **Do not swallow error logs.** Every failure must be surfaced and analyzed.
-- ❌ **Do not "Drill Down" in silence.** If you find a bug during testing, notify the user immediately.
-- ❌ **Do not forget the Dashboard.** If it isn't on the dashboard, it didn't happen.
+-  **Do not skip the Test Plan.** Testing is a forethought, not an afterthought.
+-  **Do not swallow error logs.** Every failure must be surfaced and analyzed.
+-  **Do not "Drill Down" in silence.** If you find a bug during testing, notify the user immediately.
+-  **Do not forget the Dashboard.** If it isn't on the dashboard, it didn't happen.
 
 ---
 
-**Certified By:** Platform Governance Office  
+**Certified By:** Platform Governance Office
 **Last Updated:** 2026-01-07
