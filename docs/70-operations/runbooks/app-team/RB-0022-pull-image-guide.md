@@ -1,5 +1,5 @@
 ---
-id: pull-image-guide
+id: RB-0022
 title: 'App Team Runbook: Pull Image Guide'
 type: runbook
 domain: platform-core

@@ -1,5 +1,5 @@
 ---
-id: 05_GOLDEN_PATH_VALIDATION
+id: RB-0005
 title: 'Runbook: Golden Path Validation'
 type: runbook
 domain: platform-core

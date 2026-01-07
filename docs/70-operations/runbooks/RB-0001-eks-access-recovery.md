@@ -1,5 +1,5 @@
 ---
-id: 01_EKS_ACCESS_RECOVERY
+id: RB-0001
 title: EKS Access Recovery (Runbook)
 type: runbook
 domain: platform-core

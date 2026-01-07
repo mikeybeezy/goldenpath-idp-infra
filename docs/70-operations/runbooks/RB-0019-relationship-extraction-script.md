@@ -1,5 +1,5 @@
 ---
-id: RELATIONSHIP_EXTRACTION_SCRIPT
+id: RB-0019
 title: Relationship Extraction Script - Usage & Operations
 type: runbook
 domain: platform-core

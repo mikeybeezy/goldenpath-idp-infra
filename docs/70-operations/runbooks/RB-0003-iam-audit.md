@@ -1,5 +1,5 @@
 ---
-id: 03_IAM_AUDIT
+id: RB-0003
 title: IAM Audit (Runbook)
 type: runbook
 domain: platform-core

@@ -1,5 +1,5 @@
 ---
-id: 02_GRAFANA_ACCESS
+id: RB-0002
 title: Grafana Access (Runbook)
 type: runbook
 domain: platform-core

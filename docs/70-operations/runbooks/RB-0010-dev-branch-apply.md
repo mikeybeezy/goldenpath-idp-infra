@@ -1,5 +1,5 @@
 ---
-id: 10_DEV_BRANCH_APPLY
+id: RB-0010
 title: 'Runbook: Dev Branch Infra Apply'
 type: runbook
 domain: platform-core

@@ -1,5 +1,5 @@
 ---
-id: GIT_TROUBLESHOOTING
+id: RB-0020
 title: 'Runbook: Resolving Git Rebase Conflicts (Uncommitted Changes)'
 type: runbook
 domain: platform-core

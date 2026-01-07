@@ -1,5 +1,5 @@
 ---
-id: 06_LB_ENI_ORPHANS
+id: RB-0006
 title: Load Balancer ENIs Block Subnet Deletion
 type: runbook
 domain: platform-core

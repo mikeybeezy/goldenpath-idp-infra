@@ -1,5 +1,5 @@
 ---
-id: 10_REPO_DECOMMISSIONING
+id: RB-0011
 title: Repo Decommissioning Runbook
 type: runbook
 domain: platform-core

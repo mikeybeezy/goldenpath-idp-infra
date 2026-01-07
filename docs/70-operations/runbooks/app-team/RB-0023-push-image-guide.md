@@ -1,5 +1,5 @@
 ---
-id: push-image-guide
+id: RB-0023
 title: 'App Team Runbook: Push Image Guide'
 type: runbook
 domain: platform-core

@@ -1,5 +1,5 @@
 ---
-id: METADATA_BACKFILL_SCRIPT
+id: RB-0018
 title: Metadata Backfill Script - Usage & Operations
 type: runbook
 domain: platform-core
