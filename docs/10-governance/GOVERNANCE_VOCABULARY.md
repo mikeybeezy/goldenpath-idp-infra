@@ -206,6 +206,36 @@ This document is auto-generated from `schemas/metadata/enums.yaml`. These are th
 | `🔵 MV/HQ` | Allowed value |
 | `⚫ LV/LQ` | Allowed value |
 
+## User Types
+| Value | Description |
+| :--- | :--- |
+| `regular-user` | Allowed value |
+| `service-account` | Allowed value |
+| `system-admin` | Allowed value |
+
+## System Types
+| Value | Description |
+| :--- | :--- |
+| `service-ecosystem` | Allowed value |
+| `data-pipeline` | Allowed value |
+| `platform-infrastructure` | Allowed value |
+
+## Resource Types
+| Value | Description |
+| :--- | :--- |
+| `cloud-storage` | Allowed value |
+| `compute-instance` | Allowed value |
+| `database-cluster` | Allowed value |
+| `container-registry` | Allowed value |
+
+## Api Types
+| Value | Description |
+| :--- | :--- |
+| `openapi` | Allowed value |
+| `graphql` | Allowed value |
+| `grpc` | Allowed value |
+| `asyncapi` | Allowed value |
+
 ## Ai Authority Tier
 | Value | Description |
 | :--- | :--- |
