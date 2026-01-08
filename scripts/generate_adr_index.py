@@ -39,7 +39,12 @@ def extract_metadata(file_path):
         # Take the first paragraph
         first_para = context_text.split('\n\n')[0].replace('\n', ' ').strip()
         if first_para:
-            summary = first_para
+            summary = first_para; summary = summary.replace('` ', '`').replace(' `', '`')
+            # Robust Backtick Cleanup: remove spaces inside ` ... `
+            summary = re.sub(r'`\s+([^`]+?)\s+`', r'`\1`', summary)
+            summary = re.sub(r'`\s+([^`]+?)`', r'`\1`', summary)
+            summary = re.sub(r'`([^`]+?)\s+`', r'`\1`', summary)
+
             # Truncate summary for table readability if necessary
             if len(summary) > 200:
                 summary = summary[:197] + "..."
@@ -76,6 +81,9 @@ def generate_index_content():
         adr_id = m['id']
         domain = m.get('category', 'Platform').capitalize()
         title = m.get('title', 'Untitled').replace(adr_id + ': ', '').strip("'\" ")
+        # Global Backtick Space Cleanup for title (MD038)
+        title = title.replace("` ", "`").replace(" `", "`")
+
         status = m.get('status', 'Proposed').capitalize()
         date = m.get('date', '') or m.get('created_date', '2026-01-0? ')
         summary = m.get('summary', '')

@@ -33,7 +33,8 @@ supported_until: 2028-01-01
 breaking_change: false
 ---
 
-# GoldenPath IDP Infrastructure
+## GoldenPath IDP Infrastructure
+
 
 Welcome to the core configuration and governance engine for the GoldenPath Internal Developer Platform (IDP).
 

@@ -399,7 +399,7 @@ def generate_report(target_dir='.'):
     content = "\n".join(lines)
     os.makedirs('docs/10-governance/reports', exist_ok=True)
     with open('PLATFORM_HEALTH.md', 'w') as f:
-        f.write("<!-- AUTOMATED REPORT - DO NOT EDIT MANUALLY -->\n" + content)
+        f.write(content + "\n\n<!-- AUTOMATED REPORT - DO NOT EDIT MANUALLY -->\n")
 
     with open('docs/10-governance/reports/HEALTH_AUDIT_LOG.md', 'a') as f:
         f.write(f"\n\n---\n### Audit: {timestamp}\n{content}")
