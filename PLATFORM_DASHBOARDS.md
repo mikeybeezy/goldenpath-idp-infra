@@ -7,14 +7,14 @@ status: active
 category: dashboard
 ---
 
-# 🎯 Platform Dashboards Index
-
+## 🎯 Platform Dashboards Index
 
 This document serves as the high-integrity map for all operational and strategic dashboards in the GoldenPath IDP.
 
 ---
 
 ## 🏥 Operational Health
+
 | Dashboard | Location | Purpose |
 | :--- | :--- | :--- |
 | **Platform Health** | [**`PLATFORM_HEALTH.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md) | Real-time compliance, risk, and coverage metrics. |
@@ -24,6 +24,7 @@ This document serves as the high-integrity map for all operational and strategic
 ---
 
 ## 📈 Value & Strategy
+
 | Dashboard | Location | Purpose |
 | :--- | :--- | :--- |
 | **Value Quantification** | [**`VQ_TAGGING_GUIDE.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/00-foundations/product/VQ_TAGGING_GUIDE.md) | ROI tracking and value-reclamation principles. |

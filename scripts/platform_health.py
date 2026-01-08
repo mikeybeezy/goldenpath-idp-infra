@@ -312,15 +312,20 @@ def generate_report(target_dir='.'):
     lines.append("")
 
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    lines.append("## 🏥 Platform Health Command Center\n")
-    lines.append(f"**Generated**: `{timestamp}` | **V1 Readiness**: `{v1_readiness:.1f}%` | **Mean Confidence**: `{'⭐' * int(round(mean_confidence)) or '⭐'} ({mean_confidence:.1f}/5.0)`\n")
+    lines.append("## 🏥 Platform Health Command Center")
+    lines.append("")
+    lines.append(f"**Generated**: `{timestamp}` | **V1 Readiness**: `{v1_readiness:.1f}%` | **Mean Confidence**: `{'⭐' * int(round(mean_confidence)) or '⭐'} ({mean_confidence:.1f}/5.0)`")
+    lines.append("")
     lines.append(f"**Realized Value**: `{total_reclaimed:.1f} Hours` | **Infra Run Rate**: `${monthly_cost:,.2f} {currency}/mo`")
 
-    lines.append("\n## V1 Platform Readiness Gate\n")
+    lines.append("")
+    lines.append("## V1 Platform Readiness Gate")
+    lines.append("")
     lines.append("> [!IMPORTANT]")
-    lines.append(f"> The platform is currently **{v1_readiness:.1f}%** ready for V1 production rollout.\n")
+    lines.append(f"> The platform is currently **{v1_readiness:.1f}%** ready for V1 production rollout.")
 
-    lines.append("\n| Milestone | Status | Readiness |")
+    lines.append("")
+    lines.append("| Milestone | Status | Readiness |")
     lines.append("| :--- | :--- | :--- |")
     lines.append(f"| **Metadata Integrity** | {'✅' if comp_rate > 95 else '⚠️'} | {comp_rate:.1f}% |")
     lines.append(f"| **Injection Integrity** | {'✅' if coverage > 95 else '⚠️'} | {coverage:.1f}% |")
@@ -328,7 +333,9 @@ def generate_report(target_dir='.'):
     lines.append(f"| **Changelog Activity** | ✅ | {changelog_stats['total']} Entries |")
 
     if len(trends) > 1:
-        lines.append("\n## 📈 Governance Velocity (Historical Trend)\n")
+        lines.append("")
+        lines.append("## 📈 Governance Velocity (Historical Trend)")
+        lines.append("")
         lines.append("```mermaid")
         lines.append("xychart-beta")
         lines.append("    title \"V1 Readiness Trend (Last 10 Runs)\"")
@@ -337,7 +344,9 @@ def generate_report(target_dir='.'):
         lines.append(f"    line [{', '.join(trends[-10:])}]")
         lines.append("```")
 
-    lines.append("\n## Knowledge Graph Vitality\n")
+    lines.append("")
+    lines.append("## Knowledge Graph Vitality")
+    lines.append("")
     lines.append(f"| Metric | Count | Source |")
     lines.append(f"| :--- | :--- | :--- |")
     lines.append(f"| **Architecture Decisions** | {adr_stats['total']} | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |")
@@ -346,21 +355,26 @@ def generate_report(target_dir='.'):
     lines.append(f"| **Change Logs** | {changelog_stats['total']} | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |")
     lines.append(f"| **Tracked Resources** | {stats['total_files']} | Repository Scan |")
 
-    lines.append("\n## Catalog Inventory\n")
+    lines.append("")
+    lines.append("## Catalog Inventory")
     lines.append("| Catalog | Entity Count |")
     lines.append("| :--- | :--- |")
     # Sort for deterministic output
     for cat in sorted(catalog_stats.keys()):
         lines.append(f"| {cat} | {catalog_stats[cat]} |")
 
-    lines.append("\n## 🛡️ Risk & Maturity Visualization\n")
+    lines.append("")
+    lines.append("## 🛡️ Risk & Maturity Visualization")
+    lines.append("")
     lines.append("```mermaid")
     lines.append("pie title Production Impact distribution")
     for impact, count in stats['risk_profile']['production_impact'].items():
         if count > 0: lines.append(f'    "{impact.upper()}" : {count}')
     lines.append("```")
 
-    lines.append("\n## Governance Maturity\n")
+    lines.append("")
+    lines.append("## Governance Maturity")
+    lines.append("")
     comp_rate = ((stats['total_files'] - len(stats['missing_metadata'])) / stats['total_files'] * 100) if stats['total_files'] > 0 else 0
     lines.append(f"- **Metadata Compliance**: `{comp_rate:.1f}%`")
     lines.append(f"- **Risk-Weighted Score**: `{maturity_score:.1f}%`")
@@ -368,30 +382,41 @@ def generate_report(target_dir='.'):
     if compliance_data:
         lines.append(f"- **Infrastructure Drift**: `{100 - compliance_data.get('compliance_rate', 0):.1f}%` (via `compliance-report.json`)")
 
-    lines.append("\n## Injection Coverage\n")
+    lines.append("")
+    lines.append("## Injection Coverage")
+    lines.append("")
     total = stats['injection_coverage']['total_mandated']
     injected = stats['injection_coverage']['total_injected']
     coverage = (injected / total * 100) if total > 0 else 0
-    lines.append(f"- **Sidecar Coverage**: `{coverage:.1f}%` ({injected}/{total})")
-
-    lines.append("\n## Project Realized Value (Heartbeat)\n")
+    lines.append("")
+    lines.append("## Project Realized Value (Heartbeat)")
+    lines.append("")
     lines.append("> [!TIP]")
-    lines.append(f"> Total realized value reclaimed through automation heartbeats: **{total_reclaimed:.1f} hours**.\n")
+    lines.append(f"> Total realized value reclaimed through automation heartbeats: **{total_reclaimed:.1f} hours**.")
+    lines.append("")
     lines.append(f"- **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)")
 
-    lines.append("\n## Financial Governance (Cloud Cost)\n")
+    lines.append("")
+    lines.append("## Financial Governance (Cloud Cost)")
+    lines.append("")
     lines.append("> [!NOTE]")
-    lines.append(f"> Current monthly infrastructure run rate: **${monthly_cost:,.2f} {currency}**.\n")
+    lines.append(f"> Current monthly infrastructure run rate: **${monthly_cost:,.2f} {currency}**.")
+    lines.append("")
     lines.append(f"- **Estimated Annual**: `${monthly_cost * 12:,.2f} {currency}`")
     lines.append(f"- **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)")
     lines.append("- **Tooling**: Infracost (CI-integrated)")
 
-    lines.append("\n## Operational Risks\n")
+    lines.append("")
+    lines.append("## Operational Risks")
+    lines.append("")
     lines.append(f"- **Orphaned (No Owner)**: {len(stats['orphans'])}")
     lines.append(f"- **Stale (Past Lifecycle)**: {len(stats['stale_files'])}")
 
-    lines.append("\n---")
-    lines.append("\n### Strategic Guidance\n")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    lines.append("### Strategic Guidance")
+    lines.append("")
     lines.append("- **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.")
     lines.append("- **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.")
 
