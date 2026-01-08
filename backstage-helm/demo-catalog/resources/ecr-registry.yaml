@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: goldenpath-ecr-registry
+  description: Primary AWS ECR Registry for Golden Path Artifacts
+  links:
+    - url: https://console.aws.amazon.com/ecr/repositories
+      title: AWS ECR Console
+spec:
+  type: container-registry
+  owner: platform-team
+  system: audio-playback-system # Part of the audio system demo

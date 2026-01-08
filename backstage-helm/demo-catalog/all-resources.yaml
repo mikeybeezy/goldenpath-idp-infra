@@ -5,4 +5,15 @@ metadata:
   description: A collection of all Backstage example resources
 spec:
   targets:
-    - ./resources/artists-db-resource.yaml
+  - ./resources/artists-db-resource.yaml
+  - ./resources/ecr-registry.yaml
+  - ./resources/ecr/wordpress-platform.yaml
+  - ./resources/ecr/test-app-dev.yaml
+  - ./resources/ecr/staging-api.yaml
+  - ./resources/ecr/new-wp-reg-2.yaml
+  - ./resources/ecr/new-app-16.yaml
+  - ./resources/ecr/new-app-15.yaml
+  - ./resources/ecr/new-app-14.yaml
+  - ./resources/ecr/new-app-13.yaml
+  - ./resources/ecr/new-app-10.yaml
+  - ./resources/ecr/my-reg-app-3.yaml

@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ecr-wordpress-platform
+  description: ECR Repository for wordpress-platform
+  tags:
+  - env-prod
+  - risk-high
+  annotations:
+    goldenpath.io/risk: high
+    goldenpath.io/id: REGISTRY_WORDPRESS_PLATFORM
+spec:
+  type: container-repository
+  owner: app-team-wordpress
+  dependencyOf:
+  - resource:goldenpath-ecr-registry
