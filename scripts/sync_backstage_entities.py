@@ -12,6 +12,8 @@ Usage:
 
 import argparse
 import sys
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 import yaml
 from datetime import datetime
 from lib.metadata_config import MetadataConfig
@@ -30,15 +32,26 @@ class BackstageSync:
             self.catalog = yaml.safe_load(f)
         return self.catalog
 
+    def _get_vq_class(self, risk: str) -> str:
+        """Simple mapping of risk to VQ class indicators"""
+        mapping = {
+            'high': ' 🔴 HV/HQ',
+            'medium': ' 🔵 MV/HQ',
+            'low': ' ⚫ LV/LQ'
+        }
+        return mapping.get(risk.lower(), 'Unknown')
+
     def generate_entities(self) -> List[Dict[str, Any]]:
-        resources = self.catalog.get('registries', {})
+        resources = self.catalog.get('repositories', {}) # Changed from 'registries' to 'repositories' to match ecr-catalog.yaml
         entities = []
 
         for name, res in resources.items():
             metadata = res.get('metadata', {})
+            entity_name = name.lower().replace('_', '-')
 
             # Resolve effective metadata (Inheritance Support)
             effective_metadata = self.cfg.get_effective_metadata(str(self.catalog_path), metadata)
+            risk = effective_metadata.get('risk', 'unknown')
 
             entity = {
                 'apiVersion': 'backstage.io/v1alpha1',
@@ -47,8 +60,11 @@ class BackstageSync:
                     'name': entity_name,
                     'title': name,
                     'description': f"ECR Registry for {name}",
+                    'value_quantification': {
+                        'vq_class': self._get_vq_class(risk)
+                    },
                     'annotations': {
-                        'goldenpath-idp.io/risk': effective_metadata.get('risk', 'unknown'),
+                        'goldenpath-idp.io/risk': risk,
                         'goldenpath-idp.io/environment': effective_metadata.get('environment', 'unknown'),
                         'goldenpath-idp.io/status': effective_metadata.get('status', 'unknown'),
                         'goldenpath-idp.io/id': effective_metadata.get('id', 'N/A'),

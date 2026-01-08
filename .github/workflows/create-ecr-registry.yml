@@ -67,7 +67,7 @@ jobs:
       - name: Update catalog (idempotent)
         run: |
           set -euo pipefail
-          FILE="docs/catalogs/ecr-catalog.yaml"
+          FILE="docs/20-contracts/catalogs/ecr-catalog.yaml"
           NAME="${{ inputs.registry_name }}"
           OWNER="${{ inputs.owner }}"
           RISK="${{ inputs.risk }}"

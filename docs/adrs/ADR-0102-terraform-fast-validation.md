@@ -1,24 +1,31 @@
 ---
-id: ADR-0102-terraform-fast-validation
+id: ADR-0102
 title: Layer 2 Terraform Validation (Fast Feedback Loop)
-type: adr
+status: accepted
+type: decision
+category: architecture
+version: 1.0
+owner: platform-team
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: 1.0
+lifecycle:
+  supported_until: 2028-01-04
+  breaking_change: false
 relates_to:
-  - ADR-0034
-  - CL-0064
-date: 2026-01-06
-supported_until: 2028-01-04
-breaking_change: false
+  - ADR-0034 (CI Environment Contract)
+  - CL-0064 (Terraform Lint Workflow)
+  - docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md
 ---
 
 # ADR-0102: Layer 2 Terraform Validation (Fast Feedback Loop)
 
 ## Context
-Currently, Terraform validation primarily occurs during the `env=dev` integration tests (`infra-terraform-apply-dev.yml`) or via `pr-terraform-plan.yml`. These workflows require AWS credentials, backend initialization (S3/DynamoDB), and significant runtime overhead (~2-5 minutes).
+Currently, Terraform validation primarily occurs during the `env=dev` integration tests (`infra-terraform-apply-dev.yml`) or via `pr-terraform-plan.yml`. These workflows require AWS credentials, backend initialization (S3/DynamoDB), and significant runtime overhead (~2-5 minutes). 
 
 Developers who make syntax errors (e.g., invalid attribute references) or formatting mistakes often wait several minutes only to receive a failure that could have been caught instantly offline. There is no lightweight, "offline" gate that blocks invalid HCL code from entering the repository.
 

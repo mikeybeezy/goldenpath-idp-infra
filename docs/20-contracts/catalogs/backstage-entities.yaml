@@ -4,11 +4,14 @@ metadata:
   name: wordpress-platform
   title: wordpress-platform
   description: ECR Registry for wordpress-platform
+  value_quantification:
+    vq_class: " \U0001F534 HV/HQ"
   annotations:
     goldenpath-idp.io/risk: high
     goldenpath-idp.io/environment: prod
     goldenpath-idp.io/status: active
     goldenpath-idp.io/id: REGISTRY_WORDPRESS_PLATFORM
+    goldenpath-idp.io/lineage: explicit
   labels:
     owner: app-team-wordpress
 spec:
@@ -23,11 +26,14 @@ metadata:
   name: test-app-dev
   title: test-app-dev
   description: ECR Registry for test-app-dev
+  value_quantification:
+    vq_class: " \u26AB LV/LQ"
   annotations:
     goldenpath-idp.io/risk: low
     goldenpath-idp.io/environment: dev
     goldenpath-idp.io/status: active
     goldenpath-idp.io/id: REGISTRY_TEST_APP_DEV
+    goldenpath-idp.io/lineage: explicit
   labels:
     owner: app-team-test
 spec:
@@ -42,11 +48,14 @@ metadata:
   name: staging-api
   title: staging-api
   description: ECR Registry for staging-api
+  value_quantification:
+    vq_class: " \U0001F535 MV/HQ"
   annotations:
     goldenpath-idp.io/risk: medium
     goldenpath-idp.io/environment: staging
     goldenpath-idp.io/status: active
     goldenpath-idp.io/id: REGISTRY_STAGING_API
+    goldenpath-idp.io/lineage: explicit
   labels:
     owner: app-team-api
 spec:
@@ -61,11 +70,14 @@ metadata:
   name: new-wp-reg-2
   title: new-wp-reg-2
   description: ECR Registry for new-wp-reg-2
+  value_quantification:
+    vq_class: " \u26AB LV/LQ"
   annotations:
     goldenpath-idp.io/risk: low
     goldenpath-idp.io/environment: unknown
     goldenpath-idp.io/status: pending
     goldenpath-idp.io/id: REGISTRY_NEW_WP_REG_2
+    goldenpath-idp.io/lineage: explicit
   labels:
     owner: michael-babs-2
 spec:
@@ -80,11 +92,14 @@ metadata:
   name: new-app-16
   title: new-app-16
   description: ECR Registry for new-app-16
+  value_quantification:
+    vq_class: " \u26AB LV/LQ"
   annotations:
     goldenpath-idp.io/risk: low
     goldenpath-idp.io/environment: unknown
     goldenpath-idp.io/status: pending
     goldenpath-idp.io/id: REGISTRY_NEW_APP_16
+    goldenpath-idp.io/lineage: explicit
   labels:
     owner: michael-babs-16
 spec:
@@ -99,11 +114,14 @@ metadata:
   name: new-app-15
   title: new-app-15
   description: ECR Registry for new-app-15
+  value_quantification:
+    vq_class: " \u26AB LV/LQ"
   annotations:
     goldenpath-idp.io/risk: low
     goldenpath-idp.io/environment: unknown
     goldenpath-idp.io/status: pending
     goldenpath-idp.io/id: REGISTRY_NEW_APP_15
+    goldenpath-idp.io/lineage: explicit
   labels:
     owner: michael-babs-15
 spec:
@@ -118,11 +136,14 @@ metadata:
   name: new-app-14
   title: new-app-14
   description: ECR Registry for new-app-14
+  value_quantification:
+    vq_class: " \u26AB LV/LQ"
   annotations:
     goldenpath-idp.io/risk: low
     goldenpath-idp.io/environment: unknown
     goldenpath-idp.io/status: pending
     goldenpath-idp.io/id: REGISTRY_NEW_APP_14
+    goldenpath-idp.io/lineage: explicit
   labels:
     owner: michael-babs-14
 spec:
@@ -137,11 +158,14 @@ metadata:
   name: new-app-13
   title: new-app-13
   description: ECR Registry for new-app-13
+  value_quantification:
+    vq_class: " \u26AB LV/LQ"
   annotations:
     goldenpath-idp.io/risk: low
     goldenpath-idp.io/environment: unknown
     goldenpath-idp.io/status: pending
     goldenpath-idp.io/id: REGISTRY_NEW_APP_13
+    goldenpath-idp.io/lineage: explicit
   labels:
     owner: michael-babs-13
 spec:
@@ -156,11 +180,14 @@ metadata:
   name: new-app-10
   title: new-app-10
   description: ECR Registry for new-app-10
+  value_quantification:
+    vq_class: " \u26AB LV/LQ"
   annotations:
     goldenpath-idp.io/risk: low
     goldenpath-idp.io/environment: unknown
     goldenpath-idp.io/status: pending
     goldenpath-idp.io/id: REGISTRY_NEW_APP_10
+    goldenpath-idp.io/lineage: explicit
   labels:
     owner: michael-babs-10
 spec:
@@ -175,11 +202,14 @@ metadata:
   name: my-reg-app-3
   title: my-reg-app-3
   description: ECR Registry for my-reg-app-3
+  value_quantification:
+    vq_class: " \u26AB LV/LQ"
   annotations:
     goldenpath-idp.io/risk: low
     goldenpath-idp.io/environment: unknown
     goldenpath-idp.io/status: pending
     goldenpath-idp.io/id: REGISTRY_MY_REG_APP_3
+    goldenpath-idp.io/lineage: explicit
   labels:
     owner: michael-babs-3
 spec:

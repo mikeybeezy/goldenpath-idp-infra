@@ -1,15 +1,17 @@
 ---
-id: APPS_CHANGELOG_METADATA
+id: DOCS_ROOT_METADATA
 title: metadata
-type: changelog
+type: documentation
 status: active
 owner: platform-team
-category: changelog
 domain: platform-core
+category: education
 risk_profile:
   production_impact: none
   security_risk: none
   coupling_risk: none
 reliability:
   observability_tier: bronze
-  maturity: 3
+  maturity: 2
+lifecycle:
+  supported_until: '2028-01-01'

@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: goldenpath-idp-infra
+  description: Platform Infrastructure for Golden Path IDP (Governed)
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: infrastructure
+  owner: platform-team
+  lifecycle: active
