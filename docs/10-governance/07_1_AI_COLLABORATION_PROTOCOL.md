@@ -1,4 +1,3 @@
-
 ---
 id: AI_COLLABORATION_PROTOCOL
 title: AI Collaboration Protocol
