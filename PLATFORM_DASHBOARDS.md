@@ -33,6 +33,7 @@ This document serves as the high-integrity map for all operational and strategic
 ---
 
 ## 🏛️ Governance & Decisions
+
 | Dashboard | Location | Purpose |
 | :--- | :--- | :--- |
 | **ADR Index** | [**`01_adr_index.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) | Central log of all architectural decisions. |
@@ -42,6 +43,7 @@ This document serves as the high-integrity map for all operational and strategic
 ---
 
 ## 🛠️ Maintenance & Hygiene
+
 | Dashboard | Location | Purpose |
 | :--- | :--- | :--- |
 | **Friction Report** | [**`FRICTION_REPORT.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/FRICTION_REPORT.md) | Log of identified and resolved ecosystem friction. |

@@ -35,7 +35,6 @@ breaking_change: false
 
 ## GoldenPath IDP Infrastructure
 
-
 Welcome to the core configuration and governance engine for the GoldenPath Internal Developer Platform (IDP).
 
 ---
@@ -49,6 +48,7 @@ Welcome to the core configuration and governance engine for the GoldenPath Inter
 ---
 
 ## Repository Architecture
+
 This repository manages the "Platform as a Product" through high-fidelity metadata, automated governance, and Value Quantification (VQ).
 
 This repository contains Terraform modules and environment definitions that provision the baseline cloud infrastructure for the Golden Path Internal Developer Platform (IDP).

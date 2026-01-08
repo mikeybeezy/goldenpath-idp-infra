@@ -312,8 +312,8 @@ def generate_report(target_dir='.'):
     lines.append("")
 
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    lines.append("# 🏥 Platform Health Command Center")
-    lines.append(f"**Generated**: `{timestamp}` | **V1 Readiness**: `{v1_readiness:.1f}%` | **Mean Confidence**: `{'⭐' * int(round(mean_confidence)) or '⭐'} ({mean_confidence:.1f}/5.0)`")
+    lines.append("## 🏥 Platform Health Command Center\n")
+    lines.append(f"**Generated**: `{timestamp}` | **V1 Readiness**: `{v1_readiness:.1f}%` | **Mean Confidence**: `{'⭐' * int(round(mean_confidence)) or '⭐'} ({mean_confidence:.1f}/5.0)`\n")
     lines.append(f"**Realized Value**: `{total_reclaimed:.1f} Hours` | **Infra Run Rate**: `${monthly_cost:,.2f} {currency}/mo`")
 
     lines.append("\n## V1 Platform Readiness Gate\n")
@@ -391,7 +391,7 @@ def generate_report(target_dir='.'):
     lines.append(f"- **Stale (Past Lifecycle)**: {len(stats['stale_files'])}")
 
     lines.append("\n---")
-    lines.append("### Strategic Guidance")
+    lines.append("\n### Strategic Guidance\n")
     lines.append("- **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.")
     lines.append("- **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.")
 
