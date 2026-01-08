@@ -1,4 +1,14 @@
+---
+id: TESTING_STANDARDS
+title: Testing Standards
+type: documentation
+owner: platform-team
+status: active
+category: testing
+---
+
 # Platform Testing Standards & Protocols
+
 
 **Version:** 1.0
 **Last Updated:** 2026-01-07

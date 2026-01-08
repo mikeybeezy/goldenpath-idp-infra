@@ -149,9 +149,11 @@ def generate_markdown(workflows):
             content.append(f"### {wf['name']}")
             content.append(f"- **File**: `{wf['file']}`")
             content.append(f"- **Owner**: {wf['owner']}")
-            content.append(f"- **Triggers**: {', '.join(wf['triggers'])}")
+            triggers_str = ", ".join(wf['triggers'])
+            content.append(f"- **Triggers**: {triggers_str}".strip())
             if wf['inputs']:
-                content.append(f"- **Inputs**: {', '.join(wf['inputs'])}")
+                inputs_str = ", ".join(wf['inputs'])
+                content.append(f"- **Inputs**: {inputs_str}".strip())
             content.append("")
 
     return "\n".join(content)

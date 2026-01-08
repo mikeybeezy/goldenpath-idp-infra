@@ -12,7 +12,7 @@ spec:
     tier: frontend
   type: LoadBalancer
 ---
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1  # for versions before 1.9.0 use apps/v1beta2
 kind: StatefulSet
 metadata:
   name: wordpress-statefulset
@@ -32,29 +32,29 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: wordpress:4.8-apache
-        name: wordpress
-        env:
-        - name: WORDPRESS_DB_HOST
-          value: wordpress-mysql
-        - name: WORDPRESS_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-pass
-              key: password
-        volumeMounts:
-        - name: wordpress-persistent-storage
-          mountPath: /var/www/html
-        ports:
-        - containerPort: 80
+        - image: wordpress:4.8-apache
           name: wordpress
+          env:
+            - name: WORDPRESS_DB_HOST
+              value: wordpress-mysql
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+          volumeMounts:
+            - name: wordpress-persistent-storage
+              mountPath: /var/www/html
+          ports:
+            - containerPort: 80
+              name: wordpress
   volumeClaimTemplates:
-  - metadata:
-      name: wordpress-persistent-storage
-    spec:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 10Gi
-      storageClassName: gp2
+    - metadata:
+        name: wordpress-persistent-storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+        storageClassName: gp2

@@ -25,7 +25,7 @@ relates_to:
 # ADR-0102: Layer 2 Terraform Validation (Fast Feedback Loop)
 
 ## Context
-Currently, Terraform validation primarily occurs during the `env=dev` integration tests (`infra-terraform-apply-dev.yml`) or via `pr-terraform-plan.yml`. These workflows require AWS credentials, backend initialization (S3/DynamoDB), and significant runtime overhead (~2-5 minutes). 
+Currently, Terraform validation primarily occurs during the `env=dev` integration tests (`infra-terraform-apply-dev.yml`) or via `pr-terraform-plan.yml`. These workflows require AWS credentials, backend initialization (S3/DynamoDB), and significant runtime overhead (~2-5 minutes).
 
 Developers who make syntax errors (e.g., invalid attribute references) or formatting mistakes often wait several minutes only to receive a failure that could have been caught instantly offline. There is no lightweight, "offline" gate that blocks invalid HCL code from entering the repository.
 

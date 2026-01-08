@@ -2,24 +2,19 @@
 id: PLATFORM_SCRIPTS_INDEX
 title: Platform Automation Scripts Index (Auto-Generated)
 type: documentation
-applies_to: []
-exempt: false
+category: governance
+version: '1.0'
+owner: platform-team
+status: active
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-schema_version: 1
-relates_to: []
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: tier-1
-  potential_savings_hours: 1.0
-category: governance
-version: '1.0'
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle: active
+supported_until: '2028-01-01'
 last_updated: 2026-01-06
 dependencies:
   - python3
@@ -32,53 +27,56 @@ dependencies:
 
 This directory contains the automation engine powering the GoldenPath IDP.
 
+
 ## Delivery
 
 | Script | Description |
 | :--- | :--- |
-| [ecr-build-push.sh](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/ecr-build-push.sh) | ----------------------------------------------------------------------------- |
-| [generate-build-log.sh](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate-build-log.sh) | Shell script utility. |
-| [generate-teardown-log.sh](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate-teardown-log.sh) | Shell script utility. |
-| [render_template.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/render_template.py) | Purpose: Backstage-compatible Template Renderer |
-| [resolve-cluster-name.sh](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/resolve-cluster-name.sh) | Shell script utility. |
-| [scaffold_ecr.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/scaffold_ecr.py) | Purpose: Standardized ECR Repository Scaffolding. |
+| [ecr-build-push.sh](file://scripts/ecr-build-push.sh) | ----------------------------------------------------------------------------- |
+| [generate-build-log.sh](file://scripts/generate-build-log.sh) | Shell script utility. |
+| [generate-teardown-log.sh](file://scripts/generate-teardown-log.sh) | Shell script utility. |
+| [render_template.py](file://scripts/render_template.py) | Purpose: Backstage-compatible Template Renderer |
+| [resolve-cluster-name.sh](file://scripts/resolve-cluster-name.sh) | Shell script utility. |
+| [scaffold_ecr.py](file://scripts/scaffold_ecr.py) | Purpose: Standardized ECR Repository Scaffolding. |
 
 ## Documentation
 
 | Script | Description |
 | :--- | :--- |
-| [check_doc_freshness.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/check_doc_freshness.py) | Purpose: Doc Freshness Auditor. |
-| [check_doc_index_contract.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/check_doc_index_contract.py) | Purpose: Documentation Index Contract Validator. |
-| [extract_relationships.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/extract_relationships.py) | Purpose: Automated Relationship & Dependency Extractor |
-| [format_docs.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/format_docs.py) | Purpose: Global Formatting & Whitespace Normalizer |
-| [generate_catalog_docs.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate_catalog_docs.py) | Multi-Domain Platform Catalog Generator |
-| [generate_workflow_index.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate_workflow_index.py) | Purpose: Auto-generate CI Workflows Index (CI_WORKFLOWS.md). |
+| [check_doc_freshness.py](file://scripts/check_doc_freshness.py) | Purpose: Doc Freshness Auditor. |
+| [check_doc_index_contract.py](file://scripts/check_doc_index_contract.py) | Purpose: Documentation Index Contract Validator. |
+| [extract_relationships.py](file://scripts/extract_relationships.py) | Purpose: Automated Relationship & Dependency Extractor |
+| [format_docs.py](file://scripts/format_docs.py) | Purpose: Global Formatting & Whitespace Normalizer |
+| [generate_catalog_docs.py](file://scripts/generate_catalog_docs.py) | Multi-Domain Platform Catalog Generator |
+| [generate_workflow_index.py](file://scripts/generate_workflow_index.py) | Purpose: Auto-generate CI Workflows Index (CI_WORKFLOWS.md). |
 
 ## Governance
 
 | Script | Description |
 | :--- | :--- |
-| [check_compliance.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/check_compliance.py) | Purpose: Metadata Compliance Audit Tool |
-| [platform_health.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/platform_health.py) | Purpose: Platform Health & Compliance Reporter |
-| [pr_guardrails.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/pr_guardrails.py) | PR Guardrails Validator |
-| [standardize_metadata.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/standardize_metadata.py) | Purpose: Automated Remediation Engine ("The Healer") |
-| [test_platform_health.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/test_platform_health.py) | Purpose: Unit Test Suite for Platform Health Logic |
-| [validate_metadata.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/validate_metadata.py) | Purpose: PR Quality Gate & Structural Validator |
+| [check_compliance.py](file://scripts/check_compliance.py) | Purpose: Metadata Compliance Audit Tool |
+| [platform_health.py](file://scripts/platform_health.py) | Purpose: Platform Health & Compliance Reporter |
+| [pr_guardrails.py](file://scripts/pr_guardrails.py) | PR Guardrails Validator |
+| [standardize_metadata.py](file://scripts/standardize_metadata.py) | Purpose: Automated Remediation Engine ("The Healer") |
+| [test_platform_health.py](file://scripts/test_platform_health.py) | Purpose: Unit Test Suite for Platform Health Logic |
+| [validate_metadata.py](file://scripts/validate_metadata.py) | Purpose: PR Quality Gate & Structural Validator |
 
 ## Utilities
 
 | Script | Description |
 | :--- | :--- |
-| [audit_metadata.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/audit_metadata.py) | Metadata Audit Utility (Active Governance Loop) |
-| [backfill_metadata.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/backfill_metadata.py) | Metadata Backfill Script |
-| [check_script_traceability.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/check_script_traceability.py) | Script Traceability Auditor |
-| [enforce_emoji_policy.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/enforce_emoji_policy.py) | Purpose: Emoji Policy Enforcer |
-| [fix_yaml_syntax.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/fix_yaml_syntax.py) | YAML Syntax Fixer for Templates |
-| [generate_adr_index.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate_adr_index.py) | ADR Index Generator (Iteration 1) |
-| [generate_governance_vocab.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/generate_governance_vocab.py) | Governance Vocabulary Generator |
-| [migrate_partial_metadata.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/migrate_partial_metadata.py) | Migrate partial metadata to enhanced schema |
-| [reliability-metrics.sh](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/reliability-metrics.sh) | Shell script utility. |
-| [sync_backstage_entities.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/sync_backstage_entities.py) | Backstage Entity Sync Utility |
-| [test_hotfix.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/test_hotfix.py) | Purpose: Unit tests for PR Guardrails Hotfix Logic. |
-| [validate_enums.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/validate_enums.py) | Purpose: Enhanced Enum Consistency Validator |
-| [validate_routing_compliance.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/validate_routing_compliance.py) | Purpose: Decision Routing Compliance Validator |
+| [audit_metadata.py](file://scripts/audit_metadata.py) | Metadata Audit Utility (Active Governance Loop) |
+| [backfill_metadata.py](file://scripts/backfill_metadata.py) | Metadata Backfill Script |
+| [check_script_traceability.py](file://scripts/check_script_traceability.py) | Script Traceability Auditor |
+| [enforce_emoji_policy.py](file://scripts/enforce_emoji_policy.py) | Purpose: Emoji Policy Enforcer |
+| [fix_yaml_syntax.py](file://scripts/fix_yaml_syntax.py) | YAML Syntax Fixer for Templates |
+| [generate_adr_index.py](file://scripts/generate_adr_index.py) | ADR Index Generator (Iteration 1) |
+| [generate_governance_vocab.py](file://scripts/generate_governance_vocab.py) | Governance Vocabulary Generator |
+| [migrate_partial_metadata.py](file://scripts/migrate_partial_metadata.py) | Migrate partial metadata to enhanced schema |
+| [reliability-metrics.sh](file://scripts/reliability-metrics.sh) | Shell script utility. |
+| [scaffold_test.py](file://scripts/scaffold_test.py) | Scaffold Test Utility |
+| [sync_backstage_entities.py](file://scripts/sync_backstage_entities.py) | Backstage Entity Sync Utility |
+| [sync_ecr_catalog.py](file://scripts/sync_ecr_catalog.py) | ECR Catalog Synchronization & Reconciliation Utility |
+| [test_hotfix.py](file://scripts/test_hotfix.py) | Purpose: Unit tests for PR Guardrails Hotfix Logic. |
+| [validate_enums.py](file://scripts/validate_enums.py) | Purpose: Enhanced Enum Consistency Validator |
+| [validate_routing_compliance.py](file://scripts/validate_routing_compliance.py) | Purpose: Decision Routing Compliance Validator |

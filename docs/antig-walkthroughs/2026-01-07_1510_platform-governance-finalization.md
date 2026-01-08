@@ -1,4 +1,14 @@
+---
+id: WALKTHROUGH_GOVERNANCE_FINALIZATION
+title: Governance Finalization Walkthrough
+type: walkthrough
+owner: platform-team
+status: active
+category: education
+---
+
 # Walkthrough: Institutionalizing Testing Predictability (Agent-First)
+
 
 We have transformed the testing framework from a "document-heavy chore" into an **executable pipeline** that treats Agents and Humans as first-class partners.
 
