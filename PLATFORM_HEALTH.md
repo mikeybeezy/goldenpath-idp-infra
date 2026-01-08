@@ -12,7 +12,7 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-08 04:54:33` | **V1 Readiness**: `95.1%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-08 05:02:50` | **V1 Readiness**: `95.1%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `5.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
@@ -43,7 +43,7 @@ relates_to:
 | Catalog | Entity Count |
 | :--- | :--- |
 | IDP Apis | 9 |
-| IDP Components | 13 |
+| IDP Components | 15 |
 | IDP Domains | 2 |
 | IDP Resources | 12 |
 | IDP Systems | 3 |
