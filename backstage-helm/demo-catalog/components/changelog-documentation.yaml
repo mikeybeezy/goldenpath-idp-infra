@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-documentation
+  title: Platform Changelog
+  description: Complete history of platform changes, features, and improvements
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - governance
+    - documentation
+    - changelog
+    - release-notes
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/docs/changelog/entries
+      title: Browse Changelog Entries
+      icon: docs
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/CHANGELOG.md
+      title: Full Changelog
+      icon: catalog
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  system: goldenpath-platform
