@@ -73,7 +73,7 @@ def generate_index_content():
             m['id'] = id_match.group(0)
             normalized_metadata.append(m)
 
-    normalized_metadata.sort(key=lambda x: x.get('id', ''))
+    normalized_metadata.sort(key=lambda x: (x.get('id', ''), x.get('filename', '')))
 
     # Generate Table
     table_lines = []
@@ -85,7 +85,7 @@ def generate_index_content():
         title = title.replace("` ", "`").replace(" `", "`")
 
         status = m.get('status', 'Proposed').capitalize()
-        date = m.get('date', '') or m.get('created_date', '2026-01-0? ')
+        date = m.get('date', '') or m.get('created_date', '2026-01-0?')
         summary = m.get('summary', '')
 
         line = f"| [{adr_id}]({m['filename']}) | {domain} | {title} | {status} | {date} | {summary} |"
