@@ -78,21 +78,23 @@ jobs:
           if [ ! -f "$FILE" ]; then
             cat > "$FILE" <<EOF
           version: "1.0"
-          domain: "container-registries"
+          domain: "delivery"
           owner: "platform-team"
           last_updated: "$(date -u +%Y-%m-%d)"
           managed_by: "platform-team"
-          registries: {}
+          physical_registry: "goldenpath-idp-main"
+          repositories: {}
           EOF
           fi
 
           # Add/update the registry entry
           yq -i \
-            ".registries.\"$NAME\".metadata.id = \"$ID\" |
-             .registries.\"$NAME\".metadata.owner = \"$OWNER\" |
-             .registries.\"$NAME\".metadata.risk = \"$RISK\" |
-             .registries.\"$NAME\".metadata.status = \"pending\" |
-             .registries.\"$NAME\".metadata.created_date = \"$(date -u +%Y-%m-%d)\" |
+            ".repositories.\"$NAME\".metadata.id = \"$ID\" |
+             .repositories.\"$NAME\".metadata.owner = \"$OWNER\" |
+             .repositories.\"$NAME\".metadata.risk = \"$RISK\" |
+             .repositories.\"$NAME\".metadata.environment = \"$ENV\" |
+             .repositories.\"$NAME\".metadata.status = \"pending\" |
+             .repositories.\"$NAME\".metadata.created_date = \"$(date -u +%Y-%m-%d)\" |
              .last_updated = \"$(date -u +%Y-%m-%d)\"" \
             "$FILE"
 
@@ -248,7 +250,7 @@ jobs:
           ---
 
           ##  Changes Policy
-          - ✅ Added to registry catalog (`docs/catalogs/ecr-catalog.yaml`)
+          - ✅ Added to registry catalog (`docs/20-contracts/catalogs/ecr-catalog.yaml`)
           - ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
           - ✅ Added to Terraform tfvars (`envs/${{ inputs.environment }}/terraform.tfvars`)
 

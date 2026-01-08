@@ -75,13 +75,13 @@ Trigger for custom image:
 
 ## V1 Recommendation Matrix
 
-| Recommendation | What it does | Why it matters in V1 | Enabled (V1) |
-| --- | --- | --- | --- |
-| Catalog | Indexes and serves software entities. | Establishes the system of record for services and docs. | Yes |
-| TechDocs | Renders documentation sites from repo docs. | Makes ADRs, governance, and runbooks readable. | Yes |
-| Scaffolder | Creates new services from templates. | Implements the golden path for new projects. | Yes |
-| Kubernetes | Shows K8s workloads/health for entities. | Provides deployment visibility per service. | Yes |
-| Search | Unified search across catalog and docs. | Reduces time-to-find across platform assets. | Yes |
-| Notifications | In-product notifications and events. | Surfaces workflow outcomes and alerts. | Yes |
-| Org | Manages org structure (groups/users). | Enables ownership, routing, and accountability. | Yes |
-| API Docs | Displays API docs (OpenAPI/AsyncAPI). | Improves discoverability of service interfaces. | Yes |
+| Recommendation | What it does | Why it matters in V1 |
+| --- | --- | --- |
+| Catalog | Indexes and serves software entities. | Establishes the system of record for services and docs. |
+| TechDocs | Renders documentation sites from repo docs. | Makes ADRs, governance, and runbooks readable. |
+| Scaffolder | Creates new services from templates. | Implements the golden path for new projects. |
+| Kubernetes | Shows K8s workloads/health for entities. | Provides deployment visibility per service. |
+| Search | Unified search across catalog and docs. | Reduces time-to-find across platform assets. |
+| Notifications | In-product notifications and events. | Surfaces workflow outcomes and alerts. |
+| Org | Manages org structure (groups/users). | Enables ownership, routing, and accountability. |
+| API Docs | Displays API docs (OpenAPI/AsyncAPI). | Improves discoverability of service interfaces. |
