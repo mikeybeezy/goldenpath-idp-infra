@@ -6,7 +6,6 @@ metadata:
   description: Complete catalog of platform architectural decisions and governance choices
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
-    backstage.io/techdocs-ref: dir:.
   tags:
     - governance
     - documentation
