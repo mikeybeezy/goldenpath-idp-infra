@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0068
+  title: 'ADR-0068: Fix review cadence output delimiter'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2026-01-02
+
+    - **Owners:** platform
+
+    - **Domain:** Platform
+
+    - **Decision type:** Operations
+
+    - **Related:** `.github/workflows/production-readiness-review.yml`, PR #108'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0068-platform-review-cadence-output.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

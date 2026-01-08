@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0015
+  title: 'CL-0015: Restore branch policy guard for main'
+  description: 'Date: 2026-01-02
+
+    Owner: platform
+
+    Scope: CI, governance
+
+    Related: PR #104, `docs/adrs/ADR-0065-platform-branch-policy-guard.md`'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - changelog
+  - release-notes
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0015-branch-policy-guard-restore.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

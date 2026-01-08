@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0023
+  title: 'CL-0023: Bootstrap v3 skips IRSA apply'
+  description: 'Date: 2026-01-02
+
+    Owner: platform
+
+    Scope: infra
+
+    Related: docs/adrs/ADR-0073-platform-bootstrap-v3-irsa-skip.md, PR #114'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - changelog
+  - release-notes
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0023-bootstrap-v3-irsa-skip.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

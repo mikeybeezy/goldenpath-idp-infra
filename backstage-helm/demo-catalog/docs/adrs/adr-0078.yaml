@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0078
+  title: 'ADR-0078: Governance-driven app repository scaffolder'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2026-01-03
+
+    - **Owners:** platform
+
+    - **Domain:** Platform
+
+    - **Decision type:** Governance | Delivery
+
+    - **Related:** `backstage/templates/app-template/template.yaml`, ...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0078-platform-governed-repo-scaffolder.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

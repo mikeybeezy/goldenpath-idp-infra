@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0054
+  title: 'ADR-0054: Exporter vs OpenTelemetry split for platform observability'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2025-12-31
+
+    - **Owners:** platform team
+
+    - **Domain:** Platform
+
+    - **Decision type:** Observability
+
+    - **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0054-platform-observability-exporters-otel-split.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

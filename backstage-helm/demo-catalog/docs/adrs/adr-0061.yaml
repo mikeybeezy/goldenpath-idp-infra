@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0061
+  title: 'ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform
+    external)'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2025-12-31
+
+    - **Owners:** platform
+
+    - **Domain:** Platform
+
+    - **Decision type:** Observability | Governance
+
+    - **Related:** `docs/50-observability/05_OBSERVABILITY_DECIS...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0061-platform-observability-provisioning-boundary.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

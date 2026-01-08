@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0005
+  title: 'CL-0005: Teardown finalizer removal default-on'
+  description: 'Date: 2025-12-31
+
+    Owner: platform
+
+    Scope: teardown
+
+    Related: bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh, .github/workflows/ci-teardown.yml'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - changelog
+  - release-notes
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0005-teardown-finalizer-default-on.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

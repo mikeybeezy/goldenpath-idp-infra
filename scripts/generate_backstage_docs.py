@@ -146,7 +146,7 @@ def generate_changelog_entities():
 def create_location_files(adr_entities, changelog_entities):
     """Create Location files that reference all generated entities."""
     
-    # ADR Location
+    # ADR Location - ALL entities
     adr_location = {
         "apiVersion": "backstage.io/v1alpha1",
         "kind": "Location",
@@ -155,11 +155,11 @@ def create_location_files(adr_entities, changelog_entities):
             "description": "All Architecture Decision Records"
         },
         "spec": {
-            "targets": adr_entities[:50]  # First 50 to avoid overwhelming
+            "targets": adr_entities  # ALL ADRS
         }
     }
     
-    # Changelog Location
+    # Changelog Location - ALL entities
     cl_location = {
         "apiVersion": "backstage.io/v1alpha1",
         "kind": "Location",
@@ -168,7 +168,7 @@ def create_location_files(adr_entities, changelog_entities):
             "description": "All Changelog Entries"
         },
         "spec": {
-            "targets": changelog_entities[:50]  # First 50 to avoid overwhelming
+            "targets": changelog_entities  # ALL CHANGELOGS
         }
     }
     
@@ -180,7 +180,7 @@ def create_location_files(adr_entities, changelog_entities):
     with open(output_dir / "all-changelogs.yaml", 'w') as f:
         yaml.dump(cl_location, f, sort_keys=False)
     
-    print(f"✅ Created location files (showing first 50 of each for performance)")
+    print(f"✅ Created location files with ALL entities")
 
 if __name__ == "__main__":
     print("🚀 Generating Backstage documentation entities...")
@@ -193,5 +193,4 @@ if __name__ == "__main__":
     print(f"   - Total ADRs: {len(adr_entities)}")
     print(f"   - Total Changelogs: {len(changelog_entities)}")
     print(f"   - Output: {OUTPUT_DIR}")
-    print(f"\n⚠️  Note: Showing first 50 of each type to avoid catalog performance issues")
-    print(f"   You can increase this limit in create_location_files() if needed")
+    print(f"\n✅ All entities included in catalog locations")

@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0030
+  title: 'CL-0030: Lightweight CI cost visibility (Infracost)'
+  description: 'Date: 2026-01-03
+
+    Owner: platform
+
+    Scope: CI, governance
+
+    Related: docs/adrs/ADR-0076-platform-infracost-ci-visibility.md, docs/10-governance/06_COST_GOVERNANCE.md,
+    docs/70-operations/40_COST_VISIBILITY....'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - changelog
+  - release-notes
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0030-infracost-ci-visibility.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation
