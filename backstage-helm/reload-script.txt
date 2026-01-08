@@ -3,3 +3,7 @@
 helm upgrade backstage /Users/mikesablaze/goldenpath-idp-infra/backstage-helm/charts/backstage \
 --set catalog.demoCatalogLocation='User/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/demo-catalog/all.yaml' \
 --namespace backstage
+
+
+reload catalog
+kubectl rollout restart deployment/backstage -n backstage
