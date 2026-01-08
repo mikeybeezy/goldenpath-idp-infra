@@ -6,6 +6,7 @@ metadata:
   description: "Real-time compliance, risk, V1 readiness, and realized value metrics."
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: dir:.
   tags:
     - dashboard
     - governance
