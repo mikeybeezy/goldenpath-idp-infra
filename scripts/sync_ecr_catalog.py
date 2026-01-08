@@ -85,7 +85,11 @@ def sync_catalog(dry_run=True):
     BACKSTAGE_ENTITY_PATH = "backstage-helm/demo-catalog/resources/ecr-registry.yaml"
     
     # Generate repository list for description
-    repo_list = "\n".join([f"- {name} ({catalog_repos[name].get('metadata', {}).get('environment', 'unassigned')})" for name in catalog_repos])
+    repo_list = "\n".join([
+        f"- {name} ({catalog_repos[name].get('metadata', {}).get('environment', 'unassigned')})" 
+        if catalog_repos[name] else f"- {name} (unassigned)"
+        for name in catalog_repos
+    ])
     
     backstage_resource = {
         "apiVersion": "backstage.io/v1alpha1",

@@ -168,6 +168,7 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 | 070 | P1 | ECR | Standardized Image Pull/Push (OIDC) | platform | Open | S | Q1 | Roll out `ecr-build-push.sh` to all app templates | ADR-0100 | Secure, passwordless image delivery as standard |
 | 071 | P3 | ECR | Image Version Decommissioning Process | platform | Open | S | Q2 | Define archival strategy for sunsetting old images | docs/10-governance/05_REPOSITORY_LIFECYCLE.md | Manage long-term image supply chain technical debt |
 | 072 | P2 | Gov | Shared Responsibility Notifications (Lifecycle Events) | platform | Open | M | Q1 | Build notification trigger for Slack/Email after Create/Delete | docs/10-governance/38_SHARED_RESPONSIBILITY.md | Clarify ownership boundaries immediately after resource changes |
+| 074 | P1 | **🔴 HV/HQ** | ECR | Extensive Verification of ECR Single Source of Truth | platform | Done | S | Q1 | Monitor for future drift | Script verified against 10 ghost repos |
 
 ## Rules
 

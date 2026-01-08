@@ -1,5 +1,5 @@
 {
-  "total_reclaimed_hours": 7.4,
+  "total_reclaimed_hours": 11.4,
   "history": [
     {
       "timestamp": "2026-01-07T06:52:02Z",
@@ -53,6 +53,26 @@
     },
     {
       "timestamp": "2026-01-08T20:45:52Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T20:57:28Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T20:59:30Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T21:04:19Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T21:05:26Z",
       "script": "sync_ecr_catalog.py",
       "reclaimed_hours": 1.0
     }
