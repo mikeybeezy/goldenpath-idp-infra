@@ -12,7 +12,7 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-08 06:13:36` | **V1 Readiness**: `95.1%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-08 06:15:54` | **V1 Readiness**: `95.1%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `5.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
@@ -36,7 +36,7 @@ relates_to:
 | **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
 | **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
 | **Change Logs** | 87 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 457 | Repository Scan |
+| **Tracked Resources** | 458 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -55,7 +55,7 @@ pie title Production Impact distribution
     "HIGH" : 36
     "MEDIUM" : 33
     "LOW" : 359
-    "NONE" : 26
+    "NONE" : 27
 ```
 
 ## Governance Maturity
