@@ -52,3 +52,4 @@ scripts/__pycache__/
 # Antigravity artifacts (Must ALWAYS be tracked)
 !docs/antig-walkthroughs/
 !docs/antig-implementations/
+scripts/lib/__pycache__/
