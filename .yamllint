@@ -1,5 +1,11 @@
 extends: default
 
+ignore: |
+  **/templates/*.yaml
+  **/templates/*.yml
+  gitops/helm/*/templates/*.yaml
+  modules/*/bootstrap-chart/templates/*.yaml
+
 rules:
   line-length: disable
   truthy: disable
