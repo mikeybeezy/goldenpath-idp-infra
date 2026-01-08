@@ -6,6 +6,7 @@ metadata:
 spec:
   targets:
     - ./components/artist-lookup-component.yaml
+    - ./components/platform-health.yaml
     - ./components/petstore-component.yaml
     - ./components/playback-order-component.yaml
     - ./components/podcast-api-component.yaml
