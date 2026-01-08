@@ -12,21 +12,21 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-08 17:55:03` | **V1 Readiness**: `95.1%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-08 18:19:50` | **V1 Readiness**: `95.4%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
-**Realized Value**: `5.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Realized Value**: `6.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **95.1%** ready for V1 production rollout.
+> The platform is currently **95.4%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 98.5% |
+| **Metadata Integrity** | ✅ | 98.3% |
 | **Injection Integrity** | ✅ | 100.0% |
-| **Architecture Maturity** | 🚧 | 93/120 Active |
-| **Changelog Activity** | ✅ | 87 Entries |
+| **Architecture Maturity** | 🚧 | 95/120 Active |
+| **Changelog Activity** | ✅ | 88 Entries |
 
 ## Knowledge Graph Vitality
 
@@ -35,8 +35,8 @@ relates_to:
 | **Architecture Decisions** | 120 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
 | **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
 | **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 87 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 458 | Repository Scan |
+| **Change Logs** | 88 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 459 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -45,7 +45,7 @@ relates_to:
 | IDP Apis | 9 |
 | IDP Components | 17 |
 | IDP Domains | 2 |
-| IDP Resources | 12 |
+| IDP Resources | 2 |
 | IDP Systems | 3 |
 
 ## 🛡️ Risk & Maturity Visualization
@@ -54,13 +54,13 @@ relates_to:
 pie title Production Impact distribution
     "HIGH" : 36
     "MEDIUM" : 33
-    "LOW" : 359
+    "LOW" : 360
     "NONE" : 27
 ```
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `98.5%`
+- **Metadata Compliance**: `98.3%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
@@ -70,7 +70,7 @@ pie title Production Impact distribution
 ## Project Realized Value (Heartbeat)
 
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **5.4 hours**.
+> Total realized value reclaimed through automation heartbeats: **6.4 hours**.
 
 - **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
 
