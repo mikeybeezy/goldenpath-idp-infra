@@ -1,4 +1,14 @@
+---
+id: TESTS_ROOT
+title: Testing Strategy
+type: documentation
+owner: platform-team
+status: active
+category: testing
+---
+
 # 📊 Platform Testing Dashboard
+
 
 **Status:** ✅ 100% Pass Rate | **Automation Maturity:**  (Validated) | **Latest Update:** 2026-01-07
 

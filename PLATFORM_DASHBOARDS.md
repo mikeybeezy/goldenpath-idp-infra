@@ -1,4 +1,14 @@
+---
+id: PLATFORM_DASHBOARDS
+title: Platform Dashboards
+type: documentation
+owner: platform-team
+status: active
+category: dashboard
+---
+
 # 🎯 Platform Dashboards Index
+
 
 This document serves as the high-integrity map for all operational and strategic dashboards in the GoldenPath IDP.
 

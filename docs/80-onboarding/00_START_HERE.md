@@ -1,4 +1,14 @@
+---
+id: ONBOARDING_START
+title: Start Here
+type: documentation
+owner: platform-team
+status: active
+category: onboarding
+---
+
 # 🚀 START HERE (5-Minute Onboarding)
+
 
 Welcome to the **GoldenPath IDP Infra** repository. This guide is designed to get you (Human or Agent) fully operational in under 5 minutes.
 
