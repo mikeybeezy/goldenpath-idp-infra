@@ -1,5 +1,5 @@
 {
-  "total_reclaimed_hours": 6.4,
+  "total_reclaimed_hours": 7.4,
   "history": [
     {
       "timestamp": "2026-01-07T06:52:02Z",
@@ -48,6 +48,11 @@
     },
     {
       "timestamp": "2026-01-08T18:18:45Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T20:45:52Z",
       "script": "sync_ecr_catalog.py",
       "reclaimed_hours": 1.0
     }

@@ -235,3 +235,29 @@ ai_validation_level:
   - local-checks
   - ci-green
   - prod-verified
+
+api_types:
+  - openapi
+  - graphql
+  - grpc
+  - asyncapi
+
+value_intent:
+  - cost_reduction
+  - risk_reduction
+  - speed_enablement
+  - reliability
+  - compliance
+  - developer_experience
+  - revenue_enablement
+
+automation_confidence:
+  - manual
+  - assisted
+  - supervised
+  - autonomous
+
+decision_weight:
+  - reversible
+  - costly_to_reverse
+  - foundational
