@@ -49,7 +49,7 @@ This runbook details how to enable native markdown rendering (TechDocs) for Back
 To turn a standard Component into a Documentation Portal:
 
 1.  **Locate the Component YAML**
-    *   Example: `backstage-helm/demo-catalog/components/platform-health.yaml`
+    *   Example: `backstage-helm/catalog/components/platform-health.yaml`
 
 2.  **Add the TechDocs Annotation**
     Add `backstage.io/techdocs-ref: dir:.` to the `metadata.annotations` section.

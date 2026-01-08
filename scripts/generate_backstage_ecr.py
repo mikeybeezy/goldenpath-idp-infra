@@ -14,8 +14,8 @@ import yaml
 import os
 
 SOURCE_CATALOG = "docs/20-contracts/catalogs/ecr-catalog.yaml"
-TARGET_DIR = "backstage-helm/demo-catalog/resources/ecr"
-ALL_RESOURCES_PATH = "backstage-helm/demo-catalog/all-resources.yaml"
+TARGET_DIR = "backstage-helm/catalog/resources/ecr"
+ALL_RESOURCES_PATH = "backstage-helm/catalog/all-resources.yaml"
 
 def generate():
     if not os.path.exists(SOURCE_CATALOG):

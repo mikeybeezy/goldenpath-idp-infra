@@ -27,9 +27,9 @@ metadata:
   - url: https://console.aws.amazon.com/ecr/repositories
     title: AWS ECR Console
   annotations:
-    backstage.io/managed-by-location: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/backstage-helm/demo-catalog/resources/ecr-registry.yaml
+    backstage.io/managed-by-location: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/backstage-helm/catalog/resources/ecr-registry.yaml
     platform/repo-count: '10'
-    platform/last-sync: '2026-01-08 21:05:26'
+    platform/last-sync: '2026-01-08 21:20:10'
 spec:
   type: container-registry
   owner: platform-team

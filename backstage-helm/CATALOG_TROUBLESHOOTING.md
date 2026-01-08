@@ -7,10 +7,10 @@ Backstage running localhost shows no catalog entities, including ECR resources.
 The Helm chart's default `values.yaml` points to a **remote catalog**:
 ```yaml
 catalog:
-  demoCatalogLocation: "https://github.com/PlatformersCommunity/backstage-helm-chart/blob/main/demo-catalog/all.yaml"
+  demoCatalogLocation: "https://github.com/PlatformersCommunity/backstage-helm-chart/blob/main/catalog/all.yaml"
 ```
 
-This loads entities from the PlatformersCommunity demo, **not** your local `backstage-helm/demo-catalog` with ECR resources.
+This loads entities from the PlatformersCommunity demo, **not** your local `backstage-helm/catalog` with ECR resources.
 
 ## Solution
 
@@ -27,7 +27,7 @@ helm upgrade backstage ./backstage-helm/charts/backstage \
 ### Option 2: Quick CLI Override
 ```bash
 helm upgrade backstage ./backstage-helm/charts/backstage \
-  --set catalog.demoCatalogLocation='https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/demo-catalog/all.yaml' \
+  --set catalog.demoCatalogLocation='https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml' \
   --namespace backstage
 ```
 
@@ -39,7 +39,7 @@ If running Backstage in local dev mode (yarn dev):
 catalog:
   locations:
     - type: file
-      target: /absolute/path/to/goldenpath-idp-infra/backstage-helm/demo-catalog/all.yaml
+      target: /absolute/path/to/goldenpath-idp-infra/backstage-helm/catalog/all.yaml
 ```
 
 ## Verification
@@ -56,8 +56,8 @@ After updating the catalog location:
 
 ## Current Status
 - ✅ ECR catalog bridge created: `scripts/generate_backstage_ecr.py`
-- ✅ Backstage entities generated: `backstage-helm/demo-catalog/resources/ecr/`
-- ✅ Resource index updated: `backstage-helm/demo-catalog/all-resources.yaml`
+- ✅ Backstage entities generated: `backstage-helm/catalog/resources/ecr/`
+- ✅ Resource index updated: `backstage-helm/catalog/all-resources.yaml`
 - ⚠️ **Catalog location needs configuration update**
 
 

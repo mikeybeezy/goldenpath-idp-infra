@@ -1,7 +1,7 @@
 
 
 helm upgrade backstage /Users/mikesablaze/goldenpath-idp-infra/backstage-helm/charts/backstage \
---set catalog.demoCatalogLocation='User/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/demo-catalog/all.yaml' \
+--set catalog.demoCatalogLocation='User/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml' \
 --namespace backstage
 
 
@@ -9,5 +9,5 @@ reload catalog
 kubectl rollout restart deployment/backstage -n backstage
 
 
-
-Need to create a toke
+Yous to cross reference setuo
+Default repo "https://github.com/PlatformersCommunity/backstage-helm-chart/blob/main/demo-catalog/all.yaml"

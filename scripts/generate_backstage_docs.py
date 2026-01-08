@@ -13,7 +13,7 @@ from pathlib import Path
 
 ADR_DIR = "docs/adrs"
 CHANGELOG_DIR = "docs/changelog/entries"
-OUTPUT_DIR = "backstage-helm/demo-catalog/docs"
+OUTPUT_DIR = "backstage-helm/catalog/docs"
 
 def extract_frontmatter_and_content(file_path):
     """Extract YAML frontmatter and first paragraph from markdown file."""

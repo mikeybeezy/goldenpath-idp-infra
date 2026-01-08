@@ -50,7 +50,7 @@
 3. Verify output contains "Ghosts: X" including `phantom-test-repo`.
 
 ### Scenario 2: Backstage Parity
-1. Verify `backstage-helm/demo-catalog/resources/ecr-registry.yaml` is updated.
+1. Verify `backstage-helm/catalog/resources/ecr-registry.yaml` is updated.
 2. Check description contains the new repo.
 3. Check `platform/last-sync` timestamp is current.
 

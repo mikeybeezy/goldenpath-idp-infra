@@ -57,7 +57,7 @@ appConfig: |
   catalog:
     locations:
     - type: url
-      target: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/demo-catalog/all.yaml"
+      target: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml"
       rules:
       - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User] # [ADR-0130] Trusted Zone
     - type: url

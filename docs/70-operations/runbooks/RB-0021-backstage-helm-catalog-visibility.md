@@ -73,7 +73,7 @@ kubectl get configmap -n backstage backstage-config -o yaml | grep -A 5 "DEMO_CA
 
 Expected output should show:
 ```
-DEMO_CATALOG_LOCATION: https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/demo-catalog/all.yaml
+DEMO_CATALOG_LOCATION: https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/catalog/all.yaml
 ```
 
 **Problem**: If the URL is incorrect or points to PlatformersCommunity, continue to Step 5.
@@ -96,7 +96,7 @@ Common errors to look for:
 Why: Ensures the catalog file is publicly accessible from GitHub.
 
 ```sh
-curl -I "https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/demo-catalog/all.yaml"
+curl -I "https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/catalog/all.yaml"
 ```
 
 Expected: `HTTP/2 200` response.
@@ -109,7 +109,7 @@ Why: Updates Helm deployment to point to the correct catalog.
 
 ```sh
 helm upgrade backstage ./backstage-helm/charts/backstage \
-  --set catalog.demoCatalogLocation='https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/demo-catalog/all.yaml' \
+  --set catalog.demoCatalogLocation='https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/catalog/all.yaml' \
   --namespace backstage \
   --wait
 ```
