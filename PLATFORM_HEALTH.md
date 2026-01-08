@@ -12,18 +12,18 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-08 20:47:47` | **V1 Readiness**: `95.2%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-08 21:05:44` | **V1 Readiness**: `95.1%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
-**Realized Value**: `7.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Realized Value**: `11.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **95.2%** ready for V1 production rollout.
+> The platform is currently **95.1%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 97.6% |
+| **Metadata Integrity** | ✅ | 97.2% |
 | **Injection Integrity** | ✅ | 100.0% |
 | **Architecture Maturity** | 🚧 | 95/120 Active |
 | **Changelog Activity** | ✅ | 89 Entries |
@@ -60,7 +60,7 @@ pie title Production Impact distribution
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `97.6%`
+- **Metadata Compliance**: `97.2%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
@@ -70,7 +70,7 @@ pie title Production Impact distribution
 ## Project Realized Value (Heartbeat)
 
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **7.4 hours**.
+> Total realized value reclaimed through automation heartbeats: **11.4 hours**.
 
 - **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
 
