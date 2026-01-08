@@ -3,7 +3,7 @@
 
 catalog:
   # Update this to point to your GitHub repository
-  demoCatalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/demo-catalog/all.yaml"
+  demoCatalogLocation: "https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/backstage-helm/demo-catalog/all.yaml"
   customCatalogLocation: "None"
 
 backstage:
