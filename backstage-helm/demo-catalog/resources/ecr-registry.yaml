@@ -9,4 +9,4 @@ metadata:
 spec:
   type: container-registry
   owner: platform-team
-  system: audio-playback-system # Part of the audio system demo
+  system: audio-playback

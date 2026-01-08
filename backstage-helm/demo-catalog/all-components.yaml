@@ -21,3 +21,4 @@ spec:
     - ./components/wayback-search-component.yaml
     - ./components/adr-documentation.yaml
     - ./components/changelog-documentation.yaml
+    - ./components/ecr-registry.yaml
