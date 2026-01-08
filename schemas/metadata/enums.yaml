@@ -190,3 +190,48 @@ api_types:
   - grpc
   - asyncapi
 
+# AI collaboration governance (roles, modes, and validation)
+ai_authority_tier:
+  - tier0-read-reason
+  - tier1-write-isolated
+  - tier2-safe-execute
+  - tier3-human-only
+
+ai_delegation_mode:
+  - full-delegation
+  - copilot
+  - human-only
+
+ai_execution_role:
+  # Existing (baseline roles)
+  - junior-engineer
+  - refactorer
+  - auditor
+  - automation-agent
+  - advisor
+  # Recommended (operational roles)
+  - triager
+  - documentarian
+  - compliance-checker
+  - release-scribe
+  - threat-modeler
+
+ai_context_tier:
+  - execution
+  - refinement
+  - judgment
+
+ai_task_domain:
+  - docs
+  - code
+  - infra
+  - governance
+  - security
+  - observability
+  - ci-cd
+
+ai_validation_level:
+  - not-run
+  - local-checks
+  - ci-green
+  - prod-verified

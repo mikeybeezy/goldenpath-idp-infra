@@ -1,32 +1,3 @@
----
-id: GOVERNANCE_VOCABULARY
-title: Governance Vocabulary & Allowed Values
-type: policy
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-schema_version: 1
-relates_to: []
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
-category: platform
----
-
 # Governance Vocabulary & Allowed Values
 
 This document is auto-generated from `schemas/metadata/enums.yaml`. These are the canonical values allowed in `metadata.yaml` sidecars.
@@ -226,3 +197,67 @@ This document is auto-generated from `schemas/metadata/enums.yaml`. These are th
 | `networking-vpc` | Allowed value |
 | `compute-vms` | Allowed value |
 | `secrets-management` | Allowed value |
+
+## Vq Class
+| Value | Description |
+| :--- | :--- |
+| `🔴 HV/HQ` | Allowed value |
+| `🟡 HV/LQ` | Allowed value |
+| `🔵 MV/HQ` | Allowed value |
+| `⚫ LV/LQ` | Allowed value |
+
+## Ai Authority Tier
+| Value | Description |
+| :--- | :--- |
+| `tier0-read-reason` | Allowed value |
+| `tier1-write-isolated` | Allowed value |
+| `tier2-safe-execute` | Allowed value |
+| `tier3-human-only` | Allowed value |
+
+## Ai Delegation Mode
+| Value | Description |
+| :--- | :--- |
+| `full-delegation` | Allowed value |
+| `copilot` | Allowed value |
+| `human-only` | Allowed value |
+
+## Ai Execution Role
+| Value | Description |
+| :--- | :--- |
+| `junior-engineer` | Allowed value |
+| `refactorer` | Allowed value |
+| `auditor` | Allowed value |
+| `automation-agent` | Allowed value |
+| `advisor` | Allowed value |
+| `triager` | Allowed value |
+| `documentarian` | Allowed value |
+| `compliance-checker` | Allowed value |
+| `release-scribe` | Allowed value |
+| `threat-modeler` | Allowed value |
+
+## Ai Context Tier
+| Value | Description |
+| :--- | :--- |
+| `execution` | Allowed value |
+| `refinement` | Allowed value |
+| `judgment` | Allowed value |
+
+## Ai Task Domain
+| Value | Description |
+| :--- | :--- |
+| `docs` | Allowed value |
+| `code` | Allowed value |
+| `infra` | Allowed value |
+| `governance` | Allowed value |
+| `security` | Allowed value |
+| `observability` | Allowed value |
+| `ci-cd` | Allowed value |
+
+## Ai Validation Level
+| Value | Description |
+| :--- | :--- |
+| `not-run` | Allowed value |
+| `local-checks` | Allowed value |
+| `ci-green` | Allowed value |
+| `prod-verified` | Allowed value |
+
