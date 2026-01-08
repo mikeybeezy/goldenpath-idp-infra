@@ -11,10 +11,10 @@ backstage:
   
 appConfig: |
   organization:
-    name: Platformers Community
+    name:GoldenPath IDP
 
   app:
-    title: Platformers Community Backstage
+    title: GoldenPath IDP Backstage
     baseUrl: ${BASE_URL}:7007
 
   backend:
