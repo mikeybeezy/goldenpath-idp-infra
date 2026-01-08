@@ -12,21 +12,21 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-08 18:19:50` | **V1 Readiness**: `95.4%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-08 18:52:11` | **V1 Readiness**: `95.3%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `6.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **95.4%** ready for V1 production rollout.
+> The platform is currently **95.3%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 98.3% |
+| **Metadata Integrity** | ✅ | 97.8% |
 | **Injection Integrity** | ✅ | 100.0% |
 | **Architecture Maturity** | 🚧 | 95/120 Active |
-| **Changelog Activity** | ✅ | 88 Entries |
+| **Changelog Activity** | ✅ | 89 Entries |
 
 ## Knowledge Graph Vitality
 
@@ -35,8 +35,8 @@ relates_to:
 | **Architecture Decisions** | 120 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
 | **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
 | **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 88 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 459 | Repository Scan |
+| **Change Logs** | 89 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 460 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -54,13 +54,13 @@ relates_to:
 pie title Production Impact distribution
     "HIGH" : 36
     "MEDIUM" : 33
-    "LOW" : 360
+    "LOW" : 361
     "NONE" : 27
 ```
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `98.3%`
+- **Metadata Compliance**: `97.8%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
