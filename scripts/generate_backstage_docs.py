@@ -88,7 +88,7 @@ def generate_adr_entities():
         with open(output_file, 'w') as f:
             yaml.dump(entity, f, sort_keys=False)
         
-        entities.append(f"./docs/adrs/{component_name}.yaml")
+        entities.append(f"./adrs/{component_name}.yaml")
     
     print(f"✅ Generated {len(entities)} ADR entities")
     return entities
@@ -138,7 +138,7 @@ def generate_changelog_entities():
         with open(output_file, 'w') as f:
             yaml.dump(entity, f, sort_keys=False)
         
-        entities.append(f"./docs/changelogs/{component_name}.yaml")
+        entities.append(f"./changelogs/{component_name}.yaml")
     
     print(f"✅ Generated {len(entities)} changelog entities")
     return entities
