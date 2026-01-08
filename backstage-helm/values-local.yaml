@@ -67,6 +67,8 @@ appConfig: |
     import:
       entityFilename: catalog-info.yaml
       pullRequestBranchName: backstage-integration
+    processingInterval: { seconds: 30 }
+    refreshInterval: { seconds: 60 }
     rules:
       - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User]
 

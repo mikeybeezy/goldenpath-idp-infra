@@ -17,6 +17,7 @@ import yaml
 import json
 import subprocess
 import argparse
+from datetime import datetime
 from pathlib import Path
 
 # Constants
@@ -78,7 +79,43 @@ def sync_catalog(dry_run=True):
 
     print(f"🕵️ Orphans (In AWS only): {len(orphans)}")
     if orphans:
-        for o in orphans: print(f"   - {o}")
+        for o in orphans: print(f"   - o")
+
+    # --- Backstage Integration ---
+    BACKSTAGE_ENTITY_PATH = "backstage-helm/demo-catalog/resources/ecr-registry.yaml"
+    
+    # Generate repository list for description
+    repo_list = "\n".join([f"- {name} ({catalog_repos[name].get('metadata', {}).get('environment', 'unassigned')})" for name in catalog_repos])
+    
+    backstage_resource = {
+        "apiVersion": "backstage.io/v1alpha1",
+        "kind": "Resource",
+        "metadata": {
+            "name": "goldenpath-ecr-registry",
+            "description": f"Master AWS ECR Registry. Manages {len(catalog_repos)} repositories:\n{repo_list}",
+            "links": [
+                {
+                    "url": "https://console.aws.amazon.com/ecr/repositories",
+                    "title": "AWS ECR Console"
+                }
+            ],
+            "annotations": {
+                "backstage.io/managed-by-location": "url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/backstage-helm/demo-catalog/resources/ecr-registry.yaml",
+                "platform/repo-count": str(len(catalog_repos)),
+                "platform/last-sync": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+        },
+        "spec": {
+            "type": "container-registry",
+            "owner": "platform-team",
+            "system": "audio-playback"
+        }
+    }
+
+    print(f"📝 Generating Backstage Entity: {BACKSTAGE_ENTITY_PATH}")
+    os.makedirs(os.path.dirname(BACKSTAGE_ENTITY_PATH), exist_ok=True)
+    with open(BACKSTAGE_ENTITY_PATH, 'w') as f:
+        yaml.dump(backstage_resource, f, sort_keys=False)
 
     # Log Value Heartbeat
     try:
