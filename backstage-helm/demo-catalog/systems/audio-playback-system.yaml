@@ -4,5 +4,5 @@ metadata:
   name: audio-playback
   description: Audio playback system
 spec:
-  owner: team-c
-  domain: playback
+  owner: platform-team
+  domain: platform-core

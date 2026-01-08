@@ -10,6 +10,7 @@ spec:
     - ./all-domains.yaml
     - ./all-resources.yaml
     - ./all-systems.yaml
+    - ./goldenpath-org.yaml
     - ./docs/adrs-index.yaml
     - ./docs/changelogs-index.yaml
     - ./templates/ecr-request.yaml

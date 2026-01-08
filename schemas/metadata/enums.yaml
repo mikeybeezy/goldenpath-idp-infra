@@ -167,3 +167,26 @@ vq_class:
   - 🟡 HV/LQ
   - 🔵 MV/HQ
   - ⚫ LV/LQ
+
+user_types:
+  - regular-user
+  - service-account
+  - system-admin
+
+system_types:
+  - service-ecosystem
+  - data-pipeline
+  - platform-infrastructure
+
+resource_types:
+  - cloud-storage
+  - compute-instance
+  - database-cluster
+  - container-registry
+
+api_types:
+  - openapi
+  - graphql
+  - grpc
+  - asyncapi
+
