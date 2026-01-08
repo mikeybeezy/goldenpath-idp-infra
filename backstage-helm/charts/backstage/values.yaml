@@ -81,6 +81,11 @@ appConfig: |
     baseUrl: ${BASE_URL}:7007
     listen: ':7007'
     
+    reading:
+      allow:
+        - host: raw.githubusercontent.com
+        - host: '*.githubusercontent.com'
+    
     database:
       client: pg
       connection:
@@ -119,6 +124,11 @@ appConfig: |
       target: ${CUSTOM_CATALOG_LOCATION}
       rules:
       - allow: [Component, System, API, Resource, Location]
+    import:
+      entityFilename: catalog-info.yaml
+      pullRequestBranchName: backstage-integration
+    rules:
+      - allow: [Component, System, API, Resource, Location, User, Group]
 
   kubernetes:
     serviceLocatorMethod:
