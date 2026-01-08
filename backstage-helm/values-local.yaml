@@ -1,0 +1,21 @@
+# Backstage Catalog Configuration Override
+# Use this file to point Backstage to the Golden Path demo catalog with ECR entities
+
+catalog:
+  # Update this to point to your GitHub repository
+  demoCatalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/demo-catalog/all.yaml"
+  customCatalogLocation: "None"
+
+backstage:
+  baseURL: "http://localhost"
+
+# Database connection (adjust if using different PostgreSQL setup)
+postgres:
+  port: "5432"
+  host: backstage-rw  # For Helm deployment with CloudNativePG
+  user: app
+  password: password
+
+# GitHub integration (optional - for scaffolder templates)
+github:
+  accessToken: ""  # Set via --set github.accessToken=${GH_TOKEN} or export
