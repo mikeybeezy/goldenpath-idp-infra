@@ -79,10 +79,10 @@ metadata:
     goldenpath-idp.io/id: REGISTRY_NEW_WP_REG_2
     goldenpath-idp.io/lineage: explicit
   labels:
-    owner: michael-babs-2
+    owner: platform-team
 spec:
   type: container-registry
-  owner: michael-babs-2
+  owner: platform-team
   lifecycle: pending
   system: container-infrastructure
 ---
@@ -101,10 +101,10 @@ metadata:
     goldenpath-idp.io/id: REGISTRY_NEW_APP_16
     goldenpath-idp.io/lineage: explicit
   labels:
-    owner: michael-babs-16
+    owner: platform-team
 spec:
   type: container-registry
-  owner: michael-babs-16
+  owner: platform-team
   lifecycle: pending
   system: container-infrastructure
 ---
@@ -123,10 +123,10 @@ metadata:
     goldenpath-idp.io/id: REGISTRY_NEW_APP_15
     goldenpath-idp.io/lineage: explicit
   labels:
-    owner: michael-babs-15
+    owner: platform-team
 spec:
   type: container-registry
-  owner: michael-babs-15
+  owner: platform-team
   lifecycle: pending
   system: container-infrastructure
 ---
@@ -145,10 +145,10 @@ metadata:
     goldenpath-idp.io/id: REGISTRY_NEW_APP_14
     goldenpath-idp.io/lineage: explicit
   labels:
-    owner: michael-babs-14
+    owner: platform-team
 spec:
   type: container-registry
-  owner: michael-babs-14
+  owner: platform-team
   lifecycle: pending
   system: container-infrastructure
 ---
@@ -167,10 +167,10 @@ metadata:
     goldenpath-idp.io/id: REGISTRY_NEW_APP_13
     goldenpath-idp.io/lineage: explicit
   labels:
-    owner: michael-babs-13
+    owner: platform-team
 spec:
   type: container-registry
-  owner: michael-babs-13
+  owner: platform-team
   lifecycle: pending
   system: container-infrastructure
 ---
@@ -189,10 +189,10 @@ metadata:
     goldenpath-idp.io/id: REGISTRY_NEW_APP_10
     goldenpath-idp.io/lineage: explicit
   labels:
-    owner: michael-babs-10
+    owner: platform-team
 spec:
   type: container-registry
-  owner: michael-babs-10
+  owner: platform-team
   lifecycle: pending
   system: container-infrastructure
 ---
@@ -211,9 +211,9 @@ metadata:
     goldenpath-idp.io/id: REGISTRY_MY_REG_APP_3
     goldenpath-idp.io/lineage: explicit
   labels:
-    owner: michael-babs-3
+    owner: platform-team
 spec:
   type: container-registry
-  owner: michael-babs-3
+  owner: platform-team
   lifecycle: pending
   system: container-infrastructure

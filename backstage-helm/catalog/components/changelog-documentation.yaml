@@ -6,7 +6,7 @@ metadata:
   description: Complete history of platform changes, features, and improvements
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
-    backstage.io/techdocs-ref: dir:.
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
   tags:
     - governance
     - documentation

@@ -178,6 +178,17 @@ system_types:
   - data-pipeline
   - platform-infrastructure
 
+backstage_kinds:
+  - Component
+  - System
+  - API
+  - Resource
+  - Location
+  - Template
+  - Domain
+  - Group
+  - User
+
 resource_types:
   - cloud-storage
   - compute-instance

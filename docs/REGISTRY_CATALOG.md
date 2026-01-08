@@ -49,13 +49,13 @@ relates_to:
 
 | Repository | Owner | Risk | Status |
 |----------|-------|------|--------|
-| `my-reg-app-3` | michael-babs-3 | 🟢 low | pending |
-| `new-app-10` | michael-babs-10 | 🟢 low | pending |
-| `new-app-13` | michael-babs-13 | 🟢 low | pending |
-| `new-app-14` | michael-babs-14 | 🟢 low | pending |
-| `new-app-15` | michael-babs-15 | 🟢 low | pending |
-| `new-app-16` | michael-babs-16 | 🟢 low | pending |
-| `new-wp-reg-2` | michael-babs-2 | 🟢 low | pending |
+| `my-reg-app-3` | platform-team | 🟢 low | pending |
+| `new-app-10` | platform-team | 🟢 low | pending |
+| `new-app-13` | platform-team | 🟢 low | pending |
+| `new-app-14` | platform-team | 🟢 low | pending |
+| `new-app-15` | platform-team | 🟢 low | pending |
+| `new-app-16` | platform-team | 🟢 low | pending |
+| `new-wp-reg-2` | platform-team | 🟢 low | pending |
 | `staging-api` | app-team-api | 🟡 medium | active |
 | `test-app-dev` | app-team-test | 🟢 low | active |
 | `wordpress-platform` | app-team-wordpress |  high | active |
@@ -103,7 +103,7 @@ relates_to:
 ### my-reg-app-3
 
 **ID:** `REGISTRY_MY_REG_APP_3`
-**Owner:** michael-babs-3
+**Owner:** platform-team
 **Risk:** 🟢 low
 **Status:** pending
 **Created:** 2026-01-06
@@ -118,7 +118,7 @@ relates_to:
 ### new-app-10
 
 **ID:** `REGISTRY_NEW_APP_10`
-**Owner:** michael-babs-10
+**Owner:** platform-team
 **Risk:** 🟢 low
 **Status:** pending
 **Created:** 2026-01-06
@@ -133,7 +133,7 @@ relates_to:
 ### new-app-13
 
 **ID:** `REGISTRY_NEW_APP_13`
-**Owner:** michael-babs-13
+**Owner:** platform-team
 **Risk:** 🟢 low
 **Status:** pending
 **Created:** 2026-01-06
@@ -148,7 +148,7 @@ relates_to:
 ### new-app-14
 
 **ID:** `REGISTRY_NEW_APP_14`
-**Owner:** michael-babs-14
+**Owner:** platform-team
 **Risk:** 🟢 low
 **Status:** pending
 **Created:** 2026-01-06
@@ -163,7 +163,7 @@ relates_to:
 ### new-app-15
 
 **ID:** `REGISTRY_NEW_APP_15`
-**Owner:** michael-babs-15
+**Owner:** platform-team
 **Risk:** 🟢 low
 **Status:** pending
 **Created:** 2026-01-06
@@ -178,7 +178,7 @@ relates_to:
 ### new-app-16
 
 **ID:** `REGISTRY_NEW_APP_16`
-**Owner:** michael-babs-16
+**Owner:** platform-team
 **Risk:** 🟢 low
 **Status:** pending
 **Created:** 2026-01-06
@@ -193,7 +193,7 @@ relates_to:
 ### new-wp-reg-2
 
 **ID:** `REGISTRY_NEW_WP_REG_2`
-**Owner:** michael-babs-2
+**Owner:** platform-team
 **Risk:** 🟢 low
 **Status:** pending
 **Created:** 2026-01-06

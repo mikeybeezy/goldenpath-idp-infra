@@ -60,13 +60,12 @@ spec:
       name: Trigger Creation Workflow
       action: github:actions:dispatch
       input:
+        repoUrl: github.com?owner=mikeybeezy&repo=goldenpath-idp-infra
         workflowId: create-ecr-registry.yml
-        repo: goldenpath-idp-infra
-        owner: mikeybeezy
         branchOrTagName: development
         workflowInputs:
           registry_name: ${{ parameters.name }}
-          owner: ${{ parameters.owner }}
+          owner: ${{ (parameters.owner | parseEntityRef).name | lower }}
           environment: ${{ parameters.environment }}
           risk: ${{ parameters.risk }}
 
