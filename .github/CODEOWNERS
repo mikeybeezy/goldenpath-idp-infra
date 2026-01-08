@@ -7,7 +7,7 @@
 # Automation & Governance
 .github/workflows/    @mikeybeezy
 scripts/              @mikeybeezy
-docs/governance/      @mikeybeezy
+docs/10-governance/      @mikeybeezy
 docs/adrs/            @mikeybeezy
 
 # Infrastructure

@@ -2,11 +2,8 @@
 id: 02_PLATFORM_BOUNDARIES
 title: Platform Boundaries & Contract
 type: contract
-category: unknown
-version: '1.0'
 owner: platform-team
 status: active
-dependencies: []
 risk_profile:
   production_impact: high
   security_risk: none
@@ -14,9 +11,10 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+category: platform
+version: '1.0'
+dependencies: []
 relates_to:
   - 01_GOVERNANCE
   - 21_CI_ENVIRONMENT_CONTRACT
@@ -24,6 +22,8 @@ relates_to:
   - 35_RESOURCE_TAGGING
   - 40_CHANGELOG_GOVERNANCE
   - 42_APP_TEMPLATE_LIVING
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Platform Boundaries & Contract

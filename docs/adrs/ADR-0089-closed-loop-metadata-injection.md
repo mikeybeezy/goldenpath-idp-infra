@@ -1,23 +1,15 @@
 ---
-id: ADR-0089
+id: ADR-0089-closed-loop-metadata-injection
 title: 'ADR-0089: Closed-Loop Metadata Injection'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-04
-  breaking_change: false
-relates_to: []
+lifecycle: active
+version: '1.0'
+supported_until: 2028-01-04
+breaking_change: false
 ---
 
 # ADR-0089: Closed-Loop Metadata Injection

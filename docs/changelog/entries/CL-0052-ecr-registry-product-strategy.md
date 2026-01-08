@@ -1,13 +1,7 @@
 ---
 id: CL-0052-ecr-registry-product-strategy
 title: 'CL-0052: ECR Registry Product-Based Strategy & Shared Responsibility Model'
-type: governance
-category: infrastructure
-version: '1.0'
-owner: platform-team
-status: active
-dependencies:
-  - CL-0051
+type: changelog
 risk_profile:
   production_impact: medium
   security_risk: low
@@ -15,13 +9,16 @@ risk_profile:
 reliability:
   rollback_strategy: revert-adr
   observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+version: '1.0'
+dependencies:
+  - CL-0051
 relates_to:
   - ADR-0092
   - ADR-0091
   - CL-0051
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # CL-0052: ECR Registry Product-Based Strategy & Shared Responsibility Model
@@ -117,10 +114,10 @@ Related: [ADR-0092](../adrs/ADR-0092-ecr-registry-product-strategy.md), [ADR-009
 - ✅ Registry catalog schema defined in ADR
 - ✅ Shared responsibility matrix documented
 - ✅ Risk-based governance policies specified
-- ⏳ Registry catalog YAML to be created (next step)
-- ⏳ Platform team runbooks to be created
-- ⏳ App team runbooks to be created
-- ⏳ Terraform module updates to enforce risk-based policies (future)
+-  Registry catalog YAML to be created (next step)
+-  Platform team runbooks to be created
+-  App team runbooks to be created
+-  Terraform module updates to enforce risk-based policies (future)
 
 ## Next Steps
 

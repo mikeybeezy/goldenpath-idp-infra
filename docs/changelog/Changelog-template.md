@@ -1,12 +1,7 @@
 ---
 id: Changelog-template
 title: 'CL-0001: <short title>'
-type: template
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
+type: changelog
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,11 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - CL-0001
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # CL-0001: <short title>
@@ -60,7 +56,7 @@ Related: <ADR/PR/Issue links>
 
 ### Documented
 
-- <docs/runbooks/ADR updates>
+- <docs/70-operations/runbooks/ADR updates>
 
 ### Known limitations
 

@@ -1,4 +1,4 @@
-# SOURCE: https://cloud.google.com/kubernetes-engine/docs/tutorials/guestbook
+# Managed by scripts/standardize_metadata.py
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -7,6 +7,9 @@ metadata:
     app: redis
     role: follower
     tier: backend
+  annotations:
+    goldenpath.idp/id: APPS_SAMPLE_STATELESS_APP_METADATA
+    goldenpath.idp/owner: platform-team
 spec:
   replicas: 2
   selector:
@@ -20,11 +23,11 @@ spec:
         tier: backend
     spec:
       containers:
-      - name: follower
-        image: gcr.io/google_samples/gb-redis-follower:v2
-        resources:
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        ports:
-        - containerPort: 6379
+        - name: follower
+          image: gcr.io/google_samples/gb-redis-follower:v2
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 6379

@@ -1,6 +1,12 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v2
 name: stateful-app
 description: Golden Path stateful app template
 type: application
 version: 0.1.0
-appVersion: "1.0.0"
+appVersion: 1.0.0
+governance:
+  id: APPS_HELM_METADATA
+  owner: platform-team
+  risk_profile: null
+  reliability: null

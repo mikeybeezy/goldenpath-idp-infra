@@ -1,8 +1,11 @@
----
+# Managed by scripts/standardize_metadata.py
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: nfs-provisioner-role-binding
+  annotations:
+    goldenpath.idp/id: APPS_WP_DEPLOYMENT_METADATA
+    goldenpath.idp/owner: None
 subjects:
   - kind: ServiceAccount
     name: default

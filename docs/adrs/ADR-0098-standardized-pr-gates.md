@@ -1,24 +1,14 @@
 ---
-id: ADR-0098
+id: ADR-0098-standardized-pr-gates
 title: 'ADR-0098: Standardized PR Gates for ECR Pipeline'
-type: decision
-category: adrs
+type: adr
+lifecycle: active
 version: 1.0
-owner: platform-team
-status: accepted
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-12-31
-  breaking_change: false
 relates_to:
   - ADR-0092
   - ADR-0093
+supported_until: 2028-12-31
+breaking_change: false
 ---
 
 # ADR-0098: Standardized PR Gates for ECR Pipeline

@@ -1,0 +1,33 @@
+---
+id: HELM_VALUES_METADATA
+title: metadata
+type: documentation
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+status: active
+governance:
+  id: HELM_CERT_MANAGER_METADATA
+  owner: null
+  risk_profile: null
+  reliability: null

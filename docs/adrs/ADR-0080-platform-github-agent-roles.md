@@ -1,24 +1,17 @@
 ---
-id: ADR-0080
+id: ADR-0080-platform-github-agent-roles
 title: 'ADR-0080: GitHub App Roles for AI/Automation Access'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-04
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - ADR-0080
+supported_until: 2028-01-04
+breaking_change: false
 ---
 
 # ADR-0080: GitHub App Roles for AI/Automation Access

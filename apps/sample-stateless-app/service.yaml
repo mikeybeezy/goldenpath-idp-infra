@@ -1,20 +1,21 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ values.app_name }}"
-  namespace: "{{ values.namespace }}"
+  name: '{{ values.app_name }}'
+  namespace: '{{ values.namespace }}'
   annotations:
-    goldenpath.idp/id: "{{ values.governance.id }}"
-    goldenpath.idp/owner: "{{ values.governance.owner }}"
-    goldenpath.idp/risk: "{{ values.governance.risk_profile.production_impact }}"
+    goldenpath.idp/id: APPS_SAMPLE_STATELESS_APP_METADATA
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: '{{ values.governance.risk_profile.production_impact }}'
   labels:
-    app.kubernetes.io/name: "{{ values.app_name }}"
-    app.kubernetes.io/instance: "{{ values.app_name }}"
+    app.kubernetes.io/name: '{{ values.app_name }}'
+    app.kubernetes.io/instance: '{{ values.app_name }}'
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: "{{ values.app_name }}"
+    app.kubernetes.io/name: '{{ values.app_name }}'
   ports:
     - name: http
-      port: "{{ values.service_port }}"
+      port: '{{ values.service_port }}'
       targetPort: http

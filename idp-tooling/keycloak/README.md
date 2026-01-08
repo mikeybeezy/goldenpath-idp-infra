@@ -2,26 +2,19 @@
 id: IDP_TOOLING_KEYCLOAK_CONFIG
 title: Keycloak Configuration Module
 type: documentation
-category: idp-tooling
-version: 1.0
-owner: platform-team
-status: active
-dependencies:
-  - provider:keycloak
 risk_profile:
   production_impact: high
   security_risk: high
   coupling_risk: medium
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
 relates_to:
   - HELM_KEYCLOAK
   - ADR-0005
   - 06_IDENTITY_AND_ACCESS
+version: 1.0
+dependencies:
+  - provider:keycloak
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Keycloak Configuration Module

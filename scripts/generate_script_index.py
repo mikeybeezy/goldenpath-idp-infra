@@ -68,10 +68,19 @@ def generate_index():
         "id: PLATFORM_SCRIPTS_INDEX",
         "title: Platform Automation Scripts Index (Auto-Generated)",
         "type: documentation",
-        "category: tooling",
+        "category: governance",
         "version: '1.0'",
         "owner: platform-team",
         "status: active",
+        "risk_profile:",
+        "  production_impact: low",
+        "  security_risk: none",
+        "  coupling_risk: low",
+        "reliability:",
+        "  rollback_strategy: git-revert",
+        "  observability_tier: bronze",
+        "lifecycle: active",
+        "supported_until: '2028-01-01'",
         "last_updated: 2026-01-06",
         "dependencies:",
         "  - python3",
@@ -98,7 +107,7 @@ def generate_index():
             lines.append("| Script | Description |")
             lines.append("| :--- | :--- |")
 
-        link = f"[{script['name']}](file://{os.path.abspath(script['path'])})"
+        link = f"[{script['name']}](file://{script['path']})"
         desc = script['description'] or "Utility script"
         lines.append(f"| {link} | {desc} |")
 

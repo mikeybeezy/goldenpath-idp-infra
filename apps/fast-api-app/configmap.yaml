@@ -1,426 +1,177 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fastapi-dashboard
   namespace: monitoring
   labels:
-    grafana_dashboard: "1"
+    grafana_dashboard: '1'
+  annotations:
+    goldenpath.idp/id: APPS_FAST_API_APP_METADATA
+    goldenpath.idp/owner: platform-team
 data:
-  fastapi-dashboard.json: |
-    {
-        "annotations": {
-            "list": [
-                {
-                    "builtIn": 1,
-                    "datasource": "-- Grafana --",
-                    "enable": true,
-                    "hide": true,
-                    "iconColor": "rgba(0, 211, 255, 1)",
-                    "name": "Annotations & Alerts",
-                    "type": "dashboard"
-                }
-            ]
-        },
-        "editable": true,
-        "gnetId": null,
-        "graphTooltip": 0,
-        "id": 1,
-        "links": [],
-        "panels": [
-            {
-                "aliasColors": {},
-                "bars": false,
-                "dashLength": 10,
-                "dashes": false,
-                "datasource": "Prometheus",
-                "fieldConfig": {
-                    "defaults": {
-                        "custom": {}
-                    },
-                    "overrides": []
-                },
-                "fill": 1,
-                "fillGradient": 0,
-                "gridPos": {
-                    "h": 8,
-                    "w": 12,
-                    "x": 0,
-                    "y": 0
-                },
-                "hiddenSeries": false,
-                "id": 2,
-                "legend": {
-                    "avg": false,
-                    "current": false,
-                    "max": false,
-                    "min": false,
-                    "show": true,
-                    "total": false,
-                    "values": false
-                },
-                "lines": true,
-                "linewidth": 1,
-                "nullPointMode": "null",
-                "options": {
-                    "alertThreshold": true
-                },
-                "percentage": false,
-                "pluginVersion": "7.2.0",
-                "pointradius": 2,
-                "points": false,
-                "renderer": "flot",
-                "seriesOverrides": [],
-                "spaceLength": 10,
-                "stack": false,
-                "steppedLine": false,
-                "targets": [
-                    {
-                        "expr": "rate(http_request_total[1m])",
-                        "interval": "",
-                        "legendFormat": "{{method}} {{path}}",
-                        "refId": "A"
-                    }
-                ],
-                "thresholds": [],
-                "timeFrom": null,
-                "timeRegions": [],
-                "timeShift": null,
-                "title": "Request Rate",
-                "tooltip": {
-                    "shared": true,
-                    "sort": 0,
-                    "value_type": "individual"
-                },
-                "type": "graph",
-                "xaxis": {
-                    "buckets": null,
-                    "mode": "time",
-                    "name": null,
-                    "show": true,
-                    "values": []
-                },
-                "yaxes": [
-                    {
-                        "format": "short",
-                        "label": null,
-                        "logBase": 1,
-                        "max": null,
-                        "min": null,
-                        "show": true
-                    },
-                    {
-                        "format": "short",
-                        "label": null,
-                        "logBase": 1,
-                        "max": null,
-                        "min": null,
-                        "show": true
-                    }
-                ],
-                "yaxis": {
-                    "align": false,
-                    "alignLevel": null
-                }
-            },
-            {
-                "aliasColors": {},
-                "bars": false,
-                "dashLength": 10,
-                "dashes": false,
-                "datasource": "Prometheus",
-                "fieldConfig": {
-                    "defaults": {
-                        "custom": {}
-                    },
-                    "overrides": []
-                },
-                "fill": 1,
-                "fillGradient": 0,
-                "gridPos": {
-                    "h": 8,
-                    "w": 12,
-                    "x": 12,
-                    "y": 0
-                },
-                "hiddenSeries": false,
-                "id": 4,
-                "legend": {
-                    "avg": false,
-                    "current": false,
-                    "max": false,
-                    "min": false,
-                    "show": true,
-                    "total": false,
-                    "values": false
-                },
-                "lines": true,
-                "linewidth": 1,
-                "nullPointMode": "null",
-                "options": {
-                    "alertThreshold": true
-                },
-                "percentage": false,
-                "pluginVersion": "7.2.0",
-                "pointradius": 2,
-                "points": false,
-                "renderer": "flot",
-                "seriesOverrides": [],
-                "spaceLength": 10,
-                "stack": false,
-                "steppedLine": false,
-                "targets": [
-                    {
-                        "expr": "rate(http_request_duration_seconds_sum[1m]) / rate(http_request_duration_seconds_count[1m])",
-                        "interval": "",
-                        "legendFormat": "{{method}} {{path}}",
-                        "refId": "A"
-                    }
-                ],
-                "thresholds": [],
-                "timeFrom": null,
-                "timeRegions": [],
-                "timeShift": null,
-                "title": "Average Response Time",
-                "tooltip": {
-                    "shared": true,
-                    "sort": 0,
-                    "value_type": "individual"
-                },
-                "type": "graph",
-                "xaxis": {
-                    "buckets": null,
-                    "mode": "time",
-                    "name": null,
-                    "show": true,
-                    "values": []
-                },
-                "yaxes": [
-                    {
-                        "format": "s",
-                        "label": null,
-                        "logBase": 1,
-                        "max": null,
-                        "min": null,
-                        "show": true
-                    },
-                    {
-                        "format": "short",
-                        "label": null,
-                        "logBase": 1,
-                        "max": null,
-                        "min": null,
-                        "show": true
-                    }
-                ],
-                "yaxis": {
-                    "align": false,
-                    "alignLevel": null
-                }
-            },
-            {
-                "aliasColors": {},
-                "bars": false,
-                "dashLength": 10,
-                "dashes": false,
-                "datasource": "Prometheus",
-                "fieldConfig": {
-                    "defaults": {
-                        "custom": {}
-                    },
-                    "overrides": []
-                },
-                "fill": 1,
-                "fillGradient": 0,
-                "gridPos": {
-                    "h": 8,
-                    "w": 12,
-                    "x": 0,
-                    "y": 8
-                },
-                "hiddenSeries": false,
-                "id": 6,
-                "legend": {
-                    "avg": false,
-                    "current": false,
-                    "max": false,
-                    "min": false,
-                    "show": true,
-                    "total": false,
-                    "values": false
-                },
-                "lines": true,
-                "linewidth": 1,
-                "nullPointMode": "null",
-                "options": {
-                    "alertThreshold": true
-                },
-                "percentage": false,
-                "pluginVersion": "7.2.0",
-                "pointradius": 2,
-                "points": false,
-                "renderer": "flot",
-                "seriesOverrides": [],
-                "spaceLength": 10,
-                "stack": false,
-                "steppedLine": false,
-                "targets": [
-                    {
-                        "expr": "process_resident_memory_bytes",
-                        "interval": "",
-                        "legendFormat": "Memory Usage",
-                        "refId": "A"
-                    }
-                ],
-                "thresholds": [],
-                "timeFrom": null,
-                "timeRegions": [],
-                "timeShift": null,
-                "title": "Memory Usage",
-                "tooltip": {
-                    "shared": true,
-                    "sort": 0,
-                    "value_type": "individual"
-                },
-                "type": "graph",
-                "xaxis": {
-                    "buckets": null,
-                    "mode": "time",
-                    "name": null,
-                    "show": true,
-                    "values": []
-                },
-                "yaxes": [
-                    {
-                        "format": "bytes",
-                        "label": null,
-                        "logBase": 1,
-                        "max": null,
-                        "min": null,
-                        "show": true
-                    },
-                    {
-                        "format": "short",
-                        "label": null,
-                        "logBase": 1,
-                        "max": null,
-                        "min": null,
-                        "show": true
-                    }
-                ],
-                "yaxis": {
-                    "align": false,
-                    "alignLevel": null
-                }
-            },
-            {
-                "aliasColors": {},
-                "bars": false,
-                "dashLength": 10,
-                "dashes": false,
-                "datasource": "Prometheus",
-                "fieldConfig": {
-                    "defaults": {
-                        "custom": {}
-                    },
-                    "overrides": []
-                },
-                "fill": 1,
-                "fillGradient": 0,
-                "gridPos": {
-                    "h": 8,
-                    "w": 12,
-                    "x": 12,
-                    "y": 8
-                },
-                "hiddenSeries": false,
-                "id": 8,
-                "legend": {
-                    "avg": false,
-                    "current": false,
-                    "max": false,
-                    "min": false,
-                    "show": true,
-                    "total": false,
-                    "values": false
-                },
-                "lines": true,
-                "linewidth": 1,
-                "nullPointMode": "null",
-                "options": {
-                    "alertThreshold": true
-                },
-                "percentage": false,
-                "pluginVersion": "7.2.0",
-                "pointradius": 2,
-                "points": false,
-                "renderer": "flot",
-                "seriesOverrides": [],
-                "spaceLength": 10,
-                "stack": false,
-                "steppedLine": false,
-                "targets": [
-                    {
-                        "expr": "process_cpu_usage",
-                        "interval": "",
-                        "legendFormat": "CPU Usage",
-                        "refId": "A"
-                    }
-                ],
-                "thresholds": [],
-                "timeFrom": null,
-                "timeRegions": [],
-                "timeShift": null,
-                "title": "CPU Usage",
-                "tooltip": {
-                    "shared": true,
-                    "sort": 0,
-                    "value_type": "individual"
-                },
-                "type": "graph",
-                "xaxis": {
-                    "buckets": null,
-                    "mode": "time",
-                    "name": null,
-                    "show": true,
-                    "values": []
-                },
-                "yaxes": [
-                    {
-                        "format": "percent",
-                        "label": null,
-                        "logBase": 1,
-                        "max": null,
-                        "min": null,
-                        "show": true
-                    },
-                    {
-                        "format": "short",
-                        "label": null,
-                        "logBase": 1,
-                        "max": null,
-                        "min": null,
-                        "show": true
-                    }
-                ],
-                "yaxis": {
-                    "align": false,
-                    "alignLevel": null
-                }
-            }
-        ],
-        "schemaVersion": 25,
-        "style": "dark",
-        "tags": [],
-        "templating": {
-            "list": []
-        },
-        "time": {
-            "from": "now-6h",
-            "to": "now"
-        },
-        "timepicker": {},
-        "timezone": "",
-        "title": "FastAPI Python Application Dashboard",
-        "uid": "python_fastapi_dashboard",
-        "version": 1
-    }
+  fastapi-dashboard.json: "{\n    \"annotations\": {\n        \"list\": [\n      \
+    \      {\n                \"builtIn\": 1,\n                \"datasource\": \"\
+    -- Grafana --\",\n                \"enable\": true,\n                \"hide\"\
+    : true,\n                \"iconColor\": \"rgba(0, 211, 255, 1)\",\n          \
+    \      \"name\": \"Annotations & Alerts\",\n                \"type\": \"dashboard\"\
+    \n            }\n        ]\n    },\n    \"editable\": true,\n    \"gnetId\": null,\n\
+    \    \"graphTooltip\": 0,\n    \"id\": 1,\n    \"links\": [],\n    \"panels\"\
+    : [\n        {\n            \"aliasColors\": {},\n            \"bars\": false,\n\
+    \            \"dashLength\": 10,\n            \"dashes\": false,\n           \
+    \ \"datasource\": \"Prometheus\",\n            \"fieldConfig\": {\n          \
+    \      \"defaults\": {\n                    \"custom\": {}\n                },\n\
+    \                \"overrides\": []\n            },\n            \"fill\": 1,\n\
+    \            \"fillGradient\": 0,\n            \"gridPos\": {\n              \
+    \  \"h\": 8,\n                \"w\": 12,\n                \"x\": 0,\n        \
+    \        \"y\": 0\n            },\n            \"hiddenSeries\": false,\n    \
+    \        \"id\": 2,\n            \"legend\": {\n                \"avg\": false,\n\
+    \                \"current\": false,\n                \"max\": false,\n      \
+    \          \"min\": false,\n                \"show\": true,\n                \"\
+    total\": false,\n                \"values\": false\n            },\n         \
+    \   \"lines\": true,\n            \"linewidth\": 1,\n            \"nullPointMode\"\
+    : \"null\",\n            \"options\": {\n                \"alertThreshold\": true\n\
+    \            },\n            \"percentage\": false,\n            \"pluginVersion\"\
+    : \"7.2.0\",\n            \"pointradius\": 2,\n            \"points\": false,\n\
+    \            \"renderer\": \"flot\",\n            \"seriesOverrides\": [],\n \
+    \           \"spaceLength\": 10,\n            \"stack\": false,\n            \"\
+    steppedLine\": false,\n            \"targets\": [\n                {\n       \
+    \             \"expr\": \"rate(http_request_total[1m])\",\n                  \
+    \  \"interval\": \"\",\n                    \"legendFormat\": \"{{method}} {{path}}\"\
+    ,\n                    \"refId\": \"A\"\n                }\n            ],\n \
+    \           \"thresholds\": [],\n            \"timeFrom\": null,\n           \
+    \ \"timeRegions\": [],\n            \"timeShift\": null,\n            \"title\"\
+    : \"Request Rate\",\n            \"tooltip\": {\n                \"shared\": true,\n\
+    \                \"sort\": 0,\n                \"value_type\": \"individual\"\n\
+    \            },\n            \"type\": \"graph\",\n            \"xaxis\": {\n\
+    \                \"buckets\": null,\n                \"mode\": \"time\",\n   \
+    \             \"name\": null,\n                \"show\": true,\n             \
+    \   \"values\": []\n            },\n            \"yaxes\": [\n               \
+    \ {\n                    \"format\": \"short\",\n                    \"label\"\
+    : null,\n                    \"logBase\": 1,\n                    \"max\": null,\n\
+    \                    \"min\": null,\n                    \"show\": true\n    \
+    \            },\n                {\n                    \"format\": \"short\"\
+    ,\n                    \"label\": null,\n                    \"logBase\": 1,\n\
+    \                    \"max\": null,\n                    \"min\": null,\n    \
+    \                \"show\": true\n                }\n            ],\n         \
+    \   \"yaxis\": {\n                \"align\": false,\n                \"alignLevel\"\
+    : null\n            }\n        },\n        {\n            \"aliasColors\": {},\n\
+    \            \"bars\": false,\n            \"dashLength\": 10,\n            \"\
+    dashes\": false,\n            \"datasource\": \"Prometheus\",\n            \"\
+    fieldConfig\": {\n                \"defaults\": {\n                    \"custom\"\
+    : {}\n                },\n                \"overrides\": []\n            },\n\
+    \            \"fill\": 1,\n            \"fillGradient\": 0,\n            \"gridPos\"\
+    : {\n                \"h\": 8,\n                \"w\": 12,\n                \"\
+    x\": 12,\n                \"y\": 0\n            },\n            \"hiddenSeries\"\
+    : false,\n            \"id\": 4,\n            \"legend\": {\n                \"\
+    avg\": false,\n                \"current\": false,\n                \"max\": false,\n\
+    \                \"min\": false,\n                \"show\": true,\n          \
+    \      \"total\": false,\n                \"values\": false\n            },\n\
+    \            \"lines\": true,\n            \"linewidth\": 1,\n            \"nullPointMode\"\
+    : \"null\",\n            \"options\": {\n                \"alertThreshold\": true\n\
+    \            },\n            \"percentage\": false,\n            \"pluginVersion\"\
+    : \"7.2.0\",\n            \"pointradius\": 2,\n            \"points\": false,\n\
+    \            \"renderer\": \"flot\",\n            \"seriesOverrides\": [],\n \
+    \           \"spaceLength\": 10,\n            \"stack\": false,\n            \"\
+    steppedLine\": false,\n            \"targets\": [\n                {\n       \
+    \             \"expr\": \"rate(http_request_duration_seconds_sum[1m]) / rate(http_request_duration_seconds_count[1m])\"\
+    ,\n                    \"interval\": \"\",\n                    \"legendFormat\"\
+    : \"{{method}} {{path}}\",\n                    \"refId\": \"A\"\n           \
+    \     }\n            ],\n            \"thresholds\": [],\n            \"timeFrom\"\
+    : null,\n            \"timeRegions\": [],\n            \"timeShift\": null,\n\
+    \            \"title\": \"Average Response Time\",\n            \"tooltip\": {\n\
+    \                \"shared\": true,\n                \"sort\": 0,\n           \
+    \     \"value_type\": \"individual\"\n            },\n            \"type\": \"\
+    graph\",\n            \"xaxis\": {\n                \"buckets\": null,\n     \
+    \           \"mode\": \"time\",\n                \"name\": null,\n           \
+    \     \"show\": true,\n                \"values\": []\n            },\n      \
+    \      \"yaxes\": [\n                {\n                    \"format\": \"s\"\
+    ,\n                    \"label\": null,\n                    \"logBase\": 1,\n\
+    \                    \"max\": null,\n                    \"min\": null,\n    \
+    \                \"show\": true\n                },\n                {\n     \
+    \               \"format\": \"short\",\n                    \"label\": null,\n\
+    \                    \"logBase\": 1,\n                    \"max\": null,\n   \
+    \                 \"min\": null,\n                    \"show\": true\n       \
+    \         }\n            ],\n            \"yaxis\": {\n                \"align\"\
+    : false,\n                \"alignLevel\": null\n            }\n        },\n  \
+    \      {\n            \"aliasColors\": {},\n            \"bars\": false,\n   \
+    \         \"dashLength\": 10,\n            \"dashes\": false,\n            \"\
+    datasource\": \"Prometheus\",\n            \"fieldConfig\": {\n              \
+    \  \"defaults\": {\n                    \"custom\": {}\n                },\n \
+    \               \"overrides\": []\n            },\n            \"fill\": 1,\n\
+    \            \"fillGradient\": 0,\n            \"gridPos\": {\n              \
+    \  \"h\": 8,\n                \"w\": 12,\n                \"x\": 0,\n        \
+    \        \"y\": 8\n            },\n            \"hiddenSeries\": false,\n    \
+    \        \"id\": 6,\n            \"legend\": {\n                \"avg\": false,\n\
+    \                \"current\": false,\n                \"max\": false,\n      \
+    \          \"min\": false,\n                \"show\": true,\n                \"\
+    total\": false,\n                \"values\": false\n            },\n         \
+    \   \"lines\": true,\n            \"linewidth\": 1,\n            \"nullPointMode\"\
+    : \"null\",\n            \"options\": {\n                \"alertThreshold\": true\n\
+    \            },\n            \"percentage\": false,\n            \"pluginVersion\"\
+    : \"7.2.0\",\n            \"pointradius\": 2,\n            \"points\": false,\n\
+    \            \"renderer\": \"flot\",\n            \"seriesOverrides\": [],\n \
+    \           \"spaceLength\": 10,\n            \"stack\": false,\n            \"\
+    steppedLine\": false,\n            \"targets\": [\n                {\n       \
+    \             \"expr\": \"process_resident_memory_bytes\",\n                 \
+    \   \"interval\": \"\",\n                    \"legendFormat\": \"Memory Usage\"\
+    ,\n                    \"refId\": \"A\"\n                }\n            ],\n \
+    \           \"thresholds\": [],\n            \"timeFrom\": null,\n           \
+    \ \"timeRegions\": [],\n            \"timeShift\": null,\n            \"title\"\
+    : \"Memory Usage\",\n            \"tooltip\": {\n                \"shared\": true,\n\
+    \                \"sort\": 0,\n                \"value_type\": \"individual\"\n\
+    \            },\n            \"type\": \"graph\",\n            \"xaxis\": {\n\
+    \                \"buckets\": null,\n                \"mode\": \"time\",\n   \
+    \             \"name\": null,\n                \"show\": true,\n             \
+    \   \"values\": []\n            },\n            \"yaxes\": [\n               \
+    \ {\n                    \"format\": \"bytes\",\n                    \"label\"\
+    : null,\n                    \"logBase\": 1,\n                    \"max\": null,\n\
+    \                    \"min\": null,\n                    \"show\": true\n    \
+    \            },\n                {\n                    \"format\": \"short\"\
+    ,\n                    \"label\": null,\n                    \"logBase\": 1,\n\
+    \                    \"max\": null,\n                    \"min\": null,\n    \
+    \                \"show\": true\n                }\n            ],\n         \
+    \   \"yaxis\": {\n                \"align\": false,\n                \"alignLevel\"\
+    : null\n            }\n        },\n        {\n            \"aliasColors\": {},\n\
+    \            \"bars\": false,\n            \"dashLength\": 10,\n            \"\
+    dashes\": false,\n            \"datasource\": \"Prometheus\",\n            \"\
+    fieldConfig\": {\n                \"defaults\": {\n                    \"custom\"\
+    : {}\n                },\n                \"overrides\": []\n            },\n\
+    \            \"fill\": 1,\n            \"fillGradient\": 0,\n            \"gridPos\"\
+    : {\n                \"h\": 8,\n                \"w\": 12,\n                \"\
+    x\": 12,\n                \"y\": 8\n            },\n            \"hiddenSeries\"\
+    : false,\n            \"id\": 8,\n            \"legend\": {\n                \"\
+    avg\": false,\n                \"current\": false,\n                \"max\": false,\n\
+    \                \"min\": false,\n                \"show\": true,\n          \
+    \      \"total\": false,\n                \"values\": false\n            },\n\
+    \            \"lines\": true,\n            \"linewidth\": 1,\n            \"nullPointMode\"\
+    : \"null\",\n            \"options\": {\n                \"alertThreshold\": true\n\
+    \            },\n            \"percentage\": false,\n            \"pluginVersion\"\
+    : \"7.2.0\",\n            \"pointradius\": 2,\n            \"points\": false,\n\
+    \            \"renderer\": \"flot\",\n            \"seriesOverrides\": [],\n \
+    \           \"spaceLength\": 10,\n            \"stack\": false,\n            \"\
+    steppedLine\": false,\n            \"targets\": [\n                {\n       \
+    \             \"expr\": \"process_cpu_usage\",\n                    \"interval\"\
+    : \"\",\n                    \"legendFormat\": \"CPU Usage\",\n              \
+    \      \"refId\": \"A\"\n                }\n            ],\n            \"thresholds\"\
+    : [],\n            \"timeFrom\": null,\n            \"timeRegions\": [],\n   \
+    \         \"timeShift\": null,\n            \"title\": \"CPU Usage\",\n      \
+    \      \"tooltip\": {\n                \"shared\": true,\n                \"sort\"\
+    : 0,\n                \"value_type\": \"individual\"\n            },\n       \
+    \     \"type\": \"graph\",\n            \"xaxis\": {\n                \"buckets\"\
+    : null,\n                \"mode\": \"time\",\n                \"name\": null,\n\
+    \                \"show\": true,\n                \"values\": []\n           \
+    \ },\n            \"yaxes\": [\n                {\n                    \"format\"\
+    : \"percent\",\n                    \"label\": null,\n                    \"logBase\"\
+    : 1,\n                    \"max\": null,\n                    \"min\": null,\n\
+    \                    \"show\": true\n                },\n                {\n \
+    \                   \"format\": \"short\",\n                    \"label\": null,\n\
+    \                    \"logBase\": 1,\n                    \"max\": null,\n   \
+    \                 \"min\": null,\n                    \"show\": true\n       \
+    \         }\n            ],\n            \"yaxis\": {\n                \"align\"\
+    : false,\n                \"alignLevel\": null\n            }\n        }\n   \
+    \ ],\n    \"schemaVersion\": 25,\n    \"style\": \"dark\",\n    \"tags\": [],\n\
+    \    \"templating\": {\n        \"list\": []\n    },\n    \"time\": {\n      \
+    \  \"from\": \"now-6h\",\n        \"to\": \"now\"\n    },\n    \"timepicker\"\
+    : {},\n    \"timezone\": \"\",\n    \"title\": \"FastAPI Python Application Dashboard\"\
+    ,\n    \"uid\": \"python_fastapi_dashboard\",\n    \"version\": 1\n}\n"

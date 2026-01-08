@@ -12,15 +12,17 @@ Usage:
 
 import argparse
 import sys
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 import yaml
 from datetime import datetime
-from pathlib import Path
-from typing import Dict, List, Any
+from lib.metadata_config import MetadataConfig
 
 class BackstageSync:
     def __init__(self, catalog_path: str):
         self.catalog_path = Path(catalog_path)
         self.catalog = None
+        self.cfg = MetadataConfig()
 
     def load_catalog(self) -> Dict[str, Any]:
         if not self.catalog_path.exists():
@@ -30,15 +32,26 @@ class BackstageSync:
             self.catalog = yaml.safe_load(f)
         return self.catalog
 
+    def _get_vq_class(self, risk: str) -> str:
+        """Simple mapping of risk to VQ class indicators"""
+        mapping = {
+            'high': ' 🔴 HV/HQ',
+            'medium': ' 🔵 MV/HQ',
+            'low': ' ⚫ LV/LQ'
+        }
+        return mapping.get(risk.lower(), 'Unknown')
+
     def generate_entities(self) -> List[Dict[str, Any]]:
-        resources = self.catalog.get('registries', {})
+        resources = self.catalog.get('repositories', {}) # Changed from 'registries' to 'repositories' to match ecr-catalog.yaml
         entities = []
 
         for name, res in resources.items():
             metadata = res.get('metadata', {})
-
-            # Sanitize name for Backstage (lowercase, alphanumeric, hyphens)
             entity_name = name.lower().replace('_', '-')
+
+            # Resolve effective metadata (Inheritance Support)
+            effective_metadata = self.cfg.get_effective_metadata(str(self.catalog_path), metadata)
+            risk = effective_metadata.get('risk', 'unknown')
 
             entity = {
                 'apiVersion': 'backstage.io/v1alpha1',
@@ -47,20 +60,24 @@ class BackstageSync:
                     'name': entity_name,
                     'title': name,
                     'description': f"ECR Registry for {name}",
+                    'value_quantification': {
+                        'vq_class': self._get_vq_class(risk)
+                    },
                     'annotations': {
-                        'goldenpath-idp.io/risk': metadata.get('risk', 'unknown'),
-                        'goldenpath-idp.io/environment': metadata.get('environment', 'unknown'),
-                        'goldenpath-idp.io/status': metadata.get('status', 'unknown'),
-                        'goldenpath-idp.io/id': metadata.get('id', 'N/A'),
+                        'goldenpath-idp.io/risk': risk,
+                        'goldenpath-idp.io/environment': effective_metadata.get('environment', 'unknown'),
+                        'goldenpath-idp.io/status': effective_metadata.get('status', 'unknown'),
+                        'goldenpath-idp.io/id': effective_metadata.get('id', 'N/A'),
+                        'goldenpath-idp.io/lineage': 'inherited' if 'owner' not in metadata else 'explicit'
                     },
                     'labels': {
-                        'owner': metadata.get('owner', 'unknown'),
+                        'owner': effective_metadata.get('owner', 'unknown'),
                     }
                 },
                 'spec': {
                     'type': 'container-registry',
-                    'owner': metadata.get('owner', 'platform-team'), # Backstage group format would be better
-                    'lifecycle': metadata.get('status', 'active'),
+                    'owner': effective_metadata.get('owner', 'platform-team'),
+                    'lifecycle': effective_metadata.get('status', 'active'),
                     'system': 'container-infrastructure'
                 }
             }
@@ -78,8 +95,8 @@ class BackstageSync:
 
 def main():
     parser = argparse.ArgumentParser(description="Sync ECR catalog to Backstage entities")
-    parser.add_argument("--catalog", default="docs/catalogs/ecr-catalog.yaml", help="Path to ECR catalog")
-    parser.add_argument("--output", default="docs/catalogs/backstage-entities.yaml", help="Output path for Backstage entities")
+    parser.add_argument("--catalog", default="docs/20-contracts/catalogs/ecr-catalog.yaml", help="Path to ECR catalog")
+    parser.add_argument("--output", default="docs/20-contracts/catalogs/backstage-entities.yaml", help="Output path for Backstage entities")
     args = parser.parse_args()
 
     try:

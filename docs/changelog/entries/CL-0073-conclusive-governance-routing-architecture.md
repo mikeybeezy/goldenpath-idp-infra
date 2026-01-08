@@ -1,0 +1,35 @@
+---
+id: CL-0073-conclusive-governance-routing-architecture
+title: Conclusive Governance Routing & Compliance Engine
+type: changelog
+risk_profile:
+  production_impact: medium
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+version: 1.0
+lifecycle: active
+relates_to:
+  - ADR-0117
+  - DECISION_ROUTING_STRATEGY
+date: 2026-01-06
+supported_until: 2028-01-06
+breaking_change: false
+---
+
+# CL-0073: Conclusive Governance Routing & Compliance Engine
+
+## Summary
+Architected and implemented a repository-wide governance routing engine that ensures 100% auditability for platform changes.
+
+## Changes
+- **Conclusive Matrix**: Established [**`agent-routing.yaml`**](file:///Users/mikesablaze/goldenpath-idp-infra/schemas/routing/agent-routing.yaml) as the source of truth for reviewer and artifact requirements.
+- **Automation Engine**: Created [**`validate_routing_compliance.py`**](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/validate_routing_compliance.py).
+- **Platform-wide Strategy**: Published the [**`DECISION_ROUTING_STRATEGY.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/DECISION_ROUTING_STRATEGY.md).
+- **CI Gate**: Integrated routing compliance into the mandatory PR quality workflow.
+
+## Verification
+- Verified that PRs touching `infra` or `agents` are correctly flagged when missing ADRs.
+- Confirmed specialized teams are correctly identified as required reviewers.

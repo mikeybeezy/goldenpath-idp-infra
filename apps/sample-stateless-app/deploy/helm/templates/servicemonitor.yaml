@@ -1,18 +1,22 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: "{{ .Values.appName }}"
-  namespace: "{{ .Values.namespace }}"
+  name: '{{ .Values.appName }}'
+  namespace: '{{ .Values.namespace }}'
   labels:
     release: kube-prometheus-stack
-    app.kubernetes.io/name: "{{ .Values.appName }}"
+    app.kubernetes.io/name: '{{ .Values.appName }}'
+  annotations:
+    goldenpath.idp/id: APPS_TEMPLATES_METADATA
+    goldenpath.idp/owner: None
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: "{{ .Values.appName }}"
+      app.kubernetes.io/name: '{{ .Values.appName }}'
   namespaceSelector:
     matchNames:
-      - "{{ .Values.namespace }}"
+      - '{{ .Values.namespace }}'
   endpoints:
     - port: http
       path: /metrics

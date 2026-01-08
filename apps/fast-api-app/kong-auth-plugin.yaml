@@ -1,12 +1,15 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
- name:  app         # Must match name in Ingress annotation
- namespace: app-namespace
- annotations:
-  kubernetes.io/ingress.class: kong
+  name: app
+  namespace: app-namespace
+  annotations:
+    kubernetes.io/ingress.class: kong
+    goldenpath.idp/id: APPS_FAST_API_APP_METADATA
+    goldenpath.idp/owner: platform-team
 config:
- key_names:
-   - apikey                        # Header name for the API key
- hide_credentials: true
+  key_names:
+    - apikey
+  hide_credentials: true
 plugin: key-auth

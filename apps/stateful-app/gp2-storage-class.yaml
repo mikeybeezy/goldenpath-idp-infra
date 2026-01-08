@@ -1,7 +1,11 @@
+# Managed by scripts/standardize_metadata.py
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: gp2
+  annotations:
+    goldenpath.idp/id: APPS_STATEFUL_APP_METADATA
+    goldenpath.idp/owner: platform-team
 provisioner: kubernetes.io/aws-ebs
 parameters:
   type: gp2

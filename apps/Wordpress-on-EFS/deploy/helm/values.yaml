@@ -1,4 +1,4 @@
-# Managed by scripts/standardize-metadata.py
+# Managed by scripts/standardize_metadata.py
 appName: wordpress-efs
 namespace: apps-wordpress-efs
 appVersion: 6.5.2
@@ -28,12 +28,7 @@ efsStorageClassName: efs-sc
 efsFileSystemId: fs-12345678
 efsStorageSize: 50Gi
 governance:
-  id: SCRIPTS_WORDPRESS_ON_EFS_METADATA
+  id: APPS_HELM_METADATA
   owner: platform-team
-  risk_profile:
-    production_impact: medium
-    security_risk: access
-    coupling_risk: medium
-  reliability:
-    rollback_strategy: manual
-    observability_tier: silver
+  risk_profile: null
+  reliability: null

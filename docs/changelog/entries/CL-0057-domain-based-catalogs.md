@@ -2,13 +2,6 @@
 id: CL-0057-domain-based-catalogs
 title: 'CL-0057: Domain-Based Resource Catalogs'
 type: changelog
-category: architecture
-version: '1.0'
-owner: platform-team
-status: active
-dependencies:
-  - terraform
-  - github-actions
 risk_profile:
   production_impact: low
   security_risk: none
@@ -16,13 +9,17 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-05
-  breaking_change: true
+version: '1.0'
+dependencies:
+  - terraform
+  - github-actions
+lifecycle: active
 relates_to:
   - ADR-0097
   - ADR-0092
   - ADR-0094
+supported_until: 2028-01-05
+breaking_change: true
 ---
 
 # CL-0057: Domain-Based Resource Catalogs
@@ -41,7 +38,7 @@ Refactored from single platform-wide catalog to domain-based catalogs, where eac
 
 ### New Structure
 ```
-docs/catalogs/
+docs/20-contracts/catalogs/
 ├── README.md              # Catalog index
 ├── ecr-catalog.yaml       # Container registries
 ├── rds-catalog.yaml       # Databases (future)
@@ -49,8 +46,8 @@ docs/catalogs/
 ```
 
 ### Created Files
-- `docs/catalogs/README.md` - Index of all catalogs
-- `docs/catalogs/ecr-catalog.yaml` - ECR registry catalog
+- `docs/20-contracts/catalogs/README.md` - Index of all catalogs
+- `docs/20-contracts/catalogs/ecr-catalog.yaml` - ECR registry catalog
 - `docs/adrs/ADR-0097-domain-based-resource-catalogs.md` - Decision record
 
 ### Modified Files (Pending)
@@ -58,7 +55,7 @@ docs/catalogs/
 - `scripts/generate_catalog_docs.py` - Update catalog path
 
 ### Removed Files (Pending)
-- `docs/registry-catalog.yaml` - Replaced by `docs/catalogs/ecr-catalog.yaml`
+- `docs/registry-catalog.yaml` - Replaced by `docs/20-contracts/catalogs/ecr-catalog.yaml`
 
 ## Rationale
 
@@ -71,9 +68,9 @@ docs/catalogs/
 ## Migration Path
 
 ### Phase 1: Structure ✅
-- [x] Create `docs/catalogs/` directory
-- [x] Create `docs/catalogs/README.md` index
-- [x] Create `docs/catalogs/ecr-catalog.yaml`
+- [x] Create `docs/20-contracts/catalogs/` directory
+- [x] Create `docs/20-contracts/catalogs/README.md` index
+- [x] Create `docs/20-contracts/catalogs/ecr-catalog.yaml`
 
 ### Phase 2: Update References
 - [ ] Update `.github/workflows/create-ecr-registry.yml`
@@ -87,7 +84,7 @@ docs/catalogs/
 ## Impact
 
 ### Breaking Changes
-- **Catalog path changed:** `docs/registry-catalog.yaml` → `docs/catalogs/ecr-catalog.yaml`
+- **Catalog path changed:** `docs/registry-catalog.yaml` → `docs/20-contracts/catalogs/ecr-catalog.yaml`
 - **Workflows need update:** Self-service workflows must point to new path
 - **Scripts need update:** Catalog generator must read new path
 

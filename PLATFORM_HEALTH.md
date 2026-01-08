@@ -1,4 +1,3 @@
-<!-- 🛑 AUTOMATED REPORT - DO NOT EDIT MANUALLY 🛑 -->
 ---
 id: PLATFORM_HEALTH
 title: Platform Health & Compliance Report
@@ -11,65 +10,84 @@ relates_to:
   - platform_health.py
 ---
 
-# 🏥 Platform Health Command Center
-**Generated**: `2026-01-08 01:58:21` | **V1 Readiness**: `98.4%` | **Overall Maturity**: `100.0%`
+## 🏥 Platform Health Command Center
 
-## 🏁 V1 Platform Readiness Gate
+**Generated**: `2026-01-08 03:00:59` | **V1 Readiness**: `95.4%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+
+**Realized Value**: `5.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+
+## V1 Platform Readiness Gate
+
 > [!IMPORTANT]
-> The platform is currently **98.4%** ready for V1 production rollout.
+> The platform is currently **95.4%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 98.2% |
+| **Metadata Integrity** | ✅ | 99.8% |
 | **Injection Integrity** | ✅ | 100.0% |
-| **Architecture Maturity** | 🚧 | 100/106 Active |
-| **Changelog Activity** | ✅ | 70 Entries |
+| **Architecture Maturity** | 🚧 | 93/120 Active |
+| **Changelog Activity** | ✅ | 86 Entries |
 
-## 📈 Governance Velocity (Historical Trend)
-```mermaid
-xychart-beta
-    title "V1 Readiness Trend (Last 10 Runs)"
-    x-axis ["Run -3", "Run -1"]
-    y-axis "Readiness %" 0 --> 100
-    line [100.0, 100.0, 100.0]
-```
+## Knowledge Graph Vitality
 
-## 🏹 Knowledge Graph Vitality
 | Metric | Count | Source |
 | :--- | :--- | :--- |
-| **Architecture Decisions** | 106 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
-| **Automation Scripts** | 25 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
-| **CI Workflows** | 34 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 70 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 391 | Repository Scan |
+| **Architecture Decisions** | 120 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
+| **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
+| **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
+| **Change Logs** | 86 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 456 | Repository Scan |
 
-## 🗂️ Catalog Inventory
+## Catalog Inventory
+
 | Catalog | Entity Count |
 | :--- | :--- |
-| Ecr | 10 |
 
 ## 🛡️ Risk & Maturity Visualization
+
 ```mermaid
 pie title Production Impact distribution
-    "HIGH" : 35
-    "MEDIUM" : 29
-    "LOW" : 319
-    "NONE" : 4
+    "HIGH" : 36
+    "MEDIUM" : 32
+    "LOW" : 359
+    "NONE" : 26
 ```
 
-## ⚖️ Governance Maturity
-- **Metadata Compliance**: `98.2%`
+## Governance Maturity
+
+- **Metadata Compliance**: `99.8%`
 - **Risk-Weighted Score**: `100.0%`
-- **Infrastructure Drift**: `100.0%` (via `compliance-report.json`)
 
-## 💉 Injection Coverage
-- **Sidecar Coverage**: `100.0%` (29/29)
+## Injection Coverage
 
-## 🚨 Operational Risks
+- **Sidecar Coverage**: `100.0%` (32/32)
+
+## Project Realized Value (Heartbeat)
+
+> [!TIP]
+> Total realized value reclaimed through automation heartbeats: **5.4 hours**.
+
+- **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
+
+## Financial Governance (Cloud Cost)
+
+> [!NOTE]
+> Current monthly infrastructure run rate: **$1,250.00 USD**.
+
+- **Estimated Annual**: `$15,000.00 USD`
+- **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)
+- **Tooling**: Infracost (CI-integrated)
+
+## Operational Risks
+
 - **Orphaned (No Owner)**: 0
 - **Stale (Past Lifecycle)**: 0
 
 ---
-### 📬 Strategic Guidance
+
+### Strategic Guidance
+
 - **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.
 - **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.
+
+<!-- AUTOMATED REPORT - DO NOT EDIT MANUALLY -->

@@ -1,0 +1,92 @@
+#!/bin/bash
+# bin/governance
+# Lightweight local wrapper for IDP Governance checks
+
+SC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SC_DIR/.." && pwd)"
+
+function show_help {
+    echo "Usage: governance [command]"
+    echo ""
+    echo "Commands:"
+    echo "  check [path]   Validate metadata for a file or directory."
+    echo "  heal [path]    Standardize metadata and apply inheritance."
+    echo "  audit          Run repo-wide compliance audit."
+    echo "  vocab          Show valid governance enums (Owners, Risks, etc)."
+    echo "  setup          Set up local dev environment (pre-commit, deps)."
+    echo "  lint           Run local linting suite (YAML, Markdown)."
+    echo "  pulse          Display current Platform Mission & VQ Strategy."
+    echo "  docs           Open the Onboarding & Governance index."
+}
+
+case "$1" in
+    pulse)
+        echo "🚀 GOVERNANCE PULSE: Platform Mission & VQ Strategy"
+        echo "--------------------------------------------------"
+        echo "💎 CORE VALUE: We don't just build features; we reclaim hours."
+
+        # Realized ROI (Value Heartbeat)
+        LEDGER="$PROJECT_ROOT/.goldenpath/value_ledger.json"
+        if [ -f "$LEDGER" ]; then
+            RECLAIMED=$(python3 -c "import json; print(json.load(open('$LEDGER'))['total_reclaimed_hours'])" 2>/dev/null || echo "0.0")
+            echo "📊 TOTAL RECLAIMED: $RECLAIMED HOURS"
+        else
+            echo "📊 TOTAL RECLAIMED: 0.0 HOURS"
+        fi
+        echo ""
+        echo "🛡️ CURRENT PHASE: Phase 1 (Stabilize Core - HV/HQ)"
+        echo "🎯 GOAL: Make the platform boring, predictable, and trustworthy."
+        echo ""
+        echo "🚨 THE ANTI-FRICTION OATH:"
+        echo "1. Trust is Default (HV/HQ)"
+        echo "2. Rough UX is OK (HV/LQ)"
+        echo "3. Auditability is Non-Negotiable"
+        echo "4. Accept Friction (to prevent ambiguity)"
+        echo ""
+        echo "📖 Re-centering complete. See docs/00-foundations/product/VQ_PRINCIPLES.md for details."
+        ;;
+    docs)
+        echo "📖 Opening Onboarding Index..."
+        cat "$PROJECT_ROOT/docs/80-onboarding/23_NEW_JOINERS.md" | head -n 40
+        ;;
+    test)
+        if [ "$2" == "scaffold" ]; then
+            python3 "$PROJECT_ROOT/scripts/scaffold_test.py" "${@:3}"
+        else
+            echo "🧪 Running Platform Unit Tests..."
+            python3 -m unittest discover -s "$PROJECT_ROOT/tests/unit" -p "test_*.py" -v
+        fi
+        ;;
+    setup)
+        echo "🛠️  Setting up local governance environment..."
+        pip3 install -r "$PROJECT_ROOT/requirements-dev.txt"
+        pre-commit install
+        echo "✅ Setup complete. Pre-commit hooks active."
+        ;;
+    lint)
+        echo "🔍 Running YAML lint..."
+        yamllint "$PROJECT_ROOT" -c "$PROJECT_ROOT/.yamllint"
+
+        if command -v markdownlint-cli2 >/dev/null 2>&1; then
+            echo "🔍 Running Markdown lint..."
+            markdownlint-cli2 "$PROJECT_ROOT/**/*.md" --config "$PROJECT_ROOT/.markdownlint.json"
+        else
+            echo "⚠️  markdownlint-cli2 not found. Install it for full CI parity."
+        fi
+        ;;
+    check)
+        python3 "$PROJECT_ROOT/scripts/validate_metadata.py" "${@:2}"
+        ;;
+    heal)
+        python3 "$PROJECT_ROOT/scripts/standardize_metadata.py" "${@:2}"
+        ;;
+    audit)
+        python3 "$PROJECT_ROOT/scripts/audit_metadata.py"
+        ;;
+    vocab)
+        cat "$PROJECT_ROOT/docs/10-governance/GOVERNANCE_VOCABULARY.md"
+        ;;
+    *)
+        show_help
+        ;;
+esac

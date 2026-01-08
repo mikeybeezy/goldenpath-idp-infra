@@ -1,25 +1,15 @@
 ---
-id: ADR-0100
+id: ADR-0100-standardized-ecr-lifecycle-and-documentation
 title: Standardized ECR Lifecycle and Documentation
 type: adr
-category: governance
-status: accepted
-owner: platform-team
+lifecycle: active
 version: '1.0'
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
 relates_to:
   - ADR-0092
   - ADR-0093
   - ADR-0097
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # ADR-0100: Standardized ECR Lifecycle and Documentation
@@ -33,7 +23,7 @@ We have implemented a standardized lifecycle for ECR registries that automates I
 ### Key Decisions
 1.  **Automated Identity**: Remove manual `id` input in the [create-ecr-registry.yml](.github/workflows/create-ecr-registry.yml) workflow. The ID is now auto-calculated from the registry name (e.g., `app-foo` -> `REGISTRY_APP_FOO`).
 2.  **Continuous Documentation Sync**: The registry creation workflow now triggers the documentation generator script as a mandatory step, ensuring Markdown and YAML catalogs never drift.
-3.  **Externalized Security Policies**: Move risk-based security settings (encryption, retention, scanning) out of hardcoded Python logic and into a shared [ecr-risk-settings.yaml](docs/policies/ecr-risk-settings.yaml). This file serves as the source of truth for both documentation and Terraform enforcement.
+3.  **Externalized Security Policies**: Move risk-based security settings (encryption, retention, scanning) out of hardcoded Python logic and into a shared [ecr-risk-settings.yaml](docs/10-governance/policies/ecr-risk-settings.yaml). This file serves as the source of truth for both documentation and Terraform enforcement.
 4.  **Domain-Agnostic Engine**: Refactor `generate_catalog_docs.py` to be domain-agnostic, supporting multiple resource types (S3, RDS, etc.) as per the domain-based resource catalog strategy (ADR-0097).
 5.  **HCL Integrity Guard**: Implement an automated `terraform fmt` check in the workflow to validate `terraform.tfvars` after every automated modification.
 6.  **Standardized Build Tooling**: Provide a platform-standard [ecr-build-push.sh](scripts/ecr-build-push.sh) script to enforce consistent tagging (Git SHA + Version) for all application teams.

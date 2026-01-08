@@ -1,25 +1,14 @@
 ---
 id: 13_COLLABORATION_GUIDE
 title: Collaboration Guide
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+type: runbook
 relates_to:
   - 38_BRANCHING_STRATEGY
   - SHARED_RESPONSIBILITY
+status: active
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Collaboration Guide
@@ -41,6 +30,15 @@ Flow:
 3. Merge after checks pass.
 4. Promote via a PR from `development` to `main`.
 5. Delete the branch after merge.
+
+### Value-Led Review
+
+All Pull Requests are reviewed through the lens of [**VQ Principles**](../product/VQ_PRINCIPLES.md).
+
+- **Is it 🔴 HV/HQ?** (Core/Governance/Trust): Requires deep review, high-test coverage, and zero-compromise on auditability.
+- **Is it 🟡 HV/LQ?** (UX/Dashboard/README): Prioritize velocity. If it works and is reversible, ship it. 🟡
+- **Is it 🔵 MV/HQ?** (Levers/Multipliers): Build safely, then freeze.
+- **Is it ⚫ LV/LQ?** (Bloat/Noise): Actively resist.
 
 Examples:
 
@@ -75,3 +73,11 @@ Recommended settings for `main`:
 - Require linear history (no merge commits).
 - Dismiss stale approvals when new commits are pushed.
 - Enforce code owner reviews (if `CODEOWNERS` exists).
+
+## Local Development Health
+
+Core contributors are expected to maintain a healthy local environment.
+
+- Run `bin/governance setup` after cloning or pulling major changes.
+- Run `bin/governance lint` before pushing any PR to catch syntax or metadata drift early.
+- If CI reports issues, the fastest path to a fix is usually `bin/governance heal`.

@@ -1,0 +1,13 @@
+id: ENUM_CONSISTENCY_TEST
+title: Enum Consistency Test Scenario
+type: documentation
+owner: platform-team
+lifecycle: active
+reliability:
+  maturity: 3
+  rollback_strategy: git-revert
+value_quantification:
+  vq_class: 🔵 MV/HQ
+  impact_tier: medium
+tags: [enums, metadata, validation]
+schema_version: 1

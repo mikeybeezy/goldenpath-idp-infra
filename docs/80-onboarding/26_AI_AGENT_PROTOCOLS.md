@@ -1,22 +1,7 @@
 ---
 id: 26_AI_AGENT_PROTOCOLS
 title: AI Agent & Operator Protocols
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+type: runbook
 relates_to:
   - 00_DOC_INDEX
   - 04_PR_GUARDRAILS
@@ -29,6 +14,10 @@ relates_to:
   - AI_CHANGELOG
   - CL-####
   - ROADMAP
+status: active
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # AI Agent & Operator Protocols
@@ -123,6 +112,7 @@ Read and align on priorities before proposing work:
 
 1. `docs/production-readiness-gates/ROADMAP.md`
 2. `docs/80-onboarding/13_COLLABORATION_GUIDE.md`
+3. `docs/00-foundations/product/VQ_PRINCIPLES.md` (**Mandatory: Internalize VQ strategy before proposing moves**)
 
 ## 7) Standard interfaces
 
@@ -139,6 +129,7 @@ commands to ensure consistent flags, environment variables, and safety checks.
 
 - State verification explicitly (tests run vs not run).
 - Use evidence links when claiming a change is validated.
+- **VQ Classification**: Agents must justify their approach against VQ Buckets. If proposing a high-complexity solution for a one-off task, flag as **⚫ LV/LQ** and wait for explicit human override.
 
 ## 10) PR monitoring (agent tasks)
 

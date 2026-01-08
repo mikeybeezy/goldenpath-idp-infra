@@ -113,8 +113,18 @@ def generate_markdown(workflows):
         "id: CI_WORKFLOWS",
         "title: CI Workflows Index (Auto-Generated)",
         "type: documentation",
+        "category: governance",
         "owner: platform-team",
         "status: active",
+        "risk_profile:",
+        "  production_impact: low",
+        "  security_risk: none",
+        "  coupling_risk: low",
+        "reliability:",
+        "  rollback_strategy: git-revert",
+        "  observability_tier: bronze",
+        "lifecycle: active",
+        "supported_until: '2028-01-01'",
         "last_updated: 2026-01-06",
         "---",
         "",
@@ -139,9 +149,11 @@ def generate_markdown(workflows):
             content.append(f"### {wf['name']}")
             content.append(f"- **File**: `{wf['file']}`")
             content.append(f"- **Owner**: {wf['owner']}")
-            content.append(f"- **Triggers**: {', '.join(wf['triggers'])}")
+            triggers_str = ", ".join(wf['triggers'])
+            content.append(f"- **Triggers**: {triggers_str}".strip())
             if wf['inputs']:
-                content.append(f"- **Inputs**: {', '.join(wf['inputs'])}")
+                inputs_str = ", ".join(wf['inputs'])
+                content.append(f"- **Inputs**: {inputs_str}".strip())
             content.append("")
 
     return "\n".join(content)

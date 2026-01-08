@@ -1,26 +1,15 @@
 ---
 id: 25_DAY_ONE_CHECKLIST
 title: Day-One Onboarding Checklist
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+type: runbook
 relates_to:
   - 00_DOC_INDEX
   - 23_NEW_JOINERS
   - 24_PR_GATES
+status: active
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Day-One Onboarding Checklist
@@ -48,6 +37,8 @@ documents, and artifacts you need before you start making changes.
 ## Read first (fast context)
 
 - docs/adrs/01_adr_index.md
+- docs/00-foundations/product/VQ_PRINCIPLES.md (**Read this first**)
+- docs/00-foundations/product/VQ_TAGGING_GUIDE.md
 - docs/80-onboarding/23_NEW_JOINERS.md
 - docs/80-onboarding/24_PR_GATES.md
 - docs/40-delivery/38_BRANCHING_STRATEGY.md
@@ -71,7 +62,7 @@ documents, and artifacts you need before you start making changes.
 
 ## First-day validation steps
 
-1. Install pre-commit and run `pre-commit run --all-files`.
+1. Initialize your environment: `bin/governance setup`.
 2. Confirm branch flow: create a feature branch from `development`.
 3. Open a draft PR into `development` to validate guardrails and labels (use `.github/pull_request_template.md`).
 4. Capture any missing access or missing config as issues.

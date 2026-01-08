@@ -1,26 +1,19 @@
 ---
-id: ADR-0057
+id: ADR-0057-platform-ci-terraform-force-unlock-workflow
 title: 'ADR-0057: CI Terraform force-unlock workflow (break-glass)'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-04
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - 07_TF_STATE_FORCE_UNLOCK
   - 15_TEARDOWN_AND_CLEANUP
   - ADR-0057
+supported_until: 2028-01-04
+breaking_change: false
 ---
 
 # ADR-0057: CI Terraform force-unlock workflow (break-glass)
@@ -32,7 +25,7 @@ Filename: `ADR-0057-platform-ci-terraform-force-unlock-workflow.md`
 - **Owners:** `platform`
 - **Domain:** Platform
 - **Decision type:** Operations
-- **Related:** `.github/workflows/ci-force-unlock.yml`, `docs/runbooks/07_TF_STATE_FORCE_UNLOCK.md`, `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`
+- **Related:** `.github/workflows/ci-force-unlock.yml`, `docs/70-operations/runbooks/07_TF_STATE_FORCE_UNLOCK.md`, `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`
 
 ---
 

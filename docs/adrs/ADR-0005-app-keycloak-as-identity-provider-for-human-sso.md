@@ -1,26 +1,16 @@
 ---
-id: ADR-0005
+id: ADR-0005-app-keycloak-as-identity-provider-for-human-sso
 title: 'ADR-0005: Adopt Keycloak for platform SSO (humans) and keep IRSA for pod-to-AWS
   auth'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - ADR-0003
   - ADR-0005
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 # ADR-0005: Adopt Keycloak for platform SSO (humans) and keep IRSA for pod-to-AWS auth

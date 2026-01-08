@@ -1,3 +1,4 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -5,3 +6,7 @@ resources:
 commonLabels:
   platform.goldenpath.dev/env: dev
   platform.goldenpath.dev/build-id: dev-0000
+metadata:
+  annotations:
+    goldenpath.idp/id: APPS_DEV_METADATA
+    goldenpath.idp/owner: platform-team

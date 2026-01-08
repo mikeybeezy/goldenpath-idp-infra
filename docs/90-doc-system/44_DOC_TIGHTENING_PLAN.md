@@ -2,11 +2,11 @@
 id: 44_DOC_TIGHTENING_PLAN
 title: Documentation Tightening Plan (V1)
 type: documentation
-category: unknown
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,9 +14,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 00_DOC_INDEX
   - 30_DOCUMENTATION_FRESHNESS
@@ -31,6 +29,20 @@ relates_to:
   - ADR-0052
   - ADR-0056
   - ADR-0062
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+status: active
+version: '1.0'
+dependencies: []
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Documentation Tightening Plan (V1)
@@ -65,9 +77,9 @@ Doc contract:
 | CI environment contract | docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md | docs/20-contracts/20_CI_ENVIRONMENT_SEPARATION.md, ci-workflows/CI_WORKFLOWS.md | docs/adrs/ADR-0034-platform-ci-environment-contract.md |
 | GitOps + CD | docs/40-delivery/12_GITOPS_AND_CICD.md, docs/20-contracts/29_CD_DEPLOYMENT_CONTRACT.md | docs/40-delivery/26_POST_APPLY_HEALTH_CHECKS.md | docs/adrs/ADR-0001-platform-argocd-as-gitops-operator.md, docs/adrs/ADR-0026-platform-cd-deployment-contract.md |
 | Observability | docs/50-observability/05_OBSERVABILITY_DECISIONS.md | docs/50-observability/41_STORAGE_AND_PERSISTENCE.md | docs/adrs/ADR-0052-platform-kube-prometheus-stack-bundle.md, docs/adrs/ADR-0056-platform-loki-deployment-mode.md |
-| Teardown | docs/70-operations/15_TEARDOWN_AND_CLEANUP.md | docs/70-operations/10_INFRA_FAILURE_MODES.md | docs/adrs/ADR-0043-platform-teardown-lb-eni-wait.md, docs/runbooks/09_CI_TEARDOWN_RECOVERY_V2.md |
+| Teardown | docs/70-operations/15_TEARDOWN_AND_CLEANUP.md | docs/70-operations/10_INFRA_FAILURE_MODES.md | docs/adrs/ADR-0043-platform-teardown-lb-eni-wait.md, docs/70-operations/runbooks/09_CI_TEARDOWN_RECOVERY_V2.md |
 | Security floor | docs/60-security/28_SECURITY_FLOOR_V1.md | docs/60-security/27_CI_IMAGE_SCANNING.md | docs/adrs/ADR-0024-platform-security-floor-v1.md |
-| Tagging | docs/10-governance/35_RESOURCE_TAGGING.md | docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md | docs/adrs/ADR-0037-platform-resource-tagging-policy.md |
+| Tagging | docs/10-governance/35_RESOURCE_TAGGING.md | docs/10-governance/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md | docs/adrs/ADR-0037-platform-resource-tagging-policy.md |
 | App template | docs/20-contracts/42_APP_TEMPLATE_LIVING.md | apps/fast-api-app-template/README.md | docs/adrs/ADR-0062-platform-app-template-contract.md |
 
 ## Immediate changes (this update)

@@ -1,22 +1,10 @@
 ---
-id: ADR-0038
+id: ADR-0038-platform-teardown-orphan-cleanup-gate
 title: 'ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - 15_TEARDOWN_AND_CLEANUP
   - ADR-0036
@@ -25,6 +13,8 @@ relates_to:
   - ADR-0037-platform-resource-tagging-policy
   - ADR-0038
   - ORPHAN_CLEANUP
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 # ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes
@@ -34,7 +24,7 @@ relates_to:
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Operations / Governance
-- **Related:** `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`, `docs/runbooks/ORPHAN_CLEANUP.md`, `docs/adrs/ADR-0036-platform-orphan-cleanup-workflow.md`, `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`, `.github/workflows/ci-teardown.yml`
+- **Related:** `docs/70-operations/15_TEARDOWN_AND_CLEANUP.md`, `docs/70-operations/runbooks/ORPHAN_CLEANUP.md`, `docs/adrs/ADR-0036-platform-orphan-cleanup-workflow.md`, `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`, `.github/workflows/ci-teardown.yml`
 
 ---
 

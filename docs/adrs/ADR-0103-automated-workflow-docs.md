@@ -1,27 +1,17 @@
 ---
-id: ADR-0103
+id: ADR-0103-automated-workflow-docs
 title: Automated CI Workflow Documentation
 type: adr
-category: documentation
-version: '1.0'
-owner: platform-team
 status: superseded
+lifecycle: active
+version: '1.0'
 superseded_by: ADR-0111
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-06
-  breaking_change: false
 created_date: 2026-01-06
-supersedes: []
 relates_to:
   - ADR-0071
   - ci-workflows/CI_WORKFLOWS.md
+supported_until: 2027-01-06
+breaking_change: false
 ---
 
 # ADR-0103: Automated CI Workflow Documentation

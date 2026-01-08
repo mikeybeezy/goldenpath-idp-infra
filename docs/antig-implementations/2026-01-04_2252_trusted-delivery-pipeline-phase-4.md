@@ -1,23 +1,11 @@
 ---
 id: 2026-01-04_2252_trusted-delivery-pipeline-phase-4
 title: 'Implementation Plan: Phase 4 - Trusted Delivery Pipeline (ECR)'
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
+type: implementation-plan
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: '2028-01-01'
-  breaking_change: false
-relates_to: []
+version: '1.0'
+supported_until: '2028-01-01'
+breaking_change: false
 ---
 
 # Implementation Plan: Phase 4 - Trusted Delivery Pipeline (ECR)

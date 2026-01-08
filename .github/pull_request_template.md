@@ -2,11 +2,8 @@
 id: pull_request_template
 title: Pull Request Template
 type: template
-category: github
-version: 1.0
 owner: platform-team
 status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,12 +11,15 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+category: platform
+version: 1.0
+dependencies: []
 relates_to:
   - 24_PR_GATES
   - 04_PR_GUARDRAILS
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 Select at least one checkbox per section by changing `[ ]` to `[x]`.

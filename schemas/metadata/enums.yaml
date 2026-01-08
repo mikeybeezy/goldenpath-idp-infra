@@ -1,0 +1,169 @@
+version: 1
+
+domains:
+  - platform-core
+  - delivery
+  - identity
+  - catalog
+  - observability
+  - governance
+  - security
+  - cost
+  - governance-routing
+
+components:
+  - infra
+  - ci
+  - gitops
+  - argo
+  - backstage
+  - kong
+  - agents
+  - metadata-graph
+  - policies
+  - ecr
+  - github
+  - keycloak
+
+adr_status:
+  - proposed
+  - accepted
+  - active
+  - deprecated
+  - superseded
+
+owners:
+  - platform-team
+  - security-team
+  - operations-team
+  - sre-team
+  - unknown
+  - app-team
+  - database-team
+
+lifecycle:
+  - draft
+  - active
+  - deprecated
+  - archived
+  - released
+  - planned
+  - approved
+  - accepted
+  - superseded
+  - proposed
+
+status:
+  - proposed
+  - accepted
+  - active
+  - deprecated
+  - superseded
+  - approved
+  - planned
+  - released
+
+artifact_type:
+  - adr
+  - policy
+  - governance
+  - contract
+  - runbook
+  - changelog
+  - catalog
+  - template
+  - report
+  - documentation
+  - guide
+  - strategy
+  - runlog
+  - operational-log
+  - implementation-plan
+
+adr_categories:
+  - platform
+  - delivery
+  - identity
+  - catalog
+  - observability
+  - governance
+  - security
+  - finance
+  - runtime
+  - architecture
+  - infrastructure
+  - onboarding
+  - compliance
+  - changelog
+  - testing
+  - app-team
+  - runbooks
+
+risk_profile_coupling_risk:
+  - low
+  - medium
+  - high
+
+rollback_strategy:
+  - git-revert
+  - redeploy
+  - manual
+
+observability_tier:
+  - bronze
+  - silver
+  - gold
+
+risk_profile_production_impact:
+  - none
+  - low
+  - medium
+  - high
+
+risk_profile_security_risk:
+  - none
+  - low
+  - medium
+  - high
+  - access
+
+environments:
+  - dev
+  - test
+  - staging
+  - prod
+  - ephemeral
+
+approval_tiers:
+  - self-serve
+  - platform-approval
+  - security-approval
+  - platform-and-security
+  - change-advisory
+
+reviewer_groups:
+  - platform-team
+  - security-team
+  - operations-team
+  - sre-team
+  - unknown
+  - app-team
+  - database-team
+
+service_classes:
+  - kubernetes-clusters
+  - container-registries
+  - storage-s3
+  - storage-efs
+  - storage-ebs
+  - databases-dynamodb
+  - databases-rds
+  - networking-vpc
+  - compute-vms
+  - secrets-management
+
+vq_class:
+  - 🔴 HV/HQ
+  - 🟡 HV/LQ
+  - 🔵 MV/HQ
+  - ⚫ LV/LQ

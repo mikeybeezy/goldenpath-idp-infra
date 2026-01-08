@@ -2,11 +2,6 @@
 id: CL-0008-ci-managed-lb-cleanup-workflow
 title: 'CL-0008: CI managed LB cleanup workflow'
 type: changelog
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,12 +9,13 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-04
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - 08_MANAGED_LB_CLEANUP
   - CL-0008
+supported_until: 2027-01-04
+breaking_change: false
 ---
 
 # CL-0008: CI managed LB cleanup workflow
@@ -27,7 +23,7 @@ relates_to:
 Date: 2025-12-31
 Owner: platform
 Scope: CI teardown recovery
-Related: `.github/workflows/ci-managed-lb-cleanup.yml`, `docs/runbooks/08_MANAGED_LB_CLEANUP.md`
+Related: `.github/workflows/ci-managed-lb-cleanup.yml`, `docs/70-operations/runbooks/08_MANAGED_LB_CLEANUP.md`
 
 ## Summary
 

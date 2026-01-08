@@ -1,12 +1,12 @@
 ---
 id: 08_INGRESS_STRATEGY
 title: Ingress Front Door Strategy
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
+type: adr
 status: active
-dependencies: []
+domain: platform-core
+applies_to:
+  - infra
+owner: platform-team
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,11 +14,14 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+category: architecture
+version: '1.0'
+dependencies: []
 relates_to:
   - 11_NETWORKING
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Ingress Front Door Strategy

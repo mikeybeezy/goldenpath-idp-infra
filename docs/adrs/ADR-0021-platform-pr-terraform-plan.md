@@ -1,24 +1,14 @@
 ---
-id: ADR-0021
+id: ADR-0021-platform-pr-terraform-plan
 title: 'ADR-0021: PR Terraform plan with automated comments'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - ADR-0021
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 # ADR-0021: PR Terraform plan with automated comments

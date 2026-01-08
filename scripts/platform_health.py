@@ -10,6 +10,11 @@ import re
 import os
 from datetime import datetime
 from validate_metadata import verify_injection
+from lib.vq_logger import get_total_reclaimed_hours
+from lib.cost_logger import get_cost_summary
+from lib.metadata_config import MetadataConfig
+
+cfg = MetadataConfig()
 
 def parse_frontmatter(filepath):
     """Simple frontmatter parser."""
@@ -102,6 +107,12 @@ def get_catalog_stats():
                     with open(os.path.join(catalog_dir, f), 'r') as cy:
                         data = yaml.safe_load(cy)
                         if not data: continue
+                        # Special handling for hierarchical ECR catalog
+                        if 'physical_registry' in data and 'repositories' in data:
+                            catalog_counts['Ecr Registry'] = 1
+                            catalog_counts['Ecr Repositories'] = len(data['repositories'])
+                            continue
+
                         # Find the first dictionary key that isn't metadata-typical
                         for key, value in data.items():
                             if isinstance(value, dict) and key not in ['version', 'owner', 'domain', 'last_updated', 'managed_by']:
@@ -113,7 +124,7 @@ def get_catalog_stats():
 
 def get_historical_trends():
     trends = []
-    path = 'docs/governance/reports/HEALTH_AUDIT_LOG.md'
+    path = 'docs/10-governance/reports/HEALTH_AUDIT_LOG.md'
     if os.path.exists(path):
         try:
             with open(path, 'r', encoding='utf-8') as f:
@@ -167,6 +178,7 @@ def generate_report(target_dir='.'):
         'orphans': [],
         'stale_files': [],
         'missing_metadata': [],
+        'maturity_scores': [],
         'injection_coverage': {
             'total_mandated': 0,
             'total_injected': 0,
@@ -191,25 +203,46 @@ def generate_report(target_dir='.'):
             if not is_md and not is_sidecar: continue
 
             filepath = os.path.join(root, file)
-            data, error = parse_frontmatter(filepath)
+            if is_sidecar:
+                try:
+                    with open(filepath, 'r') as f:
+                        data = yaml.safe_load(f)
+                        error = None
+                except Exception as e:
+                    data, error = None, str(e)
+            else:
+                data, error = parse_frontmatter(filepath)
+
             if error:
                 if is_md: stats['missing_metadata'].append(filepath)
                 continue
 
+            # STEP 1.1: Resolve Inheritance
+            effective_data = cfg.get_effective_metadata(filepath, data)
+
             if is_md:
                 stats['total_files'] += 1
-                cat = data.get('category', 'unknown')
+                cat = effective_data.get('category', 'unknown')
                 stats['categories'][cat] = stats['categories'].get(cat, 0) + 1
-                status = str(data.get('status', 'unknown')).lower()
+                status = str(effective_data.get('status', 'unknown')).lower()
                 stats['status'][status] = stats['status'].get(status, 0) + 1
-                risk = data.get('risk_profile', {})
+
+                risk = effective_data.get('risk_profile', {})
                 if isinstance(risk, dict):
                     impact = risk.get('production_impact', 'unknown')
                     if impact in stats['risk_profile']['production_impact']:
                         stats['risk_profile']['production_impact'][impact] += 1
-                owner = data.get('owner', 'unknown')
-                if owner == 'unknown' or not owner: stats['orphans'].append(filepath)
-                else: stats['owners'][owner] = stats['owners'].get(owner, 0) + 1
+
+                owner = effective_data.get('owner', 'unknown')
+                if owner == 'unknown' or not owner:
+                    stats['orphans'].append(filepath)
+                else:
+                    stats['owners'][owner] = stats['owners'].get(owner, 0) + 1
+
+                # Maturity tracking
+                rel = effective_data.get('reliability', {})
+                if isinstance(rel, dict):
+                    stats['maturity_scores'].append(int(rel.get('maturity', 1)))
 
                 # Stale check
                 lifecycle = data.get('lifecycle', {})
@@ -228,11 +261,18 @@ def generate_report(target_dir='.'):
                 norm_root = os.path.relpath(root, target_dir)
                 parent_dir = os.path.dirname(norm_root.rstrip('/'))
                 MANDATED_ZONES = ['gitops/helm', 'idp-tooling', 'envs', 'apps']
-                if parent_dir in MANDATED_ZONES or any(zone in norm_root for zone in MANDATED_ZONES):
+
+                # Only count DIRECT children of mandated zones, not nested subdirs
+                # e.g., gitops/helm/loki ✅ but gitops/helm/loki/values ❌
+                is_direct_child = parent_dir in MANDATED_ZONES
+
+                if is_direct_child:
                     stats['injection_coverage']['total_mandated'] += 1
                     if data and 'id' in data:
-                        if verify_injection(root, data['id']): stats['injection_coverage']['total_injected'] += 1
-                        else: stats['injection_coverage']['gaps'].append(filepath)
+                        if verify_injection(root, data['id']):
+                            stats['injection_coverage']['total_injected'] += 1
+                        else:
+                            stats['injection_coverage']['gaps'].append(filepath)
 
     # Step 2: Multi-Source Ingestion
     adr_stats = get_adr_stats()
@@ -242,11 +282,17 @@ def generate_report(target_dir='.'):
     compliance_data = get_compliance_stats()
     changelog_stats = get_changelog_stats()
     maturity_score = calculate_maturity(stats)
+    total_reclaimed = get_total_reclaimed_hours()
+    cost_summary = get_cost_summary()
+    monthly_cost = cost_summary.get("current_monthly_estimate", 0.0)
+    currency = cost_summary.get("currency", "USD")
 
     comp_rate = ((stats['total_files'] - len(stats['missing_metadata'])) / stats['total_files'] * 100) if stats['total_files'] > 0 else 0
     total_inj = stats['injection_coverage']['total_mandated']
     injected = stats['injection_coverage']['total_injected']
     coverage = (injected / total_inj * 100) if total_inj > 0 else 0
+
+    mean_confidence = (sum(stats['maturity_scores']) / len(stats['maturity_scores'])) if stats['maturity_scores'] else 1.0
 
     v1_readiness = calculate_v1_readiness(stats, adr_stats, comp_rate, coverage)
 
@@ -266,14 +312,20 @@ def generate_report(target_dir='.'):
     lines.append("")
 
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    lines.append("# 🏥 Platform Health Command Center")
-    lines.append(f"**Generated**: `{timestamp}` | **V1 Readiness**: `{v1_readiness:.1f}%` | **Overall Maturity**: `{maturity_score:.1f}%`")
+    lines.append("## 🏥 Platform Health Command Center")
+    lines.append("")
+    lines.append(f"**Generated**: `{timestamp}` | **V1 Readiness**: `{v1_readiness:.1f}%` | **Mean Confidence**: `{'⭐' * int(round(mean_confidence)) or '⭐'} ({mean_confidence:.1f}/5.0)`")
+    lines.append("")
+    lines.append(f"**Realized Value**: `{total_reclaimed:.1f} Hours` | **Infra Run Rate**: `${monthly_cost:,.2f} {currency}/mo`")
 
-    lines.append("\n## 🏁 V1 Platform Readiness Gate")
+    lines.append("")
+    lines.append("## V1 Platform Readiness Gate")
+    lines.append("")
     lines.append("> [!IMPORTANT]")
     lines.append(f"> The platform is currently **{v1_readiness:.1f}%** ready for V1 production rollout.")
 
-    lines.append("\n| Milestone | Status | Readiness |")
+    lines.append("")
+    lines.append("| Milestone | Status | Readiness |")
     lines.append("| :--- | :--- | :--- |")
     lines.append(f"| **Metadata Integrity** | {'✅' if comp_rate > 95 else '⚠️'} | {comp_rate:.1f}% |")
     lines.append(f"| **Injection Integrity** | {'✅' if coverage > 95 else '⚠️'} | {coverage:.1f}% |")
@@ -281,7 +333,9 @@ def generate_report(target_dir='.'):
     lines.append(f"| **Changelog Activity** | ✅ | {changelog_stats['total']} Entries |")
 
     if len(trends) > 1:
-        lines.append("\n## 📈 Governance Velocity (Historical Trend)")
+        lines.append("")
+        lines.append("## 📈 Governance Velocity (Historical Trend)")
+        lines.append("")
         lines.append("```mermaid")
         lines.append("xychart-beta")
         lines.append("    title \"V1 Readiness Trend (Last 10 Runs)\"")
@@ -290,7 +344,9 @@ def generate_report(target_dir='.'):
         lines.append(f"    line [{', '.join(trends[-10:])}]")
         lines.append("```")
 
-    lines.append("\n## 🏹 Knowledge Graph Vitality")
+    lines.append("")
+    lines.append("## Knowledge Graph Vitality")
+    lines.append("")
     lines.append(f"| Metric | Count | Source |")
     lines.append(f"| :--- | :--- | :--- |")
     lines.append(f"| **Architecture Decisions** | {adr_stats['total']} | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |")
@@ -299,21 +355,27 @@ def generate_report(target_dir='.'):
     lines.append(f"| **Change Logs** | {changelog_stats['total']} | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |")
     lines.append(f"| **Tracked Resources** | {stats['total_files']} | Repository Scan |")
 
-    lines.append("\n## 🗂️ Catalog Inventory")
+    lines.append("")
+    lines.append("## Catalog Inventory")
+    lines.append("")
     lines.append("| Catalog | Entity Count |")
     lines.append("| :--- | :--- |")
     # Sort for deterministic output
     for cat in sorted(catalog_stats.keys()):
         lines.append(f"| {cat} | {catalog_stats[cat]} |")
 
-    lines.append("\n## 🛡️ Risk & Maturity Visualization")
+    lines.append("")
+    lines.append("## 🛡️ Risk & Maturity Visualization")
+    lines.append("")
     lines.append("```mermaid")
     lines.append("pie title Production Impact distribution")
     for impact, count in stats['risk_profile']['production_impact'].items():
         if count > 0: lines.append(f'    "{impact.upper()}" : {count}')
     lines.append("```")
 
-    lines.append("\n## ⚖️ Governance Maturity")
+    lines.append("")
+    lines.append("## Governance Maturity")
+    lines.append("")
     comp_rate = ((stats['total_files'] - len(stats['missing_metadata'])) / stats['total_files'] * 100) if stats['total_files'] > 0 else 0
     lines.append(f"- **Metadata Compliance**: `{comp_rate:.1f}%`")
     lines.append(f"- **Risk-Weighted Score**: `{maturity_score:.1f}%`")
@@ -321,28 +383,53 @@ def generate_report(target_dir='.'):
     if compliance_data:
         lines.append(f"- **Infrastructure Drift**: `{100 - compliance_data.get('compliance_rate', 0):.1f}%` (via `compliance-report.json`)")
 
-    lines.append("\n## 💉 Injection Coverage")
+    lines.append("")
+    lines.append("## Injection Coverage")
+    lines.append("")
     total = stats['injection_coverage']['total_mandated']
     injected = stats['injection_coverage']['total_injected']
     coverage = (injected / total * 100) if total > 0 else 0
     lines.append(f"- **Sidecar Coverage**: `{coverage:.1f}%` ({injected}/{total})")
 
-    lines.append("\n## 🚨 Operational Risks")
+    lines.append("")
+    lines.append("## Project Realized Value (Heartbeat)")
+    lines.append("")
+    lines.append("> [!TIP]")
+    lines.append(f"> Total realized value reclaimed through automation heartbeats: **{total_reclaimed:.1f} hours**.")
+    lines.append("")
+    lines.append(f"- **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)")
+
+    lines.append("")
+    lines.append("## Financial Governance (Cloud Cost)")
+    lines.append("")
+    lines.append("> [!NOTE]")
+    lines.append(f"> Current monthly infrastructure run rate: **${monthly_cost:,.2f} {currency}**.")
+    lines.append("")
+    lines.append(f"- **Estimated Annual**: `${monthly_cost * 12:,.2f} {currency}`")
+    lines.append(f"- **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)")
+    lines.append("- **Tooling**: Infracost (CI-integrated)")
+
+    lines.append("")
+    lines.append("## Operational Risks")
+    lines.append("")
     lines.append(f"- **Orphaned (No Owner)**: {len(stats['orphans'])}")
     lines.append(f"- **Stale (Past Lifecycle)**: {len(stats['stale_files'])}")
 
-    lines.append("\n---")
-    lines.append("### 📬 Strategic Guidance")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    lines.append("### Strategic Guidance")
+    lines.append("")
     lines.append("- **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.")
     lines.append("- **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.")
 
     # Persist Final Dashboard
     content = "\n".join(lines)
-    os.makedirs('docs/governance/reports', exist_ok=True)
+    os.makedirs('docs/10-governance/reports', exist_ok=True)
     with open('PLATFORM_HEALTH.md', 'w') as f:
-        f.write("<!-- 🛑 AUTOMATED REPORT - DO NOT EDIT MANUALLY 🛑 -->\n" + content)
+        f.write(content + "\n\n<!-- AUTOMATED REPORT - DO NOT EDIT MANUALLY -->\n")
 
-    with open('docs/governance/reports/HEALTH_AUDIT_LOG.md', 'a') as f:
+    with open('docs/10-governance/reports/HEALTH_AUDIT_LOG.md', 'a') as f:
         f.write(f"\n\n---\n### Audit: {timestamp}\n{content}")
 
 if __name__ == "__main__":

@@ -2,13 +2,11 @@
 id: 06_IDENTITY_AND_ACCESS
 title: Identity & Access Governance
 type: documentation
-category: 60-security
-version: 1.0
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - module:keycloak
-  - module:aws_iam
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: high
@@ -16,14 +14,28 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - ADR-0005
   - ADR-0032
   - KEYCLOAK_CONFIG_README
   - 08_GITHUB_AGENT_ROLES
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: security
+status: active
+version: 1.0
+dependencies:
+  - module:keycloak
+  - module:aws_iam
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Identity & Access Governance

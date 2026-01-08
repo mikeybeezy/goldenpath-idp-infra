@@ -9,11 +9,15 @@ Usage:
     python3 scripts/backfill-metadata.py [--dry-run] [--verbose]
 """
 
-import os
-import re
-import glob
 import argparse
 from datetime import datetime, timedelta
+import sys
+
+# Add lib to path for imports
+sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
+from metadata_config import MetadataConfig
+
+cfg = MetadataConfig()
 
 
 def get_title_from_file(filepath):
@@ -201,6 +205,11 @@ def get_risk_profile(doc_type):
 
 def get_observability_tier(doc_type):
     """Get observability tier based on document type"""
+    # Use schema if available, else legacy fallback
+    skeleton = cfg.get_skeleton(doc_type)
+    if skeleton and 'reliability' in skeleton:
+        return skeleton['reliability'].get('observability_tier', 'bronze')
+
     if doc_type in ['contract', 'policy']:
         return 'gold'
     elif doc_type in ['adr', 'runbook']:
@@ -215,18 +224,12 @@ def generate_metadata(filepath, title, doc_type):
     category = extract_category(filepath)
     version = extract_version(filepath)
     dependencies = extract_dependencies(filepath)
-    lifecycle_date = get_lifecycle_date(filepath, doc_type)
-    risk_profile = get_risk_profile(doc_type)
-    obs_tier = get_observability_tier(doc_type)
 
-    # Quote title if it contains special characters
-    if ':' in title and not title.startswith('"'):
-        title = f'"{title}"'
-
-    # Format dependencies as YAML array
-    deps_yaml = '[]' if not dependencies else '\n  - ' + '\n  - '.join(dependencies)
-
-    metadata = f"""---
+    # Get base skeleton from schema
+    skeleton = cfg.get_skeleton(doc_type)
+    if not skeleton:
+        # Legacy fallback template-string logic
+        return f"""---
 id: {doc_id}
 title: {title}
 type: {doc_type}
@@ -234,22 +237,34 @@ category: {category}
 version: {version}
 owner: platform-team
 status: active
-dependencies: {deps_yaml}
+dependencies: []
 risk_profile:
-  production_impact: {risk_profile['production_impact']}
-  security_risk: {risk_profile['security_risk']}
-  coupling_risk: {risk_profile['coupling_risk']}
+  production_impact: low
 reliability:
   rollback_strategy: git-revert
-  observability_tier: {obs_tier}
+  observability_tier: bronze
 lifecycle:
-  supported_until: {lifecycle_date}
-  breaking_change: false
-relates_to: []
+  supported_until: 2028-01-01
 ---
+\n"""
 
-"""
-    return metadata
+    # Populate skeleton with context-aware data
+    new_data = copy.deepcopy(skeleton)
+    new_data.update({
+        'id': doc_id,
+        'title': title,
+        'category': category,
+        'version': version,
+        'dependencies': dependencies,
+        'lifecycle': {
+            'supported_until': get_lifecycle_date(filepath, doc_type),
+            'breaking_change': False
+        }
+    })
+
+    # Construct New Content
+    fm = yaml.dump(new_data, sort_keys=False, default_flow_style=False, allow_unicode=True, indent=2)
+    return f"---\n{fm}---\n\n"
 
 
 def has_frontmatter(filepath):

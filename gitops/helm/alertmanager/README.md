@@ -2,12 +2,11 @@
 id: HELM_ALERTMANAGER
 title: Alertmanager Helm Chart (Values)
 type: documentation
-category: gitops
-version: 1.0
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - chart:kube-prometheus-stack
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,11 +14,24 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 18_BACKSTAGE_MVP
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: delivery
+status: active
+version: 1.0
+dependencies:
+  - chart:kube-prometheus-stack
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Alertmanager Helm Deployment (Deprecated)

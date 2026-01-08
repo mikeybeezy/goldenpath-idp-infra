@@ -2,11 +2,11 @@
 id: 04_PR_GUARDRAILS
 title: PR Guardrails (GoldenPath IDP)
 type: policy
-category: unknown
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,9 +14,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - 27_REFACTORING_VALIDATION_GUIDE
@@ -30,7 +28,22 @@ relates_to:
   - CL-0002
   - CL-0002-bootstrap-refactor
   - CL-0063
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: governance
+status: active
+version: '1.0'
+dependencies: []
+supported_until: 2027-01-03
+breaking_change: false
 ---
+
 # PR Guardrails (GoldenPath IDP)
 
 Doc contract:

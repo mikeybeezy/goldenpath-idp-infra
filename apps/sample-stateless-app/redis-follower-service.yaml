@@ -1,4 +1,4 @@
-# SOURCE: https://cloud.google.com/kubernetes-engine/docs/tutorials/guestbook
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: Service
 metadata:
@@ -7,10 +7,12 @@ metadata:
     app: redis
     role: follower
     tier: backend
+  annotations:
+    goldenpath.idp/id: APPS_SAMPLE_STATELESS_APP_METADATA
+    goldenpath.idp/owner: platform-team
 spec:
   ports:
-    # the port that this service should serve on
-  - port: 6379
+    - port: 6379
   selector:
     app: redis
     role: follower

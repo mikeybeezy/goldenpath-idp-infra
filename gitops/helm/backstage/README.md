@@ -2,12 +2,11 @@
 id: HELM_BACKSTAGE
 title: Backstage Helm Chart (Values)
 type: documentation
-category: gitops
-version: 1.0
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - image:backstage
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: low
@@ -15,12 +14,25 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 18_BACKSTAGE_MVP
   - ADR-0008
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: delivery
+status: active
+version: 1.0
+dependencies:
+  - image:backstage
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Backstage Helm Deployment

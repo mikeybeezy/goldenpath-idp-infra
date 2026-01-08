@@ -32,9 +32,12 @@ import os
 import sys
 import json
 import re
+from lib.metadata_config import MetadataConfig
 
 # Configuration
-PLATFORM_TEAM = ['mikeybeezy', 'mikesablaze', 'github-actions[bot]', 'dependabot[bot]']
+cfg = MetadataConfig()
+access = cfg.get_access_config()
+PLATFORM_TEAM = access.get('platform_team', []) + access.get('service_accounts', [])
 TEMPLATE_HEADER = "Select at least one checkbox per section by changing `[ ]` to `[x]`."
 
 SECTIONS = [
@@ -141,15 +144,57 @@ def validate_build_id(author: str, files: list) -> tuple[bool, str]:
 
     return True, f"✅ build_id validated: {author} with terraform changes"
 
-def validate_checklist(body: str) -> list[str]:
-    """Validate PR body has required checkbox selections."""
+def validate_vq_classification(body: str) -> tuple[bool, str]:
+    """Ensure PR body has a valid VQ bucket classification (HV/HQ, etc)."""
+    vq_pattern = re.compile(r"VQ Class: (HV/HQ|HV/LQ|MV/HQ|LV/LQ)", re.IGNORECASE)
+    match = vq_pattern.search(body)
+
+    if not match:
+        return False, "Missing VQ Classification (e.g., 'VQ Class: HV/HQ')."
+
+    return True, f"✅ VQ Classification found: {match.group(1).upper()}"
+
+def validate_script_traceability(files: list) -> list[str]:
+    """Ensure any changed scripts have ADR and CL traceability."""
+    import subprocess
+    errors = []
+    scripts = [f for f in files if f.startswith('scripts/') and (f.endswith('.py') or f.endswith('.sh'))]
+
+    for script in scripts:
+        script_name = os.path.basename(script)
+        # Skip exempt scripts
+        if script_name in ["check_script_traceability.py", "__init__.py"]:
+            continue
+
+        print(f"   🕵️ Checking traceability for {script_name}...")
+        result = subprocess.run(
+            [sys.executable, "scripts/check_script_traceability.py", "--script", script_name, "--validate"],
+            capture_output=True, text=True
+        )
+        if result.returncode != 0:
+            errors.append(f"Script Traceability Failure for {script_name}. Ensure it is mentioned in an ADR and CL entry.")
+
+    return errors
+
+def validate_checklist(body: str, author: str, files: list) -> list[str]:
+    """Validate PR body has required checkbox selections and VQ for agents."""
     errors = []
 
     if TEMPLATE_HEADER not in body:
         errors.append("PR body must be based on `.github/pull_request_template.md` (missing template header).")
 
-    if "\\n" in body:
-        errors.append("PR body contains escaped newlines (\\n). Replace with real line breaks.")
+    # Traceability Enforcement
+    trace_errors = validate_script_traceability(files)
+    errors.extend(trace_errors)
+
+    # Mandatory VQ for Agents (and recommended for all)
+    is_agent = any(agent_sig in author.lower() for agent_sig in ['antigravity', 'agent', 'bot', 'service-account'])
+    vq_valid, vq_msg = validate_vq_classification(body)
+
+    if is_agent and not vq_valid:
+        errors.append(f"AI Agents MUST provide Value Quantification: {vq_msg}")
+    elif vq_valid:
+        print(f"   {vq_msg}")
 
     missing_sections = []
     for section in SECTIONS:
@@ -219,7 +264,7 @@ def main():
 
     # No bypass label - validate checklist
     print("📋 Validating PR checklist...")
-    errors = validate_checklist(body)
+    errors = validate_checklist(body, author, files)
 
     if errors:
         print()

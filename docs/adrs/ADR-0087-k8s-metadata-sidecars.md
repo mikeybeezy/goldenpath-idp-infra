@@ -1,12 +1,8 @@
 ---
-id: ADR-0087
+id: ADR-0087-k8s-metadata-sidecars
 title: 'ADR-0087: Integration of Governance Metadata with Kubernetes Resources'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,10 +10,10 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
-relates_to: []
+lifecycle: active
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # ADR-0087: Integration of Governance Metadata with Kubernetes Resources

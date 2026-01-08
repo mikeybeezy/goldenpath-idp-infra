@@ -13,3 +13,11 @@ repos:
     hooks:
       - id: markdownlint
         args: ["--config", ".github/linters/markdownlint.yml"]
+  - repo: local
+    hooks:
+      - id: emoji-enforcer
+        name: Emoji Usage Policy Enforcer
+        entry: python3 scripts/enforce_emoji_policy.py
+        language: python
+        files: \.(md|yaml|yml)$
+        pass_filenames: true

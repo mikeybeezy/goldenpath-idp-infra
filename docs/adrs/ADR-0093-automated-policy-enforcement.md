@@ -1,23 +1,12 @@
 ---
-id: ADR-0093
+id: ADR-0093-automated-policy-enforcement
 title: 'ADR-0093: Automated Policy Enforcement Framework'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: '2028-01-01'
-  breaking_change: false
-relates_to: []
+lifecycle: active
+version: '1.0'
+supported_until: '2028-01-01'
+breaking_change: false
 ---
 
 # ADR-0093: Automated Policy Enforcement Framework
@@ -33,14 +22,14 @@ We need policies to be enforceable, not just documentation. Manual enforcement d
 
 ### 1. Machine-Readable Policies
 
-Policies are defined as **YAML files** in `docs/policies/`, not just markdown.
+Policies are defined as **YAML files** in `docs/10-governance/policies/`, not just markdown.
 
 **Structure:**
 ```yaml
 policy_id: POL-{DOMAIN}-{NUMBER}
 version: "1.0"
 status: "active"
-
+owner: platform-team
 rules:
   - rule_id: "{POLICY_ID}-R{NUMBER}"
     enforcement: "automated|manual"

@@ -1,8 +1,12 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fastapi-app
   namespace: monitoring
+  annotations:
+    goldenpath.idp/id: APPS_FAST_API_APP_METADATA
+    goldenpath.idp/owner: platform-team
 spec:
   replicas: 1
   selector:
@@ -14,8 +18,8 @@ spec:
         app: fastapi-app
     spec:
       containers:
-      - name: fastapi-app
-        image: rslim087/fastapi-prometheus:latest
-        ports:
-        - containerPort: 8000
-          name: web
+        - name: fastapi-app
+          image: rslim087/fastapi-prometheus:latest
+          ports:
+            - containerPort: 8000
+              name: web

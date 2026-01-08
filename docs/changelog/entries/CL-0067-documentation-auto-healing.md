@@ -1,11 +1,7 @@
 ---
 id: CL-0067-documentation-auto-healing
 title: 'CL-0067: Automated Documentation Auto-Healing'
-type: documentation
-category: changelog
-version: 1.0
-owner: platform-team
-status: active
+type: changelog
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,11 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-04
-  breaking_change: false
+lifecycle: active
+version: 1.0
 relates_to:
   - ADR-0111
+supported_until: 2028-01-04
+breaking_change: false
 ---
 
 # CL-0067: Automated Documentation Auto-Healing

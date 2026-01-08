@@ -1,24 +1,17 @@
 ---
-id: ADR-0067
+id: ADR-0067-platform-labeler-base-ref
 title: 'ADR-0067: Use base ref for labeler checkout'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-04
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - ADR-0067
+supported_until: 2028-01-04
+breaking_change: false
 ---
 
 # ADR-0067: Use base ref for labeler checkout

@@ -1,25 +1,15 @@
 ---
-id: ADR-0003
+id: ADR-0003-platform-AWS-IAM-bootstrap-IRSA-SSM-
 title: 'ADR-0003: Use AWS IAM for bootstrap access, IRSA for pod-to-AWS access, and
   SSM for node break-glass'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - ADR-0003
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 # ADR-0003: Use AWS IAM for bootstrap access, IRSA for pod-to-AWS access, and SSM for node break-glass

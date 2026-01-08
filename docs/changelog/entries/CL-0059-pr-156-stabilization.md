@@ -2,9 +2,6 @@
 id: CL-0059-pr-156-stabilization
 title: 'CL-0059: PR #156 – ECR Pipeline Stabilization and Metadata Compliance'
 type: changelog
-category: changelog
-version: 1.0
-owner: platform-team
 status: released
 risk_profile:
   production_impact: low
@@ -13,11 +10,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-12-31
-  breaking_change: false
+version: 1.0
+lifecycle: active
 relates_to:
   - ADR-0098
+supported_until: 2028-12-31
+breaking_change: false
 ---
 
 # CL-0059: PR #156 – ECR Pipeline Stabilization and Metadata Compliance

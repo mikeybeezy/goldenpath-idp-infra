@@ -1,18 +1,13 @@
 extends: default
 
 ignore: |
-  .git/
-  .terraform/
-  .venv/
-  build/
-  dist/
-  apps/
-  modules/**/templates/
-  node_modules/
-  vendor/
+  **/templates/*.yaml
+  **/templates/*.yml
+  gitops/helm/*/templates/*.yaml
+  modules/*/bootstrap-chart/templates/*.yaml
 
 rules:
-  document-start: disable
-  truthy:
-    allowed-values: ["true", "false", "on", "off", "yes", "no"]
   line-length: disable
+  truthy: disable
+  comments-indentation: disable
+  document-start: disable

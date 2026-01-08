@@ -2,11 +2,6 @@
 id: CL-0007-ci-force-unlock-workflow
 title: 'CL-0007: CI force-unlock workflow'
 type: changelog
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,11 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-04
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - CL-0007
+supported_until: 2027-01-04
+breaking_change: false
 ---
 
 # CL-0007: CI force-unlock workflow
@@ -26,7 +22,7 @@ relates_to:
 Date: 2025-12-31
 Owner: platform
 Scope: terraform/ci
-Related: .github/workflows/ci-force-unlock.yml, docs/runbooks/07_TF_STATE_FORCE_UNLOCK.md
+Related: .github/workflows/ci-force-unlock.yml, docs/70-operations/runbooks/07_TF_STATE_FORCE_UNLOCK.md
 
 ## Summary
 

@@ -1,24 +1,14 @@
 ---
-id: ADR-0026
+id: ADR-0026-platform-cd-deployment-contract
 title: 'ADR-0026: CD deployment contract'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - ADR-0026
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 # ADR-0026: CD deployment contract

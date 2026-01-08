@@ -8,7 +8,7 @@ Purpose:
     enforcement framework.
 
 What it does:
-    1. Loads policy definitions from docs/policies/*.yaml
+    1. Loads policy definitions from docs/10-governance/policies/*.yaml
     2. Queries all ECR registries in AWS account
     3. Checks each registry against policy rules:
        - POL-ECR-001-R03: Required metadata present (id, owner, risk)
@@ -52,7 +52,7 @@ Exit Codes:
 Related:
     - ADR-0093: Automated Policy Enforcement
     - ADR-0092: ECR Registry Product Strategy
-    - docs/policies/README.md
+    - docs/10-governance/policies/README.md
     - .github/workflows/policy-enforcement.yml
 
 Author: Platform Team
@@ -197,7 +197,7 @@ def main():
     try:
         # Load policies
         if args.verbose:
-            print("Loading policies from docs/policies/*.yaml")
+            print("Loading policies from docs/10-governance/policies/*.yaml")
         loader = PolicyLoader()
         policies = loader.load_policies()
 

@@ -2,15 +2,9 @@
 id: BOOTSTRAP_10_BOOTSTRAP_README
 title: Bootstrap Entrypoint
 type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
-status: active
-dependencies:
-  - chart:argo-cd
-  - chart:aws-load-balancer-controller
-  - chart:cert-manager
-  - chart:kong
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: none
@@ -18,9 +12,7 @@ risk_profile:
 reliability:
   rollback_strategy: manual
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 08_INGRESS_STRATEGY
   - 12_GITOPS_AND_CICD
@@ -30,6 +22,22 @@ relates_to:
   - ADR-0002
   - ADR-0013
   - one_stage_vs_multistage_bootstrap
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+version: '1.0'
+dependencies:
+  - chart:argo-cd
+  - chart:aws-load-balancer-controller
+  - chart:cert-manager
+  - chart:kong
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Bootstrap Entrypoint
@@ -368,7 +376,7 @@ Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "prometheus" chart repository
 ...Successfully got an update from the "prometheus-community" chart repository
 ...Successfully got an update from the "bitnami" chart repository
-Update Complete. ⎈Happy Helming!⎈
+Update Complete. Happy Helming!
 namespace/argocd configured
 Release "argocd" has been upgraded. Happy Helming!
 NAME: argocd
@@ -412,7 +420,7 @@ Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "prometheus-community" chart repository
 ...Successfully got an update from the "prometheus" chart repository
 ...Successfully got an update from the "bitnami" chart repository
-Update Complete. ⎈Happy Helming!⎈
+Update Complete. Happy Helming!
 Release "aws-load-balancer-controller" has been upgraded. Happy Helming!
 NAME: aws-load-balancer-controller
 LAST DEPLOYED: Wed Dec 24 12:17:28 2025

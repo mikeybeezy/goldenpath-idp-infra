@@ -1,16 +1,20 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ values.app_name }}"
-  namespace: "{{ values.namespace }}"
+  name: '{{ values.app_name }}'
+  namespace: '{{ values.namespace }}'
   labels:
-    app.kubernetes.io/name: "{{ values.app_name }}"
-    app.kubernetes.io/instance: "{{ values.app_name }}"
+    app.kubernetes.io/name: '{{ values.app_name }}'
+    app.kubernetes.io/instance: '{{ values.app_name }}'
+  annotations:
+    goldenpath.idp/id: APPS_WORDPRESS_ON_EFS_METADATA
+    goldenpath.idp/owner: platform-team
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: "{{ values.app_name }}"
+    app.kubernetes.io/name: '{{ values.app_name }}'
   ports:
     - name: http
-      port: "{{ values.service_port }}"
+      port: '{{ values.service_port }}'
       targetPort: http

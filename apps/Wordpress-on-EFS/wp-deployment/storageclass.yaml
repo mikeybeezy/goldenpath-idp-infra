@@ -1,5 +1,9 @@
+# Managed by scripts/standardize_metadata.py
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: efs-sc
+  annotations:
+    goldenpath.idp/id: APPS_WP_DEPLOYMENT_METADATA
+    goldenpath.idp/owner: None
 provisioner: efs.csi.aws.com

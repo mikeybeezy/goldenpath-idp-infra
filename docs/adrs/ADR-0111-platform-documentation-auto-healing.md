@@ -1,29 +1,22 @@
 ---
-id: ADR-0111
+id: ADR-0111-platform-documentation-auto-healing
 title: 'ADR-0111: Automated Documentation Auto-Healing'
 type: adr
-category: documentation
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle: active
 version: 1.0
-owner: platform-team
-status: accepted
 dependencies:
   - ADR-0103
   - ADR-0104
 supersedes:
   - ADR-0103
   - ADR-0104
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
-lifecycle:
-  supported_until: 2027-01-06
-  breaking_change: false
 relates_to:
   - ADR-0101
+supported_until: 2027-01-06
+breaking_change: false
 ---
 
 # ADR-0111: Automated Documentation Auto-Healing
@@ -33,7 +26,7 @@ relates_to:
 - **Owners:** `platform-team`
 - **Domain:** Platform
 - **Decision type:** Governance
-- **Related:** [ADR-0101: PR Metadata Auto-Heal](./ADR-0101-pr-metadata-auto-heal.md)
+owner: platform-team- **Related:** [ADR-0101: PR Metadata Auto-Heal](./ADR-0101-pr-metadata-auto-heal.md)
 
 ---
 

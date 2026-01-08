@@ -1,0 +1,12 @@
+{
+  "current_monthly_estimate": 1250.0,
+  "currency": "USD",
+  "last_updated": "2026-01-07T07:52:43Z",
+  "history": [
+    {
+      "timestamp": "2026-01-07T07:52:43Z",
+      "monthly_cost": 1250.0,
+      "source": "cli"
+    }
+  ]
+}

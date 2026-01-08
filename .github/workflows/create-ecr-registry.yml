@@ -52,13 +52,13 @@ jobs:
         run: |
           # Validate registry name format
           if ! echo "${{ inputs.registry_name }}" | grep -qE '^[a-z][a-z0-9-]*$'; then
-            echo "❌ Registry name must be lowercase with hyphens only"
+            echo " Registry name must be lowercase with hyphens only"
             exit 1
           fi
 
           # Validate owner format (relaxed)
           if ! echo "${{ inputs.owner }}" | grep -qE '^[a-z0-9-]+$'; then
-            echo "❌ Owner must be lowercase alphanumeric with dashes (e.g. platform-team, michael-babs)"
+            echo " Owner must be lowercase alphanumeric with dashes (e.g. platform-team, michael-babs)"
             exit 1
           fi
 
@@ -67,7 +67,7 @@ jobs:
       - name: Update catalog (idempotent)
         run: |
           set -euo pipefail
-          FILE="docs/catalogs/ecr-catalog.yaml"
+          FILE="docs/20-contracts/catalogs/ecr-catalog.yaml"
           NAME="${{ inputs.registry_name }}"
           OWNER="${{ inputs.owner }}"
           RISK="${{ inputs.risk }}"
@@ -156,7 +156,7 @@ jobs:
                           f.write(new_content)
                       print(f"✅ Injected {name} into existing ecr_repositories block.")
                   else:
-                      print("❌ Error: Could not parse ecr_repositories block structure.")
+                      print(" Error: Could not parse ecr_repositories block structure.")
                       sys.exit(1)
               else:
                   with open(tfvars_path, "a") as f:
@@ -164,7 +164,7 @@ jobs:
                   print(f"✅ Created new ecr_repositories block with {name}.")
 
           except Exception as e:
-              print(f"❌ Error updating tfvars: {e}")
+              print(f" Error updating tfvars: {e}")
               sys.exit(1)
           '
 
@@ -196,7 +196,7 @@ jobs:
       - name: Inline Terraform Plan (Targeted)
         id: plan
         run: |
-          echo "📝 Running targeted plan for module.ecr_repositories[\"${{ inputs.registry_name }}\"]..."
+          echo " Running targeted plan for module.ecr_repositories[\"${{ inputs.registry_name }}\"]..."
 
           ENV_DIR="envs/${{ inputs.environment }}"
 
@@ -207,7 +207,7 @@ jobs:
             -lock=false \
             -refresh=false \
             -no-color > plan_output.txt 2>&1 || {
-              echo "❌ Plan failed with error:"
+              echo " Plan failed with error:"
               cat plan_output.txt
               exit 1
             }
@@ -217,7 +217,7 @@ jobs:
 
           # Build the PR body file (stripping the leading spaces used for YAML alignment)
           cat <<'EOF' | sed 's/^          //' > pr_body.raw
-          ## 🏗️ ECR Registry Creation Request
+          ##  ECR Registry Creation Request
 
           **Registry:** `${{ inputs.registry_name }}`
           **Environment:** `${{ inputs.environment }}`
@@ -227,9 +227,9 @@ jobs:
 
           ---
 
-          ## 🤖 Inline Terraform Plan
+          ##  Inline Terraform Plan
 
-          <details><summary>📄 <strong>Targeted Terraform Plan</strong></summary>
+          <details><summary> <strong>Targeted Terraform Plan</strong></summary>
 
           This plan was generated using a **bounded context** strategy (`-target`), focusing only on the new ECR repository.
           Note: state refresh was skipped because this is a shallow plan.
@@ -247,14 +247,14 @@ jobs:
 
           ---
 
-          ## 📋 Changes Policy
+          ##  Changes Policy
           - ✅ Added to registry catalog (`docs/catalogs/ecr-catalog.yaml`)
           - ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
           - ✅ Added to Terraform tfvars (`envs/${{ inputs.environment }}/terraform.tfvars`)
 
           ---
 
-          ## 🚀 Next Steps
+          ##  Next Steps
           1. **Merge** this PR (Plan is already verified above).
           2. **Run Apply** workflow (Automated next step).
 
@@ -271,7 +271,7 @@ jobs:
           # Insert security controls
           RISK="${{ inputs.risk }}"
           if [ "$RISK" == "high" ]; then
-            CONTROLS="### 🔴 High Risk\n- ✅ KMS Encryption\n- ✅ Tag Immutability\n- ✅ Retention: 50\n- ✅ Enhanced Scanning"
+            CONTROLS="###  High Risk\n- ✅ KMS Encryption\n- ✅ Tag Immutability\n- ✅ Retention: 50\n- ✅ Enhanced Scanning"
           elif [ "$RISK" == "medium" ]; then
             CONTROLS="### 🟡 Medium Risk\n- ✅ AES256\n- ✅ Tag Mutability\n- ✅ Retention: 30\n- ✅ Standard Scanning"
           else
@@ -291,7 +291,7 @@ jobs:
         with:
           base: development
           branch: "registry/create-${{ inputs.registry_name }}"
-          title: "🏗️ Create ECR Registry: ${{ inputs.registry_name }} (${{ inputs.environment }})"
+          title: " Create ECR Registry: ${{ inputs.registry_name }} (${{ inputs.environment }})"
           commit-message: "registry: create ${{ inputs.registry_name }} in ${{ inputs.environment }}"
           body-path: pr_body.txt
           labels: |

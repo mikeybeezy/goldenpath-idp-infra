@@ -2,11 +2,11 @@
 id: 37_V1_SCOPE_AND_TIMELINE
 title: V1 Scope and Timeline (Backstage + Platform Capabilities)
 type: documentation
-category: unknown
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,9 +14,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 34_PLATFORM_SUCCESS_CHECKLIST
   - ROADMAP
@@ -24,6 +22,20 @@ relates_to:
   - 00_DESIGN_PHILOSOPHY
   - READINESS_CHECKLIST
   - V1_04_CAPABILITY_MATRIX
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+status: active
+version: '1.0'
+dependencies: []
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # V1 Scope and Timeline (Backstage + Platform Capabilities)
@@ -47,9 +59,15 @@ It is a living guide for planning and execution.
 - Keep scope focused and testable.
 - Make deferrals explicit to avoid drift.
 
+## V1 Scope & VQ Alignment
+
+This V1 scope is aligned with **Phase 1 (Stabilize the Core)** of our [**VQ Strategy**](../production-readiness-gates/ROADMAP.md). Our primary success metric for V1 is: *"I can step away and nothing degrades."*
+
+Every V1 feature is classified as **🔴 HV/HQ** (High Value / High Quality). We move slowly here to ensure trust, safety, and determinism.
+
 ---
 
-## V1 scope (lightweight but usable)
+## V1 scope (The Boring Core)
 
 ### CI/CD observability (metrics only)
 

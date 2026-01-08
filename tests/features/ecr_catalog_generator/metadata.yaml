@@ -1,0 +1,13 @@
+id: ECR_CATALOG_TEST
+title: ECR Catalog Generator Test Scenario
+type: documentation
+owner: platform-team
+lifecycle: active
+reliability:
+  maturity: 4
+  rollback_strategy: git-revert
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: high
+tags: [ecr, catalog, security]
+schema_version: 1

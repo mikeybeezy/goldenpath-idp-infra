@@ -1,22 +1,10 @@
 ---
-id: ADR-0039
+id: ADR-0039-platform-tag-scoped-iam-policy-template
 title: 'ADR-0039: Tag-Scoped IAM Policy Template for Destructive Automation'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+lifecycle: active
+version: '1.0'
 relates_to:
   - 01_GOVERNANCE
   - 01_TAG_SCOPED_POLICY_TEMPLATE
@@ -24,6 +12,8 @@ relates_to:
   - ADR-0037
   - ADR-0037-platform-resource-tagging-policy
   - ADR-0039
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 # ADR-0039: Tag-Scoped IAM Policy Template for Destructive Automation
@@ -33,7 +23,7 @@ relates_to:
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Governance / Operations
-- **Related:** `docs/10-governance/01_GOVERNANCE.md`, `docs/10-governance/35_RESOURCE_TAGGING.md`, `docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md`, `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`
+- **Related:** `docs/10-governance/01_GOVERNANCE.md`, `docs/10-governance/35_RESOURCE_TAGGING.md`, `docs/10-governance/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md`, `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`
 
 ---
 
@@ -63,7 +53,7 @@ We will adopt a **tag-scoped IAM policy template** for destructive automation.
 
 - Delete actions must be scoped to `BuildId` and `Environment` tags.
 - Read-only discovery actions remain unscoped.
-- The template lives in `docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md`.
+- The template lives in `docs/10-governance/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md`.
 
 ---
 

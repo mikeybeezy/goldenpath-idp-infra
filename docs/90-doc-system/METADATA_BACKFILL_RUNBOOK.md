@@ -2,11 +2,11 @@
 id: METADATA_BACKFILL_RUNBOOK
 title: Metadata Backfill Runbook
 type: runbook
-category: unknown
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,9 +14,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+schema_version: 1
 relates_to:
   - ADR-0082
   - ADR-0083
@@ -24,6 +22,20 @@ relates_to:
   - CL-XXXX
   - METADATA_STRATEGY
   - METADATA_VALIDATION_GUIDE
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+status: active
+version: '1.0'
+dependencies: []
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 ## Metadata Backfill Runbook
@@ -82,8 +94,8 @@ Type rules:
 
 - `docs/adrs/` -> `adr`
 - `docs/changelog/entries/` -> `changelog`
-- `docs/runbooks/` -> `runbook`
-- `docs/policies/` -> `policy`
+- `docs/70-operations/runbooks/` -> `runbook`
+- `docs/10-governance/policies/` -> `policy`
 - Otherwise -> `topic`
 
 Owner rules:

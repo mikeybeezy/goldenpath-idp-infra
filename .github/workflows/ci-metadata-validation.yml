@@ -55,9 +55,9 @@ jobs:
           echo "$FILES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           if [ -z "$FILES" ]; then
-            echo "📭 No metadata files changed"
+            echo " No metadata files changed"
           else
-            echo "📋 Changed files:"
+            echo " Changed files:"
             echo "$FILES"
           fi
 
@@ -70,7 +70,7 @@ jobs:
       - name: Install dependencies
         if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
         run: |
-          pip install pyyaml==6.0.1
+          pip install -r requirements-dev.txt
 
       - name: Run Metadata Validator (Changed Files Only)
         id: validate
@@ -80,44 +80,53 @@ jobs:
           chmod +x scripts/validate_metadata.py
           echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/validate_metadata.py
 
-      - name: Auto-Heal Metadata
-        id: heal
-        if: steps.validate.outcome == 'failure'
+      - name: Validate Enums (Changed Files Only)
+        id: enums
+        if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
+        continue-on-error: true
         run: |
-          echo "🩹 Running auto-heal..."
-          python3 scripts/standardize_metadata.py
-          if ! git diff --quiet; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add -A
-            git commit -m "chore: auto-heal metadata [skip ci]"
-            git push
-            echo "healed=true" >> $GITHUB_OUTPUT
-            echo "✅ Metadata auto-healed and committed"
-          else
-            echo "healed=false" >> $GITHUB_OUTPUT
-            echo "📭 No changes needed after heal attempt"
-          fi
+          echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/validate_enums.py
 
-      - name: Re-validate After Heal
-        if: steps.heal.outputs.healed == 'true'
+      - name: Validate Governance Routing (Changed Files Only)
+        id: routing
+        if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
+        continue-on-error: true
         run: |
-          echo "🔍 Re-validating after auto-heal..."
-          echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/validate_metadata.py
+          echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/validate_routing_compliance.py
+
+      - name: Run Emoji Policy Enforcer (Changed Files Only)
+        id: emoji
+        if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
+        continue-on-error: true
+        run: |
+          echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/enforce_emoji_policy.py --dry-run
+
+      - name: Report Issues (No Auto-Push)
+        id: report
+        if: steps.validate.outcome == 'failure' || steps.emoji.outcome == 'failure' || steps.enums.outcome == 'failure' || steps.routing.outcome == 'failure'
+        run: |
+          echo "drift=true" >> $GITHUB_OUTPUT
+          echo "🩹 Governance drift detected. Please resolve it locally using the command below."
 
       - name: Summary
         if: always()
         run: |
-          echo "## Metadata Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## Quality Guardrails Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ steps.exempt.outputs.skip }}" == "true" ]; then
-            echo "⏭️ **Skipped** - Exempt label detected" >> $GITHUB_STEP_SUMMARY
+            echo " **Skipped** - Exempt label detected" >> $GITHUB_STEP_SUMMARY
           elif [ -z "${{ steps.changed.outputs.files }}" ]; then
-            echo "📭 **No metadata files changed**" >> $GITHUB_STEP_SUMMARY
-          elif [ "${{ steps.heal.outputs.healed }}" == "true" ]; then
-            echo "🩹 **Auto-healed** - Metadata standardized and committed" >> $GITHUB_STEP_SUMMARY
-          elif [ "${{ steps.validate.outcome }}" == "success" ]; then
-            echo "✅ **Passed** - All metadata valid" >> $GITHUB_STEP_SUMMARY
+            echo " **No metadata or documentation files changed**" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.report.outputs.drift }}" == "true" ]; then
+            echo " **Governance Drift Detected**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "###  Local Remediation" >> $GITHUB_STEP_SUMMARY
+            echo "Please run the following command to fix your branch and then push the changes:" >> $GITHUB_STEP_SUMMARY
+            echo '```bash' >> $GITHUB_STEP_SUMMARY
+            echo 'bin/governance heal .' >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.validate.outcome }}" == "success" ] && [ "${{ steps.emoji.outcome }}" == "success" ] && [ "${{ steps.enums.outcome }}" == "success" ] && [ "${{ steps.routing.outcome }}" == "success" ]; then
+            echo "✅ **Passed** - All metadata, enums, routing, and visual standards valid" >> $GITHUB_STEP_SUMMARY
           else
-            echo "❌ **Failed** - Metadata issues detected" >> $GITHUB_STEP_SUMMARY
+            echo " **Failed** - Unexpected CI error" >> $GITHUB_STEP_SUMMARY
           fi

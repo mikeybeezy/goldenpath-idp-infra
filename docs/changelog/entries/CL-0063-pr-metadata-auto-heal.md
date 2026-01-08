@@ -1,11 +1,7 @@
 ---
-id: CL-0063
+id: CL-0063-pr-metadata-auto-heal
 title: PR Metadata Auto-Heal and Scoped Validation
 type: changelog
-category: governance
-status: active
-owner: platform-team
-version: '1.0'
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,11 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+version: '1.0'
+lifecycle: active
 relates_to:
   - ADR-0101
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # CL-0063: PR Metadata Auto-Heal and Scoped Validation
@@ -26,14 +23,14 @@ Optimized the PR metadata validation workflow to reduce friction and improve vel
 
 ## Changes
 
-### 🔧 Workflow Updates
+### Workflow Updates
 
 #### `.github/workflows/ci-metadata-validation.yml`
 - **Scoped Validation**: Now validates only files changed in the PR, not the entire repo
 - **Auto-Heal**: Runs `standardize_metadata.py` to fix issues and auto-commits
 - **Exempt Labels**: PRs with specific labels bypass validation entirely
 
-### 📋 Exempt Labels
+### Exempt Labels
 | Label | Use Case |
 | :--- | :--- |
 | `governance-exempt` | General bypass for platform exceptions |

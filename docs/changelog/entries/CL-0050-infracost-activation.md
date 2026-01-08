@@ -2,12 +2,6 @@
 id: CL-0050-infracost-activation
 title: 'CL-0050: Activated Infracost Cost Visibility'
 type: changelog
-category: changelog
-version: 1.0
-owner: platform-team
-status: active
-dependencies:
-  - CL-0049-ci-optimization
 risk_profile:
   production_impact: low
   security_risk: low
@@ -15,12 +9,15 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2026-06-01
-  breaking_change: false
+version: 1.0
+dependencies:
+  - CL-0049-ci-optimization
+lifecycle: active
 relates_to:
   - ADR-0076
   - IDP_PRODUCT_FEATURES
+supported_until: 2026-06-01
+breaking_change: false
 ---
 
 # CL-0050: Activated Infracost Cost Visibility
@@ -42,7 +39,7 @@ Activated the Infracost integration for the `Plan - PR Terraform Plan` workflow.
 - **Manual Trigger**: Added `workflow_dispatch` event to the workflow to allow for ad-hoc validation and cost checks without commits.
 
 ### Documentation
-- **Product Features**: Added "FinOps / Cost Visibility" to [IDP_PRODUCT_FEATURES.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/product/IDP_PRODUCT_FEATURES.md).
+- **Product Features**: Added "FinOps / Cost Visibility" to [IDP_PRODUCT_FEATURES.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/00-foundations/product/IDP_PRODUCT_FEATURES.md).
 - **ADR Status**: Updated [ADR-0076](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0076-platform-infracost-ci-visibility.md) to "Implemented".
 
 ## Validation

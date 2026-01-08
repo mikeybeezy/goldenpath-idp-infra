@@ -2,11 +2,11 @@
 id: 05_REPOSITORY_LIFECYCLE
 title: Repository Lifecycle Governance
 type: policy
-category: unknown
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,13 +14,25 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 01_GOVERNANCE
   - 10_REPO_DECOMMISSIONING
   - ADR-0078
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: governance
+status: active
+version: '1.0'
+dependencies: []
+supported_until: 2027-01-03
+breaking_change: false
 ---
 
 # Repository Lifecycle Governance
@@ -31,7 +43,7 @@ Doc contract:
 - Owner: platform
 - Status: living
 - Review cadence: 90d
-- Related: docs/10-governance/01_GOVERNANCE.md, docs/runbooks/10_REPO_DECOMMISSIONING.md, docs/adrs/ADR-0078-platform-governed-repo-scaffolder.md
+- Related: docs/10-governance/01_GOVERNANCE.md, docs/70-operations/runbooks/10_REPO_DECOMMISSIONING.md, docs/adrs/ADR-0078-platform-governed-repo-scaffolder.md
 
 This policy defines how repositories enter, live within, and exit the
 organization. A repo is governed only if its **creation and decommissioning**

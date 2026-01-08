@@ -2,11 +2,11 @@
 id: 33_IAM_ROLES_AND_POLICIES
 title: IAM Roles and Policies Index (Living)
 type: documentation
-category: unknown
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,13 +14,25 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - 31_EKS_ACCESS_MODEL
   - 32_TERRAFORM_STATE_AND_LOCKING
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: security
+status: active
+version: '1.0'
+dependencies: []
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # IAM Roles and Policies Index (Living)
@@ -43,9 +55,9 @@ Use this to understand **who assumes what**, **where it is used**, and **why**.
 - **Assumed by:** GitHub Actions (OIDC).
 - **Used in:** `infra-terraform-apply-dev.yml`, `ci-teardown.yml`.
 - **Scope:** S3/DynamoDB state + AWS infra create/update.
-- **Teardown/orphan cleanup policy:** `docs/policies/ci-teardown-orphan-cleanup.json`
+- **Teardown/orphan cleanup policy:** `docs/10-governance/policies/ci-teardown-orphan-cleanup.json`
   (delete actions require `BuildId` + `Environment` tags; read actions are unscoped).
-- **Instance profile read policy:** `docs/policies/ci-apply-iam-instance-profile-read.json`
+- **Instance profile read policy:** `docs/10-governance/policies/ci-apply-iam-instance-profile-read.json`
   (required for Terraform to list IAM instance profiles when deleting roles).
 - **Note:** IAM policies are excluded from orphan cleanup by design.
 

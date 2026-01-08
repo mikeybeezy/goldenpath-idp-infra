@@ -66,6 +66,7 @@ jobs:
           ADDITIONS: ${{ steps.pr.outputs.additions }}
           DELETIONS: ${{ steps.pr.outputs.deletions }}
         run: |
+          pip install -r requirements.txt
           python scripts/pr_guardrails.py
 
       - name: Summary

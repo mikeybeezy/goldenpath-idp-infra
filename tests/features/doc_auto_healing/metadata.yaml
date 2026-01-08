@@ -1,0 +1,13 @@
+id: DOC_AUTO_HEALING_TEST
+title: Doc Auto-Healing Test Scenario
+type: documentation
+owner: platform-team
+lifecycle: active
+reliability:
+  maturity: 3
+  rollback_strategy: git-revert
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: high
+tags: [docs, automation, auto-heal]
+schema_version: 1

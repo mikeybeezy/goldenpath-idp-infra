@@ -1,14 +1,18 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: "efs-sc"
+  name: efs-sc
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 provisioner: efs.csi.aws.com
 parameters:
   provisioningMode: efs-ap
-  fileSystemId: "fs-12345678"
-  directoryPerms: "700"
-  gidRangeStart: "1000"
-  gidRangeEnd: "2000"
-  basePath: "/wordpress-efs"
+  fileSystemId: fs-12345678
+  directoryPerms: '700'
+  gidRangeStart: '1000'
+  gidRangeEnd: '2000'
+  basePath: /wordpress-efs
 reclaimPolicy: Retain
 volumeBindingMode: Immediate

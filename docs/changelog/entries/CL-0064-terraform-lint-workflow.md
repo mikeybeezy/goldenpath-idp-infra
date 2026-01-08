@@ -2,24 +2,20 @@
 id: CL-0064-terraform-lint-workflow
 title: '[CI] Add Offline Terraform Lint & Validation Gate'
 type: changelog
-category: infrastructure
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
 risk_profile:
   production_impact: none
   security_risk: none
   coupling_risk: low
 reliability:
   rollback_strategy: git-revert
-  observability_tier: none
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+  observability_tier: bronze
+version: '1.0'
+lifecycle: active
 relates_to:
   - ADR-0102
   - docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 ## [1.0.0] - 2026-01-06

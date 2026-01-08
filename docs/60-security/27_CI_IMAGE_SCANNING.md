@@ -2,12 +2,11 @@
 id: 27_CI_IMAGE_SCANNING
 title: CI Image Scanning (Living Document)
 type: documentation
-category: 60-security
-version: 1.0
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies:
-  - module:trivy
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: high
@@ -15,13 +14,26 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+schema_version: 1
 relates_to:
   - ADR-0023
   - 22_CONTAINER_REGISTRY_STANDARD
   - CI_WORKFLOWS
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: security
+status: active
+version: 1.0
+dependencies:
+  - module:trivy
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # CI Image Scanning (Living Document)

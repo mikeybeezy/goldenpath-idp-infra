@@ -1,29 +1,22 @@
 ---
-id: ADR-0036
+id: ADR-0036-platform-orphan-cleanup-workflow
 title: 'ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: superseded
-superseded_by: ADR-0038
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle:
-  supported_until: 2028-01-04
-  breaking_change: false
+lifecycle: active
+version: '1.0'
+superseded_by: ADR-0038
 relates_to:
   - 01_GOVERNANCE
   - 20_CI_ENVIRONMENT_SEPARATION
   - ADR-0036
   - ADR-0038
   - ADR-0038-platform-teardown-orphan-cleanup-gate
+supported_until: 2028-01-04
+breaking_change: false
 ---
 
 # ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown

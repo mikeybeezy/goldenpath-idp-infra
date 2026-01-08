@@ -1,16 +1,12 @@
 ---
 id: 07_REPO_DECOUPLING_OPTIONS
 title: Repo Decoupling Options
-type: documentation
-category: 30-architecture
-version: 1.0
-owner: platform-team
+type: adr
 status: active
-dependencies:
-  - module:vpc
-  - module:aws_eks
-  - module:aws_iam
-  - chart:argo-cd
+domain: platform-core
+applies_to:
+  - infra
+owner: platform-team
 risk_profile:
   production_impact: low
   security_risk: none
@@ -18,12 +14,19 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+category: architecture
+version: 1.0
+dependencies:
+  - module:vpc
+  - module:aws_eks
+  - module:aws_iam
+  - chart:argo-cd
 relates_to:
   - 09_ARCHITECTURE
   - ADR-0012
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Repo Decoupling Options

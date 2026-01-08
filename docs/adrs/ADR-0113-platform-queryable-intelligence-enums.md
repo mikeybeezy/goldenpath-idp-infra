@@ -1,0 +1,71 @@
+---
+id: ADR-0113-platform-queryable-intelligence-enums
+title: Platform Queryable Intelligence Enums
+type: adr
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle: active
+version: 1.0
+relates_to:
+  - ADR-0084
+  - FEDERATED_METADATA_STRATEGY
+date: 2026-01-06
+supported_until: 2028-01-06
+breaking_change: false
+---
+
+# ADR-0113: Platform Queryable Intelligence Enums
+
+## Context
+The GoldenPath IDP relies on metadata sidecars to drive automated governance, health reporting, and Knowledge Graph traversal. However, drift has been identified in the values used for key fields (Status, Risk, Type), leading to "Micro-Gaps" in query integrity. We need a unified set of enums that serve as the foundation of the platform's Queryable Intelligence.
+
+## Decision
+We will standardize the following enums across all platform layers (Validation, Reporting, Scaffolding, and UI).
+
+### 1. Unified Enums
+
+#### **Risk Profile (`risk_profile.production_impact`)**
+- `none`: No impact to production workloads.
+- `low`: Minimal impact, non-critical services.
+- `medium`: Noticeable impact, standard services.
+- `high`: Critical impact, tier-0 services.
+
+#### **Status (`status`)**
+- `pending`: Resource requested/provisioning.
+- `active`: Resource live and governed.
+- `deprecated`: Scheduled for removal, no new dependencies.
+- `archived`: Historical record, no longer live.
+- `draft`: Work-in-progress (specifically for docs/ADRs).
+
+#### **Type (`type`)**
+- `app`: Frontend/Backend application services (Backstage: `service`).
+- `infra`: Infrastructure resources (VPC, EKS, RDS).
+- `tool`: Internal platform tooling.
+- `adr`: Architecture Decision Records.
+- `changelog`: Change tracking entries.
+- `registry`: Container registries (ECR).
+
+#### **Observability Tier (`reliability.observability_tier`)**
+- `gold`: Full RED/Golden signals, centralized alerting.
+- `silver`: Standard metrics, dashboard-only.
+- `bronze`: Basic uptime/liveliness.
+
+### 2. Implementation Rules
+- **Ingestion Mapping**: The Knowledge Graph engine (`extract_relationships.py`) will map Backstage-native types (e.g., `service`) to platform types (e.g., `app`).
+- **Validation Drift**: Any metadata value not in these enums will trigger a `SCHEMA_VIOLATION` in the validation gates.
+
+## Consequences
+
+### Positive
+- **Deterministic Reporting**: Accurate risk-weighted scoring in `PLATFORM_HEALTH.md`.
+- **Queryable Blast Radius**: Instant identification of `high` risk nodes affected by an incident.
+- **Improved UX**: Unified dropdowns in software templates.
+
+### Negative
+- **Validation Friction**: Non-compliant metadata must be fixed before merging.
+- **Migration Effort**: Existing files needs normalization to match the new enums.

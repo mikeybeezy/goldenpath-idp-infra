@@ -1,12 +1,12 @@
 ---
 id: 04_REPO_STRUCTURE
 title: Repository Structure & Workflow
-type: documentation
-category: unknown
-version: '1.0'
-owner: platform-team
+type: adr
 status: active
-dependencies: []
+domain: platform-core
+applies_to:
+  - infra
+owner: platform-team
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,13 +14,16 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+lifecycle: active
+category: architecture
+version: '1.0'
+dependencies: []
 relates_to:
   - 12_GITOPS_AND_CICD
   - 17_BUILD_RUN_FLAGS
   - 18_BACKSTAGE_MVP
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 # Repository Structure & Workflow

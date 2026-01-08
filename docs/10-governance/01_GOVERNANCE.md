@@ -2,11 +2,11 @@
 id: 01_GOVERNANCE
 title: Platform Governance Purpose
 type: policy
-category: unknown
-version: '1.0'
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
-dependencies: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,9 +14,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle:
-  supported_until: 2027-01-03
-  breaking_change: false
+schema_version: 1
 relates_to:
   - 00_DOC_INDEX
   - 01_TAG_SCOPED_POLICY_TEMPLATE
@@ -41,7 +39,22 @@ relates_to:
   - ADR-0052
   - ADR-0052-platform-kube-prometheus-stack-bundle
   - DOCS_ADRS_README
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: governance
+status: active
+version: '1.0'
+dependencies: []
+supported_until: 2027-01-03
+breaking_change: false
 ---
+
 # Platform Governance Purpose
 
 Doc contract:
@@ -143,7 +156,7 @@ preserves velocity by making ownership and lifecycle status explicit.
 The canonical tag set lives in `docs/10-governance/35_RESOURCE_TAGGING.md` and is formalized
 in `docs/adrs/ADR-0037-platform-resource-tagging-policy.md`.
 Destructive automation must use tag-scoped IAM policies; see
-`docs/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md` and
+`docs/10-governance/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md` and
 `docs/adrs/ADR-0039-platform-tag-scoped-iam-policy-template.md`.
 
 ## 6. Changelog Accountability

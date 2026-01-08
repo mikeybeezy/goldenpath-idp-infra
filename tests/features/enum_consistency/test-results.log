@@ -1,0 +1,66 @@
+### Enum Validation Test (Intentional Errors)
+---
+✅ Enum validation passed.
+
+
+### Repo-Wide Enum Audit (Drift Analysis)
+---
+❌ Enum validation failed:
+ - docs/REGISTRY_CATALOG.md: type='documentation' not in enum ['adr', 'policy', 'governance', 'contract', 'runbook', 'changelog', 'catalog', 'template', 'report']
+ - docs/REGISTRY_CATALOG.md: category='catalogs' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/20-contracts/02_PLATFORM_BOUNDARIES.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/20-contracts/10_SERVICE_CATALOG.md: category='20-contracts' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/20-contracts/20_CI_ENVIRONMENT_SEPARATION.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/20-contracts/01_PLATFORM_SERVICE_AGREEMENT.md: category='20-contracts' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/20-contracts/42_APP_TEMPLATE_LIVING.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/20-contracts/29_CD_DEPLOYMENT_CONTRACT.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/80-onboarding/GITHUB_WORKFLOW_PERMISSIONS.md: category='onboarding' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/80-onboarding/GITHUB_WORKFLOW_PERMISSIONS.md: reliability.observability_tier='none' not in enum ['bronze', 'silver', 'gold']
+ - docs/80-onboarding/23_NEW_JOINERS.md: type='documentation' not in enum ['adr', 'policy', 'governance', 'contract', 'runbook', 'changelog', 'catalog', 'template', 'report']
+ - docs/80-onboarding/23_NEW_JOINERS.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/80-onboarding/13_COLLABORATION_GUIDE.md: type='documentation' not in enum ['adr', 'policy', 'governance', 'contract', 'runbook', 'changelog', 'catalog', 'template', 'report']
+ - docs/80-onboarding/13_COLLABORATION_GUIDE.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md: type='documentation' not in enum ['adr', 'policy', 'governance', 'contract', 'runbook', 'changelog', 'catalog', 'template', 'report']
+ - docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/80-onboarding/24_PR_GATES.md: type='documentation' not in enum ['adr', 'policy', 'governance', 'contract', 'runbook', 'changelog', 'catalog', 'template', 'report']
+ - docs/80-onboarding/24_PR_GATES.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/80-onboarding/CONTRIBUTING.md: type='documentation' not in enum ['adr', 'policy', 'governance', 'contract', 'runbook', 'changelog', 'catalog', 'template', 'report']
+ - docs/80-onboarding/CONTRIBUTING.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/80-onboarding/25_DAY_ONE_CHECKLIST.md: type='documentation' not in enum ['adr', 'policy', 'governance', 'contract', 'runbook', 'changelog', 'catalog', 'template', 'report']
+ - docs/80-onboarding/25_DAY_ONE_CHECKLIST.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/Changelog-template.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/README.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/CHANGELOG_LABELS.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0019-aws-lb-controller-refactor.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0029-ops-workflow-branch-guard.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0043-complete-metadata-backfill.md: category='changelog' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0030-infracost-ci-visibility.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0008-ci-managed-lb-cleanup-workflow.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0020-golden-signals-dashboard.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0022-pr-guardrails-template-copy.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0042-metadata-backfill-batch-1.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0012-backstage-ci-apply-dev-template.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0025-pr-gates-runbook.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0036-repo-wide-linting.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0046-k8s-metadata-sidecars.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0035-super-linter-reenabled.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0041-argocd-app-readiness-runbook.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0004-teardown-v2-kube-access-fallback.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0065-automate-workflow-docs.md: category='documentation' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0065-automate-workflow-docs.md: reliability.observability_tier='none' not in enum ['bronze', 'silver', 'gold']
+ - docs/changelog/entries/CL-0066-automate-script-docs.md: category='documentation' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0066-automate-script-docs.md: reliability.observability_tier='none' not in enum ['bronze', 'silver', 'gold']
+ - docs/changelog/entries/CL-0037-metadata-schema.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0059-pr-156-stabilization.md: category='changelog' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0059-pr-156-stabilization.md: status='released' not in enum ['draft', 'active', 'deprecated', 'archived']
+ - docs/changelog/entries/CL-0047-closed-loop-governance.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ - docs/changelog/entries/CL-0031-governed-repo-scaffolder.md: category='unknown' not in enum ['platform', 'delivery', 'identity', 'catalog', 'observability', 'governance', 'security', 'finance', 'runtime']
+ ... and 465 more
+
+
+### Emoji Policy Enforcement (Cleanup Results)
+---
+----------------------------------------
+Scan complete. Files checked: 741
+Total violations found/fixed: 0

@@ -1,4 +1,4 @@
-# Managed by scripts/standardize-metadata.py
+# Managed by scripts/standardize_metadata.py
 appConfig:
   catalog:
     locations:
@@ -13,12 +13,7 @@ appConfig:
           - allow:
               - Template
 governance:
-  id: HELM_BACKSTAGE
-  owner: platform-team
-  risk_profile:
-    production_impact: medium
-    security_risk: low
-    coupling_risk: medium
-  reliability:
-    rollback_strategy: git-revert
-    observability_tier: silver
+  id: HELM_BACKSTAGE_METADATA
+  owner: null
+  risk_profile: null
+  reliability: null

@@ -2,24 +2,20 @@
 id: CL-0066-automate-script-docs
 title: '[Docs] Automate Script Index Generation'
 type: changelog
-category: documentation
-version: '1.0'
-owner: platform-team
-status: active
-dependencies: []
 risk_profile:
   production_impact: none
   security_risk: none
   coupling_risk: low
 reliability:
   rollback_strategy: git-revert
-  observability_tier: none
-lifecycle:
-  supported_until: 2028-01-01
-  breaking_change: false
+  observability_tier: bronze
+version: '1.0'
+lifecycle: active
 relates_to:
   - ADR-0104
   - scripts/index.md
+supported_until: 2028-01-01
+breaking_change: false
 ---
 
 ## [1.0.0] - 2026-01-06

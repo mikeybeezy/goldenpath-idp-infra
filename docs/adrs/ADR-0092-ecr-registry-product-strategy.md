@@ -1,23 +1,12 @@
 ---
-id: ADR-0092
+id: ADR-0092-ecr-registry-product-strategy
 title: 'ADR-0092: ECR Registry Product-Based Strategy & Shared Responsibility Model'
 type: adr
-category: unknown
-version: '1.0'
-owner: platform-team
 status: active
-dependencies: []
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-lifecycle:
-  supported_until: '2028-01-01'
-  breaking_change: false
-relates_to: []
+lifecycle: active
+version: '1.0'
+supported_until: '2028-01-01'
+breaking_change: false
 ---
 
 # ADR-0092: ECR Registry Product-Based Strategy & Shared Responsibility Model
@@ -31,9 +20,9 @@ We need a clear strategy for ECR registry management that aligns with Domain-Dri
 
 ## Decision
 
-### 1. Product-Based Registries
+### 1. Product-Based Repositories
 
-Registries are created **per-product** (bounded context), not per-app or per-team.
+Repositories are created **per-product** (bounded context), not per-app or per-team. These reside within the shared platform Registry.
 
 **Naming:** `{product-name}-{optional-component}`
 
@@ -59,14 +48,16 @@ Registries are created **per-product** (bounded context), not per-app or per-tea
 - Remediate CVEs
 - Document images
 
-### 3. Registry Catalog
+### 3. Registry & Repository Catalog
 
-**Format:** YAML (`docs/registry-catalog.yaml`)
+**Format:** YAML (`docs/20-contracts/catalogs/ecr-catalog.yaml`)
 
 **Schema:**
 ```yaml
-registries:
-  {registry-name}:
+version: "1.0"
+physical_registry: "main-registry-name"
+repositories:
+  {repository-name}:
     metadata:
       id: "REGISTRY_{PRODUCT}"
       owner: "app-team-{name}"
