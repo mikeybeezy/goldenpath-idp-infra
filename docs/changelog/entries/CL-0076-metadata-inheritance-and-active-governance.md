@@ -22,7 +22,7 @@ Implement a robust, versioned metadata engine that enables high-velocity onboard
 
 ### Policy Updates
 *   **[METADATA_INHERITANCE_STRATEGY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/METADATA_INHERITANCE_STRATEGY.md)**: Formally defined the cascading control plane.
-*   **[ADR-0120](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0120-metadata-inheritance-and-active-governance.md)**: Documented the architectural shift toward versioned, cascading governance.
+*   **[ADR-0120](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0120-metadata-inheritance-active-governance-and-leak-protection.md)**: Documented the architectural shift toward versioned, cascading governance.
 
 ## Verification
 * CI gates updated to enforce inheritance-aware validation.

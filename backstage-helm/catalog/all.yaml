@@ -13,4 +13,5 @@ spec:
     - ./goldenpath-org.yaml
     - ./docs/adrs-index.yaml
     - ./docs/changelogs-index.yaml
+    - ./docs/governance-index.yaml
     - ./templates/ecr-request.yaml

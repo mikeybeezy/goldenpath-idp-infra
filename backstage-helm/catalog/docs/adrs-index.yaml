@@ -119,7 +119,6 @@ spec:
   - ./adrs/adr-0118.yaml
   - ./adrs/adr-0119.yaml
   - ./adrs/adr-0120.yaml
-  - ./adrs/adr-0120.yaml
   - ./adrs/adr-0121.yaml
   - ./adrs/adr-0122.yaml
   - ./adrs/adr-0123.yaml
@@ -128,3 +127,5 @@ spec:
   - ./adrs/adr-0126.yaml
   - ./adrs/adr-0127.yaml
   - ./adrs/adr-0128.yaml
+  - ./adrs/adr-0129.yaml
+  - ./adrs/adr-0130.yaml

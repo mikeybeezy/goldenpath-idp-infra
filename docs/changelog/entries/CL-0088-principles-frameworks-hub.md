@@ -1,6 +1,6 @@
 ---
-id: CL-0027-principles-frameworks-hub
-title: 'CL-0027: Principles and frameworks hub'
+id: CL-0088-principles-frameworks-hub
+title: 'CL-0088: Principles and frameworks hub'
 type: changelog
 risk_profile:
   production_impact: low
@@ -12,12 +12,12 @@ reliability:
 version: '1.0'
 lifecycle: active
 relates_to:
-  - CL-0027
+  - CL-0088
 supported_until: 2027-01-04
 breaking_change: false
 ---
 
-# CL-0027: Principles and frameworks hub
+# CL-0088: Principles and frameworks hub
 
 Date: 2026-01-03
 Owner: platform

@@ -9,7 +9,6 @@ spec:
   - ./changelogs/changelog-0002.yaml
   - ./changelogs/changelog-0003.yaml
   - ./changelogs/changelog-0004.yaml
-  - ./changelogs/changelog-0004.yaml
   - ./changelogs/changelog-0005.yaml
   - ./changelogs/changelog-0006.yaml
   - ./changelogs/changelog-0007.yaml
@@ -33,10 +32,8 @@ spec:
   - ./changelogs/changelog-0025.yaml
   - ./changelogs/changelog-0026.yaml
   - ./changelogs/changelog-0027.yaml
-  - ./changelogs/changelog-0027.yaml
   - ./changelogs/changelog-0028.yaml
   - ./changelogs/changelog-0029.yaml
-  - ./changelogs/changelog-0030.yaml
   - ./changelogs/changelog-0030.yaml
   - ./changelogs/changelog-0031.yaml
   - ./changelogs/changelog-0032.yaml
@@ -92,3 +89,9 @@ spec:
   - ./changelogs/changelog-0082.yaml
   - ./changelogs/changelog-0083.yaml
   - ./changelogs/changelog-0084.yaml
+  - ./changelogs/changelog-0085.yaml
+  - ./changelogs/changelog-0086.yaml
+  - ./changelogs/changelog-0087.yaml
+  - ./changelogs/changelog-0088.yaml
+  - ./changelogs/changelog-0089.yaml
+  - ./changelogs/changelog-0090.yaml

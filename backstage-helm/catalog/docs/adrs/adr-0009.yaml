@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0009
+  title: "ADR-0009: CI/CD observability via OpenTelemetry (\u201CDelivery Insights\u201D\
+    )"
+  description: '- **Status:** Accepted
+
+    - **Date:** 2025-12-26
+
+    - **Owners:** Platform (GoldenPath IDP)
+
+    - **Domain:** Application
+
+    - **Decision type:** Architecture | Observability | Delivery
+
+    - **Related:** docs/10-gove...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0009-app-delivery-insights.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

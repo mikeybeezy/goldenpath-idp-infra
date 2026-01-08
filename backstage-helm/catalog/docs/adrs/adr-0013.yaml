@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0013
+  title: 'ADR-0013: Argo CD app management approach for current scale'
+  description: '- **Status:** Accepted
+
+    - **Date:** 2025-12-26
+
+    - **Owners:** platform team
+
+    - **Domain:** Application
+
+    - **Decision type:** Operations
+
+    - **Related:** `docs/30-architecture/07_REPO_DECOUPLING_OPTIONS.md`'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0013-platform-argo-app-management-approach.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

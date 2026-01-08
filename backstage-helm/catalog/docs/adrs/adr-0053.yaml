@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0053
+  title: 'ADR-0053: Separate storage lifecycle from bootstrap and teardown'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2025-12-31
+
+    - **Owners:** platform
+
+    - **Domain:** Platform
+
+    - **Decision type:** Operations | Governance
+
+    - **Related:** `docs/50-observability/41_STORAGE_AND_PERSISTENC...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0053-platform-storage-lifecycle-separation.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

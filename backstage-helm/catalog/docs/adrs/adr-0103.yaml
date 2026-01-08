@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0103
+  title: 'ADR-0103: Automated CI Workflow Documentation'
+  description: Manual updates are error-prone and rely on human discipline, which
+    is not scalable. We need a way to ensure the "map" of our CI/CD capabilities is
+    always accurate and auto-generated from the source of...
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0103-automated-workflow-docs.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: superseded
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

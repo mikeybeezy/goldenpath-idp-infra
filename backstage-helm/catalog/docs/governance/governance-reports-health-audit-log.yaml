@@ -1,0 +1,40 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-reports-health-audit-log
+  title: Platform Health Audit Log
+  description: '---
+
+    ### Audit: 2026-01-08 02:20:56
+
+    ---
+
+    id: PLATFORM_HEALTH
+
+    title: Platform Health & Compliance Report
+
+    type: documentation
+
+    category: governance
+
+    status: active
+
+    owner: platform-team
+
+    version: ''2026-01-08''...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - gove
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/reports/HEALTH_AUDIT_LOG.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

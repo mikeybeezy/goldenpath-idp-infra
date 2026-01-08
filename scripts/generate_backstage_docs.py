@@ -13,7 +13,9 @@ from pathlib import Path
 
 ADR_DIR = "docs/adrs"
 CHANGELOG_DIR = "docs/changelog/entries"
+GOVERNANCE_DIR = "docs/10-governance"
 OUTPUT_DIR = "backstage-helm/catalog/docs"
+TECHDOCS_REF = "url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development"
 
 def extract_frontmatter_and_content(file_path):
     """Extract YAML frontmatter and first paragraph from markdown file."""
@@ -66,7 +68,8 @@ def generate_adr_entities():
                 "title": title,
                 "description": description,
                 "annotations": {
-                    "github.com/project-slug": "mikeybeezy/goldenpath-idp-infra"
+                    "github.com/project-slug": "mikeybeezy/goldenpath-idp-infra",
+                    "backstage.io/techdocs-ref": TECHDOCS_REF
                 },
                 "tags": ["adr", "governance", "documentation"],
                 "links": [{
@@ -116,9 +119,10 @@ def generate_changelog_entities():
                 "title": title,
                 "description": description,
                 "annotations": {
-                    "github.com/project-slug": "mikeybeezy/goldenpath-idp-infra"
+                    "github.com/project-slug": "mikeybeezy/goldenpath-idp-infra",
+                    "backstage.io/techdocs-ref": TECHDOCS_REF
                 },
-                "tags": ["changelog", "release-notes", "documentation"],
+                "tags": ["cl", "changelog", "release-notes", "documentation"],
                 "links": [{
                     "url": f"https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/{cl_file.name}",
                     "title": "View on GitHub",
@@ -143,7 +147,61 @@ def generate_changelog_entities():
     print(f"✅ Generated {len(entities)} changelog entities")
     return entities
 
-def create_location_files(adr_entities, changelog_entities):
+def generate_governance_entities():
+    """Generate Backstage entities for governance docs."""
+    gov_output_dir = Path(OUTPUT_DIR) / "governance"
+    gov_output_dir.mkdir(parents=True, exist_ok=True)
+
+    gov_files = sorted(Path(GOVERNANCE_DIR).rglob("*.md"))
+    entities = []
+
+    for gov_file in gov_files:
+        frontmatter, title, description = extract_frontmatter_and_content(gov_file)
+
+        rel_path = gov_file.relative_to(GOVERNANCE_DIR).as_posix()
+        component_name = f"governance-{rel_path}".replace("/", "-").replace("_", "-").replace(".md", "").lower()
+
+        tags = ["gove", "governance", "documentation"]
+        doc_type = frontmatter.get("type")
+        if doc_type and doc_type not in tags:
+            tags.append(doc_type)
+
+        entity = {
+            "apiVersion": "backstage.io/v1alpha1",
+            "kind": "Component",
+            "metadata": {
+                "name": component_name,
+                "title": title,
+                "description": description,
+                "annotations": {
+                    "github.com/project-slug": "mikeybeezy/goldenpath-idp-infra",
+                    "backstage.io/techdocs-ref": TECHDOCS_REF
+                },
+                "tags": tags,
+                "links": [{
+                    "url": f"https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/{rel_path}",
+                    "title": "View on GitHub",
+                    "icon": "docs"
+                }]
+            },
+            "spec": {
+                "type": "documentation",
+                "lifecycle": frontmatter.get("status", "active").lower(),
+                "owner": frontmatter.get("owner", "platform-team"),
+                "subcomponentOf": "governance-documentation"
+            }
+        }
+
+        output_file = gov_output_dir / f"{component_name}.yaml"
+        with open(output_file, 'w') as f:
+            yaml.dump(entity, f, sort_keys=False)
+
+        entities.append(f"./governance/{component_name}.yaml")
+
+    print(f"✅ Generated {len(entities)} governance entities")
+    return entities
+
+def create_location_files(adr_entities, changelog_entities, governance_entities):
     """Create Location files that reference all generated entities."""
     
     # ADR Location - ALL entities
@@ -174,11 +232,26 @@ def create_location_files(adr_entities, changelog_entities):
     
     output_dir = Path(OUTPUT_DIR)
     
-    with open(output_dir / "all-adrs.yaml", 'w') as f:
+    with open(output_dir / "adrs-index.yaml", 'w') as f:
         yaml.dump(adr_location, f, sort_keys=False)
     
-    with open(output_dir / "all-changelogs.yaml", 'w') as f:
+    with open(output_dir / "changelogs-index.yaml", 'w') as f:
         yaml.dump(cl_location, f, sort_keys=False)
+
+    # Governance Location - ALL entities
+    gov_location = {
+        "apiVersion": "backstage.io/v1alpha1",
+        "kind": "Location",
+        "metadata": {
+            "name": "all-governance",
+            "description": "All Governance Documentation"
+        },
+        "spec": {
+            "targets": governance_entities
+        }
+    }
+    with open(output_dir / "governance-index.yaml", 'w') as f:
+        yaml.dump(gov_location, f, sort_keys=False)
     
     print(f"✅ Created location files with ALL entities")
 
@@ -187,10 +260,12 @@ if __name__ == "__main__":
     
     adr_entities = generate_adr_entities()
     changelog_entities = generate_changelog_entities()
-    create_location_files(adr_entities, changelog_entities)
+    governance_entities = generate_governance_entities()
+    create_location_files(adr_entities, changelog_entities, governance_entities)
     
     print(f"\n📊 Summary:")
     print(f"   - Total ADRs: {len(adr_entities)}")
     print(f"   - Total Changelogs: {len(changelog_entities)}")
+    print(f"   - Total Governance Docs: {len(governance_entities)}")
     print(f"   - Output: {OUTPUT_DIR}")
     print(f"\n✅ All entities included in catalog locations")

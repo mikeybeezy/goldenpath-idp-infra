@@ -1,6 +1,6 @@
 ---
-id: CL-0004-teardown-v2-kube-access-fallback
-title: 'CL-0004: Teardown v2 kube access fallback'
+id: CL-0087-teardown-v2-kube-access-fallback
+title: 'CL-0087: Teardown v2 kube access fallback'
 type: changelog
 risk_profile:
   production_impact: low
@@ -12,12 +12,12 @@ reliability:
 version: '1.0'
 lifecycle: active
 relates_to:
-  - CL-0004
+  - CL-0087
 supported_until: 2027-01-04
 breaking_change: false
 ---
 
-# CL-0004: Teardown v2 kube access fallback
+# CL-0087: Teardown v2 kube access fallback
 
 Date: 2025-12-31
 Owner: platform

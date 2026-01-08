@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0036
+  title: 'ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown'
+  description: '- **Status:** Superseded
+
+    - **Date:** 2025-12-28
+
+    - **Owners:** Platform (GoldenPath IDP)
+
+    - **Domain:** Platform
+
+    - **Decision type:** Operations / Governance
+
+    - **Related:** `docs/10-governance/01_GOVERN...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0036-platform-orphan-cleanup-workflow.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: superseded
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

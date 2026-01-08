@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0110
+  title: 'ADR-0110: IDP Knowledge Graph Node Architecture'
+  description: "```mermaid\ngraph TD\n    Registry[\"Registry (ECR)\"]\n    App[\"\
+    Application (Service)\"]\n    Infra[\"Infra (EKS/VPC)\"]\n    DF[\"Dockerfile\
+    \ (Source)\"]\n    Img[\"Image (Artifact)\"]\n    Workflow[\"Workflow (Autom..."
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0110-idp-knowledge-graph-architecture.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

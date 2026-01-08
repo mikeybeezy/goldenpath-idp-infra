@@ -140,13 +140,14 @@ relates_to:
   - ADR-0118
   - ADR-0119
   - ADR-0120
-  - ADR-0120
   - ADR-0121
   - ADR-0122
   - ADR-0123
   - ADR-0124
   - ADR-0125
   - ADR-0126
+  - ADR-0129
+  - ADR-0130
 <!-- ADR_RELATE_END -->
 ---
 
@@ -274,21 +275,20 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0112](ADR-0112-automated-adr-index-generation.md) | Platform | Automated ADR Index Generation | Proposed | 2026-01-06 | As the number of Architecture Decision Records (ADRs) grows (currently 100+), keeping the`01_adr_index.md`in sync manually has become error-prone. We frequently observe drift in statuses, dates, an... |
 | [ADR-0113](ADR-0113-platform-queryable-intelligence-enums.md) | Platform | Platform Queryable Intelligence Enums | Proposed | 2026-01-06 | The GoldenPath IDP relies on metadata sidecars to drive automated governance, health reporting, and Knowledge Graph traversal. However, drift has been identified in the values used for key fields (... |
 | [ADR-0114](ADR-0114-automated-enum-consistency-validation.md) | Platform | Automated Enum Consistency Validation | Proposed | 2026-01-06 | With the introduction of unified enums in [ADR-0113](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0113-platform-queryable-intelligence-enums.md), we need a mechanism to enforce thes... |
-| [ADR-0128](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0128-automated-ecr-catalog-sync.md) | Platform | Automated ECR Catalog Sync | Active | 2026-01-0? | The ECR registry catalog (`docs/registry-catalog.yaml`) is the single source of truth for all container registries, but YAML is not easily scannable for humans. Teams need a quick, readable referen... |
-| [ADR-0129](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0129-platform-eventual-consistency-ecr-governance.md) | Platform | Eventual Consistency for ECR Registry Governance | Active | 2026-01-0? | As the GoldenPath IDP scales, we need a metadata system that is both robust and fluid. Maintaining 500+ explicit metadata files is a velocity bottleneck, while a static "set and... |
 | [ADR-0115](ADR-0115-enhanced-enum-validation-engine.md) | Platform | Enhanced Enum Validation Engine | Proposed | 2026-01-06 | ADR-0114 introduced the`validate_enums.py`script to enforce metadata consistency. However, the initial implementation relied on flat field matching, making it difficult to validate nested objects l... |
 | [ADR-0116](ADR-0116-emoji-usage-policy-and-enforcement.md) | Platform | Emoji Usage Policy & Automated Enforcement | Proposed | 2026-01-06 | Documentation quality and professional neutrality are core tenets of the platform. Excessive or semi-random emoji usage in authoritative documents (ADRs, Policies, Schemas) can obscure meaning and ... |
 | [ADR-0117](ADR-0117-conclusive-governance-routing-architecture.md) | Platform | Conclusive Governance Routing & Compliance Engine | Proposed | 2026-01-06 | As the platform grows, managing which teams review which changes (and what documentation is required) has become a manual overhead. Architectural rigor for high-risk areas like AI Agents and Securi... |
 | [ADR-0118](ADR-0118-config-driven-metadata-governance.md) | Platform | Config-Driven Metadata Governance Architecture | Proposed | 2026-01-06 | The platform's metadata standardization and validation logic was previously hardcoded in monolithic Python scripts. This created a maintenance bottleneck where architectural changes required code d... |
 | [ADR-0119](ADR-0119-grand-metadata-healing-and-contextual-alignment.md) | Platform | Grand Metadata Healing & Contextual Alignment | Proposed | 2026-01-0? | As the Golden Path IDP scales, we have transitioned to a config-driven metadata model (ADR-0118). However, a repository-wide audit revealed over 475 instances of "Governance Debt," where legacy rec... |
 | [ADR-0120](ADR-0120-metadata-inheritance-active-governance-and-leak-protection.md) | Platform | metadata | Proposed | 2026-01-0? | As we reach V1 readiness for the Golden Path IDP, we need a metadata system that is both robust and fluid. Maintaining 500+ explicit metadata files is a velocity bottleneck, while a static "set and... |
-| [ADR-0120](ADR-0120-metadata-inheritance-and-active-governance.md) | Platform | metadata | Proposed | 2026-01-0? | As we reach V1 readiness for the Golden Path IDP, we need a metadata system that is both robust and fluid. Maintaining 500+ explicit metadata files is a velocity bottleneck, while a static "set and... |
 | [ADR-0121](ADR-0121-value-quantification-framework.md) | Platform | Value Quantification (VQ) Framework | Proposed | 2026-01-07 | As the Golden Path Platform grows, engineering efforts often become "invisible" to business stakeholders. Manual governance, schema refactors, and pipeline optimizations are critical for stability ... |
 | [ADR-0122](ADR-0122-automated-vq-enforcement-and-mission-recovery.md) | Platform | Automated VQ Enforcement and Mission Recovery | Proposed | 2026-01-0? | With the introduction of the Value Quantification (VQ) framework ([ADR-0121](./ADR-0121-value-quantification-framework.md)), the platform now has a vocabulary for ROI. However, without automated en... |
 | [ADR-0123](ADR-0123-delivery-automation-suite.md) | Platform | Delivery Automation Suite (ECR & Logs) | Proposed | 2026-01-0? | The GoldenPath IDP requires a standardized set of utilities to handle ECR registry provisioning and build/teardown telemetry. These utilities were developed early in the project but lacked formal a... |
 | [ADR-0124](ADR-0124-documentation-and-visibility-suite.md) | Platform | Documentation & Visibility Suite | Proposed | 2026-01-0? | Maintaining a large documentation-as-code repository requires automated validation of freshness, structure, and relationships. These tools were built to prevent "Doc Drift" and ensure the Knowledge... |
 | [ADR-0125](ADR-0125-compliance-and-maintenance-suite.md) | Platform | Compliance & Maintenance Suite | Proposed | 2026-01-0? | The GoldenPath IDP requires continuous auditing and maintenance of its metadata and governance state. These utilities provide the "Janitorial" and "Auditing" functions for the platform. |
 | [ADR-0126](ADR-0126-idp-automation-confidence-matrix.md) | Platform | IDP Automation Confidence Matrix (Five-Star Approval) | Proposed | 2026-01-0? | As the GoldenPath IDP moves at high velocity, the accumulation of "Dark History" (undocumented/untested scripts) and brittle automation poses a risk to platform stability. We need a rigorous, multi... |
+| [ADR-0129](ADR-0129-platform-eventual-consistency-ecr-governance.md) | Platform | Eventual Consistency for ECR Registry Governance | Accepted | 2026-01-0? | The Backstage catalog currently faces a "Truth" divergence regarding AWS ECR. While only one physical ECR registry exists, previous automation (Scaffolder runs) created separate`Kind: Resource`YAML... |
+| [ADR-0130](ADR-0130-platform-catalog-zoned-defense-security.md) | Platform | Zoned Defense for Catalog Ingestion Security | Accepted | 2026-01-0? | The previous catalog configuration allowed any registered location (even user-contributed ones) to define security-sensitive entities like`Domain`,`Group`, and`User`. This created a "Shadow IT" ris... |
 <!-- ADR_TABLE_END -->
 
 ---
