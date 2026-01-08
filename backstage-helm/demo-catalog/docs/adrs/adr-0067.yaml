@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0067
+  title: 'ADR-0067: Use base ref for labeler checkout'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2026-01-02
+
+    - **Owners:** platform
+
+    - **Domain:** Platform
+
+    - **Decision type:** Governance
+
+    - **Related:** `.github/workflows/pr-labeler.yml`, PR #107'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0067-platform-labeler-base-ref.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

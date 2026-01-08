@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0043
+  title: 'ADR-0043: Teardown waits for LoadBalancer ENIs before subnet delete'
+  description: 'Filename: `ADR-0043-platform-teardown-lb-eni-wait.md`'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0043-platform-teardown-lb-eni-wait.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: superseded
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

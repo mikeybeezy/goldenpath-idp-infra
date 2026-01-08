@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0049
+  title: 'CL-0049: CI Pipeline Optimization & Standardization'
+  description: '**Date:** 2026-01-04
+
+    **Owner:** Platform Team
+
+    **Scope:** GitHub Actions, Python Scripts, Documentation
+
+    **Related:** CL-0048 (Platform Health), CL-0035 (Super Linter)'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - changelog
+  - release-notes
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0049-ci-optimization.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

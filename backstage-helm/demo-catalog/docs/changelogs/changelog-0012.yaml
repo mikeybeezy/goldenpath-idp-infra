@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0012
+  title: 'CL-0012: Backstage template for dev Terraform apply'
+  description: 'Date: 2025-12-31
+
+    Owner: platform
+
+    Scope: Backstage, CI workflow UX
+
+    Related: `backstage/templates/ci-apply-dev/template.yaml`, `.github/workflows/infra-terraform-apply-dev.yml`'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - changelog
+  - release-notes
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0012-backstage-ci-apply-dev-template.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

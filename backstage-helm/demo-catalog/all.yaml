@@ -10,3 +10,5 @@ spec:
     - ./all-domains.yaml
     - ./all-resources.yaml
     - ./all-systems.yaml
+    - ./docs/all-adrs.yaml
+    - ./docs/all-changelogs.yaml

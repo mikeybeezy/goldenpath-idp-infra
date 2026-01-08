@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0063
+  title: 'ADR-0063: Terraform Helm Provider for Bootstrap'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2026-01-01
+
+    - **Owners:** platform
+
+    - **Domain:** Platform
+
+    - **Decision type:** Architecture
+
+    - **Related:** `docs/adrs/ADR-0001-platform-argocd-as-gitops-operator.md`'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0063-platform-terraform-helm-bootstrap.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

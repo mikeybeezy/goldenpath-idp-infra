@@ -1,0 +1,23 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0036
+  title: 'Changelog: repo-wide linting for knowledge graph hygiene'
+  description: 'Date: 2026-01-03
+
+    Owner: platform'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - changelog
+  - release-notes
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0036-repo-wide-linting.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

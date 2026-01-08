@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0099
+  title: 'ADR-0099: Standardized IAM Policy Management'
+  description: '1.  **Strict File Format**: All policies must be valid JSON to ensure
+    compatibility with Terraform''s `file()` function and CI/CD linting.
+
+    2.  **Mapping Index**: A `VARIABLE_MAPPING_INDEX.md` will be m...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0099-standardized-iam-policy-management.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

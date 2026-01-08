@@ -1,0 +1,57 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: all-adrs
+  description: All Architecture Decision Records
+spec:
+  targets:
+  - ./docs/adrs/adr-0001.yaml
+  - ./docs/adrs/adr-0002.yaml
+  - ./docs/adrs/adr-0003.yaml
+  - ./docs/adrs/adr-0004.yaml
+  - ./docs/adrs/adr-0005.yaml
+  - ./docs/adrs/adr-0006.yaml
+  - ./docs/adrs/adr-0007.yaml
+  - ./docs/adrs/adr-0008.yaml
+  - ./docs/adrs/adr-0009.yaml
+  - ./docs/adrs/adr-0010.yaml
+  - ./docs/adrs/adr-0011.yaml
+  - ./docs/adrs/adr-0012.yaml
+  - ./docs/adrs/adr-0013.yaml
+  - ./docs/adrs/adr-0014.yaml
+  - ./docs/adrs/adr-0015.yaml
+  - ./docs/adrs/adr-0016.yaml
+  - ./docs/adrs/adr-0017.yaml
+  - ./docs/adrs/adr-0018.yaml
+  - ./docs/adrs/adr-0019.yaml
+  - ./docs/adrs/adr-0020.yaml
+  - ./docs/adrs/adr-0021.yaml
+  - ./docs/adrs/adr-0022.yaml
+  - ./docs/adrs/adr-0023.yaml
+  - ./docs/adrs/adr-0024.yaml
+  - ./docs/adrs/adr-0025.yaml
+  - ./docs/adrs/adr-0026.yaml
+  - ./docs/adrs/adr-0027.yaml
+  - ./docs/adrs/adr-0028.yaml
+  - ./docs/adrs/adr-0029.yaml
+  - ./docs/adrs/adr-0030.yaml
+  - ./docs/adrs/adr-0031.yaml
+  - ./docs/adrs/adr-0032.yaml
+  - ./docs/adrs/adr-0033.yaml
+  - ./docs/adrs/adr-0034.yaml
+  - ./docs/adrs/adr-0035.yaml
+  - ./docs/adrs/adr-0036.yaml
+  - ./docs/adrs/adr-0037.yaml
+  - ./docs/adrs/adr-0038.yaml
+  - ./docs/adrs/adr-0039.yaml
+  - ./docs/adrs/adr-0040.yaml
+  - ./docs/adrs/adr-0041.yaml
+  - ./docs/adrs/adr-0042.yaml
+  - ./docs/adrs/adr-0043.yaml
+  - ./docs/adrs/adr-0044.yaml
+  - ./docs/adrs/adr-0045.yaml
+  - ./docs/adrs/adr-0046.yaml
+  - ./docs/adrs/adr-0047.yaml
+  - ./docs/adrs/adr-0048.yaml
+  - ./docs/adrs/adr-0049.yaml
+  - ./docs/adrs/adr-0050.yaml

@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0001
+  title: 'ADR-0001: Adopt Argo CD as GitOps controller for platform deployments'
+  description: '- **Status:** Accepted
+
+    - **Date:** 2025-12-26
+
+    - **Owners:** Platform (GoldenPath IDP)
+
+    - **Domain:** Platform
+
+    - **Decision type:** Architecture / Operations
+
+    - **Related docs:** docs/06_REBUILD_SEQUENCE...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0001-platform-argocd-as-gitops-operator.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

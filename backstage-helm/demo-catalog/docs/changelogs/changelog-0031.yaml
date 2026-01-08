@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0031
+  title: 'CL-0031: Governance-driven app repo scaffolder'
+  description: 'Date: 2026-01-03
+
+    Owner: platform
+
+    Scope: backstage templates, workflows, app template
+
+    Related: docs/adrs/ADR-0078-platform-governed-repo-scaffolder.md'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+  tags:
+  - changelog
+  - release-notes
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0031-governed-repo-scaffolder.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation
