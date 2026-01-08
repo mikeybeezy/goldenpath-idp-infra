@@ -81,9 +81,20 @@ To turn a standard Component into a Documentation Portal:
 *   **Cause**: The Backstage container might lack `mkdocs` or `techdocs-core`.
 *   **Fix**: Ensure your Backstage image includes these dependencies, or switch to `techdocs.builder: 'external'` (requires S3/GCS).
 
-### "FetchUrlReader does not implement readTree"
-*   **Cause**: Backstage cannot read the source files from GitHub.
-*   **Fix**: Verify `backend.reading.allow` includes `raw.githubusercontent.com`.
+### "Authentication failed" or "FetchUrlReader" errors
+*   **Cause**: The `GITHUB_TOKEN` in `backstage-secrets` is missing, invalid, or lacks scopes.
+*   **Fix**: Update the secret with a Classic Token having these scopes:
+    *   **repo** (Required for reading software components)
+    *   **read:org**, **read:user**, **user:email** (Reading organization data)
+    *   **workflow** (If templates include GitHub workflows)
+
+```bash
+kubectl create secret generic backstage-secrets \
+  --from-literal=GITHUB_TOKEN=ghp_YOUR_TOKEN_HERE \
+  --from-literal=POSTGRES_PASSWORD=password \
+  --from-literal=POSTGRES_USER=app \
+  --dry-run=client -o yaml | kubectl apply -f -
+```
 
 ### Docs are stale
 *   **Cause**: Local builder caches builds.
