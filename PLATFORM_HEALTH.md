@@ -12,7 +12,7 @@ relates_to:
 ---
 
 # 🏥 Platform Health Command Center
-**Generated**: `2026-01-08 01:40:20` | **V1 Readiness**: `94.8%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-08 01:42:18` | **V1 Readiness**: `94.8%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 **Realized Value**: `4.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## 🏁 V1 Platform Readiness Gate
@@ -67,13 +67,13 @@ pie title Production Impact distribution
 ## 💎 Project Realized Value (Heartbeat)
 > [!TIP]
 > Total realized value reclaimed through automation heartbeats: **4.4 hours**.
-- **ROI Ledger**: [.goldenpath/value_ledger.json](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/.goldenpath/value_ledger.json)
+- **ROI Ledger**: [.goldenpath/value_ledger.json](file:///Users/mikesablaze/goldenpath-idp-infra/.goldenpath/value_ledger.json)
 
 ## 💳 Financial Governance (Cloud Cost)
 > [!NOTE]
 > Current monthly infrastructure run rate: **$1,250.00 USD**.
 - **Estimated Annual**: `$15,000.00 USD`
-- **Cost Ledger**: [.goldenpath/cost_ledger.json](file:///home/runner/work/goldenpath-idp-infra/goldenpath-idp-infra/.goldenpath/cost_ledger.json)
+- **Cost Ledger**: [.goldenpath/cost_ledger.json](file:///Users/mikesablaze/goldenpath-idp-infra/.goldenpath/cost_ledger.json)
 - **Tooling**: Infracost (CI-integrated)
 
 ## 🚨 Operational Risks
