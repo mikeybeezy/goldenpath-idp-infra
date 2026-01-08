@@ -1,4 +1,4 @@
-<!-- 🛑 AUTOMATED REPORT - DO NOT EDIT MANUALLY 🛑 -->
+<!-- AUTOMATED REPORT - DO NOT EDIT MANUALLY -->
 ---
 id: PLATFORM_HEALTH
 title: Platform Health & Compliance Report
@@ -12,33 +12,23 @@ relates_to:
 ---
 
 # 🏥 Platform Health Command Center
-**Generated**: `2026-01-08 02:17:07` | **V1 Readiness**: `95.6%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-08 02:20:56` | **V1 Readiness**: `95.5%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 **Realized Value**: `4.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
-## 🏁 V1 Platform Readiness Gate
+## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **95.6%** ready for V1 production rollout.
+> The platform is currently **95.5%** ready for V1 production rollout.
 
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 99.8% |
+| **Metadata Integrity** | ✅ | 99.6% |
 | **Injection Integrity** | ✅ | 100.0% |
 | **Architecture Maturity** | 🚧 | 93/119 Active |
 | **Changelog Activity** | ✅ | 86 Entries |
 
-## 📈 Governance Velocity (Historical Trend)
-
-```mermaid
-xychart-beta
-    title "V1 Readiness Trend (Last 10 Runs)"
-    x-axis ["Run -3", "Run -1"]
-    y-axis "Readiness %" 0 --> 100
-    line [100.0, 100.0, 100.0]
-```
-
-## 🏹 Knowledge Graph Vitality
+## Knowledge Graph Vitality
 
 | Metric | Count | Source |
 | :--- | :--- | :--- |
@@ -46,9 +36,9 @@ xychart-beta
 | **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
 | **CI Workflows** | 0 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
 | **Change Logs** | 86 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 455 | Repository Scan |
+| **Tracked Resources** | 454 | Repository Scan |
 
-## 🗂️ Catalog Inventory
+## Catalog Inventory
 
 | Catalog | Entity Count |
 | :--- | :--- |
@@ -59,27 +49,27 @@ xychart-beta
 pie title Production Impact distribution
     "HIGH" : 36
     "MEDIUM" : 32
-    "LOW" : 359
+    "LOW" : 358
     "NONE" : 26
 ```
 
-## ⚖️ Governance Maturity
+## Governance Maturity
 
-- **Metadata Compliance**: `99.8%`
+- **Metadata Compliance**: `99.6%`
 - **Risk-Weighted Score**: `100.0%`
 
-## 💉 Injection Coverage
+## Injection Coverage
 
 - **Sidecar Coverage**: `100.0%` (32/32)
 
-## 💎 Project Realized Value (Heartbeat)
+## Project Realized Value (Heartbeat)
 
 > [!TIP]
 > Total realized value reclaimed through automation heartbeats: **4.4 hours**.
 
 - **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
 
-## 💳 Financial Governance (Cloud Cost)
+## Financial Governance (Cloud Cost)
 
 > [!NOTE]
 > Current monthly infrastructure run rate: **$1,250.00 USD**.
@@ -88,12 +78,12 @@ pie title Production Impact distribution
 - **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)
 - **Tooling**: Infracost (CI-integrated)
 
-## 🚨 Operational Risks
+## Operational Risks
 
 - **Orphaned (No Owner)**: 0
 - **Stale (Past Lifecycle)**: 0
 
 ---
-### 📬 Strategic Guidance
+### Strategic Guidance
 - **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.
 - **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.
