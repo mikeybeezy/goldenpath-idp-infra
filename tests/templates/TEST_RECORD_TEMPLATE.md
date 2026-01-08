@@ -1,4 +1,14 @@
+---
+id: TEST_RECORD_TEMPLATE
+title: Test Record Template
+type: template
+owner: platform-team
+status: active
+category: testing
+---
+
 # Test Record Template
+
 
 **Test Name:** [Descriptive name]
 **Date:** YYYY-MM-DD

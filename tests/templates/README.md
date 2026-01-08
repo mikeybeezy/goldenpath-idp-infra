@@ -1,4 +1,14 @@
+---
+id: TEST_TEMPLATES_ROOT
+title: Test Templates
+type: documentation
+owner: platform-team
+status: active
+category: testing
+---
+
 # Testing Templates - Quick Start Guide
+
 
 **Purpose:** Standardized templates for consistent, repeatable testing
 **Last Updated:** 2026-01-07
