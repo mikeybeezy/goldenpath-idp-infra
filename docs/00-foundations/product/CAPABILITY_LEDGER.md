@@ -103,6 +103,8 @@ The IDP transforms manual cloud resource requests into governed, one-click workf
 - **Risk-Based Security Automation**: Security controls (encryption, mutability, retention, scanning) are auto-applied based on declared risk levels—compliance is enforced, not optional.
 - **Domain-Agnostic Engine**: A single catalog generator supports multiple AWS resource types (ECR, S3, RDS), enabling rapid expansion to new services.
 - **Day Zero Guidance**: Every provisioning PR includes direct links to operational runbooks, ensuring developers know exactly how to use newly created resources.
+- **Eventually Consistent Governance**: Decouples immediate scaffolding from catalog visibility to ensure 100% referential integrity. The "Mirror Model" eliminates "Ghost Resources" by reconciling the catalog against the physical cloud state on a 3-minute heartbeat (via ADR-0129).
+- **Advisory Decommissioning**: Separates documentation cleanup from physical infrastructure teardown. Removing a resource from the governance logic results in an immediate "Soft Delete" from Backstage (re-rendering), while the sync script flags the physical resource as an "Orphan" in advisory mode rather than performing destructive auto-deletion.
 
 ## 12. FinOps / Cost Visibility
 The platform empowers engineers to be financially responsible by making cost impact visible *before* resources are provisioned.

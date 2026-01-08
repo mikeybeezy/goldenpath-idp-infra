@@ -59,7 +59,7 @@ appConfig: |
     - type: url
       target: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/demo-catalog/all.yaml"
       rules:
-      - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User]
+      - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User] # [ADR-0130] Trusted Zone
     - type: url
       target: ${CUSTOM_CATALOG_LOCATION}
       rules:
@@ -70,7 +70,7 @@ appConfig: |
     processingInterval: { seconds: 30 }
     refreshInterval: { seconds: 60 }
     rules:
-      - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User]
+      - allow: [Component, API] # [ADR-0130] Global Sandbox
 
   kubernetes:
     serviceLocatorMethod:
