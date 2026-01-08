@@ -357,6 +357,7 @@ def generate_report(target_dir='.'):
 
     lines.append("")
     lines.append("## Catalog Inventory")
+    lines.append("")
     lines.append("| Catalog | Entity Count |")
     lines.append("| :--- | :--- |")
     # Sort for deterministic output
@@ -388,6 +389,8 @@ def generate_report(target_dir='.'):
     total = stats['injection_coverage']['total_mandated']
     injected = stats['injection_coverage']['total_injected']
     coverage = (injected / total * 100) if total > 0 else 0
+    lines.append(f"- **Sidecar Coverage**: `{coverage:.1f}%` ({injected}/{total})")
+
     lines.append("")
     lines.append("## Project Realized Value (Heartbeat)")
     lines.append("")

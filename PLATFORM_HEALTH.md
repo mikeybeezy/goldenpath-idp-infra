@@ -12,7 +12,7 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-08 02:42:10` | **V1 Readiness**: `95.4%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-08 02:44:26` | **V1 Readiness**: `95.4%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `5.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
@@ -39,6 +39,7 @@ relates_to:
 | **Tracked Resources** | 456 | Repository Scan |
 
 ## Catalog Inventory
+
 | Catalog | Entity Count |
 | :--- | :--- |
 
@@ -59,6 +60,7 @@ pie title Production Impact distribution
 
 ## Injection Coverage
 
+- **Sidecar Coverage**: `100.0%` (32/32)
 
 ## Project Realized Value (Heartbeat)
 
