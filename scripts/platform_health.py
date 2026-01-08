@@ -99,6 +99,8 @@ def get_workflow_stats():
 
 def get_catalog_stats():
     catalog_counts = {}
+    
+    # 1. Standard YAML Catalogs
     catalog_dir = 'docs/catalogs'
     if os.path.exists(catalog_dir):
         for f in os.listdir(catalog_dir):
@@ -107,19 +109,38 @@ def get_catalog_stats():
                     with open(os.path.join(catalog_dir, f), 'r') as cy:
                         data = yaml.safe_load(cy)
                         if not data: continue
-                        # Special handling for hierarchical ECR catalog
                         if 'physical_registry' in data and 'repositories' in data:
                             catalog_counts['Ecr Registry'] = 1
                             catalog_counts['Ecr Repositories'] = len(data['repositories'])
                             continue
-
-                        # Find the first dictionary key that isn't metadata-typical
                         for key, value in data.items():
                             if isinstance(value, dict) and key not in ['version', 'owner', 'domain', 'last_updated', 'managed_by']:
                                 catalog_counts[f.replace('.yaml', '').replace('-catalog', '').title()] = len(value)
                                 break
-                except:
-                    pass
+                except: pass
+
+    # 2. Backstage Demo Catalog
+    backstage_dir = 'backstage-helm/demo-catalog'
+    if os.path.exists(backstage_dir):
+        for f in os.listdir(backstage_dir):
+            if f.startswith('all-') and f.endswith('.yaml'):
+                try:
+                    with open(os.path.join(backstage_dir, f), 'r') as cy:
+                        docs = list(yaml.safe_load_all(cy))
+                        entity_type = f.replace('all-', '').replace('.yaml', '').title()
+                        total_entities = 0
+                        for doc in docs:
+                            if not doc: continue
+                            if doc.get('kind') == 'Location':
+                                targets = doc.get('spec', {}).get('targets', [])
+                                total_entities += len(targets)
+                            elif 'kind' in doc:
+                                total_entities += 1
+                        
+                        if total_entities > 0:
+                            catalog_counts[f"IDP {entity_type}"] = total_entities
+                except: pass
+                
     return catalog_counts
 
 def get_historical_trends():

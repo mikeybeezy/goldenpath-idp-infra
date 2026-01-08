@@ -12,18 +12,18 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-08 03:00:59` | **V1 Readiness**: `95.4%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-08 03:36:36` | **V1 Readiness**: `95.3%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `5.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **95.4%** ready for V1 production rollout.
+> The platform is currently **95.3%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 99.8% |
+| **Metadata Integrity** | ✅ | 99.3% |
 | **Injection Integrity** | ✅ | 100.0% |
 | **Architecture Maturity** | 🚧 | 93/120 Active |
 | **Changelog Activity** | ✅ | 86 Entries |
@@ -42,6 +42,11 @@ relates_to:
 
 | Catalog | Entity Count |
 | :--- | :--- |
+| IDP Apis | 9 |
+| IDP Components | 13 |
+| IDP Domains | 2 |
+| IDP Resources | 1 |
+| IDP Systems | 3 |
 
 ## 🛡️ Risk & Maturity Visualization
 
@@ -55,7 +60,7 @@ pie title Production Impact distribution
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `99.8%`
+- **Metadata Compliance**: `99.3%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage

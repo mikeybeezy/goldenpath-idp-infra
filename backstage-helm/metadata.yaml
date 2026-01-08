@@ -1,0 +1,27 @@
+---
+id: backstage-helm
+title: Backstage Helm Deployment Suite
+type: infrastructure
+domain: developer-experience
+owner: platform-team
+lifecycle: active
+status: active
+version: 1.0
+value_quantification:
+  vq_class: HV/HQ
+  impact_tier: high
+  potential_savings_hours: 500.0
+risk_profile:
+  production_impact: medium
+  security_risk: medium
+  coupling_risk: high
+reliability:
+  rollback_strategy: helm-rollback
+  observability_tier: gold
+tags:
+  - idp
+  - backstage
+  - portal
+  - velocity-multiplier
+  - v1-gate
+---
