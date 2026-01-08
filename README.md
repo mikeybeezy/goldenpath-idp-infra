@@ -39,7 +39,8 @@ Welcome to the core configuration and governance engine for the GoldenPath Inter
 
 ---
 
-### Quick Links
+## Quick Links
+
 - [** START HERE (5-Min Onboarding)**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/80-onboarding/00_START_HERE.md)
 - [** Platform Dashboards Index**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_DASHBOARDS.md)
 - [** Current Platform Health**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md)
@@ -53,7 +54,7 @@ This repository contains Terraform modules and environment definitions that prov
 
 ## Repository Layout
 
-```
+```text
 .
 ├── modules/        # Reusable Terraform modules (VPC, subnets, SG, compute, etc.)
 ├── envs/           # Per-environment stacks (dev, test, staging, prod)
@@ -80,7 +81,7 @@ and file touchpoints.
 
 1. **Clone the repo**
 
-   ```sh
+   ```bash
    git clone <repo-url> && cd goldenpath-idp-infra
    ```
 
@@ -92,7 +93,7 @@ and file touchpoints.
 
 3. **Pick an environment to work with**
 
-   ```sh
+   ```bash
    cd envs/dev   # replace dev with test/staging/prod if needed
    ```
 
@@ -103,7 +104,7 @@ and file touchpoints.
 
 4. **Initialize Terraform for that environment**
 
-   ```sh
+   ```bash
    terraform init
    ```
 
@@ -111,7 +112,7 @@ and file touchpoints.
 
 5. **Preview the changes**
 
-   ```sh
+   ```bash
    terraform plan -out plan.out
    ```
 
@@ -119,7 +120,7 @@ and file touchpoints.
 
 6. **Apply when ready**
 
-   ```sh
+   ```bash
    terraform apply plan.out
    ```
 
@@ -127,7 +128,7 @@ and file touchpoints.
 
 7. **Tear down (optional)**
 
-   ```sh
+   ```bash
    terraform destroy
    ```
 
@@ -137,7 +138,7 @@ and file touchpoints.
 
 If you prefer a simplified workflow, the Makefile wraps the standard Terraform commands per environment:
 
-```sh
+```bash
 make init ENV=dev
 make plan ENV=dev
 make apply ENV=dev
