@@ -185,4 +185,12 @@ ecr_repositories = {
       risk  = "low"
     }
   }
+
+  "new-wp-reg2" = {
+    metadata = {
+      id    = "REGISTRY_NEW_WP_REG2"
+      owner = "platform-team"
+      risk  = "low"
+    }
+  }
 }
