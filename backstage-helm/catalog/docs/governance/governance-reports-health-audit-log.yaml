@@ -29,6 +29,7 @@ metadata:
   - gove
   - governance
   - documentation
+  - report
   links:
   - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/reports/HEALTH_AUDIT_LOG.md
     title: View on GitHub
