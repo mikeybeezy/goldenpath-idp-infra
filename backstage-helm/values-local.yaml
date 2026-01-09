@@ -11,7 +11,7 @@ backstage:
 
 appConfig: |
   organization:
-    name:GoldenPath IDP
+    name: GoldenPath IDP
 
   app:
     title: GoldenPath IDP Backstage
