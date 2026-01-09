@@ -40,6 +40,7 @@ relates_to:
   - RB-0022
   - RB-0023
   - RB-0024
+  - RB-0025
 supersedes: []
 superseded_by: []
 tags: []
@@ -80,6 +81,7 @@ breaking_change: false
 - [docs/70-operations/runbooks/RB-0018-metadata-backfill-script.md](docs/70-operations/runbooks/RB-0018-metadata-backfill-script.md) — Automated metadata injection for legacy directories.
 - [docs/70-operations/runbooks/RB-0019-relationship-extraction-script.md](docs/70-operations/runbooks/RB-0019-relationship-extraction-script.md) — Building the Platform Knowledge Graph via metadata links.
 - [docs/70-operations/runbooks/RB-0020-git-troubleshooting.md](docs/70-operations/runbooks/RB-0020-git-troubleshooting.md) — Resolving branch drift and merge conflicts in governed repos.
+- [docs/70-operations/runbooks/RB-0025-ecr-catalog-sync.md](docs/70-operations/runbooks/RB-0025-ecr-catalog-sync.md) — Sync Backstage ECR registry to AWS physical state.
 
 ### App Team Runbooks
 - [docs/70-operations/runbooks/app-team/RB-0021-fix-cve-guide.md](docs/70-operations/runbooks/app-team/RB-0021-fix-cve-guide.md) — Step-by-step guide to resolving CVEs in container images.

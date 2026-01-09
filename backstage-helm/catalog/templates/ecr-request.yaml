@@ -32,11 +32,16 @@ spec:
         owner:
           title: Owner
           type: string
-          description: Team that owns this repository (e.g., app-team-payment).
-          ui:field: EntityPicker
-          ui:options:
-            catalogFilter:
-              kind: Group
+          description: Team that owns this repository.
+          enum:
+            - platform-team
+            - security-team
+            - operations-team
+            - sre-team
+            - unknown
+            - app-team
+            - database-team
+          default: platform-team
         requester:
           title: Requesting User
           type: string
@@ -84,7 +89,7 @@ spec:
         branchOrTagName: development
         workflowInputs:
           registry_name: ${{ parameters.name }}
-          owner: ${{ (parameters.owner | parseEntityRef).name | lower }}
+          owner: ${{ parameters.owner }}
           user: ${{ parameters.requester }}
           domain: ${{ parameters.domain }}
           environment: ${{ parameters.environment }}

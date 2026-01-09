@@ -291,6 +291,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0129](ADR-0129-platform-eventual-consistency-ecr-governance.md) | Platform | Eventual Consistency for ECR Registry Governance | Accepted | 2026-01-0? | The Backstage catalog currently faces a "Truth" divergence regarding AWS ECR. While only one physical ECR registry exists, previous automation (Scaffolder runs) created separate`Kind: Resource`YAML... |
 | [ADR-0130](ADR-0130-platform-catalog-zoned-defense-security.md) | Platform | Zoned Defense for Catalog Ingestion Security | Accepted | 2026-01-0? | The previous catalog configuration allowed any registered location (even user-contributed ones) to define security-sensitive entities like`Domain`,`Group`, and`User`. This created a "Shadow IT" ris... |
 | [ADR-0131](ADR-0131-platform-health-outcome-metrics.md) | Platform | Outcome Metrics for Platform Health | Proposed | 2026-01-0? | The platform health dashboard currently focuses on governance inputs (metadata compliance, ADR activity, changelog volume) but lacks outcome-based signals that reflect delivery reliability and time... |
+| [ADR-0132](ADR-0132-platform-container-registry-system.md) | Platform | Dedicated Backstage System for ECR Registry | Accepted | 2026-01-09 | Model the ECR registry as its own Backstage system to make ownership and delivery dependencies explicit, and align catalog grouping with the registry lifecycle. |
 <!-- ADR_TABLE_END -->
 
 ---

@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0132
+  title: 'ADR-0132: Model ECR Registry as a Dedicated Backstage System'
+  description: '- **Status:** Accepted
+
+    - **Date:** 2026-01-09
+
+    - **Owners:** `platform-team`
+
+    - **Decision type:** Architecture | Governance'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0132-platform-container-registry-system.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: accepted
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

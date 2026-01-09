@@ -14,4 +14,4 @@ spec:
   type: infrastructure
   lifecycle: production
   owner: platform-team
-  system: audio-playback
+  system: container-registry
