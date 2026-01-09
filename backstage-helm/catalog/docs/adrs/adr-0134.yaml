@@ -1,11 +1,11 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: adr-0120
-  title: 'ADR-0120: Metadata Inheritance, Versioning, and Active Governance Loop'
-  description: 'id: ADR-0120-metadata-inheritance-and-active-governance
+  name: adr-0134
+  title: 'ADR-0134: Metadata Inheritance, Active Governance, and Leak Protection'
+  description: 'id: ADR-0134-metadata-inheritance-active-governance-and-leak-protection
 
-    title: ''ADR-0120: Metadata Inheritance, Versioning, and Active Governance Loop''
+    title: ''ADR-0134: Metadata Inheritance, Active Governance, and Leak Protection''
 
     type: adr
 
@@ -18,7 +18,7 @@ metadata:
   - governance
   - documentation
   links:
-  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0120-metadata-inheritance-and-active-governance.md
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0134-metadata-inheritance-active-governance-and-leak-protection.md
     title: View on GitHub
     icon: docs
 spec:
