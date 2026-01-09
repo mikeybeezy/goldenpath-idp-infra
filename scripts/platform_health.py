@@ -114,10 +114,12 @@ def get_catalog_stats():
                     with open(os.path.join(catalog_dir, f), 'r') as cy:
                         data = yaml.safe_load(cy)
                         if not data: continue
+                        # Special handling for hierarchical ECR catalog
                         if 'physical_registry' in data and 'repositories' in data:
                             catalog_counts['Ecr Registry'] = 1
                             catalog_counts['Ecr Repositories'] = len(data['repositories'])
                             continue
+                        # Find the first dictionary key that isn't metadata-typical
                         for key, value in data.items():
                             if isinstance(value, dict) and key not in ['version', 'owner', 'domain', 'last_updated', 'managed_by']:
                                 catalog_counts[f.replace('.yaml', '').replace('-catalog', '').title()] = len(value)

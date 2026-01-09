@@ -247,12 +247,6 @@ ai_validation_level:
   - ci-green
   - prod-verified
 
-api_types:
-  - openapi
-  - graphql
-  - grpc
-  - asyncapi
-
 value_intent:
   - cost_reduction
   - risk_reduction
