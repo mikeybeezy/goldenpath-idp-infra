@@ -1,7 +1,7 @@
 version: "1.0"
 domain: delivery
 owner: platform-team
-last_updated: "2026-01-06"
+last_updated: "2026-01-09"
 managed_by: platform-team
 physical_registry: "goldenpath-idp-main"
 repositories:
@@ -78,3 +78,13 @@ repositories:
       risk: low
       status: pending
       created_date: "2026-01-06"
+  new-wp-reg2:
+    metadata:
+      id: REGISTRY_NEW_WP_REG2
+      owner: platform-team
+      requested_by: michael-deans
+      domain: delivery
+      risk: low
+      environment: dev
+      status: pending
+      created_date: "2026-01-09"
