@@ -3,6 +3,8 @@ name: Quality - Terraform Lint
 
 on:
   pull_request:
+    branches:
+      - main
     paths:
       - "**/*.tf"
       - "**/*.tfvars"

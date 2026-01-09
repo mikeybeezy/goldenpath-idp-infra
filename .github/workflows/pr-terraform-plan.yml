@@ -3,6 +3,8 @@ name: Plan - PR Terraform Plan
 
 on:
   pull_request:
+    branches:
+      - main
     paths:
       - "**/*.tf"
       - "**/*.tfvars"

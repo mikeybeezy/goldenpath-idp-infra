@@ -139,15 +139,15 @@ breaking_change: false
 
 ### super-linter.yml
 **Purpose:** Lint code
-**Trigger:** Pull requests
+**Trigger:** Manual
 
 ### yamllint.yml
 **Purpose:** Lint YAML files
-**Trigger:** Pull requests
+**Trigger:** Pull requests (main only)
 
 ### pre-commit.yml
 **Purpose:** Run pre-commit hooks
-**Trigger:** Pull requests
+**Trigger:** Pull requests (main only)
 
 ### ci-metadata-validation.yml
 **Purpose:** Validate and auto-heal metadata schema
