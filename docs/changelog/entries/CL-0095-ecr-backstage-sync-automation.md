@@ -53,3 +53,7 @@ Related: docs/adrs/ADR-0128-automated-ecr-catalog-sync.md
 ## Validation
 
 - Workflow run opens a PR after ECR auto-apply succeeds
+
+## Notes
+
+- Manual workflow dispatch testing is deferred until the workflow is promoted to `main`.
