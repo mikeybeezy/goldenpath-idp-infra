@@ -1,5 +1,5 @@
 ---
-id: RB-0012
+id: RB-0012-argocd-app-readiness
 title: Argo CD App Readiness Checklist
 type: runbook
 domain: platform-core

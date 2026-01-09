@@ -1,5 +1,5 @@
 ---
-id: RB-0008
+id: RB-0008-managed-lb-cleanup
 title: Managed LB Resource Cleanup (Runbook)
 type: runbook
 domain: platform-core

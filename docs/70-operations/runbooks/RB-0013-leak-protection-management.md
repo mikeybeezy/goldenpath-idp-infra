@@ -1,5 +1,5 @@
 ---
-id: RB-0012-leak-protection-management
+id: RB-0013-leak-protection-management
 title: Leak Protection Management
 type: runbook
 domain: platform-core

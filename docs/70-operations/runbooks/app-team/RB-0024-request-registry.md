@@ -1,5 +1,5 @@
 ---
-id: RB-0024
+id: RB-0024-request-registry
 title: 'App Team Runbook: Request ECR Registry'
 type: runbook
 domain: platform-core

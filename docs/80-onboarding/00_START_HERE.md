@@ -1,5 +1,5 @@
 ---
-id: ONBOARDING_START
+id: 00_START_HERE
 title: Start Here
 type: documentation
 owner: platform-team

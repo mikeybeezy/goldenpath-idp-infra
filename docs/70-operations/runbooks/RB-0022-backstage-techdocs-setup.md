@@ -1,5 +1,5 @@
 ---
-id: RB-0022
+id: RB-0022-backstage-techdocs-setup
 title: Enabling Native TechDocs Rendering
 type: runbook
 domain: idp

@@ -1,3 +1,22 @@
+---
+id: CL-0084-backstage-ecr-instrumentation
+title: 'CL-0084: Backstage VQ Alignment and ECR Instrumentation'
+type: changelog
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle: active
+version: '1.0'
+relates_to:
+  - CL-0084
+supported_until: 2028-01-08
+breaking_change: false
+---
+
 # CL-0084: Backstage VQ Alignment and ECR Instrumentation
 
 ## Date

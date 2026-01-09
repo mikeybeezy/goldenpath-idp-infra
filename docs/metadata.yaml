@@ -5,7 +5,7 @@ type: documentation
 status: active
 owner: platform-team
 domain: platform-core
-category: education
+category: platform
 risk_profile:
   production_impact: none
   security_risk: none
@@ -13,5 +13,5 @@ risk_profile:
 reliability:
   observability_tier: bronze
   maturity: 2
-lifecycle:
-  supported_until: '2028-01-01'
+lifecycle: active
+supported_until: '2028-01-01'

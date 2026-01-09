@@ -1,5 +1,5 @@
 ---
-id: AI_COLLABORATION_PROTOCOL
+id: 07_1_AI_COLLABORATION_PROTOCOL
 title: AI Collaboration Protocol
 type: documentation
 owner: platform-team

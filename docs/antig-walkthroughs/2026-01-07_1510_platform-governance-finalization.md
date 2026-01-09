@@ -1,5 +1,5 @@
 ---
-id: WALKTHROUGH_GOVERNANCE_FINALIZATION
+id: 2026-01-07_1510_platform-governance-finalization
 title: Governance Finalization Walkthrough
 type: walkthrough
 owner: platform-team

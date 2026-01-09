@@ -1,3 +1,19 @@
+---
+id: ADR-0128
+title: 'ADR-0128: Automated IDP Catalog Mapping for AWS ECR'
+type: adr
+status: accepted
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+lifecycle: active
+version: 1.0
+relates_to:
+  - ADR-0092
+supported_until: 2028-01-08
+breaking_change: false
+---
+
 # ADR-0128: Automated IDP Catalog Mapping for AWS ECR
 
 ## Status

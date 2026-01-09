@@ -1,5 +1,5 @@
 ---
-id: RB-0015-extending-governance-vocabulary
+id: RB-0016-extending-governance-vocabulary
 title: Extending Governance Vocabulary
 type: runbook
 domain: platform-core

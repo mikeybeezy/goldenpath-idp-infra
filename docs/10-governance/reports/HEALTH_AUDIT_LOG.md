@@ -1,3 +1,37 @@
+---
+id: HEALTH_AUDIT_LOG
+title: Health Audit Log
+type: report
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+schema_version: 1
+relates_to:
+  - PLATFORM_HEALTH
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: governance
+status: active
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
+---
+
 # Platform Health Audit Log
 
 
@@ -2291,3 +2325,36 @@ pie title Production Impact distribution
 
 - **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.
 - **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.
+---
+id: HEALTH_AUDIT_LOG
+title: Health Audit Log
+type: report
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+schema_version: 1
+relates_to:
+  - PLATFORM_HEALTH
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: governance
+status: active
+version: '1.0'
+supported_until: 2028-01-01
+breaking_change: false
+---

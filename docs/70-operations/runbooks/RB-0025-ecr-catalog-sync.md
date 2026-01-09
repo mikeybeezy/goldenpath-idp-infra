@@ -1,5 +1,5 @@
 ---
-id: RB-0025
+id: RB-0025-ecr-catalog-sync
 title: ECR Catalog Sync (AWS Source of Truth)
 type: runbook
 domain: delivery

@@ -1,5 +1,5 @@
 ---
-id: RB-0004
+id: RB-0004-lb-finalizer-stuck
 title: LoadBalancer Service Stuck on Finalizer
 type: runbook
 domain: platform-core

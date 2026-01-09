@@ -1,5 +1,5 @@
 ---
-id: RB-0013-metadata-and-enum-alignment
+id: RB-0014-metadata-and-enum-alignment
 title: Metadata & Enum Alignment
 type: runbook
 domain: platform-core
