@@ -124,12 +124,12 @@ Edit `backstage-helm/charts/backstage/values.yaml` and ensure the `backend` sect
 backend:
   baseUrl: ${BASE_URL}:7007
   listen: ':7007'
-  
+
   reading:
     allow:
       - host: raw.githubusercontent.com
       - host: '*.githubusercontent.com'
-  
+
   database:
     # ... rest of config
 ```
@@ -195,15 +195,15 @@ Navigate to **Catalog** in the Backstage UI. You should see:
 ## Common Issues
 
 ### Issue: "URL parsing failed" for "url:None"
-**Cause**: The `CUSTOM_CATALOG_LOCATION` is set to "None" (string instead of unset).  
+**Cause**: The `CUSTOM_CATALOG_LOCATION` is set to "None" (string instead of unset).
 **Fix**: Ensure Helm values use `customCatalogLocation: ""` or don't set it.
 
 ### Issue: Duplicate backend sections in values.yaml
-**Cause**: YAML only recognizes the first key occurrence.  
+**Cause**: YAML only recognizes the first key occurrence.
 **Fix**: Merge all backend configuration into a single `backend:` block.
 
 ### Issue: GitHub 401 Unauthorized for private repos
-**Cause**: Backstage needs a GitHub token to read private repositories.  
+**Cause**: Backstage needs a GitHub token to read private repositories.
 **Fix**: Set `github.accessToken` in Helm values or via environment variable.
 
 ## Related Docs

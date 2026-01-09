@@ -290,4 +290,3 @@ This document is auto-generated from `schemas/metadata/enums.yaml`. These are th
 | `local-checks` | Allowed value |
 | `ci-green` | Allowed value |
 | `prod-verified` | Allowed value |
-

@@ -99,7 +99,7 @@ def get_workflow_stats():
 
 def get_catalog_stats():
     catalog_counts = {}
-    
+
     # 1. Standard YAML Catalogs (legacy + contracts)
     catalog_dirs = [
         'docs/catalogs',
@@ -141,11 +141,11 @@ def get_catalog_stats():
                                 total_entities += len(targets)
                             elif 'kind' in doc:
                                 total_entities += 1
-                        
+
                         if total_entities > 0:
                             catalog_counts[f"IDP {entity_type}"] = total_entities
                 except: pass
-                
+
     return catalog_counts
 
 def get_historical_trends():

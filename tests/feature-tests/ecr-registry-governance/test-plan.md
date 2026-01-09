@@ -12,11 +12,11 @@
 ### Objectives
 - **What are we testing?** The `scripts/sync_ecr_catalog.py` reconciliation logic.
 - **Why are we testing it?** To ensure the Backstage catalog is a high-fidelity mirror of AWS ECR state and governance intent.
-- **Success Criteria:** 
+- **Success Criteria:**
     - Script correctly identifies "Ghosts" (defined in catalog, missing in AWS).
     - Script correctly identifies "Orphans" (existing in AWS, missing in catalog).
     - Script correctly generates/updates the Backstage `Resource` entity.
-- **Failure Criteria:** 
+- **Failure Criteria:**
     - Script misses a discrepancy.
     - Script generates invalid YAML.
     - Script errors out due to missing metadata.

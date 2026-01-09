@@ -7,7 +7,7 @@ This document captures the security configuration and ingestion logic for the Go
 We utilize a two-tier permission system in `values-local.yaml` to ensure referential integrity.
 
 ### 🔓 Tier 1: Per-Location Trust
-Full permissions (`Domain`, `Group`, `User`, `System`, `Resource`) are granted **only** to the official GoldenPath repository. 
+Full permissions (`Domain`, `Group`, `User`, `System`, `Resource`) are granted **only** to the official GoldenPath repository.
 
 ### 🔒 Tier 2: Global Sandbox
 The global `catalog.rules` are restricted to `Component` and `API`. This prevents developers from inadvertently (or maliciously) defining organizational structures from their own service repositories.

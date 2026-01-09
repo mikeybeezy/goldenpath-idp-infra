@@ -54,7 +54,7 @@ def generate():
         entities.append(entity)
 
     os.makedirs(TARGET_DIR, exist_ok=True)
-    
+
     generated_files = []
     for name, entity in zip(repositories.keys(), entities):
         file_path = f"{TARGET_DIR}/{name}.yaml"
@@ -66,19 +66,19 @@ def generate():
     if os.path.exists(ALL_RESOURCES_PATH):
         with open(ALL_RESOURCES_PATH, 'r') as f:
             all_res = yaml.safe_load(f)
-        
-        # Keep original targets (like artists-db and ecr-registry) 
+
+        # Keep original targets (like artists-db and ecr-registry)
         # but replace/append ECR repos
         current_targets = all_res.get('spec', {}).get('targets', [])
         new_targets = [t for t in current_targets if not t.startswith('./resources/ecr/') and t != './resources/ecr-repositories.yaml']
-        
+
         # Ensure ecr-registry is there
         if './resources/ecr-registry.yaml' not in new_targets:
             new_targets.append('./resources/ecr-registry.yaml')
-            
+
         new_targets.extend(generated_files)
         all_res['spec']['targets'] = new_targets
-        
+
         with open(ALL_RESOURCES_PATH, 'w') as f:
             yaml.dump(all_res, f, sort_keys=False)
 

@@ -59,5 +59,3 @@ After updating the catalog location:
 - ✅ Backstage entities generated: `backstage-helm/catalog/resources/ecr/`
 - ✅ Resource index updated: `backstage-helm/catalog/all-resources.yaml`
 - ⚠️ **Catalog location needs configuration update**
-
-
