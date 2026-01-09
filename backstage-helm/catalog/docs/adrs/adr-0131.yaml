@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0131
+  title: 'ADR-0131: Outcome Metrics for Platform Health'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2026-01-08
+
+    - **Owners:** `platform-team`
+
+    - **Decision type:** Governance | Observability'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0131-platform-health-outcome-metrics.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: proposed
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

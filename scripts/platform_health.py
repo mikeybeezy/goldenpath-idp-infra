@@ -100,9 +100,14 @@ def get_workflow_stats():
 def get_catalog_stats():
     catalog_counts = {}
     
-    # 1. Standard YAML Catalogs
-    catalog_dir = 'docs/catalogs'
-    if os.path.exists(catalog_dir):
+    # 1. Standard YAML Catalogs (legacy + contracts)
+    catalog_dirs = [
+        'docs/catalogs',
+        'docs/20-contracts/catalogs'
+    ]
+    for catalog_dir in catalog_dirs:
+        if not os.path.exists(catalog_dir):
+            continue
         for f in os.listdir(catalog_dir):
             if f.endswith('.yaml') and f != 'backstage-entities.yaml':
                 try:

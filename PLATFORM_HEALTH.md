@@ -5,43 +5,45 @@ type: documentation
 category: governance
 status: active
 owner: platform-team
-version: '2026-01-08'
+version: '2026-01-09'
 relates_to:
   - platform_health.py
 ---
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-08 21:23:28` | **V1 Readiness**: `95.1%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-09 00:16:57` | **V1 Readiness**: `93.7%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `13.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **95.1%** ready for V1 production rollout.
+> The platform is currently **93.7%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 97.2% |
+| **Metadata Integrity** | ⚠️ | 93.1% |
 | **Injection Integrity** | ✅ | 100.0% |
-| **Architecture Maturity** | 🚧 | 95/120 Active |
-| **Changelog Activity** | ✅ | 89 Entries |
+| **Architecture Maturity** | 🚧 | 95/123 Active |
+| **Changelog Activity** | ✅ | 91 Entries |
 
 ## Knowledge Graph Vitality
 
 | Metric | Count | Source |
 | :--- | :--- | :--- |
-| **Architecture Decisions** | 120 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
+| **Architecture Decisions** | 123 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
 | **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
 | **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 89 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 459 | Repository Scan |
+| **Change Logs** | 91 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 461 | Repository Scan |
 
 ## Catalog Inventory
 
 | Catalog | Entity Count |
 | :--- | :--- |
+| Ecr Registry | 1 |
+| Ecr Repositories | 10 |
 | IDP Apis | 9 |
 | IDP Components | 17 |
 | IDP Domains | 2 |
@@ -54,13 +56,13 @@ relates_to:
 pie title Production Impact distribution
     "HIGH" : 36
     "MEDIUM" : 33
-    "LOW" : 360
+    "LOW" : 362
     "NONE" : 27
 ```
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `97.2%`
+- **Metadata Compliance**: `93.1%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage

@@ -1990,3 +1990,304 @@ pie title Production Impact distribution
 
 - **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.
 - **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.
+
+---
+### Audit: 2026-01-08 23:51:21
+---
+id: PLATFORM_HEALTH
+title: Platform Health & Compliance Report
+type: documentation
+category: governance
+status: active
+owner: platform-team
+version: '2026-01-08'
+relates_to:
+  - platform_health.py
+---
+
+## 🏥 Platform Health Command Center
+
+**Generated**: `2026-01-08 23:51:21` | **V1 Readiness**: `93.9%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+
+**Realized Value**: `13.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+
+## V1 Platform Readiness Gate
+
+> [!IMPORTANT]
+> The platform is currently **93.9%** ready for V1 production rollout.
+
+| Milestone | Status | Readiness |
+| :--- | :--- | :--- |
+| **Metadata Integrity** | ⚠️ | 93.2% |
+| **Injection Integrity** | ✅ | 100.0% |
+| **Architecture Maturity** | 🚧 | 95/122 Active |
+| **Changelog Activity** | ✅ | 90 Entries |
+
+## Knowledge Graph Vitality
+
+| Metric | Count | Source |
+| :--- | :--- | :--- |
+| **Architecture Decisions** | 122 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
+| **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
+| **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
+| **Change Logs** | 90 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 459 | Repository Scan |
+
+## Catalog Inventory
+
+| Catalog | Entity Count |
+| :--- | :--- |
+| IDP Apis | 9 |
+| IDP Components | 17 |
+| IDP Domains | 2 |
+| IDP Resources | 2 |
+| IDP Systems | 3 |
+
+## 🛡️ Risk & Maturity Visualization
+
+```mermaid
+pie title Production Impact distribution
+    "HIGH" : 36
+    "MEDIUM" : 33
+    "LOW" : 360
+    "NONE" : 27
+```
+
+## Governance Maturity
+
+- **Metadata Compliance**: `93.2%`
+- **Risk-Weighted Score**: `100.0%`
+
+## Injection Coverage
+
+- **Sidecar Coverage**: `100.0%` (32/32)
+
+## Project Realized Value (Heartbeat)
+
+> [!TIP]
+> Total realized value reclaimed through automation heartbeats: **13.4 hours**.
+
+- **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
+
+## Financial Governance (Cloud Cost)
+
+> [!NOTE]
+> Current monthly infrastructure run rate: **$1,250.00 USD**.
+
+- **Estimated Annual**: `$15,000.00 USD`
+- **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)
+- **Tooling**: Infracost (CI-integrated)
+
+## Operational Risks
+
+- **Orphaned (No Owner)**: 0
+- **Stale (Past Lifecycle)**: 0
+
+---
+
+### Strategic Guidance
+
+- **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.
+- **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.
+
+---
+### Audit: 2026-01-08 23:55:29
+---
+id: PLATFORM_HEALTH
+title: Platform Health & Compliance Report
+type: documentation
+category: governance
+status: active
+owner: platform-team
+version: '2026-01-08'
+relates_to:
+  - platform_health.py
+---
+
+## 🏥 Platform Health Command Center
+
+**Generated**: `2026-01-08 23:55:29` | **V1 Readiness**: `93.9%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+
+**Realized Value**: `13.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+
+## V1 Platform Readiness Gate
+
+> [!IMPORTANT]
+> The platform is currently **93.9%** ready for V1 production rollout.
+
+| Milestone | Status | Readiness |
+| :--- | :--- | :--- |
+| **Metadata Integrity** | ⚠️ | 93.2% |
+| **Injection Integrity** | ✅ | 100.0% |
+| **Architecture Maturity** | 🚧 | 95/122 Active |
+| **Changelog Activity** | ✅ | 90 Entries |
+
+## Knowledge Graph Vitality
+
+| Metric | Count | Source |
+| :--- | :--- | :--- |
+| **Architecture Decisions** | 122 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
+| **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
+| **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
+| **Change Logs** | 90 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 459 | Repository Scan |
+
+## Catalog Inventory
+
+| Catalog | Entity Count |
+| :--- | :--- |
+| Ecr Registry | 1 |
+| Ecr Repositories | 10 |
+| IDP Apis | 9 |
+| IDP Components | 17 |
+| IDP Domains | 2 |
+| IDP Resources | 2 |
+| IDP Systems | 3 |
+
+## 🛡️ Risk & Maturity Visualization
+
+```mermaid
+pie title Production Impact distribution
+    "HIGH" : 36
+    "MEDIUM" : 33
+    "LOW" : 360
+    "NONE" : 27
+```
+
+## Governance Maturity
+
+- **Metadata Compliance**: `93.2%`
+- **Risk-Weighted Score**: `100.0%`
+
+## Injection Coverage
+
+- **Sidecar Coverage**: `100.0%` (32/32)
+
+## Project Realized Value (Heartbeat)
+
+> [!TIP]
+> Total realized value reclaimed through automation heartbeats: **13.4 hours**.
+
+- **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
+
+## Financial Governance (Cloud Cost)
+
+> [!NOTE]
+> Current monthly infrastructure run rate: **$1,250.00 USD**.
+
+- **Estimated Annual**: `$15,000.00 USD`
+- **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)
+- **Tooling**: Infracost (CI-integrated)
+
+## Operational Risks
+
+- **Orphaned (No Owner)**: 0
+- **Stale (Past Lifecycle)**: 0
+
+---
+
+### Strategic Guidance
+
+- **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.
+- **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.
+
+---
+### Audit: 2026-01-09 00:16:57
+---
+id: PLATFORM_HEALTH
+title: Platform Health & Compliance Report
+type: documentation
+category: governance
+status: active
+owner: platform-team
+version: '2026-01-09'
+relates_to:
+  - platform_health.py
+---
+
+## 🏥 Platform Health Command Center
+
+**Generated**: `2026-01-09 00:16:57` | **V1 Readiness**: `93.7%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+
+**Realized Value**: `13.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+
+## V1 Platform Readiness Gate
+
+> [!IMPORTANT]
+> The platform is currently **93.7%** ready for V1 production rollout.
+
+| Milestone | Status | Readiness |
+| :--- | :--- | :--- |
+| **Metadata Integrity** | ⚠️ | 93.1% |
+| **Injection Integrity** | ✅ | 100.0% |
+| **Architecture Maturity** | 🚧 | 95/123 Active |
+| **Changelog Activity** | ✅ | 91 Entries |
+
+## Knowledge Graph Vitality
+
+| Metric | Count | Source |
+| :--- | :--- | :--- |
+| **Architecture Decisions** | 123 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
+| **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
+| **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
+| **Change Logs** | 91 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 461 | Repository Scan |
+
+## Catalog Inventory
+
+| Catalog | Entity Count |
+| :--- | :--- |
+| Ecr Registry | 1 |
+| Ecr Repositories | 10 |
+| IDP Apis | 9 |
+| IDP Components | 17 |
+| IDP Domains | 2 |
+| IDP Resources | 2 |
+| IDP Systems | 3 |
+
+## 🛡️ Risk & Maturity Visualization
+
+```mermaid
+pie title Production Impact distribution
+    "HIGH" : 36
+    "MEDIUM" : 33
+    "LOW" : 362
+    "NONE" : 27
+```
+
+## Governance Maturity
+
+- **Metadata Compliance**: `93.1%`
+- **Risk-Weighted Score**: `100.0%`
+
+## Injection Coverage
+
+- **Sidecar Coverage**: `100.0%` (32/32)
+
+## Project Realized Value (Heartbeat)
+
+> [!TIP]
+> Total realized value reclaimed through automation heartbeats: **13.4 hours**.
+
+- **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
+
+## Financial Governance (Cloud Cost)
+
+> [!NOTE]
+> Current monthly infrastructure run rate: **$1,250.00 USD**.
+
+- **Estimated Annual**: `$15,000.00 USD`
+- **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)
+- **Tooling**: Infracost (CI-integrated)
+
+## Operational Risks
+
+- **Orphaned (No Owner)**: 0
+- **Stale (Past Lifecycle)**: 0
+
+---
+
+### Strategic Guidance
+
+- **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.
+- **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.
