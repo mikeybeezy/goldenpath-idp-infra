@@ -1,0 +1,99 @@
+name: Backstage ECR Sync PR
+
+on:
+  workflow_run:
+    workflows: ["Apply - ECR Auto-Apply"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      region:
+        description: "AWS region for ECR sync"
+        required: true
+        default: "eu-west-2"
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  sync:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ${{ inputs.region || 'eu-west-2' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: development
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: python3 -m pip install --upgrade pip pyyaml
+
+      - name: Configure AWS credentials (read-only)
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
+
+      - name: Extract registry name (if available)
+        id: registry
+        run: |
+          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          if [[ "$BRANCH" == registry/create-* ]]; then
+            NAME="${BRANCH#registry/create-}"
+            echo "name=$NAME" >> "$GITHUB_OUTPUT"
+            echo "Registry name: $NAME"
+          else
+            echo "name=" >> "$GITHUB_OUTPUT"
+            echo "No registry branch detected (branch: $BRANCH)."
+          fi
+
+      - name: Wait for registry to appear in ECR
+        if: steps.registry.outputs.name != ''
+        run: |
+          NAME="${{ steps.registry.outputs.name }}"
+          for i in {1..12}; do
+            if aws ecr describe-repositories --region "$AWS_REGION" --repository-names "$NAME" >/dev/null 2>&1; then
+              echo "Registry found: $NAME"
+              exit 0
+            fi
+            echo "Waiting for registry to appear ($i/12)..."
+            sleep 15
+          done
+          echo "Registry not found after wait: $NAME"
+          exit 1
+
+      - name: Sync Backstage ECR catalog
+        run: python3 scripts/sync_ecr_catalog.py --region "$AWS_REGION"
+
+      - name: Open PR with synced catalog
+        uses: peter-evans/create-pull-request@v6
+        with:
+          base: development
+          branch: automation/ecr-backstage-sync
+          title: "docs(backstage): sync ECR registry catalog"
+          commit-message: "docs(backstage): sync ECR registry catalog"
+          body: |
+            Automated sync of the Backstage ECR registry entity after a registry
+            PR merge.
+
+            - Source of truth: AWS ECR (via scripts/sync_ecr_catalog.py)
+            - Output: backstage-helm/catalog/resources/ecr-registry.yaml
+            - Region: ${{ env.AWS_REGION }}
+
+            Human review required per HITL policy and CODEOWNERS.
+          add-paths: |
+            backstage-helm/catalog/resources/ecr-registry.yaml
+            .goldenpath/value_ledger.json
+          labels: |
+            docs

@@ -71,6 +71,16 @@ Portable region options (preferred):
 
 ## Procedure
 
+## Automation (post-merge)
+
+This sync runs automatically after an ECR registry PR merges and the apply
+workflow completes successfully. The automation opens a PR with the updated
+Backstage registry entity for human review.
+
+Workflow: `.github/workflows/ecr-backstage-sync.yml`
+
+Manual runs are still supported for debugging or recovery.
+
 1. Ensure region and credentials are set.
 
    ```bash
