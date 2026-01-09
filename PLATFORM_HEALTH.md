@@ -12,7 +12,7 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-09 07:04:24` | **V1 Readiness**: `94.6%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-09 07:08:48` | **V1 Readiness**: `94.6%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `13.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
@@ -43,7 +43,7 @@ relates_to:
 | Catalog | Entity Count |
 | :--- | :--- |
 | Ecr Registry | 1 |
-| Ecr Repositories | 10 |
+| Ecr Repositories | 11 |
 | IDP Apis | 9 |
 | IDP Components | 17 |
 | IDP Domains | 2 |
