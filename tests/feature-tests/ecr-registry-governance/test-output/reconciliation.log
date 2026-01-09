@@ -1,0 +1,16 @@
+🏥 Reconciling ECR Catalog against AWS Physical State...
+--------------------------------------------------
+✅ Synced: 1
+👻 Ghosts (In Catalog only): 10
+   - wordpress-platform
+   - test-app-dev
+   - staging-api
+   - new-wp-reg-2
+   - new-app-15
+   - new-app-14
+   - new-app-13
+   - new-app-10
+   - my-reg-app-3
+   - phantom-service-repo
+🕵️ Orphans (In AWS only): 0
+📝 Generating Backstage Entity: backstage-helm/demo-catalog/resources/ecr-registry.yaml

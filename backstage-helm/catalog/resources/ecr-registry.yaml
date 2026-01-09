@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: goldenpath-ecr-registry
+  description: 'Master AWS ECR Registry. Manages 2 repositories:
+
+    - new-app-16 (unassigned)
+
+    - new-wp-reg2 (unassigned)'
+  links:
+  - url: https://console.aws.amazon.com/ecr/repositories
+    title: AWS ECR Console
+  annotations:
+    backstage.io/managed-by-location: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/backstage-helm/catalog/resources/ecr-registry.yaml
+    platform/repo-count: '2'
+    platform/last-sync: '2026-01-09 07:30:55'
+spec:
+  type: container-registry
+  owner: platform-team
+  system: container-registry

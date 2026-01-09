@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0031
+  title: 'ADR-0031: Create IRSA service accounts during bootstrap'
+  description: '- **Status:** Accepted
+
+    - **Date:** 2025-12-28
+
+    - **Owners:** Platform (GoldenPath IDP)
+
+    - **Domain:** Platform
+
+    - **Decision type:** Operations | Delivery
+
+    - **Related:** bootstrap/10_bootstrap/README.md,...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0031-platform-bootstrap-irsa-service-accounts.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

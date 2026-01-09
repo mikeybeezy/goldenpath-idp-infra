@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0102
+  title: 'ADR-0102: Layer 2 Terraform Validation (Fast Feedback Loop)'
+  description: Developers who make syntax errors (e.g., invalid attribute references)
+    or formatting mistakes often wait several minutes only to receive a failure that
+    could have been caught instantly offline. There ...
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0102-terraform-fast-validation.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: accepted
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

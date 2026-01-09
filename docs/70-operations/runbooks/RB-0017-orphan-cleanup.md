@@ -1,5 +1,5 @@
 ---
-id: RB-0017
+id: RB-0017-orphan-cleanup
 title: Orphan Cleanup
 type: runbook
 domain: platform-core

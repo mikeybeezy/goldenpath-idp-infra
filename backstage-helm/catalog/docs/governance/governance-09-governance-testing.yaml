@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-09-governance-testing
+  title: Governance Testing Doc
+  description: 'Purpose: Safe, low-risk document used to validate governance automation,
+
+    Backstage docs generation, and HITL PR workflows. This is not a policy source
+
+    for platform decisions.'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - gove
+  - governance
+  - documentation
+  - policy
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/09_GOVERNANCE_TESTING.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

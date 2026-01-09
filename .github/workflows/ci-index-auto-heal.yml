@@ -5,7 +5,6 @@ on:
   pull_request:
     branches:
       - main
-      - development
     paths:
       - 'scripts/**'
       - '.github/workflows/**'

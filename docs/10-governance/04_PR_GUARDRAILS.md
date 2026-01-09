@@ -62,7 +62,7 @@ recommended best practices for keeping the platform safe and auditable.
 The governance model uses a **Dual-Speed** approach to balance developer velocity with production safety:
 
 - **Strict Enforcement (`main`)**: All guardrails, policies, and metadata schemas are strictly enforced. PRs must be perfectly compliant.
-- **Experimental Flow (`development`)**: Governance is relaxed. Only basic quality (linting, formatting) is enforced to allow rapid prototyping and iteration.
+- **Experimental Flow (`development`)**: Governance is advisory only. No required checks, to keep iteration fast.
 
 ## Guardrails in place
 
@@ -117,13 +117,20 @@ Configured in `/.github/labeler.yml` and applied by
 
 ### Required status checks (branch rulesets)
 
-Ensure branch rulesets for `development` and `main` require these checks:
+Ensure branch rulesets for `main` require these checks:
 
 - `Yamllint`
-- `Quality - Super Linter (Markdown)`
+- `PR Governance Gates / governance-gates`
 
 Both lint checks run repo-wide to keep YAML and Markdown consistent as the
 knowledge graph footprint expands.
+
+### Minimal branch protection checklist (main)
+
+- Require status checks: `PR Governance Gates / governance-gates`.
+- Require branches to be up to date before merging.
+- Require at least one human approval.
+- Block force-pushes and deletions.
 
 ### Changelog gate
 

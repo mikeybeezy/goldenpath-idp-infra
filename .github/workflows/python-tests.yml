@@ -2,6 +2,8 @@ name: Python Unit Tests
 
 on:
   pull_request:
+    branches:
+      - main
     paths:
       - 'scripts/**/*.py'
       - 'tests/**/*.py'

@@ -12,50 +12,57 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-09 01:59:36` | **V1 Readiness**: `95.4%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-09 13:06:50` | **V1 Readiness**: `95.3%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
-**Realized Value**: `5.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Realized Value**: `17.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **95.4%** ready for V1 production rollout.
+> The platform is currently **95.3%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 99.8% |
+| **Metadata Integrity** | ✅ | 98.1% |
 | **Injection Integrity** | ✅ | 100.0% |
-| **Architecture Maturity** | 🚧 | 93/120 Active |
-| **Changelog Activity** | ✅ | 86 Entries |
+| **Architecture Maturity** | 🚧 | 98/124 Active |
+| **Changelog Activity** | ✅ | 95 Entries |
 
 ## Knowledge Graph Vitality
 
 | Metric | Count | Source |
 | :--- | :--- | :--- |
-| **Architecture Decisions** | 120 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
+| **Architecture Decisions** | 124 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
 | **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
 | **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 86 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 456 | Repository Scan |
+| **Change Logs** | 95 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 477 | Repository Scan |
 
 ## Catalog Inventory
 
 | Catalog | Entity Count |
 | :--- | :--- |
+| Ecr Registry | 1 |
+| Ecr Repositories | 11 |
+| IDP Apis | 9 |
+| IDP Components | 17 |
+| IDP Domains | 3 |
+| IDP Resources | 2 |
+| IDP Systems | 4 |
 
 ## 🛡️ Risk & Maturity Visualization
 
 ```mermaid
 pie title Production Impact distribution
     "HIGH" : 36
-    "MEDIUM" : 32
-    "LOW" : 359
-    "NONE" : 26
+    "MEDIUM" : 33
+    "LOW" : 378
+    "NONE" : 27
 ```
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `99.8%`
+- **Metadata Compliance**: `98.1%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
@@ -65,7 +72,7 @@ pie title Production Impact distribution
 ## Project Realized Value (Heartbeat)
 
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **5.4 hours**.
+> Total realized value reclaimed through automation heartbeats: **17.4 hours**.
 
 - **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
 

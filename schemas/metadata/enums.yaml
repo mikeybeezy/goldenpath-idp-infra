@@ -167,3 +167,102 @@ vq_class:
   - 🟡 HV/LQ
   - 🔵 MV/HQ
   - ⚫ LV/LQ
+
+user_types:
+  - regular-user
+  - service-account
+  - system-admin
+
+system_types:
+  - service-ecosystem
+  - data-pipeline
+  - platform-infrastructure
+
+backstage_kinds:
+  - Component
+  - System
+  - API
+  - Resource
+  - Location
+  - Template
+  - Domain
+  - Group
+  - User
+
+resource_types:
+  - cloud-storage
+  - compute-instance
+  - database-cluster
+  - container-registry
+
+api_types:
+  - openapi
+  - graphql
+  - grpc
+  - asyncapi
+
+# AI collaboration governance (roles, modes, and validation)
+ai_authority_tier:
+  - tier0-read-reason
+  - tier1-write-isolated
+  - tier2-safe-execute
+  - tier3-human-only
+
+ai_delegation_mode:
+  - full-delegation
+  - copilot
+  - human-only
+
+ai_execution_role:
+  # Existing (baseline roles)
+  - junior-engineer
+  - refactorer
+  - auditor
+  - automation-agent
+  - advisor
+  # Recommended (operational roles)
+  - triager
+  - documentarian
+  - compliance-checker
+  - release-scribe
+  - threat-modeler
+
+ai_context_tier:
+  - execution
+  - refinement
+  - judgment
+
+ai_task_domain:
+  - docs
+  - code
+  - infra
+  - governance
+  - security
+  - observability
+  - ci-cd
+
+ai_validation_level:
+  - not-run
+  - local-checks
+  - ci-green
+  - prod-verified
+
+value_intent:
+  - cost_reduction
+  - risk_reduction
+  - speed_enablement
+  - reliability
+  - compliance
+  - developer_experience
+  - revenue_enablement
+
+automation_confidence:
+  - manual
+  - assisted
+  - supervised
+  - autonomous
+
+decision_weight:
+  - reversible
+  - costly_to_reverse
+  - foundational

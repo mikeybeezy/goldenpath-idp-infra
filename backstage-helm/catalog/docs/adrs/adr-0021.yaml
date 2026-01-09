@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0021
+  title: 'ADR-0021: PR Terraform plan with automated comments'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2025-12-27
+
+    - **Owners:** Platform (GoldenPath IDP)
+
+    - **Domain:** Platform
+
+    - **Decision type:** Delivery | Governance
+
+    - **Related:** docs/20-contracts/20_CI_ENVIRONME...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0021-platform-pr-terraform-plan.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

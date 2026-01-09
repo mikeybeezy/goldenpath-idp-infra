@@ -19,6 +19,7 @@ relates_to:
   - 04_PR_GUARDRAILS
   - 26_AI_AGENT_PROTOCOLS
   - AI_CHANGELOG
+  - ADR-0133
 supersedes: []
 superseded_by: []
 tags: []
@@ -93,7 +94,37 @@ remain human.
   lifecycle actions, policy enforcement changes.
 - AI may recommend, but must not execute without explicit instruction.
 
-## 2) Guardrails
+## 3) Role mappings (execution profiles)
+
+Role mappings bind execution roles to authority tiers, delegation modes, and
+validation expectations. Every AI task must declare one role and inherit its
+constraints.
+
+Mapping rules:
+
+- Each role maps to `ai_authority_tier`, `ai_delegation_mode`,
+  `ai_context_tier`, and `ai_validation_level`.
+- Declare `ai_task_domain` per task (docs, code, infra, governance, security,
+  observability, ci-cd).
+- Use least-privilege by default; upgrades require explicit human approval.
+- Role constraints are enforceable guardrails; if a task violates them, stop
+  and escalate.
+- Roles and values must align with `schemas/metadata/enums.yaml`.
+
+| Role | Authority tier | Delegation mode | Context tier | Validation level | Notes |
+| --- | --- | --- | --- | --- | --- |
+| junior-engineer | tier1-write-isolated | full-delegation | execution | local-checks | No new enums or schemas. |
+| refactorer | tier1-write-isolated | full-delegation | refinement | local-checks | Preserve behavior. |
+| auditor | tier0-read-reason | full-delegation | judgment | not-run | Read-only. |
+| automation-agent | tier2-safe-execute | full-delegation | execution | ci-green | No apply/destroy/IAM. |
+| advisor | tier0-read-reason | copilot | judgment | not-run | Propose options only. |
+| triager | tier0-read-reason | copilot | judgment | not-run | Recommend labels/gates only. |
+| documentarian | tier1-write-isolated | full-delegation | execution | local-checks | Docs only, no policy changes. |
+| compliance-checker | tier2-safe-execute | full-delegation | refinement | local-checks | Validate-only, no fixes. |
+| release-scribe | tier1-write-isolated | full-delegation | execution | local-checks | Changelog/runbook only. |
+| threat-modeler | tier0-read-reason | copilot | judgment | not-run | Analysis only. |
+
+## 4) Guardrails
 
 - **Branching:** no branch create/switch/delete without explicit approval.
 - **Destructive actions:** no resets, deletes, or force-pushes without approval.
@@ -101,31 +132,31 @@ remain human.
 - **Guardrail alignment:** labels must match actual changes; remove false
   positives to avoid blocking.
 
-## 3) Auditability
+## 5) Auditability
 
 - Every AI-driven change must be traceable to a PR or commit.
 - Evidence (run logs, CI links, or metrics) must be recorded when available.
 - Record AI contributions in `docs/90-doc-system/AI_CHANGELOG.md`.
 
-## 4) QA and accuracy
+## 6) QA and accuracy
 
 - No unverified claims: if tests are not run, state it explicitly.
 - CI must be green before work is considered complete.
 - When errors occur, use the deterministic triage loop:
   read logs → fix → re-run → confirm green.
 
-## 5) Data handling
+## 7) Data handling
 
 - Never introduce secrets into the repo.
 - Do not copy sensitive data into docs or logs.
 - Redact or summarize external logs before adding them to docs.
 
-## 6) Exceptions and escalation
+## 8) Exceptions and escalation
 
 - Emergency overrides require explicit approval in the current turn.
 - If a change could impact infrastructure, evidence is mandatory.
 
-## 7) Responsibilities
+## 9) Responsibilities
 
 - **Agent:** execute safely, document decisions, and provide evidence.
 - **Operator:** approve scope, review changes, and validate outcomes.

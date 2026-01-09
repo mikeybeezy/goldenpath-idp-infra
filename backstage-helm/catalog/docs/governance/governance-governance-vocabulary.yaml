@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-governance-vocabulary
+  title: Governance Vocabulary & Allowed Values
+  description: This document is auto-generated from `schemas/metadata/enums.yaml`.
+    These are the canonical values allowed in `metadata.yaml` sidecars.
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - gove
+  - governance
+  - documentation
+  - policy
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/GOVERNANCE_VOCABULARY.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

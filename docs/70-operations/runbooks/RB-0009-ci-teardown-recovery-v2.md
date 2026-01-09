@@ -1,5 +1,5 @@
 ---
-id: RB-0009
+id: RB-0009-ci-teardown-recovery-v2
 title: CI Teardown Recovery (v2)
 type: runbook
 domain: platform-core

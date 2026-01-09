@@ -1,5 +1,5 @@
 {
-  "total_reclaimed_hours": 5.4,
+  "total_reclaimed_hours": 17.4,
   "history": [
     {
       "timestamp": "2026-01-07T06:52:02Z",
@@ -44,6 +44,66 @@
     {
       "timestamp": "2026-01-08T02:22:41Z",
       "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T18:18:45Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T20:45:52Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T20:57:28Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T20:59:30Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T21:04:19Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T21:05:26Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T21:19:46Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-08T21:20:10Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-09T07:17:19Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-09T07:30:55Z",
+      "script": "sync_ecr_catalog.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-09T10:40:43Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-09T12:38:17Z",
+      "script": "validate_metadata.py",
       "reclaimed_hours": 1.0
     }
   ]

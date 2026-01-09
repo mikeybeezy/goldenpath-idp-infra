@@ -1,0 +1,23 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-pr-156-stabilization-checklist
+  title: 'PR #156: Stabilization & Compliance Checklist'
+  description: 'This checklist documents the validation steps required for **PR #156**
+    to ensure the ECR registry pipeline is stable and all governance gates pass deterministically.'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - gove
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/PR-156-STABILIZATION-CHECKLIST.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

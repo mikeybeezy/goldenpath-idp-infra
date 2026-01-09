@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: platform-health-dashboard
+  title: "Platform Health & Compliance"
+  description: "Real-time compliance, risk, V1 readiness, and realized value metrics."
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+    - dashboard
+    - governance
+    - health
+    - compliance
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/PLATFORM_HEALTH.md
+      title: "🏥 View Health Dashboard"
+      icon: dashboard
+      type: documentation
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/PLATFORM_DASHBOARDS.md
+      title: "🎯 Dashboards Index"
+      icon: catalog
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/scripts/platform_health.py
+      title: "View Source Script"
+      icon: code
+spec:
+  type: dashboard
+  lifecycle: production
+  owner: platform-team
+  system: goldenpath-platform

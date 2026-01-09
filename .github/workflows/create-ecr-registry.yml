@@ -13,7 +13,30 @@ on:
         required: true
       owner:
         description: 'Team owner (e.g., app-team-wordpress)'
+        type: choice
         required: true
+        options:
+          - platform-team
+          - security-team
+          - operations-team
+          - sre-team
+          - unknown
+          - app-team
+          - database-team
+      user:
+        description: 'Requesting user (e.g., daniel-deans)'
+        required: true
+      domain:
+        description: 'Domain'
+        type: choice
+        required: true
+        options:
+          - platform-core
+          - delivery
+          - observability
+          - governance
+          - security
+          - cost
       risk:
         description: 'Risk level'
         type: choice
@@ -62,6 +85,12 @@ jobs:
             exit 1
           fi
 
+          # Validate requesting user format
+          if ! echo "${{ inputs.user }}" | grep -qE '^[a-z0-9-]+$'; then
+            echo " User must be lowercase alphanumeric with dashes (e.g. daniel-deans)"
+            exit 1
+          fi
+
           echo "✅ All inputs validated"
 
       - name: Update catalog (idempotent)
@@ -70,6 +99,8 @@ jobs:
           FILE="docs/20-contracts/catalogs/ecr-catalog.yaml"
           NAME="${{ inputs.registry_name }}"
           OWNER="${{ inputs.owner }}"
+          USER="${{ inputs.user }}"
+          DOMAIN="${{ inputs.domain }}"
           RISK="${{ inputs.risk }}"
           ID="${{ steps.calc.outputs.id }}"
           ENV="${{ inputs.environment }}"
@@ -78,21 +109,25 @@ jobs:
           if [ ! -f "$FILE" ]; then
             cat > "$FILE" <<EOF
           version: "1.0"
-          domain: "container-registries"
+          domain: "delivery"
           owner: "platform-team"
           last_updated: "$(date -u +%Y-%m-%d)"
           managed_by: "platform-team"
-          registries: {}
+          physical_registry: "goldenpath-idp-main"
+          repositories: {}
           EOF
           fi
 
           # Add/update the registry entry
           yq -i \
-            ".registries.\"$NAME\".metadata.id = \"$ID\" |
-             .registries.\"$NAME\".metadata.owner = \"$OWNER\" |
-             .registries.\"$NAME\".metadata.risk = \"$RISK\" |
-             .registries.\"$NAME\".metadata.status = \"pending\" |
-             .registries.\"$NAME\".metadata.created_date = \"$(date -u +%Y-%m-%d)\" |
+            ".repositories.\"$NAME\".metadata.id = \"$ID\" |
+             .repositories.\"$NAME\".metadata.owner = \"$OWNER\" |
+             .repositories.\"$NAME\".metadata.requested_by = \"$USER\" |
+             .repositories.\"$NAME\".metadata.domain = \"$DOMAIN\" |
+             .repositories.\"$NAME\".metadata.risk = \"$RISK\" |
+             .repositories.\"$NAME\".metadata.environment = \"$ENV\" |
+             .repositories.\"$NAME\".metadata.status = \"pending\" |
+             .repositories.\"$NAME\".metadata.created_date = \"$(date -u +%Y-%m-%d)\" |
              .last_updated = \"$(date -u +%Y-%m-%d)\"" \
             "$FILE"
 
@@ -222,6 +257,8 @@ jobs:
           **Registry:** `${{ inputs.registry_name }}`
           **Environment:** `${{ inputs.environment }}`
           **Owner:** `${{ inputs.owner }}`
+          **Requested By:** `${{ inputs.user }}`
+          **Domain:** `${{ inputs.domain }}`
           **Risk Level:** `${{ inputs.risk }}`
           **ID:** `${{ steps.calc.outputs.id }}`
 
@@ -248,7 +285,7 @@ jobs:
           ---
 
           ##  Changes Policy
-          - ✅ Added to registry catalog (`docs/catalogs/ecr-catalog.yaml`)
+          - ✅ Added to registry catalog (`docs/20-contracts/catalogs/ecr-catalog.yaml`)
           - ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
           - ✅ Added to Terraform tfvars (`envs/${{ inputs.environment }}/terraform.tfvars`)
 

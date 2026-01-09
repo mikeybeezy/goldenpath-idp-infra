@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: container-registry
+  description: Platform container registry and lifecycle services
+spec:
+  owner: platform-team
+  domain: delivery

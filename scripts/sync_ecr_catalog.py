@@ -17,18 +17,20 @@ import yaml
 import json
 import subprocess
 import argparse
+from datetime import datetime
 from pathlib import Path
 
 # Constants
 CATALOG_PATH = "docs/20-contracts/catalogs/ecr-catalog.yaml"
+DEFAULT_REGION = os.environ.get("AWS_REGION") or os.environ.get("AWS_DEFAULT_REGION")
 
-def get_physical_repositories():
+def get_physical_repositories(region=None):
     """Fetches repository list from AWS ECR."""
     try:
-        result = subprocess.run(
-            ["aws", "ecr", "describe-repositories", "--output", "json"],
-            capture_output=True, text=True, check=True
-        )
+        cmd = ["aws", "ecr", "describe-repositories", "--output", "json"]
+        if region:
+            cmd.extend(["--region", region])
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         data = json.loads(result.stdout)
         return {r['repositoryName']: r for r in data.get('repositories', [])}
     except subprocess.CalledProcessError as e:
@@ -38,7 +40,7 @@ def get_physical_repositories():
         print("⚠️ aws cli not found. Running in ADVISORY mode using mock data.")
         return None
 
-def sync_catalog(dry_run=True):
+def sync_catalog(dry_run=True, region=None):
     """Performs reconciliation between catalog and AWS."""
     if not os.path.exists(CATALOG_PATH):
         print(f"❌ Catalog not found: {CATALOG_PATH}")
@@ -48,7 +50,7 @@ def sync_catalog(dry_run=True):
         catalog = yaml.safe_load(f)
 
     catalog_repos = catalog.get('repositories', {})
-    physical_repos = get_physical_repositories()
+    physical_repos = get_physical_repositories(region=region)
 
     if physical_repos is None:
         print("🔍 ADVISORY: Could not query AWS. Comparison skipped.")
@@ -78,7 +80,47 @@ def sync_catalog(dry_run=True):
 
     print(f"🕵️ Orphans (In AWS only): {len(orphans)}")
     if orphans:
-        for o in orphans: print(f"   - {o}")
+        for o in orphans:
+            print(f"   - {o}")
+
+    # --- Backstage Integration ---
+    BACKSTAGE_ENTITY_PATH = "backstage-helm/catalog/resources/ecr-registry.yaml"
+
+    # Generate repository list for description
+    repo_list = "\n".join([
+        f"- {name} ({catalog_repos.get(name, {}).get('metadata', {}).get('environment', 'unassigned')})"
+        for name in sorted(physical_repos)
+    ])
+
+    backstage_resource = {
+        "apiVersion": "backstage.io/v1alpha1",
+        "kind": "Resource",
+        "metadata": {
+            "name": "goldenpath-ecr-registry",
+            "description": f"Master AWS ECR Registry. Manages {len(physical_repos)} repositories:\n{repo_list}",
+            "links": [
+                {
+                    "url": "https://console.aws.amazon.com/ecr/repositories",
+                    "title": "AWS ECR Console"
+                }
+            ],
+            "annotations": {
+                "backstage.io/managed-by-location": "url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/backstage-helm/catalog/resources/ecr-registry.yaml",
+                "platform/repo-count": str(len(physical_repos)),
+                "platform/last-sync": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+        },
+        "spec": {
+            "type": "container-registry",
+            "owner": "platform-team",
+            "system": "container-registry"
+        }
+    }
+
+    print(f"📝 Generating Backstage Entity: {BACKSTAGE_ENTITY_PATH}")
+    os.makedirs(os.path.dirname(BACKSTAGE_ENTITY_PATH), exist_ok=True)
+    with open(BACKSTAGE_ENTITY_PATH, 'w') as f:
+        yaml.dump(backstage_resource, f, sort_keys=False)
 
     # Log Value Heartbeat
     try:
@@ -93,6 +135,11 @@ def sync_catalog(dry_run=True):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="ECR Catalog Sync Utility")
     parser.add_argument("--dry-run", action="store_true", default=True)
+    parser.add_argument(
+        "--region",
+        default=DEFAULT_REGION,
+        help="AWS region (defaults to AWS_REGION/AWS_DEFAULT_REGION or AWS CLI config)."
+    )
     args = parser.parse_args()
 
-    sync_catalog(dry_run=args.dry_run)
+    sync_catalog(dry_run=args.dry_run, region=args.region)

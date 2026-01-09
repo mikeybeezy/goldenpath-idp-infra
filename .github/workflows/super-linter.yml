@@ -2,10 +2,7 @@
 name: Quality - Docs & Config Linter
 
 on:
-  pull_request:
-    branches:
-      - main
-      - development
+  workflow_dispatch:
 
 jobs:
   lint:

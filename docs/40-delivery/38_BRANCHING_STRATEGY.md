@@ -96,7 +96,7 @@ Recommended settings for `main`:
 
 Recommended settings for `development`:
 
-- Require status checks to pass (optional but preferred).
+- No required status checks (optional only).
 - Disallow force pushes.
 
 ---

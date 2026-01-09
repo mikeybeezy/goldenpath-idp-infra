@@ -1,7 +1,7 @@
 version: "1.0"
 domain: delivery
 owner: platform-team
-last_updated: "2026-01-06"
+last_updated: "2026-01-09"
 managed_by: platform-team
 physical_registry: "goldenpath-idp-main"
 repositories:
@@ -32,49 +32,59 @@ repositories:
   new-wp-reg-2:
     metadata:
       id: REGISTRY_NEW_WP_REG_2
-      owner: michael-babs-2
+      owner: platform-team
       risk: low
       status: pending
       created_date: "2026-01-06"
   new-app-16:
     metadata:
       id: REGISTRY_NEW_APP_16
-      owner: michael-babs-16
+      owner: platform-team
       risk: low
       status: pending
       created_date: "2026-01-06"
   new-app-15:
     metadata:
       id: REGISTRY_NEW_APP_15
-      owner: michael-babs-15
+      owner: platform-team
       risk: low
       status: pending
       created_date: "2026-01-06"
   new-app-14:
     metadata:
       id: REGISTRY_NEW_APP_14
-      owner: michael-babs-14
+      owner: platform-team
       risk: low
       status: pending
       created_date: "2026-01-06"
   new-app-13:
     metadata:
       id: REGISTRY_NEW_APP_13
-      owner: michael-babs-13
+      owner: platform-team
       risk: low
       status: pending
       created_date: "2026-01-06"
   new-app-10:
     metadata:
       id: REGISTRY_NEW_APP_10
-      owner: michael-babs-10
+      owner: platform-team
       risk: low
       status: pending
       created_date: "2026-01-06"
   my-reg-app-3:
     metadata:
       id: REGISTRY_MY_REG_APP_3
-      owner: michael-babs-3
+      owner: platform-team
       risk: low
       status: pending
       created_date: "2026-01-06"
+  new-wp-reg2:
+    metadata:
+      id: REGISTRY_NEW_WP_REG2
+      owner: platform-team
+      requested_by: michael-deans
+      domain: delivery
+      risk: low
+      environment: dev
+      status: pending
+      created_date: "2026-01-09"

@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-documentation
+  title: Platform Changelog
+  description: Complete history of platform changes, features, and improvements
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+    - governance
+    - documentation
+    - changelog
+    - release-notes
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/docs/changelog/entries
+      title: Browse All Changelog Entries
+      icon: docs
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/CHANGELOG.md
+      title: Full Changelog
+      icon: catalog
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0084-backstage-ecr-instrumentation.md
+      title: "CL-0084: Backstage ECR Integration"
+      type: documentation
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team

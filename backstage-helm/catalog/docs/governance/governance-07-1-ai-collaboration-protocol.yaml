@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-07-1-ai-collaboration-protocol
+  title: AI Collaboration Protocol (ACP)
+  description: This document defines how Artificial Intelligence (AI) systems are
+    used within the Golden Path IDP to accelerate delivery **without compromising
+    architectural integrity, governance, or trust**.
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - gove
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/07_1_AI_COLLABORATION_PROTOCOL.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

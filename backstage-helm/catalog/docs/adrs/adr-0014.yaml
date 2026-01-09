@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0014
+  title: 'ADR-0014: Local preflight checks before PRs'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2025-12-26
+
+    - **Owners:** platform team
+
+    - **Domain:** Platform
+
+    - **Decision type:** Governance
+
+    - **Related:** `.github/workflows/infra-terraform.yml`'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - adr
+  - governance
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0014-platform-ci-local-preflight-checks.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

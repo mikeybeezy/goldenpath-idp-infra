@@ -2,7 +2,7 @@ site_name: Golden Path IDP - Infrastructure
 nav:
   - Overview: README.md
   - Foundations:
-      - docindex: docs/00-foundations/00_DOC_INDEX.md
+      - docindex: docs/90-doc-system/00_DOC_INDEX.md
   - Architecture:
       - ADR Index: docs/adrs/README.md
       - Recent ADRs: docs/30-architecture/
@@ -18,3 +18,4 @@ nav:
       - Index: docs/changelog/README.md
 plugins:
   - techdocs-core
+# Trigger Rebuild Thu Jan  8 06:50:03 GMT 2026
