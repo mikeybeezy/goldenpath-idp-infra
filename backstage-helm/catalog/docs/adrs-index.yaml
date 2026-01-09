@@ -131,3 +131,4 @@ spec:
   - ./adrs/adr-0130.yaml
   - ./adrs/adr-0131.yaml
   - ./adrs/adr-0132.yaml
+  - ./adrs/adr-0133.yaml
