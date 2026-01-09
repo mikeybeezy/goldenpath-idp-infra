@@ -121,9 +121,17 @@ Ensure branch rulesets for `development` and `main` require these checks:
 
 - `Yamllint`
 - `Quality - Super Linter (Markdown)`
+- `PR Governance Gates / governance-gates`
 
 Both lint checks run repo-wide to keep YAML and Markdown consistent as the
 knowledge graph footprint expands.
+
+### Minimal branch protection checklist (main)
+
+- Require status checks: `PR Governance Gates / governance-gates`.
+- Require branches to be up to date before merging.
+- Require at least one human approval.
+- Block force-pushes and deletions.
 
 ### Changelog gate
 
