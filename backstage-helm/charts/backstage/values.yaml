@@ -63,7 +63,7 @@ postgres:
   password: password
 
 catalog:
-  demoCatalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml"
+  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml"
   customCatalogLocation: "None"
 
 backstage:
@@ -117,7 +117,7 @@ appConfig: |
   catalog:
     locations:
     - type: url
-      target: ${DEMO_CATALOG_LOCATION}
+      target: ${CATALOG_LOCATION}
       rules:
       - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User]
     - type: url

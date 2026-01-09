@@ -5,6 +5,6 @@ metadata:
 data:
   POSTGRES_PORT: {{ .Values.postgres.port | quote}}
   POSTGRES_HOST: {{ .Values.postgres.host }}
-  DEMO_CATALOG_LOCATION: {{ .Values.catalog.demoCatalogLocation }}
+  CATALOG_LOCATION: {{ default .Values.catalog.demoCatalogLocation .Values.catalog.catalogLocation }}
   CUSTOM_CATALOG_LOCATION: {{ .Values.catalog.customCatalogLocation }}
   BASE_URL: {{ .Values.backstage.baseURL }}
