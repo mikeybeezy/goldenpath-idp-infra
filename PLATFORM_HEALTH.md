@@ -12,9 +12,9 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-09 17:55:36` | **V1 Readiness**: `95.3%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-09 18:48:59` | **V1 Readiness**: `95.3%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
-**Realized Value**: `17.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Realized Value**: `19.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
@@ -36,7 +36,7 @@ relates_to:
 | **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
 | **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
 | **Change Logs** | 96 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 479 | Repository Scan |
+| **Tracked Resources** | 471 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -54,7 +54,7 @@ relates_to:
 
 ```mermaid
 pie title Production Impact distribution
-    "HIGH" : 36
+    "HIGH" : 28
     "MEDIUM" : 33
     "LOW" : 379
     "NONE" : 28
@@ -72,7 +72,7 @@ pie title Production Impact distribution
 ## Project Realized Value (Heartbeat)
 
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **17.4 hours**.
+> Total realized value reclaimed through automation heartbeats: **19.4 hours**.
 
 - **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
 
