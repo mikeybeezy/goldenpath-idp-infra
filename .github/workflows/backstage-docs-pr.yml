@@ -1,0 +1,57 @@
+name: Backstage Docs Catalog PR
+
+on:
+  push:
+    branches:
+      - development
+    paths:
+      - docs/adrs/**
+      - docs/changelog/entries/**
+      - docs/10-governance/**
+      - scripts/generate_backstage_docs.py
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate Backstage docs catalog entities
+        run: python3 scripts/generate_backstage_docs.py
+
+      - name: Open PR with generated docs
+        uses: peter-evans/create-pull-request@v6
+        with:
+          base: development
+          branch: automation/backstage-docs-catalog
+          title: "docs(backstage): regenerate catalog docs"
+          commit-message: "docs(backstage): regenerate catalog docs"
+          body: |
+            Automated update of Backstage catalog doc entities to prevent drift
+            between `docs/` and `backstage-helm/catalog/docs/`.
+
+            - Sources: docs/adrs, docs/changelog/entries, docs/10-governance
+            - Generator: scripts/generate_backstage_docs.py
+            - Why: Keep Backstage doc entities current without manual edits
+            - How to review: Check the generated YAML diffs and ensure new docs
+              entries are included
+            - References:
+              - ADR-0133: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0133-human-in-the-loop-backstage-docs-prs.md
+              - Script: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/scripts/generate_backstage_docs.py
+
+            Human review required per HITL policy and CODEOWNERS.
+          add-paths: |
+            backstage-helm/catalog/docs/**
+          labels: |
+            docs
