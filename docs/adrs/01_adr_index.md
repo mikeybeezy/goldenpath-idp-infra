@@ -295,6 +295,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0132](ADR-0132-platform-container-registry-system.md) | Platform | Dedicated Backstage System for ECR Registry | Accepted | 2026-01-09 | Model the ECR registry as its own Backstage system to make ownership and delivery dependencies explicit, and align catalog grouping with the registry lifecycle. |
 | [ADR-0133](ADR-0133-human-in-the-loop-backstage-docs-prs.md) | Platform | HITL PRs for Backstage Docs Generation | Accepted | 2026-01-09 | Automate Backstage doc generation via PRs while enforcing human review through CODEOWNERS. |
 | [ADR-0134](ADR-0134-metadata-inheritance-active-governance-and-leak-protection.md) | Platform | metadata | Accepted | 2026-01-0? | We implemented cascading metadata inheritance with active governance and leak protection to prevent exempt assets from reaching production. |
+| [ADR-0135](ADR-0135-platform-secrets-manager-eso-foundation.md) | Platform | Secrets Manager + ESO foundation | Proposed | 2026-01-09 | Establish Secrets Manager as the source of truth and ESO as the sync mechanism for the golden path. |
 <!-- ADR_TABLE_END -->
 
 ---

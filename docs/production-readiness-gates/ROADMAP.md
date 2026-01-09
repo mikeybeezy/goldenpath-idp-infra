@@ -170,6 +170,7 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 | 072 | P2 | Gov | Shared Responsibility Notifications (Lifecycle Events) | platform | Open | M | Q1 | Build notification trigger for Slack/Email after Create/Delete | docs/10-governance/38_SHARED_RESPONSIBILITY.md | Clarify ownership boundaries immediately after resource changes |
 | 073 | P2 | Backstage | TechDocs: switch local build to S3 publisher | platform | Open | M | Q2 | Configure TechDocs S3 bucket + IAM and enable publisher | docs/production-readiness-gates/ROADMAP.md | Faster, more reliable doc builds at scale |
 | 074 | P1 | **🔴 HV/HQ** | ECR | Extensive Verification of ECR Single Source of Truth | platform | Done | S | Q1 | Monitor for future drift | Script verified against 10 ghost repos |
+| 075 | P2 | GitOps | Deprecate legacy ArgoCD bootstrap scripts after build is stable | platform | Open | S | Q1 | Mark scripts as deprecated and add a guard to prevent double-install | docs/adrs/ADR-0063-platform-terraform-helm-bootstrap.md, bootstrap/10_gitops-controller/10_argocd_helm.sh, bootstrap/10_bootstrap/goldenpath-idp-bootstrap*.sh | Prevent drift and duplicate ArgoCD installs now that Terraform owns Helm bootstrap |
 
 ## Rules
 
