@@ -27,6 +27,9 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Install Python dependencies
+        run: python3 -m pip install --upgrade pip pyyaml
+
       - name: Generate Backstage docs catalog entities
         run: python3 scripts/generate_backstage_docs.py
 
