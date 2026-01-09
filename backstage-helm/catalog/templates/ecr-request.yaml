@@ -18,6 +18,8 @@ spec:
       required:
         - name
         - owner
+        - requester
+        - domain
         - environment
         - risk
       properties:
@@ -35,6 +37,23 @@ spec:
           ui:options:
             catalogFilter:
               kind: Group
+        requester:
+          title: Requesting User
+          type: string
+          description: Requester (e.g., daniel-deans).
+          pattern: '^[a-z0-9-]+$'
+        domain:
+          title: Domain
+          type: string
+          description: Domain for this registry.
+          enum:
+            - platform-core
+            - delivery
+            - observability
+            - governance
+            - security
+            - cost
+          default: delivery
         environment:
           title: Environment
           type: string
@@ -66,6 +85,8 @@ spec:
         workflowInputs:
           registry_name: ${{ parameters.name }}
           owner: ${{ (parameters.owner | parseEntityRef).name | lower }}
+          user: ${{ parameters.requester }}
+          domain: ${{ parameters.domain }}
           environment: ${{ parameters.environment }}
           risk: ${{ parameters.risk }}
 

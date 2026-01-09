@@ -17,7 +17,7 @@ value_quantification:
 
 # Runbook: Enabling Native TechDocs Rendering
 
-## 📋 Overview
+## Overview
 
 This runbook details how to enable native markdown rendering (TechDocs) for Backstage components. This allows documentation (like ADRs, Changelogs, and Health Reports) to be read directly within the Backstage UI without navigating to GitHub.
 
@@ -44,7 +44,7 @@ This runbook details how to enable native markdown rendering (TechDocs) for Back
               - host: raw.githubusercontent.com
     ```
 
-## 🔄 Procedure: Enabling TechDocs for a Component
+## Procedure: Enabling TechDocs for a Component
 
 To turn a standard Component into a Documentation Portal:
 
@@ -75,7 +75,7 @@ To turn a standard Component into a Documentation Portal:
     *   Click the **"Docs"** tab.
     *   Verify the left navigation matches your `mkdocs.yml`.
 
-## ❓ Troubleshooting
+## Troubleshooting
 
 ### "Failed to generate docs" or "Builder not found"
 *   **Cause**: The Backstage container might lack `mkdocs` or `techdocs-core`.

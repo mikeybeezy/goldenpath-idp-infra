@@ -6,7 +6,7 @@ This document captures the security configuration and ingestion logic for the Go
 
 We utilize a two-tier permission system in `values-local.yaml` to ensure referential integrity.
 
-### 🔓 Tier 1: Per-Location Trust
+### Tier 1: Per-Location Trust
 Full permissions (`Domain`, `Group`, `User`, `System`, `Resource`) are granted **only** to the official GoldenPath repository.
 
 ### 🔒 Tier 2: Global Sandbox
@@ -14,7 +14,7 @@ The global `catalog.rules` are restricted to `Component` and `API`. This prevent
 
 ---
 
-## ⏱️ Parity & Consistency Timings
+## Parity & Consistency Timings
 
 | Setting | Value | Description |
 | :--- | :--- | :--- |
@@ -24,6 +24,6 @@ The global `catalog.rules` are restricted to `Component` and `API`. This prevent
 
 ---
 
-## 🔗 Related Documentation
+## Related Documentation
 - [Security Decision (ADR-0130)](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0130-platform-catalog-zoned-defense-security.md)
 - [Consistency Model (ADR-0129)](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0129-platform-eventual-consistency-ecr-governance.md)

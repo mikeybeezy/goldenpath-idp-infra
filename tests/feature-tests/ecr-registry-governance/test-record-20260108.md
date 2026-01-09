@@ -36,7 +36,7 @@ Reference: [test-plan.md](./test-plan.md)
 ### Step 3: Discrepancy Detection
 **Command:** `python3 scripts/sync_ecr_catalog.py`
 **Expected:** Detect 10 Ghosts (9 existing + 1 new).
-**Actual:** Output confirmed `👻 Ghosts (In Catalog only): 10`.
+**Actual:** Output confirmed `Ghosts (In Catalog only): 10`.
 **Status:** ✅
 
 ### Step 4: Backstage Parity

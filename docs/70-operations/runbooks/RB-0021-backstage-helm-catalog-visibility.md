@@ -182,7 +182,7 @@ If Step 8 shows "Connection refused":
 ```sh
 kubectl port-forward svc/backstage -n backstage 7007:7007
 ```
-3. Open browser: http://localhost:7007
+3. Open browser: <http://localhost:7007>
 
 ## Verification
 
