@@ -17,8 +17,6 @@ lifecycle: active
 supported_until: 2028-01-09
 relates_to:
   - .pre-commit-config.yaml
-inheritance:
-  mode: none
 tags:
   - pre-commit
   - tooling

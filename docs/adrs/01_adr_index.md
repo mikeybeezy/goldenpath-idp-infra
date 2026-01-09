@@ -296,6 +296,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0133](ADR-0133-human-in-the-loop-backstage-docs-prs.md) | Platform | HITL PRs for Backstage Docs Generation | Accepted | 2026-01-09 | Automate Backstage doc generation via PRs while enforcing human review through CODEOWNERS. |
 | [ADR-0134](ADR-0134-metadata-inheritance-active-governance-and-leak-protection.md) | Platform | metadata | Accepted | 2026-01-0? | We implemented cascading metadata inheritance with active governance and leak protection to prevent exempt assets from reaching production. |
 | [ADR-0135](ADR-0135-platform-secrets-manager-eso-foundation.md) | Platform | Secrets Manager + ESO foundation | Proposed | 2026-01-09 | Establish Secrets Manager as the source of truth and ESO as the sync mechanism for the golden path. |
+| [ADR-0136](ADR-0136-platform-tooling-config-identity.md) | Platform | Tooling config identity sidecars | Proposed | 2026-01-09 | Add metadata sidecars for root tooling configs to ensure ownership and auditability. |
 <!-- ADR_TABLE_END -->
 
 ---
