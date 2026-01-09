@@ -12,6 +12,7 @@ metadata:
   - gove
   - governance
   - documentation
+  - policy
   links:
   - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/GOVERNANCE_VOCABULARY.md
     title: View on GitHub
