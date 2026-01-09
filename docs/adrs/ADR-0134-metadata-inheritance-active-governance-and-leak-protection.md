@@ -1,15 +1,15 @@
 ---
-id: ADR-0120-metadata-inheritance-active-governance-and-leak-protection
+id: ADR-0134-metadata-inheritance-active-governance-and-leak-protection
 title: metadata
 type: adr
 ---
 
-id: ADR-0120-metadata-inheritance-active-governance-and-leak-protection
-title: 'ADR-0120: Metadata Inheritance, Active Governance, and Leak Protection'
+id: ADR-0134-metadata-inheritance-active-governance-and-leak-protection
+title: 'ADR-0134: Metadata Inheritance, Active Governance, and Leak Protection'
 type: adr
 owner: platform-team---
 
-# ADR-0120: Metadata Inheritance, Active Governance, and Leak Protection
+# ADR-0134: Metadata Inheritance, Active Governance, and Leak Protection
 
 ## Status
 Accepted
