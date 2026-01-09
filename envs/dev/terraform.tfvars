@@ -185,4 +185,12 @@ ecr_repositories = {
       risk  = "low"
     }
   }
+
+  "backstage-reg" = {
+    metadata = {
+      id    = "REGISTRY_BACKSTAGE_REG"
+      owner = "daniel-deans"
+      risk  = "low"
+    }
+  }
 }

@@ -1,7 +1,7 @@
 version: "1.0"
 domain: delivery
 owner: platform-team
-last_updated: "2026-01-06"
+last_updated: "2026-01-09"
 managed_by: platform-team
 physical_registry: "goldenpath-idp-main"
 repositories:
@@ -78,3 +78,11 @@ repositories:
       risk: low
       status: pending
       created_date: "2026-01-06"
+registries:
+  backstage-reg:
+    metadata:
+      id: REGISTRY_BACKSTAGE_REG
+      owner: daniel-deans
+      risk: low
+      status: pending
+      created_date: "2026-01-09"
