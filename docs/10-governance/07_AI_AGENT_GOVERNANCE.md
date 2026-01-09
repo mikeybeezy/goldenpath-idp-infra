@@ -19,6 +19,7 @@ relates_to:
   - 04_PR_GUARDRAILS
   - 26_AI_AGENT_PROTOCOLS
   - AI_CHANGELOG
+  - ADR-0133
 supersedes: []
 superseded_by: []
 tags: []
