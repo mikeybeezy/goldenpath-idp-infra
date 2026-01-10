@@ -12,7 +12,7 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-10 00:54:37` | **V1 Readiness**: `94.9%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-10 01:01:37` | **V1 Readiness**: `94.9%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `20.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
@@ -52,12 +52,12 @@ relates_to:
 
 ## AWS Inventory Snapshot
 
-- **Last run**: `2026-01-10T00:44:01Z`
+- **Last run**: `2026-01-09T23:55:30Z`
 - **Accounts**: `REDACTED`
 - **Regions**: `eu-west-2`
-- **Total resources**: `31`
-- **Tagged**: `29` | **Untagged**: `2` | **Tag violations**: `29`
-- **Report**: [`reports/aws-inventory/aws-inventory-2026-01-10.md`](file://reports/aws-inventory/aws-inventory-2026-01-10.md)
+- **Total resources**: `33`
+- **Tagged**: `31` | **Untagged**: `2` | **Tag violations**: `30`
+- **Report**: [`reports/aws-inventory/aws-inventory-2026-01-09.md`](file://reports/aws-inventory/aws-inventory-2026-01-09.md)
 
 ## 🛡️ Risk & Maturity Visualization
 
