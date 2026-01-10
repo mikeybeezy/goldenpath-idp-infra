@@ -63,7 +63,7 @@ postgres:
   password: password
 
 catalog:
-  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml"
+  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage-helm/catalog/all.yaml"
   customCatalogLocation: "None"
 
 backstage:

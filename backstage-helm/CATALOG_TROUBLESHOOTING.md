@@ -27,7 +27,7 @@ helm upgrade backstage ./backstage-helm/charts/backstage \
 ### Option 2: Quick CLI Override
 ```bash
 helm upgrade backstage ./backstage-helm/charts/backstage \
-  --set catalog.catalogLocation='https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml' \
+  --set catalog.catalogLocation='https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage-helm/catalog/all.yaml' \
   --namespace backstage
 ```
 
