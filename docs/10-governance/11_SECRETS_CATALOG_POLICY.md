@@ -75,6 +75,11 @@ Every Secrets Manager resource must include:
 - `Owner`, `Environment`, and standard tags per
   `docs/10-governance/35_RESOURCE_TAGGING.md`
 
+## Coupled updates
+
+If tag keys change, update this policy and
+`docs/10-governance/35_RESOURCE_TAGGING.md` together in the same PR.
+
 ## Enforcement
 
 - Reviewers must reject catalog entries that violate the scope rules above.
