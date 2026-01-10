@@ -1,7 +1,7 @@
 version: "1.0"
 domain: delivery
 owner: platform-team
-last_updated: "2026-01-09"
+last_updated: "2026-01-10"
 managed_by: platform-team
 physical_registry: "goldenpath-idp-main"
 repositories:
@@ -88,3 +88,13 @@ repositories:
       environment: dev
       status: pending
       created_date: "2026-01-09"
+  mikes-aprpppp:
+    metadata:
+      id: REGISTRY_MIKES_APRPPPP
+      owner: platform-team
+      requested_by: michael-deainss
+      domain: delivery
+      risk: low
+      environment: dev
+      status: pending
+      created_date: "2026-01-10"
