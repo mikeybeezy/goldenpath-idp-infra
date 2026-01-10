@@ -12,7 +12,7 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-10 01:01:37` | **V1 Readiness**: `94.9%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-10 01:18:03` | **V1 Readiness**: `94.9%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `20.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
@@ -26,7 +26,7 @@ relates_to:
 | **Metadata Integrity** | ✅ | 97.1% |
 | **Injection Integrity** | ✅ | 100.0% |
 | **Architecture Maturity** | 🚧 | 98/125 Active |
-| **Changelog Activity** | ✅ | 99 Entries |
+| **Changelog Activity** | ✅ | 100 Entries |
 
 ## Knowledge Graph Vitality
 
@@ -35,8 +35,8 @@ relates_to:
 | **Architecture Decisions** | 125 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
 | **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
 | **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 99 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 477 | Repository Scan |
+| **Change Logs** | 100 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 479 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -52,12 +52,12 @@ relates_to:
 
 ## AWS Inventory Snapshot
 
-- **Last run**: `2026-01-09T23:55:30Z`
+- **Last run**: `2026-01-10T00:44:01Z`
 - **Accounts**: `REDACTED`
 - **Regions**: `eu-west-2`
-- **Total resources**: `33`
-- **Tagged**: `31` | **Untagged**: `2` | **Tag violations**: `30`
-- **Report**: [`reports/aws-inventory/aws-inventory-2026-01-09.md`](file://reports/aws-inventory/aws-inventory-2026-01-09.md)
+- **Total resources**: `31`
+- **Tagged**: `29` | **Untagged**: `2` | **Tag violations**: `29`
+- **Report**: [`reports/aws-inventory/aws-inventory-2026-01-10.md`](file://reports/aws-inventory/aws-inventory-2026-01-10.md)
 
 ## 🛡️ Risk & Maturity Visualization
 
@@ -65,7 +65,7 @@ relates_to:
 pie title Production Impact distribution
     "HIGH" : 28
     "MEDIUM" : 33
-    "LOW" : 384
+    "LOW" : 386
     "NONE" : 29
 ```
 
