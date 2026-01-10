@@ -135,6 +135,8 @@ How they are removed:
 2. Update this document with the new tag(s).
 3. Update Terraform modules and bootstrap tooling to apply the tag(s).
 4. Update governance if the tag affects audit or cleanup expectations.
+5. Update `docs/10-governance/11_SECRETS_CATALOG_POLICY.md` to keep
+   Backstage cataloging and tag keys aligned.
 
 ---
 

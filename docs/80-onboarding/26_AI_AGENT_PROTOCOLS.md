@@ -106,6 +106,12 @@ Reference:
 Rule of thumb: code changes without documentation updates are incomplete when
 labels require them.
 
+## 5a) Doc creation and metadata compliance
+
+- **Scaffold new docs** with `scripts/scaffold_doc.py` so frontmatter matches policy.
+- **Pre-commit auto-fix** runs `scripts/standardize_metadata.py` on changed docs; re-stage files after it runs.
+- **CI backstop** uses `scripts/validate_metadata.py`; if it fails, run `scripts/standardize_metadata.py <path>` and re-push.
+
 ## 6) Context loading (start of session)
 
 Read and align on priorities before proposing work:

@@ -10,6 +10,7 @@ locals {
   name_prefix            = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.base_name_prefix}-${local.build_id}" : local.base_name_prefix
   cluster_name           = var.eks_config.cluster_name != "" ? var.eks_config.cluster_name : "${local.base_name_prefix}-eks"
   cluster_name_effective = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.cluster_name}-${local.build_id}" : local.cluster_name
+  role_suffix            = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "-${local.build_id}" : ""
   public_subnets         = var.public_subnets
   private_subnets        = var.private_subnets
   # Use a larger node group during bootstrap to avoid capacity bottlenecks.
@@ -66,6 +67,36 @@ module "public_route_table" {
   tags                   = local.common_tags
 }
 
+module "iam" {
+  source = "../../modules/aws_iam"
+  count  = var.iam_config.enabled ? 1 : 0
+
+  cluster_role_name                       = "${var.iam_config.cluster_role_name}${local.role_suffix}"
+  node_group_role_name                    = "${var.iam_config.node_group_role_name}${local.role_suffix}"
+  enable_oidc_role                        = true
+  oidc_role_name                          = "${var.iam_config.oidc_role_name}${local.role_suffix}"
+  oidc_issuer_url                         = var.iam_config.oidc_issuer_url
+  oidc_provider_arn                       = var.iam_config.oidc_provider_arn
+  oidc_audience                           = var.iam_config.oidc_audience
+  oidc_subject                            = var.iam_config.oidc_subject
+  enable_autoscaler_role                  = var.iam_config.enable_autoscaler_role
+  autoscaler_role_name                    = "${var.iam_config.autoscaler_role_name}${local.role_suffix}"
+  autoscaler_policy_arn                   = var.iam_config.autoscaler_policy_arn
+  autoscaler_service_account_namespace    = var.iam_config.autoscaler_service_account_namespace
+  autoscaler_service_account_name         = var.iam_config.autoscaler_service_account_name
+  enable_lb_controller_role               = var.iam_config.enable_lb_controller_role
+  lb_controller_role_name                 = "${var.iam_config.lb_controller_role_name}${local.role_suffix}"
+  lb_controller_policy_arn                = var.iam_config.lb_controller_policy_arn
+  lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
+  lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
+  enable_eso_role                         = var.iam_config.enable_eso_role
+  eso_role_name                           = "${var.iam_config.eso_role_name}${local.role_suffix}"
+  eso_service_account_namespace           = var.iam_config.eso_service_account_namespace
+  eso_service_account_name                = var.iam_config.eso_service_account_name
+  environment                             = local.environment
+  tags                                    = local.common_tags
+}
+
 module "web_security_group" {
   source = "../../modules/aws_sg"
 
@@ -111,3 +142,81 @@ module "compute" {
 
   depends_on = [module.public_route_table]
 }*/
+
+resource "kubernetes_service_account_v1" "external_secrets" {
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+
+  metadata {
+    name      = var.iam_config.eso_service_account_name
+    namespace = var.iam_config.eso_service_account_namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].eso_role_arn
+    }
+  }
+
+  depends_on = [
+    module.iam
+  ]
+}
+
+module "app_secrets" {
+  source = "../../modules/aws_secrets_manager"
+
+  name        = "${local.name_prefix}-app-secrets"
+  description = "Standard application secrets for ${local.environment}"
+  tags        = local.common_tags
+
+  metadata = {
+    id    = "SECRET_PLATFORM_CORE_${upper(local.environment)}"
+    owner = var.owner_team
+    risk  = "medium"
+  }
+}
+
+module "kubernetes_addons" {
+  source = "../../modules/kubernetes_addons"
+  count  = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
+
+  path_to_app_manifests = "${path.module}/../../gitops/argocd/apps/${local.environment}"
+  argocd_values         = file("${path.module}/../../gitops/helm/argocd/values/${local.environment}.yaml")
+
+  # AWS Load Balancer Controller specific inputs
+  vpc_id       = module.vpc.vpc_id
+  cluster_name = local.cluster_name_effective
+  aws_region   = var.aws_region
+
+  tags = local.common_tags
+}
+
+resource "kubernetes_manifest" "cluster_secret_store" {
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+
+  manifest = {
+    apiVersion = "external-secrets.io/v1beta1"
+    kind       = "ClusterSecretStore"
+    metadata = {
+      name = "aws-secretsmanager"
+    }
+    spec = {
+      provider = {
+        aws = {
+          service = "SecretsManager"
+          region  = var.aws_region
+          auth = {
+            jwt = {
+              serviceAccountRef = {
+                name      = var.iam_config.eso_service_account_name
+                namespace = var.iam_config.eso_service_account_namespace
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [
+    kubernetes_service_account_v1.external_secrets,
+    module.kubernetes_addons
+  ]
+}

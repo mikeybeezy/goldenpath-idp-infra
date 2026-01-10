@@ -31,6 +31,8 @@ If you are a new engineer or operator, do this first:
 
 3.  **Discover the Ecosystem**:
     Open [**`PLATFORM_DASHBOARDS.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_DASHBOARDS.md) in the root. This is your map to all health, testing, and registry reports.
+4.  **Doc Scaffolding**:
+    Use `scripts/scaffold_doc.py` for any new docs to ensure metadata compliance from day one.
 
 ---
 
@@ -48,6 +50,7 @@ If you are an AI Assistant (Antigravity, etc.), you MUST begin every session her
 
 3.  **Standardized Scaffolding**:
     Use `./bin/governance test scaffold` for every new feature or script to ensure metadata and test integrity from Step 1.
+    Use `scripts/scaffold_doc.py` for any new docs to keep frontmatter compliant.
 
 ---
 

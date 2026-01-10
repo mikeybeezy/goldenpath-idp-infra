@@ -106,4 +106,25 @@ tags = {
 
 1. **Standards:** Publish this schema.
 2. **Backfill:** Update Template files (`ADR-TEMPLATE.md`) and existing critical docs.
-3. **Enforcement:** Add `validate_metadata.py` to CI.
+3. **Scaffold:** Create new docs via `scripts/scaffold_doc.py` so headers match the schema by default.
+4. **Local Auto-Fix:** Pre-commit runs `scripts/standardize_metadata.py` on changed docs to normalize headers.
+5. **Enforcement:** Add `validate_metadata.py` to CI.
+
+Coupled updates:
+- If tag keys change, update `docs/10-governance/35_RESOURCE_TAGGING.md`
+  and `docs/10-governance/11_SECRETS_CATALOG_POLICY.md` in the same PR.
+
+## Doc Creation (Preferred)
+
+Use the scaffold to generate new docs with compliant frontmatter:
+
+```bash
+# Standard doc
+python3 scripts/scaffold_doc.py --path docs/90-doc-system/NEW_DOC.md --type documentation --owner platform-team
+
+# ADR
+python3 scripts/scaffold_doc.py --path docs/adrs/ADR-0140-platform-doc-metadata-autofix.md
+
+# Changelog entry
+python3 scripts/scaffold_doc.py --path docs/changelog/entries/CL-0101-doc-metadata-scaffold.md
+```

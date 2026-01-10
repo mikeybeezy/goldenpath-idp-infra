@@ -91,6 +91,30 @@ variable "lb_controller_service_account_name" {
   default     = "aws-load-balancer-controller"
 }
 
+variable "enable_eso_role" {
+  type        = bool
+  description = "Whether to create the External Secrets Operator IRSA role."
+  default     = false
+}
+
+variable "eso_role_name" {
+  type        = string
+  description = "Name for the External Secrets Operator IAM role."
+  default     = "goldenpath-idp-eso-role"
+}
+
+variable "eso_service_account_namespace" {
+  type        = string
+  description = "Namespace for the ESO service account."
+  default     = "external-secrets"
+}
+
+variable "eso_service_account_name" {
+  type        = string
+  description = "Name of the ESO service account."
+  default     = "external-secrets"
+}
+
 variable "oidc_issuer_url" {
   type        = string
   description = "OIDC issuer URL for the EKS cluster."

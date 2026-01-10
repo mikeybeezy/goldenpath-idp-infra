@@ -2,13 +2,6 @@
 id: 01_adr_index
 title: ADR Index (GoldenPath IDP)
 type: adr
-reliability:
-  observability_tier: bronze
----
-
-id: 01_adr_index
-title: ADR Index (GoldenPath IDP)
-type: adr
 category: unknown
 version: '1.0'
 owner: platform-team
@@ -157,6 +150,9 @@ relates_to:
   - ADR-0135
   - ADR-0136
   - ADR-0137
+  - ADR-0138
+  - ADR-0139
+  - ADR-0140
 <!-- ADR_RELATE_END -->
 ---
 
@@ -307,6 +303,9 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0135](ADR-0135-platform-secrets-manager-eso-foundation.md) | Platform | Secrets Manager + External Secrets Operator foundation | Proposed | 2026-01-0? | We need a deterministic, auditable secrets flow for the IDP golden path. Today, secrets handling is ad hoc, and does not provide a governed path for app teams. We want a consistent source of truth ... |
 | [ADR-0136](ADR-0136-platform-tooling-config-identity.md) | Platform | Tooling config identity sidecars | Proposed | 2026-01-0? | We want every artifact that influences platform behavior to have a clear identity, owner, and audit trail. Tooling configs such as`.pre-commit-config.yaml`,`.yamllint`,`.markdownlint.json`, and`mkd... |
 | [ADR-0137](ADR-0137-metadata-placement-configs-and-reports.md) | Platform | Metadata placement for configs and reports | Proposed | 2026-01-0? | We need a single, consistent rule for where metadata lives for non-doc artifacts (config YAML/JSON and generated reports). Mixing frontmatter and sidecars has led to confusion, validation gaps, and... |
+| [ADR-0138](ADR-0138-automated-secret-scanning-gitleaks-trufflehog.md) | Platform | Automated Secret Scanning with Gitleaks and TruffleHog | Proposed | 2026-01-0? | As we transition to using **AWS Secrets Manager** and **External Secrets Operator (ESO)** for credential management, we must ensure that secrets do not bypass these governed systems and leak into t... |
+| [ADR-0139](ADR-0139-portable-secrets-manager-infra-module.md) | Platform | Portable Secrets Manager Infrastructure Module | Proposed | 2026-01-0? | We need to manage AWS Secrets Manager instances across`dev`,`test`,`staging`, and`prod`. Historically, infrastructure for different environments was handled with varying degrees of duplication. To ... |
+| [ADR-0140](ADR-0140-platform-doc-scaffold-metadata-autofix.md) | Platform | Doc scaffolding and metadata auto-fix | Accepted | 2026-01-0? | New docs are often created without the required metadata headers. The missing frontmatter is usually only discovered at PR time, which creates friction and burns review cycles. We need a path that ... |
 <!-- ADR_TABLE_END -->
 
 ---

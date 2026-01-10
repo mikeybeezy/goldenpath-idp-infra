@@ -42,6 +42,10 @@ If you lose context or the turn history becomes muddy, run:
 bin/governance pulse
 ```
 
+### Doc Creation
+Use `scripts/scaffold_doc.py` for any new doc. Pre-commit auto-fix will
+normalize headers; CI validation is the backstop.
+
 ### Pull Request Discipline
 Every PR you author MUST include:
 1. **VQ Classification**: One of `🔴 HV/HQ`, `🟡 HV/LQ`, `🔵 MV/HQ`, `⚫ LV/LQ`.
