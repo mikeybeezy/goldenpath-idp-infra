@@ -1,3 +1,22 @@
+---
+id: 35_SECRET_MANAGEMENT
+title: Secret Management Strategy
+type: security-policy
+status: functional
+owner: platform-team
+version: '1.0'
+risk_profile:
+  production_impact: low
+  security_risk: high
+  coupling_risk: low
+reliability:
+  rollback_strategy: manual-rotation
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-10
+  breaking_change: false
+---
+
 # Secret Management Strategy
 
 This document outlines the strategy for managing sensitive information within the Golden Path platform, ensuring security, auditability, and consistent governance across all environments.

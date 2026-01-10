@@ -3,7 +3,7 @@ id: ADR-0138
 title: 'ADR-0138: Automated Secret Scanning with Gitleaks and TruffleHog'
 type: adr
 status: proposed
-owners: platform-team
+owner: platform-team
 version: '1.0'
 risk_profile:
   production_impact: low
