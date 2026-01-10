@@ -150,6 +150,7 @@ relates_to:
   - ADR-0130
   - ADR-0131
   - ADR-0134
+  - ADR-0137
 <!-- ADR_RELATE_END -->
 ---
 
@@ -297,6 +298,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0134](ADR-0134-metadata-inheritance-active-governance-and-leak-protection.md) | Platform | metadata | Accepted | 2026-01-0? | We implemented cascading metadata inheritance with active governance and leak protection to prevent exempt assets from reaching production. |
 | [ADR-0135](ADR-0135-platform-secrets-manager-eso-foundation.md) | Platform | Secrets Manager + ESO foundation | Proposed | 2026-01-09 | Establish Secrets Manager as the source of truth and ESO as the sync mechanism for the golden path. |
 | [ADR-0136](ADR-0136-platform-tooling-config-identity.md) | Platform | Tooling config identity sidecars | Proposed | 2026-01-09 | Add metadata sidecars for root tooling configs to ensure ownership and auditability. |
+| [ADR-0137](ADR-0137-metadata-placement-configs-and-reports.md) | Platform | Metadata placement for configs and reports | Proposed | 2026-01-09 | Standardize sidecar metadata for configs/reports while keeping docs on frontmatter. |
 <!-- ADR_TABLE_END -->
 
 ---

@@ -1,0 +1,45 @@
+version: 1
+org:
+  name: goldenpath
+accounts:
+  - id: "000000000000"
+    name: placeholder
+    role_arn: "arn:aws:iam::000000000000:role/InventoryReadOnly"
+    regions:
+      include:
+        - eu-west-2
+      exclude: []
+
+tag_policy:
+  required_keys:
+    - Project
+    - Environment
+    - Owner
+  goldenpath_project_values:
+    - goldenpath-idp
+  env_values:
+    - dev
+    - test
+    - staging
+    - prod
+
+catalog_mapping:
+  owner_tag: Owner
+  env_tag: Environment
+  project_tag: Project
+  owner_to_backstage_group: {}
+  domain_by_project:
+    goldenpath-idp: "domain:default/platform-core"
+
+reporting:
+  output_dir: reports/aws-inventory
+  full_output_dir: reports/aws-inventory/local
+  formats:
+    - json
+    - md
+  include_iam_summary: true
+  include_untagged: true
+  include_tag_violations: true
+  include_resource_list: true
+  include_ecr_subset: true
+  redact_account_ids: true

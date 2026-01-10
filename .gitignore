@@ -48,6 +48,7 @@ envs/dev/grafana
 envs/dev/grafana-describe.txt
 scripts/__pycache__/
 .venv
+reports/aws-inventory/local/
 
 # Antigravity artifacts (Must ALWAYS be tracked)
 !docs/antig-walkthroughs/

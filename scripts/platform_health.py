@@ -9,6 +9,7 @@ import yaml
 import re
 import os
 from datetime import datetime
+from pathlib import Path
 from validate_metadata import verify_injection
 from lib.vq_logger import get_total_reclaimed_hours
 from lib.cost_logger import get_cost_summary
@@ -51,6 +52,38 @@ def get_changelog_stats():
         if entries:
             stats['latest'] = sorted(entries)[-1]
     return stats
+
+def get_latest_inventory_report():
+    reports_dir = Path("reports/aws-inventory")
+    if not reports_dir.exists():
+        return None
+
+    candidates = sorted(
+        [p for p in reports_dir.glob("aws-inventory-*.json") if "aws-inventory-ecr-" not in p.name],
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    if not candidates:
+        return None
+
+    path = candidates[0]
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return None
+
+    summary = data.get("summary", {})
+    scope = data.get("scope", {})
+    return {
+        "path": str(path),
+        "md_path": str(path.with_suffix(".md")),
+        "run_id": data.get("run_id"),
+        "accounts": scope.get("accounts", []),
+        "regions": scope.get("regions", []),
+        "summary": summary,
+        "errors": data.get("errors", []),
+    }
 
 def calculate_v1_readiness(health_stats, adr_stats, comp_rate, coverage):
     """Calculates V1 Readiness Score (0-100%)."""
@@ -314,6 +347,7 @@ def generate_report(target_dir='.'):
     cost_summary = get_cost_summary()
     monthly_cost = cost_summary.get("current_monthly_estimate", 0.0)
     currency = cost_summary.get("currency", "USD")
+    inventory_report = get_latest_inventory_report()
 
     comp_rate = ((stats['total_files'] - len(stats['missing_metadata'])) / stats['total_files'] * 100) if stats['total_files'] > 0 else 0
     total_inj = stats['injection_coverage']['total_mandated']
@@ -393,6 +427,30 @@ def generate_report(target_dir='.'):
         lines.append(f"| {cat} | {catalog_stats[cat]} |")
 
     lines.append("")
+    lines.append("## AWS Inventory Snapshot")
+    lines.append("")
+    if inventory_report:
+        summary = inventory_report.get("summary", {})
+        accounts = ", ".join(inventory_report.get("accounts", [])) or "n/a"
+        regions = ", ".join(inventory_report.get("regions", [])) or "n/a"
+        errors = inventory_report.get("errors", [])
+        lines.append(f"- **Last run**: `{inventory_report.get('run_id', 'n/a')}`")
+        lines.append(f"- **Accounts**: `{accounts}`")
+        lines.append(f"- **Regions**: `{regions}`")
+        lines.append(f"- **Total resources**: `{summary.get('total_resources', 0)}`")
+        lines.append(
+            f"- **Tagged**: `{summary.get('tagged', 0)}` | "
+            f"**Untagged**: `{summary.get('untagged', 0)}` | "
+            f"**Tag violations**: `{summary.get('tag_violations', 0)}`"
+        )
+        if errors:
+            lines.append(f"- **Errors**: `{len(errors)}` (see report)")
+        md_path = inventory_report.get("md_path", inventory_report["path"])
+        lines.append(f"- **Report**: [`{md_path}`](file://{md_path})")
+    else:
+        lines.append("- **Status**: No inventory report found under `reports/aws-inventory`.")
+
+    lines.append("")
     lines.append("## 🛡️ Risk & Maturity Visualization")
     lines.append("")
     lines.append("```mermaid")
@@ -457,8 +515,21 @@ def generate_report(target_dir='.'):
     with open('PLATFORM_HEALTH.md', 'w') as f:
         f.write(content + "\n\n<!-- AUTOMATED REPORT - DO NOT EDIT MANUALLY -->\n")
 
-    with open('docs/10-governance/reports/HEALTH_AUDIT_LOG.md', 'a') as f:
-        f.write(f"\n\n---\n### Audit: {timestamp}\n{content}")
+    with open('docs/10-governance/reports/HEALTH_AUDIT_LOG.md', 'w') as f:
+        f.write(
+            "\n".join([
+                "# Platform Health Audit Log",
+                "",
+                f"Last updated: `{timestamp}`",
+                "",
+                "- This file keeps only the latest snapshot.",
+                "- Full history can be regenerated from source data if needed.",
+                "",
+                "## Latest Snapshot",
+                "",
+                content,
+            ])
+        )
 
 if __name__ == "__main__":
     generate_report()

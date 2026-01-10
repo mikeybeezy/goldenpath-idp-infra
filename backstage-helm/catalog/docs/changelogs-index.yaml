@@ -100,3 +100,5 @@ spec:
   - ./changelogs/changelog-0093.yaml
   - ./changelogs/changelog-0094.yaml
   - ./changelogs/changelog-0095.yaml
+  - ./changelogs/changelog-0098.yaml
+  - ./changelogs/changelog-0099.yaml
