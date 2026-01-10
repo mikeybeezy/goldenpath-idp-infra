@@ -1,0 +1,69 @@
+---
+id: ADR-0138
+title: 'ADR-0138: Automated Secret Scanning with Gitleaks and TruffleHog'
+type: adr
+status: proposed
+relates_to:
+  - ADR-0014
+  - ADR-0019
+  - ADR-0135
+---
+
+# ADR-0138: Automated Secret Scanning with Gitleaks and TruffleHog
+
+- **Status:** Proposed
+- **Date:** 2026-01-10
+- **Owners:** `platform-team`
+- **Domain:** Security
+- **Decision type:** Security | Operations
+
+---
+
+## Context
+
+As we transition to using **AWS Secrets Manager** and **External Secrets Operator (ESO)** for credential management, we must ensure that secrets do not bypass these governed systems and leak into the Git repository in plain text. Plain-text secrets in Git are a "Point of No Return" security event requiring complete rotation and history scrubbing.
+
+## Decision
+
+We will implement a multi-layered automated secret scanning strategy using **Gitleaks** and **TruffleHog**.
+
+### 1. Shift-Left Protection (Local Pre-Commit)
+- **Tool**: Gitleaks (CLI)
+- **Integration**: Added to `.pre-commit-config.yaml`.
+- **Action**: Prevent a commit if a secret pattern is detected. This ensures secrets never reach the `.git` directory on origin.
+
+### 2. CI/CD Gatekeeping (GitHub Actions)
+- **Tool**: Gitleaks + TruffleHog OSS
+- **Integration**: Added to Pull Request workflows.
+- **Action**:
+    - **Gitleaks**: Scans the entire commit history of the PR for patterns.
+    - **TruffleHog**: Scans and **verifies** identified secrets (AWS, GitHub, etc.) to confirm if the secret is active.
+
+## Consequences
+
+### Positive
+- **Drift Prevention**: Forces developers to use the governed `aws_secrets_manager` module.
+- **Reduced False Positives**: TruffleHog's verification engine ensures only actionable leaks break the build.
+- **Auditability**: Every PR is programmatically audited for security compliance.
+
+### Tradeoffs / Risks
+- **Build Latency**: Scanning large codebases can add 30-60 seconds to CI runs.
+- **Maintenance**: Rule sets must be updated periodically to catch new secret formats.
+
+## Operational impact
+
+- Developers must have Gitleaks installed locally or run via `pre-commit`.
+- Security incidents (detected leaks) must trigger an immediate rotation of the leaked credential, even if the commit is blocked.
+
+## Alternatives considered
+
+### GitHub Secret Scanning (Native)
+- **Pros**: Zero configuration, native to GitHub.
+- **Cons**: Only scans after push; doesn't provide local pre-commit prevention for custom/proprietary secret formats.
+
+### Snyk / Checkov
+- **Status**: Already in use for general linting/vulnerability scanning, but Gitleaks/TruffleHog provide deeper, specialized secret verification.
+
+## Follow-ups
+- Update `.pre-commit-config.yaml` with Gitleaks hook.
+- Create `.github/workflows/ci-secret-scan.yml`.

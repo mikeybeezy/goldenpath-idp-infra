@@ -303,3 +303,17 @@ module "ecr_repositories" {
   name     = each.key
   metadata = each.value.metadata
 }
+
+module "app_secrets" {
+  source = "../../modules/aws_secrets_manager"
+
+  name        = "${local.name_prefix}-app-secrets"
+  description = "Standard application secrets for ${local.environment}"
+  tags        = local.common_tags
+
+  metadata = {
+    id    = "SECRET_PLATFORM_CORE"
+    owner = var.owner_team
+    risk  = "medium"
+  }
+}

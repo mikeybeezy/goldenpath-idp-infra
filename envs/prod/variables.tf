@@ -104,6 +104,25 @@ variable "enable_storage_addons" {
   default     = true
 }
 
+// SSM is the default node access path; SSH is break-glass and should be time-boxed and IP-restricted.
+variable "enable_ssh_break_glass" {
+  type        = bool
+  description = "Enable SSH break-glass access to worker nodes."
+  default     = false
+}
+
+variable "ssh_key_name" {
+  type        = string
+  description = "EC2 key pair name for SSH break-glass access."
+  default     = null
+}
+
+variable "ssh_source_security_group_ids" {
+  type        = list(string)
+  description = "Security group IDs allowed to SSH into worker nodes."
+  default     = []
+}
+
 variable "compute_config" {
   description = "Configuration for the optional EC2 instance."
   type = object({
