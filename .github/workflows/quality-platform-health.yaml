@@ -1,11 +1,7 @@
 name: "Quality - Platform Health Check"
 
 on:
-  push:
-    branches: [development]
-  schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight
-  workflow_dispatch:  # Allow manual triggers
+  workflow_dispatch:  # Manual only
 
 permissions:
   contents: write
@@ -29,12 +25,6 @@ jobs:
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)/scripts
           python3 scripts/platform_health.py .
-
-      - name: Commit Health Report
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: update platform health dashboard [skip ci]"
-          file_pattern: 'PLATFORM_HEALTH.md'
 
       - name: Upload Health Report
         uses: actions/upload-artifact@v4
