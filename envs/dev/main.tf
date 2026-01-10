@@ -226,13 +226,13 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
-    args        = ["eks", "get-token", "--cluster-name", module.eks[0].cluster_name, "--region", "eu-west-2"]
+    args        = ["eks", "get-token", "--cluster-name", module.eks[0].cluster_name, "--region", var.aws_region]
     command     = "aws"
   }
 }
 
 resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
-  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_lb_controller_role ? 1 : 0
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_lb_controller_role ? 1 : 0
 
   metadata {
     name      = var.iam_config.lb_controller_service_account_name
@@ -250,7 +250,7 @@ resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
 }
 
 resource "kubernetes_service_account_v1" "cluster_autoscaler" {
-  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_autoscaler_role ? 1 : 0
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_autoscaler_role ? 1 : 0
 
   metadata {
     name      = var.iam_config.autoscaler_service_account_name
@@ -268,7 +268,7 @@ resource "kubernetes_service_account_v1" "cluster_autoscaler" {
 }
 
 resource "kubernetes_service_account_v1" "external_secrets" {
-  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
 
   metadata {
     name      = var.iam_config.eso_service_account_name
@@ -291,7 +291,7 @@ provider "helm" {
     cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["eks", "get-token", "--cluster-name", module.eks[0].cluster_name, "--region", "eu-west-2"]
+      args        = ["eks", "get-token", "--cluster-name", module.eks[0].cluster_name, "--region", var.aws_region]
       command     = "aws"
     }
   }
@@ -341,7 +341,7 @@ module "app_secrets" {
 }
 
 resource "kubernetes_manifest" "cluster_secret_store" {
-  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
 
   manifest = {
     apiVersion = "external-secrets.io/v1beta1"
