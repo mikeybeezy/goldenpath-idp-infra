@@ -80,4 +80,5 @@ Core contributors are expected to maintain a healthy local environment.
 
 - Run `bin/governance setup` after cloning or pulling major changes.
 - Run `bin/governance lint` before pushing any PR to catch syntax or metadata drift early.
+- Use `scripts/scaffold_doc.py` for new docs; pre-commit auto-fix will normalize metadata headers.
 - If CI reports issues, the fastest path to a fix is usually `bin/governance heal`.

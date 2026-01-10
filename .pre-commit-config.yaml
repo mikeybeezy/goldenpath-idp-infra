@@ -20,6 +20,12 @@ repos:
         args: ["--redact"]
   - repo: local
     hooks:
+      - id: doc-metadata-autofix
+        name: Doc Metadata Auto-Fix
+        entry: python3 scripts/standardize_metadata.py
+        language: python
+        files: ^docs/.*\.md$
+        pass_filenames: true
       - id: emoji-enforcer
         name: Emoji Usage Policy Enforcer
         entry: python3 scripts/enforce_emoji_policy.py

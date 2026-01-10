@@ -79,6 +79,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [generate_governance_vocab.py](file://scripts/generate_governance_vocab.py) | Governance Vocabulary Generator |
 | [migrate_partial_metadata.py](file://scripts/migrate_partial_metadata.py) | Migrate partial metadata to enhanced schema |
 | [reliability-metrics.sh](file://scripts/reliability-metrics.sh) | Shell script utility. |
+| [scaffold_doc.py](file://scripts/scaffold_doc.py) | Doc Scaffold Utility |
 | [scaffold_test.py](file://scripts/scaffold_test.py) | Scaffold Test Utility |
 | [sync_backstage_entities.py](file://scripts/sync_backstage_entities.py) | Backstage Entity Sync Utility |
 | [sync_ecr_catalog.py](file://scripts/sync_ecr_catalog.py) | ECR Catalog Synchronization & Reconciliation Utility |
