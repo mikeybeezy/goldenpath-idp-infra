@@ -12,18 +12,18 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-10 00:24:16` | **V1 Readiness**: `95.1%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-10 00:24:36` | **V1 Readiness**: `94.1%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `20.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **95.1%** ready for V1 production rollout.
+> The platform is currently **94.1%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 97.5% |
+| **Metadata Integrity** | ⚠️ | 93.7% |
 | **Injection Integrity** | ✅ | 100.0% |
 | **Architecture Maturity** | 🚧 | 98/125 Active |
 | **Changelog Activity** | ✅ | 99 Entries |
@@ -71,7 +71,7 @@ pie title Production Impact distribution
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `97.5%`
+- **Metadata Compliance**: `93.7%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
