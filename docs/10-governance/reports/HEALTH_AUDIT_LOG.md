@@ -1,6 +1,6 @@
 # Platform Health Audit Log
 
-Last updated: `2026-01-10 00:32:32`
+Last updated: `2026-01-10 00:44:02`
 
 - This file keeps only the latest snapshot.
 - Full history can be regenerated from source data if needed.
@@ -21,18 +21,18 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-10 00:32:32` | **V1 Readiness**: `94.1%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-10 00:44:02` | **V1 Readiness**: `93.9%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `20.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **94.1%** ready for V1 production rollout.
+> The platform is currently **93.9%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ⚠️ | 93.7% |
+| **Metadata Integrity** | ⚠️ | 92.9% |
 | **Injection Integrity** | ✅ | 100.0% |
 | **Architecture Maturity** | 🚧 | 98/125 Active |
 | **Changelog Activity** | ✅ | 99 Entries |
@@ -61,12 +61,12 @@ relates_to:
 
 ## AWS Inventory Snapshot
 
-- **Last run**: `2026-01-09T23:55:30Z`
+- **Last run**: `2026-01-10T00:44:01Z`
 - **Accounts**: `REDACTED`
 - **Regions**: `eu-west-2`
-- **Total resources**: `33`
-- **Tagged**: `31` | **Untagged**: `2` | **Tag violations**: `30`
-- **Report**: [`reports/aws-inventory/aws-inventory-2026-01-09.md`](file://reports/aws-inventory/aws-inventory-2026-01-09.md)
+- **Total resources**: `31`
+- **Tagged**: `29` | **Untagged**: `2` | **Tag violations**: `29`
+- **Report**: [`reports/aws-inventory/aws-inventory-2026-01-10.md`](file://reports/aws-inventory/aws-inventory-2026-01-10.md)
 
 ## 🛡️ Risk & Maturity Visualization
 
@@ -80,7 +80,7 @@ pie title Production Impact distribution
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `93.7%`
+- **Metadata Compliance**: `92.9%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
