@@ -15,7 +15,10 @@ ADR_DIR = "docs/adrs"
 CHANGELOG_DIR = "docs/changelog/entries"
 GOVERNANCE_DIR = "docs/10-governance"
 OUTPUT_DIR = "backstage-helm/catalog/docs"
-TECHDOCS_REF = "url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development"
+REPO_SLUG = "mikeybeezy/goldenpath-idp-infra"
+REPO_BRANCH = "main"
+BLOB_BASE = f"https://github.com/{REPO_SLUG}/blob/{REPO_BRANCH}"
+EDIT_BASE = f"https://github.com/{REPO_SLUG}/edit/{REPO_BRANCH}"
 
 class IndentDumper(yaml.SafeDumper):
     """Ensures list items are indented under their parent keys."""
@@ -32,6 +35,11 @@ def dump_yaml(data, path: Path) -> None:
             default_flow_style=False,
             Dumper=IndentDumper,
         )
+
+def build_urls(rel_path: str) -> tuple[str, str]:
+    view_url = f"{BLOB_BASE}/{rel_path}"
+    edit_url = f"{EDIT_BASE}/{rel_path}"
+    return view_url, edit_url
 
 def extract_frontmatter_and_content(file_path):
     """Extract YAML frontmatter and first paragraph from markdown file."""
@@ -71,6 +79,8 @@ def generate_adr_entities():
 
     for adr_file in adr_files:
         frontmatter, title, description = extract_frontmatter_and_content(adr_file)
+        rel_path = f"docs/adrs/{adr_file.name}"
+        view_url, edit_url = build_urls(rel_path)
 
         # Extract ADR number from filename
         adr_number = adr_file.stem.split('-')[1]
@@ -84,14 +94,15 @@ def generate_adr_entities():
                 "title": title,
                 "description": description,
                 "annotations": {
-                    "github.com/project-slug": "mikeybeezy/goldenpath-idp-infra",
-                    "backstage.io/techdocs-ref": TECHDOCS_REF
+                    "github.com/project-slug": REPO_SLUG,
+                    "backstage.io/view-url": view_url,
+                    "backstage.io/edit-url": edit_url
                 },
                 "tags": ["adr", "governance", "documentation"],
                 "links": [{
-                    "url": f"https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/{adr_file.name}",
+                    "url": view_url,
                     "title": "View on GitHub",
-                    "icon": "docs"
+                    "icon": "github"
                 }]
             },
             "spec": {
@@ -121,6 +132,8 @@ def generate_changelog_entities():
 
     for cl_file in cl_files:
         frontmatter, title, description = extract_frontmatter_and_content(cl_file)
+        rel_path = f"docs/changelog/entries/{cl_file.name}"
+        view_url, edit_url = build_urls(rel_path)
 
         # Extract CL number from filename
         cl_number = cl_file.stem.split('-')[1]
@@ -134,14 +147,15 @@ def generate_changelog_entities():
                 "title": title,
                 "description": description,
                 "annotations": {
-                    "github.com/project-slug": "mikeybeezy/goldenpath-idp-infra",
-                    "backstage.io/techdocs-ref": TECHDOCS_REF
+                    "github.com/project-slug": REPO_SLUG,
+                    "backstage.io/view-url": view_url,
+                    "backstage.io/edit-url": edit_url
                 },
                 "tags": ["cl", "changelog", "release-notes", "documentation"],
                 "links": [{
-                    "url": f"https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/{cl_file.name}",
+                    "url": view_url,
                     "title": "View on GitHub",
-                    "icon": "docs"
+                    "icon": "github"
                 }]
             },
             "spec": {
@@ -173,6 +187,8 @@ def generate_governance_entities():
         frontmatter, title, description = extract_frontmatter_and_content(gov_file)
 
         rel_path = gov_file.relative_to(GOVERNANCE_DIR).as_posix()
+        doc_path = f"docs/10-governance/{rel_path}"
+        view_url, edit_url = build_urls(doc_path)
         component_name = f"governance-{rel_path}".replace("/", "-").replace("_", "-").replace(".md", "").lower()
 
         tags = ["gove", "governance", "documentation"]
@@ -188,14 +204,15 @@ def generate_governance_entities():
                 "title": title,
                 "description": description,
                 "annotations": {
-                    "github.com/project-slug": "mikeybeezy/goldenpath-idp-infra",
-                    "backstage.io/techdocs-ref": TECHDOCS_REF
+                    "github.com/project-slug": REPO_SLUG,
+                    "backstage.io/view-url": view_url,
+                    "backstage.io/edit-url": edit_url
                 },
                 "tags": tags,
                 "links": [{
-                    "url": f"https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/{rel_path}",
+                    "url": view_url,
                     "title": "View on GitHub",
-                    "icon": "docs"
+                    "icon": "github"
                 }]
             },
             "spec": {
