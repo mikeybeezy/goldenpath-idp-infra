@@ -40,7 +40,9 @@ bootstrap/0.5_bootstrap/40_smoke-tests/audit/
 # Terraform timing logs
 logs/build-timings/
 
-.txt
+# Governance Reports
+metadata_validation_report.txt
+*.log
 
 # Local notes
 chat_fil.txt

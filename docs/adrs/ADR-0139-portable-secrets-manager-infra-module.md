@@ -3,6 +3,18 @@ id: ADR-0139
 title: 'ADR-0139: Portable Secrets Manager Infrastructure Module'
 type: adr
 status: proposed
+owner: platform-team
+version: '1.0'
+risk_profile:
+  production_impact: high
+  security_risk: high
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle:
+  supported_until: 2028-01-10
+  breaking_change: false
 relates_to:
   - ADR-0007
   - ADR-0135

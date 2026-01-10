@@ -167,8 +167,56 @@ module "app_secrets" {
   tags        = local.common_tags
 
   metadata = {
-    id    = "SECRET_PLATFORM_CORE"
+    id    = "SECRET_PLATFORM_CORE_${upper(local.environment)}"
     owner = var.owner_team
     risk  = "medium"
   }
+}
+
+module "kubernetes_addons" {
+  source = "../../modules/kubernetes_addons"
+  count  = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
+
+  path_to_app_manifests = "${path.module}/../../gitops/argocd/apps/${local.environment}"
+  argocd_values         = file("${path.module}/../../gitops/helm/argocd/values/${local.environment}.yaml")
+
+  # AWS Load Balancer Controller specific inputs
+  vpc_id       = module.vpc.vpc_id
+  cluster_name = local.cluster_name_effective
+  aws_region   = var.aws_region
+
+  tags = local.common_tags
+}
+
+resource "kubernetes_manifest" "cluster_secret_store" {
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+
+  manifest = {
+    apiVersion = "external-secrets.io/v1beta1"
+    kind       = "ClusterSecretStore"
+    metadata = {
+      name = "aws-secretsmanager"
+    }
+    spec = {
+      provider = {
+        aws = {
+          service = "SecretsManager"
+          region  = var.aws_region
+          auth = {
+            jwt = {
+              serviceAccountRef = {
+                name      = var.iam_config.eso_service_account_name
+                namespace = var.iam_config.eso_service_account_namespace
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [
+    kubernetes_service_account_v1.external_secrets,
+    module.kubernetes_addons
+  ]
 }

@@ -2,13 +2,6 @@
 id: 01_adr_index
 title: ADR Index (GoldenPath IDP)
 type: adr
-reliability:
-  observability_tier: bronze
----
-
-id: 01_adr_index
-title: ADR Index (GoldenPath IDP)
-type: adr
 category: unknown
 version: '1.0'
 owner: platform-team

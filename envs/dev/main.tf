@@ -334,8 +334,41 @@ module "app_secrets" {
   tags        = local.common_tags
 
   metadata = {
-    id    = "SECRET_PLATFORM_CORE"
+    id    = "SECRET_PLATFORM_CORE_${upper(local.environment)}"
     owner = var.owner_team
     risk  = "medium"
   }
+}
+
+resource "kubernetes_manifest" "cluster_secret_store" {
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+
+  manifest = {
+    apiVersion = "external-secrets.io/v1beta1"
+    kind       = "ClusterSecretStore"
+    metadata = {
+      name = "aws-secretsmanager"
+    }
+    spec = {
+      provider = {
+        aws = {
+          service = "SecretsManager"
+          region  = "eu-west-2"
+          auth = {
+            jwt = {
+              serviceAccountRef = {
+                name      = var.iam_config.eso_service_account_name
+                namespace = var.iam_config.eso_service_account_namespace
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [
+    kubernetes_service_account_v1.external_secrets,
+    module.kubernetes_addons # Ensure ESO CRDs are present
+  ]
 }

@@ -36,3 +36,19 @@ variable "metadata" {
   })
   default = null
 }
+
+variable "rotation_lambda_arn" {
+  description = "Specifies the ARN of the Lambda function that can rotate the secret."
+  type        = string
+  default     = null
+}
+
+variable "rotation_rules" {
+  description = "A structure that defines the rotation configuration for the secret."
+  type = object({
+    automatically_after_days = number
+  })
+  default = {
+    automatically_after_days = 30
+  }
+}
