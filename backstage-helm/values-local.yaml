@@ -43,6 +43,11 @@ appConfig: |
     providers: {}
 
   scaffolder:
+    allowedActions:
+      - fetch:plain
+      - command:execute
+      - publish:github:pull-request
+      - debug:log
 
   techdocs:
     builder: 'external'
