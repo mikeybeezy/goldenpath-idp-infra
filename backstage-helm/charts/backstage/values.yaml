@@ -107,6 +107,7 @@ appConfig: |
       - fetch:plain
       - command:execute
       - publish:github:pull-request
+      - github:actions:dispatch
       - debug:log
 
   techdocs:
