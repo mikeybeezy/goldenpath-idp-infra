@@ -193,4 +193,12 @@ ecr_repositories = {
       risk  = "low"
     }
   }
+
+  "mikes-zzzzzzzzzaaa" = {
+    metadata = {
+      id    = "REGISTRY_MIKES_ZZZZZZZZZAAA"
+      owner = "platform-team"
+      risk  = "low"
+    }
+  }
 }

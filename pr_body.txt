@@ -1,3 +1,24 @@
+##  ECR Registry Creation Request
+
+**Registry:** `mikes-zzzzzzzzzaaa`
+**Environment:** `dev`
+**Owner:** `platform-team`
+**Requested By:** `michael-deansyyyyyyyuuuy`
+**Domain:** `delivery`
+**Risk Level:** `low`
+**ID:** `REGISTRY_MIKES_ZZZZZZZZZAAA`
+
+---
+
+##  Inline Terraform Plan
+
+<details><summary> <strong>Targeted Terraform Plan</strong></summary>
+
+This plan was generated using a **bounded context** strategy (`-target`), focusing only on the new ECR repository.
+Note: state refresh was skipped because this is a shallow plan.
+
+```hcl
+
 
 Terraform used the selected providers to generate the following execution
 plan. Resource actions are indicated with the following symbols:
@@ -76,3 +97,30 @@ Terraform specifically suggests to use it as part of an error message.
 
 Note: You didn't use the -out option to save this plan, so Terraform can't
 guarantee to take exactly these actions if you run "terraform apply" now.
+```
+</details>
+
+---
+
+## 🔒 Security Controls (Auto-Applied)
+
+### 🟢 Low Risk
+- ✅ AES256
+- ✅ Tag Mutability
+- ✅ Retention: 20
+- ✅ Standard Scanning
+
+---
+
+##  Changes Policy
+- ✅ Added to registry catalog (`docs/20-contracts/catalogs/ecr-catalog.yaml`)
+- ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
+- ✅ Added to Terraform tfvars (`envs/dev/terraform.tfvars`)
+
+---
+
+##  Next Steps
+1. **Merge** this PR (Plan is already verified above).
+2. **Run Apply** workflow (Automated next step).
+
+/cc @platform-team
