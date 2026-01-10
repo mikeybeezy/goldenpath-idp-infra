@@ -178,6 +178,10 @@ variable "iam_config" {
     lb_controller_policy_arn                = string
     lb_controller_service_account_namespace = string
     lb_controller_service_account_name      = string
+    enable_eso_role                         = optional(bool, false)
+    eso_role_name                           = optional(string, "goldenpath-idp-eso-role")
+    eso_service_account_namespace           = optional(string, "external-secrets")
+    eso_service_account_name                = optional(string, "external-secrets")
   })
   validation {
     condition     = var.iam_config.enabled == false || var.eks_config.enabled == true
@@ -202,6 +206,10 @@ variable "iam_config" {
     lb_controller_policy_arn                = ""
     lb_controller_service_account_namespace = "kube-system"
     lb_controller_service_account_name      = "aws-load-balancer-controller"
+    enable_eso_role                         = false
+    eso_role_name                           = "goldenpath-idp-eso-role"
+    eso_service_account_namespace           = "external-secrets"
+    eso_service_account_name                = "external-secrets"
   }
 }
 

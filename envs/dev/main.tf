@@ -87,6 +87,10 @@ module "iam" {
   lb_controller_policy_arn                = var.iam_config.lb_controller_policy_arn
   lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
   lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
+  enable_eso_role                         = var.iam_config.enable_eso_role
+  eso_role_name                           = "${var.iam_config.eso_role_name}${local.role_suffix}"
+  eso_service_account_namespace           = var.iam_config.eso_service_account_namespace
+  eso_service_account_name                = var.iam_config.eso_service_account_name
   environment                             = local.environment
   tags                                    = local.common_tags
 
@@ -263,6 +267,24 @@ resource "kubernetes_service_account_v1" "cluster_autoscaler" {
   ]
 }
 
+resource "kubernetes_service_account_v1" "external_secrets" {
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+
+  metadata {
+    name      = var.iam_config.eso_service_account_name
+    namespace = var.iam_config.eso_service_account_namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].eso_role_arn
+    }
+  }
+
+  depends_on = [
+    module.eks,
+    module.iam,
+    aws_eks_access_policy_association.terraform_admin
+  ]
+}
+
 provider "helm" {
   kubernetes {
     host                   = module.eks[0].cluster_endpoint
@@ -285,7 +307,7 @@ module "kubernetes_addons" {
   # AWS Load Balancer Controller specific inputs
   vpc_id       = module.vpc.vpc_id
   cluster_name = local.cluster_name_effective
-  aws_region   = "eu-west-2" # Hardcoded based on provider config, could also be var.aws_region if available
+  aws_region   = var.aws_region
 
   tags = local.common_tags
 
@@ -302,4 +324,51 @@ module "ecr_repositories" {
 
   name     = each.key
   metadata = each.value.metadata
+}
+
+module "app_secrets" {
+  source = "../../modules/aws_secrets_manager"
+
+  name        = "${local.name_prefix}-app-secrets"
+  description = "Standard application secrets for ${local.environment}"
+  tags        = local.common_tags
+
+  metadata = {
+    id    = "SECRET_PLATFORM_CORE_${upper(local.environment)}"
+    owner = var.owner_team
+    risk  = "medium"
+  }
+}
+
+resource "kubernetes_manifest" "cluster_secret_store" {
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+
+  manifest = {
+    apiVersion = "external-secrets.io/v1beta1"
+    kind       = "ClusterSecretStore"
+    metadata = {
+      name = "aws-secretsmanager"
+    }
+    spec = {
+      provider = {
+        aws = {
+          service = "SecretsManager"
+          region  = var.aws_region
+          auth = {
+            jwt = {
+              serviceAccountRef = {
+                name      = var.iam_config.eso_service_account_name
+                namespace = var.iam_config.eso_service_account_namespace
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [
+    kubernetes_service_account_v1.external_secrets,
+    module.kubernetes_addons # Ensure ESO CRDs are present
+  ]
 }
