@@ -1,0 +1,29 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0099
+  title: 'CL-0099: AWS inventory in platform health'
+  description: 'Date: 2026-01-09
+
+    Owner: platform-team
+
+    Scope: governance, reporting
+
+    Related: scripts/aws_inventory.py, PLATFORM_HEALTH.md'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0099-aws-inventory-platform-health.md
+      title: View on GitHub
+      icon: docs
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

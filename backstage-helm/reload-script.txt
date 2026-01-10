@@ -1,7 +1,7 @@
 
 
 helm upgrade backstage /Users/mikesablaze/goldenpath-idp-infra/backstage-helm/charts/backstage \
---set catalog.demoCatalogLocation='https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml' \
+--set catalog.catalogLocation='https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml' \
 --namespace backstage
 
 

@@ -1,0 +1,24 @@
+---
+id: MARKDOWNLINT_CONFIG_METADATA
+title: Markdownlint Configuration
+type: documentation
+owner: platform-team
+status: active
+domain: governance
+category: governance
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle: active
+supported_until: 2028-01-09
+relates_to:
+  - .markdownlint.json
+tags:
+  - markdownlint
+  - tooling
+  - docs
+---

@@ -5,38 +5,38 @@ type: documentation
 category: governance
 status: active
 owner: platform-team
-version: '2026-01-09'
+version: '2026-01-10'
 relates_to:
   - platform_health.py
 ---
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-09 13:06:50` | **V1 Readiness**: `95.3%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-10 01:18:03` | **V1 Readiness**: `94.9%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
-**Realized Value**: `17.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Realized Value**: `20.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **95.3%** ready for V1 production rollout.
+> The platform is currently **94.9%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 98.1% |
+| **Metadata Integrity** | ✅ | 97.1% |
 | **Injection Integrity** | ✅ | 100.0% |
-| **Architecture Maturity** | 🚧 | 98/124 Active |
-| **Changelog Activity** | ✅ | 95 Entries |
+| **Architecture Maturity** | 🚧 | 98/125 Active |
+| **Changelog Activity** | ✅ | 100 Entries |
 
 ## Knowledge Graph Vitality
 
 | Metric | Count | Source |
 | :--- | :--- | :--- |
-| **Architecture Decisions** | 124 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
+| **Architecture Decisions** | 125 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
 | **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
 | **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 95 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 477 | Repository Scan |
+| **Change Logs** | 100 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 479 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -50,19 +50,28 @@ relates_to:
 | IDP Resources | 2 |
 | IDP Systems | 4 |
 
+## AWS Inventory Snapshot
+
+- **Last run**: `2026-01-10T00:44:01Z`
+- **Accounts**: `REDACTED`
+- **Regions**: `eu-west-2`
+- **Total resources**: `31`
+- **Tagged**: `29` | **Untagged**: `2` | **Tag violations**: `29`
+- **Report**: [`reports/aws-inventory/aws-inventory-2026-01-10.md`](file://reports/aws-inventory/aws-inventory-2026-01-10.md)
+
 ## 🛡️ Risk & Maturity Visualization
 
 ```mermaid
 pie title Production Impact distribution
-    "HIGH" : 36
+    "HIGH" : 28
     "MEDIUM" : 33
-    "LOW" : 378
-    "NONE" : 27
+    "LOW" : 386
+    "NONE" : 29
 ```
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `98.1%`
+- **Metadata Compliance**: `97.1%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
@@ -72,7 +81,7 @@ pie title Production Impact distribution
 ## Project Realized Value (Heartbeat)
 
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **17.4 hours**.
+> Total realized value reclaimed through automation heartbeats: **20.4 hours**.
 
 - **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
 

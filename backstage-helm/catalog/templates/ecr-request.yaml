@@ -29,6 +29,12 @@ spec:
           description: Unique name for the ECR repository (e.g., payment-service-cache).
           ui:autofocus: true
           pattern: '^[a-z][a-z0-9-]*$'
+        repoUrl:
+          title: Workflow Repo URL
+          type: string
+          description: GitHub repository hosting the ECR workflow.
+          default: "github.com?owner=mikeybeezy&repo=goldenpath-idp-infra"
+          ui:widget: hidden
         owner:
           title: Owner
           type: string
@@ -84,7 +90,7 @@ spec:
       name: Trigger Creation Workflow
       action: github:actions:dispatch
       input:
-        repoUrl: github.com?owner=mikeybeezy&repo=goldenpath-idp-infra
+        repoUrl: ${{ parameters.repoUrl }}
         workflowId: create-ecr-registry.yml
         branchOrTagName: development
         workflowInputs:

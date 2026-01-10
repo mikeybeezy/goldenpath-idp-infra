@@ -1,0 +1,64 @@
+{
+  "run_id": "2026-01-10T00:44:01Z",
+  "scope": {
+    "accounts": [
+      "REDACTED"
+    ],
+    "regions": [
+      "eu-west-2"
+    ],
+    "iam_included": false
+  },
+  "summary": {
+    "total_repositories": 2
+  },
+  "repositories": [
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "repository_name": "new-wp-reg2",
+      "resource_arn": "arn:aws:ecr:eu-west-2:REDACTED:repository/new-wp-reg2",
+      "tag_hints": {
+        "owner": "platform-team",
+        "environment": "dev",
+        "project": "goldenpath-idp",
+        "cost_center": ""
+      },
+      "tags": {
+        "Project": "goldenpath-idp",
+        "goldenpath.idp/owner": "platform-team",
+        "Owner": "platform-team",
+        "ManagedBy": "terraform",
+        "goldenpath.idp/risk": "low",
+        "BuildId": "03-01-26-02",
+        "goldenpath.idp/id": "REGISTRY_NEW_WP_REG2",
+        "Lifecycle": "ephemeral",
+        "Environment": "dev"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "repository_name": "new-app-16",
+      "resource_arn": "arn:aws:ecr:eu-west-2:REDACTED:repository/new-app-16",
+      "tag_hints": {
+        "owner": "platform-team",
+        "environment": "dev",
+        "project": "goldenpath-idp",
+        "cost_center": ""
+      },
+      "tags": {
+        "Project": "goldenpath-idp",
+        "goldenpath.idp/owner": "michael-babs-16",
+        "Owner": "platform-team",
+        "ManagedBy": "terraform",
+        "goldenpath.idp/risk": "low",
+        "BuildId": "03-01-26-02",
+        "goldenpath.idp/id": "REGISTRY_NEW_APP_16",
+        "Lifecycle": "ephemeral",
+        "Environment": "dev"
+      }
+    }
+  ],
+  "note": "Subset of AWS inventory for ECR repositories only."
+}

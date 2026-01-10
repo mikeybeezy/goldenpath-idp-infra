@@ -7,7 +7,7 @@ Backstage running localhost shows no catalog entities, including ECR resources.
 The Helm chart's default `values.yaml` points to a **remote catalog**:
 ```yaml
 catalog:
-  demoCatalogLocation: "https://github.com/PlatformersCommunity/backstage-helm-chart/blob/main/catalog/all.yaml"
+  catalogLocation: "https://github.com/PlatformersCommunity/backstage-helm-chart/blob/main/catalog/all.yaml"
 ```
 
 This loads entities from the PlatformersCommunity demo, **not** your local `backstage-helm/catalog` with ECR resources.
@@ -27,7 +27,7 @@ helm upgrade backstage ./backstage-helm/charts/backstage \
 ### Option 2: Quick CLI Override
 ```bash
 helm upgrade backstage ./backstage-helm/charts/backstage \
-  --set catalog.demoCatalogLocation='https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml' \
+  --set catalog.catalogLocation='https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml' \
   --namespace backstage
 ```
 

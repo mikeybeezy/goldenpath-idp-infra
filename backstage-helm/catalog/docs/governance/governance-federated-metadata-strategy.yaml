@@ -8,14 +8,14 @@ metadata:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
   tags:
-  - gove
-  - governance
-  - documentation
-  - strategy
+    - gove
+    - governance
+    - documentation
+    - strategy
   links:
-  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/FEDERATED_METADATA_STRATEGY.md
-    title: View on GitHub
-    icon: docs
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/FEDERATED_METADATA_STRATEGY.md
+      title: View on GitHub
+      icon: docs
 spec:
   type: documentation
   lifecycle: active

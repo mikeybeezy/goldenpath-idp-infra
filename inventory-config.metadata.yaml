@@ -1,0 +1,24 @@
+---
+id: INVENTORY_CONFIG
+title: AWS Inventory Config
+type: documentation
+domain: governance
+owner: platform-team
+status: active
+category: governance
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+lifecycle: active
+supported_until: 2028-01-09
+relates_to:
+  - inventory-config.yaml
+tags:
+  - inventory
+  - aws
+  - compliance
+---

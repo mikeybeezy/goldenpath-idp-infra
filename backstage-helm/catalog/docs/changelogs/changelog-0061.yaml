@@ -9,14 +9,14 @@ metadata:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
   tags:
-  - cl
-  - changelog
-  - release-notes
-  - documentation
+    - cl
+    - changelog
+    - release-notes
+    - documentation
   links:
-  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0061-ecr-workflow-optimizations.md
-    title: View on GitHub
-    icon: docs
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0061-ecr-workflow-optimizations.md
+      title: View on GitHub
+      icon: docs
 spec:
   type: documentation
   lifecycle: production

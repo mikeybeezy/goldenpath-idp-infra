@@ -170,6 +170,10 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 | 072 | P2 | Gov | Shared Responsibility Notifications (Lifecycle Events) | platform | Open | M | Q1 | Build notification trigger for Slack/Email after Create/Delete | docs/10-governance/38_SHARED_RESPONSIBILITY.md | Clarify ownership boundaries immediately after resource changes |
 | 073 | P2 | Backstage | TechDocs: switch local build to S3 publisher | platform | Open | M | Q2 | Configure TechDocs S3 bucket + IAM and enable publisher | docs/production-readiness-gates/ROADMAP.md | Faster, more reliable doc builds at scale |
 | 074 | P1 | **🔴 HV/HQ** | ECR | Extensive Verification of ECR Single Source of Truth | platform | Done | S | Q1 | Monitor for future drift | Script verified against 10 ghost repos |
+| 075 | P2 | GitOps | Deprecate legacy ArgoCD bootstrap scripts after build is stable | platform | Open | S | Q1 | Mark scripts as deprecated and add a guard to prevent double-install | docs/adrs/ADR-0063-platform-terraform-helm-bootstrap.md, bootstrap/10_gitops-controller/10_argocd_helm.sh, bootstrap/10_bootstrap/goldenpath-idp-bootstrap*.sh | Prevent drift and duplicate ArgoCD installs now that Terraform owns Helm bootstrap |
+| 076 | P2 | Governance | Tooling config identity sidecars | platform | Done | S | Q1 | Extend to additional config files if needed | docs/adrs/ADR-0136-platform-tooling-config-identity.md, docs/changelog/entries/CL-0097-tooling-config-identity-sidecars.md | Ensure tooling configs have explicit identity and audit trail |
+| 077 | P2 | Governance | Enforce tooling sidecar presence in validation/reporting | platform | Open | S | Q1 | Add validator/reporting coverage for root config sidecars | scripts/validate_metadata.py, PLATFORM_HEALTH.md | Turn identity sidecars into measurable governance coverage |
+| 078 | P2 | Observability | V2: full AWS inventory via Config Aggregator or Resource Explorer | platform | Open | M | Q2 | Evaluate costs + scope, then add cross-region inventory | docs/50-observability/05_OBSERVABILITY_DECISIONS.md | Surface tagged + untagged resources across all regions |
 
 ## Rules
 

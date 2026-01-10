@@ -8,15 +8,15 @@ metadata:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
   tags:
-  - adr
-  - governance
-  - documentation
+    - adr
+    - governance
+    - documentation
   links:
-  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0128-automated-ecr-catalog-sync.md
-    title: View on GitHub
-    icon: docs
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0128-automated-ecr-catalog-sync.md
+      title: View on GitHub
+      icon: docs
 spec:
   type: documentation
-  lifecycle: active
+  lifecycle: accepted
   owner: platform-team
   subcomponentOf: architecture-decision-records

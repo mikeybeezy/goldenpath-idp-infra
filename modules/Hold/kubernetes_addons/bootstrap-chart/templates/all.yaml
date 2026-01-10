@@ -1,4 +1,0 @@
-{{- range $data := .Values.manifests }}
----
-{{ $data }}
-{{- end }}
