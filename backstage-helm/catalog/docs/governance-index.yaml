@@ -15,6 +15,7 @@ spec:
   - ./governance/governance-07-ai-agent-governance.yaml
   - ./governance/governance-08-github-agent-roles.yaml
   - ./governance/governance-09-governance-testing.yaml
+  - ./governance/governance-10-secret-scanning-policy.yaml
   - ./governance/governance-35-resource-tagging.yaml
   - ./governance/governance-auto-healing-guide.yaml
   - ./governance/governance-codeowners-policy.yaml

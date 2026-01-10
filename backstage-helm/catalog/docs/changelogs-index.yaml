@@ -104,3 +104,4 @@ spec:
   - ./changelogs/changelog-0097.yaml
   - ./changelogs/changelog-0098.yaml
   - ./changelogs/changelog-0099.yaml
+  - ./changelogs/changelog-0100.yaml

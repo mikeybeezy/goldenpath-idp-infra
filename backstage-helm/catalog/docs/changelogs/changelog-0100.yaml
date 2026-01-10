@@ -1,0 +1,29 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0100
+  title: 'CL-0100: Gitleaks secret scanning'
+  description: 'Date: 2026-01-10
+
+    Owner: platform-team
+
+    Scope: security, governance, CI
+
+    Related: .github/workflows/gitleaks.yml, .pre-commit-config.yaml'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+  tags:
+  - cl
+  - changelog
+  - release-notes
+  - documentation
+  links:
+  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/changelog/entries/CL-0100-gitleaks-secret-scanning.md
+    title: View on GitHub
+    icon: docs
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation
