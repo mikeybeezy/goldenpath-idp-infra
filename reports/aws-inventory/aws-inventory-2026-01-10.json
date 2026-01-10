@@ -1,0 +1,955 @@
+{
+  "run_id": "2026-01-10T00:44:01Z",
+  "scope": {
+    "accounts": [
+      "REDACTED"
+    ],
+    "regions": [
+      "eu-west-2"
+    ],
+    "iam_included": false
+  },
+  "summary": {
+    "total_resources": 31,
+    "tagged": 29,
+    "untagged": 2,
+    "tag_violations": 29
+  },
+  "by_account": [
+    {
+      "account_id": "REDACTED",
+      "name": "placeholder",
+      "regions_scanned": [
+        "eu-west-2"
+      ],
+      "resources": 31,
+      "tagged": 29,
+      "untagged": 2,
+      "tag_violations": 29
+    }
+  ],
+  "missing_tags": [
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "cloudformation",
+      "resource_arn": "arn:aws:cloudformation:eu-west-2:REDACTED:stack/eksctl-devops-test-cluster-cluster/0295e760-df58-11f0-94ab-0a5259aeb55d",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-02c3f30e4da9835e7",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:subnet/subnet-0a47288eafb977e8d",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:subnet/subnet-0327f0cf0ba0d9821",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:vpc/vpc-0fabff1a751926ada",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-83562ef1e8/93e16c82f0466f3d",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-5944eeee31/002e4ee4c7f7869c",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "dynamodb",
+      "resource_arn": "arn:aws:dynamodb:eu-west-2:REDACTED:table/goldenpath-idp-dev-db",
+      "missing_keys": [
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-0f1000de1f4b16da9",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:internet-gateway/igw-0f40d4eb861e3c421",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:route-table/rtb-07b270a34baf6cb71",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-ac023efb05/b6fded0e71616a1b",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-41aca50275/227470327add6447",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "s3",
+      "resource_arn": "arn:aws:s3::REDACTED:scaletific-tf-example-bucket",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-060833062687fc3a6",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-0203205294d028ced",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:security-group/sg-0372a187d2c06c58d",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-d1199ec405/fbf458a3de5705b2",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-d5288aeef4/f25b96c176b0a975",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-4a2bc5e66f/ab63ca4d28d0a9e3",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-343df266be/9074add92cfd8b30",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "events",
+      "resource_arn": "arn:aws:events:eu-west-2:REDACTED:rule/AutoScalingManagedRule",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-098732f13286d01c5",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-06a0025afa512d274",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:route-table/rtb-0d3df8280459577bf",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:subnet/subnet-0f660ecc366ce4999",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:subnet/subnet-06fefe7ffb40e67ca",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-ac64c6feae/33f09f42e5e45fe5",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-d5ef5ff115/1d8c74272392143d",
+      "missing_keys": [
+        "Project",
+        "Owner",
+        "Environment"
+      ]
+    }
+  ],
+  "tag_violations": [],
+  "errors": [],
+  "note": "Tagging API only returns resources that are tagged or were previously tagged.",
+  "resource_list": [
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "cloudformation",
+      "resource_arn": "arn:aws:cloudformation:eu-west-2:REDACTED:stack/eksctl-devops-test-cluster-cluster/0295e760-df58-11f0-94ab-0a5259aeb55d",
+      "resource_name": "0295e760-df58-11f0-94ab-0a5259aeb55d",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "alpha.eksctl.io/cluster-name": "devops-test-cluster",
+        "eksctl.cluster.k8s.io/v1alpha1/cluster-name": "devops-test-cluster",
+        "alpha.eksctl.io/cluster-oidc-enabled": "false",
+        "alpha.eksctl.io/eksctl-version": "0.221.0-dev+de9424a29.2025-12-18T20:36:33Z"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-02c3f30e4da9835e7",
+      "resource_name": "i-02c3f30e4da9835e7",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "scaletific-apache-server"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:subnet/subnet-0a47288eafb977e8d",
+      "resource_name": "subnet-0a47288eafb977e8d",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "sclateific-public-subnet-latest"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:subnet/subnet-0327f0cf0ba0d9821",
+      "resource_name": "subnet-0327f0cf0ba0d9821",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "scaletific-public-subnet"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:vpc/vpc-0fabff1a751926ada",
+      "resource_name": "vpc-0fabff1a751926ada",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "scaletific-vpc"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-83562ef1e8/93e16c82f0466f3d",
+      "resource_name": "93e16c82f0466f3d",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "service.k8s.aws/stack": "kong-system/dev-kong-kong-proxy",
+        "service.k8s.aws/resource": "kong-system/dev-kong-kong-proxy:80",
+        "elbv2.k8s.aws/cluster": "goldenpath-dev-eks-26-12-29-30"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-5944eeee31/002e4ee4c7f7869c",
+      "resource_name": "002e4ee4c7f7869c",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "service.k8s.aws/stack": "kong-system/dev-kong-kong-proxy",
+        "service.k8s.aws/resource": "kong-system/dev-kong-kong-proxy:443",
+        "elbv2.k8s.aws/cluster": "goldenpath-dev-eks-26-12-29-30"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "dynamodb",
+      "resource_arn": "arn:aws:dynamodb:eu-west-2:REDACTED:table/goldenpath-idp-dev-db",
+      "resource_name": "goldenpath-idp-dev-db",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": "goldenpath-idp",
+        "cost_center": ""
+      },
+      "tags": {
+        "Project": "goldenpath-idp",
+        "Created By": "Michael Nouriel"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-0f1000de1f4b16da9",
+      "resource_name": "i-0f1000de1f4b16da9",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "scaletific-apache2-server"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:internet-gateway/igw-0f40d4eb861e3c421",
+      "resource_name": "igw-0f40d4eb861e3c421",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "scaletific-igw"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:route-table/rtb-07b270a34baf6cb71",
+      "resource_name": "rtb-07b270a34baf6cb71",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "scaletific-private-routetable"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ecr",
+      "resource_arn": "arn:aws:ecr:eu-west-2:REDACTED:repository/new-wp-reg2",
+      "resource_name": "new-wp-reg2",
+      "tag_hints": {
+        "owner": "platform-team",
+        "environment": "dev",
+        "project": "goldenpath-idp",
+        "cost_center": ""
+      },
+      "tags": {
+        "Project": "goldenpath-idp",
+        "goldenpath.idp/owner": "platform-team",
+        "Owner": "platform-team",
+        "ManagedBy": "terraform",
+        "goldenpath.idp/risk": "low",
+        "BuildId": "03-01-26-02",
+        "goldenpath.idp/id": "REGISTRY_NEW_WP_REG2",
+        "Lifecycle": "ephemeral",
+        "Environment": "dev"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ecr",
+      "resource_arn": "arn:aws:ecr:eu-west-2:REDACTED:repository/new-app-16",
+      "resource_name": "new-app-16",
+      "tag_hints": {
+        "owner": "platform-team",
+        "environment": "dev",
+        "project": "goldenpath-idp",
+        "cost_center": ""
+      },
+      "tags": {
+        "Project": "goldenpath-idp",
+        "goldenpath.idp/owner": "michael-babs-16",
+        "Owner": "platform-team",
+        "ManagedBy": "terraform",
+        "goldenpath.idp/risk": "low",
+        "BuildId": "03-01-26-02",
+        "goldenpath.idp/id": "REGISTRY_NEW_APP_16",
+        "Lifecycle": "ephemeral",
+        "Environment": "dev"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-ac023efb05/b6fded0e71616a1b",
+      "resource_name": "b6fded0e71616a1b",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "service.k8s.aws/stack": "kong-system/dev-kong-kong-proxy",
+        "service.k8s.aws/resource": "kong-system/dev-kong-kong-proxy:443",
+        "elbv2.k8s.aws/cluster": "goldenpath-dev-eks-26-12-29-10"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-41aca50275/227470327add6447",
+      "resource_name": "227470327add6447",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "service.k8s.aws/stack": "kong-system/dev-kong-kong-proxy",
+        "service.k8s.aws/resource": "kong-system/dev-kong-kong-proxy:80",
+        "elbv2.k8s.aws/cluster": "goldenpath-dev-eks-26-12-29-35"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "s3",
+      "resource_arn": "arn:aws:s3::REDACTED:scaletific-tf-example-bucket",
+      "resource_name": "scaletific-tf-example-bucket",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {}
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-060833062687fc3a6",
+      "resource_name": "i-060833062687fc3a6",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "aws:autoscaling:groupName": "eks-dev-default-42cdc501-1763-48a1-1ac3-ef3226e722ce",
+        "aws:ec2:fleet-id": "fleet-62bd52ac-95a7-4e36-8cba-2fa80c61e7a0",
+        "eks:cluster-name": "goldenpath-dev-eks-04-01-26-02",
+        "kubernetes.io/cluster/goldenpath-dev-eks-04-01-26-02": "owned",
+        "k8s.io/cluster-autoscaler/goldenpath-dev-eks-04-01-26-02": "owned",
+        "aws:ec2launchtemplate:version": "1",
+        "eks:nodegroup-name": "dev-default",
+        "k8s.io/cluster-autoscaler/enabled": "true",
+        "aws:ec2launchtemplate:id": "lt-019df13f4070dbf0e"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-0203205294d028ced",
+      "resource_name": "i-0203205294d028ced",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "scaltific-private-instance"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:security-group/sg-0372a187d2c06c58d",
+      "resource_name": "sg-0372a187d2c06c58d",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "allow_tls"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-d1199ec405/fbf458a3de5705b2",
+      "resource_name": "fbf458a3de5705b2",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "service.k8s.aws/stack": "kong-system/dev-kong-kong-proxy",
+        "service.k8s.aws/resource": "kong-system/dev-kong-kong-proxy:443",
+        "elbv2.k8s.aws/cluster": "goldenpath-dev-eks-26-12-29-35"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-d5288aeef4/f25b96c176b0a975",
+      "resource_name": "f25b96c176b0a975",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "service.k8s.aws/stack": "kong-system/dev-kong-kong-proxy",
+        "service.k8s.aws/resource": "kong-system/dev-kong-kong-proxy:80",
+        "elbv2.k8s.aws/cluster": "goldenpath-dev-eks-26-12-29-34"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-4a2bc5e66f/ab63ca4d28d0a9e3",
+      "resource_name": "ab63ca4d28d0a9e3",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "service.k8s.aws/stack": "kong-system/dev-kong-kong-proxy",
+        "service.k8s.aws/resource": "kong-system/dev-kong-kong-proxy:443",
+        "elbv2.k8s.aws/cluster": "goldenpath-dev-eks-30-12-25-01"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-343df266be/9074add92cfd8b30",
+      "resource_name": "9074add92cfd8b30",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "service.k8s.aws/stack": "kong-system/dev-kong-kong-proxy",
+        "service.k8s.aws/resource": "kong-system/dev-kong-kong-proxy:80",
+        "elbv2.k8s.aws/cluster": "goldenpath-dev-eks-30-12-25-01"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "events",
+      "resource_arn": "arn:aws:events:eu-west-2:REDACTED:rule/AutoScalingManagedRule",
+      "resource_name": "AutoScalingManagedRule",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {}
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-098732f13286d01c5",
+      "resource_name": "i-098732f13286d01c5",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "apache-test-instance-4"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:instance/i-06a0025afa512d274",
+      "resource_name": "i-06a0025afa512d274",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "aws:autoscaling:groupName": "eks-dev-default-42cdc501-1763-48a1-1ac3-ef3226e722ce",
+        "aws:ec2:fleet-id": "fleet-563d4637-0227-cea5-2cb8-0b28c5cbd1cd",
+        "eks:cluster-name": "goldenpath-dev-eks-04-01-26-02",
+        "kubernetes.io/cluster/goldenpath-dev-eks-04-01-26-02": "owned",
+        "k8s.io/cluster-autoscaler/goldenpath-dev-eks-04-01-26-02": "owned",
+        "aws:ec2launchtemplate:version": "1",
+        "eks:nodegroup-name": "dev-default",
+        "k8s.io/cluster-autoscaler/enabled": "true",
+        "aws:ec2launchtemplate:id": "lt-019df13f4070dbf0e"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:route-table/rtb-0d3df8280459577bf",
+      "resource_name": "rtb-0d3df8280459577bf",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "scaletific-public-routetable"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:subnet/subnet-0f660ecc366ce4999",
+      "resource_name": "subnet-0f660ecc366ce4999",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "scaletific-private-subnet"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "ec2",
+      "resource_arn": "arn:aws:ec2:eu-west-2:REDACTED:subnet/subnet-06fefe7ffb40e67ca",
+      "resource_name": "subnet-06fefe7ffb40e67ca",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "Name": "scaletific-public-subnet-b"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-ac64c6feae/33f09f42e5e45fe5",
+      "resource_name": "33f09f42e5e45fe5",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "service.k8s.aws/stack": "kong-system/dev-kong-kong-proxy",
+        "service.k8s.aws/resource": "kong-system/dev-kong-kong-proxy:80",
+        "elbv2.k8s.aws/cluster": "goldenpath-dev-eks-26-12-29-10"
+      }
+    },
+    {
+      "account_id": "REDACTED",
+      "region": "eu-west-2",
+      "service": "elasticloadbalancing",
+      "resource_arn": "arn:aws:elasticloadbalancing:eu-west-2:REDACTED:targetgroup/k8s-kongsyst-devkongk-d5ef5ff115/1d8c74272392143d",
+      "resource_name": "1d8c74272392143d",
+      "tag_hints": {
+        "owner": null,
+        "environment": null,
+        "project": null,
+        "cost_center": ""
+      },
+      "tags": {
+        "service.k8s.aws/stack": "kong-system/dev-kong-kong-proxy",
+        "service.k8s.aws/resource": "kong-system/dev-kong-kong-proxy:443",
+        "elbv2.k8s.aws/cluster": "goldenpath-dev-eks-26-12-29-34"
+      }
+    }
+  ],
+  "ecr_subset": {
+    "total_repositories": 2,
+    "repositories": [
+      {
+        "account_id": "REDACTED",
+        "region": "eu-west-2",
+        "repository_name": "new-wp-reg2",
+        "resource_arn": "arn:aws:ecr:eu-west-2:REDACTED:repository/new-wp-reg2",
+        "tag_hints": {
+          "owner": "platform-team",
+          "environment": "dev",
+          "project": "goldenpath-idp",
+          "cost_center": ""
+        },
+        "tags": {
+          "Project": "goldenpath-idp",
+          "goldenpath.idp/owner": "platform-team",
+          "Owner": "platform-team",
+          "ManagedBy": "terraform",
+          "goldenpath.idp/risk": "low",
+          "BuildId": "03-01-26-02",
+          "goldenpath.idp/id": "REGISTRY_NEW_WP_REG2",
+          "Lifecycle": "ephemeral",
+          "Environment": "dev"
+        }
+      },
+      {
+        "account_id": "REDACTED",
+        "region": "eu-west-2",
+        "repository_name": "new-app-16",
+        "resource_arn": "arn:aws:ecr:eu-west-2:REDACTED:repository/new-app-16",
+        "tag_hints": {
+          "owner": "platform-team",
+          "environment": "dev",
+          "project": "goldenpath-idp",
+          "cost_center": ""
+        },
+        "tags": {
+          "Project": "goldenpath-idp",
+          "goldenpath.idp/owner": "michael-babs-16",
+          "Owner": "platform-team",
+          "ManagedBy": "terraform",
+          "goldenpath.idp/risk": "low",
+          "BuildId": "03-01-26-02",
+          "goldenpath.idp/id": "REGISTRY_NEW_APP_16",
+          "Lifecycle": "ephemeral",
+          "Environment": "dev"
+        }
+      }
+    ]
+  }
+}
