@@ -21,6 +21,23 @@ DEFAULT_CONFIG = ROOT / "inventory-config.yaml"
 ENUMS_PATH = ROOT / "schemas/metadata/enums.yaml"
 COST_CENTER_KEYS = ["CostCenter", "cost_center", "cost-center", "Cost-Center"]
 
+class IndentDumper(yaml.SafeDumper):
+    """Ensure list items are indented under their parent keys."""
+
+    def increase_indent(self, flow=False, indentless=False):
+        return super().increase_indent(flow, False)
+
+def dump_yaml(data: dict, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as f:
+        yaml.dump(
+            data,
+            f,
+            sort_keys=False,
+            default_flow_style=False,
+            Dumper=IndentDumper,
+        )
+
 def load_yaml(path: Path) -> dict:
     if not path.exists():
         return {}
@@ -336,6 +353,7 @@ def write_json(path: Path, data: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, sort_keys=False)
+        f.write("\n")
 
 def write_md(path: Path, data: dict) -> None:
     lines = [
@@ -403,7 +421,7 @@ def write_md(path: Path, data: dict) -> None:
 
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
+        f.write("\n".join(lines) + "\n")
 
 def write_ecr_md(path: Path, data: dict) -> None:
     lines = [
@@ -437,7 +455,7 @@ def write_ecr_md(path: Path, data: dict) -> None:
 
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
+        f.write("\n".join(lines) + "\n")
 
 def write_sidecar(path: Path, report_id: str, run_date: str) -> None:
     sidecar = {
@@ -463,8 +481,7 @@ def write_sidecar(path: Path, report_id: str, run_date: str) -> None:
     }
 
     sidecar_path = path.with_suffix(path.suffix + ".metadata.yaml")
-    with sidecar_path.open("w", encoding="utf-8") as f:
-        yaml.safe_dump(sidecar, f, sort_keys=False)
+    dump_yaml(sidecar, sidecar_path)
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate AWS inventory reports.")

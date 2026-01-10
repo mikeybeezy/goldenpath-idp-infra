@@ -10,12 +10,28 @@ Value:
     Provides O(1) visibility into the container registry fleet within Backstage.
 """
 
-import yaml
 import os
+import yaml
 
 SOURCE_CATALOG = "docs/20-contracts/catalogs/ecr-catalog.yaml"
 TARGET_DIR = "backstage-helm/catalog/resources/ecr"
 ALL_RESOURCES_PATH = "backstage-helm/catalog/all-resources.yaml"
+
+class IndentDumper(yaml.SafeDumper):
+    """Ensure list items are indented under their parent keys."""
+
+    def increase_indent(self, flow=False, indentless=False):
+        return super().increase_indent(flow, False)
+
+def dump_yaml(data, path: str) -> None:
+    with open(path, "w", encoding="utf-8") as f:
+        yaml.dump(
+            data,
+            f,
+            sort_keys=False,
+            default_flow_style=False,
+            Dumper=IndentDumper,
+        )
 
 def generate():
     if not os.path.exists(SOURCE_CATALOG):
@@ -58,8 +74,7 @@ def generate():
     generated_files = []
     for name, entity in zip(repositories.keys(), entities):
         file_path = f"{TARGET_DIR}/{name}.yaml"
-        with open(file_path, 'w') as f:
-            yaml.dump(entity, f, sort_keys=False)
+        dump_yaml(entity, file_path)
         generated_files.append(f"./resources/ecr/{name}.yaml")
 
     # Update all-resources.yaml
@@ -79,8 +94,7 @@ def generate():
         new_targets.extend(generated_files)
         all_res['spec']['targets'] = new_targets
 
-        with open(ALL_RESOURCES_PATH, 'w') as f:
-            yaml.dump(all_res, f, sort_keys=False)
+        dump_yaml(all_res, ALL_RESOURCES_PATH)
 
     print(f"✅ Generated {len(entities)} individual Backstage ECR entities in {TARGET_DIR}")
     print(f"✅ Updated {ALL_RESOURCES_PATH} with {len(generated_files)} new targets")

@@ -27,6 +27,8 @@ last_updated: 2026-01-06
 CI Workflows (GitHub Actions)
 
 ├─ Bootstrap / Tooling
+│   ├─ Backstage Docs Catalog PR
+│   ├─ Backstage ECR Sync PR
 │   ├─ Bootstrap - CI Backstage (Stub)
 │   ├─ Bootstrap - CI Bootstrap (Stub)
 │   ├─ Create ECR Registry
@@ -70,13 +72,26 @@ CI Workflows (GitHub Actions)
 │   └─ Plan - PR Terraform Plan
 │
 └─ Uncategorized
+    ├─ PR Gates
+    ├─ PR Governance Gates
     ├─ Python Unit Tests
-    └─ Quality - Documentation Auto-Healing
+    ├─ Quality - Documentation Auto-Healing
+    └─ Security - Gitleaks
 ```
 
 ---
 
 ## Bootstrap / Tooling
+
+### Backstage Docs Catalog PR
+- **File**: `backstage-docs-pr.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### Backstage ECR Sync PR
+- **File**: `ecr-backstage-sync.yml`
+- **Owner**: platform
+- **Triggers**:
 
 ### Bootstrap - CI Backstage (Stub)
 - **File**: `ci-backstage.yml`
@@ -253,6 +268,16 @@ CI Workflows (GitHub Actions)
 
 ## Uncategorized
 
+### PR Gates
+- **File**: `pr-gates.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### PR Governance Gates
+- **File**: `pr-governance-gates.yml`
+- **Owner**: platform
+- **Triggers**:
+
 ### Python Unit Tests
 - **File**: `python-tests.yml`
 - **Owner**: platform
@@ -260,5 +285,10 @@ CI Workflows (GitHub Actions)
 
 ### Quality - Documentation Auto-Healing
 - **File**: `ci-index-auto-heal.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### Security - Gitleaks
+- **File**: `gitleaks.yml`
 - **Owner**: platform
 - **Triggers**:

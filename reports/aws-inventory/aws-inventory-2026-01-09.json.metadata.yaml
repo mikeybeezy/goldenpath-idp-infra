@@ -14,9 +14,9 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 relates_to:
-- INVENTORY_CONFIG
-- reports/aws-inventory/aws-inventory-2026-01-09.json
+  - INVENTORY_CONFIG
+  - reports/aws-inventory/aws-inventory-2026-01-09.json
 tags:
-- inventory
-- report
-- aws
+  - inventory
+  - report
+  - aws

@@ -8,8 +8,8 @@ metadata:
 
     - new-wp-reg2 (dev)'
   links:
-  - url: https://console.aws.amazon.com/ecr/repositories
-    title: AWS ECR Console
+    - url: https://console.aws.amazon.com/ecr/repositories
+      title: AWS ECR Console
   annotations:
     backstage.io/managed-by-location: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/backstage-helm/catalog/resources/ecr-registry.yaml
     platform/repo-count: '2'

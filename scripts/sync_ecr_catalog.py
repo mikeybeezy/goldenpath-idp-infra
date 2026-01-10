@@ -12,17 +12,33 @@ Value:
     ensuring the catalog is a high-fidelity mirror of AWS state.
 """
 
-import os
-import yaml
-import json
-import subprocess
 import argparse
+import json
+import os
+import subprocess
+import yaml
 from datetime import datetime
 from pathlib import Path
 
 # Constants
 CATALOG_PATH = "docs/20-contracts/catalogs/ecr-catalog.yaml"
 DEFAULT_REGION = os.environ.get("AWS_REGION") or os.environ.get("AWS_DEFAULT_REGION")
+
+class IndentDumper(yaml.SafeDumper):
+    """Ensure list items are indented under their parent keys."""
+
+    def increase_indent(self, flow=False, indentless=False):
+        return super().increase_indent(flow, False)
+
+def dump_yaml(data, path: str) -> None:
+    with open(path, "w", encoding="utf-8") as f:
+        yaml.dump(
+            data,
+            f,
+            sort_keys=False,
+            default_flow_style=False,
+            Dumper=IndentDumper,
+        )
 
 def get_physical_repositories(region=None):
     """Fetches repository list from AWS ECR."""
@@ -119,8 +135,7 @@ def sync_catalog(dry_run=True, region=None):
 
     print(f"📝 Generating Backstage Entity: {BACKSTAGE_ENTITY_PATH}")
     os.makedirs(os.path.dirname(BACKSTAGE_ENTITY_PATH), exist_ok=True)
-    with open(BACKSTAGE_ENTITY_PATH, 'w') as f:
-        yaml.dump(backstage_resource, f, sort_keys=False)
+    dump_yaml(backstage_resource, BACKSTAGE_ENTITY_PATH)
 
     # Log Value Heartbeat
     try:
