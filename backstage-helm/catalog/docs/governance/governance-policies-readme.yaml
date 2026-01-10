@@ -12,16 +12,17 @@ metadata:
     **Status:** Planned'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
-    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/README.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/policies/README.md
   tags:
     - gove
     - governance
     - documentation
     - policy
   links:
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/policies/README.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/README.md
       title: View on GitHub
-      icon: docs
+      icon: github
 spec:
   type: documentation
   lifecycle: active

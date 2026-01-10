@@ -6,16 +6,17 @@ metadata:
   description: 'Last updated: `2026-01-10 00:44:02`'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
-    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/reports/HEALTH_AUDIT_LOG.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/reports/HEALTH_AUDIT_LOG.md
   tags:
     - gove
     - governance
     - documentation
     - report
   links:
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/reports/HEALTH_AUDIT_LOG.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/reports/HEALTH_AUDIT_LOG.md
       title: View on GitHub
-      icon: docs
+      icon: github
 spec:
   type: documentation
   lifecycle: active
