@@ -93,57 +93,26 @@ spec:
           environment=${{ parameters.environment }}
           risk=${{ parameters.risk }}
 
-    - id: fetch-repo
-      name: Fetch Repository
-      action: fetch:plain
-      input:
-        url: https://github.com/mikeybeezy/goldenpath-idp-infra
-        targetPath: ./repo
-
-    - id: scaffold-registry
-      name: Scaffold Registry Changes
-      action: command:execute
-      input:
-        command: python3
-        args:
-          - scripts/scaffold_ecr.py
-          - --app-name
-          - ${{ parameters.name }}
-          - --owner
-          - ${{ parameters.owner }}
-          - --risk
-          - ${{ parameters.risk }}
-          - --environment
-          - ${{ parameters.environment }}
-          - --requester
-          - ${{ parameters.requester }}
-          - --domain
-          - ${{ parameters.domain }}
-        workingDirectory: ./repo
-
-    - id: create-pr
-      name: Create Pull Request
-      action: publish:github:pull-request
+    - id: trigger-workflow
+      name: Trigger Creation Workflow
+      action: github:actions:dispatch
       input:
         repoUrl: github.com?owner=mikeybeezy&repo=goldenpath-idp-infra
-        title: "ECR registry: ${{ parameters.name }}"
-        description: |
-          ## ECR Registry Creation Request
-          **Registry:** `${{ parameters.name }}`
-          **Environment:** `${{ parameters.environment }}`
-          **Owner:** `${{ parameters.owner }}`
-          **Requested By:** `${{ parameters.requester }}`
-          **Domain:** `${{ parameters.domain }}`
-          **Risk:** `${{ parameters.risk }}`
-        branchName: "ecr/${{ parameters.environment }}/${{ parameters.name }}"
-        targetBranchName: main
-        sourcePath: ./repo
+        workflowId: create-ecr-registry.yml
+        branchOrTagName: main
+        workflowInputs:
+          registry_name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          user: ${{ parameters.requester }}
+          domain: ${{ parameters.domain }}
+          environment: ${{ parameters.environment }}
+          risk: ${{ parameters.risk }}
 
   output:
     links:
-      - title: Open Pull Request
-        url: ${{ steps['create-pr'].output.pullRequestUrl }}
+      - title: Open Workflow Runs
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/workflows/create-ecr-registry.yml
       - title: PR List (fallback)
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls
-      - title: Catalog Link (static; success = PR link above)
+      - title: Catalog Link (static; success = workflow run above)
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/20-contracts/catalogs/ecr-catalog.yaml

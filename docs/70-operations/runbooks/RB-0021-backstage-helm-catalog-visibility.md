@@ -194,6 +194,37 @@ Navigate to **Catalog** in the Backstage UI. You should see:
 
 ## Common Issues
 
+### Issue: Helm values override not applied (catalog still points to development)
+**Symptoms**:
+- `helm get values backstage -n backstage` still shows `development` catalog URLs
+- Backstage UI keeps loading the demo catalog
+
+**Cause**:
+- Helm upgrade used the upstream chart instead of the local chart, or
+- The upgrade omitted one of the values files (`values-local.yaml` / `values-local.secrets.yaml`), or
+- Old values persisted because Helm reused previous values.
+
+**Fix**:
+
+1) Upgrade using the local chart and both values files:
+```sh
+helm upgrade --install backstage /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra/backstage-helm/charts/backstage \
+  -n backstage --create-namespace --reset-values \
+  -f /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra/backstage-helm/values-local.yaml \
+  -f /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra/backstage-helm/values-local.secrets.yaml
+```
+
+2) Confirm the rendered config:
+```sh
+helm get values backstage -n backstage
+kubectl -n backstage get configmap backstage-app-config -o yaml | rg -n "catalog|DEMO_CATALOG"
+```
+
+3) Restart Backstage to pick up the new ConfigMap:
+```sh
+kubectl -n backstage rollout restart deployment/backstage
+```
+
 ### Issue: "URL parsing failed" for "url:None"
 **Cause**: The `CUSTOM_CATALOG_LOCATION` is set to "None" (string instead of unset).
 **Fix**: Ensure Helm values use `customCatalogLocation: ""` or don't set it.
