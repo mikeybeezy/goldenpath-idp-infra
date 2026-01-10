@@ -52,6 +52,7 @@ documents, and artifacts you need before you start making changes.
 - Bootstrap scripts: `bootstrap/`
 - Terraform entry points: `Makefile`, `envs/dev/`, `modules/`
 - Pre-commit rules: `.pre-commit-config.yaml`
+- Doc scaffolding: `scripts/scaffold_doc.py` (creates compliant frontmatter)
 
 ## Starter artifacts to have on hand
 
@@ -65,4 +66,5 @@ documents, and artifacts you need before you start making changes.
 1. Initialize your environment: `bin/governance setup`.
 2. Confirm branch flow: create a feature branch from `development`.
 3. Open a draft PR into `development` to validate guardrails and labels (use `.github/pull_request_template.md`).
-4. Capture any missing access or missing config as issues.
+4. Create a sample doc with `scripts/scaffold_doc.py` and confirm pre-commit auto-fix runs on save.
+5. Capture any missing access or missing config as issues.

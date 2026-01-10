@@ -49,6 +49,12 @@ Located at: `scripts/validate_metadata.py`
 
 It enforces the Schema defined in [METADATA_STRATEGY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/METADATA_STRATEGY.md) across all Markdown (`.md`) and Sidecar YAML (`metadata.yaml`) files.
 
+## Authoring Flow (Recommended)
+
+1. **Scaffold** new docs using `scripts/scaffold_doc.py` (generates compliant frontmatter).
+2. **Auto-fix** runs in pre-commit via `scripts/standardize_metadata.py` for changed docs.
+3. **Validate** in CI using `scripts/validate_metadata.py` (backstop only).
+
 ## Usage
 
 ### Local Run
