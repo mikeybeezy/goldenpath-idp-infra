@@ -23,10 +23,10 @@ spec:
   - ./governance/governance-emoji-policy.yaml
   - ./governance/governance-federated-metadata-strategy.yaml
   - ./governance/governance-governance-vocabulary.yaml
+  - ./governance/governance-metadata-artifact-adoption-policy.yaml
   - ./governance/governance-metadata-inheritance-strategy.yaml
   - ./governance/governance-metadata-injection-guide.yaml
   - ./governance/governance-metadata-maintenance-guide.yaml
-  - ./governance/governance-metadata-artifact-adoption-policy.yaml
   - ./governance/governance-platform-health-guide.yaml
   - ./governance/governance-pr-156-stabilization-checklist.yaml
   - ./governance/governance-policies-01-tag-scoped-policy-template.yaml

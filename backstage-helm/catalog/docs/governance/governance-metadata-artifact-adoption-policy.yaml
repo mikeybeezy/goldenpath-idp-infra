@@ -3,7 +3,12 @@ kind: Component
 metadata:
   name: governance-metadata-artifact-adoption-policy
   title: Metadata Adoption Policy for Configs and Reports
-  description: Defines where metadata lives for configs and reports (sidecar vs frontmatter).
+  description: '| Artifact | Location | Metadata Form | Source of Truth | Notes |
+
+    | --- | --- | --- | --- | --- |
+
+    | Config files (YAML/JSON) | repo root / scripts / configs | `<file>.metadata.yaml`
+    | sidecar | Keep p...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
