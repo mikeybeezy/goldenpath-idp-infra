@@ -17,6 +17,22 @@ GOVERNANCE_DIR = "docs/10-governance"
 OUTPUT_DIR = "backstage-helm/catalog/docs"
 TECHDOCS_REF = "url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development"
 
+class IndentDumper(yaml.SafeDumper):
+    """Ensures list items are indented under their parent keys."""
+
+    def increase_indent(self, flow=False, indentless=False):
+        return super().increase_indent(flow, False)
+
+def dump_yaml(data, path: Path) -> None:
+    with open(path, 'w', encoding='utf-8') as f:
+        yaml.dump(
+            data,
+            f,
+            sort_keys=False,
+            default_flow_style=False,
+            Dumper=IndentDumper,
+        )
+
 def extract_frontmatter_and_content(file_path):
     """Extract YAML frontmatter and first paragraph from markdown file."""
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -88,8 +104,7 @@ def generate_adr_entities():
 
         # Write individual entity file
         output_file = adr_output_dir / f"{component_name}.yaml"
-        with open(output_file, 'w') as f:
-            yaml.dump(entity, f, sort_keys=False)
+        dump_yaml(entity, output_file)
 
         entities.append(f"./adrs/{component_name}.yaml")
 
@@ -139,8 +154,7 @@ def generate_changelog_entities():
 
         # Write individual entity file
         output_file = cl_output_dir / f"{component_name}.yaml"
-        with open(output_file, 'w') as f:
-            yaml.dump(entity, f, sort_keys=False)
+        dump_yaml(entity, output_file)
 
         entities.append(f"./changelogs/{component_name}.yaml")
 
@@ -193,8 +207,7 @@ def generate_governance_entities():
         }
 
         output_file = gov_output_dir / f"{component_name}.yaml"
-        with open(output_file, 'w') as f:
-            yaml.dump(entity, f, sort_keys=False)
+        dump_yaml(entity, output_file)
 
         entities.append(f"./governance/{component_name}.yaml")
 
@@ -232,11 +245,9 @@ def create_location_files(adr_entities, changelog_entities, governance_entities)
 
     output_dir = Path(OUTPUT_DIR)
 
-    with open(output_dir / "adrs-index.yaml", 'w') as f:
-        yaml.dump(adr_location, f, sort_keys=False)
+    dump_yaml(adr_location, output_dir / "adrs-index.yaml")
 
-    with open(output_dir / "changelogs-index.yaml", 'w') as f:
-        yaml.dump(cl_location, f, sort_keys=False)
+    dump_yaml(cl_location, output_dir / "changelogs-index.yaml")
 
     # Governance Location - ALL entities
     gov_location = {
@@ -250,8 +261,7 @@ def create_location_files(adr_entities, changelog_entities, governance_entities)
             "targets": governance_entities
         }
     }
-    with open(output_dir / "governance-index.yaml", 'w') as f:
-        yaml.dump(gov_location, f, sort_keys=False)
+    dump_yaml(gov_location, output_dir / "governance-index.yaml")
 
     print(f"✅ Created location files with ALL entities")
 

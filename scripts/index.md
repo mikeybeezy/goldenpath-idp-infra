@@ -66,11 +66,16 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | Script | Description |
 | :--- | :--- |
 | [audit_metadata.py](file://scripts/audit_metadata.py) | Metadata Audit Utility (Active Governance Loop) |
+| [aws_inventory.py](file://scripts/aws_inventory.py) | Generate a lightweight AWS inventory report using Resource Groups Tagging API. |
 | [backfill_metadata.py](file://scripts/backfill_metadata.py) | Metadata Backfill Script |
 | [check_script_traceability.py](file://scripts/check_script_traceability.py) | Script Traceability Auditor |
+| [deploy-backstage.sh](file://scripts/deploy-backstage.sh) | Purpose: Deploy Backstage with VQ Telemetry and Born Governed status. |
 | [enforce_emoji_policy.py](file://scripts/enforce_emoji_policy.py) | Purpose: Emoji Policy Enforcer |
 | [fix_yaml_syntax.py](file://scripts/fix_yaml_syntax.py) | YAML Syntax Fixer for Templates |
 | [generate_adr_index.py](file://scripts/generate_adr_index.py) | ADR Index Generator (Iteration 1) |
+| [generate_backstage_docs.py](file://scripts/generate_backstage_docs.py) | Backstage Documentation Entity Generator |
+| [generate_backstage_ecr.py](file://scripts/generate_backstage_ecr.py) | Backstage ECR Entity Generator |
+| [generate_doc_system_map.py](file://scripts/generate_doc_system_map.py) | Generate and refresh the platform documentation system map. |
 | [generate_governance_vocab.py](file://scripts/generate_governance_vocab.py) | Governance Vocabulary Generator |
 | [migrate_partial_metadata.py](file://scripts/migrate_partial_metadata.py) | Migrate partial metadata to enhanced schema |
 | [reliability-metrics.sh](file://scripts/reliability-metrics.sh) | Shell script utility. |

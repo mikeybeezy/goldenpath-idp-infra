@@ -8,13 +8,14 @@ metadata:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
   tags:
-  - gove
-  - governance
-  - documentation
+    - gove
+    - governance
+    - documentation
+    - report
   links:
-  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/reports/HEALTH_AUDIT_LOG.md
-    title: View on GitHub
-    icon: docs
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/reports/HEALTH_AUDIT_LOG.md
+      title: View on GitHub
+      icon: docs
 spec:
   type: documentation
   lifecycle: active

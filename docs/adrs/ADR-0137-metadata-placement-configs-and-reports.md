@@ -87,6 +87,7 @@ Rejected due to drift risk and loss of locality.
 
 - Add sidecars for the inventory config and report outputs.
 - Update validators/reporting to include tooling-style sidecars.
+- Track `scripts/aws_inventory.py` as the first governed report generator under this policy.
 
 ## Notes
 

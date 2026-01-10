@@ -8,14 +8,14 @@ metadata:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
   tags:
-  - gove
-  - governance
-  - documentation
-  - policy
+    - gove
+    - governance
+    - documentation
+    - policy
   links:
-  - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/02_GOVERNANCE_MODEL.md
-    title: View on GitHub
-    icon: docs
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/02_GOVERNANCE_MODEL.md
+      title: View on GitHub
+      icon: docs
 spec:
   type: documentation
   lifecycle: deprecated

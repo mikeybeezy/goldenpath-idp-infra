@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""
+Generate and refresh the platform documentation system map.
+
+Updates docs/90-doc-system/PLATFORM_SYSTEM_MAP.md with current counts for
+living docs, Backstage indexes, and report sidecars.
+"""
 import datetime
 from pathlib import Path
 
