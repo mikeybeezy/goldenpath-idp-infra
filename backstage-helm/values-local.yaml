@@ -45,7 +45,7 @@ appConfig: |
   scaffolder:
 
   techdocs:
-    builder: 'local'
+    builder: 'external'
     generator:
       runIn: 'local'
     publisher:
