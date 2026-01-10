@@ -193,4 +193,12 @@ ecr_repositories = {
       risk  = "low"
     }
   }
+
+  "backstage-regza" = {
+    metadata = {
+      id    = "REGISTRY_BACKSTAGE_REGZA"
+      owner = "platform-team"
+      risk  = "medium"
+    }
+  }
 }
