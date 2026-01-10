@@ -9,3 +9,4 @@ spec:
     - ./systems/audio-playback-system.yaml
     - ./systems/container-registry-system.yaml
     - ./systems/podcast-system.yaml
+    - ./systems/secrets-platform.yaml
