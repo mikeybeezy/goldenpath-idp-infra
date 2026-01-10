@@ -173,7 +173,6 @@ def main():
     if not interactive:
         missing = []
         if not args.app_name: missing.append("--app-name")
-        if not args.app_id: missing.append("--app-id")
         if not args.owner: missing.append("--owner")
         if missing:
             print(f"❌ Error: Required: {', '.join(missing)}")
