@@ -17,6 +17,6 @@ metadata:
     icon: docs
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records
