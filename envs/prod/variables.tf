@@ -205,3 +205,58 @@ variable "eks_config" {
     }
   }
 }
+variable "iam_config" {
+  description = "Configuration for optional EKS IAM roles and OIDC assume role."
+  type = object({
+    enabled                                 = bool
+    cluster_role_name                       = string
+    node_group_role_name                    = string
+    oidc_role_name                          = string
+    oidc_issuer_url                         = string
+    oidc_provider_arn                       = string
+    oidc_audience                           = string
+    oidc_subject                            = string
+    enable_autoscaler_role                  = bool
+    autoscaler_role_name                    = string
+    autoscaler_policy_arn                   = string
+    autoscaler_service_account_namespace    = string
+    autoscaler_service_account_name         = string
+    enable_lb_controller_role               = bool
+    lb_controller_role_name                 = string
+    lb_controller_policy_arn                = string
+    lb_controller_service_account_namespace = string
+    lb_controller_service_account_name      = string
+    enable_eso_role                         = optional(bool, false)
+    eso_role_name                           = optional(string, "goldenpath-idp-eso-role")
+    eso_service_account_namespace           = optional(string, "external-secrets")
+    eso_service_account_name                = optional(string, "external-secrets")
+  })
+  validation {
+    condition     = var.iam_config.enabled == false || var.eks_config.enabled == true
+    error_message = "iam_config.enabled requires eks_config.enabled to be true."
+  }
+  default = {
+    enabled                                 = false
+    cluster_role_name                       = ""
+    node_group_role_name                    = ""
+    oidc_role_name                          = ""
+    oidc_issuer_url                         = ""
+    oidc_provider_arn                       = ""
+    oidc_audience                           = "sts.amazonaws.com"
+    oidc_subject                            = ""
+    enable_autoscaler_role                  = false
+    autoscaler_role_name                    = "goldenpath-idp-cluster-autoscaler"
+    autoscaler_policy_arn                   = ""
+    autoscaler_service_account_namespace    = "kube-system"
+    autoscaler_service_account_name         = "cluster-autoscaler"
+    enable_lb_controller_role               = false
+    lb_controller_role_name                 = "goldenpath-idp-aws-load-balancer-controller"
+    lb_controller_policy_arn                = ""
+    lb_controller_service_account_namespace = "kube-system"
+    lb_controller_service_account_name      = "aws-load-balancer-controller"
+    enable_eso_role                         = false
+    eso_role_name                           = "goldenpath-idp-eso-role"
+    eso_service_account_namespace           = "external-secrets"
+    eso_service_account_name                = "external-secrets"
+  }
+}

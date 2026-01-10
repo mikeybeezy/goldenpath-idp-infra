@@ -345,3 +345,65 @@ resource "aws_iam_role_policy_attachment" "lb_controller" {
   role       = aws_iam_role.lb_controller[0].name
   policy_arn = var.lb_controller_policy_arn != "" ? var.lb_controller_policy_arn : aws_iam_policy.lb_controller[0].arn
 }
+
+data "aws_iam_policy_document" "eso_assume" {
+  count = var.enable_eso_role ? 1 : 0
+
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:aud"
+      values   = [var.oidc_audience]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:${var.eso_service_account_namespace}:${var.eso_service_account_name}"]
+    }
+
+    principals {
+      type        = "Federated"
+      identifiers = [var.oidc_provider_arn]
+    }
+  }
+}
+
+resource "aws_iam_role" "eso" {
+  count              = var.enable_eso_role ? 1 : 0
+  name               = var.eso_role_name
+  assume_role_policy = data.aws_iam_policy_document.eso_assume[0].json
+  tags               = merge(var.tags, local.environment_tags)
+}
+
+data "aws_iam_policy_document" "eso" {
+  count = var.enable_eso_role ? 1 : 0
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "eso" {
+  count       = var.enable_eso_role ? 1 : 0
+  name        = "${var.eso_role_name}-policy"
+  description = "IAM policy for External Secrets Operator."
+  policy      = data.aws_iam_policy_document.eso[0].json
+  tags        = merge(var.tags, local.environment_tags)
+}
+
+resource "aws_iam_role_policy_attachment" "eso" {
+  count      = var.enable_eso_role ? 1 : 0
+  role       = aws_iam_role.eso[0].name
+  policy_arn = aws_iam_policy.eso[0].arn
+}

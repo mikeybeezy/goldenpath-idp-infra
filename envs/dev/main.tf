@@ -87,6 +87,10 @@ module "iam" {
   lb_controller_policy_arn                = var.iam_config.lb_controller_policy_arn
   lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
   lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
+  enable_eso_role                         = var.iam_config.enable_eso_role
+  eso_role_name                           = "${var.iam_config.eso_role_name}${local.role_suffix}"
+  eso_service_account_namespace           = var.iam_config.eso_service_account_namespace
+  eso_service_account_name                = var.iam_config.eso_service_account_name
   environment                             = local.environment
   tags                                    = local.common_tags
 
@@ -253,6 +257,24 @@ resource "kubernetes_service_account_v1" "cluster_autoscaler" {
     namespace = var.iam_config.autoscaler_service_account_namespace
     annotations = {
       "eks.amazonaws.com/role-arn" = module.iam[0].cluster_autoscaler_role_arn
+    }
+  }
+
+  depends_on = [
+    module.eks,
+    module.iam,
+    aws_eks_access_policy_association.terraform_admin
+  ]
+}
+
+resource "kubernetes_service_account_v1" "external_secrets" {
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+
+  metadata {
+    name      = var.iam_config.eso_service_account_name
+    namespace = var.iam_config.eso_service_account_namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].eso_role_arn
     }
   }
 
