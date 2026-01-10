@@ -24,6 +24,9 @@ repos:
         name: Doc Metadata Auto-Fix
         entry: python3 scripts/standardize_metadata.py
         language: python
+        additional_dependencies:
+          - pyyaml
+        stages: [commit]
         files: ^docs/.*\.md$
         pass_filenames: true
       - id: emoji-enforcer
