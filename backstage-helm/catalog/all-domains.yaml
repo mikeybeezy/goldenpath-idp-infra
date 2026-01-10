@@ -8,3 +8,4 @@ spec:
     - ./domains/delivery-domain.yaml
     - ./domains/artists-domain.yaml
     - ./domains/playback-domain.yaml
+    - ./domains/security-domain.yaml

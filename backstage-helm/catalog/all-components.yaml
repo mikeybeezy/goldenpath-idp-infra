@@ -22,3 +22,4 @@ spec:
     - ./components/adr-documentation.yaml
     - ./components/changelog-documentation.yaml
     - ./components/ecr-registry.yaml
+    - ./components/external-secrets-operator.yaml
