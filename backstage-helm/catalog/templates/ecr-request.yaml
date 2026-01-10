@@ -92,7 +92,7 @@ spec:
       input:
         repoUrl: ${{ parameters.repoUrl }}
         workflowId: create-ecr-registry.yml
-        branchOrTagName: development
+        branchOrTagName: main
         workflowInputs:
           registry_name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
@@ -106,4 +106,4 @@ spec:
       - title: Open Workflow Run
         url: ${{ steps['trigger-workflow'].output.link }}
       - title: Repository URL (After Merge)
-        url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/20-contracts/catalogs/ecr-catalog.yaml
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/20-contracts/catalogs/ecr-catalog.yaml
