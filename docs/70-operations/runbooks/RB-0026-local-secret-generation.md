@@ -88,16 +88,16 @@ After the parser generates the implementation artifacts, you must follow these s
 ### 1. Provision the AWS Resource
 Navigate to the Terraform environment and apply the changes. 
 
-> [!TIP]
-> **Surgical Targeting**: In a shared environment, `terraform plan` might show many unrelated changes. To isolate just your new secret, use the `-target` flag.
+> [!IMPORTANT]
+> **Subdirectory Discovery**: Terraform only automatically loads `*.auto.tfvars.json` from the **current directory**. Since the parser organizes files into `secrets/generated/`, you must explicitly pass the file using the `-var-file` flag.
 
 ```bash
 cd envs/dev
-# Target the specific secret module instance
-terraform plan -target='module.app_secrets["<service>-<name>"]'
-terraform apply -target='module.app_secrets["<service>-<name>"]'
+# Target the specific secret and pass the generated var-file
+terraform plan \
+  -target='module.app_secrets["payments-payments-db-credentials"]' \
+  -var-file='secrets/generated/payments/SEC-0007.auto.tfvars.json'
 ```
-*Note: The key `<service>-<name>` matches the key in your generated `.auto.tfvars.json` file.*
 
 ### 2. Commit and Sync (GitOps)
 The `ExternalSecret` manifest must be committed to the repository for ArgoCD to pick it up.
