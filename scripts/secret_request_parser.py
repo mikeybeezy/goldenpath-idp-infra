@@ -44,6 +44,10 @@ class SecretRequest:
 
     provider: str = "aws-secrets-manager"
 
+    read_principals: List[str] = None
+    write_principals: List[str] = None
+    break_glass_principals: List[str] = None
+
 
 def load_yaml(path: Path) -> Dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
@@ -89,6 +93,11 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> SecretRequest:
     namespace = access.get("namespace")
     k8sSecretName = access.get("k8sSecretName")
 
+    # Access control principal lists (camelCase for contract, snake_case internally)
+    read_principals = access.get("readPrincipals", [])
+    write_principals = access.get("writePrincipals", [])
+    break_glass_principals = access.get("breakGlassPrincipals", [])
+
     missing = [k for k, v in {
         "id": secret_id,
         "name": name,
@@ -120,6 +129,9 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> SecretRequest:
         lifecycleStatus=str(lifecycleStatus),
         namespace=str(namespace),
         k8sSecretName=str(k8sSecretName),
+        read_principals=list(read_principals),
+        write_principals=list(write_principals),
+        break_glass_principals=list(break_glass_principals),
     )
 
 
@@ -174,7 +186,10 @@ def generate_tfvars(req: SecretRequest) -> Dict[str, Any]:
                     "id": req.secret_id,
                     "owner": req.owner,
                     "risk": req.riskTier,
-                }
+                },
+                "read_principals": req.read_principals,
+                "write_principals": req.write_principals,
+                "break_glass_principals": req.break_glass_principals,
             }
         }
     }

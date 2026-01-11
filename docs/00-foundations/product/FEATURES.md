@@ -43,6 +43,7 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Config-Driven Governance**: Manage platform rules via a Schema-First YAML control plane.
 - **Zero-Touch Auto-Healing**: Automatic metadata initialization for new assets to eliminate governance debt.
 - **HITL Governance**: Human-In-The-Loop guidance that replaces friction with actionable remediation.
+- **Policy-as-Code Guardrails**: Automated enforcement of security best-practices (encryption, rotation, retention) at the intent layer.
 
 ## 🚀 Delivery & Self-Service
 *Automating the path from local code to a production-ready, governed environment.*
@@ -50,6 +51,8 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Repository Scaffolding**: One-click creation of governed GitHub repositories with pre-configured CI/CD.
 - **Service Scaffolding**: Strategic templates for Node.js, Python, and Go that bake in security and standards.
 - **Resource Provisioning**: Governed workflows for AWS ECR, S3, RDS, and VPC components.
+- **Unified Secret Request Flow**: A streamlined, single-contract interface for managing the entire secret lifecycle across AWS and Kubernetes.
+- **GitOps Secret Projection**: Automated bridging of AWS Secrets Manager to Kubernetes namespaces via the External Secrets Operator.
 - **CI/CD Guardrails**: Automated branch policies and PR gates to protect the main development branch.
 
 ## Observability & Intelligence

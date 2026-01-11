@@ -154,6 +154,16 @@ The platform prioritizes developer velocity by replacing "Automatic Policing" wi
 
 ---
 
+## 18. Contract-Driven Secret Provisioning (Request-to-Projection)
+The platform transforms raw developer intent into governed cloud infrastructure and cluster-side secrets through a deterministic **Secret Request Parser**.
+- **Contract-to-IaC Translation**: Performs high-fidelity translation of developer "intent" YAML into platform-grade Terraform configuration, decoupling implementation complexity from the user.
+- **Shift-Left Governance Engine**: Enforces platform security policies (e.g., mandatory rotation for high-risk secrets) during the PR phase, blocking non-compliant requests before they reach AWS.
+- **Dual-Target Projection**: Simultaneously generates cloud infrastructure (Terraform) and Kubernetes projection manifests (ESO), ensuring 1:1 parity between cloud resources and cluster access.
+- **Automated IAM Least-Privilege**: Dynamically calculates and applies resource-level IAM policies for secrets based on declared `read`/`write` access principals in the contract.
+- **Deterministic Namespace Isolation**: Enforces standardized naming and namespace mapping to prevent cross-tenant collisions and ensure strict environment separation.
+
+---
+
 ## Technical Foundation
 - **Platform Core**: AWS EKS (Ubuntu/Bottlerocket)
 - **GitOps Engine**: Argo CD
