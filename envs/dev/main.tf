@@ -327,17 +327,14 @@ module "ecr_repositories" {
 }
 
 module "app_secrets" {
-  source = "../../modules/aws_secrets_manager"
+  source   = "../../modules/aws_secrets_manager"
+  for_each = var.app_secrets
 
-  name        = "${local.name_prefix}-app-secrets"
-  description = "Standard application secrets for ${local.environment}"
+  name        = each.key
+  description = each.value.description
   tags        = local.common_tags
 
-  metadata = {
-    id    = "SECRET_PLATFORM_CORE_${upper(local.environment)}"
-    owner = var.owner_team
-    risk  = "medium"
-  }
+  metadata = each.value.metadata
 }
 
 resource "kubernetes_manifest" "cluster_secret_store" {

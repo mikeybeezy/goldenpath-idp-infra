@@ -10,122 +10,125 @@ relates_to:
 
 # How It Works: Secret Request Flow
 
-This document explains the technical lifecycle of a platform secret, following the Golden Path "Intent vs. Projection" model.
+This document explains the technical lifecycle of a platform secret, following the Golden Path "Intent vs. Projection" model. It emphasizes the philosophy that **Backstage is the front door for intent, while the platform owns creation, policy, and lifecycle.**
 
-## 0. High-Level Architecture
-This diagram shows how a single developer intent is transformed into cloud infrastructure and cluster hydration.
+## 💡 Core Philosophy
+
+### The Golden Rule
+> [!IMPORTANT]
+> **Humans never touch AWS directly. Backstage never touches secret values. Automation enforces policy.**
+
+### The "Front Door" Model
+Backstage should **NOT** create secrets directly via AWS API.
+- **Security**: Avoids giving Backstage broad IAM permissions (huge blast radius).
+- **Auditability**: Ensures every secret request goes through a version-controlled, auditable PR.
+- **Separation of Concerns**: Backstage captures *intent*; the Platform handles *implementation*.
+
+---
+
+## 🏛️ End-to-End Architecture
+
+The following flow represents the clean separation between captured intent, Git-based governance, and cluster-side projection.
 
 ```text
-+---------------+       +-----------------------+
-|   Developer   | ----> |    Git Repository     |
-+---------------+       +-----------------------+
-                                    |
-                          ( CI / Schema Validation )
-                                    |
-+-----------------------+           |
-|  Platform Automation  | <---------+ (PR Merged)
-+-----------------------+
-        |
-        |       +-------------------------------+
-        +-----> |      AWS Secrets Manager      |
-        |       +-------------------------------+
-        |       (path: goldenpath/service/env)
-        |
-        |       +-------------------------------+
-        +-----> |   GitOps Repo / ArgoCD Sync   |
-                +-------------------------------+
-                                |
-                        ( Remote Reconcile )
-                                |
-                +-------------------------------+
-                |      Target K8s Cluster       |
-                +-------------------------------+
-                                |
-                        +---------------+
-                        |    ESO Pod    |
-                        +---------------+
-                                |
-                        ( Secret Sync )
-                                |
-                        +---------------+       +-------------------+
-                        |  K8s Secret   | ----> |   App Container   |
-                        +---------------+       +-------------------+
+[Backstage UI]
+   |
+   | (template: request secret)
+   v
+[Git PR in infra repo]  <-- approvals / policy gates
+   |
+   | (merge)
+   v
+[Workflow/Terraform]
+   |
+   | creates/updates
+   v
+[AWS Secrets Manager]  <-- source of truth
+   |
+   | (ESO reads via IRSA)
+   v
+[ESO in cluster]
+   |
+   | writes
+   v
+[K8s Secret]
+   |
+   | (mounted/env)
+   v
+[Pod Container]
 ```
 
-## 1. Developer Intent (The "What")
-The process starts when a developer defines their requirement in a standard, low-entropy manifest. They declare their **Intent** without needing to understand the underlying infrastructure.
+---
 
-**Manifest Location**: `catalogs/secrets/<service>/<env>/<id>.yaml`
+## 🔄 The Lifecycle in Practice
 
-### Example: Intent
-```yaml
-apiVersion: goldenpath.io/v1
-kind: SecretRequest
-metadata:
-  id: SEC-0007                      # Mandatory: Audit ID (SEC-XXXX)
-  name: payments-db-credentials     # Mandatory: Intent Name
-  owner: team-payments              # Mandatory: Accountability
-  service: payments                 # Mandatory: Service namespace
-  environment: dev                  # Mandatory: Environment
-spec:
-  provider: aws-secrets-manager      # Mandatory: Provider
-  secretType: database-credentials   # Mandatory: Type
-  risk:
-    tier: medium                     # Mandatory: Governance
-  rotation:
-    rotationClass: standard          # Mandatory: Security
-  lifecycle:
-    status: active                   # Mandatory: Lifecycle
-  access:
-    namespace: payments              # Mandatory: K8s Namespace
-    k8sSecretName: payments-db-creds # Mandatory: K8s Secret Name
-  ttlDays: 30                       # Mandatory: Cleanup (Days)
-```
+### 1. Backstage Captures Intent
+The developer selects the "Request app secret" template and provides:
+- **Service Name**: The namespace of the consumer.
+- **Environment**: dev/test/stage/prod.
+- **Secret Class**: db-creds, api-key, etc.
+- **Risk Tier / Rotation Policy**: Governance requirements.
 
-## 2. Platform Processing (The "Logic")
-When the PR is opened, the platform automation executes validation and governance logic.
+**Result**: Backstage creates a PR (or dispatches a workflow) into the infrastructure repository.
 
-### Validation & Governance
-- **Schema & Enum Check**: Ensures all fields align with `schemas/metadata/enums.yaml`.
-- **Governance Logic**: Enforces rules based on `risk.tier`. For example, `high` risk requires `rotationClass != none`.
+### 2. Git as the Source of Truth
+The PR contains the declarative intent in the platform contract format:
+- **Location**: `catalogs/secrets/<service>/<env>/<id>.yaml`
+- **Metadata**: Sidecar containing ownership and risk profiles.
 
-## 3. Infrastructure Projection (The "Implementation")
-Once the PR is merged, the platform 프로젝트 the intent into implementation manifests.
+This is where peer review, automated guardrails, and security approvals happen.
 
-### The ExternalSecret (The "What")
-This manifest is auto-generated and pushed to the GitOps repository. It translates the high-level intent into specific AWS paths.
+### 3. Platform Provisioning (AWS)
+On merge to the protected branch, the platform automation:
+1.  Creates/updates the secret in **AWS Secrets Manager**.
+2.  Applies mandatory tags, ownership, and rotation configuration.
+3.  Enforces security policies (e.g., encryption keys).
+4.  **No secret values are ever stored in Git or handled by Backstage.**
 
-```yaml
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: payments-db-credentials-sync
-  namespace: payments
-spec:
-  refreshInterval: "1h"
-  secretStoreRef:
-    name: aws-secrets-manager
-    kind: ClusterSecretStore
-  target:
-    name: payments-db-creds
-    creationPolicy: Owner
-  dataFrom:
-    - extract:
-        key: "goldenpath/payments/dev/payments-db-credentials"
-```
+### 4. Cluster Projection (ESO)
+In the target EKS cluster, the **External Secrets Operator (ESO)**:
+1.  Authenticates to AWS via **IRSA** (IAM Roles for Service Accounts).
+2.  References the AWS Secret ARN generated in step 3.
+3.  Writes a native Kubernetes `Secret` into the application's namespace.
 
-## 4. Consumption
-The application consumes the secret as a standard Kubernetes `Secret` object. The application code remains decoupled from the infrastructure provider (AWS), allowing for future portability.
+### 5. Consumption (Pod)
+The application Deployment references the K8s Secret via environment variables or volume mounts.
+- **Portability**: The application code doesn't know it's using AWS; it just sees a K8s Secret.
+- **Hydration**: The secret is hydrated just-in-time at the runtime boundary.
 
-## 5. Decommissioning
-Decommissioning is intent-based to avoid accidental deletion and ensure auditability:
+---
 
-**Lifecycle Progression**:
+## 🛡️ Governance & Decommissioning
+
+### Risk Tiers
+- **High Risk**: Requires mandatory rotation and manual security approval.
+- **Medium/Low Risk**: Can be auto-approved based on policy and standard rotation.
+
+### Decommissioning Workflow
+Secrets follow a controlled "Cool-down" sequence to prevent production outages:
 `active → deprecated → decommission_requested → decommissioned`
 
-**Sequencing**:
-1. Change `lifecycle.status` to `decommission_requested`.
-2. Automation removes the `ExternalSecret` (stop cluster projection).
-3. Best-effort checks confirm no active consumers.
-4. Final deletion of the AWS secret and transition to `decommissioned`.
-5. Record an audit entry.
+1.  **Decommission Requested**: Automation removes the `ExternalSecret` manifest from the cluster.
+2.  **Verification**: Confirm no metrics or logs show active usage.
+3.  **Final Deletion**: The AWS secret is deleted after the verification grace period.
+
+---
+
+## 🛠️ Implementation: GitHub Actions Outline
+
+The lifecycle is enforced by two distinct workflows ensuring a clean separation between **Validation** and **Execution**.
+
+### A. `secret-request-pr.yml` (PR: Validate + Plan)
+- **Trigger**: `pull_request` on `catalogs/secrets/**`.
+- **Steps**:
+    1.  **Schema Validation**: Ensures the `SecretRequest` manifest is valid.
+    2.  **Policy Gate**: Fails the build if `riskTier=high` but `rotationClass=none`.
+    3.  **Terraform Plan**: Generates a plan showing the AWS Secrets Manager changes.
+    4.  **Traceability**: Ensures the request is linked to an ADR and recorded in the audit log.
+
+### B. `secret-request-apply.yml` (Merge: Apply + Sync)
+- **Trigger**: `push` to `development/main` on `catalogs/secrets/**`.
+- **Steps**:
+    1.  **Terraform Apply**: Provisions the secret in AWS and configures rotation.
+    2.  **Manifest Generation**: Generates the `ExternalSecret` manifest for GitOps.
+    3.  **ArgoCD Reconcile**: Triggers an ArgoCD refresh to pull the new secret into the cluster.

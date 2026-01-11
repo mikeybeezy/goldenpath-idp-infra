@@ -275,3 +275,16 @@ variable "ecr_repositories" {
   }))
   default = {}
 }
+
+variable "app_secrets" {
+  description = "Map of application secrets to provision in Secrets Manager."
+  type = map(object({
+    metadata = object({
+      id    = string
+      owner = string
+      risk  = optional(string, "medium")
+    })
+    description = optional(string, "Managed application secret")
+  }))
+  default = {}
+}

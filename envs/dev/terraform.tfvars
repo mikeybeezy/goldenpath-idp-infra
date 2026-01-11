@@ -194,3 +194,16 @@ ecr_repositories = {
     }
   }
 }
+
+# Secret Catalog
+app_secrets = {
+
+  "payments-payments-db-credentials" = {
+    description = "Managed secret for payments in dev"
+    metadata = {
+      id    = "SEC-0007"
+      owner = "app-team"
+      risk  = "medium"
+    }
+  }
+}
