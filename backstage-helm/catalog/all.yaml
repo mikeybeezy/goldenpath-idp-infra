@@ -5,11 +5,13 @@ metadata:
   description: A collection of all Backstage example entities, except users, groups, and templates
 spec:
   targets:
-    - ../../catalog-info.yaml
     - ./all-apis.yaml
     - ./all-components.yaml
     - ./all-domains.yaml
     - ./all-resources.yaml
     - ./all-systems.yaml
     - ./goldenpath-org.yaml
+    - ./docs/adrs-index.yaml
+    - ./docs/changelogs-index.yaml
+    - ./docs/governance-index.yaml
     - ./templates/ecr-request.yaml

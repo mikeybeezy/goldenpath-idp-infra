@@ -6,14 +6,13 @@ metadata:
   description: Complete history of platform changes, features, and improvements
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
-    backstage.io/techdocs-ref: dir:.
   tags:
     - governance
     - documentation
     - changelog
     - release-notes
   links:
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/docs/changelog/entries
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/tree/main/docs/changelog/entries
       title: Browse All Changelog Entries
       icon: docs
     - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/CHANGELOG.md
@@ -26,4 +25,3 @@ spec:
   type: documentation
   lifecycle: production
   owner: platform-team
-  system: documentation-portal
