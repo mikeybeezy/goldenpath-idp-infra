@@ -52,6 +52,7 @@ python3 scripts/scaffold_test.py --script "scripts/my_script.py"
 | [**Doc Auto-Healing**](./features/doc_auto_healing/) | ✅ PASS |  | Frontmatter normalization & link repair. |
 | [**Governance Traceability**](./features/governance_traceability/) | ✅ PASS |  | Hard-gate link between code and ADRs. |
 | [**Enum Consistency**](./features/enum_consistency/) | ✅ PASS |  | Intelligence-ready metadata validation. |
+| [**Secret Request Flow**](./feature-tests/secret-request-flow/) | ✅ PASS |  | End-to-end camelCase secret lifecycle. |
 
 ### **Operational Suites**
 | Suite | Type | Status | Coverage |
