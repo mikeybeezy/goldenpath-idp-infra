@@ -56,3 +56,6 @@ reports/aws-inventory/local/
 !docs/antig-walkthroughs/
 !docs/antig-implementations/
 scripts/lib/__pycache__/
+
+
+values-local.secrets.yaml

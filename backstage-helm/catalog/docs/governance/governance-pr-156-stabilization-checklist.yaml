@@ -7,15 +7,16 @@ metadata:
     to ensure the ECR registry pipeline is stable and all governance gates pass deterministically.'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
-    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/PR-156-STABILIZATION-CHECKLIST.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/PR-156-STABILIZATION-CHECKLIST.md
   tags:
     - gove
     - governance
     - documentation
   links:
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/PR-156-STABILIZATION-CHECKLIST.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/PR-156-STABILIZATION-CHECKLIST.md
       title: View on GitHub
-      icon: docs
+      icon: github
 spec:
   type: documentation
   lifecycle: active

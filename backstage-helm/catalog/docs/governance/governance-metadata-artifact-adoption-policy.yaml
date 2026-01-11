@@ -11,15 +11,16 @@ metadata:
     | sidecar | Keep p...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
-    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/METADATA_ARTIFACT_ADOPTION_POLICY.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/METADATA_ARTIFACT_ADOPTION_POLICY.md
   tags:
     - gove
     - governance
     - documentation
   links:
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/10-governance/METADATA_ARTIFACT_ADOPTION_POLICY.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/METADATA_ARTIFACT_ADOPTION_POLICY.md
       title: View on GitHub
-      icon: docs
+      icon: github
 spec:
   type: documentation
   lifecycle: active

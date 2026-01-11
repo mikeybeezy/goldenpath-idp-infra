@@ -9,15 +9,16 @@ metadata:
     2. **Standard Schema**: The generated `PLATFORM_HEALTH.md` will it...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
-    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0090-automated-platform-health-dashboard.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0090-automated-platform-health-dashboard.md
   tags:
     - adr
     - governance
     - documentation
   links:
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0090-automated-platform-health-dashboard.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0090-automated-platform-health-dashboard.md
       title: View on GitHub
-      icon: docs
+      icon: github
 spec:
   type: documentation
   lifecycle: active

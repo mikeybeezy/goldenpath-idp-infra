@@ -16,15 +16,16 @@ metadata:
     - **Related:** `.github/workflows/infra-terraform.yml`, `CONTRIBUTING.m...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
-    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0010-platform-terraform-lockfile-stability.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0010-platform-terraform-lockfile-stability.md
   tags:
     - adr
     - governance
     - documentation
   links:
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0010-platform-terraform-lockfile-stability.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0010-platform-terraform-lockfile-stability.md
       title: View on GitHub
-      icon: docs
+      icon: github
 spec:
   type: documentation
   lifecycle: active

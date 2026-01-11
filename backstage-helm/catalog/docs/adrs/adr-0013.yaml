@@ -16,15 +16,16 @@ metadata:
     - **Related:** `docs/30-architecture/07_REPO_DECOUPLING_OPTIONS.md`'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
-    backstage.io/techdocs-ref: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0013-platform-argo-app-management-approach.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0013-platform-argo-app-management-approach.md
   tags:
     - adr
     - governance
     - documentation
   links:
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0013-platform-argo-app-management-approach.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0013-platform-argo-app-management-approach.md
       title: View on GitHub
-      icon: docs
+      icon: github
 spec:
   type: documentation
   lifecycle: active

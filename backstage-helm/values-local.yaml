@@ -3,7 +3,7 @@
 
 catalog:
   # Update this to point to your GitHub repository
-  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml"
+  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage-helm/catalog/all.yaml"
   customCatalogLocation: "None"
 
 backstage:
@@ -43,9 +43,15 @@ appConfig: |
     providers: {}
 
   scaffolder:
+    allowedActions:
+      - fetch:plain
+      - command:execute
+      - publish:github:pull-request
+      - github:actions:dispatch
+      - debug:log
 
   techdocs:
-    builder: 'local'
+    builder: 'external'
     generator:
       runIn: 'local'
     publisher:
@@ -57,7 +63,7 @@ appConfig: |
   catalog:
     locations:
     - type: url
-      target: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml"
+      target: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage-helm/catalog/all.yaml"
       rules:
       - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User] # [ADR-0130] Trusted Zone
     - type: url

@@ -63,7 +63,7 @@ postgres:
   password: password
 
 catalog:
-  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/development/backstage-helm/catalog/all.yaml"
+  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage-helm/catalog/all.yaml"
   customCatalogLocation: "None"
 
 backstage:
@@ -103,9 +103,15 @@ appConfig: |
     providers: {}
 
   scaffolder:
+    allowedActions:
+      - fetch:plain
+      - command:execute
+      - publish:github:pull-request
+      - github:actions:dispatch
+      - debug:log
 
   techdocs:
-    builder: 'local'
+    builder: 'external'
     generator:
       runIn: 'local'
     publisher:
