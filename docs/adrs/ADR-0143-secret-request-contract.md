@@ -39,14 +39,20 @@ metadata:
   id: SEC-0007                      # Mandatory: Audit ID (SEC-XXXX)
   name: payments-db-credentials     # Mandatory: Intent Name
   owner: team-payments              # Mandatory: Accountability (Enum: owners)
-spec:
   service: payments                 # Mandatory: Service namespace
   environment: dev                  # Mandatory: Environment (Enum: environments)
-  provider: aws-secrets-manager      # Mandatory: Portability (Enum: providers)
+spec:
+  provider: aws-secrets-manager      # Mandatory: Provider (Enum: providers)
   secretType: database-credentials   # Mandatory: Type (Enum: security.secret_types)
-  riskTier: medium                  # Mandatory: Governance (Enum: security.risk_tiers)
-  rotationClass: standard           # Mandatory: Security (Enum: security.rotation_classes)
-  lifecycleStatus: active           # Mandatory: Lifecycle (Enum: security.lifecycle_status)
+  risk:
+    tier: medium                     # Mandatory: Governance (Enum: security.risk_tiers)
+  rotation:
+    rotationClass: standard          # Mandatory: Security (Enum: security.rotation_classes)
+  lifecycle:
+    status: active                   # Mandatory: Lifecycle (Enum: security.lifecycle_status)
+  access:
+    namespace: payments              # Mandatory: K8s Namespace
+    k8sSecretName: payments-db-creds # Mandatory: K8s Secret Name
   ttlDays: 30                       # Mandatory: Cleanup (Days)
   notes: "Optional human context"    # Optional Context
 ```
@@ -56,14 +62,16 @@ spec:
   - `id`: Unique Audit ID (Format: `SEC-XXXX`)
   - `name`: Intent-based resource name
   - `owner`: Accountability reference (Enum: `owners`)
-- **Spec**:
   - `service`: Target service namespace
   - `environment`: Deployment target (Enum: `environments`)
+- **Spec**:
   - `provider`: Infrastructure provider (Enum: `providers`)
   - `secretType`: Categorization (Enum: `security.secret_types`)
-  - `riskTier`: Security risk classification (Enum: `security.risk_tiers`)
-  - `rotationClass`: Rotation posture (Enum: `security.rotation_classes`)
-  - `lifecycleStatus`: Operational state (Enum: `security.lifecycle_status`)
+  - `risk.tier`: Security risk classification (Enum: `security.risk_tiers`)
+  - `rotation.rotationClass`: Rotation posture (Enum: `security.rotation_classes`)
+  - `lifecycle.status`: Operational state (Enum: `security.lifecycle_status`)
+  - `access.namespace`: Target Kubernetes namespace for projection
+  - `access.k8sSecretName`: Target name for the projected Kubernetes secret
   - `ttlDays`: Time-to-live for the managed resource
 
 ## Workflow (High Level)
@@ -76,9 +84,9 @@ spec:
 5. Argo CD reconciles the cluster; ESO hydrates the secret into the namespace.
 
 ## Governance & Rotation Policy
-The platform enforces the following guards based on the `riskTier`:
+The platform enforces the following guards based on the `risk.tier`:
 
-| riskTier | Approval Required | rotationClass Requirement | Action on Violation |
+| risk.tier | Approval Required | rotationClass Requirement | Action on Violation |
 | :--- | :---: | :---: | :--- |
 | **high** | Yes | != `none` | **Block** provisioning/PR |
 | **medium** | Yes | Recommended | **Warn** (PR comment) if `none` |
@@ -87,14 +95,17 @@ The platform enforces the following guards based on the `riskTier`:
 *Note: Not all secret types support automated rotation. If rotation is not enabled, the request must remain explicit about the posture (`rotationClass: none`) and be traceable.*
 
 ## Decommissioning
-Decommissioning is intent-based to avoid accidental deletion:
+Decommissioning is intent-based to prevent accidental deletion and ensure auditability:
+
+**Lifecycle Progression**:
 `active → deprecated → decommission_requested → decommissioned`
 
 **Sequencing**:
-1. Remove the `ExternalSecret` (stop projection).
-2. Confirm no consumers (best-effort checks).
-3. Delete the AWS secret.
-4. Record an audit entry.
+1. Change `lifecycle.status` to `decommission_requested`.
+2. Automation removes the `ExternalSecret` (stop cluster projection).
+3. Best-effort checks confirm no active consumers.
+4. Final deletion of the AWS secret and transition to `decommissioned`.
+5. Record an audit entry.
 
 ## Source of Truth
 - **SecretRequest record**: Git

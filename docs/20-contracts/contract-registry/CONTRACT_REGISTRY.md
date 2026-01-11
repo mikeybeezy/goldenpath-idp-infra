@@ -20,16 +20,22 @@ metadata:
   id: SEC-0007                      # Format: SEC-XXXX
   name: payments-db-credentials     # Intent name
   owner: team-payments              # Enum: owners
-spec:
   service: payments                 # Service namespace
   environment: dev                  # Enum: environments
+spec:
   provider: aws-secrets-manager      # Enum: providers
   secretType: database-credentials   # Enum: security.secret_types
-  riskTier: medium                  # Enum: security.risk_tiers
-  rotationClass: standard           # Enum: security.rotation_classes
-  lifecycleStatus: active           # Enum: security.lifecycle_status
+  risk:
+    tier: medium                     # Enum: security.risk_tiers
+  rotation:
+    rotationClass: standard           # Enum: security.rotation_classes
+  lifecycle:
+    status: active                   # Enum: security.lifecycle_status
+  access:
+    namespace: payments              # K8s Namespace
+    k8sSecretName: payments-db-creds # Projected Secret Name
   ttlDays: 30                       # Lifecycle Bind
-  notes: "Optional context"         # Optional human-readable context
+  notes: "Optional human context"    # Optional context
 ```
 
 2. **Global Abstraction Strategy** ([PLATFORM_CONTRACT_RATIONALE.md](PLATFORM_CONTRACT_RATIONALE.md))
