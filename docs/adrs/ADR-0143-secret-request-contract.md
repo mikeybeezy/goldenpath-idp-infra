@@ -143,6 +143,10 @@ spec:
   access:
     namespace: payments
     k8sSecretName: payments-db-creds
+    # NEW: Security principal hooks
+    readPrincipals: ["arn:aws:iam::593517239005:role/goldenpath-idp-eso-role"]
+    writePrincipals: ["arn:aws:iam::593517239005:role/github-actions-secrets-writer"]
+    breakGlassPrincipals: ["arn:aws:iam::593517239005:role/platform-admin"]
   ttlDays: 30
 ```
 
