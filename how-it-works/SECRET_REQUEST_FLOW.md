@@ -1,3 +1,10 @@
+---
+id: HIW_SECRET_FLOW
+title: "How It Works: Secret Request Flow"
+status: active
+version: "1.0"
+---
+
 # How It Works: Secret Request Flow
 
 This document explains the technical lifecycle of a platform secret, following the Golden Path "Intent vs. Projection" model.

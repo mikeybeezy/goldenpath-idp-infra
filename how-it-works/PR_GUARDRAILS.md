@@ -1,3 +1,10 @@
+---
+id: HIW_PR_GUARDRAILS
+title: "How It Works: PR Guardrails"
+status: active
+version: "1.0"
+---
+
 # How It Works: PR Guardrails
 
 This document explains how the platform enforces quality, traceability, and governance on every Pull Request using the "Guardrails" engine.

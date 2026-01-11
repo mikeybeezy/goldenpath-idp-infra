@@ -1,3 +1,10 @@
+---
+id: HIW_ECR_FLOW
+title: "How It Works: ECR Request Flow"
+status: active
+version: "1.0"
+---
+
 # How It Works: ECR Request Flow
 
 This document explains the technical lifecycle of an ECR (Elastic Container Registry) request, from the developer "Wizard" in Backstage to the automated provisioning in AWS.

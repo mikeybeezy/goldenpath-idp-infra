@@ -1,3 +1,10 @@
+---
+id: HIW_INDEX
+title: How It Works Index
+status: active
+version: "1.0"
+---
+
 # How It Works
 
 This directory contains high-level, technical explanations of the platform's core mechanics. It focuses on the "Intent-based" model of the Golden Path, explaining the relationship between developer manifests and final infrastructure.
