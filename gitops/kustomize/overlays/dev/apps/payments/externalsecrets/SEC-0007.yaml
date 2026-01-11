@@ -1,19 +1,20 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
+  name: payments-payments-db-credentials-sync
+  namespace: payments
   labels:
     goldenpath.idp/id: null
     platform.idp/service: payments
-  name: payments-payments-db-credentials-sync
-  namespace: payments
+    platform.idp/env: dev
 spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: aws-secretsmanager
+    kind: ClusterSecretStore
+  target:
+    name: payments-db-creds
+    creationPolicy: Owner
   dataFrom:
   - extract:
       key: goldenpath/dev/payments/payments-db-credentials
-  refreshInterval: 1h
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: aws-secretsmanager
-  target:
-    creationPolicy: Owner
-    name: payments-db-creds
