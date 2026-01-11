@@ -107,7 +107,7 @@ def generate_index():
             lines.append("| Script | Description |")
             lines.append("| :--- | :--- |")
 
-        link = f"[{script['name']}](file://{script['path']})"
+        link = f"[{script['name']}]({script['name']})"
         desc = script['description'] or "Utility script"
         lines.append(f"| {link} | {desc} |")
 

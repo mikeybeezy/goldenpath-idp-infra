@@ -32,57 +32,57 @@ This directory contains the automation engine powering the GoldenPath IDP.
 
 | Script | Description |
 | :--- | :--- |
-| [ecr-build-push.sh](file://scripts/ecr-build-push.sh) | ----------------------------------------------------------------------------- |
-| [generate-build-log.sh](file://scripts/generate-build-log.sh) | Shell script utility. |
-| [generate-teardown-log.sh](file://scripts/generate-teardown-log.sh) | Shell script utility. |
-| [render_template.py](file://scripts/render_template.py) | Purpose: Backstage-compatible Template Renderer |
-| [resolve-cluster-name.sh](file://scripts/resolve-cluster-name.sh) | Shell script utility. |
-| [scaffold_ecr.py](file://scripts/scaffold_ecr.py) | Purpose: Standardized ECR Repository Scaffolding. |
+| [ecr-build-push.sh](ecr-build-push.sh) | ----------------------------------------------------------------------------- |
+| [generate-build-log.sh](generate-build-log.sh) | Shell script utility. |
+| [generate-teardown-log.sh](generate-teardown-log.sh) | Shell script utility. |
+| [render_template.py](render_template.py) | Purpose: Backstage-compatible Template Renderer |
+| [resolve-cluster-name.sh](resolve-cluster-name.sh) | Shell script utility. |
+| [scaffold_ecr.py](scaffold_ecr.py) | Purpose: Standardized ECR Repository Scaffolding. |
 
 ## Documentation
 
 | Script | Description |
 | :--- | :--- |
-| [check_doc_freshness.py](file://scripts/check_doc_freshness.py) | Purpose: Doc Freshness Auditor. |
-| [check_doc_index_contract.py](file://scripts/check_doc_index_contract.py) | Purpose: Documentation Index Contract Validator. |
-| [extract_relationships.py](file://scripts/extract_relationships.py) | Purpose: Automated Relationship & Dependency Extractor |
-| [format_docs.py](file://scripts/format_docs.py) | Purpose: Global Formatting & Whitespace Normalizer |
-| [generate_catalog_docs.py](file://scripts/generate_catalog_docs.py) | Multi-Domain Platform Catalog Generator |
-| [generate_workflow_index.py](file://scripts/generate_workflow_index.py) | Purpose: Auto-generate CI Workflows Index (CI_WORKFLOWS.md). |
+| [check_doc_freshness.py](check_doc_freshness.py) | Purpose: Doc Freshness Auditor. |
+| [check_doc_index_contract.py](check_doc_index_contract.py) | Purpose: Documentation Index Contract Validator. |
+| [extract_relationships.py](extract_relationships.py) | Purpose: Automated Relationship & Dependency Extractor |
+| [format_docs.py](format_docs.py) | Purpose: Global Formatting & Whitespace Normalizer |
+| [generate_catalog_docs.py](generate_catalog_docs.py) | Multi-Domain Platform Catalog Generator |
+| [generate_workflow_index.py](generate_workflow_index.py) | Purpose: Auto-generate CI Workflows Index (CI_WORKFLOWS.md). |
 
 ## Governance
 
 | Script | Description |
 | :--- | :--- |
-| [check_compliance.py](file://scripts/check_compliance.py) | Purpose: Metadata Compliance Audit Tool |
-| [platform_health.py](file://scripts/platform_health.py) | Purpose: Platform Health & Compliance Reporter |
-| [pr_guardrails.py](file://scripts/pr_guardrails.py) | PR Guardrails Validator |
-| [standardize_metadata.py](file://scripts/standardize_metadata.py) | Purpose: Automated Remediation Engine ("The Healer") |
-| [test_platform_health.py](file://scripts/test_platform_health.py) | Purpose: Unit Test Suite for Platform Health Logic |
-| [validate_metadata.py](file://scripts/validate_metadata.py) | Purpose: PR Quality Gate & Structural Validator |
+| [check_compliance.py](check_compliance.py) | Purpose: Metadata Compliance Audit Tool |
+| [platform_health.py](platform_health.py) | Purpose: Platform Health & Compliance Reporter |
+| [pr_guardrails.py](pr_guardrails.py) | PR Guardrails Validator |
+| [standardize_metadata.py](standardize_metadata.py) | Purpose: Automated Remediation Engine ("The Healer") |
+| [test_platform_health.py](test_platform_health.py) | Purpose: Unit Test Suite for Platform Health Logic |
+| [validate_metadata.py](validate_metadata.py) | Purpose: PR Quality Gate & Structural Validator |
 
 ## Utilities
 
 | Script | Description |
 | :--- | :--- |
-| [audit_metadata.py](file://scripts/audit_metadata.py) | Metadata Audit Utility (Active Governance Loop) |
-| [aws_inventory.py](file://scripts/aws_inventory.py) | Generate a lightweight AWS inventory report using Resource Groups Tagging API. |
-| [backfill_metadata.py](file://scripts/backfill_metadata.py) | Metadata Backfill Script |
-| [check_script_traceability.py](file://scripts/check_script_traceability.py) | Script Traceability Auditor |
-| [deploy-backstage.sh](file://scripts/deploy-backstage.sh) | Purpose: Deploy Backstage with VQ Telemetry and Born Governed status. |
-| [enforce_emoji_policy.py](file://scripts/enforce_emoji_policy.py) | Purpose: Emoji Policy Enforcer |
-| [fix_yaml_syntax.py](file://scripts/fix_yaml_syntax.py) | YAML Syntax Fixer for Templates |
-| [generate_adr_index.py](file://scripts/generate_adr_index.py) | ADR Index Generator (Iteration 1) |
-| [generate_backstage_docs.py](file://scripts/generate_backstage_docs.py) | Backstage Documentation Entity Generator |
-| [generate_backstage_ecr.py](file://scripts/generate_backstage_ecr.py) | Backstage ECR Entity Generator |
-| [generate_doc_system_map.py](file://scripts/generate_doc_system_map.py) | Generate and refresh the platform documentation system map. |
-| [generate_governance_vocab.py](file://scripts/generate_governance_vocab.py) | Governance Vocabulary Generator |
-| [migrate_partial_metadata.py](file://scripts/migrate_partial_metadata.py) | Migrate partial metadata to enhanced schema |
-| [reliability-metrics.sh](file://scripts/reliability-metrics.sh) | Shell script utility. |
-| [scaffold_doc.py](file://scripts/scaffold_doc.py) | Doc Scaffold Utility |
-| [scaffold_test.py](file://scripts/scaffold_test.py) | Scaffold Test Utility |
-| [sync_backstage_entities.py](file://scripts/sync_backstage_entities.py) | Backstage Entity Sync Utility |
-| [sync_ecr_catalog.py](file://scripts/sync_ecr_catalog.py) | ECR Catalog Synchronization & Reconciliation Utility |
-| [test_hotfix.py](file://scripts/test_hotfix.py) | Purpose: Unit tests for PR Guardrails Hotfix Logic. |
-| [validate_enums.py](file://scripts/validate_enums.py) | Purpose: Enhanced Enum Consistency Validator |
-| [validate_routing_compliance.py](file://scripts/validate_routing_compliance.py) | Purpose: Decision Routing Compliance Validator |
+| [audit_metadata.py](audit_metadata.py) | Metadata Audit Utility (Active Governance Loop) |
+| [aws_inventory.py](aws_inventory.py) | Generate a lightweight AWS inventory report using Resource Groups Tagging API. |
+| [backfill_metadata.py](backfill_metadata.py) | Metadata Backfill Script |
+| [check_script_traceability.py](check_script_traceability.py) | Script Traceability Auditor |
+| [deploy-backstage.sh](deploy-backstage.sh) | Purpose: Deploy Backstage with VQ Telemetry and Born Governed status. |
+| [enforce_emoji_policy.py](enforce_emoji_policy.py) | Purpose: Emoji Policy Enforcer |
+| [fix_yaml_syntax.py](fix_yaml_syntax.py) | YAML Syntax Fixer for Templates |
+| [generate_adr_index.py](generate_adr_index.py) | ADR Index Generator (Iteration 1) |
+| [generate_backstage_docs.py](generate_backstage_docs.py) | Backstage Documentation Entity Generator |
+| [generate_backstage_ecr.py](generate_backstage_ecr.py) | Backstage ECR Entity Generator |
+| [generate_doc_system_map.py](generate_doc_system_map.py) | Generate and refresh the platform documentation system map. |
+| [generate_governance_vocab.py](generate_governance_vocab.py) | Governance Vocabulary Generator |
+| [migrate_partial_metadata.py](migrate_partial_metadata.py) | Migrate partial metadata to enhanced schema |
+| [reliability-metrics.sh](reliability-metrics.sh) | Shell script utility. |
+| [scaffold_doc.py](scaffold_doc.py) | Doc Scaffold Utility |
+| [scaffold_test.py](scaffold_test.py) | Scaffold Test Utility |
+| [sync_backstage_entities.py](sync_backstage_entities.py) | Backstage Entity Sync Utility |
+| [sync_ecr_catalog.py](sync_ecr_catalog.py) | ECR Catalog Synchronization & Reconciliation Utility |
+| [test_hotfix.py](test_hotfix.py) | Purpose: Unit tests for PR Guardrails Hotfix Logic. |
+| [validate_enums.py](validate_enums.py) | Purpose: Enhanced Enum Consistency Validator |
+| [validate_routing_compliance.py](validate_routing_compliance.py) | Purpose: Decision Routing Compliance Validator |
