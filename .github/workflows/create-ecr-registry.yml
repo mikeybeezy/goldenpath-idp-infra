@@ -3,6 +3,10 @@ name: Create ECR Registry
 on:
   workflow_dispatch:
     inputs:
+      base_branch:
+        description: 'PR base branch'
+        required: true
+        default: development
       environment:
         description: 'Target environment'
         type: choice
@@ -326,7 +330,7 @@ jobs:
       - name: Create PR
         uses: peter-evans/create-pull-request@v6
         with:
-          base: development
+          base: ${{ inputs.base_branch }}
           branch: "registry/create-${{ inputs.registry_name }}"
           title: " Create ECR Registry: ${{ inputs.registry_name }} (${{ inputs.environment }})"
           commit-message: "registry: create ${{ inputs.registry_name }} in ${{ inputs.environment }}"

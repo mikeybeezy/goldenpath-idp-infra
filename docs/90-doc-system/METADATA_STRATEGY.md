@@ -110,6 +110,10 @@ tags = {
 4. **Local Auto-Fix:** Pre-commit runs `scripts/standardize_metadata.py` on changed docs to normalize headers.
 5. **Enforcement:** Add `validate_metadata.py` to CI.
 
+Coupled updates:
+- If tag keys change, update `docs/10-governance/35_RESOURCE_TAGGING.md`
+  and `docs/10-governance/11_SECRETS_CATALOG_POLICY.md` in the same PR.
+
 ## Doc Creation (Preferred)
 
 Use the scaffold to generate new docs with compliant frontmatter:

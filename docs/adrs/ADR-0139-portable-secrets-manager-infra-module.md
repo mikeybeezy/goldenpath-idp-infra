@@ -38,7 +38,7 @@ We need to manage AWS Secrets Manager instances across `dev`, `test`, `staging`,
 
 We will create a **Portable Infrastructure Module** (`modules/aws_secrets_manager/`) to manage the lifecycle of AWS Secrets Manager. This module will be the standard way all platform environments provision secret containers.
 
-### Key Characteristics:
+### Key Characteristics
 1. **Consistency**: Same encryption settings, lifecycle policies, and naming conventions across all tiers.
 2. **Portability**: The module accepts environment-specific variables (via `local.name_prefix` and `local.common_tags`) to ensure zero code change when porting to a new environment.
 3. **Encapsulation**: Details like rotation window and KMS key selection are handled inside the module, exposing only necessary outputs (ARN, Name) to the environment layers.
