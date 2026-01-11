@@ -193,4 +193,12 @@ ecr_repositories = {
       risk  = "low"
     }
   }
+
+  "master-blaster" = {
+    metadata = {
+      id    = "REGISTRY_MASTER_BLASTER"
+      owner = "platform-team"
+      risk  = "low"
+    }
+  }
 }
