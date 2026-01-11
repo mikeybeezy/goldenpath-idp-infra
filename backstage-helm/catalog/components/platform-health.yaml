@@ -12,14 +12,14 @@ metadata:
     - health
     - compliance
   links:
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/PLATFORM_HEALTH.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/PLATFORM_HEALTH.md
       title: "🏥 View Health Dashboard"
       icon: dashboard
       type: documentation
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/PLATFORM_DASHBOARDS.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/PLATFORM_DASHBOARDS.md
       title: "🎯 Dashboards Index"
       icon: catalog
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/scripts/platform_health.py
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/scripts/platform_health.py
       title: "View Source Script"
       icon: code
 spec:

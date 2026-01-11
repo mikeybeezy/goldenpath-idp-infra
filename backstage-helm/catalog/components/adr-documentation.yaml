@@ -12,16 +12,16 @@ metadata:
     - documentation
     - adr
   links:
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/tree/main/docs/adrs
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/docs/adrs
       title: Browse All ADRs on GitHub
       icon: docs
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/README.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/README.md
       title: ADR Index
       icon: catalog
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0127-backstage-deployment-roi-telemetry.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0127-backstage-deployment-roi-telemetry.md
       title: "ADR-0127: Backstage Deployment"
       type: documentation
-    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0128-automated-ecr-catalog-sync.md
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/development/docs/adrs/ADR-0128-automated-ecr-catalog-sync.md
       title: "ADR-0128: ECR Catalog Sync"
       type: documentation
 spec:
