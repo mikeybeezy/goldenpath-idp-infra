@@ -1,5 +1,5 @@
 {
-  "total_reclaimed_hours": 22.4,
+  "total_reclaimed_hours": 29.4,
   "history": [
     {
       "timestamp": "2026-01-07T06:52:02Z",
@@ -129,6 +129,41 @@
     {
       "timestamp": "2026-01-10T02:12:49Z",
       "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-11T01:54:41Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-11T01:55:02Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-11T01:55:02Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-11T01:55:02Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-11T02:41:03Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-11T02:41:34Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-11T02:41:35Z",
+      "script": "standardize_metadata.py",
       "reclaimed_hours": 1.0
     }
   ]
