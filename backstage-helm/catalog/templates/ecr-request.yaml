@@ -114,5 +114,7 @@ spec:
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/workflows/create-ecr-registry.yml
       - title: PR Link (filtered by branch)
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls?q=is%3Apr+head%3Aregistry%2Fcreate-${{ parameters.name }}
+      - title: PR List (fallback)
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls
       - title: Catalog Link (static; success = workflow run above)
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/20-contracts/catalogs/ecr-catalog.yaml
