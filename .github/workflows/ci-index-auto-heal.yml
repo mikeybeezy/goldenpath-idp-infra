@@ -1,4 +1,5 @@
 # Owner: platform
+# Relates-To: how-it-works/DOC_AUTO_HEALING.md
 name: Quality - Documentation Auto-Healing
 
 on:

@@ -10,6 +10,8 @@ applies_to:
 owner: platform-team
 status: active
 version: "1.0"
+relates_to:
+  - how-it-works/SECRET_REQUEST_FLOW.md
 ---
 
 # ADR-0143: Secret Request Contract (V1)
