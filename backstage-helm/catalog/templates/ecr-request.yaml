@@ -101,6 +101,7 @@ spec:
         workflowId: create-ecr-registry.yml
         branchOrTagName: main
         workflowInputs:
+          base_branch: development
           registry_name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
           user: ${{ parameters.requester }}
@@ -112,6 +113,8 @@ spec:
     links:
       - title: Open Workflow Runs
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/workflows/create-ecr-registry.yml
+      - title: PR Link (filtered by branch)
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls?q=is%3Apr+head%3Aregistry%2Fcreate-${{ parameters.name }}
       - title: PR List (fallback)
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls
       - title: Catalog Link (static; success = workflow run above)

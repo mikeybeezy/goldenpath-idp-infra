@@ -153,6 +153,7 @@ relates_to:
   - ADR-0138
   - ADR-0139
   - ADR-0140
+  - ADR-0141
 <!-- ADR_RELATE_END -->
 ---
 
@@ -306,6 +307,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0138](ADR-0138-automated-secret-scanning-gitleaks-trufflehog.md) | Platform | Automated Secret Scanning with Gitleaks and TruffleHog | Proposed | 2026-01-0? | As we transition to using **AWS Secrets Manager** and **External Secrets Operator (ESO)** for credential management, we must ensure that secrets do not bypass these governed systems and leak into t... |
 | [ADR-0139](ADR-0139-portable-secrets-manager-infra-module.md) | Platform | Portable Secrets Manager Infrastructure Module | Proposed | 2026-01-0? | We need to manage AWS Secrets Manager instances across`dev`,`test`,`staging`, and`prod`. Historically, infrastructure for different environments was handled with varying degrees of duplication. To ... |
 | [ADR-0140](ADR-0140-platform-doc-scaffold-metadata-autofix.md) | Platform | Doc scaffolding and metadata auto-fix | Accepted | 2026-01-0? | New docs are often created without the required metadata headers. The missing frontmatter is usually only discovered at PR time, which creates friction and burns review cycles. We need a path that ... |
+| [ADR-0141](ADR-0141-backstage-ecr-dispatch-workflow.md) | Platform | Backstage ECR requests use GitHub Actions dispatch | Accepted | 2026-01-0? | The Backstage ECR scaffolder was creating PRs directly using`fetch:plain`+`command:execute`+`publish:github:pull-request`. That path requires a custom Backstage backend image with the command actio... |
 <!-- ADR_TABLE_END -->
 
 ---
