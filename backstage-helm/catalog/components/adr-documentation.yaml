@@ -28,3 +28,4 @@ spec:
   type: documentation
   lifecycle: production
   owner: platform-team
+  system: documentation-portal
