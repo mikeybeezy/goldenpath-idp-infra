@@ -86,13 +86,18 @@ In our platform, a secret isn't functional until it exists in both AWS and Kuber
 After the parser generates the implementation artifacts, you must follow these steps to bring the secret to life:
 
 ### 1. Provision the AWS Resource
-Navigate to the Terraform environment and apply the changes. The generated `.tfvars.json` will be automatically loaded.
+Navigate to the Terraform environment and apply the changes. 
+
+> [!TIP]
+> **Surgical Targeting**: In a shared environment, `terraform plan` might show many unrelated changes. To isolate just your new secret, use the `-target` flag.
 
 ```bash
 cd envs/dev
-terraform plan   # Verify the secret and IAM policy creation
-terraform apply  # Provision to AWS
+# Target the specific secret module instance
+terraform plan -target='module.app_secrets["<service>-<name>"]'
+terraform apply -target='module.app_secrets["<service>-<name>"]'
 ```
+*Note: The key `<service>-<name>` matches the key in your generated `.auto.tfvars.json` file.*
 
 ### 2. Commit and Sync (GitOps)
 The `ExternalSecret` manifest must be committed to the repository for ArgoCD to pick it up.
