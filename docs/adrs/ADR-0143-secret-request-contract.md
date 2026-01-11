@@ -87,6 +87,7 @@ spec:
 2. CI validates enums/schema and generates a **preview** (no cloud changes).
 3. Platform reviews and approves based on risk tier.
 4. On merge, automation:
+   - validates governance policies (e.g., `risk: high` requires `rotationClass != none`)
    - provisions/updates the secret in AWS Secrets Manager
    - generates/commits the `ExternalSecret` manifest (GitOps)
    - generates/commits the `*.auto.tfvars.json` (Terraform)
