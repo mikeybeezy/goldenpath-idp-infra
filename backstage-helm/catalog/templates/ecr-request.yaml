@@ -101,6 +101,7 @@ spec:
         workflowId: create-ecr-registry.yml
         branchOrTagName: main
         workflowInputs:
+          base_branch: development
           registry_name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
           user: ${{ parameters.requester }}

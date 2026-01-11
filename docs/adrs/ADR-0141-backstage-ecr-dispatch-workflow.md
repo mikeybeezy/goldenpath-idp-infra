@@ -69,7 +69,7 @@ updates.
 ### Operational impact
 
 - Enable `github:actions:dispatch` in Backstage allowed actions.
-- Keep workflow base aligned with the dispatch ref.
+- Keep workflow PRs targeting `development` via a `base_branch` input.
 
 ## Alternatives considered
 

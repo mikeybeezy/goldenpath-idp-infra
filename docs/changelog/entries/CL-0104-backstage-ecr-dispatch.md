@@ -28,7 +28,7 @@ Related: PR #212, docs/adrs/ADR-0141-backstage-ecr-dispatch-workflow.md
 ## Summary
 
 - Switch the Backstage ECR request template to dispatch the workflow on main.
-- Align PR base in the workflow with the dispatch ref.
+- Keep workflow PRs targeting `development` via an explicit `base_branch` input.
 - Add a filtered PR link and keep a workflow link as the primary signal.
 
 ## Impact
