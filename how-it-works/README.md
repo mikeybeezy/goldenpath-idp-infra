@@ -4,3 +4,4 @@ This directory contains high-level, technical explanations of the platform's cor
 
 ## Explanations
 1. [Secret Request Flow](SECRET_REQUEST_FLOW.md): How application secrets are governed and projected from Git to Kubernetes.
+2. [ECR Request Flow](ECR_REQUEST_FLOW.md): The self-service lifecycle of container registry provisioning.
