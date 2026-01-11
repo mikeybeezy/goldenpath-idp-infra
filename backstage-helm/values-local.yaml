@@ -51,7 +51,7 @@ appConfig: |
       - debug:log
 
   techdocs:
-    builder: 'external'
+    builder: 'local'
     generator:
       runIn: 'local'
     publisher:
