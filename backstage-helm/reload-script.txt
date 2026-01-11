@@ -49,4 +49,3 @@ helm upgrade --install backstage \
   -n backstage --create-namespace \
   -f /Users/mikesablaze/goldenpath-idp-infra/backstage-helm/values-local.yaml \
   --set github.accessToken="$GH_TOKEN"
-
