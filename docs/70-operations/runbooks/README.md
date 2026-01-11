@@ -41,6 +41,7 @@ relates_to:
   - RB-0023
   - RB-0024
   - RB-0025
+  - RB-0026
 supersedes: []
 superseded_by: []
 tags: []
@@ -82,6 +83,7 @@ breaking_change: false
 - [docs/70-operations/runbooks/RB-0019-relationship-extraction-script.md](docs/70-operations/runbooks/RB-0019-relationship-extraction-script.md) — Building the Platform Knowledge Graph via metadata links.
 - [docs/70-operations/runbooks/RB-0020-git-troubleshooting.md](docs/70-operations/runbooks/RB-0020-git-troubleshooting.md) — Resolving branch drift and merge conflicts in governed repos.
 - [docs/70-operations/runbooks/RB-0025-ecr-catalog-sync.md](docs/70-operations/runbooks/RB-0025-ecr-catalog-sync.md) — Sync Backstage ECR registry to AWS physical state.
+- [docs/70-operations/runbooks/RB-0026-local-secret-generation.md](docs/70-operations/runbooks/RB-0026-local-secret-generation.md) — Execute the Secret Request Parser locally for dry-runs and targeting.
 
 ### App Team Runbooks
 - [docs/70-operations/runbooks/app-team/RB-0021-fix-cve-guide.md](docs/70-operations/runbooks/app-team/RB-0021-fix-cve-guide.md) — Step-by-step guide to resolving CVEs in container images.
