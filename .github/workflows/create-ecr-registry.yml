@@ -1,3 +1,5 @@
+# Owner: platform
+# Relates-To: how-it-works/ECR_REQUEST_FLOW.md
 name: Create ECR Registry
 
 on:
