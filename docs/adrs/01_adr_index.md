@@ -154,6 +154,9 @@ relates_to:
   - ADR-0139
   - ADR-0140
   - ADR-0141
+  - ADR-0142
+  - ADR-0143
+  - ADR-0144
 <!-- ADR_RELATE_END -->
 ---
 
@@ -308,6 +311,9 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0139](ADR-0139-portable-secrets-manager-infra-module.md) | Platform | Portable Secrets Manager Infrastructure Module | Proposed | 2026-01-0? | We need to manage AWS Secrets Manager instances across`dev`,`test`,`staging`, and`prod`. Historically, infrastructure for different environments was handled with varying degrees of duplication. To ... |
 | [ADR-0140](ADR-0140-platform-doc-scaffold-metadata-autofix.md) | Platform | Doc scaffolding and metadata auto-fix | Accepted | 2026-01-0? | New docs are often created without the required metadata headers. The missing frontmatter is usually only discovered at PR time, which creates friction and burns review cycles. We need a path that ... |
 | [ADR-0141](ADR-0141-backstage-ecr-dispatch-workflow.md) | Platform | Backstage ECR requests use GitHub Actions dispatch | Accepted | 2026-01-0? | The Backstage ECR scaffolder was creating PRs directly using`fetch:plain`+`command:execute`+`publish:github:pull-request`. That path requires a custom Backstage backend image with the command actio... |
+| [ADR-0142](ADR-0142-declarative-platform-contracts.md) | Platform | Strategic Adoption of Declarative Platform Contracts | Accepted | 2026-01-11 | As the Golden Path IDP scales, the gap between developer intent and infrastructure implementation is widening. We will adopt a Declarative Platform Contract pattern. |
+| [ADR-0143](ADR-0143-secret-request-contract.md) | Platform | Secret Request Contract (V1) | Accepted | 2026-01-11 | This contract defines how teams request application secrets through the platform in a governed, auditable way. |
+| [ADR-0144](ADR-0144-intent-to-projection-parser.md) | Platform | Architecture of the Intent-to-Projection Parser | Accepted | 2026-01-11 | Authoring low-level IaC creates cognitive overload and governance debt. We will centralize platform intelligence into a standalone Intent-to-Projection Parser. |
 <!-- ADR_TABLE_END -->
 
 ---

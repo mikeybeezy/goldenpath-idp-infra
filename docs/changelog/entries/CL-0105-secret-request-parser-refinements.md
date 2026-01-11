@@ -23,7 +23,7 @@ breaking_change: false
 Date: 2026-01-11
 Owner: platform-team
 Scope: Secret Manager Infrastructure, Secret Request Parser
-Related: PR #216, docs/adrs/ADR-0143-secret-request-contract.md
+Related: PR #216, docs/adrs/ADR-0143-secret-request-contract.md, docs/adrs/ADR-0144-intent-to-projection-parser.md
 
 ## Summary
 
