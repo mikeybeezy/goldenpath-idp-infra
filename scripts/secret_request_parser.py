@@ -34,13 +34,13 @@ class SecretRequest:
     environment: str
     owner: str
 
-    secret_type: str
-    risk_tier: str
-    rotation_class: str
-    lifecycle_status: str
+    secretType: str
+    riskTier: str
+    rotationClass: str
+    lifecycleStatus: str
 
     namespace: str
-    k8s_secret_name: str
+    k8sSecretName: str
 
     provider: str = "aws-secrets-manager"
 
@@ -58,10 +58,10 @@ def load_enums(enums_path: Path) -> Dict[str, List[str]]:
         node = security.get(key, {})
         return list(node.get("values", []))
     return {
-        "secret_type": values("secret_types"),
-        "risk_tier": values("risk_tiers"),
-        "rotation_class": values("rotation_classes"),
-        "lifecycle_status": values("lifecycle_status"),
+        "secretType": values("secret_types"),
+        "riskTier": values("risk_tiers"),
+        "rotationClass": values("rotation_classes"),
+        "lifecycleStatus": values("lifecycle_status"),
     }
 
 
@@ -69,7 +69,7 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> SecretRequest:
     md = doc.get("metadata", {})
     spec = doc.get("spec", {})
 
-    # Top-level field mapping (snake_case)
+    # Top-level field mapping
     secret_id = doc.get("id") or md.get("id")
     name = doc.get("name") or md.get("name")
     service = doc.get("service") or md.get("service")
@@ -78,16 +78,16 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> SecretRequest:
 
     provider = spec.get("provider", "aws-secrets-manager")
 
-    secret_type = spec.get("secret_type")
+    secretType = spec.get("secretType")
     
-    # Nested mapping for risk/rotation/lifecycle
-    risk_tier = ((spec.get("risk") or {}).get("tier"))
-    rotation_class = ((spec.get("rotation") or {}).get("rotation_class"))
-    lifecycle_status = ((spec.get("lifecycle") or {}).get("status"))
+    # Nested mapping for risk/rotation/lifecycle (Restoring camelCase structure)
+    riskTier = ((spec.get("risk") or {}).get("tier"))
+    rotationClass = ((spec.get("rotation") or {}).get("rotationClass"))
+    lifecycleStatus = ((spec.get("lifecycle") or {}).get("status"))
 
     access = spec.get("access") or {}
     namespace = access.get("namespace")
-    k8s_secret_name = access.get("k8s_secret_name")
+    k8sSecretName = access.get("k8sSecretName")
 
     missing = [k for k, v in {
         "id": secret_id,
@@ -96,12 +96,12 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> SecretRequest:
         "environment": environment,
         "owner": owner,
         "spec.provider": provider,
-        "spec.secret_type": secret_type,
-        "spec.risk.tier": risk_tier,
-        "spec.rotation.rotation_class": rotation_class,
-        "spec.lifecycle.status": lifecycle_status,
+        "spec.secretType": secretType,
+        "spec.risk.tier": riskTier,
+        "spec.rotation.rotationClass": rotationClass,
+        "spec.lifecycle.status": lifecycleStatus,
         "spec.access.namespace": namespace,
-        "spec.access.k8s_secret_name": k8s_secret_name,
+        "spec.access.k8sSecretName": k8sSecretName,
     }.items() if not v]
 
     if missing:
@@ -114,12 +114,12 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> SecretRequest:
         environment=str(environment),
         owner=str(owner),
         provider=str(provider),
-        secret_type=str(secret_type),
-        risk_tier=str(risk_tier),
-        rotation_class=str(rotation_class),
-        lifecycle_status=str(lifecycle_status),
+        secretType=str(secretType),
+        riskTier=str(riskTier),
+        rotationClass=str(rotationClass),
+        lifecycleStatus=str(lifecycleStatus),
         namespace=str(namespace),
-        k8s_secret_name=str(k8s_secret_name),
+        k8sSecretName=str(k8sSecretName),
     )
 
 
@@ -130,14 +130,14 @@ def validate_enums(req: SecretRequest, enums: Dict[str, List[str]], src_path: Pa
                 f"{src_path}: invalid {field}='{value}'. Allowed: {allowed}"
             )
 
-    check("spec.secret_type", req.secret_type, enums["secret_type"])
-    check("spec.risk.tier", req.risk_tier, enums["risk_tier"])
-    check("spec.rotation.rotation_class", req.rotation_class, enums["rotation_class"])
-    check("spec.lifecycle.status", req.lifecycle_status, enums["lifecycle_status"])
+    check("spec.secretType", req.secretType, enums["secretType"])
+    check("spec.risk.tier", req.riskTier, enums["riskTier"])
+    check("spec.rotation.rotationClass", req.rotationClass, enums["rotationClass"])
+    check("spec.lifecycle.status", req.lifecycleStatus, enums["lifecycleStatus"])
 
     # Minimal V1 policy gates
-    if req.risk_tier == "high" and req.rotation_class == "none":
-        raise ValueError(f"{src_path}: risk_tier=high requires rotation_class != 'none'")
+    if req.riskTier == "high" and req.rotationClass == "none":
+        raise ValueError(f"{src_path}: riskTier=high requires rotationClass != 'none'")
 
 
 def derive_secret_key(req: SecretRequest) -> str:
@@ -173,7 +173,7 @@ def generate_tfvars(req: SecretRequest) -> Dict[str, Any]:
                 "metadata": {
                     "id": req.secret_id,
                     "owner": req.owner,
-                    "risk": req.risk_tier,
+                    "risk": req.riskTier,
                 }
             }
         }
@@ -200,7 +200,7 @@ def generate_externalsecret(req: SecretRequest) -> Dict[str, Any]:
                 "kind": "ClusterSecretStore",
             },
             "target": {
-                "name": req.k8s_secret_name,
+                "name": req.k8sSecretName,
                 "creationPolicy": "Owner",
             },
             "dataFrom": [

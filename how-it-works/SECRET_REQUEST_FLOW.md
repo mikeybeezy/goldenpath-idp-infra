@@ -119,7 +119,7 @@ Secrets follow a controlled "Cool-down" sequence to prevent production outages:
 The lifecycle is enforced by two distinct workflows ensuring a clean separation between **Validation** and **Execution**.
 
 ### A. `secret-request-pr.yml` (PR: Validate + Plan)
-- **Trigger**: `pull_request` on `catalogs/secrets/**`.
+- **Trigger**: `pull_request` on `docs/catalogs/secrets/**`.
 - **Steps**:
     1.  **Schema Validation**: Ensures the `SecretRequest` manifest is valid.
     2.  **Policy Gate**: Fails the build if `riskTier=high` but `rotationClass=none`.
@@ -127,7 +127,7 @@ The lifecycle is enforced by two distinct workflows ensuring a clean separation 
     4.  **Traceability**: Ensures the request is linked to an ADR and recorded in the audit log.
 
 ### B. `secret-request-apply.yml` (Merge: Apply + Sync)
-- **Trigger**: `push` to `development/main` on `catalogs/secrets/**`.
+- **Trigger**: `push` to `development/main` on `docs/catalogs/secrets/**`.
 - **Steps**:
     1.  **Terraform Apply**: Provisions the secret in AWS and configures rotation.
     2.  **Manifest Generation**: Generates the `ExternalSecret` manifest for GitOps.
