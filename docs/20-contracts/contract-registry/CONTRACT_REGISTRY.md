@@ -12,5 +12,24 @@ This registry tracks the maturity and implementation status of all Golden Path d
 | RoutingRequest | Managed with Kong/Ingress. | Network | [ ] | [ ] | TBD |
 
 ## Index
-1. SecretRequest Protocol
-2. Global Abstraction Strategy (PLATFORM_CONTRACT_RATIONALE.md)
+1. **SecretRequest Protocol**
+```yaml
+apiVersion: goldenpath.io/v1
+kind: SecretRequest
+metadata:
+  id: SEC-0007                      # Format: SEC-XXXX
+  name: payments-db-credentials     # Intent name
+  owner: team-payments              # Enum: owners
+spec:
+  service: payments                 # Service namespace
+  environment: dev                  # Enum: environments
+  provider: aws-secrets-manager      # Enum: providers
+  secretType: database-credentials   # Enum: security.secret_types
+  riskTier: medium                  # Enum: security.risk_tiers
+  rotationClass: standard           # Enum: security.rotation_classes
+  lifecycleStatus: active           # Enum: security.lifecycle_status
+  ttlDays: 30                       # Lifecycle Bind
+  notes: "Optional context"         # Optional human-readable context
+```
+
+2. **Global Abstraction Strategy** ([PLATFORM_CONTRACT_RATIONALE.md](PLATFORM_CONTRACT_RATIONALE.md))
