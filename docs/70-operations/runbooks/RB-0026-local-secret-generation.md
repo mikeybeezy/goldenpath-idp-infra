@@ -61,7 +61,23 @@ Once execution succeeds, the parser will emit files to deterministic locations:
 | Target | Output Location | Purpose |
 | :--- | :--- | :--- |
 | **Terraform** | `envs/<env>/secrets/generated/<service>/SEC-XXXX.auto.tfvars.json` | Cloud resource provisioning |
-| **GitOps** | `gitops/environments/<env>/secrets/SEC-XXXX-external-secret.yaml` | Cluster-side projection |
+| **GitOps** | `gitops/kustomize/overlays/<env>/apps/<service>/externalsecrets/SEC-XXXX.yaml` | Cluster-side projection |
+
+---
+
+## 🏗️ The "Dual-Projection" Model
+
+A common question is: **Why can't I just run `terraform apply`?**
+
+In our platform, a secret isn't functional until it exists in both AWS and Kubernetes. Running `terraform apply` in isolation only completes the **infrastructure** half. The Parser script is the only component that bridges the two worlds:
+
+1.  **Infrastructure (AWS)**: The generated `*.auto.tfvars.json` tells Terraform to create the secret and the IAM policy in AWS Secrets Manager.
+2.  **Projection (K8s)**: The generated `ExternalSecret` manifest tells the **External Secrets Operator (ESO)** in your cluster *which* AWS secret to fetch and *where* to put it in Kubernetes.
+
+> [!IMPORTANT]
+> **Without the Parser**, you have a secret in the cloud but no way for your application to see it. **Without Terraform**, you have a request in the cluster that will fail because the cloud resource doesn't exist.
+
+---
 
 ### Linking to Terraform
 To verify the generated variables against the live environment:
