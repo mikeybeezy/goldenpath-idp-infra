@@ -55,6 +55,10 @@ spec:
   access:
     namespace: payments              # Mandatory: K8s Namespace
     k8sSecretName: payments-db-creds # Mandatory: K8s Secret Name
+    # NEW: Security principal hooks for resource-level IAM
+    readPrincipals: ["arn:aws:iam::...:role/eso-role"]
+    writePrincipals: ["arn:aws:iam::...:role/secrets-writer"]
+    breakGlassPrincipals: ["arn:aws:iam::...:role/platform-admin"]
   ttlDays: 30                       # Mandatory: Cleanup (Days)
 ```
 
@@ -73,6 +77,9 @@ spec:
   - `lifecycle.status`: Operational state (Enum: `security.lifecycle_status`)
   - `access.namespace`: Target Kubernetes namespace for projection
   - `access.k8sSecretName`: Target name for the projected Kubernetes secret
+  - `access.readPrincipals`: List of IAM ARNs with read access to the AWS secret
+  - `access.writePrincipals`: List of IAM ARNs with write/update access
+  - `access.breakGlassPrincipals`: ARNs for emergency/administrative access
   - `ttlDays`: Time-to-live for the managed resource
 
 ## Workflow (High Level)
