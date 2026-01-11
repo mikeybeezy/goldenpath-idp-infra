@@ -30,7 +30,7 @@ If you are a new engineer or operator, do this first:
     *View the current Platform Mission, total Reclaimed ROI, and V1 Readiness status.*
 
 3.  **Discover the Ecosystem**:
-    Open [**`PLATFORM_DASHBOARDS.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_DASHBOARDS.md) in the root. This is your map to all health, testing, and registry reports.
+    Open [**`PLATFORM_DASHBOARDS.md`**](PLATFORM_DASHBOARDS.md) in the root. This is your map to all health, testing, and registry reports.
 4.  **Doc Scaffolding**:
     Use `scripts/scaffold_doc.py` for any new docs to ensure metadata compliance from day one.
 
@@ -40,7 +40,7 @@ If you are a new engineer or operator, do this first:
 If you are an AI Assistant (Antigravity, etc.), you MUST begin every session here:
 
 1.  **Read the Instructions**:
-    Open [**`tests/AGENT_INSTRUCTIONS.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/tests/AGENT_INSTRUCTIONS.md). This defines the "START HERE" block you must include in every test suite you create.
+    Open [**`tests/AGENT_INSTRUCTIONS.md`**](tests/AGENT_INSTRUCTIONS.md). This defines the "START HERE" block you must include in every test suite you create.
 
 2.  **Verify Baseline**:
     ```bash

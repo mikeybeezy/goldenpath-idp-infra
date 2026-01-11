@@ -35,7 +35,7 @@ This plan outlines the steps to optimize the ECR registry creation process, enha
 
 ### User Experience & Tooling
 - [x] **Task 6: PR Guidance Injection**
-    - *Action:* Add deep-links to the [Push Image Guide](file:///Users/mikesablaze/goldenpath-idp-infra/docs/70-operations/runbooks/app-team/push-image-guide.md) in the PR body.
+    - *Action:* Add deep-links to the [Push Image Guide](docs/70-operations/runbooks/app-team/push-image-guide.md) in the PR body.
 - [x] **Task 7: Image Creation & Tagging Script**
     - *Action:* Create a standardized script (e.g., `scripts/ecr-build-push.sh`) to handle building, multi-tagging (Git SHA + SemVer), and pushing.
 

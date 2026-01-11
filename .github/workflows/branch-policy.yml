@@ -8,6 +8,7 @@ on:
 
 jobs:
   enforce-development-only:
+    if: github.base_ref != 'development'
     runs-on: ubuntu-latest
     steps:
       - name: Enforce development -> main

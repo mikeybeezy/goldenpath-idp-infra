@@ -16,7 +16,7 @@ We have transformed the testing framework from a "document-heavy chore" into an 
 
 ## 🤖 Agent-First "START HERE" Directive
 
-We've removed the ambiguity of "how to test" by creating a dedicated [**`AGENT_INSTRUCTIONS.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/tests/AGENT_INSTRUCTIONS.md) and embedding **Agent START HERE** blocks directly into every test suite.
+We've removed the ambiguity of "how to test" by creating a dedicated [**`AGENT_INSTRUCTIONS.md`**](tests/AGENT_INSTRUCTIONS.md) and embedding **Agent START HERE** blocks directly into every test suite.
 
 ### Mandatory Pipeline
 1. **SCAFFOLD**: Initialize structure with standardized metadata.
@@ -43,7 +43,7 @@ These indicators have been propagated to all metadata files, roadmaps, and healt
 
 ## ⭐ High-Fidelity Testing Dashboard
 
-The [**Testing Dashboard**](file:///Users/mikesablaze/goldenpath-idp-infra/tests/README.md) now surfaces the **Automation Confidence Matrix**, allowing any user to understand the maturity of a feature at a glance.
+The [**Testing Dashboard**](tests/README.md) now surfaces the **Automation Confidence Matrix**, allowing any user to understand the maturity of a feature at a glance.
 
 ### Key Metrics Surfaced
 - **Automation Maturity**: (e.g., ⭐⭐⭐ Validated)
@@ -94,14 +94,14 @@ This ensures every new asset starts with the correct directory structure, templa
 The repository root has been decluttered, removing ephemeral validation reports and redundant PR body artifacts.
 
 ### Central Discovery Store
-We created [**`PLATFORM_DASHBOARDS.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_DASHBOARDS.md) as the single source of truth for locating all platform-level insights, including Health, Testing, Registry, and VQ metrics.
+We created [**`PLATFORM_DASHBOARDS.md`**](PLATFORM_DASHBOARDS.md) as the single source of truth for locating all platform-level insights, including Health, Testing, Registry, and VQ metrics.
 
 ## 5-Minute Onboarding (Human & Agent)
 
 The platform now features a definitive entry point for any participant in the ecosystem.
 
 ### Universal Handshake
-We created [**`00_START_HERE.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/80-onboarding/00_START_HERE.md) which provides:
+We created [**`00_START_HERE.md`**](docs/80-onboarding/00_START_HERE.md) which provides:
 - **Humans**: A 3-step setup with `bin/governance`.
 - **Agents**: A mandatory operational handshake including a baseline audit and scaffolding rules.
 

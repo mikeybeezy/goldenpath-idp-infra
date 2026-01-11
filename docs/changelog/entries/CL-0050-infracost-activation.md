@@ -35,12 +35,12 @@ Activated the Infracost integration for the `Plan - PR Terraform Plan` workflow.
 
 ### Activated
 - **Infracost Integration**: Enabled by configuring the `INFRACOST_API_KEY` repository secret.
-- **Robust Key Detection**: Updated [pr-terraform-plan.yml](file:///Users/mikesablaze/goldenpath-idp-infra/.github/workflows/pr-terraform-plan.yml) to verify keys from both `secrets` and `vars` contexts for improved reliability.
+- **Robust Key Detection**: Updated [pr-terraform-plan.yml](.github/workflows/pr-terraform-plan.yml) to verify keys from both `secrets` and `vars` contexts for improved reliability.
 - **Manual Trigger**: Added `workflow_dispatch` event to the workflow to allow for ad-hoc validation and cost checks without commits.
 
 ### Documentation
-- **Product Features**: Added "FinOps / Cost Visibility" to [IDP_PRODUCT_FEATURES.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/00-foundations/product/IDP_PRODUCT_FEATURES.md).
-- **ADR Status**: Updated [ADR-0076](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0076-platform-infracost-ci-visibility.md) to "Implemented".
+- **Product Features**: Added "FinOps / Cost Visibility" to [IDP_PRODUCT_FEATURES.md](docs/00-foundations/product/IDP_PRODUCT_FEATURES.md).
+- **ADR Status**: Updated [ADR-0076](docs/adrs/ADR-0076-platform-infracost-ci-visibility.md) to "Implemented".
 
 ## Validation
 

@@ -18,7 +18,7 @@ breaking_change: false
 # ADR-0114: Automated Enum Consistency Validation
 
 ## Context
-With the introduction of unified enums in [ADR-0113](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0113-platform-queryable-intelligence-enums.md), we need a mechanism to enforce these values across the repository. Manual review is insufficient for 300+ files, and existing validation scripts (`validate_metadata.py`) use hardcoded logic that is difficult to scale.
+With the introduction of unified enums in [ADR-0113](docs/adrs/ADR-0113-platform-queryable-intelligence-enums.md), we need a mechanism to enforce these values across the repository. Manual review is insufficient for 300+ files, and existing validation scripts (`validate_metadata.py`) use hardcoded logic that is difficult to scale.
 
 ## Decision
 We will implement a dedicated validation engine, `validate_enums.py`, that enforces metadata consistency against a centralized schema.

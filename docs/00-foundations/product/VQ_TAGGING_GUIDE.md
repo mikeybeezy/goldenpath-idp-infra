@@ -98,7 +98,7 @@ Rule: If it doesn’t compound, don’t carry it.
 ## 1. Tagging Python Scripts
 Scripts are tagged using an adjacent `metadata.yaml` or a directory-level default.
 
-### Example: [standardize_metadata.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/metadata.yaml)
+### Example: [standardize_metadata.py](scripts/metadata.yaml)
 ```yaml
 id: APPS_SCRIPTS_METADATA
 type: automation-script
@@ -112,7 +112,7 @@ value_quantification:
 ## 🤖 2. Tagging GitHub Workflows
 Since GitHub Actions YAML files don't support custom governance keys, we use a **Metadata Sidecar** in the `.github/workflows/` directory.
 
-### Example: [.github/workflows/create-ecr-registry.metadata.yaml](file:///Users/mikesablaze/goldenpath-idp-infra/.github/workflows/create-ecr-registry.metadata.yaml)
+### Example: [.github/workflows/create-ecr-registry.metadata.yaml](.github/workflows/create-ecr-registry.metadata.yaml)
 ```yaml
 id: WORKFLOW_CREATE_ECR
 type: documentation

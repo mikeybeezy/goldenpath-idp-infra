@@ -20,10 +20,10 @@ This index provides the definitive mapping between raw JSON policy fragments and
 
 | Policy File (JSON) | Terraform Variable | Target Role / Usage |
 |:---|:---|:---|
-| `[ecr-combined-policy.json](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/policies/iam/ecr-combined-policy.json)` | `var.ecr_combined_policy_json` | **App/Platform**: Registry Mgmt + Image Push |
-| `[ci-teardown-orphan-cleanup.json](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/policies/iam/ci-teardown-orphan-cleanup.json)` | `var.teardown_policy_json` | **CI Runner**: Delete tagged resources |
-| `[ci-apply-iam-instance-profile-read.json](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/policies/iam/ci-apply-iam-instance-profile-read.json)` | `var.iam_read_policy_json` | **CI Runner**: List Instance Profiles |
-| `[ci-teardown-extra-permissions.json](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/policies/iam/ci-teardown-extra-permissions.json)` | `var.extra_cleanup_policy_json` | **CI Runner**: Supplemental cleanup actions |
+| `[ecr-combined-policy.json](docs/10-governance/policies/iam/ecr-combined-policy.json)` | `var.ecr_combined_policy_json` | **App/Platform**: Registry Mgmt + Image Push |
+| `[ci-teardown-orphan-cleanup.json](docs/10-governance/policies/iam/ci-teardown-orphan-cleanup.json)` | `var.teardown_policy_json` | **CI Runner**: Delete tagged resources |
+| `[ci-apply-iam-instance-profile-read.json](docs/10-governance/policies/iam/ci-apply-iam-instance-profile-read.json)` | `var.iam_read_policy_json` | **CI Runner**: List Instance Profiles |
+| `[ci-teardown-extra-permissions.json](docs/10-governance/policies/iam/ci-teardown-extra-permissions.json)` | `var.extra_cleanup_policy_json` | **CI Runner**: Supplemental cleanup actions |
 
 ---
 

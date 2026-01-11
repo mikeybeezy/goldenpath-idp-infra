@@ -36,7 +36,7 @@ This document defines the strategy for **Config-Driven Metadata Governance**. Hi
 
 ## The Governance Stack
 
-### 1. The Source of Truth ([`enums.yaml`](file:///Users/mikesablaze/goldenpath-idp-infra/schemas/metadata/enums.yaml))
+### 1. The Source of Truth ([`enums.yaml`](schemas/metadata/enums.yaml))
 Defines the allowed values for all metadata fields (Owners, Domains, Statuses, Risk Levels).
 
 ### 2. The Rule Sets (`schemas/metadata/*.schema.yaml`)

@@ -52,7 +52,7 @@ breaking_change: false
 
 `scripts/extract-relationships.py` automatically populates the `relates_to` metadata field by scanning document content for references to other files, ADRs, PRs, and workflow files. It builds the Knowledge Graph connections between documents.
 
-**Script Location:** [`scripts/extract-relationships.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/extract-relationships.py)
+**Script Location:** [`scripts/extract-relationships.py`](scripts/extract-relationships.py)
 
 ## What It Does
 
@@ -428,10 +428,10 @@ Add filter logic before adding to `relationships` set.
 
 ## Related Documentation
 
-- [ADR-0084: Enhanced Metadata Schema](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0084-platform-enhanced-metadata-schema.md)
-- [CL-0043: Complete Metadata Backfill](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/entries/CL-0043-complete-metadata-backfill.md)
-- [METADATA_STRATEGY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/90-doc-system/METADATA_STRATEGY.md)
-- [Metadata Backfill Script Runbook](file:///Users/mikesablaze/goldenpath-idp-infra/docs/70-operations/runbooks/METADATA_BACKFILL_SCRIPT.md)
+- [ADR-0084: Enhanced Metadata Schema](docs/adrs/ADR-0084-platform-enhanced-metadata-schema.md)
+- [CL-0043: Complete Metadata Backfill](docs/changelog/entries/CL-0043-complete-metadata-backfill.md)
+- [METADATA_STRATEGY.md](docs/90-doc-system/METADATA_STRATEGY.md)
+- [Metadata Backfill Script Runbook](docs/70-operations/runbooks/METADATA_BACKFILL_SCRIPT.md)
 
 ## Support
 

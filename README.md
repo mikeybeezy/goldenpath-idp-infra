@@ -41,9 +41,9 @@ Welcome to the core configuration and governance engine for the GoldenPath Inter
 
 ## Quick Links
 
-- [** START HERE (5-Min Onboarding)**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/80-onboarding/00_START_HERE.md)
-- [** Platform Dashboards Index**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_DASHBOARDS.md)
-- [** Current Platform Health**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md)
+- [** START HERE (5-Min Onboarding)**](docs/80-onboarding/00_START_HERE.md)
+- [** Platform Dashboards Index**](PLATFORM_DASHBOARDS.md)
+- [** Current Platform Health**](PLATFORM_HEALTH.md)
 
 ---
 

@@ -66,9 +66,9 @@ This script transforms the enums from a text file into an **executable quality g
 
 We've promoted these new capabilities to ensure they are recognized as core platform features.
 
-- **[ADR-0113](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0113-platform-queryable-intelligence-enums.md)**: Formalized the architecture decision.
-- **[IDP_PRODUCT_FEATURES.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/00-foundations/product/IDP_PRODUCT_FEATURES.md)**: Added "Enum Consistency Enforcement" to the Capability Roadmap.
-- **[scripts/index.md](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md)**: Indexed the new validator for easy discovery.
+- **[ADR-0113](docs/adrs/ADR-0113-platform-queryable-intelligence-enums.md)**: Formalized the architecture decision.
+- **[IDP_PRODUCT_FEATURES.md](docs/00-foundations/product/IDP_PRODUCT_FEATURES.md)**: Added "Enum Consistency Enforcement" to the Capability Roadmap.
+- **[scripts/index.md](scripts/index.md)**: Indexed the new validator for easy discovery.
 
 ---
 
@@ -79,7 +79,7 @@ We've established a strict standard for visual communication to reduce cognitive
 ### [NEW] `EMOJI_POLICY.md`
 - **Allowed**: Only in instructional docs (READMEs, Runbooks) as semantic markers (⚠️, ✅, 🔒...).
 - **Forbidden**: Strictly banned from ADRs, Policies, and Authoritative records.
-- **Enforcement**: [`enforce_emoji_policy.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/enforce_emoji_policy.py) scans and fixes violations automatically.
+- **Enforcement**: [`enforce_emoji_policy.py`](scripts/enforce_emoji_policy.py) scans and fixes violations automatically.
 
 ---
 

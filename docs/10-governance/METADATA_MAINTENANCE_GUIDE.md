@@ -45,7 +45,7 @@ When the governance schema needs to change (e.g., adding a `cost_center` field o
 Modify `scripts/standardize-metadata.py`.
 - Add the new field to the `SKELETON` dictionary with a sensible default value or a "TBD" placeholder.
 - If the field can be derived (e.g., from path or filename), add that logic to the script.
-- **Reference**: See [METADATA_SIDECAR_TEMPLATE.yaml](file:///Users/mikesablaze/goldenpath-idp-infra/docs/templates/METADATA_SIDECAR_TEMPLATE.yaml) for the latest gold standard.
+- **Reference**: See [METADATA_SIDECAR_TEMPLATE.yaml](docs/templates/METADATA_SIDECAR_TEMPLATE.yaml) for the latest gold standard.
 
 ### 2. Execute Bulk Update
 Run the standardized script across the entire repository:

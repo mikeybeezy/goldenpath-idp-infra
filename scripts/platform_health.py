@@ -116,7 +116,7 @@ def get_script_stats():
         with open(path, 'r') as f:
             content = f.read()
             # Count [name.sh](...) links
-            matches = re.findall(r'\[.*?\.(\w+)\]\(file://.*?\)', content)
+            matches = re.findall(r'\[.*?\.(\w+)\]\(.*?\)', content)
             stats['total'] = len(matches)
     return stats
 
@@ -411,10 +411,10 @@ def generate_report(target_dir='.'):
     lines.append("")
     lines.append(f"| Metric | Count | Source |")
     lines.append(f"| :--- | :--- | :--- |")
-    lines.append(f"| **Architecture Decisions** | {adr_stats['total']} | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |")
-    lines.append(f"| **Automation Scripts** | {script_stats['total']} | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |")
-    lines.append(f"| **CI Workflows** | {workflow_stats['total']} | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |")
-    lines.append(f"| **Change Logs** | {changelog_stats['total']} | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |")
+    lines.append(f"| **Architecture Decisions** | {adr_stats['total']} | [ADR Index](docs/adrs/01_adr_index.md) |")
+    lines.append(f"| **Automation Scripts** | {script_stats['total']} | [Script Index](scripts/index.md) |")
+    lines.append(f"| **CI Workflows** | {workflow_stats['total']} | [Workflow Index](ci-workflows/CI_WORKFLOWS.md) |")
+    lines.append(f"| **Change Logs** | {changelog_stats['total']} | [Changelog Index](docs/changelog/README.md) |")
     lines.append(f"| **Tracked Resources** | {stats['total_files']} | Repository Scan |")
 
     lines.append("")
@@ -483,7 +483,7 @@ def generate_report(target_dir='.'):
     lines.append("> [!TIP]")
     lines.append(f"> Total realized value reclaimed through automation heartbeats: **{total_reclaimed:.1f} hours**.")
     lines.append("")
-    lines.append(f"- **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)")
+    lines.append(f"- **ROI Ledger**: [.goldenpath/value_ledger.json](.goldenpath/value_ledger.json)")
 
     lines.append("")
     lines.append("## Financial Governance (Cloud Cost)")
@@ -492,7 +492,7 @@ def generate_report(target_dir='.'):
     lines.append(f"> Current monthly infrastructure run rate: **${monthly_cost:,.2f} {currency}**.")
     lines.append("")
     lines.append(f"- **Estimated Annual**: `${monthly_cost * 12:,.2f} {currency}`")
-    lines.append(f"- **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)")
+    lines.append(f"- **Cost Ledger**: [.goldenpath/cost_ledger.json](.goldenpath/cost_ledger.json)")
     lines.append("- **Tooling**: Infracost (CI-integrated)")
 
     lines.append("")

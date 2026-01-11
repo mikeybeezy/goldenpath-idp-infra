@@ -5,38 +5,38 @@ type: documentation
 category: governance
 status: active
 owner: platform-team
-version: '2026-01-10'
+version: '2026-01-11'
 relates_to:
   - platform_health.py
 ---
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-10 01:18:03` | **V1 Readiness**: `94.9%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-11 15:27:27` | **V1 Readiness**: `94.3%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
-**Realized Value**: `20.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Realized Value**: `31.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **94.9%** ready for V1 production rollout.
+> The platform is currently **94.3%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 97.1% |
+| **Metadata Integrity** | ✅ | 97.3% |
 | **Injection Integrity** | ✅ | 100.0% |
-| **Architecture Maturity** | 🚧 | 98/125 Active |
-| **Changelog Activity** | ✅ | 100 Entries |
+| **Architecture Maturity** | 🚧 | 101/135 Active |
+| **Changelog Activity** | ✅ | 104 Entries |
 
 ## Knowledge Graph Vitality
 
 | Metric | Count | Source |
 | :--- | :--- | :--- |
-| **Architecture Decisions** | 125 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
-| **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
-| **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 100 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 479 | Repository Scan |
+| **Architecture Decisions** | 135 | [ADR Index](docs/adrs/01_adr_index.md) |
+| **Automation Scripts** | 39 | [Script Index](scripts/index.md) |
+| **CI Workflows** | 40 | [Workflow Index](ci-workflows/CI_WORKFLOWS.md) |
+| **Change Logs** | 104 | [Changelog Index](docs/changelog/README.md) |
+| **Tracked Resources** | 490 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -45,10 +45,10 @@ relates_to:
 | Ecr Registry | 1 |
 | Ecr Repositories | 11 |
 | IDP Apis | 9 |
-| IDP Components | 17 |
-| IDP Domains | 3 |
-| IDP Resources | 2 |
-| IDP Systems | 4 |
+| IDP Components | 18 |
+| IDP Domains | 4 |
+| IDP Resources | 14 |
+| IDP Systems | 5 |
 
 ## AWS Inventory Snapshot
 
@@ -63,15 +63,15 @@ relates_to:
 
 ```mermaid
 pie title Production Impact distribution
-    "HIGH" : 28
+    "HIGH" : 29
     "MEDIUM" : 33
-    "LOW" : 386
+    "LOW" : 396
     "NONE" : 29
 ```
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `97.1%`
+- **Metadata Compliance**: `97.3%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
@@ -81,9 +81,9 @@ pie title Production Impact distribution
 ## Project Realized Value (Heartbeat)
 
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **20.4 hours**.
+> Total realized value reclaimed through automation heartbeats: **31.4 hours**.
 
-- **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
+- **ROI Ledger**: [.goldenpath/value_ledger.json](.goldenpath/value_ledger.json)
 
 ## Financial Governance (Cloud Cost)
 
@@ -91,7 +91,7 @@ pie title Production Impact distribution
 > Current monthly infrastructure run rate: **$1,250.00 USD**.
 
 - **Estimated Annual**: `$15,000.00 USD`
-- **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)
+- **Cost Ledger**: [.goldenpath/cost_ledger.json](.goldenpath/cost_ledger.json)
 - **Tooling**: Infracost (CI-integrated)
 
 ## Operational Risks

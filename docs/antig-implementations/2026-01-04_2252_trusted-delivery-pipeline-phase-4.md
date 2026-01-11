@@ -21,7 +21,7 @@ This plan establishes a secure software supply chain by integrating AWS Elastic 
 ## Proposed Changes
 
 ### [Platform Repo] (`goldenpath-idp-infra`)
-#### [NEW] [envs/dev/ecr.tf](file:///Users/mikesablaze/goldenpath-idp-infra/envs/dev/ecr.tf)
+#### [NEW] [envs/dev/ecr.tf](envs/dev/ecr.tf)
 Create the ECR repository for the WordPress application.
 - **Resource**: `aws_ecr_repository`
 - **Name**: `goldenpath-wordpress-app` (Aligned with repo name)

@@ -88,16 +88,16 @@ The indexing scripts do not "run" the code they scan.
 
 ### 2. Automated Indexing
 The system maintains the following indices in real-time:
- - **Script Index**: [scripts/index.md](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md)
- - **Workflow Index**: [.github/workflows/index.md](file:///Users/mikesablaze/goldenpath-idp-infra/.github/workflows/index.md)
- - **ADR Index**: [docs/adrs/01_adr_index.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md)
+ - **Script Index**: [scripts/index.md](scripts/index.md)
+ - **Workflow Index**: [.github/workflows/index.md](.github/workflows/index.md)
+ - **ADR Index**: [docs/adrs/01_adr_index.md](docs/adrs/01_adr_index.md)
 
 ### 3. Limited File Scope
 The bot is cryptographically restricted (via the workflow definition) to only modify three files: `scripts/index.md`, `ci-workflows/CI_WORKFLOWS.md`, and `docs/adrs/01_adr_index.md`. It cannot touch `.tf`, `.py`, or `.sh` logic.
 
 ### 4. Human-in-the-Loop (HITL) Mandate
 Automation is for **drafting**, not **authorizing**.
-- **The Mandatory Signature**: Per the **[CODEOWNERS Policy](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/CODEOWNERS_POLICY.md)**, every bot-generated commit requires an explicit human approval (thumbs-up) from the `platform-team` before it can be merged.
+- **The Mandatory Signature**: Per the **[CODEOWNERS Policy](docs/10-governance/CODEOWNERS_POLICY.md)**, every bot-generated commit requires an explicit human approval (thumbs-up) from the `platform-team` before it can be merged.
 - **Verification Gate**: The PR will remain blocked until a human has inspected the bot's diff for side-effects.
 - **No Self-Approval**: The bot is technically barred from merging its own changes, ensuring a separation of concerns between "Generation" and "Verification."
 

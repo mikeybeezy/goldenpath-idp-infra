@@ -36,7 +36,7 @@ This document establishes the **Automated Decision Routing** framework. It ensur
 
 ## The Routing Engine
 The source of truth for all routing logic is maintained in:
- [**`schemas/routing/agent-routing.yaml`**](file:///Users/mikesablaze/goldenpath-idp-infra/schemas/routing/agent-routing.yaml)
+ [**`schemas/routing/agent-routing.yaml`**](schemas/routing/agent-routing.yaml)
 
 ### 1. Functional Domain Routing (`by_domain`)
 We categorize risk based on the primary area of impact:
