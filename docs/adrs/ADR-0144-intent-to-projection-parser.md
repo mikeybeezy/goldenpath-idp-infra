@@ -48,9 +48,16 @@ graph TD
         G["ExternalSecret YAML (K8s)"]
     end
 
+    subgraph Sync ["GitOps Reconciliation"]
+        H["Terraform Apply"]
+        I["ArgoCD Sync"]
+    end
+
     A --> B
     E --> F
     E --> G
+    F --> H
+    G --> I
 ```
 
 ## Internal Mechanisms
@@ -66,8 +73,8 @@ The Parser encodes the "Rules of the Platform" into executable code.
 
 ### 3. The Multi-Target Emitter (Output)
 A single input results in multiple synchronized outputs:
-- **Cloud Projection**: Emits JSON/HCL for Terraform to provision the physical resource.
-- **Cluster Projection**: Emits Kubernetes manifests (e.g., ExternalSecrets) to hydrate the resource into the application's runtime.
+- **Cloud Projection**: Emits JSON/HCL into the environment's `generated/` directory for Terraform to provision the physical resource.
+- **Cluster Projection**: Emits Kubernetes manifests (e.g., ExternalSecrets) into the cluster's GitOps overlay. **These manifests are placed in directories explicitly tracked and synced by ArgoCD**, ensuring the cluster state is automatically reconciled with the generated blueprints.
 
 ## Rationale
 - **Decoupling**: We can update the Terraform module or swap AWS for Vault entirely within the Parser's `Translation Layer` without the developer ever changing their YAML file.

@@ -142,7 +142,7 @@ The core of our **"Golden Path"** architecture lies in the **Parser**. By sittin
 ### 🏆 Three Massive Advantages:
 1.  **Shift-Left Governance**: We drop policy gates directly into the Python parser (e.g., `risk: high` strictly requires `rotation: standard`). This allows us to catch security violations at the PR stage—before a single line of Terraform is ever calculated.
 2.  **Contract-Driven Infrastructure**: Developers are shielded from the complexity of Terraform modules, security policies, and principal ARNs. They interact only with a simple, human-readable YAML schema.
-3.  **The GitOps Bridge**: The parser is "multi-lingual"—it generates the `tfvars` for AWS provisioning and the `ExternalSecret` manifests for Kubernetes projection simultaneously. This ensures the AWS resource and the cluster projection are always in 100% sync.
+3.  **The GitOps Bridge**: The parser is "multi-lingual"—it generates the `tfvars` for AWS provisioning and the `ExternalSecret` manifests for Kubernetes projection simultaneously. **These manifests are emitted directly into the GitOps overlays monitored by ArgoCD**, ensuring the cloud resource and the cluster projection are always in 100% sync via automated reconciliation.
 
 ### 📊 The Lifecycle Visualization
 ```mermaid
