@@ -4,7 +4,7 @@ metadata:
   name: payments-payments-db-credentials-sync
   namespace: payments
   labels:
-    goldenpath.idp/id: null
+    goldenpath.idp/id: SEC-0007
     platform.idp/service: payments
     platform.idp/env: dev
 spec:
