@@ -193,4 +193,12 @@ ecr_repositories = {
       risk  = "low"
     }
   }
+
+  "backstage-regzr" = {
+    metadata = {
+      id    = "REGISTRY_BACKSTAGE_REGZR"
+      owner = "platform-team"
+      risk  = "low"
+    }
+  }
 }
