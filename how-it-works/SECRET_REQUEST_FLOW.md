@@ -8,11 +8,11 @@ relates_to:
   - docs/adrs/ADR-0135-platform-secrets-manager-eso-foundation.md
 ---
 
-# How It Works: Secret Request Flow
+# How It Works: Platform Secret Lifecycle
 
 This document explains the technical lifecycle of a platform secret, following the Golden Path "Intent vs. Projection" model. It emphasizes the philosophy that **Backstage is the front door for intent, while the platform owns creation, policy, and lifecycle.**
 
-## 💡 Core Philosophy
+## 🧭 Core Philosophy
 
 ### The Golden Rule
 > [!IMPORTANT]
@@ -60,7 +60,7 @@ The following flow represents the clean separation between captured intent, Git-
 
 ---
 
-## 🔄 The Lifecycle in Practice
+## ⚡ The Lifecycle in Practice
 
 ### 1. Backstage Captures Intent
 The developer selects the "Request app secret" template and provides:

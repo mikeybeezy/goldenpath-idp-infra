@@ -1,5 +1,5 @@
 ---
-id: SECRET_REQUEST_CONTRACT
+id: ADR-0143
 title: Secret Request Contract (V1)
 type: documentation
 domain: security

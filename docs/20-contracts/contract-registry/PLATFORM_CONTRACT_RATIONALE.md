@@ -1,3 +1,20 @@
+---
+id: PLATFORM_CONTRACT_RATIONALE
+title: Platform Contract Rationale
+type: documentation
+domain: governance
+owner: platform-team
+status: active
+lifecycle: active
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+---
+
 # Rationale: The Move to Declarative Contracts
 
 ## The Problem: Implementation Leakage

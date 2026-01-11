@@ -1,3 +1,20 @@
+---
+id: CONTRACT_REGISTRY
+title: Platform Contract Registry
+type: contract
+domain: governance
+owner: platform-team
+status: active
+lifecycle: active
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+---
+
 # Platform Contract Registry
 
 This registry tracks the maturity and implementation status of all Golden Path declarative interfaces.

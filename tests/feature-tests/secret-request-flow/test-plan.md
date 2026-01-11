@@ -23,7 +23,7 @@ Verify that the `SecretRequest` manifest is correctly parsed, validated (camelCa
 - **Tool**: `scripts/secret_request_parser.py`
 - **Enums**: `schemas/metadata/enums.yaml`
 
-## 📝 Execution Steps
+## 📖 Execution Steps
 1.  Run `scripts/secret_request_parser.py --mode validate --input-files <path>`
 2.  Run `scripts/secret_request_parser.py --mode generate --input-files <path>`
 3.  Inspect `envs/dev/secrets/generated/` for JSON outputs.

@@ -1,3 +1,20 @@
+---
+id: ADR-0142
+title: "ADR-0142: Strategic Adoption of Declarative Platform Contracts"
+type: adr
+domain: governance
+owner: platform-team
+status: accepted
+lifecycle: active
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+---
+
 # ADR-0142: Strategic Adoption of Declarative Platform Contracts
 
 ## Status
