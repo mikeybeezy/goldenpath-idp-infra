@@ -334,6 +334,10 @@ module "app_secrets" {
   description = each.value.description
   tags        = local.common_tags
 
+  read_principals        = each.value.read_principals
+  write_principals       = each.value.write_principals
+  break_glass_principals = each.value.break_glass_principals
+
   metadata = each.value.metadata
 }
 

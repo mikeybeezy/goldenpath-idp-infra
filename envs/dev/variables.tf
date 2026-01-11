@@ -284,7 +284,10 @@ variable "app_secrets" {
       owner = string
       risk  = optional(string, "medium")
     })
-    description = optional(string, "Managed application secret")
+    description            = optional(string, "Managed application secret")
+    read_principals        = optional(list(string), [])
+    write_principals       = optional(list(string), [])
+    break_glass_principals = optional(list(string), [])
   }))
   default = {}
 }

@@ -126,7 +126,7 @@ ecr_repositories = {
     metadata = {
       id    = "REGISTRY_TEST_APP_DEV"
       owner = "app-team-test"
-      risk  = "low"
+      risk = "low"
     }
   }
 
@@ -134,7 +134,7 @@ ecr_repositories = {
     metadata = {
       id    = "REGISTRY_NEW_WP_REG_2"
       owner = "michael-babs-2"
-      risk  = "low"
+      risk = "low"
     }
   }
 
@@ -142,7 +142,7 @@ ecr_repositories = {
     metadata = {
       id    = "REGISTRY_NEW_APP_16"
       owner = "michael-babs-16"
-      risk  = "low"
+      risk = "low"
     }
   }
 
@@ -150,7 +150,7 @@ ecr_repositories = {
     metadata = {
       id    = "REGISTRY_NEW_APP_15"
       owner = "michael-babs-15"
-      risk  = "low"
+      risk = "low"
     }
   }
 
@@ -158,7 +158,7 @@ ecr_repositories = {
     metadata = {
       id    = "REGISTRY_NEW_APP_14"
       owner = "michael-babs-14"
-      risk  = "low"
+      risk = "low"
     }
   }
 
@@ -166,7 +166,7 @@ ecr_repositories = {
     metadata = {
       id    = "REGISTRY_NEW_APP_13"
       owner = "michael-babs-13"
-      risk  = "low"
+      risk = "low"
     }
   }
 
@@ -174,7 +174,7 @@ ecr_repositories = {
     metadata = {
       id    = "REGISTRY_NEW_APP_10"
       owner = "michael-babs-10"
-      risk  = "low"
+      risk = "low"
     }
   }
 
@@ -182,7 +182,7 @@ ecr_repositories = {
     metadata = {
       id    = "REGISTRY_MY_REG_APP_3"
       owner = "michael-babs-3"
-      risk  = "low"
+      risk = "low"
     }
   }
 
@@ -190,7 +190,7 @@ ecr_repositories = {
     metadata = {
       id    = "REGISTRY_NEW_WP_REG2"
       owner = "platform-team"
-      risk  = "low"
+      risk = "low"
     }
   }
 }
@@ -198,12 +198,12 @@ ecr_repositories = {
 # Secret Catalog
 app_secrets = {
 
-  "payments-payments-db-credentials" = {
+  "goldenpath-idp-secret-store" = {
     description = "Managed secret for payments in dev"
     metadata = {
       id    = "SEC-0007"
       owner = "app-team"
-      risk  = "medium"
+      risk = "medium"
     }
   }
 }
