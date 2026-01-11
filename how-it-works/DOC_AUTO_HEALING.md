@@ -3,6 +3,10 @@ id: HIW_DOC_AUTO_HEALING
 title: "How It Works: Documentation Auto-Healing"
 status: active
 version: "1.0"
+relates_to:
+  - scripts/platform_health.py
+  - scripts/generate_adr_index.py
+  - .github/workflows/ci-index-auto-heal.yml
 ---
 
 # How It Works: Documentation Auto-Healing

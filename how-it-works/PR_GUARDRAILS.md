@@ -3,6 +3,10 @@ id: HIW_PR_GUARDRAILS
 title: "How It Works: PR Guardrails"
 status: active
 version: "1.0"
+relates_to:
+  - scripts/pr_guardrails.py
+  - scripts/validate_enums.py
+  - .github/workflows/pr-guardrails.yml
 ---
 
 # How It Works: PR Guardrails
