@@ -79,14 +79,37 @@ In our platform, a secret isn't functional until it exists in both AWS and Kuber
 
 ---
 
-### Linking to Terraform
-To verify the generated variables against the live environment:
+---
+
+## 🚀 Next Steps (Closing the Loop)
+
+After the parser generates the implementation artifacts, you must follow these steps to bring the secret to life:
+
+### 1. Provision the AWS Resource
+Navigate to the Terraform environment and apply the changes. The generated `.tfvars.json` will be automatically loaded.
 
 ```bash
 cd envs/dev
-terraform plan
+terraform plan   # Verify the secret and IAM policy creation
+terraform apply  # Provision to AWS
 ```
-*Terraform will automatically pick up any `*.auto.tfvars.json` file in the directory.*
+
+### 2. Commit and Sync (GitOps)
+The `ExternalSecret` manifest must be committed to the repository for ArgoCD to pick it up.
+
+```bash
+git add gitops/kustomize/overlays/dev/apps/payments/externalsecrets/
+git commit -m "feat(secrets): add ESO projection for SEC-0007"
+git push origin <your-branch>
+```
+
+### 3. Reconcile in Cluster
+*   **Automatic**: ArgoCD will sync the new manifest within its next refresh cycle (usually 3-5 minutes).
+*   **Surgical Sync**: You can trigger a manual sync in the ArgoCD UI or via CLI to prioritize this change.
+
+---
+
+### Linking to Terraform
 
 ---
 
