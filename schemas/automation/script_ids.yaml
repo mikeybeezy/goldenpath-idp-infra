@@ -1,4 +1,4 @@
-next: 44
+next: 51
 map:
   scripts/audit_metadata.py: SCRIPT-0001
   scripts/aws_inventory.py: SCRIPT-0002
@@ -43,3 +43,10 @@ map:
   scripts/validate_metadata.py: SCRIPT-0041
   scripts/validate_routing_compliance.py: SCRIPT-0042
   scripts/validate_scripts_tested.py: SCRIPT-0043
+  scripts/generate_script_matrix.py: SCRIPT-0044
+  scripts/lib/cost_logger.py: SCRIPT-0045
+  scripts/lib/metadata_config.py: SCRIPT-0046
+  scripts/lib/script_metadata.py: SCRIPT-0047
+  scripts/lib/vq_logger.py: SCRIPT-0048
+  scripts/policy-enforcement/check-policy-compliance.py: SCRIPT-0049
+  scripts/repair_shebangs.py: SCRIPT-0050
