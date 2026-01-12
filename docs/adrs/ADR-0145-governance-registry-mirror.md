@@ -1,38 +1,72 @@
 ---
-id: ADR-0145
+id: ADR-0145-governance-registry-mirror
 title: 'ADR-0145: Governance Registry Mirror Pattern'
 type: adr
-domain: platform-governance
+domain: platform-core
 owner: platform-team
 lifecycle: active
 exempt: false
 reliability:
   rollback_strategy: git-revert
-  observability_tier: gold
-  maturity: 3
+  observability_tier: bronze
+  maturity: 2
 schema_version: 1
-relates_to:
-  - RB-0027
-  - ADR-0136
-  - ADR-0026
+relates_to: []
 supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
 value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+---
+
+```
+id: ADR-0145
+title: 'ADR-0145: Governance Registry Mirror Pattern'
+type: adr
+status: accepted
+domain: platform-governance
+owner: platform-team
+lifecycle: active
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: gold
+  maturity: 3
+schema_version: 1
+relates_to: [RB-0027, ADR-0136, ADR-0026]
+value_quantification:
   vq_class: 🔵 MV/HQ
   impact_tier: high
   potential_savings_hours: 5.0
-supported_until: '2028-01-01'
 ---
 
 # ADR-0145: Governance Registry Mirror Pattern
 
 ## Context
-High-velocity interaction between humans and machine agents creates a "Commit Tug-of-War" when automated scripts attempt to mutate the active development branch. Specifically, scripts updating `PLATFORM_HEALTH.md`, documentation indices, and catalog syncs frequently cause `[rejected] fetch first` errors for human contributors. We require a mechanism that preserves high-integrity audit trails while maintaining a frictionless developer environment.
+High-velocity interaction between humans and machine agents creates a “Commit Tug-of-War” when automated scripts attempt to mutate active development branches. Specifically, scripts updating `PLATFORM_HEALTH.md`, documentation indices, and catalog syncs frequently cause `[rejected] fetch first` errors for human contributors and generate branch drift across open PRs.
+
+We require a mechanism that:
+- Preserves high-integrity audit trails.
+- Avoids branch mutation during active development.
+- Scales across multiple environments without state collision.
+- Remains reproducible from a specific source commit.
 
 ## Decision
-We will implement the **Governance Registry Mirror Pattern**. All machine-generated metadata, health reports, and documentation indices will be decoupled from the primary code branches and housed in a dedicated, orphan branch named `governance-registry`.
+We will implement the **Governance Registry Mirror Pattern**. All machine-generated outputs (metadata reports, platform health reports, documentation indices, audit logs) will be written to a dedicated branch named: `governance-registry`.
+
+This branch is CI-owned, and acts as an **observation context (derived state)**, decoupled from human/agent intent branches (`development`, `main`).
+
+## Source of Truth Contract
+To prevent ambiguity and future drift:
+1. **Canonical intent (source of truth)** lives in: `development` and `main` (code, configs, contracts, schemas, workflows).
+2. **Canonical observation (derived outputs)** lives in: `governance-registry` (health reports, indices, audit artifacts).
+3. **Registry content is derived-only**:
+   - Every registry commit MUST reference a `source_sha` from `development` or `main`.
+   - The registry outputs MUST be reproducible by rerunning the audit pipeline at that `source_sha`.
+4. **No manual fixes in registry**: Humans do not “patch” dashboards in the registry branch; fixes happen in source branches and re-generate.
 
 ## Visual Architecture
 
@@ -54,37 +88,59 @@ graph TD
             DASH[UNIFIED_DASHBOARD.md]
         end
         subgraph "Environment Folders"
-            EDEV[environments/development/PLATFORM_HEALTH.md]
-            EPROD[environments/production/PLATFORM_HEALTH.md]
+            EDEV[environments/development/latest/PLATFORM_HEALTH.md]
+            EPROD[environments/production/latest/PLATFORM_HEALTH.md]
+            HDEV[environments/development/history/DATE-SHA/]
+            HPROD[environments/production/history/DATE-SHA/]
         end
     end
 
     DEV -- "Push/Merge" --> CI_DEV
     PROD -- "Merge/Push" --> CI_PROD
     
-    CI_DEV -- "Commit Audit Result" --> EDEV
-    CI_PROD -- "Commit Audit Result" --> EPROD
+    CI_DEV -- "Commit Audit Result (source_sha)" --> EDEV
+    CI_PROD -- "Commit Audit Result (source_sha)" --> EPROD
+    
+    CI_DEV -- "Archive Result (date+sha)" --> HDEV
+    CI_PROD -- "Archive Result (date+sha)" --> HPROD
     
     EDEV -- "Automatic Aggregation" --> DASH
     EPROD -- "Automatic Aggregation" --> DASH
 ```
 
-## Architecture: Unified Registry
-To support scalability and multi-environment visibility, the registry branch utilizes environment-specific folder nesting (`environments/<env>/`). This configuration ensures:
-1. **Multi-env Support**: Environments like `test`, `staging`, and `production` can be added without state collision.
-2. **Promotion Heatmap**: The unified dashboard can track the "Compliance Delta" between different environment lifecycle stages.
-3. **Chain of Custody**: Every report is tagged with its source branch and commit SHA for forensic auditability.
+## Architecture: Unified Registry Layout
+The `governance-registry` branch uses environment-specific nesting:
+- `environments/<env>/latest/...` (Always current view).
+- `environments/<env>/history/<date>-<sha>/...` (Append-only forensic audit trail).
+
+Every report is bound to: `source_branch`, `source_sha`, `generation timestamp (UTC)`, and `audit job ID`.
+
+## Operational Rules
+
+### 1. Write Boundary (Integrity Control)
+Only a **CI identity** may push to `governance-registry`. Human contributors do not commit directly to the registry branch. Branch protections should enforce "CI bot is the only writer."
+
+### 2. Concurrency / Race Safety
+To avoid “last writer wins” collisions when multiple merges happen quickly:
+- CI audit job must use GitHub Actions concurrency control (single writer per env).
+- Registry updates must be **atomic**: update `latest/` and append to `history/` in the single commit.
+
+### 3. Visibility & UX
+- **README Mitigation**: Root `README.md` links to `governance-registry/UNIFIED_DASHBOARD.md` and `latest/` health reports.
+- **PR Delta Comments**: Every PR merge posts a comment containing registry links, `source_sha`, and a pass/fail summary with key deltas.
 
 ## Consequences
 
 ### Positive
-- **Frictionless Development**: Developers and agents are no longer rejected due to automated background audit updates.
-- **Infinite Scalability**: The platform can scale to hundreds of environments by simply adding folders to the registry mirror.
-- **Permanent Audit Trail**: A linear history of platform readiness and value quantification is preserved independently of code churn.
+- **Frictionless Development**: Eliminates rejections caused by background mutation.
+- **Audit Integrity**: Derived outputs have a linear, append-only history independent of code churn.
+- **Clear separation of concerns**: Intent branches stay clean; observation stays authoritative.
 
 ### Negative
-- **Visibility**: The definitive health report and catalog indices move to a separate branch. This is mitigated by pinning a "Single Pane of Glass" link in the root README.md and using PR comments to notify users of state-sync events.
+- **Split visibility**: Mitigated via README pinning + PR comments.
+- **Repo growth**: Mitigated via future retention policy or periodic squashing.
 
 ## Alternatives Considered
-- **Option 2: GitHub Action Summaries**: Rejected because results were ephemeral and lacked a long-term git-based audit trail.
-- **Option 3: Post-Merge Commits to Dev**: Rejected because it doubles commit noise and still creates sync issues for other open PRs.
+- **GitHub Action Summaries**: Rejected as ephemeral.
+- **Post-merge commits to dev**: Rejected as noisy and causes PR sync issues.
+```

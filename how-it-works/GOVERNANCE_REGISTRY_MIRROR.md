@@ -7,15 +7,31 @@ category: architecture
 
 # How it Works – Governance Registry Mirror
 
-The **Governance Registry Mirror** is the platform's mechanism for achieving **High-Integrity Auditability** without sacrificing **Developer Velocity**. 
+The **Governance Registry Mirror** utilizes a decoupled "Observer Pattern" for repository state. It ensures **High-Integrity Auditability** without the "Commit Tug-of-War" common in high-velocity agent repositories.
 
-## 1. The Core Problem: Change Collision
-In a high-velocity environment, automated scripts that update documentation indices or health reports compete for the git lock on the active development branch. This leads to the "Commit Tug-of-War," where humans are rejected by machine commits.
+## 1. The Source of Truth Contract
+The platform strictly distinguishes between **Intent** and **Observation**:
+- **Intent (development/main)**: Humans and Agents change code here. This is the canonical source for what the platform *should be*.
+- **Observation (governance-registry)**: The platform records its health results here. This is the canonical record of what the platform *is*.
 
-## 2. The Solution: Decoupled State Mirroring
-We separate the repository into two distinct domains:
-1.  **Intent Domain (`development`/`main`)**: Where humans and agents express *what* should change.
-2.  **Observation Domain (`governance-registry`)**: Where the platform records *how* the platform responded (Audit Pulse, Reports).
+**Contract Rule**: Registry content is derived-only and must be reproducible from a specific Git SHA in the source branches. Direct "fixing" of dashboards in the registry branch is prohibited.
+
+## 2. Forensic Folder Structure
+The registry branch is structured to provide both an immediate "Live View" and a permanent "Forensic Audit Trail":
+
+```text
+governance-registry (branch)
+├── environments/
+│   ├── dev/
+│   │   ├── latest/
+│   │   │   └── PLATFORM_HEALTH.md  <-- Live reporting view
+│   │   └── history/
+│   │       └── 20260112-c420fca/
+│   │           └── PLATFORM_HEALTH.md <-- Immutable forensic snapshot
+│   └── prod/
+│       └── ... (same structure)
+└── UNIFIED_DASHBOARD.md              <-- Cross-environment heatmap
+```
 
 ## 3. Architecture Overview
 
@@ -37,58 +53,31 @@ graph TD
             DASH[UNIFIED_DASHBOARD.md]
         end
         subgraph "Environment Folders"
-            EDEV[environments/development/PLATFORM_HEALTH.md]
-            EPROD[environments/production/PLATFORM_HEALTH.md]
+            subgraph "dev"
+                ED_L[environments/dev/latest/PLATFORM_HEALTH.md]
+                ED_H[environments/dev/history/DATE-SHA/...]
+            end
+            subgraph "prod"
+                EP_L[environments/prod/latest/PLATFORM_HEALTH.md]
+                EP_H[environments/prod/history/DATE-SHA/...]
+            end
         end
     end
 
     DEV -- "Push/Merge" --> CI_DEV
     PROD -- "Merge/Push" --> CI_PROD
     
-    CI_DEV -- "Commit Audit Result" --> EDEV
-    CI_PROD -- "Commit Audit Result" --> EPROD
-    
-    EDEV -- "Automatic Aggregation" --> DASH
-    EPROD -- "Automatic Aggregation" --> DASH
+    CI_DEV -- "Commit Audit Result (source_sha)" --> dev
+    CI_PROD -- "Commit Audit Result (source_sha)" --> prod
 ```
 
-### ASCII Architecture
+## 4. Key Operational Guardrails
 
-```text
-    +-----------------------+      +-----------------------+
-    |  Branch: development  |      |     Branch: main      |
-    | (Code + Intent Only)  |      | (Production Stability)|
-    +-----------+-----------+      +-----------+-----------+
-                |                              |
-                | Push/Merge                   | Push/Merge
-                v                              v
-    +-----------------------+      +-----------------------+
-    |   CI Governance Job   |      |   CI Governance Job   |
-    | (Run platform_health) |      | (Run platform_health) |
-    +-----------+-----------+      +-----------+-----------+
-                |                              |
-                | Write Mirror                 | Write Mirror
-                v                              v
-    +------------------------------------------------------+
-    |             Branch: governance-registry              |
-    |                                                      |
-    |  /environments/development/PLATFORM_HEALTH.md        |
-    |  /environments/production/PLATFORM_HEALTH.md         |
-    |                                                      |
-    |             +--------------------------+             |
-    |             |   UNIFIED_DASHBOARD.md   |             |
-    |             |  (Single Pane of Glass)  |             |
-    |             +--------------------------+             |
-    +------------------------------------------------------+
-```
+### 🚫 CI-Only Write Boundary
+To maintain the integrity of the audit log, only automated service accounts are permitted to write to the registry branch. Humans have Read-Only access.
 
-## 4. Key Benefits
+### 🏎️ Atomic Pulse Updates
+When a "pulse" is recorded, the CI updates the `latest/` pointer and creates the `history/` entry in a **single atomic commit**. This prevents races and ensures that "Live" and "History" always represent the same point in time.
 
-### 🏎️ Frictionless PRs
-Because the `PLATFORM_HEALTH.md` is no longer committed to the PR branch, developers never experience an "out-of-sync" rejection caused by automated audit updates.
-
-### 🛡️ Immutable Audit Trail
-The `governance-registry` preserves a linear history of platform readiness. Even if a PR branch is deleted after merge, the specific health snapshot of the platform at that moment is permanently archived on the registry branch.
-
-### 📊 Multi-Environment Visibility
-The platform uses folder nesting (`environments/<env>/`) to allow a single unified dashboard to compare the health of `dev` vs `prod` in real-time.
+### 🔗 SHA Binding
+Every report in the registry contains a `SOURCE_COMMIT` field, allowing any auditor to verify provenance by checking the code state at that specific Git SHA.
