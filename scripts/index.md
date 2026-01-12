@@ -89,7 +89,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [repair_shebangs.py](file://scripts/repair_shebangs.py) | --- |
 | [scaffold_doc.py](file://scripts/scaffold_doc.py) | --- |
 | [scaffold_test.py](file://scripts/scaffold_test.py) | --- |
-| [secret_request_parser.py](file://scripts/secret_request_parser.py) | No description provided. |
+| [secret_request_parser.py](file://scripts/secret_request_parser.py) | --- |
 | [sync_backstage_entities.py](file://scripts/sync_backstage_entities.py) | --- |
 | [sync_ecr_catalog.py](file://scripts/sync_ecr_catalog.py) | --- |
 | [test_hotfix.py](file://scripts/test_hotfix.py) | --- |

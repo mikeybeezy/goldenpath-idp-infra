@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import annotations
 """
 ---
 id: SCRIPT-0033
@@ -20,6 +19,7 @@ risk_profile:
   coupling_risk: low
 ---
 """
+from __future__ import annotations
 
 # Owner: platform
 """
