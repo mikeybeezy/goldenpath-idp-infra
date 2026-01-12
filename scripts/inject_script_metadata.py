@@ -87,7 +87,7 @@ def inject_py(path: Path, meta: dict, dry_run: bool = False) -> bool:
     if dry_run:
         print(f"[DRY-RUN] Would inject metadata into {path}")
     else:
-        path.write_text(block + txt, encoding="utf-8")
+        path.write_text(new_txt, encoding="utf-8")
     return True
 
 def inject_sh(path: Path, meta: dict, dry_run: bool = False) -> bool:
