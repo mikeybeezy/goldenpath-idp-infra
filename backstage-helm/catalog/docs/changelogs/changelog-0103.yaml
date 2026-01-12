@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0103
+  title: 'CL-0103: Backstage ECR scaffolder creates PRs directly'
+  description: 'Date: 2026-01-10
+
+    Owner: platform-team
+
+    Scope: Backstage scaffolder, ECR registry workflow
+
+    Related: PR #202, docs/adrs/ADR-0095-self-service-registry-creation.md, docs/adrs/ADR-0128-automated-ecr-catalo...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0103-backstage-ecr-pr-scaffolder.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0103-backstage-ecr-pr-scaffolder.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0103-backstage-ecr-pr-scaffolder.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

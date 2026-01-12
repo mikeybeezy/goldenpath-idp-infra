@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0143
+  title: 'ADR-0143: Secret Request Contract (V1)'
+  description: '| risk.tier | Approval Required | rotationClass Requirement | Action
+    on Violation |
+
+    | :--- | :---: | :---: | :--- |
+
+    | **high** | Yes | != `none` | **Block** provisioning/PR |
+
+    | **medium** | Yes | Reco...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0143-secret-request-contract.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0143-secret-request-contract.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0143-secret-request-contract.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records
