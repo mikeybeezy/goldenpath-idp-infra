@@ -39,7 +39,7 @@ This is a contributor-facing guide to PR gates. It aims to prevent confusion
 by showing what triggers each gate and the expected response. Open to refinement
 and contribution.
 
-> **💡 Pro-Tip**: Use the [**Frictionless PR Workflow (RB-0027)**](../70-operations/runbooks/RB-0027-frictionless-pr-gates.md) to pass all checks automatically.
+> ** Pro-Tip**: Use the [**Frictionless PR Workflow (RB-0027)**](../70-operations/runbooks/RB-0027-frictionless-pr-gates.md) to pass all checks automatically.
 
 ## Gate flow (approximate)
 

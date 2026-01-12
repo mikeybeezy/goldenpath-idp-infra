@@ -150,7 +150,7 @@ The platform transforms raw developer intent into governed cloud infrastructure 
 ---
 
 ## 19. Heal-First, Push-Once Workflow (Frictionless PR Gates)
-The platform optimizes developer experience by replacing manual compliance chores with an automated **Heal-First, Push-Once** workflow. 
+The platform optimizes developer experience by replacing manual compliance chores with an automated **Heal-First, Push-Once** workflow.
 - **The Healer (`bin/governance heal`)**: A remediation engine that automatically formats YAML/Markdown, injects missing metadata, and aligns files with platform standards to ensure 100% gate compatibility before push.
 - **Minimal Conflict Enforcement**: Implements a 'Specific Owner Wins' policy to prevent environment-level automation from overwriting app-level identities, eliminating the CI oscillation that typically blocks multi-team PRs.
 - **Marker-Based Stability**: Uses non-destructive comment markers to inject auto-generated tables (Indices, Workflows) into hand-managed documentation, maintaining both source truth and human readability.
