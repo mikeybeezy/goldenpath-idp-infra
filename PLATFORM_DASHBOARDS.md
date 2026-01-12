@@ -26,7 +26,7 @@ value_quantification:
   impact_tier: low
   potential_savings_hours: 0.0
 status: active
-category: dashboard
+category: platform
 ---
 
 ## 🎯 Platform Dashboards Index

@@ -250,7 +250,7 @@ def scan_directory(target_path):
     else:
         for root, dirs, files in os.walk(target_path):
             # Skip hidden and ignored dirs
-            dirs[:] = [d for d in dirs if not d.startswith('.') and d not in ['node_modules']]
+            dirs[:] = [d for d in dirs if not d.startswith('.') and d not in ['node_modules', 'tests', 'how-it-works']]
 
             # Normalize root for zone checking
             norm_root = os.path.relpath(root, '.')
