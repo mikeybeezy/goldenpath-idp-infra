@@ -148,8 +148,9 @@ def validate_schema(data, filepath):
              is_cl_match = re.match(r'^CL-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
              is_rb_match = re.match(r'^RB-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
              is_sec_match = re.match(r'^SEC-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
+             is_cnt_match = re.match(r'^CNT-\d{3}$', doc_id) and (filename_base == doc_id or filename_base.startswith(doc_id + '-'))
 
-             if not (is_adr_match or is_cl_match or is_rb_match or is_sec_match):
+             if not (is_adr_match or is_cl_match or is_rb_match or is_sec_match or is_cnt_match):
                   errors.append(f"ID mismatch: '{doc_id}' found in header but filename is '{filename_base}'")
 
     if 'owner' in data:
