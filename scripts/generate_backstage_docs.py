@@ -8,6 +8,7 @@ making all governance documentation discoverable in the Backstage catalog.
 
 import os
 import re
+import yaml
 from pathlib import Path
 
 import sys

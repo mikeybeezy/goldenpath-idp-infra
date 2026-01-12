@@ -107,3 +107,10 @@ spec:
     - ./changelogs/changelog-0100.yaml
     - ./changelogs/changelog-0101.yaml
     - ./changelogs/changelog-0102.yaml
+    - ./changelogs/changelog-0103.yaml
+    - ./changelogs/changelog-0104.yaml
+    - ./changelogs/changelog-0105.yaml
+    - ./changelogs/changelog-0106.yaml
+    - ./changelogs/changelog-0107.yaml
+    - ./changelogs/changelog-0108.yaml
+    - ./changelogs/changelog-0109.yaml

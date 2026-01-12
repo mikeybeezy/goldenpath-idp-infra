@@ -13,6 +13,7 @@ import os
 import subprocess
 import sys
 import yaml
+from pathlib import Path
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from metadata_config import platform_yaml_dump

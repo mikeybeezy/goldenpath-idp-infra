@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: governance-02-governance-model
-  title: "Governance Model \u2013 Golden Path IDP (Deprecated)"
+  title: Governance Model – Golden Path IDP (Deprecated)
   description: 'Doc contract:'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra

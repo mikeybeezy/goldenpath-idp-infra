@@ -12,6 +12,7 @@ Value:
 
 import os
 import sys
+import yaml
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from metadata_config import platform_yaml_dump

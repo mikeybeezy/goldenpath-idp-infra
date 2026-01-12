@@ -3,8 +3,8 @@ kind: Component
 metadata:
   name: adr-0101
   title: 'ADR-0101: PR Metadata Auto-Heal and Scoped Validation'
-  description: "This friction contradicted the platform's \"Born Governed\" philosophy\u2014\
-    governance should enable velocity, not block it."
+  description: This friction contradicted the platform's "Born Governed" philosophy—governance
+    should enable velocity, not block it.
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0101-pr-metadata-auto-heal.md

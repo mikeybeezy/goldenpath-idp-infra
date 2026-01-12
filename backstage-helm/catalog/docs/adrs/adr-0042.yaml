@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0042
-  title: "ADR-0042: Branching strategy (development \u2192 main)"
+  title: 'ADR-0042: Branching strategy (development → main)'
   description: 'Filename: `ADR-0042-platform-branching-strategy.md`'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra

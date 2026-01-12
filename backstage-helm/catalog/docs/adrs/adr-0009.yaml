@@ -2,8 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0009
-  title: "ADR-0009: CI/CD observability via OpenTelemetry (\u201CDelivery Insights\u201D\
-    )"
+  title: 'ADR-0009: CI/CD observability via OpenTelemetry (“Delivery Insights”)'
   description: '- **Status:** Accepted
 
     - **Date:** 2025-12-26
