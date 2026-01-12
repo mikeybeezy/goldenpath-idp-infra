@@ -5,6 +5,7 @@ type: guide
 relates_to:
   - CNT-001
   - ADR-0146
+  - ADR-0147
 ---
 
 # How It Works: Born Governed Lifecycle
@@ -30,12 +31,13 @@ graph TD
     Wrapper[Verified Runner<br/>bin/test-verified];
     Validator[Enforcer<br/>validate_scripts_tested.py];
     Proof[Proof Artifact<br/>proof-xyz.json];
+    Injector[Backfill Injector<br/>inject_script_metadata.py];
 
     subgraph "Contract Layer (Static)"
     Script -->|Must Conform to| Schema
     end
 
-    subgraph "verification Layer (Dynamic)"
+    subgraph "Verification Layer (Dynamic)"
     Wrapper -->|Reads Contract| Script
     Wrapper -->|Executes| TestRunner[Pytest / Bats]
     TestRunner -->|Success| Proof
@@ -46,8 +48,15 @@ graph TD
     Validator -->|Enforces| Schema
     end
 
+    subgraph "Migration Layer (Auto)"
+    Injector -->|Scans| UnmanagedScript[Legacy Script]
+    Injector -->|Injects| Script
+    Injector -->|Registers| Registry[script_ids.yaml]
+    end
+
     style Schema fill:#f9f,stroke:#333,stroke-width:2px
     style Proof fill:#90EE90,stroke:#333,stroke-width:2px
+    style Injector fill:#FFD700,stroke:#333,stroke-width:2px
 ```
 
 ---
@@ -80,6 +89,22 @@ The release pipeline runs.
     - **Outcome**: Is `status: passed`?
 - **Policy**: High-Risk scripts (P0) *must* have valid proofs. Low-risk scripts can stay at Level 2.
 - **Outcome**: **Maturity Level 3 (Certified)**
+
+---
+
+## Migration Strategy (Brownfield)
+
+For existing scripts that predate this standard, we use the **Backfill Injector**.
+
+1.  **Scan**: `scripts/inject_script_metadata.py` scans the repository.
+2.  **Identify**: It detects file types (`.py`, `.sh`).
+3.  **Assign**: It allocates a persistent ID (e.g., `SCRIPT-0042`) from `schemas/automation/script_ids.yaml`.
+4.  **Inject**: It rewrites the file header with safe defaults (Maturity 2, Low Risk).
+
+Developers then only need to:
+1.  Run the injector.
+2.  Write the missing unit test (referenced by ID).
+3.  Commit.
 
 ---
 
