@@ -134,6 +134,12 @@ date: 2026-01-12
 - [ ] Update CONFIDENCE_MATRIX.md with results
 - [ ] Document dry-run patterns in runbook
 
+### Future Scope: Infrastructure Governance (Post-Feb 15)
+- [ ] **Terraform Certification**: Extend "Born Governed" to `infra/modules/`.
+- [ ] **Contract**: Define metadata standard for TF modules (e.g., inside `versions.tf`).
+- [ ] **Validation**: Enforce `tflint`, `checkov`, and `terraform validate` presence.
+- [ ] **Matrix**: Include Terraform modules in the central Certification Matrix.
+
 ---
 
 ## 🛠️ Dry-Run Implementation Template
