@@ -31,13 +31,13 @@ category: platform
 Analysie the PR Blocakage issues and provide a diagnosis.
 Do not attempt to resolve.
 
-Sripts to run. 
+Sripts to run.
 
 Local pre-commit checks have been
 
-Run document auto heal 
+Run document auto heal
 
-Run Yaml lint and formatting 
+Run Yaml lint and formatting
 
 markdownlint-cli2 not found. Install it for full CI parity.
 
