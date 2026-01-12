@@ -7,7 +7,7 @@ category: architecture
 
 # How it Works – Governance Registry Mirror
 
-The **Governance Registry Mirror** utilizes a decoupled "Observer Pattern" for repository state. It ensures **High-Integrity Auditability** without the "Commit Tug-of-War" common in high-velocity agent repositories.
+The **Governance Registry Mirror** utilize a decoupled "Observer Pattern" for repository state. It ensures **High-Integrity Auditability** without the "Commit Tug-of-War" common in high-velocity agent repositories.
 
 ## 1. The Source of Truth Contract
 The platform strictly distinguishes between **Intent** and **Observation**:
@@ -16,7 +16,26 @@ The platform strictly distinguishes between **Intent** and **Observation**:
 
 **Contract Rule**: Registry content is derived-only and must be reproducible from a specific Git SHA in the source branches. Direct "fixing" of dashboards in the registry branch is prohibited.
 
-## 2. Forensic Folder Structure
+## 2. High-Integrity Metadata Contract
+Every artifact written to the registry includes a mandatory "Chain-of-Custody" header. This ensures every audit pulse is verifiable without an external database.
+
+```yaml
+---
+id: GOVREG-PLATFORM-HEALTH
+generated_at: <TIMESTAMP_UTC>
+source:
+  branch: development
+  sha: <GIT_SHA>
+pipeline:
+  workflow: ci-audit.yml
+  run_id: <RUN_ID>
+integrity:
+  derived_only: true
+  reproducible: true
+---
+```
+
+## 3. Forensic Folder Structure
 The registry branch is structured to provide both an immediate "Live View" and a permanent "Forensic Audit Trail":
 
 ```text
@@ -24,16 +43,16 @@ governance-registry (branch)
 ├── environments/
 │   ├── dev/
 │   │   ├── latest/
-│   │   │   └── PLATFORM_HEALTH.md  <-- Live reporting view
+│   │   │   └── PLATFORM_HEALTH.md  <-- Live reporting view (Backstage Target)
 │   │   └── history/
-│   │       └── 20260112-c420fca/
+│   │       └── 2026-01-12-0814Z-c420fca/
 │   │           └── PLATFORM_HEALTH.md <-- Immutable forensic snapshot
 │   └── prod/
 │       └── ... (same structure)
 └── UNIFIED_DASHBOARD.md              <-- Cross-environment heatmap
 ```
 
-## 3. Architecture Overview
+## 4. Architecture Overview
 
 ```mermaid
 graph TD
@@ -71,13 +90,19 @@ graph TD
     CI_PROD -- "Commit Audit Result (source_sha)" --> prod
 ```
 
-## 4. Key Operational Guardrails
+## 5. Key Operational Capabilities
 
 ### 🚫 CI-Only Write Boundary
-To maintain the integrity of the audit log, only automated service accounts are permitted to write to the registry branch. Humans have Read-Only access.
+To maintain the integrity of the audit log, only the **GitHub Actions Service Account** is permitted to write to the registry branch. Humans have Read-Only access, protecting the log from accidental or malicious tampering.
 
 ### 🏎️ Atomic Pulse Updates
-When a "pulse" is recorded, the CI updates the `latest/` pointer and creates the `history/` entry in a **single atomic commit**. This prevents races and ensures that "Live" and "History" always represent the same point in time.
+When a "pulse" is recorded, the CI updates the `latest/` pointer, creates the `history/` entry, and regenerates the `UNIFIED_DASHBOARD.md` in a **single atomic commit**. This ensures the "Live" view and "History" are always perfectly synchronized.
 
-### 🔗 SHA Binding
-Every report in the registry contains a `SOURCE_COMMIT` field, allowing any auditor to verify provenance by checking the code state at that specific Git SHA.
+### 🚦 Concurrency & Ordering
+To prevent "last-writer-wins" collisions during rapid merges, the registry employs **Ordered Queueing**. Using GitHub Actions concurrency groups (e.g., `govreg-dev`), the engine ensures that updates are processed in strict chronological order, even if multiple PRs are merged seconds apart.
+
+### 🔗 Visibility & UX (PR Feedback Loop)
+The registry is "Hidden but Authoritative." To maintain developer visibility:
+1. **README Integration**: The root README.md links directly to the `latest` reports.
+2. **PR Comments**: On merge, the CI posts a comment with direct links to the new registry artifacts, the generation SHA, and a pass/fail summary.
+3. **Backstage Sync**: Backstage TechDocs are redirected to read from the `latest/` folder in the registry branch, providing a stable URL for the platform dashboard.
