@@ -167,6 +167,16 @@ The platform implements a **Governance Registry Mirror Pattern** to decouple mac
 
 ---
 
+## 21. "Born Governed" Script Automation
+The platform ensures that all automation code is treated as a first-class citizen with strict contracts, verifying safety and quality before execution.
+- **Contract-Driven Execution**: Every script carries a self-describing contract (ID, Owner, Risk, Test Strategy) that determines how it is validated and run.
+- **Legacy Backfill Injection**: The **Backfill Injector** automatically upgrades legacy scripts to the "Born Governed" standard, ensuring 100% repository compliance.
+- **Cryptographic Trust**: Critical scripts are verified via cryptographic proofs (`proof-*.json`) minted by the **Verified Runner**, ensuring that "Trusted Code" has actually passed its tests in the current context.
+- **Pre-Execution Safety**: The **Validator Gate** blocks any script execution if the contract is violated or if the proof is stale, preventing "works on my machine" unsafe operations.
+- **Real-Time Visibility**: The **Certification Matrix** provides a live, auto-generated dashboard of script maturity (M3 Certified vs M1 Tracked).
+
+---
+
 ## Technical Foundation
 - **Platform Core**: AWS EKS (Ubuntu/Bottlerocket)
 - **GitOps Engine**: Argo CD
