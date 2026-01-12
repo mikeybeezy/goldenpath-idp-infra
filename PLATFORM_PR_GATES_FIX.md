@@ -1,6 +1,6 @@
 ---
 id: PLATFORM_PR_GATES_FIX
-title: PLATFORM_PR_GATES_FIX
+title: 'Handled automatically by pre-commit, or run manually:'
 type: documentation
 domain: platform-core
 applies_to: []
@@ -31,17 +31,29 @@ category: platform
 Analysie the PR Blocakage issues and provide a diagnosis.
 Do not attempt to resolve.
 
-Sripts to run.
+Sripts to run. 
 
 Local pre-commit checks have been
 
-Run document auto heal
+Run document auto heal 
 
-Run Yaml lint and formatting
+Run Yaml lint and formatting 
 
 markdownlint-cli2 not found. Install it for full CI parity.
 
-Sync Indices: Run bin/governance heal . locally one last time to synchronize the workflow and script indices.
-Strict Commit: Use git commit -am "chore(hygiene): final index and annotation sync".
-Validate Locally: Run python3 -m pre_commit run --all-files locally and ensure it returns 100% Passed.
-Final Push: Once local is 100% green, push. Since our new scripts are now idempotent, the CI will find the files exactly as it expects them.
+# Handled automatically by pre-commit, or run manually:
+python3 scripts/generate_script_index.py
+python3 scripts/generate_workflow_index.py
+
+Run the pre-commit suite locally to catch errors before they hit CI.
+python3 -m pre_commit run --all-files
+
+4. Push with Confidence
+git add .
+git commit -m "feat: my change"
+git push origin <branch>
+
+4. Push with Confidence
+git add .
+git commit -m "feat: my change"
+git push origin <branch>
