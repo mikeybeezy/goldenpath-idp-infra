@@ -9,8 +9,15 @@ relates_to:
 
 # How It Works: Born Governed Lifecycle
 
-This guide visualizes the **Schema-Driven Script Testing** architecture (ADR-0146).
-It explains how a script moves from "Code" to "Certified Asset" using contracts.
+This guide details the **Schema-Driven Script Testing** architecture. It moves beyond simple "testing" to a model of **provenance and contract enforcement**.
+
+## The Core Philosophy: "Trust but Verify"
+
+In a standard repo, testing is often implicit ("I ran it locally"). In the Golden Path, testing is explicit and evidence-based.
+
+1.  **Trust (The Contract)**: The developer declares *how* the script should be tested in the metadata header.
+2.  **Verify (The Proof)**: The CI system executes that contract and mints a cryptographic proof artifact (`proof-*.json`).
+3.  **Certify (The Gate)**: The release process checks for the *existence* and *freshness* of that proof.
 
 ## The Architecture
 
@@ -20,82 +27,82 @@ The system consists of four key components working in a closed loop:
 graph TD
     Schema[Contract Schema<br/>script.schema.yaml];
     Script[Script Source<br/>Standard Metadata];
-    Wrapper[Test Wrapper<br/>bin/test-verified];
+    Wrapper[Verified Runner<br/>bin/test-verified];
     Validator[Enforcer<br/>validate_scripts_tested.py];
     Proof[Proof Artifact<br/>proof-xyz.json];
 
-    Script -->|Must Conform to| Schema;
-    Wrapper -->|Reads| Script;
-    Wrapper -->|Executes| TestRunner[Pytest / Bats];
-    TestRunner -->|If Pass| Proof;
-    Validator -->|Verifies| Proof;
-    Validator -->|Enforces| Schema;
+    subgraph "Contract Layer (Static)"
+    Script -->|Must Conform to| Schema
+    end
 
-    style Schema fill:#f9f,stroke:#333,stroke-width:4px
+    subgraph "verification Layer (Dynamic)"
+    Wrapper -->|Reads Contract| Script
+    Wrapper -->|Executes| TestRunner[Pytest / Bats]
+    TestRunner -->|Success| Proof
+    end
+
+    subgraph "Governance Layer (Gate)"
+    Validator -->|Checks| Proof
+    Validator -->|Enforces| Schema
+    end
+
+    style Schema fill:#f9f,stroke:#333,stroke-width:2px
     style Proof fill:#90EE90,stroke:#333,stroke-width:2px
 ```
 
 ---
 
-## The Certification Flow
+## Nuance: The Lifecycle Stages
 
-How verification happens during a standard CI pipeline run:
+A script is not simply "tested" or "untested". It moves through defined maturity stages.
 
-```mermaid
-sequenceDiagram
-    participant Dev as Developer
-    participant Script as Script (Source)
-    participant Wrapper as Verified Runner
-    participant Schema as Contract
-    participant Proof as Proof Artifact
-    participant CI as Gatekeeper
+### Stage 1: "Born" (Static Definition)
+The developer writes the code and adds the YAML header.
+- **Action**: `git commit`
+- **Check**: `pre-commit` runs `validate_scripts_tested.py`
+- **Nuance**: At this stage, we only check *syntax* and *completeness*. We do not run the test yet. We ensure the *promise* of a test exists.
+- **Outcome**: **Maturity Level 1 (Tracked)**
 
-    Dev->>Script: Writes Code + Metadata Header
-    
-    rect rgb(240, 248, 255)
-    note right of Dev: Phase 1: Local Verification
-    Dev->>Wrapper: bin/test-verified script.py
-    Wrapper->>Schema: Validate Contract
-    Schema-->>Wrapper: Valid
-    Wrapper->>Script: Run Declared Command (pytest)
-    Script-->>Wrapper: ✅ Passed
-    Wrapper->>Proof: Generate proof-script.json
-    end
-    
-    rect rgb(255, 240, 245)
-    note right of CI: Phase 2: CI Certification
-    CI->>Validator: validate_scripts_tested.py --verify-proofs
-    Validator->>Script: Check Risk Profile
-    Validator->>Proof: Check SHA & Run ID
-    
-    alt Proof Valid
-        Validator-->>CI: ✅ Certified (Level 3)
-    else Proof Stale/Missing
-        Validator-->>CI: ❌ Failed (Level 0)
-    end
-    end
-```
+### Stage 2: "Verified" (Local Execution)
+The developer runs the test suite locally or in CI.
+- **Action**: `bin/test-verified scripts/my_script.py`
+- **Nuance**: The wrapper doesn't just run `pytest`. It:
+    1. Parses the header to find the *exact* command the author intended.
+    2. Captures the exit code.
+    3. If (and only if) successful, writes `test-results/proofs/proof-my_script.json`.
+- **Outcome**: **Maturity Level 2 (Validated)**
+
+### Stage 3: "Certified" (CI Proof)
+The release pipeline runs.
+- **Action**: `validate_scripts_tested.py --verify-proofs`
+- **Nuance**: The validator looks for the `proof-*.json` file. It checks:
+    - **Freshness**: Does `proof.git_sha` match the current commit? (Prevents "stale proof" loopholes).
+    - **Outcome**: Is `status: passed`?
+- **Policy**: High-Risk scripts (P0) *must* have valid proofs. Low-risk scripts can stay at Level 2.
+- **Outcome**: **Maturity Level 3 (Certified)**
 
 ---
 
-## Component Roles
+## Detailed Component Roles
 
 ### 1. The Contract (Schema)
 **File:** `schemas/automation/script.schema.yaml`
-- Defines the "Law".
-- Specifies required fields (`id`, `owner`, `test.runner`).
-- Defines Maturity Levels (0-3).
+- **Role**: The Constitution.
+- **Key Fields**:
+    - `dry_run.supported`: Mandatory for mutator scripts.
+    - `test.evidence`:
+        - `declared`: "I promise I tested this manually." (Limit: Maturity 1-2)
+        - `ci`: "The machine must verify this." (Required for Maturity 3)
 
 ### 2. The Standard (Source)
 **File:** `scripts/*.py`
-- Embeds the contract directly in the header.
-- Self-describes its testing needs.
+- **Role**: The Citizen.
+- **Design Principle**: Metadata is embedded in the native comment format (Python docstrings, Bash comments) to keep the file self-contained.
 
 ```python
 """
 ---
 id: SCRIPT-001
-maturity: 3
 test:
   command: "pytest tests/my_test.py"
   evidence: ci
@@ -105,23 +112,13 @@ test:
 
 ### 3. The Executor (Wrapper)
 **File:** `bin/test-verified`
-- The "honest broker".
-- Runs the test exactly as declared.
-- Mints the `proof.json` artifact (the "Certificate").
+- **Role**: The Notary Public.
+- **Why use a wrapper?**
+    - It abstracts the difference between Python (`pytest`), Bash (`bats`), and Go testing.
+    - It ensures proofs are uniform JSON structure regardless of the tool used.
+    - It prevents developers from generating fake proofs manually (complicated enough to discourage, easy enough to automate).
 
 ### 4. The Enforcer (Validator)
 **File:** `scripts/validate_scripts_tested.py`
-- The "Auditor".
-- Runs in CI/Pre-commit.
-- Checks that High Risk scripts actually HAVE a valid proof.
-
----
-
-## Workflow Integration
-
-| Stage | Action | Tool | Outcome |
-| :--- | :--- | :--- | :--- |
-| **Development** | Write Code | Editor | Header added |
-| **Commit** | Pre-commit | `validate_scripts_tested.py` | Schema compliant? |
-| **Test** | Run Tests | `bin/test-verified` | Proof generated |
-| **Gate** | CI Validation | `validate_scripts_tested.py --verify-proofs` | **Certified** |
+- **Role**: The Auditor.
+- **Nuance**: It is stateless. It only looks at the artifacts on disk (Source + Proof). This makes it fast and cache-friendly.
