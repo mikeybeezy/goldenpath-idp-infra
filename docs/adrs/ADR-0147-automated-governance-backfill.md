@@ -75,4 +75,4 @@ map:
 ## Consequences
 *   **Speed**: Compliance can be achieved in seconds.
 *   **Consistency**: All headers are syntactically perfect V1 headers.
-*   **Maintenance**: The registry file must be version controlled.
+*   **Maintenance**: The registry file must be version controlled. Supports `repair_shebangs.py` for automated dialect correction.

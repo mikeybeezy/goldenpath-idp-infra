@@ -128,3 +128,8 @@ A new tool, `scripts/validate_scripts_tested.py`, acts as the **Policy Enforceme
 
 ## Compliance
 This ADR supersedes heuristic checks. The "Script Certification Audit" document (`SCRIPT_CERTIFICATION_AUDIT.md`) will track the migration progress towards 100% compliance.
+
+Implementing tools:
+- `generate_script_matrix.py`: Automated certification reporting.
+- `scaffold_test.py`: Standardized test scaffolding for certification.
+- `check-policy-compliance.py`: Automated policy governance.

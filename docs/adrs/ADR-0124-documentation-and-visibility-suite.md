@@ -43,6 +43,7 @@ We officially adopt the following scripts as the core Documentation & Visibility
 4.  **`extract_relationships.py`**: Populates the Knowledge Graph by parsing `relates_to` and `supersedes` metadata.
 5.  **`generate_governance_vocab.py`**: Generates the human-readable [GOVERNANCE_VOCABULARY.md](../../governance/GOVERNANCE_VOCABULARY.md).
 6.  **`sync_backstage_entities.py`**: Mirrors internal metadata to Backstage YAML entities.
+7.  **`generate_doc_system_map.py`**: Visualizes documentation hierarchies and logical clusters.
 
 ## Consequences
 
