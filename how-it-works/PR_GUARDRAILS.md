@@ -42,6 +42,15 @@ The core logic resides in a specialized Python engine that reads the PR body, la
 
 - **Checklist Enforcement**: Rejects PRs if mandatory sections (Change Type, Impact, Testing) are not checked in the PR description.
 - **Traceability Gate**: Uses `check_script_traceability.py` to ensure any new scripts are documented in an ADR and added to a Changelog.
+
+### Script Traceability
+To eliminate **"Dark Automation"**, the platform enforces that every automation script must have a recorded provenance.
+
+- **The "Why" (ADRs)**: Every script must be referenced in an **Architectural Decision Record** (`docs/adrs/`). This proves the script was created as part of a formal designer intent.
+- **The "When" (Changelog)**: Every script must be mentioned in at least one **Changelog entry** (`docs/changelog/entries/`). This provides a historical audit trail of its introduction and evolution.
+
+**How it works**:
+The `scripts/check_script_traceability.py` auditor scans the `scripts/` directory for `.py` and `.sh` files. It then cross-references each filename against the entire markdown corpus in the ADR and Changelog directories. If a script is found to be "orphaned" (missing either an ADR or a CL link), the PR gate is blocked.
 - **VQ for Agents**: Mandatory Value Quantification (VQ) is enforced for all AI-generated PRs (e.g., VQ Class: HV/HQ).
 
 ## 2. Smart Bypasses (Contextual Logic)
