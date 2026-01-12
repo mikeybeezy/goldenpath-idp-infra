@@ -23,11 +23,7 @@ value_quantification:
   impact_tier: tier-1
   potential_savings_hours: 1.0
 category: governance
-version: '1.0'
-last_updated: 2026-01-06
-dependencies:
-  - python3
-  - pyyaml
+last_updated: 2026-01-12
 ---
 
 # Platform Automation Scripts Index (Auto-Generated)
@@ -36,6 +32,7 @@ dependencies:
 
 This directory contains the automation engine powering the GoldenPath IDP.
 
+<!-- SCRIPTS_TABLE_START -->
 ## Delivery
 
 | Script | Description |
@@ -95,3 +92,4 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [test_hotfix.py](file://scripts/test_hotfix.py) | Purpose: Unit tests for PR Guardrails Hotfix Logic. |
 | [validate_enums.py](file://scripts/validate_enums.py) | Purpose: Enhanced Enum Consistency Validator |
 | [validate_routing_compliance.py](file://scripts/validate_routing_compliance.py) | Purpose: Decision Routing Compliance Validator |
+<!-- SCRIPTS_TABLE_END -->

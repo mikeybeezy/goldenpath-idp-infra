@@ -1,23 +1,36 @@
+# Managed by scripts/standardize_metadata.py
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: "{{ values.app_name }}-reader"
-  namespace: "{{ values.namespace }}"
+  name: '{{ values.app_name }}-reader'
+  namespace: '{{ values.namespace }}'
+  annotations:
+    goldenpath.idp/id: APPS_WORDPRESS_ON_EFS_METADATA
+    goldenpath.idp/owner: platform-team
 rules:
-  - apiGroups: [""]
-    resources: ["configmaps", "secrets"]
-    verbs: ["get", "list"]
+  - apiGroups:
+      - ''
+    resources:
+      - configmaps
+      - secrets
+    verbs:
+      - get
+      - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: "{{ values.app_name }}-reader"
-  namespace: "{{ values.namespace }}"
+  name: '{{ values.app_name }}-reader'
+  namespace: '{{ values.namespace }}'
+  annotations:
+    goldenpath.idp/id: APPS_WORDPRESS_ON_EFS_METADATA
+    goldenpath.idp/owner: platform-team
 subjects:
   - kind: ServiceAccount
-    name: "{{ values.service_account_name }}"
-    namespace: "{{ values.namespace }}"
+    name: '{{ values.service_account_name }}'
+    namespace: '{{ values.namespace }}'
 roleRef:
   kind: Role
-  name: "{{ values.app_name }}-reader"
+  name: '{{ values.app_name }}-reader'
   apiGroup: rbac.authorization.k8s.io

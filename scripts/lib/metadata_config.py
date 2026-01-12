@@ -24,6 +24,21 @@ def platform_yaml_dump(data: Any, stream=None, **kwargs) -> Optional[str]:
     settings.update(kwargs)
     return yaml.dump(data, stream, **settings)
 
+def platform_yaml_dump_all(documents: List[Any], stream=None, **kwargs) -> Optional[str]:
+    """
+    Helper function to dump multiple YAML documents using the PlatformYamlDumper.
+    """
+    settings = {
+        'sort_keys': False,
+        'default_flow_style': False,
+        'allow_unicode': True,
+        'indent': 2,
+        'Dumper': PlatformYamlDumper,
+        'explicit_start': True
+    }
+    settings.update(kwargs)
+    return yaml.dump_all(documents, stream, **settings)
+
 class MetadataConfig:
     """
     Central configuration manager for metadata governance.

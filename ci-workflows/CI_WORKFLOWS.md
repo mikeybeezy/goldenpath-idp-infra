@@ -25,10 +25,10 @@ value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
-category: governance
 status: active
+category: governance
+last_updated: 2026-01-12
 supported_until: '2028-01-01'
-last_updated: 2026-01-06
 ---
 
 # CI Workflows Index (Auto-Generated)
@@ -37,6 +37,7 @@ last_updated: 2026-01-06
 
 ## Visualize
 
+<!-- WORKFLOW_TREE_START -->
 ```text
 CI Workflows (GitHub Actions)
 
@@ -93,9 +94,11 @@ CI Workflows (GitHub Actions)
     ├─ Request App Secret
     └─ Security - Gitleaks
 ```
+<!-- WORKFLOW_TREE_END -->
 
 ---
 
+<!-- WORKFLOW_DETAILS_START -->
 ## Bootstrap / Tooling
 
 ### Backstage Docs Catalog PR
@@ -312,3 +315,5 @@ CI Workflows (GitHub Actions)
 - **File**: `gitleaks.yml`
 - **Owner**: platform
 - **Triggers**:
+
+<!-- WORKFLOW_DETAILS_END -->

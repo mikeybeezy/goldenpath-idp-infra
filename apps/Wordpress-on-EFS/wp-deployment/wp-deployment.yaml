@@ -1,9 +1,14 @@
+# Managed by scripts/standardize_metadata.py
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: wordpress
   labels:
     app: wordpress
+  annotations:
+    goldenpath.idp/id: APPS_WP_DEPLOYMENT_METADATA
+    goldenpath.idp/owner: None
 spec:
   ports:
     - port: 80
@@ -12,12 +17,15 @@ spec:
     tier: frontend
   type: LoadBalancer
 ---
-apiVersion: apps/v1  # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress
   labels:
     app: wordpress
+  annotations:
+    goldenpath.idp/id: APPS_WP_DEPLOYMENT_METADATA
+    goldenpath.idp/owner: None
 spec:
   selector:
     matchLabels:
