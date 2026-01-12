@@ -13,6 +13,6 @@ parameters:
   directoryPerms: '700'
   gidRangeStart: '1000'
   gidRangeEnd: '2000'
-  basePath: /{{ .Values.appName }}
+  basePath: "/{{ .Values.appName }}"
 reclaimPolicy: Retain
 volumeBindingMode: Immediate

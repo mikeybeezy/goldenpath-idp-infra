@@ -5,7 +5,7 @@ metadata:
   name: '{{ values.app_name }}-dashboard'
   namespace: '{{ values.namespace }}'
   annotations:
-    k8s-sidecar-target-directory: /tmp/dashboards/{{ values.app_name }}
+    k8s-sidecar-target-directory: "/tmp/dashboards/{{ values.app_name }}"
     goldenpath.idp/id: APPS_DASHBOARDS_METADATA
     goldenpath.idp/owner: None
   labels:
