@@ -23,7 +23,7 @@ The [Secret Request Parser](file:///Users/mikesablaze/goldenpath-idp-infra/scrip
 
 1.  **Python 3.10+** installed.
 2.  **PyYAML** library: `pip install PyYAML`.
-3.  Working directory must be the project root.
+3.  **Working directory must be the project root.** Commands will fail if run from inside `envs/dev` or other subdirectories.
 
 ---
 
@@ -119,6 +119,32 @@ git push origin <your-branch>
 ### 3. Reconcile in Cluster
 *   **Automatic**: ArgoCD will sync the new manifest within its next refresh cycle (usually 3-5 minutes).
 *   **Surgical Sync**: You can trigger a manual sync in the ArgoCD UI or via CLI to prioritize this change.
+
+---
+
+## 🧹 Cleanup (Tearing Down)
+
+After your local testing or verification is complete, you should cleanup the created resources to prevent drift or accidental production usage.
+
+### 1. Destroy AWS Resource
+Use the same target and var-file to surgically destroy only the secret you created.
+
+```bash
+cd envs/dev
+terraform destroy \
+  -target='module.app_secrets["payments-payments-db-credentials"]' \
+  -var-file='secrets/generated/payments/SEC-0007.auto.tfvars.json' \
+  -var="aws_region=eu-west-2"
+```
+
+### 2. Remove Generated Artifacts
+Delete the local files produced by the parser to keep the `generated/` directories clean.
+
+```bash
+# Back in project root
+rm envs/dev/secrets/generated/payments/SEC-0007.auto.tfvars.json
+rm gitops/kustomize/overlays/dev/apps/payments/externalsecrets/SEC-0007.yaml
+```
 
 ---
 
