@@ -31,13 +31,15 @@ import re
 import yaml
 from pathlib import Path
 
-# Add scriptsdir to path to import validator utils
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'scripts'))
+# Add lib to path
+LIB_PATH = os.path.join(os.path.dirname(__file__), '..', 'scripts', 'lib')
+sys.path.append(LIB_PATH)
+
 try:
-    from validate_scripts_tested import extract_frontmatter
+    from script_metadata import extract_frontmatter, parse_header
 except ImportError:
-    # Fallback if running from different context
-    def extract_frontmatter(c): return None
+    print(f"❌ Failed to import script_metadata lib from {LIB_PATH}")
+    sys.exit(1)
 
 PROOF_DIR = Path("test-results/proofs")
 
