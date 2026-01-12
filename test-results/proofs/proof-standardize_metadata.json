@@ -1,0 +1,11 @@
+{
+  "id": "proof-standardize_metadata",
+  "script_id": "standardize_metadata",
+  "script_path": "scripts/standardize_metadata.py",
+  "verified_at": "2026-01-12T19:13:28.537070Z",
+  "git_sha": "0a3c57683057f1437e1c1fae440cf62a0b0ac0ec",
+  "run_id": "local",
+  "runner": "pytest",
+  "outcome": "passed",
+  "summary": {}
+}

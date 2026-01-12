@@ -5,11 +5,11 @@ id: standardize_metadata
 type: script
 owner: platform-team
 status: active
-maturity: 2
+maturity: 3
 test:
   runner: pytest
   command: "pytest -q tests/unit/test_standardize_metadata.py"
-  evidence: declared
+  evidence: ci
 dry_run:
   supported: true
   command_hint: "--dry-run"

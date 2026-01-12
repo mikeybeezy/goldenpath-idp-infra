@@ -38,7 +38,7 @@ date: 2026-01-12
 | 5 | backfill_metadata.py | ❌ | ✅ | ADR-0088 | 🟡 HV/MQ | ⭐⭐ | P1 | platform-team |
 | 6 | extract_relationships.py | ❌ | ✅ | ADR-0084 | 🟡 MV/MQ | ⭐⭐ | P2 | platform-team |
 | 7 | platform_health.py | ❌ | ❌ | ADR-0145 | 🔴 HV/HQ | ⭐⭐ | P0 | platform-team |
-| 8 | standardize_metadata.py | ❌ | ✅ | ADR-0088 | 🔴 HV/HQ | ⭐⭐ | P0 | platform-team |
+| 8 | standardize_metadata.py | ✅ | ✅ | ADR-0088 | 🔴 HV/HQ | ⭐⭐⭐ | P0 | platform-team |
 | 9 | pr_guardrails.py | ❌ | ❌ | ADR-0102 | 🔴 HV/HQ | ⭐⭐ | P0 | platform-team |
 | 10 | validate_govreg.py | ❌ | N/A | ADR-0145 | 🔴 HV/HQ | ⭐⭐ | P1 | platform-team |
 | 11 | aws_inventory.py | ❌ | ❌ | - | 🟡 MV/MQ | ⭐ | P2 | platform-team |
