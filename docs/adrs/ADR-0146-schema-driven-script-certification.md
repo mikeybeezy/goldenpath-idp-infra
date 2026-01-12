@@ -1,0 +1,130 @@
+---
+id: ADR-0146
+title: Schema-Driven Script Certification
+type: adr
+status: active
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
+relates_to:
+  - ADR-0126 (Confidence Matrix)
+  - CL-0117 (Implementation)
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-12
+context:
+  - Scripts are a critical part of the platform control plane.
+  - Currently, script quality is enforced heuristically (e.g., check if a test file
+    exists), which is brittle and unverifiable.
+  - We lack a mechanism to verify that a script supports safety features like Dry-Run
+    without executing it.
+  - There is no machine-readable link between a script, its test runner, and its execution
+    proof in CI.
+decision:
+  - We will adopt a **Schema-Driven Certification** model for all platform automation
+    scripts.
+  - Every script MUST contain a structured YAML metadata block (Frontmatter) in its
+    header.
+  - This metadata MUST conform to `schemas/automation/script.schema.yaml`.
+  - The schema defines strict contracts for Identity, Maturity, Dry-Run Support, and
+    Testing Strategy.
+  - We will enforce this contract using a dedicated validator (`validate_scripts_tested.py`)
+    in CI.
+consequences:
+  - Scripts become self-describing assets with explicit safety profiles.
+  - CI can deterministically verify if a specific script is tested, purely by reading
+    its contract.
+  - Enables advanced policy enforcement (e.g., 'High Impact scripts must use CI proofs').
+  - 'Migration cost: Existing scripts must be updated with metadata headers.'
+alternatives:
+  - 'Continue with file-existence heuristics (Rejected: Too fragile, no dry-run verification).'
+  - 'Maintain a central `tests.json` registry (Rejected: High drift risk; metadata
+    should live with the code).'
+compliance:
+  - All scripts in `scripts/` MUST have a `script` type validation block.
+  - 'High-risk scripts MUST declare `evidence: ci` and generate proof artifacts.'
+---
+
+# ADR-0146: Schema-Driven Script Certification
+
+## Context
+The platform currently relies on dozens of Python and Bash scripts to manage critical lifecycle events (metadata standardization, registry mirroring, secret management). While we have a high-level "Confidence Matrix" (ADR-0126), the actual enforcement of this matrix has been manual or heuristic.
+
+There was no way for a machine to look at `scripts/remediate_everything.py` and answer:
+1. Is this safe to run? (Dry-run support)
+2. How do I test it? (Runner command)
+3. Is it production ready? (Maturity level)
+
+## Decision
+
+We are shifting governance **left**, directly into the source code headers.
+
+### 1. The Contract (`script.schema.yaml`)
+We define a rigid schema that every script must satisfy. Key fields:
+
+```yaml
+test:
+  runner: pytest
+  command: "pytest tests/unit/test_my_script.py"
+  evidence: ci
+dry_run:
+  supported: true
+risk_profile:
+  production_impact: high
+```
+
+### 2. Implementation Pattern
+Metadata is embedded in the native comment format of the language:
+
+**Python:**
+```python
+"""
+---
+id: my_script
+type: script
+...
+---
+"""
+```
+
+**Bash:**
+```bash
+# ---
+# id: my_script
+# type: script
+# ...
+# ---
+```
+
+### 3. Verification
+A new tool, `scripts/validate_scripts_tested.py`, acts as the **Policy Enforcement Point (PEP)**. It runs in CI/Pre-commit and blocks any script that:
+1. Lacks a header.
+2. Violates the schema.
+3. Claims `evidence: ci` but has no corresponding Test Proof artifact.
+
+## Consequences
+
+### Positive
+*   **Transparency:** Developers see the quality contract immediately when opening a file.
+*   **Automation:** CI can intelligently selectively test scripts based on their metadata.
+*   **Safety:** The `dry_run.supported` flag allows us to build generic "Safe Runners" that can execute any script in preview mode blindly.
+
+### Negative
+*   **Boilerplate:** Minimal overhead added to every script file (~15 lines).
+*   **Migration:** We need to backfill headers for ~40 existing scripts.
+
+## Compliance
+This ADR supersedes heuristic checks. The "Script Certification Audit" document (`SCRIPT_CERTIFICATION_AUDIT.md`) will track the migration progress towards 100% compliance.
