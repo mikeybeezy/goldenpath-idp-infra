@@ -51,24 +51,25 @@ def extract_frontmatter(content: str) -> str:
     in_block = False
     
     for line in lines:
-        sline = line.strip()
+        # Robustly handle indentation:
+        # Match optional leading whitespace, then '#', then optional single space
+        # Capture strictly the rest of the line (which contains YAML indent)
+        match = re.match(r'^\s*# ?(.*)', line)
+        if not match:
+            continue
+            
+        cleaned = match.group(1).rstrip()
         
-        # Detect Start/End separator
-        # Pattern: # --- or #--- (ignoring whitespace)
-        if re.match(r'^#\s?-{3}$', sline):
+        # Detect separator (---)
+        if cleaned == '---':
             if in_block:
-                in_block = False 
-                break # Stop processing after first block closes
+                in_block = False
+                break
             else:
                 in_block = True
                 continue
         
         if in_block:
-            # Strip the leading comment char '#'
-            # We want to preserve indentation relative to the comment char, 
-            # but usually just stripping '# ' is correct.
-            # Regex: Remove leading '#' and optional single space.
-            cleaned = re.sub(r'^#\s?', '', sline)
             yaml_lines.append(cleaned)
             
     if yaml_lines:
