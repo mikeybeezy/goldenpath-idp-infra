@@ -1,10 +1,27 @@
 #!/usr/bin/env python3
 """
+---
+id: standardize_metadata
+type: script
+owner: platform-team
+status: active
+maturity: 2
+test:
+  runner: pytest
+  command: "pytest -q tests/unit/test_standardize_metadata.py"
+  evidence: declared
+dry_run:
+  supported: true
+  command_hint: "--dry-run"
+risk_profile:
+  production_impact: high
+  security_risk: none
+  coupling_risk: high
+---
 Purpose: Automated Remediation Engine ("The Healer")
 Achievement: Enables O(1) schema evolution across 300+ files. Merges existing data with
              the canonical governance skeleton, enforces path-based IDs, and creates
-             missing metadata sidecars in mandated zones. Supports **Governance Injection Pass**
-             to propagate metadata into live Kubernetes resources (Values/Apps).
+             missing metadata sidecars in mandated zones.
 Value: Eliminates manual backfills and "governance debt" while bridging the gap
        between documentation and live infrastructure auditability.
 """
