@@ -106,3 +106,10 @@ The registry is "Hidden but Authoritative." To maintain developer visibility:
 1. **README Integration**: The root README.md links directly to the `latest` reports.
 2. **PR Comments**: On merge, the CI posts a comment with direct links to the new registry artifacts, the generation SHA, and a pass/fail summary.
 3. **Backstage Sync**: Backstage TechDocs are redirected to read from the `latest/` folder in the registry branch, providing a stable URL for the platform dashboard.
+
+### 🛡️ Ledger Integrity Validation
+To prevent the registry from becoming polluted with manual commits or incorrectly formatted artifacts, the platform enforces a strict validation gate:
+- **Automatic Enforcement**: The `govreg-validate.yml` workflow runs on every push to the `governance-registry` branch.
+- **Structural Validation**: The `validate_govreg.py` script ensures only allowed top-level paths exist (`environments/`, `UNIFIED_DASHBOARD.md`).
+- **Metadata Completeness**: Every markdown artifact is validated to contain all required chain-of-custody fields (`source.sha`, `pipeline.run_id`, `integrity.derived_only`).
+- **Anti-Tampering**: The validator blocks commits that violate the ledger contract, protecting the registry from accidental or malicious manual patches.

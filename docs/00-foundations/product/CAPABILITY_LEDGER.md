@@ -157,6 +157,16 @@ The platform optimizes developer experience by replacing manual compliance chore
 
 ---
 
+## 20. Governance Registry Mirror (Audit Ledger)
+The platform implements a **Governance Registry Mirror Pattern** to decouple machine-generated audit artifacts from human development branches, eliminating the "Commit Tug-of-War" while preserving high-integrity audit trails.
+- **Dedicated Branch Architecture**: All platform health reports, documentation indices, and audit logs are written to the CI-owned `governance-registry` branch, preventing merge conflicts on active development branches.
+- **Chain-of-Custody Enforcement**: Every artifact includes mandatory provenance metadata (`source.sha`, `pipeline.run_id`, `generated_at`) ensuring reproducibility and forensic traceability without requiring an external database.
+- **Ledger Integrity Validation**: The `validate_govreg.py` enforcer runs on every registry commit, blocking manual patches and validating folder structure, preventing the branch from becoming polluted with untracked files.
+- **Atomic State Mirroring**: Updates to the registry are atomic—updating both the "Latest View" and the "Historical Snapshot" in a single commit, with concurrency guards preventing race conditions during high-velocity merges.
+- **Relates-To**: [ADR-0145](/docs/adrs/ADR-0145-governance-registry-mirror.md), [RB-0028](/docs/70-operations/runbooks/RB-0028-governance-registry-operations.md)
+
+---
+
 ## Technical Foundation
 - **Platform Core**: AWS EKS (Ubuntu/Bottlerocket)
 - **GitOps Engine**: Argo CD
