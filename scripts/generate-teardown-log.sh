@@ -1,4 +1,22 @@
 #!/bin/bash
+# ---
+# id: SCRIPT-0015
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 2
+# dry_run:
+#   supported: true
+#   command_hint: --dry-run
+# test:
+#   runner: shellcheck
+#   command: shellcheck scripts/generate-teardown-log.sh
+#   evidence: declared
+# risk_profile:
+#   production_impact: low
+#   security_risk: low
+#   coupling_risk: low
+# ---
 set -e
 
 # Usage: ./generate-teardown-log.sh <BUILD_ID> <DURATION_SECONDS> <RUN_URL> <OUTCOME> <FLAGS_STRING> [ERROR_MSG]

@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
+# ---
+# id: SCRIPT-0029
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 2
+# dry_run:
+#   supported: true
+#   command_hint: --dry-run
+# test:
+#   runner: shellcheck
+#   command: shellcheck scripts/resolve-cluster-name.sh
+#   evidence: declared
+# risk_profile:
+#   production_impact: low
+#   security_risk: low
+#   coupling_risk: low
+# ---
 set -euo pipefail
 
 usage() {
