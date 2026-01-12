@@ -31,7 +31,7 @@ except ImportError:
     sys.exit(1)
 
 SCRIPTS_DIR = Path("scripts")
-OUT = Path("docs/70-operations/SCRIPT_CERTIFICATION_MATRIX.md")
+OUT = Path("docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md")
 
 def get_meta(path: Path) -> dict:
     try:

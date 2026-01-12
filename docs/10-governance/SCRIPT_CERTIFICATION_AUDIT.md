@@ -18,10 +18,12 @@ date: 2026-01-12
 
 ## 📊 Audit Summary
 
-**Total Scripts:** 40  
-**With Unit Tests:** 4 (10%)  
-**With Dry-Run:** 5 (12.5%)  
-**Certified (⭐⭐⭐+):** 4 (10%)  
+**Live Status Dashboard**: See [SCRIPT_CERTIFICATION_MATRIX.md](./SCRIPT_CERTIFICATION_MATRIX.md) for the automated, real-time certification status of all scripts.
+
+**Migration Progress (Manual Tracker):**
+**Total Scripts:** 43
+**Certified (⭐⭐⭐):** 1 (Standardize Metadata)
+**Validated (⭐⭐):** 42 (Backfilled)
 
 **Target Completion:** 2026-02-15 (5 weeks)
 
