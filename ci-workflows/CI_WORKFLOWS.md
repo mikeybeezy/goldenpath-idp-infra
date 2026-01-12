@@ -65,8 +65,7 @@ CI Workflows (GitHub Actions)
 │   ├─ Apply - Infra Terraform Apply (prod)
 │   ├─ Apply - Infra Terraform Apply (staging)
 │   ├─ Apply - Infra Terraform Apply (test)
-│   ├─ Apply - Infra Terraform Update (dev)
-│   └─ Secret Requests (Apply)
+│   └─ Apply - Infra Terraform Update (dev)
 │
 ├─ Terraform Plan
 │   ├─ Plan - Infra Terraform Plan Pipeline
@@ -253,11 +252,6 @@ CI Workflows (GitHub Actions)
 
 ### Apply - Infra Terraform Update (dev)
 - **File**: `infra-terraform-update-dev.yml`
-- **Owner**: platform
-- **Triggers**:
-
-### Secret Requests (Apply)
-- **File**: `secret-request-apply.yml`
 - **Owner**: platform
 - **Triggers**:
 

@@ -2,8 +2,14 @@
 id: test-record-20260107
 title: metadata
 type: test-suite
+owner: platform-team
 status: active
+domain: platform-core
 category: platform
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 ---
 
 # Governance & Traceability Validation Record (2026-01-07)

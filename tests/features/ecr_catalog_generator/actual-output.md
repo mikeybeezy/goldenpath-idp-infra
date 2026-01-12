@@ -16,10 +16,11 @@ value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
+status: active
+category: platform
 version: '1.0'
 supported_until: '2028-01-01'
 breaking_change: false
-category: platform
 ---
 
 # ECR Registry Catalog

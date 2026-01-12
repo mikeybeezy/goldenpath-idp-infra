@@ -2,9 +2,7 @@
 id: GITHUB_WORKFLOWS_INDEX
 title: GitHub Actions Workflows Index
 type: documentation
-domain: platform-core
 applies_to: []
-owner: platform-team
 lifecycle: active
 exempt: false
 risk_profile:
@@ -36,7 +34,6 @@ dependencies:
   - aws-cli
 supported_until: 2028-01-01
 breaking_change: false
-category: platform
 ---
 
 # GitHub Actions Workflows

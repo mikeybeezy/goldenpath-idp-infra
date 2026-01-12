@@ -2,25 +2,10 @@
 id: HIW_PR_GUARDRAILS
 title: 'How It Works: PR Guardrails'
 type: documentation
-applies_to: []
-exempt: false
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-  maturity: 1
-schema_version: 1
 relates_to:
   - scripts/pr_guardrails.py
   - scripts/validate_enums.py
   - .github/workflows/pr-guardrails.yml
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 ---
 
 # How It Works: PR Guardrails

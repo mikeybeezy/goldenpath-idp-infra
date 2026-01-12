@@ -28,7 +28,6 @@ value_quantification:
 category: delivery
 status: active
 version: '1.0'
-dependencies: []
 supported_until: 2028-01-01
 breaking_change: false
 ---
