@@ -1,0 +1,48 @@
+# Owner: platform
+name: Quality - Terraform Lint
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**/*.tf"
+      - "**/*.tfvars"
+
+jobs:
+  tflint:
+    name: Terraform Lint & Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Format Check
+        id: fmt
+        run: terraform fmt -check -recursive
+        continue-on-error: false
+
+      - name: Terraform Validate (Modules & Envs)
+        run: |
+          set -e
+          # Find all directories containing *.tf files
+          # We skip .terraform (plugins) and .git
+          find . -type f -name "*.tf" -not -path "*/.terraform/*" -not -path "*/.git/*" -exec dirname {} \; | sort -u | while read -r dir; do
+            echo " Validating: $dir"
+
+            # Use subshell to maintain CWD
+            (
+              cd "$dir"
+              # Init without backend (offline, fast)
+              terraform init -backend=false -input=false > /dev/null
+              terraform validate
+            )
+          done
+
+      - name: Runbook link
+        if: always()
+        run: |
+          echo "Runbook: docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md" >> "${GITHUB_STEP_SUMMARY}"

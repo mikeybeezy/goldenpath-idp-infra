@@ -1,0 +1,343 @@
+# Owner: platform
+# Relates-To: how-it-works/ECR_REQUEST_FLOW.md
+name: Create ECR Registry
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_branch:
+        description: 'PR base branch'
+        required: true
+        default: development
+      environment:
+        description: 'Target environment'
+        type: choice
+        required: true
+        options: [dev, test, staging, prod]
+      registry_name:
+        description: 'Registry name (e.g., wordpress-platform)'
+        required: true
+      owner:
+        description: 'Team owner (e.g., app-team-wordpress)'
+        type: choice
+        required: true
+        options:
+          - platform-team
+          - security-team
+          - operations-team
+          - sre-team
+          - unknown
+          - app-team
+          - database-team
+      user:
+        description: 'Requesting user (e.g., daniel-deans)'
+        required: true
+      domain:
+        description: 'Domain'
+        type: choice
+        required: true
+        options:
+          - platform-core
+          - delivery
+          - observability
+          - governance
+          - security
+          - cost
+      risk:
+        description: 'Risk level'
+        type: choice
+        required: true
+        options: [low, medium, high]
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  propose:
+    name: Propose Registry Creation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Calculate Registry ID
+        id: calc
+        run: |
+          # Convert wordpress-platform to REGISTRY_WORDPRESS_PLATFORM
+          NAME="${{ inputs.registry_name }}"
+          ID=$(echo "$NAME" | tr '-' '_' | tr '[:lower:]' '[:upper:]' | sed 's/^/REGISTRY_/')
+          echo "id=$ID" >> $GITHUB_OUTPUT
+          echo "✅ Calculated ID: $ID"
+
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Validate inputs
+        run: |
+          # Validate registry name format
+          if ! echo "${{ inputs.registry_name }}" | grep -qE '^[a-z][a-z0-9-]*$'; then
+            echo " Registry name must be lowercase with hyphens only"
+            exit 1
+          fi
+
+          # Validate owner format (relaxed)
+          if ! echo "${{ inputs.owner }}" | grep -qE '^[a-z0-9-]+$'; then
+            echo " Owner must be lowercase alphanumeric with dashes (e.g. platform-team, michael-babs)"
+            exit 1
+          fi
+
+          # Validate requesting user format
+          if ! echo "${{ inputs.user }}" | grep -qE '^[a-z0-9-]+$'; then
+            echo " User must be lowercase alphanumeric with dashes (e.g. daniel-deans)"
+            exit 1
+          fi
+
+          echo "✅ All inputs validated"
+
+      - name: Update catalog (idempotent)
+        run: |
+          set -euo pipefail
+          FILE="docs/20-contracts/catalogs/ecr-catalog.yaml"
+          NAME="${{ inputs.registry_name }}"
+          OWNER="${{ inputs.owner }}"
+          USER="${{ inputs.user }}"
+          DOMAIN="${{ inputs.domain }}"
+          RISK="${{ inputs.risk }}"
+          ID="${{ steps.calc.outputs.id }}"
+          ENV="${{ inputs.environment }}"
+
+          # Ensure file exists with proper structure
+          if [ ! -f "$FILE" ]; then
+            cat > "$FILE" <<EOF
+          version: "1.0"
+          domain: "delivery"
+          owner: "platform-team"
+          last_updated: "$(date -u +%Y-%m-%d)"
+          managed_by: "platform-team"
+          physical_registry: "goldenpath-idp-main"
+          repositories: {}
+          EOF
+          fi
+
+          # Add/update the registry entry
+          yq -i \
+            ".repositories.\"$NAME\".metadata.id = \"$ID\" |
+             .repositories.\"$NAME\".metadata.owner = \"$OWNER\" |
+             .repositories.\"$NAME\".metadata.requested_by = \"$USER\" |
+             .repositories.\"$NAME\".metadata.domain = \"$DOMAIN\" |
+             .repositories.\"$NAME\".metadata.risk = \"$RISK\" |
+             .repositories.\"$NAME\".metadata.environment = \"$ENV\" |
+             .repositories.\"$NAME\".metadata.status = \"pending\" |
+             .repositories.\"$NAME\".metadata.created_date = \"$(date -u +%Y-%m-%d)\" |
+             .last_updated = \"$(date -u +%Y-%m-%d)\"" \
+            "$FILE"
+
+          echo "✅ Updated catalog for registry: $NAME (ID: $ID)"
+
+      - name: Update Terraform tfvars
+        env:
+          INPUT_ENVIRONMENT: ${{ inputs.environment }}
+          INPUT_REGISTRY_NAME: ${{ inputs.registry_name }}
+          INPUT_OWNER: ${{ inputs.owner }}
+          INPUT_RISK: ${{ inputs.risk }}
+          INPUT_ID: ${{ steps.calc.outputs.id }}
+        run: |
+          python3 -c '
+          import os
+          import sys
+
+          env = os.environ.get("INPUT_ENVIRONMENT")
+          tfvars_path = "envs/" + env + "/terraform.tfvars"
+          name = os.environ.get("INPUT_REGISTRY_NAME")
+          owner = os.environ.get("INPUT_OWNER")
+          risk = os.environ.get("INPUT_RISK")
+          reg_id = os.environ.get("INPUT_ID")
+
+          # HCL Entry to insert
+          new_entry = f"""
+            "{name}" = {{
+              metadata = {{
+                id    = "{reg_id}"
+                owner = "{owner}"
+                risk  = "{risk}"
+              }}
+            }}
+          """
+
+          try:
+              with open(tfvars_path, "r") as f:
+                  content = f.read()
+
+              if f"\"{name}\"" in content and "ecr_repositories" in content:
+                  print(f"⚠️  Registry {name} appears to already exist in {tfvars_path}")
+                  sys.exit(0)
+
+              if "ecr_repositories = {" in content:
+                  start_idx = content.find("ecr_repositories = {")
+                  brace_count = 0
+                  insert_idx = -1
+
+                  for i in range(start_idx, len(content)):
+                      if content[i] == "{":
+                          brace_count += 1
+                      elif content[i] == "}":
+                          brace_count -= 1
+                          if brace_count == 0:
+                              insert_idx = i
+                              break
+
+                  if insert_idx != -1:
+                      new_content = content[:insert_idx] + new_entry + content[insert_idx:]
+                      with open(tfvars_path, "w") as f:
+                          f.write(new_content)
+                      print(f"✅ Injected {name} into existing ecr_repositories block.")
+                  else:
+                      print(" Error: Could not parse ecr_repositories block structure.")
+                      sys.exit(1)
+              else:
+                  with open(tfvars_path, "a") as f:
+                      f.write(f"\n# Registry Catalog\necr_repositories = {{\n{new_entry}\n}}\n")
+                  print(f"✅ Created new ecr_repositories block with {name}.")
+
+          except Exception as e:
+              print(f" Error updating tfvars: {e}")
+              sys.exit(1)
+          '
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials (for Plan)
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
+
+      - name: Terraform Init (Stateless File Swap)
+        run: |
+          # We swap the backend file entirely to avoid any S3 validation during the plan.
+          # This is the most deterministic way to perform a "Bounded Context" plan.
+
+          ENV_DIR="envs/${{ inputs.environment }}"
+          mv "${ENV_DIR}/backend.tf" "${ENV_DIR}/backend.tf.bak"
+
+          cat <<EOF > "${ENV_DIR}/backend.tf"
+          terraform {
+            backend "local" {}
+          }
+          EOF
+
+          terraform -chdir="${ENV_DIR}" init -input=false
+
+      - name: Inline Terraform Plan (Targeted)
+        id: plan
+        run: |
+          echo " Running targeted plan for module.ecr_repositories[\"${{ inputs.registry_name }}\"]..."
+
+          ENV_DIR="envs/${{ inputs.environment }}"
+
+          # We use -refresh=false because we are running with a blank local state.
+          # This ensures we see everything as "to be created" (+).
+          terraform -chdir="${ENV_DIR}" plan \
+            -target="module.ecr_repositories[\"${{ inputs.registry_name }}\"]" \
+            -lock=false \
+            -refresh=false \
+            -no-color > plan_output.txt 2>&1 || {
+              echo " Plan failed with error:"
+              cat plan_output.txt
+              exit 1
+            }
+
+          # Log to console so user can see progress
+          cat plan_output.txt
+
+          # Build the PR body file (stripping the leading spaces used for YAML alignment)
+          cat <<'EOF' | sed 's/^          //' > pr_body.raw
+          ##  ECR Registry Creation Request
+
+          **Registry:** `${{ inputs.registry_name }}`
+          **Environment:** `${{ inputs.environment }}`
+          **Owner:** `${{ inputs.owner }}`
+          **Requested By:** `${{ inputs.user }}`
+          **Domain:** `${{ inputs.domain }}`
+          **Risk Level:** `${{ inputs.risk }}`
+          **ID:** `${{ steps.calc.outputs.id }}`
+
+          ---
+
+          ##  Inline Terraform Plan
+
+          <details><summary> <strong>Targeted Terraform Plan</strong></summary>
+
+          This plan was generated using a **bounded context** strategy (`-target`), focusing only on the new ECR repository.
+          Note: state refresh was skipped because this is a shallow plan.
+
+          ```hcl
+          PLAN_CONTENT_PLACEHOLDER
+          ```
+          </details>
+
+          ---
+
+          ## 🔒 Security Controls (Auto-Applied)
+
+          SECURITY_CONTROLS_PLACEHOLDER
+
+          ---
+
+          ##  Changes Policy
+          - ✅ Added to registry catalog (`docs/20-contracts/catalogs/ecr-catalog.yaml`)
+          - ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
+          - ✅ Added to Terraform tfvars (`envs/${{ inputs.environment }}/terraform.tfvars`)
+
+          ---
+
+          ##  Next Steps
+          1. **Merge** this PR (Plan is already verified above).
+          2. **Run Apply** workflow (Automated next step).
+
+          /cc @platform-team
+          EOF
+
+          # Replace placeholders with actual content
+          cp pr_body.raw pr_body.txt
+
+          # Insert plan content (last 500 lines to avoid PR overflow)
+          sed -i '/PLAN_CONTENT_PLACEHOLDER/r plan_output.txt' pr_body.txt
+          sed -i 's/PLAN_CONTENT_PLACEHOLDER//' pr_body.txt
+
+          # Insert security controls
+          RISK="${{ inputs.risk }}"
+          if [ "$RISK" == "high" ]; then
+            CONTROLS="###  High Risk\n- ✅ KMS Encryption\n- ✅ Tag Immutability\n- ✅ Retention: 50\n- ✅ Enhanced Scanning"
+          elif [ "$RISK" == "medium" ]; then
+            CONTROLS="### 🟡 Medium Risk\n- ✅ AES256\n- ✅ Tag Mutability\n- ✅ Retention: 30\n- ✅ Standard Scanning"
+          else
+            CONTROLS="### 🟢 Low Risk\n- ✅ AES256\n- ✅ Tag Mutability\n- ✅ Retention: 20\n- ✅ Standard Scanning"
+          fi
+          sed -i "s|SECURITY_CONTROLS_PLACEHOLDER|$CONTROLS|" pr_body.txt
+
+          echo "✅ PR body generated in pr_body.txt"
+
+      - name: Restore Real Backend
+        run: |
+          ENV_DIR="envs/${{ inputs.environment }}"
+          mv "${ENV_DIR}/backend.tf.bak" "${ENV_DIR}/backend.tf"
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          base: ${{ inputs.base_branch }}
+          branch: "registry/create-${{ inputs.registry_name }}"
+          title: " Create ECR Registry: ${{ inputs.registry_name }} (${{ inputs.environment }})"
+          commit-message: "registry: create ${{ inputs.registry_name }} in ${{ inputs.environment }}"
+          body-path: pr_body.txt
+          labels: |
+            ecr-registry
+            platform-team
+            ${{ inputs.environment }}

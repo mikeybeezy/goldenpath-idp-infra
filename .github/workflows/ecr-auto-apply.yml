@@ -1,0 +1,72 @@
+# Owner: platform
+name: Apply - ECR Auto-Apply
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - development
+
+jobs:
+  auto-apply:
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'ecr-registry')
+    runs-on: ubuntu-latest
+    environment: dev
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Extract Registry Name
+        id: extract
+        run: |
+          # The branch name pattern is registry/create-<name>
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          REGISTRY_NAME=$(echo "$BRANCH_NAME" | sed 's/registry\/create-//')
+          echo "name=$REGISTRY_NAME" >> $GITHUB_OUTPUT
+          echo " Targeted Registry: $REGISTRY_NAME"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials (for Apply)
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}
+
+      - name: Resolve State Key
+        id: resolve
+        run: |
+          # We read the lifecycle and build_id directly from the tfvars committed to the repo
+          LIFECYCLE=$(grep "cluster_lifecycle" envs/dev/terraform.tfvars | cut -d'"' -f2)
+          BUILD_ID=$(grep "build_id" envs/dev/terraform.tfvars | cut -d'"' -f2)
+
+          if [[ "$LIFECYCLE" == "ephemeral" ]]; then
+            STATE_KEY="envs/dev/builds/${BUILD_ID}/terraform.tfstate"
+          else
+            STATE_KEY="envs/dev/terraform.tfstate"
+          fi
+          echo "key=$STATE_KEY" >> $GITHUB_OUTPUT
+          echo " Using State Key: $STATE_KEY"
+
+      - name: Terraform Init
+        run: |
+          terraform -chdir=envs/dev init \
+            -backend-config="bucket=goldenpath-idp-dev-bucket" \
+            -backend-config="key=${{ steps.resolve.outputs.key }}" \
+            -backend-config="region=eu-west-2" \
+            -backend-config="dynamodb_table=goldenpath-idp-dev-db-key" \
+            -backend-config="encrypt=true"
+
+      - name: Terraform Apply (Targeted)
+        run: |
+          NAME="${{ steps.extract.outputs.name }}"
+          echo " Applying changes for registry: $NAME"
+
+          terraform -chdir=envs/dev apply -auto-approve -input=false -no-color \
+            -target="module.ecr_repositories[\"$NAME\"]"

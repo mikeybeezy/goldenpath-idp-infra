@@ -1,0 +1,139 @@
+# Owner: platform
+name: Ops - CI Managed LB Cleanup
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment (dev/test/staging/prod)"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - test
+          - staging
+          - prod
+      region:
+        description: "AWS region"
+        required: true
+        default: "eu-west-2"
+      cluster_name:
+        description: "EKS cluster name (optional, resolved if empty)"
+        required: false
+        default: ""
+      lifecycle:
+        description: "Lifecycle (ephemeral or persistent)"
+        required: true
+        default: "ephemeral"
+        type: choice
+        options:
+          - ephemeral
+          - persistent
+      build_id:
+        description: "Build ID for ephemeral clusters (required if resolving cluster name)"
+        required: false
+        default: ""
+      stack_tag:
+        description: "Optional service.k8s.aws/stack value (narrows cleanup scope)"
+        required: false
+        default: ""
+      delete_cluster_tagged_sgs:
+        description: "Delete security groups tagged with elbv2.k8s.aws/cluster"
+        required: true
+        default: true
+        type: boolean
+      dry_run:
+        description: "Dry-run only (no deletes)"
+        required: true
+        default: true
+        type: boolean
+      confirm_delete:
+        description: "Confirm deletion (required when dry_run=false)"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  managed-lb-cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      ENV: ${{ inputs.env }}
+      AWS_REGION: ${{ inputs.region }}
+      CLUSTER_NAME: ${{ inputs.cluster_name }}
+      BUILD_ID: ${{ inputs.build_id }}
+      CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
+      TF_DIR: envs/${{ inputs.env }}
+      STACK_TAG: ${{ inputs.stack_tag }}
+      DELETE_CLUSTER_TAGGED_SGS: ${{ inputs.delete_cluster_tagged_sgs }}
+      DRY_RUN: ${{ inputs.dry_run }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Validate branch
+        run: |
+          if [[ "${{ github.ref_name }}" != "main" && "${{ github.ref_name }}" != "development" ]]; then
+            echo "Managed LB cleanup can only run from main or development." >&2
+            exit 1
+          fi
+
+      - name: Validate inputs
+        run: |
+          if [[ "${{ inputs.dry_run }}" != "true" && "${{ inputs.confirm_delete }}" != "true" ]]; then
+            echo "confirm_delete must be true when dry_run=false." >&2
+            exit 1
+          fi
+          if [[ -z "${CLUSTER_NAME}" && "${CLUSTER_LIFECYCLE}" == "ephemeral" && -z "${BUILD_ID}" ]]; then
+            echo "build_id is required when lifecycle=ephemeral and cluster_name is not provided." >&2
+            exit 1
+          fi
+
+      - name: Resolve cluster name
+        run: |
+          if [[ -z "${CLUSTER_NAME}" ]]; then
+            CLUSTER_NAME="$(ENV=${ENV} TF_DIR=${TF_DIR} BUILD_ID=${BUILD_ID} CLUSTER_LIFECYCLE=${CLUSTER_LIFECYCLE} bash scripts/resolve-cluster-name.sh)"
+          fi
+          echo "CLUSTER_NAME=${CLUSTER_NAME}" >> "${GITHUB_ENV}"
+          echo "Resolved CLUSTER_NAME=${CLUSTER_NAME}"
+
+      - name: Resolve backend config
+        id: backend
+        run: |
+          case "${ENV}" in
+            dev)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}" >> "$GITHUB_OUTPUT"
+              ;;
+            test)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_TEST }}" >> "$GITHUB_OUTPUT"
+              ;;
+            staging)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_STAGING }}" >> "$GITHUB_OUTPUT"
+              ;;
+            prod)
+              echo "role=${{ secrets.TF_AWS_IAM_ROLE_PROD }}" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported env: ${ENV}" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ inputs.region }}
+          role-to-assume: ${{ steps.backend.outputs.role }}
+
+      - name: Cleanup managed LB resources
+        run: |
+          DRY_RUN="${DRY_RUN}" \
+          STACK_TAG="${STACK_TAG}" \
+          DELETE_CLUSTER_TAGGED_SGS="${DELETE_CLUSTER_TAGGED_SGS}" \
+          bash bootstrap/60_tear_down_clean_up/cleanup-managed-lb-resources.sh "${CLUSTER_NAME}" "${AWS_REGION}"
+      - name: Runbook link
+        if: always()
+        run: |
+          echo "Runbook: docs/runbooks/08_MANAGED_LB_CLEANUP.md" >> "${GITHUB_STEP_SUMMARY}"

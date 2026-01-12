@@ -1,0 +1,56 @@
+# Owner: platform
+name: Bootstrap - CI Backstage (Stub)
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment to target (dev/test/staging/prod)"
+        required: true
+        default: "dev"
+      image_tag:
+        description: "Image tag to deploy (from build step)"
+        required: false
+        default: ""
+
+jobs:
+  backstage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ENV: ${{ inputs.env }}
+      IMAGE_TAG: ${{ inputs.image_tag }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Phase 1: Build + push
+      # Goal: build the Backstage image and push to registry.
+      - name: Phase 1 - Build and push (stub)
+        run: |
+          echo "Build/push Backstage image here"
+          echo "IMAGE_TAG=${IMAGE_TAG}"
+
+      # Phase 2: Update GitOps values
+      # Goal: set image tag in gitops/helm/backstage/values/<env>.yaml.
+      - name: Phase 2 - Update GitOps values (stub)
+        run: |
+          echo "Update Helm values with IMAGE_TAG here"
+
+      # Phase 3: Argo CD sync
+      # Goal: sync the Backstage application in Argo CD.
+      - name: Phase 3 - Argo sync (stub)
+        run: |
+          echo "argocd app sync ${ENV}-backstage"
+
+      # Phase 4: Validate
+      # Goal: confirm Backstage is healthy and reachable.
+      - name: Phase 4 - Validate (stub)
+        run: |
+          echo "kubectl -n backstage get pods"
+          echo "kubectl -n kong-system get svc"
+      - name: Runbook link
+        if: always()
+        run: |
+          echo "Runbook: docs/00-foundations/18_BACKSTAGE_MVP.md" >> "${GITHUB_STEP_SUMMARY}"
