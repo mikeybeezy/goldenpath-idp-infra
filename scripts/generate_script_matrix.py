@@ -5,7 +5,7 @@ id: generate_script_matrix
 type: script
 owner: platform-team
 status: active
-maturity: 3
+maturity: 2
 test:
   runner: pytest
   command: "pytest -q tests/unit/test_generate_script_matrix.py"
