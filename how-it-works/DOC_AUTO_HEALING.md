@@ -1,5 +1,5 @@
 ---
-id: HIW_DOC_AUTO_HEALING
+id: DOC_AUTO_HEALING
 title: 'How It Works: Documentation Auto-Healing'
 type: documentation
 relates_to:

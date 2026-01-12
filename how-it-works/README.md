@@ -1,5 +1,5 @@
 ---
-id: HIW_INDEX
+id: APPS_HOW_IT_WORKS
 title: How It Works Index
 type: documentation
 ---

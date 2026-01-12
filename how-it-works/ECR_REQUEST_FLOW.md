@@ -1,5 +1,5 @@
 ---
-id: HIW_ECR_FLOW
+id: ECR_REQUEST_FLOW
 title: 'How It Works: ECR Request Flow'
 type: documentation
 relates_to:

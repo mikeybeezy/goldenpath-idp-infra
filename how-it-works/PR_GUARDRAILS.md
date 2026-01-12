@@ -1,5 +1,5 @@
 ---
-id: HIW_PR_GUARDRAILS
+id: PR_GUARDRAILS
 title: 'How It Works: PR Guardrails'
 type: documentation
 relates_to:

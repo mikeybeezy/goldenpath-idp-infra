@@ -1,5 +1,5 @@
 ---
-id: GUIDE-002
+id: BORN_GOVERNED_LIFECYCLE
 title: Born Governed Lifecycle
 type: guide
 relates_to:
