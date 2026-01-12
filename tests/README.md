@@ -2,13 +2,26 @@
 id: TESTS_ROOT
 title: Testing Strategy
 type: documentation
-owner: platform-team
-status: active
+applies_to: []
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: none
+  maturity: 1
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 category: testing
 ---
 
 # 📊 Platform Testing Dashboard
-
 
 **Status:** ✅ 100% Pass Rate | **Automation Maturity:**  (Validated) | **Latest Update:** 2026-01-07
 
@@ -52,6 +65,7 @@ python3 scripts/scaffold_test.py --script "scripts/my_script.py"
 | [**Doc Auto-Healing**](./features/doc_auto_healing/) | ✅ PASS |  | Frontmatter normalization & link repair. |
 | [**Governance Traceability**](./features/governance_traceability/) | ✅ PASS |  | Hard-gate link between code and ADRs. |
 | [**Enum Consistency**](./features/enum_consistency/) | ✅ PASS |  | Intelligence-ready metadata validation. |
+| [**Secret Request Flow**](./feature-tests/secret-request-flow/) | ✅ PASS |  | End-to-end camelCase secret lifecycle. |
 
 ### **Operational Suites**
 | Suite | Type | Status | Coverage |

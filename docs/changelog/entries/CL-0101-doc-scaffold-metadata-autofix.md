@@ -2,6 +2,12 @@
 id: CL-0101
 title: 'CL-0101: Doc scaffold + metadata auto-fix'
 type: changelog
+status: active
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -9,12 +15,20 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: active
-version: '1.0'
+schema_version: 1
 relates_to:
   - CL-0101
   - ADR-0140
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-10
+version: '1.0'
 breaking_change: false
 ---
 

@@ -2,8 +2,6 @@
 id: 42_APP_TEMPLATE_LIVING
 title: App Template Living Doc
 type: contract
-owner: platform-team
-status: active
 risk_profile:
   production_impact: medium
   security_risk: none
@@ -11,15 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-category: platform
-version: '1.0'
-dependencies: []
 relates_to:
   - 02_PLATFORM_BOUNDARIES
   - ADR-0062
   - FAST-API-APP-TEMPLATE
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

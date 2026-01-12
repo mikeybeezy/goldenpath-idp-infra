@@ -122,6 +122,10 @@ def update_index_file(table_content, relate_content, validate_only=False):
         print("ADR Index is up to date.")
         return True
 
+    if new_content == content:
+        print("ADR Index is already up to date.")
+        return True
+
     with open(INDEX_FILE, 'w', encoding='utf-8') as f:
         f.write(new_content)
     print("Successfully updated ADR Index.")

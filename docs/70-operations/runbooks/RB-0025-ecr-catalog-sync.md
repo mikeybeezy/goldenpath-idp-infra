@@ -3,10 +3,6 @@ id: RB-0025-ecr-catalog-sync
 title: ECR Catalog Sync (AWS Source of Truth)
 type: runbook
 domain: delivery
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: low
@@ -14,23 +10,25 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - ADR-0128-automated-ecr-catalog-sync
   - ADR-0129-platform-eventual-consistency-ecr-governance
-supersedes: []
-superseded_by: []
-tags: [ecr, catalog, backstage, sync]
-inheritance: {}
+tags:
+  - ecr
+  - catalog
+  - backstage
+  - sync
 value_quantification:
   vq_class: 🟡 MV/HQ
   impact_tier: medium
   potential_savings_hours: 1.0
 category: runbooks
-status: active
-version: '1.0'
-dependencies: [aws, python3]
 supported_until: 2028-01-01
+version: '1.0'
+dependencies:
+  - aws
+  - python3
 breaking_change: false
 ---
 

@@ -2,6 +2,12 @@
 id: CL-0027-app-example-deployments
 title: 'CL-0027: App example deployments'
 type: changelog
+status: active
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -9,13 +15,21 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-version: '1.0'
-lifecycle: active
+schema_version: 1
 relates_to:
   - 42_APP_EXAMPLE_DEPLOYMENTS
   - ADR-0075
   - CL-0027
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2027-01-04
+version: '1.0'
 breaking_change: false
 ---
 

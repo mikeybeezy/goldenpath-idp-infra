@@ -1,23 +1,36 @@
+# Managed by scripts/standardize_metadata.py
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: "{{ .Values.appName }}-reader"
-  namespace: "{{ .Values.namespace }}"
+  name: '{{ .Values.appName }}-reader'
+  namespace: '{{ .Values.namespace }}'
+  annotations:
+    goldenpath.idp/id: APPS_TEMPLATES_METADATA
+    goldenpath.idp/owner: None
 rules:
-  - apiGroups: [""]
-    resources: ["configmaps", "secrets"]
-    verbs: ["get", "list"]
+  - apiGroups:
+      - ''
+    resources:
+      - configmaps
+      - secrets
+    verbs:
+      - get
+      - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: "{{ .Values.appName }}-reader"
-  namespace: "{{ .Values.namespace }}"
+  name: '{{ .Values.appName }}-reader'
+  namespace: '{{ .Values.namespace }}'
+  annotations:
+    goldenpath.idp/id: APPS_TEMPLATES_METADATA
+    goldenpath.idp/owner: None
 subjects:
   - kind: ServiceAccount
-    name: "{{ .Values.serviceAccountName }}"
-    namespace: "{{ .Values.namespace }}"
+    name: '{{ .Values.serviceAccountName }}'
+    namespace: '{{ .Values.namespace }}'
 roleRef:
   kind: Role
-  name: "{{ .Values.appName }}-reader"
+  name: '{{ .Values.appName }}-reader'
   apiGroup: rbac.authorization.k8s.io

@@ -2,13 +2,23 @@
 id: 00_START_HERE
 title: Start Here
 type: documentation
+domain: platform-core
+applies_to: []
 owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
 status: active
 category: onboarding
+supported_until: '2028-01-01'
 ---
 
 # 🚀 START HERE (5-Minute Onboarding)
-
 
 Welcome to the **GoldenPath IDP Infra** repository. This guide is designed to get you (Human or Agent) fully operational in under 5 minutes.
 
@@ -31,7 +41,9 @@ If you are a new engineer or operator, do this first:
 
 3.  **Discover the Ecosystem**:
     Open [**`PLATFORM_DASHBOARDS.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_DASHBOARDS.md) in the root. This is your map to all health, testing, and registry reports.
-4.  **Doc Scaffolding**:
+4.  **Frictionless PRs**:
+    Review the [**Heal-First Workflow (RB-0027)**](../70-operations/runbooks/RB-0027-frictionless-pr-gates.md) to pass all PR gates automatically.
+5.  **Doc Scaffolding**:
     Use `scripts/scaffold_doc.py` for any new docs to ensure metadata compliance from day one.
 
 ---
@@ -51,6 +63,9 @@ If you are an AI Assistant (Antigravity, etc.), you MUST begin every session her
 3.  **Standardized Scaffolding**:
     Use `./bin/governance test scaffold` for every new feature or script to ensure metadata and test integrity from Step 1.
     Use `scripts/scaffold_doc.py` for any new docs to keep frontmatter compliant.
+
+4.  **Auto-Remediation**:
+    Always run `bin/governance heal .` before proposing changes to ensure automatic alignment with CI gates.
 
 ---
 

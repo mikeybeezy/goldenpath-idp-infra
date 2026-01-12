@@ -2,8 +2,6 @@
 id: DOCS_BUILD-RUN-LOGS_README
 title: Build and Teardown Logs Documentation
 type: runlog
-owner: platform-team
-status: active
 risk_profile:
   production_impact: low
   security_risk: none
@@ -11,10 +9,6 @@ risk_profile:
 reliability:
   rollback_strategy: not-applicable
   observability_tier: bronze
-lifecycle: active
-category: platform
-version: '1.0'
-dependencies: []
 relates_to:
   - 41_BUILD_RUN_LOG
   - BR-TEMPLATE
@@ -22,6 +16,7 @@ relates_to:
   - TD-TEMPLATE
   - TD_TEMPLATE
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

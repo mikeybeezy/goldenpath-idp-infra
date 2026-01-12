@@ -2,6 +2,12 @@
 id: CL-0031-governed-repo-scaffolder
 title: 'CL-0031: Governance-driven app repo scaffolder'
 type: changelog
+status: active
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -9,14 +15,22 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-version: '1.0'
-lifecycle: active
+schema_version: 1
 relates_to:
   - 42_APP_TEMPLATE_LIVING
   - ADR-0078
   - ADR-0078-platform-governed-repo-scaffolder
   - CL-0031
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2027-01-04
+version: '1.0'
 breaking_change: false
 ---
 

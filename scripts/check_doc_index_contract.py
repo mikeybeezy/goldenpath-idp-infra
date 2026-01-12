@@ -48,6 +48,8 @@ def parse_doc_contract(path, max_lines=80):
                 continue
             if not in_contract:
                 continue
+            if not line.strip():
+                continue
             if not line.startswith("-"):
                 break
             entry = line.lstrip("-").strip()

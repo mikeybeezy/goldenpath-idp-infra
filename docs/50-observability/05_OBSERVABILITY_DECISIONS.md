@@ -2,11 +2,6 @@
 id: 05_OBSERVABILITY_DECISIONS
 title: Observability Tooling Decisions
 type: documentation
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -14,7 +9,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-schema_version: 1
+  maturity: 1
 relates_to:
   - 41_STORAGE_AND_PERSISTENCE
   - ADR-0049
@@ -24,19 +19,9 @@ relates_to:
   - ADR-0056
   - ADR-0056-platform-loki-deployment-mode
   - ADR-0061
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: observability
-status: active
-version: '1.0'
-dependencies: []
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

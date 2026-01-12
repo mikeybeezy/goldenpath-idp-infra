@@ -2,13 +2,28 @@
 id: VARIABLE_MAPPING_INDEX
 title: IAM Policy-to-Variable Mapping Index
 type: policy
+domain: platform-core
+applies_to: []
+owner: platform-team
 lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-version: '1.0'
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+status: active
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

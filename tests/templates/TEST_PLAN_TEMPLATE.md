@@ -2,13 +2,10 @@
 id: TEST_PLAN_TEMPLATE
 title: Test Plan Template
 type: template
-owner: platform-team
-status: active
 category: testing
 ---
 
 # Test Plan Template
-
 
 **Feature/Component:** [Name of what you're testing]
 **Created:** YYYY-MM-DD

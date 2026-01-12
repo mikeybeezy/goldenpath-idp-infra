@@ -2,13 +2,26 @@
 id: AGENT_INSTRUCTIONS
 title: Agent Instructions
 type: documentation
-owner: platform-team
-status: active
+applies_to: []
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: none
+  maturity: 1
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 category: testing
 ---
 
 # 🤖 Platform Agent Testing Instructions
-
 
 > [!IMPORTANT]
 > **START HERE**: All AI Agents (Antigravity or others) must follow this protocol for every code change to ensure platform integrity and traceability.

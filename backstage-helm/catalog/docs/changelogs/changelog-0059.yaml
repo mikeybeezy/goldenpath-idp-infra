@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0059
-  title: "CL-0059: PR #156 \u2013 ECR Pipeline Stabilization and Metadata Compliance"
+  title: 'CL-0059: PR #156 – ECR Pipeline Stabilization and Metadata Compliance'
   description: 'This change stabilizes the ECR pipeline PR workflow and enforces metadata
     compliance across the repository. Key improvements include:
 

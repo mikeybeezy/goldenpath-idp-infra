@@ -1,3 +1,9 @@
+---
+id: test-record-20260108
+title: metadata
+type: test-suite
+---
+
 # Test Record: ECR Registry Single Source of Truth
 
 **Date:** 2026-01-08

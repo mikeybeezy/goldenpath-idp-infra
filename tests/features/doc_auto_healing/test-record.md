@@ -2,7 +2,9 @@
 id: test-record
 title: Feature Test Record - Documentation Auto-Healing (HITL)
 type: test-record
+owner: platform-team
 status: passed
+domain: platform-core
 category: testing
 risk_profile:
   production_impact: low
@@ -11,10 +13,9 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: '1.0'
 relates_to:
   - ADR-0111
+version: '1.0'
 supported_until: 2028-01-01
 breaking_change: false
 ---

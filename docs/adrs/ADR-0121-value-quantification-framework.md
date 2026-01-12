@@ -2,6 +2,10 @@
 id: ADR-0121-value-quantification-framework
 title: Value Quantification (VQ) Framework
 type: adr
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: none
   security_risk: none
@@ -9,6 +13,17 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
 date: 2026-01-07
 ---
 

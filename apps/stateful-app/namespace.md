@@ -13,6 +13,7 @@ risk_profile:
 reliability:
   rollback_strategy: kubectl-delete
   observability_tier: bronze
+  maturity: 1
 schema_version: 1
 relates_to:
   - STATEFUL_APP_README

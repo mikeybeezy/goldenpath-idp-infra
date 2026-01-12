@@ -12,6 +12,10 @@ import re
 import glob
 import yaml
 import argparse
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
+from metadata_config import platform_yaml_dump
 from collections import defaultdict
 
 
@@ -110,7 +114,7 @@ def write_metadata(file_path, metadata, content):
     """Write updated metadata back to file"""
     try:
         # Serialize metadata to YAML
-        yaml_str = yaml.dump(metadata, default_flow_style=False, sort_keys=False)
+        yaml_str = platform_yaml_dump(metadata)
 
         # Write file
         with open(file_path, 'w', encoding='utf-8') as f:

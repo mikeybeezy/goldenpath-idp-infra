@@ -3,6 +3,11 @@ id: CL-0053-daily-policy-enforcement-workflow
 title: 'CL-0053: Daily Policy Enforcement Workflow'
 type: changelog
 status: planned
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -10,13 +15,21 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-version: '1.0'
-lifecycle: active
+schema_version: 1
 relates_to:
   - ADR-0093
   - ADR-0092
   - CL-0053
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2027-01-05
+version: '1.0'
 breaking_change: false
 ---
 

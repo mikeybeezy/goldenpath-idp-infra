@@ -14,8 +14,12 @@ from datetime import datetime, timedelta
 import sys
 
 # Add lib to path for imports
+import os
+import re
+import copy
+import glob
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
-from metadata_config import MetadataConfig
+from metadata_config import MetadataConfig, platform_yaml_dump
 
 cfg = MetadataConfig()
 
@@ -263,7 +267,7 @@ lifecycle:
     })
 
     # Construct New Content
-    fm = yaml.dump(new_data, sort_keys=False, default_flow_style=False, allow_unicode=True, indent=2)
+    fm = platform_yaml_dump(new_data)
     return f"---\n{fm}---\n\n"
 
 

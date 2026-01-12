@@ -2,8 +2,6 @@
 id: 01_PLATFORM_SERVICE_AGREEMENT
 title: Platform Service Agreement
 type: contract
-owner: platform-team
-status: active
 risk_profile:
   production_impact: high
   security_risk: none
@@ -11,14 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-lifecycle: active
-category: delivery
-version: 1.0
-dependencies: []
 relates_to:
   - 10_SERVICE_CATALOG
   - SHARED_RESPONSIBILITY
+category: delivery
 supported_until: 2028-01-01
+version: 1.0
 breaking_change: false
 ---
 

@@ -2,7 +2,12 @@
 id: 23_NEW_JOINERS
 title: New Joiners Guide
 type: runbook
+domain: platform-core
 applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
 relates_to:
   - 02_PLATFORM_BOUNDARIES
   - 13_COLLABORATION_GUIDE
@@ -14,10 +19,10 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-category: platform
 status: active
-version: '1.0'
+category: platform
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

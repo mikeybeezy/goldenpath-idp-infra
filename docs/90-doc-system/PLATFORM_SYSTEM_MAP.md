@@ -2,11 +2,6 @@
 id: PLATFORM_SYSTEM_MAP
 title: Platform System Map (Living)
 type: documentation
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,27 +9,23 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - 00_DOC_INDEX
   - 30_DOCUMENTATION_FRESHNESS
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
-category: platform
-status: active
-version: '1.0'
-dependencies: []
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 
 # Platform System Map (Living)
+
+Doc contract:
+
+- Purpose: Visualize what lives where, who owns it, and how it stays fresh.
+- Owner: platform
+- Status: living
+- Review cadence: 90d
 
 Purpose: one place to see **what lives where**, **who owns it**, and **how it stays fresh**.
 

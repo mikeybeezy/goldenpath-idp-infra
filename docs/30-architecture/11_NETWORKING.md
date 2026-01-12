@@ -2,11 +2,8 @@
 id: 11_NETWORKING
 title: Networking Decisions
 type: adr
-status: active
-domain: platform-core
 applies_to:
   - infra
-owner: platform-team
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,13 +11,11 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: active
-category: architecture
-version: '1.0'
-dependencies: []
 relates_to:
   - 08_INGRESS_STRATEGY
+category: architecture
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

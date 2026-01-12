@@ -3,11 +3,14 @@ id: ADR-0051-platform-reliability-metrics-contract-minimums
 title: 'ADR-0051: Minimal reliability metrics and contract minimums'
 type: adr
 status: active
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: '1.0'
+schema_version: 1
 relates_to:
   - 02_PLATFORM_BOUNDARIES
   - 17_BUILD_RUN_FLAGS
@@ -16,7 +19,16 @@ relates_to:
   - 35_RESOURCE_TAGGING
   - 40_CHANGELOG_GOVERNANCE
   - ADR-0051
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-04
+version: '1.0'
 breaking_change: false
 ---
 

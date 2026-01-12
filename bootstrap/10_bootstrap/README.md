@@ -12,6 +12,7 @@ risk_profile:
 reliability:
   rollback_strategy: manual
   observability_tier: silver
+  maturity: 1
 schema_version: 1
 relates_to:
   - 08_INGRESS_STRATEGY

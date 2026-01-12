@@ -2,6 +2,43 @@ import os
 import yaml
 from typing import Any, Dict, List, Optional
 
+class PlatformYamlDumper(yaml.SafeDumper):
+    """
+    Standardized YAML dumper for the Golden Path IDP.
+    Ensures consistent indentation (especially for lists) to match yamllint and pre-commit.
+    """
+    def increase_indent(self, flow=False, indentless=False):
+        return super(PlatformYamlDumper, self).increase_indent(flow, False)
+
+def platform_yaml_dump(data: Any, stream=None, **kwargs) -> Optional[str]:
+    """
+    Helper function to dump YAML using the PlatformYamlDumper with standardized settings.
+    """
+    settings = {
+        'sort_keys': False,
+        'default_flow_style': False,
+        'allow_unicode': True,
+        'indent': 2,
+        'Dumper': PlatformYamlDumper
+    }
+    settings.update(kwargs)
+    return yaml.dump(data, stream, **settings)
+
+def platform_yaml_dump_all(documents: List[Any], stream=None, **kwargs) -> Optional[str]:
+    """
+    Helper function to dump multiple YAML documents using the PlatformYamlDumper.
+    """
+    settings = {
+        'sort_keys': False,
+        'default_flow_style': False,
+        'allow_unicode': True,
+        'indent': 2,
+        'Dumper': PlatformYamlDumper,
+        'explicit_start': True
+    }
+    settings.update(kwargs)
+    return yaml.dump_all(documents, stream, **settings)
+
 class MetadataConfig:
     """
     Central configuration manager for metadata governance.
@@ -122,31 +159,26 @@ class MetadataConfig:
                     skeleton[field] = ""
         return skeleton
 
-    def find_parent_metadata(self, filepath: str) -> Optional[Dict[str, Any]]:
+    def find_all_parents_metadata(self, filepath: str) -> List[Dict[str, Any]]:
         """
-        Walks up the directory tree to find the nearest parent metadata.yaml.
+        Walks up the directory tree to find all parent metadata.yaml files.
+        Returns them in order from root-most to leaf-most.
         """
+        all_parent_data = []
         abs_filepath = os.path.abspath(filepath)
         current_dir = os.path.dirname(abs_filepath)
         root_dir = os.getcwd()
 
-        # print(f"DEBUG: find_parent for {abs_filepath}")
-        # print(f"DEBUG: root_dir: {root_dir}")
-
+        # Collect all parents
         while current_dir.startswith(root_dir):
             parent_metadata_file = os.path.join(current_dir, "metadata.yaml")
-            # print(f"DEBUG: checking {parent_metadata_file}")
-
-            # Don't load self as parent if we are a metadata.yaml
             if parent_metadata_file != abs_filepath and os.path.exists(parent_metadata_file):
-                # print(f"DEBUG: MATCH FOUND at {parent_metadata_file}")
                 try:
                     with open(parent_metadata_file, "r") as f:
                         data = yaml.safe_load(f)
                         if isinstance(data, dict):
-                            return data
-                except Exception as e:
-                    # print(f"DEBUG: error loading parent {e}")
+                            all_parent_data.append(data)
+                except:
                     pass
 
             # Move up
@@ -154,24 +186,37 @@ class MetadataConfig:
             if next_dir == current_dir or current_dir == root_dir:
                 break
             current_dir = next_dir
-        return None
+
+        # Reverse so root-most is first (for proper merging)
+        all_parent_data.reverse()
+        return all_parent_data
+
+    def find_parent_metadata(self, filepath: str) -> Optional[Dict[str, Any]]:
+        """
+        Nearest parent metadata.yaml. Provided for backward compatibility.
+        """
+        parents = self.find_all_parents_metadata(filepath)
+        return parents[-1] if parents else None
 
     def get_effective_metadata(self, filepath: str, local_data: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Merges local metadata with inherited parent defaults.
+        Merges local metadata with inherited parent defaults recursively (root -> leaf -> local).
         """
-        parent_data = self.find_parent_metadata(filepath)
-        if not parent_data:
-            return local_data
+        parents_data = self.find_all_parents_metadata(filepath)
 
-        # Inherit non-identity fields if missing locally
-        effective = parent_data.copy()
+        # Identity (ID/Title) should NEVER be inherited
+        identity_fields = ['id', 'title']
+
+        effective = {}
+        # Merge all parents starting from root-most
+        for parent in parents_data:
+            for k, v in parent.items():
+                if k not in identity_fields and v is not None and v != "":
+                    effective[k] = v
+
+        # Finally, merge local data (overrides parents)
         for k, v in local_data.items():
             if v is not None and v != "" and v != {} and v != []:
                 effective[k] = v
-
-        # Identity (ID) should NEVER be inherited
-        if 'id' not in local_data:
-            effective.pop('id', None)
 
         return effective

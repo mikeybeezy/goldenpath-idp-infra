@@ -26,7 +26,7 @@ repos:
         language: python
         additional_dependencies:
           - pyyaml
-        stages: [commit]
+        stages: [pre-commit]
         files: ^docs/.*\.md$
         pass_filenames: true
       - id: emoji-enforcer
@@ -35,3 +35,24 @@ repos:
         language: python
         files: \.(md|yaml|yml)$
         pass_filenames: true
+      - id: generate-adr-index
+        name: Auto-Heal ADR Index
+        entry: python3 scripts/generate_adr_index.py
+        language: python
+        additional_dependencies: [pyyaml]
+        always_run: true
+        pass_filenames: false
+      - id: generate-script-index
+        name: Auto-Heal Script Index
+        entry: python3 scripts/generate_script_index.py
+        language: python
+        additional_dependencies: [pyyaml]
+        always_run: true
+        pass_filenames: false
+      - id: generate-workflow-index
+        name: Auto-Heal Workflow Index
+        entry: python3 scripts/generate_workflow_index.py
+        language: python
+        additional_dependencies: [pyyaml]
+        always_run: true
+        pass_filenames: false

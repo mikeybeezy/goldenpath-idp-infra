@@ -1,23 +1,36 @@
+# Managed by scripts/standardize_metadata.py
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: "wordpress-efs-reader"
-  namespace: "apps-wordpress-efs"
+  name: wordpress-efs-reader
+  namespace: apps-wordpress-efs
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 rules:
-  - apiGroups: [""]
-    resources: ["configmaps", "secrets"]
-    verbs: ["get", "list"]
+  - apiGroups:
+      - ''
+    resources:
+      - configmaps
+      - secrets
+    verbs:
+      - get
+      - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: "wordpress-efs-reader"
-  namespace: "apps-wordpress-efs"
+  name: wordpress-efs-reader
+  namespace: apps-wordpress-efs
+  annotations:
+    goldenpath.idp/id: APPS_BASE_METADATA
+    goldenpath.idp/owner: None
 subjects:
   - kind: ServiceAccount
-    name: "wordpress-efs"
-    namespace: "apps-wordpress-efs"
+    name: wordpress-efs
+    namespace: apps-wordpress-efs
 roleRef:
   kind: Role
-  name: "wordpress-efs-reader"
+  name: wordpress-efs-reader
   apiGroup: rbac.authorization.k8s.io

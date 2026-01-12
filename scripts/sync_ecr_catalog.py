@@ -16,29 +16,21 @@ import argparse
 import json
 import os
 import subprocess
+import sys
 import yaml
-from datetime import datetime
 from pathlib import Path
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
+from metadata_config import platform_yaml_dump
 
 # Constants
 CATALOG_PATH = "docs/20-contracts/catalogs/ecr-catalog.yaml"
 DEFAULT_REGION = os.environ.get("AWS_REGION") or os.environ.get("AWS_DEFAULT_REGION")
 
-class IndentDumper(yaml.SafeDumper):
-    """Ensure list items are indented under their parent keys."""
-
-    def increase_indent(self, flow=False, indentless=False):
-        return super().increase_indent(flow, False)
 
 def dump_yaml(data, path: str) -> None:
     with open(path, "w", encoding="utf-8") as f:
-        yaml.dump(
-            data,
-            f,
-            sort_keys=False,
-            default_flow_style=False,
-            Dumper=IndentDumper,
-        )
+        platform_yaml_dump(data, f)
 
 def get_physical_repositories(region=None):
     """Fetches repository list from AWS ECR."""

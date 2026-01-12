@@ -2,11 +2,6 @@
 id: CAPABILITY_LEDGER
 title: IDP Capability Ledger
 type: documentation
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,23 +9,13 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-schema_version: 1
+  maturity: 1
 relates_to:
   - ADR-0027
   - ADR-0092
   - PLATFORM_HEALTH.md
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
-category: platform
-status: active
-version: '1.0'
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 
@@ -151,6 +136,24 @@ The platform prioritizes developer velocity by replacing "Automatic Policing" wi
 - **Environment Parity CLI**: The [**`bin/governance`**](file:///Users/mikesablaze/goldenpath-idp-infra/bin/governance) suite provides 1:1 parity between a developer's laptop and the CI environment.
   - **Value**: "Born Green" development where issues are caught *before* they ever reach a PR.
   - **Cognitive Load Eliminated**: Eliminates the "Passes locally, fails in CI" syndrome, saving hours of debugging time by ensuring the local environment is always correctly configured with dependencies and hooks.
+
+---
+
+## 18. Contract-Driven Secret Provisioning (Request-to-Projection)
+The platform transforms raw developer intent into governed cloud infrastructure and cluster-side secrets through a deterministic **Secret Request Parser**.
+- **Contract-to-IaC Translation**: Performs high-fidelity translation of developer "intent" YAML into platform-grade Terraform configuration, decoupling implementation complexity from the user.
+- **Shift-Left Governance Engine**: Enforces platform security policies (e.g., mandatory rotation for high-risk secrets) during the PR phase, blocking non-compliant requests before they reach AWS.
+- **Dual-Target Projection**: Simultaneously generates cloud infrastructure (Terraform) and Kubernetes projection manifests (ESO), ensuring 1:1 parity between cloud resources and cluster access.
+- **Automated IAM Least-Privilege**: Dynamically calculates and applies resource-level IAM policies for secrets based on declared `read`/`write` access principals in the contract.
+- **Deterministic Namespace Isolation**: Enforces standardized naming and namespace mapping to prevent cross-tenant collisions and ensure strict environment separation.
+
+---
+
+## 19. Heal-First, Push-Once Workflow (Frictionless PR Gates)
+The platform optimizes developer experience by replacing manual compliance chores with an automated **Heal-First, Push-Once** workflow.
+- **The Healer (`bin/governance heal`)**: A remediation engine that automatically formats YAML/Markdown, injects missing metadata, and aligns files with platform standards to ensure 100% gate compatibility before push.
+- **Minimal Conflict Enforcement**: Implements a 'Specific Owner Wins' policy to prevent environment-level automation from overwriting app-level identities, eliminating the CI oscillation that typically blocks multi-team PRs.
+- **Marker-Based Stability**: Uses non-destructive comment markers to inject auto-generated tables (Indices, Workflows) into hand-managed documentation, maintaining both source truth and human readability.
 
 ---
 

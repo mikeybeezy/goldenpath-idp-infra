@@ -3,7 +3,7 @@ kind: Component
 metadata:
   name: governance-reports-health-audit-log
   title: Platform Health Audit Log
-  description: 'Last updated: `2026-01-10 00:44:02`'
+  description: 'Last updated: `2026-01-12 06:03:12`'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/reports/HEALTH_AUDIT_LOG.md

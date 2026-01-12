@@ -2,6 +2,12 @@
 id: 26_AI_AGENT_PROTOCOLS
 title: AI Agent & Operator Protocols
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
 relates_to:
   - 00_DOC_INDEX
   - 04_PR_GUARDRAILS
@@ -14,9 +20,14 @@ relates_to:
   - AI_CHANGELOG
   - CL-####
   - ROADMAP
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
 status: active
-version: '1.0'
+category: platform
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

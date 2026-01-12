@@ -13,6 +13,7 @@ risk_profile:
 reliability:
   rollback_strategy: manual
   observability_tier: silver
+  maturity: 1
 schema_version: 1
 relates_to:
   - WORDPRESS_ON_EFS_README

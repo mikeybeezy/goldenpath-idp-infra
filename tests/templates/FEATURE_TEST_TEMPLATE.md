@@ -2,13 +2,10 @@
 id: FEATURE_TEST_TEMPLATE
 title: Feature Test Template
 type: template
-owner: platform-team
-status: active
 category: testing
 ---
 
 # Feature Test Template
-
 
 **Feature Name:** [Name of the feature being tested]
 **Test Date:** YYYY-MM-DD

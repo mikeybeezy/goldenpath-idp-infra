@@ -3,10 +3,19 @@ kind: Component
 metadata:
   name: governance-metadata-inheritance-strategy
   title: Metadata Inheritance & Active Governance Strategy
-  description: "```text\nidp-root/\n\u251C\u2500\u2500 apps/\n\u2502   \u251C\u2500\
-    \u2500 metadata.yaml (v:1, owner:platform, domain:delivery)\n\u2502   \u2514\u2500\
-    \u2500 my-app/\n\u2502       \u2514\u2500\u2500 metadata.yaml (id:MY_APP) <\u2500\
-    \u2500 [Inherits owner/domain]\n```"
+  description: '```text
+
+    idp-root/
+
+    ├── apps/
+
+    │   ├── metadata.yaml (v:1, owner:platform, domain:delivery)
+
+    │   └── my-app/
+
+    │       └── metadata.yaml (id:MY_APP) <── [Inherits owner/domain]
+
+    ```'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/METADATA_INHERITANCE_STRATEGY.md

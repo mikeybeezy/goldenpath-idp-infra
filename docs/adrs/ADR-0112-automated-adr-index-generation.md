@@ -2,6 +2,10 @@
 id: ADR-0112-automated-adr-index-generation
 title: 'ADR-0112: Automated ADR Index Generation'
 type: adr
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: low
@@ -9,13 +13,21 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: 1.0
-date: 2026-01-06
+schema_version: 1
 relates_to:
   - ADR-0110
   - ADR-0111
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2027-01-06
+version: 1.0
+date: 2026-01-06
 breaking_change: false
 ---
 

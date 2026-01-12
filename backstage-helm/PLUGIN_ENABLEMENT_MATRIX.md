@@ -1,3 +1,9 @@
+---
+id: PLUGIN_ENABLEMENT_MATRIX
+title: Backstage Plugin Enablement Matrix (Helm + Stock Image)
+type: documentation
+---
+
 # Backstage Plugin Enablement Matrix (Helm + Stock Image)
 
 Purpose: clarify what can be enabled via config-only (Helm values) versus what

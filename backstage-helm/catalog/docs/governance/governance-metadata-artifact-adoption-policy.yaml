@@ -3,12 +3,7 @@ kind: Component
 metadata:
   name: governance-metadata-artifact-adoption-policy
   title: Metadata Adoption Policy for Configs and Reports
-  description: '| Artifact | Location | Metadata Form | Source of Truth | Notes |
-
-    | --- | --- | --- | --- | --- |
-
-    | Config files (YAML/JSON) | repo root / scripts / configs | `<file>.metadata.yaml`
-    | sidecar | Keep p...'
+  description: 'Doc contract:'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/METADATA_ARTIFACT_ADOPTION_POLICY.md

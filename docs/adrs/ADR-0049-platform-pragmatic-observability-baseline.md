@@ -3,14 +3,30 @@ id: ADR-0049-platform-pragmatic-observability-baseline
 title: 'ADR-0049: Pragmatic observability baseline for V1 (RED + Golden Signals)'
 type: adr
 status: active
+domain: platform-core
+owner: platform-team
 lifecycle: active
-version: '1.0'
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
 relates_to:
   - 05_OBSERVABILITY_DECISIONS
   - ADR-0049
   - ADR-0069
   - ADR-0069-platform-observability-baseline-golden-signals
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2027-01-03
+version: '1.0'
 breaking_change: false
 ---
 

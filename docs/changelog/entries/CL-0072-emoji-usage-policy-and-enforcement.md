@@ -2,6 +2,12 @@
 id: CL-0072-emoji-usage-policy-and-enforcement
 title: Emoji Usage Policy & Automated Enforcement
 type: changelog
+status: active
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -9,13 +15,21 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-version: 1.0
-lifecycle: active
+schema_version: 1
 relates_to:
   - ADR-0116
   - EMOJI_POLICY
-date: 2026-01-06
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-06
+version: 1.0
+date: 2026-01-06
 breaking_change: false
 ---
 

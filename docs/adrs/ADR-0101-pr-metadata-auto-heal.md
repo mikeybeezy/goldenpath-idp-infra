@@ -3,6 +3,10 @@ id: ADR-0101-pr-metadata-auto-heal
 title: 'ADR-0101: PR Metadata Auto-Heal and Scoped Validation'
 type: adr
 status: active
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -10,12 +14,20 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: '1.0'
+schema_version: 1
 relates_to:
   - ADR-0098
   - CL-0063
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

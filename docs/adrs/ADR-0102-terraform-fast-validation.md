@@ -1,25 +1,31 @@
 ---
 id: ADR-0102
 title: Layer 2 Terraform Validation (Fast Feedback Loop)
-status: accepted
-type: decision
-category: architecture
-version: 1.0
+type: adr
+domain: platform-core
 owner: platform-team
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
 lifecycle:
   supported_until: 2028-01-04
   breaking_change: false
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+schema_version: 1
 relates_to:
   - ADR-0034 (CI Environment Contract)
   - CL-0064 (Terraform Lint Workflow)
   - docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+version: 1.0
 ---
 
 # ADR-0102: Layer 2 Terraform Validation (Fast Feedback Loop)

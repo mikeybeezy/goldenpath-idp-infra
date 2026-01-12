@@ -2,8 +2,6 @@
 id: 29_CD_DEPLOYMENT_CONTRACT
 title: CD Deployment Contract
 type: contract
-owner: platform-team
-status: active
 risk_profile:
   production_impact: high
   security_risk: none
@@ -11,15 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-lifecycle: active
-category: platform
-version: '1.0'
-dependencies: []
 relates_to:
   - 12_GITOPS_AND_CICD
   - 39_GOLDEN_PATH_VALIDATION
   - ADR-0026
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

@@ -3,16 +3,29 @@ id: ADR-0135
 title: 'ADR-0135: Secrets Manager + External Secrets Operator foundation'
 type: adr
 status: proposed
+domain: platform-core
+owner: platform-team
+lifecycle: proposed
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: proposed
-version: 1.0
+schema_version: 1
 relates_to:
   - ADR-0006
   - ADR-0015
   - ADR-0031
+  - how-it-works/SECRET_REQUEST_FLOW.md
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-09
+version: 1.0
 breaking_change: false
 ---
 

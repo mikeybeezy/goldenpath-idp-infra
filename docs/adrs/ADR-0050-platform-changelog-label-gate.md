@@ -3,16 +3,28 @@ id: ADR-0050-platform-changelog-label-gate
 title: 'ADR-0050: Label-gated changelog entries'
 type: adr
 status: active
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: '1.0'
+schema_version: 1
 relates_to:
   - 40_CHANGELOG_GOVERNANCE
   - ADR-0050
   - DOCS_CHANGELOG_README
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-04
+version: '1.0'
 breaking_change: false
 ---
 

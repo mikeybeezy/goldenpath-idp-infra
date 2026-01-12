@@ -20,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

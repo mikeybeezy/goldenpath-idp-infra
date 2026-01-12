@@ -1,3 +1,9 @@
+---
+id: APPS_BACKSTAGE_HELM
+title: metadata
+type: documentation
+---
+
 # Backstage Helm Charts
 
 This directory contains the Helm charts and local overrides for the GoldenPath IDP Backstage instance.

@@ -2,11 +2,6 @@
 id: 36_STATE_KEY_STRATEGY
 title: State Key Strategy (Living)
 type: policy
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: medium
   security_risk: none
@@ -14,26 +9,16 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - 25_PR_TERRAFORM_PLAN
   - 32_TERRAFORM_STATE_AND_LOCKING
   - ADR-0040
   - ADR-0040-platform-lifecycle-aware-state-keys
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: compliance
-status: active
-version: '1.0'
-dependencies: []
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

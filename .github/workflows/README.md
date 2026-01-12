@@ -12,6 +12,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
+  maturity: 1
 schema_version: 1
 relates_to:
   - ADR-0093

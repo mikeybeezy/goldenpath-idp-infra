@@ -2,11 +2,6 @@
 id: 32_TERRAFORM_STATE_AND_LOCKING
 title: Terraform State and Locking (Living)
 type: policy
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,25 +9,15 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - 07_TF_STATE_FORCE_UNLOCK
   - 21_CI_ENVIRONMENT_CONTRACT
   - 33_IAM_ROLES_AND_POLICIES
   - 36_STATE_KEY_STRATEGY
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: compliance
-status: active
-version: '1.0'
-dependencies: []
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

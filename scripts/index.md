@@ -2,10 +2,8 @@
 id: PLATFORM_SCRIPTS_INDEX
 title: Platform Automation Scripts Index (Auto-Generated)
 type: documentation
-category: governance
-version: '1.0'
-owner: platform-team
-status: active
+applies_to: []
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,12 +11,19 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: active
-supported_until: '2028-01-01'
-last_updated: 2026-01-06
-dependencies:
-  - python3
-  - pyyaml
+  maturity: 1
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: tier-1
+  potential_savings_hours: 1.0
+category: governance
+last_updated: 2026-01-12
 ---
 
 # Platform Automation Scripts Index (Auto-Generated)
@@ -27,7 +32,7 @@ dependencies:
 
 This directory contains the automation engine powering the GoldenPath IDP.
 
-
+<!-- SCRIPTS_TABLE_START -->
 ## Delivery
 
 | Script | Description |
@@ -81,8 +86,10 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [reliability-metrics.sh](file://scripts/reliability-metrics.sh) | Shell script utility. |
 | [scaffold_doc.py](file://scripts/scaffold_doc.py) | Doc Scaffold Utility |
 | [scaffold_test.py](file://scripts/scaffold_test.py) | Scaffold Test Utility |
+| [secret_request_parser.py](file://scripts/secret_request_parser.py) | SecretRequest parser/generator (Adapted Standard). |
 | [sync_backstage_entities.py](file://scripts/sync_backstage_entities.py) | Backstage Entity Sync Utility |
 | [sync_ecr_catalog.py](file://scripts/sync_ecr_catalog.py) | ECR Catalog Synchronization & Reconciliation Utility |
 | [test_hotfix.py](file://scripts/test_hotfix.py) | Purpose: Unit tests for PR Guardrails Hotfix Logic. |
 | [validate_enums.py](file://scripts/validate_enums.py) | Purpose: Enhanced Enum Consistency Validator |
 | [validate_routing_compliance.py](file://scripts/validate_routing_compliance.py) | Purpose: Decision Routing Compliance Validator |
+<!-- SCRIPTS_TABLE_END -->

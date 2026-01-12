@@ -2,11 +2,6 @@
 id: RB-0023-push-image-guide
 title: 'App Team Runbook: Push Image Guide'
 type: runbook
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,24 +9,16 @@ risk_profile:
 reliability:
   rollback_strategy: not-applicable
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - RUNBOOK_REQUEST_ECR_REGISTRY
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
-category: runbooks
 status: draft
+category: runbooks
+supported_until: 2028-01-05
 version: '1.0'
 dependencies:
   - docker
   - aws-cli
-supported_until: 2028-01-05
 breaking_change: false
 ---
 

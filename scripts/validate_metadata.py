@@ -125,8 +125,10 @@ def validate_schema(data, filepath):
              # Standardized ADR/CL ID pattern matching ADR-XXXX/CL-XXXX prefixes
              is_adr_match = re.match(r'^ADR-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
              is_cl_match = re.match(r'^CL-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
+             is_rb_match = re.match(r'^RB-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
+             is_sec_match = re.match(r'^SEC-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
 
-             if not (is_adr_match or is_cl_match):
+             if not (is_adr_match or is_cl_match or is_rb_match or is_sec_match):
                   errors.append(f"ID mismatch: '{doc_id}' found in header but filename is '{filename_base}'")
 
     if 'owner' in data:
@@ -250,6 +252,10 @@ def scan_directory(target_path):
                     files_to_check.append(os.path.join(root, file))
                     if norm_root in mandatory_checks:
                         mandatory_checks[norm_root] = True
+
+                # Check SecretRequest YAMLs
+                if 'catalogs/secrets' in norm_root and file.endswith('.yaml'):
+                     files_to_check.append(os.path.join(root, file))
 
     # 1. Validate Existing Files
     for filepath in files_to_check:

@@ -17,17 +17,13 @@ import sys
 
 # Add lib to path for imports
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
-from metadata_config import MetadataConfig
+from lib.metadata_config import MetadataConfig, PlatformYamlDumper, platform_yaml_dump, platform_yaml_dump_all
 
 cfg = MetadataConfig()
 
 # Fallback owner and versions if schema lookup fails
 OWNER = "platform-team"
 VERSION = "1.0"
-
-class IndentDumper(yaml.SafeDumper):
-    def increase_indent(self, flow=False, indentless=False):
-        return super(IndentDumper, self).increase_indent(flow, False)
 
 def get_type_from_path(filepath):
     if 'adrs/' in filepath: return 'adr'
@@ -172,7 +168,7 @@ def standardize_file(filepath):
             new_data['reliability']['observability_tier'] = 'bronze'
 
     # 8. Reconstruct and Save
-    new_fm = yaml.dump(new_data, Dumper=IndentDumper, sort_keys=False, default_flow_style=False, allow_unicode=True, indent=2)
+    new_fm = platform_yaml_dump(new_data)
     if is_yaml:
         # Standard YAML sidecars should only have a leading marker, trailing marker signals a second document.
         new_content = f"---\n{new_fm}"
@@ -180,11 +176,15 @@ def standardize_file(filepath):
         # Markdown frontmatter MANDATES markers at both ends.
         new_content = f"---\n{new_fm}---\n\n{body.lstrip()}"
 
-    new_content = re.sub(r'\n{3,}', '\n\n', new_content)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(new_content)
+    new_content = re.sub(r'\n{3,}', '\n\n', new_content).strip() + '\n'
 
-    print(f"✅ Standardized: {filepath}")
+    if new_content != content:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+        print(f"✅ Standardized: {filepath}")
+    else:
+        # print(f"ℹ️  No changes needed: {filepath}")
+        pass
 
     # CLOSED-LOOP GOVERNANCE: Inject metadata into associated K8s resources
     if filename_base == 'metadata':
@@ -205,19 +205,17 @@ def inject_governance(sidecar_path, data):
                         candidates.append(os.path.join(base_dir, f))
             except: pass
 
-    # ArgoCD Apps
+    # ArgoCD Apps - Only walk and match if we are NOT already in the ArgoCD tree
+    # to avoid oscillation between environment-level metadata and app-level metadata.
     argocd_dir = os.path.abspath(os.path.join(os.getcwd(), 'gitops', 'argocd', 'apps'))
-    if os.path.isdir(argocd_dir):
-        # Improved matching: Must match accurately or be in a specific subdirectory
+    if os.path.isdir(argocd_dir) and 'gitops/argocd/apps' not in sidecar_path:
         target_name = os.path.basename(base_dir)
         for root, _, files in os.walk(argocd_dir):
              for f in files:
-                # Specific matching to avoid collision between idp-tooling and gitops/helm
                 is_match = False
                 if target_name in f and f.endswith(('.yaml', '.yml')):
                     if 'gitops/helm' in sidecar_path and 'apps/' not in root: is_match = True
                     elif 'apps/' in sidecar_path and 'apps/' in root: is_match = True
-                    elif 'idp-tooling' in sidecar_path: is_match = False # Tooling usually doesn't have an ArgoCD app itself
 
                 if is_match:
                     candidates.append(os.path.join(root, f))
@@ -234,22 +232,64 @@ def inject_governance(sidecar_path, data):
             with open(cand, 'r', encoding='utf-8') as f:
                 v_content = f.read()
 
-            v_data = yaml.safe_load(v_content) or {}
-            if not isinstance(v_data, dict): continue
+            v_docs = list(yaml.safe_load_all(v_content))
+            if not v_docs: continue
 
-            if v_data.get('apiVersion') and v_data.get('kind'):
-                if 'metadata' not in v_data: v_data['metadata'] = {}
-                if 'annotations' not in v_data['metadata']: v_data['metadata']['annotations'] = {}
-                v_data['metadata']['annotations']['goldenpath.idp/id'] = str(gov_block['id'])
-                v_data['metadata']['annotations']['goldenpath.idp/owner'] = str(gov_block.get('owner', 'unknown'))
-                print(f"🏷️  Annotated K8s resource: {cand}")
-            else:
-                v_data['governance'] = gov_block
-                print(f"💉 Injected governance into: {cand}")
+            any_doc_updated = False
+            updated_docs = []
 
-            with open(cand, 'w', encoding='utf-8') as f:
-                f.write("# Managed by scripts/standardize_metadata.py\n")
-                yaml.dump(v_data, f, Dumper=IndentDumper, sort_keys=False, default_flow_style=False, indent=2)
+            for doc in v_docs:
+                if not isinstance(doc, dict):
+                    updated_docs.append(doc)
+                    continue
+
+                # Check if change is needed for this specific document
+                current_gov = doc.get('governance', {})
+                current_ann = doc.get('metadata', {}).get('annotations', {})
+
+                is_k8s = doc.get('apiVersion') and doc.get('kind')
+                needs_update = False
+
+                if is_k8s:
+                    anno_id = current_ann.get('goldenpath.idp/id')
+                    anno_owner = current_ann.get('goldenpath.idp/owner')
+                    target_id = str(gov_block['id'])
+                    target_owner = str(gov_block.get('owner', 'unknown'))
+
+                    if anno_id != target_id or anno_owner != target_owner:
+                        # Priority check: If the file already has a specific ID and we are applying
+                        # environment-level metadata, do not overwrite the specific ID.
+                        is_env_metadata = 'gitops/argocd/apps' in sidecar_path
+                        if is_env_metadata and anno_id and anno_id != 'None':
+                            # Skip this file, it's already owned by a specific app
+                            continue
+
+                        needs_update = True
+                        if 'metadata' not in doc: doc['metadata'] = {}
+                        if 'annotations' not in doc['metadata']: doc['metadata']['annotations'] = {}
+                        doc['metadata']['annotations']['goldenpath.idp/id'] = target_id
+                        doc['metadata']['annotations']['goldenpath.idp/owner'] = target_owner
+                else:
+                    if current_gov != gov_block:
+                        needs_update = True
+                        doc['governance'] = gov_block
+
+                if needs_update:
+                    any_doc_updated = True
+
+                updated_docs.append(doc)
+
+            if any_doc_updated:
+                header = "# Managed by scripts/standardize_metadata.py\n"
+                if len(updated_docs) > 1:
+                    new_v_content = header + platform_yaml_dump_all(updated_docs)
+                else:
+                    new_v_content = header + platform_yaml_dump(updated_docs[0])
+
+                if new_v_content.strip() != v_content.strip():
+                    with open(cand, 'w', encoding='utf-8') as f:
+                        f.write(new_v_content.strip() + '\n')
+                    print(f"{'🏷️' if is_k8s else '💉'} {'Annotated' if is_k8s else 'Injected'} resource (Multi-doc aware): {cand}")
         except Exception as e:
             print(f"⚠️ Failed injection for {cand}: {e}")
 

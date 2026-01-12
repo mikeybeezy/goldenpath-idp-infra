@@ -266,3 +266,42 @@ decision_weight:
   - reversible
   - costly_to_reverse
   - foundational
+
+# --- Security Contract Enums ---
+# These govern the SecretRequest kind and its conditional logic.
+security:
+  secret_types:
+    description: "Classification for policy/rotation defaults."
+    values:
+      - database-credentials
+      - api-key
+      - oauth-client
+      - webhook-secret
+      - signing-key
+      - encryption-key
+      - tls-private-key
+      - container-registry-credential
+      - third-party-token
+      - generic
+
+  risk_tiers:
+    description: "Risk classification for approval gating."
+    values:
+      - low
+      - medium
+      - high
+
+  rotation_classes:
+    description: "Rotation posture requirement."
+    values:
+      - none
+      - standard
+      - high
+
+  lifecycle_status:
+    description: "Operational state of the secret."
+    values:
+      - active
+      - deprecated
+      - decommission_requested
+      - decommissioned

@@ -2,6 +2,10 @@
 id: ADR-0096-risk-based-ecr-controls
 title: 'ADR-0096: Risk-Based ECR Security Controls'
 type: adr
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: low
@@ -9,16 +13,24 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: '1.0'
-dependencies:
-  - terraform
-  - aws-ecr
+schema_version: 1
 relates_to:
   - ADR-0092
   - ADR-0093
   - CL-0056
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-05
+version: '1.0'
+dependencies:
+  - terraform
+  - aws-ecr
 breaking_change: false
 ---
 

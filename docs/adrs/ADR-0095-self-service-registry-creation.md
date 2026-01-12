@@ -3,9 +3,27 @@ id: ADR-0095-self-service-registry-creation
 title: 'ADR-0095: Self-Service ECR Registry Creation Workflow'
 type: adr
 status: active
+domain: platform-core
+owner: platform-team
 lifecycle: active
-version: '1.0'
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
+relates_to:
+  - how-it-works/ECR_REQUEST_FLOW.md
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: '2028-01-01'
+version: '1.0'
 breaking_change: false
 ---
 

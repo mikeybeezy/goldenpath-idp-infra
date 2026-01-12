@@ -194,3 +194,19 @@ ecr_repositories = {
     }
   }
 }
+
+# Secret Catalog
+app_secrets = {
+  "goldenpath-idp-secret-store" = {
+    description = "Managed secret for payments in dev"
+    metadata = {
+      id    = "SEC-0007"
+      owner = "app-team"
+      risk  = "medium"
+    }
+    # Security policy principals
+    read_principals        = ["arn:aws:iam::593517239005:role/goldenpath-idp-eso-role"]
+    write_principals       = ["arn:aws:iam::593517239005:role/github-actions-secrets-writer"]
+    break_glass_principals = ["arn:aws:iam::593517239005:role/platform-admin"]
+  }
+}

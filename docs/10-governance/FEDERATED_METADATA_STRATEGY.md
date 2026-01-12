@@ -2,11 +2,6 @@
 id: FEDERATED_METADATA_STRATEGY
 title: 'Federated Metadata Strategy: Scaling the Knowledge Graph'
 type: strategy
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,22 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
-schema_version: 1
-relates_to: []
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
+  maturity: 1
 category: governance
-status: active
+supported_until: 2028-12-31
 version: 1.0
 dependencies:
   - module:governance-engine
-supported_until: 2028-12-31
 breaking_change: false
 ---
 

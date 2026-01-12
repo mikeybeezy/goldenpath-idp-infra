@@ -3,16 +3,28 @@ id: ADR-0060-platform-ephemeral-update-workflow
 title: 'ADR-0060: Separate update workflow for existing ephemeral dev clusters'
 type: adr
 status: active
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: '1.0'
+schema_version: 1
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0060
   - CI_WORKFLOWS
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-04
+version: '1.0'
 breaking_change: false
 ---
 

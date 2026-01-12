@@ -4,18 +4,30 @@ title: 'ADR-0061: Observability provisioning boundary (Helm in-cluster, Terrafor
   external)'
 type: adr
 status: active
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: '1.0'
+schema_version: 1
 relates_to:
   - 01_GOVERNANCE
   - 05_OBSERVABILITY_DECISIONS
   - ADR-0052
   - ADR-0052-platform-kube-prometheus-stack-bundle
   - ADR-0061
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-04
+version: '1.0'
 breaking_change: false
 ---
 

@@ -4,6 +4,7 @@ Achievement: Aggregates repository metadata into a human-readable dashboard (PLA
              highlighting orphaned resources, stale lifecycles, and risk distributions.
 Value: Provides the "Management Plane" for governance, shifting metadata from boilerplate
        into actionable operational intelligence for leadership.
+Relates-To: how-it-works/DOC_AUTO_HEALING.md
 """
 import yaml
 import re
@@ -141,23 +142,26 @@ def get_catalog_stats():
     for catalog_dir in catalog_dirs:
         if not os.path.exists(catalog_dir):
             continue
-        for f in os.listdir(catalog_dir):
-            if f.endswith('.yaml') and f != 'backstage-entities.yaml':
-                try:
-                    with open(os.path.join(catalog_dir, f), 'r') as cy:
-                        data = yaml.safe_load(cy)
-                        if not data: continue
-                        # Special handling for hierarchical ECR catalog
-                        if 'physical_registry' in data and 'repositories' in data:
-                            catalog_counts['Ecr Registry'] = 1
-                            catalog_counts['Ecr Repositories'] = len(data['repositories'])
-                            continue
-                        # Find the first dictionary key that isn't metadata-typical
-                        for key, value in data.items():
-                            if isinstance(value, dict) and key not in ['version', 'owner', 'domain', 'last_updated', 'managed_by']:
-                                catalog_counts[f.replace('.yaml', '').replace('-catalog', '').title()] = len(value)
-                                break
-                except: pass
+
+        # Recursive scan for nested catalogs (e.g. docs/catalogs/secrets/**)
+        for root, _, files in os.walk(catalog_dir):
+            for f in files:
+                if f.endswith('.yaml') and f != 'backstage-entities.yaml':
+                    try:
+                        with open(os.path.join(catalog_dir, f), 'r') as cy:
+                            data = yaml.safe_load(cy)
+                            if not data: continue
+                            # Special handling for hierarchical ECR catalog
+                            if 'physical_registry' in data and 'repositories' in data:
+                                catalog_counts['Ecr Registry'] = 1
+                                catalog_counts['Ecr Repositories'] = len(data['repositories'])
+                                continue
+                            # Find the first dictionary key that isn't metadata-typical
+                            for key, value in data.items():
+                                if isinstance(value, dict) and key not in ['version', 'owner', 'domain', 'last_updated', 'managed_by']:
+                                    catalog_counts[f.replace('.yaml', '').replace('-catalog', '').title()] = len(value)
+                                    break
+                    except: pass
 
     # 2. Backstage Demo Catalog
     backstage_dir = 'backstage-helm/catalog'

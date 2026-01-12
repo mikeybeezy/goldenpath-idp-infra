@@ -2,15 +2,26 @@
 id: 24_PR_GATES
 title: PR Gates and How to Unblock Them
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
 relates_to:
   - 00_DOC_INDEX
   - 04_PR_GUARDRAILS
   - 30_DOCUMENTATION_FRESHNESS
   - DOCS_CHANGELOG_README
   - ADR-0101
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
 status: active
-version: '1.0'
+category: platform
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 
@@ -27,6 +38,8 @@ Doc contract:
 This is a contributor-facing guide to PR gates. It aims to prevent confusion
 by showing what triggers each gate and the expected response. Open to refinement
 and contribution.
+
+> **Pro-Tip**: Use the [**Frictionless PR Workflow (RB-0027)**](../70-operations/runbooks/RB-0027-frictionless-pr-gates.md) to pass all checks automatically.
 
 ## Gate flow (approximate)
 

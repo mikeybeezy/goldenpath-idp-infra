@@ -14,6 +14,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
+  maturity: 1
 schema_version: 1
 relates_to:
   - 18_BACKSTAGE_MVP
@@ -28,7 +29,6 @@ value_quantification:
 category: platform
 status: active
 version: '1.0'
-dependencies: []
 supported_until: 2028-01-01
 breaking_change: false
 ---
@@ -181,6 +181,16 @@ Timing runs:
   `envs/<env>/variables.tf`, and the `eks_config` object in `envs/<env>/terraform.tfvars`. Update the
   config (cluster name, version, node-group sizes/types), run `terraform plan`, and apply. Comment them
   back out whenever you want to pause or remove EKS.
+
+## Governance & PR Gates
+
+To ensure platform stability, all changes must pass a multi-gate validation process. To pass these with **minimal friction**, follow the **Heal-First** workflow:
+
+1.  **Heal Locally**: Run `bin/governance heal .` to automatically align your files with platform standards.
+2.  **Verify**: Run `python3 -m pre_commit run --all-files` to catch linting errors.
+3.  **Push**: Push to your branch and let the CI Auto-Healer bot fix common index synchronization issues.
+
+For a detailed guide, see [**RB-0027: Frictionless PR Gates**](docs/70-operations/runbooks/RB-0027-frictionless-pr-gates.md).
 
 ## Tips
 

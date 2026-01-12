@@ -3,17 +3,29 @@ id: ADR-0041-platform-orphan-cleanup-deletion-order
 title: 'ADR-0041: Deterministic orphan cleanup deletion order'
 type: adr
 status: active
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: '1.0'
+schema_version: 1
 relates_to:
   - 15_TEARDOWN_AND_CLEANUP
   - ADR-0038
   - ADR-0038-platform-teardown-orphan-cleanup-gate
   - ADR-0041
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-04
+version: '1.0'
 breaking_change: false
 ---
 

@@ -2,10 +2,6 @@
 id: HEALTH_AUDIT_LOG
 title: Platform Health Audit Log
 type: report
-category: governance
-status: active
-owner: platform-team
-lifecycle: active
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,14 +9,15 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - platform_health.py
+category: governance
 ---
 
 # Platform Health Audit Log
 
-Last updated: `2026-01-10 00:44:02`
+Last updated: `2026-01-12 06:03:12`
 
 - This file keeps only the latest snapshot.
 - Full history can be regenerated from source data if needed.
@@ -34,38 +31,38 @@ type: documentation
 category: governance
 status: active
 owner: platform-team
-version: '2026-01-10'
+version: '2026-01-12'
 relates_to:
   - platform_health.py
 ---
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-10 00:44:02` | **V1 Readiness**: `93.9%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-12 06:03:12` | **V1 Readiness**: `94.2%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
-**Realized Value**: `20.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Realized Value**: `26.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **93.9%** ready for V1 production rollout.
+> The platform is currently **94.2%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ⚠️ | 92.9% |
+| **Metadata Integrity** | ✅ | 96.6% |
 | **Injection Integrity** | ✅ | 100.0% |
-| **Architecture Maturity** | 🚧 | 98/125 Active |
-| **Changelog Activity** | ✅ | 99 Entries |
+| **Architecture Maturity** | 🚧 | 104/138 Active |
+| **Changelog Activity** | ✅ | 106 Entries |
 
 ## Knowledge Graph Vitality
 
 | Metric | Count | Source |
 | :--- | :--- | :--- |
-| **Architecture Decisions** | 125 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
-| **Automation Scripts** | 33 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
-| **CI Workflows** | 35 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 99 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 477 | Repository Scan |
+| **Architecture Decisions** | 138 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
+| **Automation Scripts** | 40 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
+| **CI Workflows** | 40 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
+| **Change Logs** | 106 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 501 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -74,10 +71,10 @@ relates_to:
 | Ecr Registry | 1 |
 | Ecr Repositories | 11 |
 | IDP Apis | 9 |
-| IDP Components | 17 |
-| IDP Domains | 3 |
-| IDP Resources | 2 |
-| IDP Systems | 4 |
+| IDP Components | 18 |
+| IDP Domains | 4 |
+| IDP Resources | 14 |
+| IDP Systems | 5 |
 
 ## AWS Inventory Snapshot
 
@@ -92,15 +89,15 @@ relates_to:
 
 ```mermaid
 pie title Production Impact distribution
-    "HIGH" : 28
+    "HIGH" : 29
     "MEDIUM" : 33
-    "LOW" : 384
-    "NONE" : 29
+    "LOW" : 404
+    "NONE" : 32
 ```
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `92.9%`
+- **Metadata Compliance**: `96.6%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
@@ -110,7 +107,7 @@ pie title Production Impact distribution
 ## Project Realized Value (Heartbeat)
 
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **20.4 hours**.
+> Total realized value reclaimed through automation heartbeats: **26.4 hours**.
 
 - **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
 

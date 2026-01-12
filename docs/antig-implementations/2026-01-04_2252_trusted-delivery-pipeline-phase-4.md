@@ -2,9 +2,25 @@
 id: 2026-01-04_2252_trusted-delivery-pipeline-phase-4
 title: 'Implementation Plan: Phase 4 - Trusted Delivery Pipeline (ECR)'
 type: implementation-plan
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 status: active
-version: '1.0'
+category: platform
 supported_until: '2028-01-01'
+version: '1.0'
 breaking_change: false
 ---
 

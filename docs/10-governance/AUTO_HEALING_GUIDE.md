@@ -2,8 +2,6 @@
 id: AUTO_HEALING_GUIDE
 title: Governance - Documentation Auto-Healing Guide
 type: guide
-owner: platform-team
-status: active
 risk_profile:
   production_impact: low
   security_risk: none
@@ -11,12 +9,11 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-category: governance
-version: '1.0'
 relates_to:
   - ADR-0111
+category: governance
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

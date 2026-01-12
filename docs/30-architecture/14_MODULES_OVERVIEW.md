@@ -2,11 +2,8 @@
 id: 14_MODULES_OVERVIEW
 title: Modules Overview
 type: adr
-status: active
-domain: platform-core
 applies_to:
   - infra
-owner: platform-team
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,8 +11,17 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: active
+relates_to:
+  - MODULES_AWS_COMPUTE_README
+  - MODULES_AWS_EKS_README
+  - MODULES_AWS_IAM_README
+  - MODULES_AWS_NIC_README
+  - MODULES_AWS_ROUTE_TABLE_README
+  - MODULES_AWS_SG_README
+  - MODULES_AWS_SUBNET_README
+  - MODULES_VPC_README
 category: architecture
+supported_until: 2028-01-01
 version: '1.0'
 dependencies:
   - module:aws_compute
@@ -26,16 +32,6 @@ dependencies:
   - module:aws_sg
   - module:aws_subnet
   - module:vpc
-relates_to:
-  - MODULES_AWS_COMPUTE_README
-  - MODULES_AWS_EKS_README
-  - MODULES_AWS_IAM_README
-  - MODULES_AWS_NIC_README
-  - MODULES_AWS_ROUTE_TABLE_README
-  - MODULES_AWS_SG_README
-  - MODULES_AWS_SUBNET_README
-  - MODULES_VPC_README
-supported_until: 2028-01-01
 breaking_change: false
 ---
 

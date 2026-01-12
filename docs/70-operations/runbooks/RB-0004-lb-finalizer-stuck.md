@@ -2,11 +2,6 @@
 id: RB-0004-lb-finalizer-stuck
 title: LoadBalancer Service Stuck on Finalizer
 type: runbook
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -14,26 +9,17 @@ risk_profile:
 reliability:
   rollback_strategy: rerun-teardown
   observability_tier: silver
-schema_version: 1
+  maturity: 1
 relates_to:
   - TEARDOWN_README
   - 08_MANAGED_LB_CLEANUP
   - 15_TEARDOWN_AND_CLEANUP
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: runbooks
-status: active
+supported_until: 2028-01-01
 version: 1.0
 dependencies:
   - module:kubernetes
   - chart:aws-load-balancer-controller
-supported_until: 2028-01-01
 breaking_change: false
 ---
 

@@ -14,6 +14,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
+  maturity: 1
 schema_version: 1
 relates_to: []
 supersedes: []
@@ -27,7 +28,6 @@ value_quantification:
 category: platform
 status: active
 version: '1.0'
-dependencies: []
 description: Steps to ensure a Pull Request passes all repository-wide CI gates
 supported_until: 2028-01-01
 breaking_change: false

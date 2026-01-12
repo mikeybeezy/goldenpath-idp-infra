@@ -2,11 +2,6 @@
 id: RB-0024-request-registry
 title: 'App Team Runbook: Request ECR Registry'
 type: runbook
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,28 +9,19 @@ risk_profile:
 reliability:
   rollback_strategy: not-applicable
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - ADR-0092
   - ADR-0096
   - ADR-0100
   - CL-0055
   - CL-0061
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: runbooks
-status: active
+supported_until: 2028-01-05
 version: '1.0'
 dependencies:
   - github-actions
   - aws-ecr
-supported_until: 2028-01-05
 breaking_change: false
 ---
 

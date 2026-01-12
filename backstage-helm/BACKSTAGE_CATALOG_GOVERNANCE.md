@@ -1,3 +1,9 @@
+---
+id: BACKSTAGE_CATALOG_GOVERNANCE
+title: metadata
+type: documentation
+---
+
 # 🛡️ Catalog Governance & Intake Rules
 
 This document captures the security configuration and ingestion logic for the GoldenPath IDP Catalog.

@@ -2,11 +2,6 @@
 id: DOCS_RUNBOOKS_README
 title: Runbooks Index
 type: runbook
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -14,7 +9,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-schema_version: 1
+  maturity: 1
 relates_to:
   - RB-0001
   - RB-0002
@@ -41,19 +36,10 @@ relates_to:
   - RB-0023
   - RB-0024
   - RB-0025
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
+  - RB-0026
 category: runbooks
-status: active
-version: 1.0
-dependencies: []
 supported_until: 2028-01-01
+version: 1.0
 breaking_change: false
 ---
 
@@ -82,6 +68,7 @@ breaking_change: false
 - [docs/70-operations/runbooks/RB-0019-relationship-extraction-script.md](docs/70-operations/runbooks/RB-0019-relationship-extraction-script.md) — Building the Platform Knowledge Graph via metadata links.
 - [docs/70-operations/runbooks/RB-0020-git-troubleshooting.md](docs/70-operations/runbooks/RB-0020-git-troubleshooting.md) — Resolving branch drift and merge conflicts in governed repos.
 - [docs/70-operations/runbooks/RB-0025-ecr-catalog-sync.md](docs/70-operations/runbooks/RB-0025-ecr-catalog-sync.md) — Sync Backstage ECR registry to AWS physical state.
+- [docs/70-operations/runbooks/RB-0026-local-secret-generation.md](docs/70-operations/runbooks/RB-0026-local-secret-generation.md) — Execute the Secret Request Parser locally for dry-runs and targeting.
 
 ### App Team Runbooks
 - [docs/70-operations/runbooks/app-team/RB-0021-fix-cve-guide.md](docs/70-operations/runbooks/app-team/RB-0021-fix-cve-guide.md) — Step-by-step guide to resolving CVEs in container images.

@@ -84,6 +84,7 @@ def log_heartbeat(script_name):
 
         with open(LEDGER_FILE, 'w') as f:
             json.dump(ledger, f, indent=2)
+            f.write('\n')
 
         return True, f"Logged {value} hours for {script_name}"
     except Exception as e:

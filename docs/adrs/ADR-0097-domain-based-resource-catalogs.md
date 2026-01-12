@@ -2,6 +2,10 @@
 id: ADR-0097-domain-based-resource-catalogs
 title: 'ADR-0097: Domain-Based Resource Catalogs'
 type: adr
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -9,16 +13,24 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: '1.0'
-dependencies:
-  - terraform
-  - backstage
+schema_version: 1
 relates_to:
   - ADR-0092
   - ADR-0094
   - CL-0057
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-05
+version: '1.0'
+dependencies:
+  - terraform
+  - backstage
 breaking_change: true
 ---
 

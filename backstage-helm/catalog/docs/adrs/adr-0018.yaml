@@ -2,8 +2,8 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0018
-  title: "ADR-0018: Container registry standard \u2014 ECR default, GHCR supported,\
-    \ Docker Hub discouraged"
+  title: 'ADR-0018: Container registry standard — ECR default, GHCR supported, Docker
+    Hub discouraged'
   description: '- **Status:** Proposed
 
     - **Date:** 2025-12-27

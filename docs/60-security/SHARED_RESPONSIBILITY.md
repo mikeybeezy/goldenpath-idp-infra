@@ -5,8 +5,6 @@ type: guide
 owner: security-team
 status: proposed
 domain: security
-category: security
-lifecycle: active
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,6 +12,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
+category: security
 ---
 
 # Shared Responsibility Model

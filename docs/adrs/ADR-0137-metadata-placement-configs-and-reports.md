@@ -3,16 +3,28 @@ id: ADR-0137
 title: 'ADR-0137: Metadata placement for configs and reports'
 type: adr
 status: proposed
+domain: platform-core
+owner: platform-team
+lifecycle: proposed
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: proposed
-version: 1.0
+schema_version: 1
 relates_to:
   - ADR-0087
   - ADR-0136
   - METADATA_ARTIFACT_ADOPTION_POLICY
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-09
+version: 1.0
 breaking_change: false
 ---
 

@@ -2,9 +2,11 @@
 id: CI_WORKFLOWS
 title: CI Workflows Index (Auto-Generated)
 type: documentation
-category: governance
+domain: platform-core
+applies_to: []
 owner: platform-team
-status: active
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -12,9 +14,21 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: active
+  maturity: 1
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+status: active
+category: governance
+last_updated: 2026-01-12
 supported_until: '2028-01-01'
-last_updated: 2026-01-06
 ---
 
 # CI Workflows Index (Auto-Generated)
@@ -23,6 +37,7 @@ last_updated: 2026-01-06
 
 ## Visualize
 
+<!-- WORKFLOW_TREE_START -->
 ```text
 CI Workflows (GitHub Actions)
 
@@ -65,7 +80,8 @@ CI Workflows (GitHub Actions)
 │   ├─ Apply - Infra Terraform Apply (prod)
 │   ├─ Apply - Infra Terraform Apply (staging)
 │   ├─ Apply - Infra Terraform Apply (test)
-│   └─ Apply - Infra Terraform Update (dev)
+│   ├─ Apply - Infra Terraform Update (dev)
+│   └─ Secret Requests (Apply)
 │
 ├─ Terraform Plan
 │   ├─ Plan - Infra Terraform Plan Pipeline
@@ -76,11 +92,15 @@ CI Workflows (GitHub Actions)
     ├─ PR Governance Gates
     ├─ Python Unit Tests
     ├─ Quality - Documentation Auto-Healing
+    ├─ Request App Secret
+    ├─ Secret Requests (PR)
     └─ Security - Gitleaks
 ```
+<!-- WORKFLOW_TREE_END -->
 
 ---
 
+<!-- WORKFLOW_DETAILS_START -->
 ## Bootstrap / Tooling
 
 ### Backstage Docs Catalog PR
@@ -254,6 +274,11 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
+### Secret Requests (Apply)
+- **File**: `secret-request-apply.yml`
+- **Owner**: platform
+- **Triggers**:
+
 ## Terraform Plan
 
 ### Plan - Infra Terraform Plan Pipeline
@@ -288,7 +313,19 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
+### Request App Secret
+- **File**: `request-app-secret.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### Secret Requests (PR)
+- **File**: `secret-request-pr.yml`
+- **Owner**: platform
+- **Triggers**:
+
 ### Security - Gitleaks
 - **File**: `gitleaks.yml`
 - **Owner**: platform
 - **Triggers**:
+
+<!-- WORKFLOW_DETAILS_END -->
