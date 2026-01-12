@@ -67,6 +67,15 @@ jobs:
           if [ -f docs/build-timings.csv ]; then
             cp docs/build-timings.csv _govreg_out/build_timings.csv
           fi
+          
+          # Copy AWS inventory reports (latest snapshots)
+          if [ -d reports/aws-inventory ]; then
+            mkdir -p _govreg_out/aws-inventory
+            # Copy the 2 most recent JSON and MD files
+            find reports/aws-inventory -type f \( -name "aws-inventory-*.json" -o -name "aws-inventory-*.md" \) ! -name "*-ecr-*" | \
+              sort -r | head -n 4 | \
+              xargs -I {} cp {} _govreg_out/aws-inventory/ 2>/dev/null || true
+          fi
 
       - name: Inject metadata headers
         env:
