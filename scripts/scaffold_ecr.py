@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Purpose: Standardized ECR Repository Scaffolding.
-Creates Terraform config and ensures governance metadata sidecars (Owner, Risk, ID).
+Relates-To: how-it-works/ECR_REQUEST_FLOW.md
 """
 import sys
 import os

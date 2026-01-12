@@ -5,6 +5,8 @@ type: adr
 status: active
 lifecycle: active
 version: '1.0'
+relates_to:
+  - how-it-works/ECR_REQUEST_FLOW.md
 supported_until: '2028-01-01'
 breaking_change: false
 ---

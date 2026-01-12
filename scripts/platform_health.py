@@ -4,6 +4,7 @@ Achievement: Aggregates repository metadata into a human-readable dashboard (PLA
              highlighting orphaned resources, stale lifecycles, and risk distributions.
 Value: Provides the "Management Plane" for governance, shifting metadata from boilerplate
        into actionable operational intelligence for leadership.
+Relates-To: how-it-works/DOC_AUTO_HEALING.md
 """
 import yaml
 import re
@@ -141,8 +142,11 @@ def get_catalog_stats():
     for catalog_dir in catalog_dirs:
         if not os.path.exists(catalog_dir):
             continue
-        for f in os.listdir(catalog_dir):
-            if f.endswith('.yaml') and f != 'backstage-entities.yaml':
+        
+        # Recursive scan for nested catalogs (e.g. docs/catalogs/secrets/**)
+        for root, _, files in os.walk(catalog_dir):
+            for f in files:
+                if f.endswith('.yaml') and f != 'backstage-entities.yaml':
                 try:
                     with open(os.path.join(catalog_dir, f), 'r') as cy:
                         data = yaml.safe_load(cy)

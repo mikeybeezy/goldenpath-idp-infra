@@ -1,3 +1,7 @@
+################################################################################
+# Core Environment Metadata
+################################################################################
+
 variable "environment" {
   type        = string
   description = "Environment identifier (dev/test/staging/prod)."
@@ -21,6 +25,10 @@ variable "owner_team" {
   default     = "platform-team"
 }
 
+################################################################################
+# Lifecycle & Ephemeral Settings
+################################################################################
+
 variable "cluster_lifecycle" {
   type        = string
   description = "Lifecycle for the environment: ephemeral or persistent."
@@ -40,6 +48,10 @@ variable "build_id" {
     error_message = "build_id must be set when cluster_lifecycle is ephemeral."
   }
 }
+
+################################################################################
+# Networking (VPC & Subnets)
+################################################################################
 
 variable "vpc_cidr" {
   type        = string
@@ -71,6 +83,10 @@ variable "common_tags" {
   description = "Additional tags applied to resources."
   default     = {}
 }
+
+################################################################################
+# Compute (Standalone EC2)
+################################################################################
 
 variable "compute_config" {
   description = "Configuration for the optional EC2 instance."
@@ -106,6 +122,55 @@ variable "compute_config" {
   }
 }
 
+################################################################################
+# EKS Cluster Configuration
+################################################################################
+
+variable "eks_config" {
+  description = "Configuration for the optional EKS cluster."
+  type = object({
+    enabled                       = bool
+    cluster_name                  = string
+    version                       = string
+    enable_ssh_break_glass        = bool
+    ssh_key_name                  = string
+    ssh_source_security_group_ids = list(string)
+    node_group = object({
+      name           = string
+      min_size       = number
+      max_size       = number
+      desired_size   = number
+      instance_types = list(string)
+      disk_size      = number
+      capacity_type  = string
+      update_config = optional(object({
+        max_unavailable            = optional(number)
+        max_unavailable_percentage = optional(number)
+      }))
+    })
+  })
+  default = {
+    enabled                       = false
+    cluster_name                  = ""
+    version                       = "1.29"
+    enable_ssh_break_glass        = false
+    ssh_key_name                  = null
+    ssh_source_security_group_ids = []
+    node_group = {
+      name           = "default"
+      min_size       = 1
+      max_size       = 1
+      desired_size   = 1
+      instance_types = ["t3.medium"]
+      disk_size      = 20
+      capacity_type  = "ON_DEMAND"
+      update_config = {
+        max_unavailable = 1
+      }
+    }
+  }
+}
+
 variable "addon_replica_counts" {
   description = "Optional map of addon replica counts by addon name."
   type        = map(number)
@@ -117,6 +182,10 @@ variable "enable_storage_addons" {
   type        = bool
   default     = true
 }
+
+################################################################################
+# Bootstrap & Break-Glass Settings
+################################################################################
 
 variable "bootstrap_mode" {
   description = "When true, use bootstrap-safe node sizing."
@@ -156,6 +225,10 @@ variable "ssh_source_security_group_ids" {
   description = "Security group IDs allowed to SSH into worker nodes."
   default     = []
 }
+
+################################################################################
+# IAM & Identity (OIDC / Roles / ESO)
+################################################################################
 
 variable "iam_config" {
   description = "Configuration for optional EKS IAM roles and OIDC assume role."
@@ -219,50 +292,9 @@ variable "enable_k8s_resources" {
   default     = false
 }
 
-variable "eks_config" {
-  description = "Configuration for the optional EKS cluster."
-  type = object({
-    enabled                       = bool
-    cluster_name                  = string
-    version                       = string
-    enable_ssh_break_glass        = bool
-    ssh_key_name                  = string
-    ssh_source_security_group_ids = list(string)
-    node_group = object({
-      name           = string
-      min_size       = number
-      max_size       = number
-      desired_size   = number
-      instance_types = list(string)
-      disk_size      = number
-      capacity_type  = string
-      update_config = optional(object({
-        max_unavailable            = optional(number)
-        max_unavailable_percentage = optional(number)
-      }))
-    })
-  })
-  default = {
-    enabled                       = false
-    cluster_name                  = ""
-    version                       = "1.29"
-    enable_ssh_break_glass        = false
-    ssh_key_name                  = null
-    ssh_source_security_group_ids = []
-    node_group = {
-      name           = "default"
-      min_size       = 1
-      max_size       = 1
-      desired_size   = 1
-      instance_types = ["t3.medium"]
-      disk_size      = 20
-      capacity_type  = "ON_DEMAND"
-      update_config = {
-        max_unavailable = 1
-      }
-    }
-  }
-}
+################################################################################
+# Platform Catalogs (ECR & Secrets)
+################################################################################
 
 variable "ecr_repositories" {
   description = "Map of ECR repositories to create."
@@ -272,6 +304,22 @@ variable "ecr_repositories" {
       owner = string
       risk  = optional(string, "medium")
     })
+  }))
+  default = {}
+}
+
+variable "app_secrets" {
+  description = "Map of application secrets to provision in Secrets Manager."
+  type = map(object({
+    metadata = object({
+      id    = string
+      owner = string
+      risk  = optional(string, "medium")
+    })
+    description            = optional(string, "Managed application secret")
+    read_principals        = optional(list(string), [])
+    write_principals       = optional(list(string), [])
+    break_glass_principals = optional(list(string), [])
   }))
   default = {}
 }

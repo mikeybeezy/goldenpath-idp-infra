@@ -12,6 +12,7 @@ relates_to:
   - ADR-0006
   - ADR-0015
   - ADR-0031
+  - how-it-works/SECRET_REQUEST_FLOW.md
 supported_until: 2028-01-09
 breaking_change: false
 ---

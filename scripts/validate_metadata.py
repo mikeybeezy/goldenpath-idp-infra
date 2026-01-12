@@ -251,6 +251,10 @@ def scan_directory(target_path):
                     if norm_root in mandatory_checks:
                         mandatory_checks[norm_root] = True
 
+                # Check SecretRequest YAMLs
+                if 'catalogs/secrets' in norm_root and file.endswith('.yaml'):
+                     files_to_check.append(os.path.join(root, file))
+
     # 1. Validate Existing Files
     for filepath in files_to_check:
         print(f"DEBUG: Checking {filepath}")

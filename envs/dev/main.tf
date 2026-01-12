@@ -1,3 +1,7 @@
+################################################################################
+# Terraform Configuration & Providers
+################################################################################
+
 terraform {
   required_version = ">= 1.5.0"
 
@@ -13,18 +17,26 @@ terraform {
   }
 }
 
+################################################################################
+# Global Metadata & Dynamic Resource Naming
+################################################################################
+
 locals {
-  environment            = var.environment
-  cluster_lifecycle      = var.cluster_lifecycle
-  build_id               = var.build_id
-  base_name_prefix       = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
+  environment       = var.environment
+  cluster_lifecycle = var.cluster_lifecycle
+  build_id          = var.build_id
+  base_name_prefix  = var.name_prefix != "" ? var.name_prefix : "goldenpath-${local.environment}"
+
+  # Dynamic naming: suffixes resources with BuildId if in ephemeral/CI mode
   name_prefix            = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.base_name_prefix}-${local.build_id}" : local.base_name_prefix
   cluster_name           = var.eks_config.cluster_name != "" ? var.eks_config.cluster_name : "${local.base_name_prefix}-eks"
   cluster_name_effective = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.cluster_name}-${local.build_id}" : local.cluster_name
   role_suffix            = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "-${local.build_id}" : ""
-  public_subnets         = var.public_subnets
-  private_subnets        = var.private_subnets
-  # Use a larger node group during bootstrap to avoid capacity bottlenecks.
+
+  public_subnets  = var.public_subnets
+  private_subnets = var.private_subnets
+
+  # Inject larger node sizing if the cluster is in 'bootstrap_mode' to speed up bring-up
   effective_node_group = var.bootstrap_mode ? merge(
     var.eks_config.node_group,
     {
@@ -47,6 +59,10 @@ locals {
   )
 }
 
+################################################################################
+# Core Foundation: VPC & Networking
+################################################################################
+
 module "vpc" {
   source = "../../modules/vpc"
 
@@ -66,37 +82,6 @@ module "subnets" {
   tags            = local.common_tags
 }
 
-module "iam" {
-  source = "../../modules/aws_iam"
-  count  = var.iam_config.enabled ? 1 : 0
-
-  cluster_role_name                       = "${var.iam_config.cluster_role_name != "" ? var.iam_config.cluster_role_name : "${local.base_name_prefix}-eks-cluster-role"}${local.role_suffix}"
-  node_group_role_name                    = "${var.iam_config.node_group_role_name != "" ? var.iam_config.node_group_role_name : "${local.base_name_prefix}-eks-node-role"}${local.role_suffix}"
-  oidc_role_name                          = "${var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.base_name_prefix}-eks-oidc-role"}${local.role_suffix}"
-  oidc_issuer_url                         = module.eks[0].oidc_issuer_url
-  oidc_provider_arn                       = module.eks[0].oidc_provider_arn
-  oidc_audience                           = var.iam_config.oidc_audience
-  oidc_subject                            = var.iam_config.oidc_subject
-  enable_autoscaler_role                  = var.iam_config.enable_autoscaler_role
-  autoscaler_role_name                    = "${var.iam_config.autoscaler_role_name}${local.role_suffix}"
-  autoscaler_policy_arn                   = var.iam_config.autoscaler_policy_arn
-  autoscaler_service_account_namespace    = var.iam_config.autoscaler_service_account_namespace
-  autoscaler_service_account_name         = var.iam_config.autoscaler_service_account_name
-  enable_lb_controller_role               = var.iam_config.enable_lb_controller_role
-  lb_controller_role_name                 = "${var.iam_config.lb_controller_role_name}${local.role_suffix}"
-  lb_controller_policy_arn                = var.iam_config.lb_controller_policy_arn
-  lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
-  lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
-  enable_eso_role                         = var.iam_config.enable_eso_role
-  eso_role_name                           = "${var.iam_config.eso_role_name}${local.role_suffix}"
-  eso_service_account_namespace           = var.iam_config.eso_service_account_namespace
-  eso_service_account_name                = var.iam_config.eso_service_account_name
-  environment                             = local.environment
-  tags                                    = local.common_tags
-
-  depends_on = [module.eks]
-}
-
 module "public_route_table" {
   source = "../../modules/aws_route_table"
 
@@ -109,6 +94,7 @@ module "public_route_table" {
   tags                   = local.common_tags
 }
 
+# NAT Gateway for private subnet outbound connectivity
 resource "aws_eip" "nat" {
   domain = "vpc"
 
@@ -144,6 +130,10 @@ module "private_route_table" {
   tags                   = local.common_tags
 }
 
+################################################################################
+# Compute & Standalone Instances
+################################################################################
+
 module "web_security_group" {
   source = "../../modules/aws_sg"
 
@@ -175,6 +165,10 @@ module "compute" {
   tags                          = local.common_tags
 }
 
+################################################################################
+# Kubernetes Foundation: EKS Cluster
+################################################################################
+
 module "eks" {
   source = "../../modules/aws_eks"
   count  = var.eks_config.enabled ? 1 : 0
@@ -195,10 +189,45 @@ module "eks" {
   depends_on = [module.public_route_table]
 }
 
+################################################################################
+# Identity & Access Management (IAM)
+################################################################################
+
+module "iam" {
+  source = "../../modules/aws_iam"
+  count  = var.iam_config.enabled ? 1 : 0
+
+  cluster_role_name                       = "${var.iam_config.cluster_role_name != "" ? var.iam_config.cluster_role_name : "${local.base_name_prefix}-eks-cluster-role"}${local.role_suffix}"
+  node_group_role_name                    = "${var.iam_config.node_group_role_name != "" ? var.iam_config.node_group_role_name : "${local.base_name_prefix}-eks-node-role"}${local.role_suffix}"
+  oidc_role_name                          = "${var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.base_name_prefix}-eks-oidc-role"}${local.role_suffix}"
+  oidc_issuer_url                         = module.eks[0].oidc_issuer_url
+  oidc_provider_arn                       = module.eks[0].oidc_provider_arn
+  oidc_audience                           = var.iam_config.oidc_audience
+  oidc_subject                            = var.iam_config.oidc_subject
+  enable_autoscaler_role                  = var.iam_config.enable_autoscaler_role
+  autoscaler_role_name                    = "${var.iam_config.autoscaler_role_name}${local.role_suffix}"
+  autoscaler_policy_arn                   = var.iam_config.autoscaler_policy_arn
+  autoscaler_service_account_namespace    = var.iam_config.autoscaler_service_account_namespace
+  autoscaler_service_account_name         = var.iam_config.autoscaler_service_account_name
+  enable_lb_controller_role               = var.iam_config.enable_lb_controller_role
+  lb_controller_role_name                 = "${var.iam_config.lb_controller_role_name}${local.role_suffix}"
+  lb_controller_policy_arn                = var.iam_config.lb_controller_policy_arn
+  lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
+  lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
+  enable_eso_role                         = var.iam_config.enable_eso_role
+  eso_role_name                           = "${var.iam_config.eso_role_name}${local.role_suffix}"
+  eso_service_account_namespace           = var.iam_config.eso_service_account_namespace
+  eso_service_account_name                = var.iam_config.eso_service_account_name
+  environment                             = local.environment
+  tags                                    = local.common_tags
+
+  depends_on = [module.eks]
+}
+
+# Principal identity for bootstrapping admin access
 data "aws_caller_identity" "current" {}
 
 # Grant the Terraform runner (CI role or local user) admin access to the cluster
-# This ensures 'exec' auth works even if the creator was a different role.
 resource "aws_eks_access_entry" "terraform_admin" {
   cluster_name  = module.eks[0].cluster_name
   principal_arn = data.aws_caller_identity.current.arn
@@ -220,6 +249,10 @@ resource "aws_eks_access_policy_association" "terraform_admin" {
 
   depends_on = [aws_eks_access_entry.terraform_admin]
 }
+
+################################################################################
+# Managed Kubernetes Resources (ESO / Add-ons)
+################################################################################
 
 provider "kubernetes" {
   host                   = module.eks[0].cluster_endpoint
@@ -318,28 +351,7 @@ module "kubernetes_addons" {
   ]
 }
 
-module "ecr_repositories" {
-  source   = "../../modules/aws_ecr"
-  for_each = var.ecr_repositories
-
-  name     = each.key
-  metadata = each.value.metadata
-}
-
-module "app_secrets" {
-  source = "../../modules/aws_secrets_manager"
-
-  name        = "${local.name_prefix}-app-secrets"
-  description = "Standard application secrets for ${local.environment}"
-  tags        = local.common_tags
-
-  metadata = {
-    id    = "SECRET_PLATFORM_CORE_${upper(local.environment)}"
-    owner = var.owner_team
-    risk  = "medium"
-  }
-}
-
+# Trust store for workload secret synchronization via ESO
 resource "kubernetes_manifest" "cluster_secret_store" {
   count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
 
@@ -371,4 +383,31 @@ resource "kubernetes_manifest" "cluster_secret_store" {
     kubernetes_service_account_v1.external_secrets,
     module.kubernetes_addons # Ensure ESO CRDs are present
   ]
+}
+
+################################################################################
+# Platform Catalogs: ECR & Secrets
+################################################################################
+
+module "ecr_repositories" {
+  source   = "../../modules/aws_ecr"
+  for_each = var.ecr_repositories
+
+  name     = each.key
+  metadata = each.value.metadata
+}
+
+module "app_secrets" {
+  source   = "../../modules/aws_secrets_manager"
+  for_each = var.app_secrets
+
+  name        = each.key
+  description = each.value.description
+  tags        = local.common_tags
+
+  read_principals        = each.value.read_principals
+  write_principals       = each.value.write_principals
+  break_glass_principals = each.value.break_glass_principals
+
+  metadata = each.value.metadata
 }
