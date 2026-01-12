@@ -49,6 +49,12 @@ python3 scripts/secret_request_parser.py \
   --input-files docs/catalogs/secrets/payments/dev/SEC-0007.yaml
 ```
 
+**Expected Output:**
+```text
+[OK] docs/catalogs/secrets/payments/dev/SEC-0007.yaml -> envs/dev/secrets/generated/payments/SEC-0007.auto.tfvars.json
+[OK] docs/catalogs/secrets/payments/dev/SEC-0007.yaml -> gitops/kustomize/overlays/dev/apps/payments/externalsecrets/SEC-0007.yaml
+```
+
 > [!TIP]
 > **Surgical Targeting**: You can pass multiple files to `--input-files` to generate a batch, or a single file to isolate just one resource.
 
