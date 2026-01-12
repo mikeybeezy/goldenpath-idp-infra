@@ -15,6 +15,7 @@ tags: []
 inheritance: {}
 status: active
 category: onboarding
+supported_until: '2028-01-01'
 ---
 
 # 🚀 START HERE (5-Minute Onboarding)

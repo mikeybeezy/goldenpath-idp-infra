@@ -4,19 +4,31 @@ title: 'CL-0104: Backstage ECR requests dispatch workflow'
 type: changelog
 status: active
 owner: platform-team
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: low
   coupling_risk: low
-lifecycle: active
-version: '1.0'
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+schema_version: 1
 relates_to:
   - CL-0104
   - ADR-0141
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-11
+version: '1.0'
 breaking_change: false
 ---
 

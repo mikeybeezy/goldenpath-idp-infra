@@ -3,10 +3,27 @@ id: ADR-0004-platform-datree-policy-as-code-in-ci
 title: 'ADR-0004: Use Datree as Kubernetes policy-as-code gate in CI'
 type: adr
 status: active
-supported_until: 2027-01-03
-version: '1.0'
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
 relates_to:
   - ADR-0004
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: 2027-01-03
+version: '1.0'
 breaking_change: false
 ---
 

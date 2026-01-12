@@ -4,17 +4,28 @@ title: 'ADR-0046: PR plan owns validation (no auto infra checks dispatch)'
 type: adr
 status: active
 domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
-version: '1.0'
+schema_version: 1
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - 36_STATE_KEY_STRATEGY
   - ADR-0044
   - ADR-0046
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-04
+version: '1.0'
 breaking_change: false
 ---
 

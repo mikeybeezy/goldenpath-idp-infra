@@ -3,8 +3,15 @@ id: ADR-0039-platform-tag-scoped-iam-policy-template
 title: 'ADR-0039: Tag-Scoped IAM Policy Template for Destructive Automation'
 type: adr
 status: active
-supported_until: 2027-01-03
-version: '1.0'
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
 relates_to:
   - 01_GOVERNANCE
   - 01_TAG_SCOPED_POLICY_TEMPLATE
@@ -12,6 +19,16 @@ relates_to:
   - ADR-0037
   - ADR-0037-platform-resource-tagging-policy
   - ADR-0039
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: 2027-01-03
+version: '1.0'
 breaking_change: false
 ---
 

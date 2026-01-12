@@ -2,16 +2,30 @@
 id: 2026-01-06_1020_idp-knowledge-graph-node-architecture
 title: IDP Knowledge Graph Node Architecture
 type: implementation-plan
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
   maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0110
-category: architecture
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 status: approved
-version: '1.0'
+category: architecture
 supported_until: '2028-01-01'
+version: '1.0'
 breaking_change: false
 ---
 

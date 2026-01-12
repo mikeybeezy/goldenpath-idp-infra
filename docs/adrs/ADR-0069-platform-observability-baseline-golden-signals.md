@@ -3,17 +3,29 @@ id: ADR-0069-platform-observability-baseline-golden-signals
 title: 'ADR-0069: Observability baseline for golden signals in production'
 type: adr
 status: superseded
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-supported_until: 2028-01-04
-version: '1.0'
-superseded_by: ADR-0049
+schema_version: 1
 relates_to:
   - 05_OBSERVABILITY_DECISIONS
   - ADR-0049
   - ADR-0049-platform-pragmatic-observability-baseline
   - ADR-0069
+supersedes: []
+superseded_by: ADR-0049
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: 2028-01-04
+version: '1.0'
 breaking_change: false
 ---
 

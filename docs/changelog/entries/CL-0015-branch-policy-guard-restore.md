@@ -4,20 +4,32 @@ title: 'CL-0015: Restore branch policy guard for main'
 type: changelog
 status: active
 owner: platform-team
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-version: '1.0'
-lifecycle: active
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+schema_version: 1
 relates_to:
   - ADR-0065
   - ADR-0065-platform-branch-policy-guard
   - CL-0015
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2027-01-04
+version: '1.0'
 breaking_change: false
 ---
 

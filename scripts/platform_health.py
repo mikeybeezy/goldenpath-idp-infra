@@ -142,7 +142,7 @@ def get_catalog_stats():
     for catalog_dir in catalog_dirs:
         if not os.path.exists(catalog_dir):
             continue
-        
+
         # Recursive scan for nested catalogs (e.g. docs/catalogs/secrets/**)
         for root, _, files in os.walk(catalog_dir):
             for f in files:

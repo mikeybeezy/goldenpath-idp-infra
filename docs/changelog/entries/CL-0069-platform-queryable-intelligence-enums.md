@@ -4,19 +4,31 @@ title: Platform Queryable Intelligence Enums
 type: changelog
 status: active
 owner: platform-team
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-version: 1.0
-lifecycle: active
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+schema_version: 1
 relates_to:
   - ADR-0113
-date: 2026-01-06
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-06
+version: 1.0
+date: 2026-01-06
 breaking_change: false
 ---
 

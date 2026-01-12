@@ -2,10 +2,20 @@
 id: AGENT_FIRST_BOOT
 title: AI Agent First-Boot Protocol
 type: documentation
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-  maturity: 1
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
+category: platform
+supported_until: '2028-01-01'
 ---
 
 # AI Agent First-Boot Protocol

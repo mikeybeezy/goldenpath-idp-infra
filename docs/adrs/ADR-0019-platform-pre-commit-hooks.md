@@ -4,11 +4,26 @@ title: 'ADR-0019: Pre-commit hooks as local quality gates'
 type: adr
 status: active
 domain: platform-core
+owner: platform-team
 lifecycle: active
-version: '1.0'
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
 relates_to:
   - ADR-0019
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2027-01-03
+version: '1.0'
 breaking_change: false
 ---
 

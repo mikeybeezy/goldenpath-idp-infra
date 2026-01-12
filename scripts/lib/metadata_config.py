@@ -154,15 +154,22 @@ class MetadataConfig:
         all_parent_data.reverse()
         return all_parent_data
 
+    def find_parent_metadata(self, filepath: str) -> Optional[Dict[str, Any]]:
+        """
+        Nearest parent metadata.yaml. Provided for backward compatibility.
+        """
+        parents = self.find_all_parents_metadata(filepath)
+        return parents[-1] if parents else None
+
     def get_effective_metadata(self, filepath: str, local_data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Merges local metadata with inherited parent defaults recursively (root -> leaf -> local).
         """
         parents_data = self.find_all_parents_metadata(filepath)
-        
+
         # Identity (ID/Title) should NEVER be inherited
         identity_fields = ['id', 'title']
-        
+
         effective = {}
         # Merge all parents starting from root-most
         for parent in parents_data:

@@ -4,10 +4,27 @@ title: 'ADR-0008: Use Backstage as the developer portal and the V1 demo applicat
   for env promotion'
 type: adr
 status: active
-supported_until: 2027-01-03
-version: '1.0'
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
 relates_to:
   - ADR-0008
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: 2027-01-03
+version: '1.0'
 breaking_change: false
 ---
 

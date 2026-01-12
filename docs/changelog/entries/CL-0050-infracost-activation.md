@@ -4,21 +4,33 @@ title: 'CL-0050: Activated Infracost Cost Visibility'
 type: changelog
 status: active
 owner: platform-team
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: low
   coupling_risk: low
-version: 1.0
-dependencies:
-  - CL-0049-ci-optimization
-lifecycle: active
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+schema_version: 1
 relates_to:
   - ADR-0076
   - IDP_PRODUCT_FEATURES
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2026-06-01
+version: 1.0
+dependencies:
+  - CL-0049-ci-optimization
 breaking_change: false
 ---
 

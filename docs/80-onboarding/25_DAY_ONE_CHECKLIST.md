@@ -17,10 +17,10 @@ superseded_by: []
 tags: []
 inheritance: {}
 status: active
-version: '1.0'
-supported_until: 2028-01-01
-breaking_change: false
 category: platform
+supported_until: 2028-01-01
+version: '1.0'
+breaking_change: false
 ---
 
 # Day-One Onboarding Checklist

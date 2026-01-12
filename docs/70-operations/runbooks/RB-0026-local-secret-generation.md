@@ -60,7 +60,7 @@ python3 scripts/secret_request_parser.py \
 
 ---
 
-##  Verification & Mapping
+## Verification & Mapping
 
 Once execution succeeds, the parser will emit files to deterministic locations:
 
@@ -108,7 +108,7 @@ terraform apply \
   -var="aws_region=us-east-1"
 ```
 
-####  Selecting the Region
+#### Selecting the Region
 The AWS region is controlled by the `aws_region` variable in your environment's `terraform.tfvars`.
 *   To check: `grep "aws_region" terraform.tfvars` (from `envs/dev/`)
 *   To override locally: Use `-var="aws_region=us-east-1"` in your plan/apply command.
@@ -128,7 +128,7 @@ git push origin <your-branch>
 
 ---
 
-##  Cleanup (Tearing Down)
+## Cleanup (Tearing Down)
 
 After your local testing or verification is complete, you should cleanup the created resources to prevent drift or accidental production usage.
 
@@ -154,7 +154,7 @@ rm gitops/kustomize/overlays/dev/apps/payments/externalsecrets/SEC-0007.yaml
 
 ---
 
-##  Troubleshooting
+## Troubleshooting
 
 | Issue | Root Cause | Resolution |
 | :--- | :--- | :--- |
@@ -166,5 +166,5 @@ rm gitops/kustomize/overlays/dev/apps/payments/externalsecrets/SEC-0007.yaml
 
 ---
 
-##  Support
+## Support
 For complex policy violations or parser logic changes, contact the **@platform-team**.

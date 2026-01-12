@@ -2,6 +2,11 @@
 id: GITHUB_WORKFLOW_PERMISSIONS
 title: GitHub Workflow Permissions & Setup
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: medium
@@ -10,13 +15,18 @@ reliability:
   rollback_strategy: none
   observability_tier: bronze
   maturity: 1
+schema_version: 1
 relates_to:
   - 25_DAY_ONE_CHECKLIST
   - CI_WORKFLOWS
-category: onboarding
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
 status: active
-version: '1.0'
+category: onboarding
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

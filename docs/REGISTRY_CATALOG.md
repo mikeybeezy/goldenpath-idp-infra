@@ -2,8 +2,6 @@
 id: REGISTRY_CATALOG
 title: Delivery Catalog
 type: documentation
-applies_to: []
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -12,19 +10,10 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: silver
   maturity: 1
-schema_version: 1
 relates_to:
   - ADR-0097
   - ADR-0100
   - generate_catalog_docs.py
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: catalog
 supported_until: 2028-01-01
 version: '1.0'

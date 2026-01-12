@@ -84,7 +84,7 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> SecretRequest:
     provider = spec.get("provider", "aws-secrets-manager")
 
     secretType = spec.get("secretType")
-    
+
     # Nested mapping for risk/rotation/lifecycle (Restoring camelCase structure)
     riskTier = ((spec.get("risk") or {}).get("tier"))
     rotationClass = ((spec.get("rotation") or {}).get("rotationClass"))

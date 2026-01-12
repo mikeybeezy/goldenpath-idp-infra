@@ -2,11 +2,28 @@
 id: ADR-0144
 title: Architecture of the Intent-to-Projection Parser (The Golden Path Core)
 type: adr
-domain: architecture
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
 relates_to:
   - ADR-0142-declarative-platform-contracts.md
   - ADR-0143-secret-request-contract.md
   - how-it-works/SECRET_REQUEST_FLOW.md
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
 ---
 
 # ADR-0144: Architecture of the Intent-to-Projection Parser

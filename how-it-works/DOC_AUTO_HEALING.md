@@ -50,7 +50,7 @@ bin/governance heal indexes
 This command runs all generator scripts in sequence, synchronizing the documentation with the new files.
 
 ## 3. The Health Command Center (`PLATFORM_HEALTH.md`)
-The `platform_health.py` script aggregates all metadata into a single dashboard. 
+The `platform_health.py` script aggregates all metadata into a single dashboard.
 - **Readiness Score**: Calculates a % score for V1 Production rollout.
 - **Asset Inventory**: Counts ADRs, Scripts, and Workflows.
 - **Risk Visibility**: Surfaces "Orphaned" files (no owner) or "Stale" files (past their lifecycle end-date).

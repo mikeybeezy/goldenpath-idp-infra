@@ -18,10 +18,10 @@ value_quantification:
   impact_tier: low
   potential_savings_hours: 0.0
 status: active
-version: '1.0'
-supported_until: '2028-01-01'
-breaking_change: false
 category: platform
+supported_until: '2028-01-01'
+version: '1.0'
+breaking_change: false
 ---
 
 # Implementation Plan: Phase 4 - Trusted Delivery Pipeline (ECR)

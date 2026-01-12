@@ -4,21 +4,33 @@ title: 'CL-0049: CI Pipeline Optimization & Standardization'
 type: changelog
 status: active
 owner: platform-team
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: low
   coupling_risk: low
-version: 1.0
-dependencies:
-  - CL-0048-automated-platform-health
-lifecycle: active
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+schema_version: 1
 relates_to:
   - PLATFORM_HEALTH
   - METADATA_VALIDATION_GUIDE
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2026-06-01
+version: 1.0
+dependencies:
+  - CL-0048-automated-platform-health
 breaking_change: false
 ---
 

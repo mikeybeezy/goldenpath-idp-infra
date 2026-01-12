@@ -3,16 +3,28 @@ id: ADR-0044-platform-infra-checks-ref-mode
 title: 'ADR-0044: Configurable ref for infra checks dispatch'
 type: adr
 status: superseded
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-supported_until: 2028-01-04
-version: '1.0'
-superseded_by: ADR-0046
+schema_version: 1
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0044
   - ADR-0046
+supersedes: []
+superseded_by: ADR-0046
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: 2028-01-04
+version: '1.0'
 breaking_change: false
 ---
 

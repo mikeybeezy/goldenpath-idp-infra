@@ -3,15 +3,27 @@ id: ADR-0136
 title: 'ADR-0136: Tooling config identity sidecars'
 type: adr
 status: proposed
+domain: platform-core
+owner: platform-team
+lifecycle: proposed
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: proposed
-supported_until: 2028-01-09
-version: 1.0
+schema_version: 1
 relates_to:
   - ADR-0082
   - ADR-0111
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: 2028-01-09
+version: 1.0
 breaking_change: false
 ---
 

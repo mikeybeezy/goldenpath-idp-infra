@@ -4,23 +4,35 @@ title: 'CL-0055: Self-Service ECR Registry Creation Workflow'
 type: changelog
 status: active
 owner: platform-team
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: low
   coupling_risk: medium
-version: '1.0'
-dependencies:
-  - github-actions
-  - yq
-lifecycle: active
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
+schema_version: 1
 relates_to:
   - ADR-0095
   - ADR-0092
   - CL-0055
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2027-01-05
+version: '1.0'
+dependencies:
+  - github-actions
+  - yq
 breaking_change: false
 ---
 

@@ -19,6 +19,7 @@ value_quantification:
   potential_savings_hours: 0.0
 status: active
 category: governance
+supported_until: '2028-01-01'
 ---
 
 # Automation Certification Matrix (Master Record)

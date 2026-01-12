@@ -4,13 +4,28 @@ title: 'ADR-0034: CI Environment Contract'
 type: adr
 status: active
 domain: platform-core
+owner: platform-team
 lifecycle: active
-version: '1.0'
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
 relates_to:
   - ADR-0011
   - ADR-0011-platform-ci-environment-contract
   - ADR-0034
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2027-01-03
+version: '1.0'
 breaking_change: false
 ---
 

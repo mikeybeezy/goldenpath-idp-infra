@@ -3,14 +3,27 @@ id: ADR-0072-platform-pr-checklist-template
 title: 'ADR-0072: PR checklist template in PR gates guide'
 type: adr
 status: active
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-supported_until: 2028-01-04
-version: '1.0'
+schema_version: 1
 relates_to:
   - 24_PR_GATES
   - ADR-0072
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: 2028-01-04
+version: '1.0'
 breaking_change: false
 ---
 

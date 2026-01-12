@@ -2,14 +2,25 @@
 id: 2026-01-05_1922_ecr-workflow-optimization
 title: 'Implementation Plan: ECR Workflow Optimization'
 type: implementation-plan
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-  maturity: 1
-category: governance
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 status: active
-version: '1.0'
+category: governance
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

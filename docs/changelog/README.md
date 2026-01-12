@@ -4,20 +4,32 @@ title: Changelog Guidance (Label-Gated)
 type: changelog
 status: active
 owner: platform-team
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-version: '1.0'
-lifecycle: active
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+schema_version: 1
 relates_to:
   - CL-0001
   - CL-0002
   - Changelog-template
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 
