@@ -1,0 +1,141 @@
+#!/usr/bin/env python3
+"""
+Purpose: Pre-commit hook to enforce script certification standards
+Achievement: Blocks commits with new scripts that lack tests or dry-run
+Value: Prevents technical debt from accumulating in scripts/
+Relates-To: SCRIPT_CERTIFICATION_AUDIT, ADR-0126
+"""
+import os
+import sys
+import re
+from pathlib import Path
+
+SCRIPTS_DIR = Path("scripts")
+TESTS_DIR = Path("tests/unit")
+REQUIRED_MATURITY = 2  # ⭐⭐ minimum (Documented)
+
+# Scripts exempt from testing (libraries, not executables)
+EXEMPT_PATTERNS = [
+    r"^__init__\.py$",
+    r"^lib/.*",  # Library modules
+]
+
+def is_exempt(script_path: str) -> bool:
+    """Check if script is exempt from testing requirements."""
+    for pattern in EXEMPT_PATTERNS:
+        if re.match(pattern, script_path):
+            return True
+    return False
+
+def get_new_scripts():
+    """Get list of newly added Python scripts in this commit."""
+    # Get staged files
+    staged = os.popen("git diff --cached --name-only --diff-filter=A").read().strip()
+    if not staged:
+        return []
+    
+    new_scripts = []
+    for file in staged.split("\n"):
+        if file.startswith("scripts/") and file.endswith(".py"):
+            rel_path = file.replace("scripts/", "")
+            if not is_exempt(rel_path):
+                new_scripts.append(file)
+    
+    return new_scripts
+
+def has_unit_test(script_path: str) -> bool:
+    """Check if a unit test exists for this script."""
+    script_name = Path(script_path).stem
+    test_file = TESTS_DIR / f"test_{script_name}.py"
+    return test_file.exists()
+
+def has_dry_run_support(script_path: str) -> bool:
+    """Check if script implements dry-run mode."""
+    try:
+        with open(script_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            # Look for dry-run/dry_run in arguments or code
+            return bool(re.search(r'(dry.run|dry_run)', content, re.IGNORECASE))
+    except:
+        return False
+
+def has_docstring(script_path: str) -> bool:
+    """Check if script has proper module docstring with metadata."""
+    try:
+        with open(script_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            # Look for structured docstring with Purpose, Achievement, Value
+            required_fields = ["Purpose:", "Achievement:", "Value:", "Relates-To:"]
+            return all(field in content for field in required_fields)
+    except:
+        return False
+
+def check_script_certification(script_path: str):
+    """Validate certification requirements for a script."""
+    issues = []
+    
+    # Check 1: Module docstring
+    if not has_docstring(script_path):
+        issues.append("Missing structured docstring (Purpose/Achievement/Value/Relates-To)")
+    
+    # Check 2: Unit test OR Dry-run (at least one)
+    has_test = has_unit_test(script_path)
+    has_dry_run = has_dry_run_support(script_path)
+    
+    if not has_test and not has_dry_run:
+        issues.append("Missing BOTH unit test AND dry-run support (need at least one)")
+    
+    return issues
+
+def main():
+    """Main pre-commit hook logic."""
+    new_scripts = get_new_scripts()
+    
+    if not new_scripts:
+        sys.exit(0)  # No new scripts, allow commit
+    
+    print("🔍 Scanning new scripts for certification requirements...")
+    print("-" * 60)
+    
+    all_issues = {}
+    for script in new_scripts:
+        issues = check_script_certification(script)
+        if issues:
+            all_issues[script] = issues
+    
+    if all_issues:
+        print("❌ COMMIT BLOCKED: New scripts missing certification requirements\n")
+        
+        for script, issues in all_issues.items():
+            print(f"📄 {script}")
+            for issue in issues:
+                print(f"   ❌ {issue}")
+            print()
+        
+        print("=" * 60)
+        print("📋 TO FIX:")
+        print("=" * 60)
+        print()
+        print("Option 1: Add structured docstring")
+        print("  python3 scripts/scaffold_test.py --script <script_name>")
+        print()
+        print("Option 2: Add unit test")
+        print(f"  Create: tests/unit/test_<script_name>.py")
+        print()
+        print("Option 3: Add dry-run support")
+        print("  Add --dry-run flag to script (see SCRIPT_CERTIFICATION_AUDIT.md)")
+        print()
+        print("Option 4: Mark as exempt")
+        print("  Move to scripts/lib/ if it's a library module")
+        print()
+        print("=" * 60)
+        print("📖 Documentation: docs/10-governance/SCRIPT_CERTIFICATION_AUDIT.md")
+        print("=" * 60)
+        
+        sys.exit(1)  # Block commit
+    
+    print("✅ All new scripts meet certification requirements")
+    sys.exit(0)
+
+if __name__ == "__main__":
+    main()
