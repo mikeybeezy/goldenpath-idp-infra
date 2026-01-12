@@ -1,3 +1,9 @@
+---
+id: test-record-20260112
+title: Governance Registry Mirror - Test Record
+type: test-suite
+---
+
 # Governance Registry Mirror - Test Record
 
 **Date:** 2026-01-12  

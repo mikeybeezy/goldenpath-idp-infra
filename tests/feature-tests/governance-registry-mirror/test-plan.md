@@ -1,3 +1,9 @@
+---
+id: test-plan
+title: Governance Registry Mirror - Feature Test Plan
+type: test-suite
+---
+
 # Governance Registry Mirror - Feature Test Plan
 
 **Test ID:** FT-GOVREG-001  

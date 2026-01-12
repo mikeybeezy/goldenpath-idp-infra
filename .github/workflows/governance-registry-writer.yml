@@ -49,15 +49,24 @@ jobs:
           export PYTHONPATH=$PYTHONPATH:$(pwd)/scripts
           python3 scripts/platform_health.py . > _govreg_out/PLATFORM_HEALTH.md
           
-          # Generate indices
+          # Generate all indices
           python3 scripts/generate_script_index.py
           python3 scripts/generate_workflow_index.py
           python3 scripts/generate_adr_index.py
+          python3 scripts/generate_catalog_docs.py
+          python3 scripts/generate_governance_vocab.py
           
           # Copy generated indices to output
           cp scripts/index.md _govreg_out/scripts_index.md
           cp ci-workflows/CI_WORKFLOWS.md _govreg_out/workflows_index.md
           cp docs/adrs/01_adr_index.md _govreg_out/adr_index.md
+          cp docs/REGISTRY_CATALOG.md _govreg_out/registry_catalog.md
+          cp docs/10-governance/GOVERNANCE_VOCABULARY.md _govreg_out/governance_vocabulary.md
+          
+          # Copy build timings if exists
+          if [ -f docs/build-timings.csv ]; then
+            cp docs/build-timings.csv _govreg_out/build_timings.csv
+          fi
 
       - name: Inject metadata headers
         env:

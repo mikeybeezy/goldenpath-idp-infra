@@ -1,133 +1,34 @@
 ---
-id: HEALTH_AUDIT_LOG
-title: Platform Health Audit Log
-type: report
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-  maturity: 1
-relates_to:
-  - platform_health.py
-category: governance
+id: HEALTH_AUDIT_LOG_REDIRECT
+title: Platform Health Audit Log (Migrated)
+type: redirect
+status: deprecated
 ---
 
-# Platform Health Audit Log
+# ⚠️ This File Has Been Migrated
 
-Last updated: `2026-01-12 06:03:12`
+The **Platform Health Audit Log** has been migrated to the **Governance Registry** as part of ADR-0145.
 
-- This file keeps only the latest snapshot.
-- Full history can be regenerated from source data if needed.
+## New Locations:
 
-## Latest Snapshot
+- **Latest Report:** [governance-registry/environments/development/latest/PLATFORM_HEALTH.md](https://github.com/mikeybeezy/goldenpath-idp-infra/blob/governance-registry/environments/development/latest/PLATFORM_HEALTH.md)
+- **Historical Snapshots:** [governance-registry/environments/development/history/](https://github.com/mikeybeezy/goldenpath-idp-infra/tree/governance-registry/environments/development/history)
 
----
-id: PLATFORM_HEALTH
-title: Platform Health & Compliance Report
-type: documentation
-category: governance
-status: active
-owner: platform-team
-version: '2026-01-12'
-relates_to:
-  - platform_health.py
----
+## Why This Change?
 
-## 🏥 Platform Health Command Center
+Per **ADR-0145: Governance Registry Mirror Pattern**, all machine-generated observation artifacts now live in the dedicated `governance-registry` branch to:
 
-**Generated**: `2026-01-12 06:03:12` | **V1 Readiness**: `94.2%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+1. **Eliminate Commit Conflicts** - No more "fetch first" errors on active PRs
+2. **Preserve Audit Trail** - Every historical snapshot is preserved with its source SHA
+3. **Maintain Reproducibility** - Any commit can regenerate its exact report state
 
-**Realized Value**: `26.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+## Related Documentation:
 
-## V1 Platform Readiness Gate
-
-> [!IMPORTANT]
-> The platform is currently **94.2%** ready for V1 production rollout.
-
-| Milestone | Status | Readiness |
-| :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 96.6% |
-| **Injection Integrity** | ✅ | 100.0% |
-| **Architecture Maturity** | 🚧 | 104/138 Active |
-| **Changelog Activity** | ✅ | 106 Entries |
-
-## Knowledge Graph Vitality
-
-| Metric | Count | Source |
-| :--- | :--- | :--- |
-| **Architecture Decisions** | 138 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
-| **Automation Scripts** | 40 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
-| **CI Workflows** | 40 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 106 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 501 | Repository Scan |
-
-## Catalog Inventory
-
-| Catalog | Entity Count |
-| :--- | :--- |
-| Ecr Registry | 1 |
-| Ecr Repositories | 11 |
-| IDP Apis | 9 |
-| IDP Components | 18 |
-| IDP Domains | 4 |
-| IDP Resources | 14 |
-| IDP Systems | 5 |
-
-## AWS Inventory Snapshot
-
-- **Last run**: `2026-01-10T00:44:01Z`
-- **Accounts**: `REDACTED`
-- **Regions**: `eu-west-2`
-- **Total resources**: `31`
-- **Tagged**: `29` | **Untagged**: `2` | **Tag violations**: `29`
-- **Report**: [`reports/aws-inventory/aws-inventory-2026-01-10.md`](file://reports/aws-inventory/aws-inventory-2026-01-10.md)
-
-## 🛡️ Risk & Maturity Visualization
-
-```mermaid
-pie title Production Impact distribution
-    "HIGH" : 29
-    "MEDIUM" : 33
-    "LOW" : 404
-    "NONE" : 32
-```
-
-## Governance Maturity
-
-- **Metadata Compliance**: `96.6%`
-- **Risk-Weighted Score**: `100.0%`
-
-## Injection Coverage
-
-- **Sidecar Coverage**: `100.0%` (32/32)
-
-## Project Realized Value (Heartbeat)
-
-> [!TIP]
-> Total realized value reclaimed through automation heartbeats: **26.4 hours**.
-
-- **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
-
-## Financial Governance (Cloud Cost)
-
-> [!NOTE]
-> Current monthly infrastructure run rate: **$1,250.00 USD**.
-
-- **Estimated Annual**: `$15,000.00 USD`
-- **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)
-- **Tooling**: Infracost (CI-integrated)
-
-## Operational Risks
-
-- **Orphaned (No Owner)**: 0
-- **Stale (Past Lifecycle)**: 0
+- [ADR-0145: Governance Registry Mirror](/docs/adrs/ADR-0145-governance-registry-mirror.md)
+- [RB-0028: Registry Operations](/docs/70-operations/runbooks/RB-0028-governance-registry-operations.md)
+- [Migration Guide](/docs/10-governance/GOVERNANCE_REGISTRY_MIGRATION.md)
 
 ---
 
-### Strategic Guidance
-
-- **V1 Readiness Indicator**: A composite metric tracking Architecture (ADRs), Governance (Metadata/Injection), and Delivery (Changelogs). Target: 100%.
-- **Visualizing Trends**: The `xychart-beta` is best viewed in GitHub/GitLab or VS Code with updated Mermaid support (v10.x+). It tracks our 'Readiness Velocity' across audit cycles.
+**Last Updated:** 2026-01-12  
+**Migration Date:** 2026-01-12
