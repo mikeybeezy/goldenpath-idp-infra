@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Owner: platform
 """
 SecretRequest parser/generator (Adapted Standard).
 
