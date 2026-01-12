@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 ---
 id: SCRIPT-0011
@@ -19,7 +20,6 @@ risk_profile:
 ---
 """
 
-#!/usr/bin/env python3
 """
 Purpose: Automated Relationship & Dependency Extractor
 Achievement: Scans content for ADR/CL mentions, Markdown links, and dependency prefixes

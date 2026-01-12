@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 ---
 id: SCRIPT-0040
@@ -19,7 +20,6 @@ risk_profile:
 ---
 """
 
-#!/usr/bin/env python3
 """
 Purpose: Governance Registry Integrity Validator
 Achievement: Enforces the ledger contract on the governance-registry branch by validating:

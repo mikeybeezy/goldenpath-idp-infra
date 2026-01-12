@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 ---
 id: SCRIPT-0039
@@ -19,7 +20,6 @@ risk_profile:
 ---
 """
 
-#!/usr/bin/env python3
 """
 Purpose: Enhanced Enum Consistency Validator
 Achievement: Implements recursive dot-path validation across MD and YAML artifacts.

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 ---
 id: SCRIPT-0041
@@ -19,7 +20,6 @@ risk_profile:
 ---
 """
 
-#!/usr/bin/env python3
 """
 Purpose: PR Quality Gate & Structural Validator
 Achievement: Enforces schema compliance and mandatory sidecar presence in core directories.

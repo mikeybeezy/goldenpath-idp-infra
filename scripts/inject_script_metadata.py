@@ -77,6 +77,13 @@ def inject_py(path: Path, meta: dict, dry_run: bool = False) -> bool:
     
     block = '"""\n---\n' + yaml.safe_dump(meta, sort_keys=False) + '---\n"""\n\n'
     
+    # keep shebang first if present
+    if txt.startswith("#!"):
+        first_line, rest = txt.split("\n", 1)
+        new_txt = first_line + "\n" + block + rest
+    else:
+        new_txt = block + txt
+    
     if dry_run:
         print(f"[DRY-RUN] Would inject metadata into {path}")
     else:
@@ -111,7 +118,7 @@ def main() -> int:
     reg = load_id_registry()
     changed = 0
 
-    for p in sorted(SCRIPTS_DIR.glob("*")):
+    for p in sorted(SCRIPTS_DIR.rglob("*")):
         if p.is_dir():
             continue
         if p.suffix not in (".py", ".sh", ".bash"):

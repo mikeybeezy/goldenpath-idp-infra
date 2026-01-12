@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 ---
 id: SCRIPT-0042
@@ -19,7 +20,6 @@ risk_profile:
 ---
 """
 
-#!/usr/bin/env python3
 """
 Purpose: Decision Routing Compliance Validator
 Achievement: Enforces mandatory artifacts (ADRs, Changelogs) based on

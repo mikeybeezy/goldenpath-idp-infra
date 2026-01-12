@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 ---
 id: SCRIPT-0004
@@ -19,7 +20,6 @@ risk_profile:
 ---
 """
 
-#!/usr/bin/env python3
 """
 Purpose: Metadata Compliance Audit Tool
 Achievement: Performs deep inspection of YAML frontmatter syntax and mandatory field presence.

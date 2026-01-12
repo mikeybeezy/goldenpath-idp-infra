@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 ---
 id: SCRIPT-0031
@@ -19,7 +20,6 @@ risk_profile:
 ---
 """
 
-#!/usr/bin/env python3
 """
 Purpose: Standardized ECR Repository Scaffolding.
 Relates-To: how-it-works/ECR_REQUEST_FLOW.md

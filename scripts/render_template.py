@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 ---
 id: SCRIPT-0028
@@ -19,7 +20,6 @@ risk_profile:
 ---
 """
 
-#!/usr/bin/env python3
 """
 Purpose: Backstage-compatible Template Renderer
 Achievement: Renders `{{ values.* }}` placeholders in application templates. Updated

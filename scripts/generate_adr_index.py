@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 ---
 id: SCRIPT-0016
@@ -19,7 +20,6 @@ risk_profile:
 ---
 """
 
-#!/usr/bin/env python3
 """
 ADR Index Generator (Iteration 1)
 Automates the generation of 01_adr_index.md from ADR-*.md metadata.
