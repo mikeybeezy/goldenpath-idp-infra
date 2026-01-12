@@ -12,6 +12,7 @@ import os
 import re
 import yaml
 import copy
+import argparse
 from datetime import datetime
 import sys
 
@@ -51,7 +52,8 @@ SIDECAR_MANDATED_ZONES = [
     'apps'
 ]
 
-def standardize_file(filepath):
+
+def standardize_file(filepath, dry_run=False):
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
@@ -179,18 +181,24 @@ def standardize_file(filepath):
     new_content = re.sub(r'\n{3,}', '\n\n', new_content).strip() + '\n'
 
     if new_content != content:
-        with open(filepath, 'w', encoding='utf-8') as f:
-            f.write(new_content)
-        print(f"✅ Standardized: {filepath}")
+        if dry_run:
+            print(f"[DRY-RUN] Would standardize: {filepath}")
+        else:
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(new_content)
+            print(f"✅ Standardized: {filepath}")
     else:
-        # print(f"ℹ️  No changes needed: {filepath}")
+        if dry_run:
+            # print(f"[DRY-RUN] No changes needed: {filepath}")
+            pass
         pass
 
     # CLOSED-LOOP GOVERNANCE: Inject metadata into associated K8s resources
+    # CLOSED-LOOP GOVERNANCE: Inject metadata into associated K8s resources
     if filename_base == 'metadata':
-        inject_governance(filepath, new_data)
+        inject_governance(filepath, new_data, dry_run=dry_run)
 
-def inject_governance(sidecar_path, data):
+def inject_governance(sidecar_path, data, dry_run=False):
     """Propagates metadata values into associated values.yaml files."""
     base_dir = os.path.dirname(sidecar_path)
     candidates = []
@@ -287,22 +295,28 @@ def inject_governance(sidecar_path, data):
                     new_v_content = header + platform_yaml_dump(updated_docs[0])
 
                 if new_v_content.strip() != v_content.strip():
-                    with open(cand, 'w', encoding='utf-8') as f:
-                        f.write(new_v_content.strip() + '\n')
-                    print(f"{'🏷️' if is_k8s else '💉'} {'Annotated' if is_k8s else 'Injected'} resource (Multi-doc aware): {cand}")
+                    if dry_run:
+                        print(f"[DRY-RUN] Would inject governance into: {cand}")
+                    else:
+                        with open(cand, 'w', encoding='utf-8') as f:
+                             f.write(new_v_content.strip() + '\n')
+                        print(f"{'🏷️' if is_k8s else '💉'} {'Annotated' if is_k8s else 'Injected'} resource (Multi-doc aware): {cand}")
         except Exception as e:
             print(f"⚠️ Failed injection for {cand}: {e}")
 
 def main():
-    targets = sys.argv[1:] if len(sys.argv) > 1 else ['.']
+    parser = argparse.ArgumentParser(description="Standardize metadata across the platform.")
+    parser.add_argument("targets", nargs="*", default=["."], help="Directories or files to scan")
+    parser.add_argument("--dry-run", action="store_true", help="Preview changes without writing")
+    args = parser.parse_args()
 
-    for target in targets:
+    for target in args.targets:
         if not os.path.exists(target):
             print(f"⚠️ Warning: Target {target} not found.")
             continue
 
         if os.path.isfile(target):
-            standardize_file(target)
+            standardize_file(target, dry_run=args.dry_run)
             continue
 
         for root, dirs, files in os.walk(target):
@@ -316,16 +330,19 @@ def main():
             if is_mandated and len(path_parts) >= 2:
                 if 'metadata.yaml' not in files and 'metadata.yml' not in files:
                     sidecar_path = os.path.join(root, 'metadata.yaml')
-                    print(f"🩹 Creating missing sidecar: {sidecar_path}")
-                    with open(sidecar_path, 'w') as f:
-                        f.write("---\n# Placeholder\n---\n")
+                    if args.dry_run:
+                        print(f"[DRY-RUN] Would create missing sidecar: {sidecar_path}")
+                    else:
+                        print(f"🩹 Creating missing sidecar: {sidecar_path}")
+                        with open(sidecar_path, 'w') as f:
+                            f.write("---\n# Placeholder\n---\n")
                     files.append('metadata.yaml')
 
             for file in files:
                 is_md = file.endswith('.md') and file not in ['DOC_INDEX.md', 'PLATFORM_HEALTH.md']
                 is_meta = file in ['metadata.yaml', 'metadata.yml']
                 if is_md or is_meta:
-                    standardize_file(os.path.join(root, file))
+                    standardize_file(os.path.join(root, file), dry_run=args.dry_run)
 
     # Log Value Heartbeat
     try:
