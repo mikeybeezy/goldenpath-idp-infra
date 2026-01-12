@@ -2,13 +2,26 @@
 id: TEST_TEMPLATES_ROOT
 title: Test Templates
 type: documentation
-owner: platform-team
-status: active
+applies_to: []
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: none
+  maturity: 1
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 category: testing
 ---
 
 # Testing Templates - Quick Start Guide
-
 
 **Purpose:** Standardized templates for consistent, repeatable testing
 **Last Updated:** 2026-01-07

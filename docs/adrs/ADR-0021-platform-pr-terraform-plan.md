@@ -3,6 +3,7 @@ id: ADR-0021-platform-pr-terraform-plan
 title: 'ADR-0021: PR Terraform plan with automated comments'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

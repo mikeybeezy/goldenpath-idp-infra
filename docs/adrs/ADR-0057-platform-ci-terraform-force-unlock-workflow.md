@@ -3,6 +3,7 @@ id: ADR-0057-platform-ci-terraform-force-unlock-workflow
 title: 'ADR-0057: CI Terraform force-unlock workflow (break-glass)'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

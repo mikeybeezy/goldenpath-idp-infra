@@ -3,6 +3,7 @@ id: ADR-0019-platform-pre-commit-hooks
 title: 'ADR-0019: Pre-commit hooks as local quality gates'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

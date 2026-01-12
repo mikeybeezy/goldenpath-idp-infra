@@ -3,12 +3,11 @@ id: ADR-0016-platform-ci-environment-separation
 title: 'ADR-0016: CI environment separation and manual promotion gates'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - 01_GOVERNANCE
   - ADR-0016
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

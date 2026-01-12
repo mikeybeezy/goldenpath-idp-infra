@@ -3,6 +3,7 @@ id: ADR-0067-platform-labeler-base-ref
 title: 'ADR-0067: Use base ref for labeler checkout'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

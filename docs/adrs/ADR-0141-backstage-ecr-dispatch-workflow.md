@@ -2,7 +2,7 @@
 id: ADR-0141
 title: 'ADR-0141: Backstage ECR requests use GitHub Actions dispatch'
 type: adr
-status: accepted
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze

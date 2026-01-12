@@ -2,6 +2,7 @@
 id: ADR-0119-grand-metadata-healing-and-contextual-alignment
 title: 'ADR-0119: Grand Metadata Healing & Contextual Alignment'
 type: adr
+domain: platform-core
 reliability:
   observability_tier: bronze
 ---

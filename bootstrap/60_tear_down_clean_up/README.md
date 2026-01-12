@@ -12,6 +12,7 @@ risk_profile:
 reliability:
   rollback_strategy: not-applicable
   observability_tier: gold
+  maturity: 1
 schema_version: 1
 relates_to:
   - BOOTSTRAP_README

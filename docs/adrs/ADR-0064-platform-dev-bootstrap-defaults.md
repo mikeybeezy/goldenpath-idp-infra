@@ -3,6 +3,7 @@ id: ADR-0064-platform-dev-bootstrap-defaults
 title: 'ADR-0064: Dev bootstrap defaults off for k8s resources and storage'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

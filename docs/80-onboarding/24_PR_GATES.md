@@ -2,16 +2,27 @@
 id: 24_PR_GATES
 title: PR Gates and How to Unblock Them
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
 relates_to:
   - 00_DOC_INDEX
   - 04_PR_GUARDRAILS
   - 30_DOCUMENTATION_FRESHNESS
   - DOCS_CHANGELOG_README
   - ADR-0101
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
 status: active
 version: '1.0'
 supported_until: 2028-01-01
 breaking_change: false
+category: platform
 ---
 
 # PR Gates and How to Unblock Them

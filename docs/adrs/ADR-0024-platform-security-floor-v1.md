@@ -3,6 +3,7 @@ id: ADR-0024-platform-security-floor-v1
 title: 'ADR-0024: Security floor for V1'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

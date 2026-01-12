@@ -3,6 +3,7 @@ id: ADR-0095-self-service-registry-creation
 title: 'ADR-0095: Self-Service ECR Registry Creation Workflow'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

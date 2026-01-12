@@ -6,14 +6,13 @@ status: active
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
+supported_until: 2028-01-04
 version: '1.0'
 relates_to:
   - 15_TEARDOWN_AND_CLEANUP
   - ADR-0038
   - ADR-0038-platform-teardown-orphan-cleanup-gate
   - ADR-0041
-supported_until: 2028-01-04
 breaking_change: false
 ---
 

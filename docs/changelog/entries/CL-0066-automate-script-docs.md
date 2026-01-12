@@ -2,13 +2,15 @@
 id: CL-0066-automate-script-docs
 title: '[Docs] Automate Script Index Generation'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: none
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 version: '1.0'
 lifecycle: active
 relates_to:

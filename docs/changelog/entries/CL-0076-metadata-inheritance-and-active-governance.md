@@ -2,6 +2,8 @@
 id: CL-0076-metadata-inheritance-and-active-governance
 title: 'CL-0076: Metadata Inheritance, Versioning, and Active Governance'
 type: changelog
+status: active
+owner: platform-team
 ---
 
 # CL-0076: Metadata Inheritance, Versioning, and Active Governance

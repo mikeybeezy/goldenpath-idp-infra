@@ -3,6 +3,7 @@ id: ADR-0058-platform-grafana-config-workflow
 title: 'ADR-0058: Separate Grafana config workflow with readiness guard'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

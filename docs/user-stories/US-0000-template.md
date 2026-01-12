@@ -2,8 +2,6 @@
 id: US-0000-template
 title: 'US-0000: User Story Template'
 type: template
-owner: platform-team
-status: active
 risk_profile:
   production_impact: low
   security_risk: none
@@ -11,13 +9,10 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: active
-category: platform
-version: 1.0
-dependencies: []
 relates_to:
   - USER_STORIES_INDEX
 supported_until: 2028-01-01
+version: 1.0
 breaking_change: false
 ---
 

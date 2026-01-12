@@ -2,6 +2,7 @@
 id: ADR-0114-automated-enum-consistency-validation
 title: Automated Enum Consistency Validation
 type: adr
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

@@ -3,13 +3,12 @@ id: ADR-0037-platform-resource-tagging-policy
 title: 'ADR-0037: Platform resource tagging policy'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - 01_GOVERNANCE
   - 35_RESOURCE_TAGGING
   - ADR-0037
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

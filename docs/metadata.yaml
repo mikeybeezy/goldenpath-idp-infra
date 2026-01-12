@@ -2,16 +2,29 @@
 id: DOCS_ROOT_METADATA
 title: metadata
 type: documentation
-status: active
-owner: platform-team
 domain: platform-core
-category: platform
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: none
   security_risk: none
   coupling_risk: none
 reliability:
+  rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 2
-lifecycle: active
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+status: active
+category: platform
 supported_until: '2028-01-01'

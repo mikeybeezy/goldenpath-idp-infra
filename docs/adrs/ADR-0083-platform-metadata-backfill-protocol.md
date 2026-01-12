@@ -3,12 +3,11 @@ id: ADR-0083-platform-metadata-backfill-protocol
 title: Metadata Backfill Campaign Protocol
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - ADR-0082
   - ADR-0083
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

@@ -3,6 +3,7 @@ id: ADR-0027-platform-design-philosophy
 title: 'ADR-0027: Platform design philosophy and reference implementation'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

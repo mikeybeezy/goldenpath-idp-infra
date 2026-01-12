@@ -7,11 +7,11 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 lifecycle: proposed
+supported_until: 2028-01-09
 version: 1.0
 relates_to:
   - ADR-0082
   - ADR-0111
-supported_until: 2028-01-09
 breaking_change: false
 ---
 

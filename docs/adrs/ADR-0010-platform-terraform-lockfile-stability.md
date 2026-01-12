@@ -3,6 +3,7 @@ id: ADR-0010-platform-terraform-lockfile-stability
 title: 'ADR-0010: Enforce Terraform lockfile stability in CI'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

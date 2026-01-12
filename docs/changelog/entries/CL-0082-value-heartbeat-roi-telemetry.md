@@ -9,7 +9,6 @@ relates_to:
   - ADR-0121
   - vq_logger.py
   - value_ledger.json
-category: governance
 supported_until: 2028-01-01
 ---
 

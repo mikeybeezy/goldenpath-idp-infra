@@ -2,11 +2,6 @@
 id: RB-0012-argocd-app-readiness
 title: Argo CD App Readiness Checklist
 type: runbook
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -14,7 +9,7 @@ risk_profile:
 reliability:
   rollback_strategy: rerun-validation
   observability_tier: silver
-schema_version: 1
+  maturity: 1
 relates_to:
   - 05_GOLDEN_PATH_VALIDATION
   - 10_INFRA_FAILURE_MODES
@@ -22,20 +17,11 @@ relates_to:
   - BOOTSTRAP_README
   - ADR-0001
   - ADR-0013
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: runbooks
-status: active
+supported_until: 2028-01-01
 version: 1.0
 dependencies:
   - chart:argo-cd
-supported_until: 2028-01-01
 breaking_change: false
 ---
 

@@ -3,6 +3,7 @@ id: ADR-0017-platform-policy-as-code
 title: 'ADR-0017: Policy as code for infrastructure and application changes'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

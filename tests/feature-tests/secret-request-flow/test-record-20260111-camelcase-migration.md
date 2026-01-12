@@ -1,3 +1,9 @@
+---
+id: test-record-20260111-camelcase-migration
+title: metadata
+type: test-suite
+---
+
 # Feature Test Record: Secret Request Flow (camelCase Migration)
 
 **Date:** 2026-01-11

@@ -4,6 +4,7 @@ title: 'ADR-0005: Adopt Keycloak for platform SSO (humans) and keep IRSA for pod
   auth'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

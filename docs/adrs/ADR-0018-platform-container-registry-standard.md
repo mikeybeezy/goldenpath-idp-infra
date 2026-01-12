@@ -4,6 +4,7 @@ title: 'ADR-0018: Container registry standard — ECR default, GHCR supported, D
   Hub discouraged'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

@@ -3,12 +3,11 @@ id: ADR-0032-platform-eks-access-model
 title: 'ADR-0032: EKS access model (bootstrap admin vs steady-state access)'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - ADR-0015
   - ADR-0032
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

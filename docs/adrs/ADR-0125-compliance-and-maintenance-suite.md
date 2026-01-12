@@ -2,6 +2,7 @@
 id: ADR-0125
 title: 'ADR-0125: Compliance & Maintenance Suite'
 type: adr
+domain: platform-core
 lifecycle: active
 schema_version: 1
 ---

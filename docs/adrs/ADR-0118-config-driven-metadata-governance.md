@@ -2,6 +2,7 @@
 id: ADR-0118-config-driven-metadata-governance
 title: Config-Driven Metadata Governance Architecture
 type: adr
+domain: platform-core
 risk_profile:
   production_impact: low
   security_risk: none

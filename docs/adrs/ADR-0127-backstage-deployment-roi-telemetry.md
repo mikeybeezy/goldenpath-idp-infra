@@ -2,13 +2,12 @@
 id: ADR-0127
 title: 'ADR-0127: Backstage Helm Deployment with ROI Telemetry'
 type: adr
-status: accepted
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 lifecycle: active
 version: 1.0
-relates_to: []
 supported_until: 2028-01-08
 breaking_change: false
 ---

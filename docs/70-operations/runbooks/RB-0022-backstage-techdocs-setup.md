@@ -3,16 +3,18 @@ id: RB-0022-backstage-techdocs-setup
 title: Enabling Native TechDocs Rendering
 type: runbook
 domain: idp
-owner: platform-team
-lifecycle: active
 tags:
   - backstage
   - techdocs
   - documentation
 value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
   frequency: monthly
   time_saved_per_run: 2h
   risk_reduction: medium
+category: runbooks
 ---
 
 # Runbook: Enabling Native TechDocs Rendering

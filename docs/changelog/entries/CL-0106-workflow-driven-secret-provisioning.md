@@ -1,3 +1,11 @@
+---
+id: CL-0106-workflow-driven-secret-provisioning
+title: metadata
+type: changelog
+status: active
+owner: platform-team
+---
+
 # CL-0106: Workflow-Driven Secret Provisioning and Auto-Apply
 
 ## Summary

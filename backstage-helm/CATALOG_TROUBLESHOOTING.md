@@ -1,3 +1,9 @@
+---
+id: CATALOG_TROUBLESHOOTING
+title: metadata
+type: documentation
+---
+
 # Backstage Catalog Visibility Troubleshooting
 
 ## Problem

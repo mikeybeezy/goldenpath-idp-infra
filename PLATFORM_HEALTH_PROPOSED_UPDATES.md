@@ -1,3 +1,33 @@
+---
+id: PLATFORM_HEALTH_PROPOSED_UPDATES
+title: Platform Health Proposed Updates
+type: documentation
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
+---
+
 # Platform Health Proposed Updates
 
 Purpose: capture recommended health metrics, data sources, and lightweight

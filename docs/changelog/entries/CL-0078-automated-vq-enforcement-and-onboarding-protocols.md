@@ -2,6 +2,8 @@
 id: CL-0078
 title: 'CL-0078: Automated VQ Enforcement and Onboarding Protocols'
 type: changelog
+status: active
+owner: platform-team
 lifecycle: active
 schema_version: 1
 relates_to:

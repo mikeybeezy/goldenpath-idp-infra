@@ -3,6 +3,7 @@ id: ADR-0050-platform-changelog-label-gate
 title: 'ADR-0050: Label-gated changelog entries'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

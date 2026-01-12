@@ -3,6 +3,7 @@ id: ADR-0088-automated-metadata-remediation
 title: 'ADR-0088: Automated Metadata Remediation over Manual Compliance'
 type: adr
 status: active
+domain: platform-core
 risk_profile:
   production_impact: low
   security_risk: none

@@ -3,10 +3,6 @@ id: 11_SECRETS_CATALOG_POLICY
 title: Secrets Cataloging Policy (Backstage)
 type: policy
 domain: security
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: access
@@ -14,23 +10,19 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - 10_SECRET_SCANNING_POLICY
   - 35_RESOURCE_TAGGING
   - ADR-0138
   - ADR-0139
-supersedes: []
-superseded_by: []
 tags:
   - governance
   - security
   - secrets
 category: governance
-status: active
-version: '1.0'
-dependencies: []
 supported_until: 2027-01-03
+version: '1.0'
 breaking_change: false
 ---
 

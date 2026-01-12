@@ -3,6 +3,7 @@ id: 02_adr_template
 title: 'ADR-XXXX: Template for Architecture Decision Records'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

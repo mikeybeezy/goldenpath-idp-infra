@@ -1,8 +1,7 @@
 ---
 id: HIW_INDEX
 title: How It Works Index
-status: active
-version: "1.0"
+type: documentation
 ---
 
 # How It Works

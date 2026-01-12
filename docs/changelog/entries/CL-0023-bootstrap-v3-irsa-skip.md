@@ -2,13 +2,15 @@
 id: CL-0023-bootstrap-v3-irsa-skip
 title: 'CL-0023: Bootstrap v3 skips IRSA apply'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 version: '1.0'
 lifecycle: active
 relates_to:

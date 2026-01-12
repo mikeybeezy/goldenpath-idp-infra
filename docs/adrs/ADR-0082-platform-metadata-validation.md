@@ -3,6 +3,7 @@ id: ADR-0082-platform-metadata-validation
 title: Platform Metadata Validation Strategy
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

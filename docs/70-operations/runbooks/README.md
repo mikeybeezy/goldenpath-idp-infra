@@ -2,11 +2,6 @@
 id: DOCS_RUNBOOKS_README
 title: Runbooks Index
 type: runbook
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -14,7 +9,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-schema_version: 1
+  maturity: 1
 relates_to:
   - RB-0001
   - RB-0002
@@ -42,19 +37,9 @@ relates_to:
   - RB-0024
   - RB-0025
   - RB-0026
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: runbooks
-status: active
-version: 1.0
-dependencies: []
 supported_until: 2028-01-01
+version: 1.0
 breaking_change: false
 ---
 

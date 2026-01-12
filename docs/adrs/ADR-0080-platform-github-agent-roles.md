@@ -3,6 +3,7 @@ id: ADR-0080-platform-github-agent-roles
 title: 'ADR-0080: GitHub App Roles for AI/Automation Access'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

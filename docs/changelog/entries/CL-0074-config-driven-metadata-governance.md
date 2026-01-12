@@ -2,13 +2,15 @@
 id: CL-0074-config-driven-metadata-governance
 title: Transition to Config-Driven Metadata Governance
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: none
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
 version: 1.0
 lifecycle: active
 relates_to:

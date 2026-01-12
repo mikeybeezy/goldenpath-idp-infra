@@ -2,7 +2,9 @@
 id: GITHUB_WORKFLOWS_INDEX
 title: GitHub Actions Workflows Index
 type: documentation
+domain: platform-core
 applies_to: []
+owner: platform-team
 lifecycle: active
 exempt: false
 risk_profile:
@@ -12,6 +14,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: gold
+  maturity: 1
 schema_version: 1
 relates_to:
   - ADR-0093
@@ -33,6 +36,7 @@ dependencies:
   - aws-cli
 supported_until: 2028-01-01
 breaking_change: false
+category: platform
 ---
 
 # GitHub Actions Workflows

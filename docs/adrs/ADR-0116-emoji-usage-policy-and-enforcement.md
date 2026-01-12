@@ -2,6 +2,7 @@
 id: ADR-0116-emoji-usage-policy-and-enforcement
 title: Emoji Usage Policy & Automated Enforcement
 type: adr
+domain: platform-core
 risk_profile:
   production_impact: low
   security_risk: none

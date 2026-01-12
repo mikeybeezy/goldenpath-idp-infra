@@ -3,12 +3,11 @@ id: ADR-0013-platform-argo-app-management-approach
 title: 'ADR-0013: Argo CD app management approach for current scale'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - 07_REPO_DECOUPLING_OPTIONS
   - ADR-0013
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

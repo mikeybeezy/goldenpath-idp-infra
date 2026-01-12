@@ -4,6 +4,7 @@ title: 'ADR-0007: Adopt an environment model that balances cost, iteration speed
   and credible separation'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

@@ -3,6 +3,7 @@ id: ADR-0025-platform-boundaries-contract
 title: 'ADR-0025: Platform boundaries and contract'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

@@ -3,6 +3,7 @@ id: ADR-0020-platform-helm-kustomize-hybrid
 title: 'ADR-0020: Hybrid GitOps approach with Helm and Kustomize'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

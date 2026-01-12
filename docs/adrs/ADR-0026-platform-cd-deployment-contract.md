@@ -3,6 +3,7 @@ id: ADR-0026-platform-cd-deployment-contract
 title: 'ADR-0026: CD deployment contract'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

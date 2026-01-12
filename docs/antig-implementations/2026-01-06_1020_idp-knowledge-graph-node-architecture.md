@@ -5,12 +5,9 @@ type: implementation-plan
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
+  maturity: 1
 relates_to:
   - ADR-0110
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: architecture
 status: approved
 version: '1.0'

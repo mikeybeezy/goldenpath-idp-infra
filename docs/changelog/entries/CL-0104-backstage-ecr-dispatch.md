@@ -2,13 +2,15 @@
 id: CL-0104
 title: 'CL-0104: Backstage ECR requests dispatch workflow'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: low
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 lifecycle: active
 version: '1.0'
 relates_to:

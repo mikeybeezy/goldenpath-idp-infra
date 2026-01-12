@@ -3,6 +3,7 @@ id: ADR-0093-automated-policy-enforcement
 title: 'ADR-0093: Automated Policy Enforcement Framework'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 supported_until: '2028-01-01'

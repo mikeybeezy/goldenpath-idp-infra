@@ -2,13 +2,15 @@
 id: CL-0052-ecr-registry-product-strategy
 title: 'CL-0052: ECR Registry Product-Based Strategy & Shared Responsibility Model'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: revert-adr
+  observability_tier: gold
 risk_profile:
   production_impact: medium
   security_risk: low
   coupling_risk: medium
-reliability:
-  rollback_strategy: revert-adr
-  observability_tier: gold
 lifecycle: active
 version: '1.0'
 dependencies:

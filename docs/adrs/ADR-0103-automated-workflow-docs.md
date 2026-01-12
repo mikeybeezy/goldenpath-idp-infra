@@ -3,6 +3,7 @@ id: ADR-0103-automated-workflow-docs
 title: Automated CI Workflow Documentation
 type: adr
 status: superseded
+domain: platform-core
 lifecycle: active
 version: '1.0'
 superseded_by: ADR-0111

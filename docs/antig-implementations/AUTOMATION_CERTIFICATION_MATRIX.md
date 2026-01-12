@@ -2,13 +2,26 @@
 id: AUTOMATION_CERTIFICATION_MATRIX
 title: Automation Certification Master Record
 type: documentation
+domain: platform-core
+applies_to: []
 owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 status: active
 category: governance
 ---
 
 # Automation Certification Matrix (Master Record)
-
 
 This ledger tracks the verification results for every script in the repository. Scripts must fulfill all requirements within a column to be "Certified" for that surface area.
 

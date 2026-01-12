@@ -3,6 +3,7 @@ id: ADR-0084-platform-enhanced-metadata-schema
 title: 'ADR-0084: Enhanced Metadata Schema for Knowledge Graph'
 type: adr
 status: active
+domain: platform-core
 risk_profile:
   production_impact: low
   security_risk: none

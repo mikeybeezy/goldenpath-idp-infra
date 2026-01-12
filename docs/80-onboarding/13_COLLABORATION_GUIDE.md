@@ -2,13 +2,24 @@
 id: 13_COLLABORATION_GUIDE
 title: Collaboration Guide
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
 relates_to:
   - 38_BRANCHING_STRATEGY
   - SHARED_RESPONSIBILITY
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
 status: active
 version: '1.0'
 supported_until: 2028-01-01
 breaking_change: false
+category: platform
 ---
 
 # Collaboration Guide

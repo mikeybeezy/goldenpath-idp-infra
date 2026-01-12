@@ -2,6 +2,7 @@
 id: ADR-0123
 title: 'ADR-0123: Delivery Automation Suite (ECR & Logs)'
 type: adr
+domain: platform-core
 lifecycle: active
 schema_version: 1
 ---

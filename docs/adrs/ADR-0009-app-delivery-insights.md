@@ -3,6 +3,7 @@ id: ADR-0009-app-delivery-insights
 title: 'ADR-0009: CI/CD observability via OpenTelemetry ("Delivery Insights")'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

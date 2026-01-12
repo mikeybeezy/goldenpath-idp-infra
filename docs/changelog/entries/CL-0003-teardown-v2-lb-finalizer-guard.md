@@ -2,13 +2,15 @@
 id: CL-0003-teardown-v2-lb-finalizer-guard
 title: 'CL-0003: Teardown v2 LoadBalancer finalizer guard'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 version: '1.0'
 lifecycle: active
 relates_to:

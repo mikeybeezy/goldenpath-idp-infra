@@ -3,11 +3,10 @@ id: ADR-0035-platform-iam-audit-cadence
 title: 'ADR-0035: IAM Audit Cadence for CI Roles'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - ADR-0035
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

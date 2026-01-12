@@ -3,13 +3,14 @@ id: CL-0077-value-quantification-framework
 title: Value Quantification (VQ) Infrastructure
 type: changelog
 status: accepted
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: gold
 risk_profile:
   production_impact: none
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: gold
 date: 2026-01-07
 ---
 

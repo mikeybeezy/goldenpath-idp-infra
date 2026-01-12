@@ -3,6 +3,7 @@ id: ADR-0137
 title: 'ADR-0137: Metadata placement for configs and reports'
 type: adr
 status: proposed
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze

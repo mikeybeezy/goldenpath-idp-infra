@@ -3,6 +3,7 @@ id: ADR-0062-platform-app-template-contract
 title: 'ADR-0062: App template contract for team-owned deployments'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

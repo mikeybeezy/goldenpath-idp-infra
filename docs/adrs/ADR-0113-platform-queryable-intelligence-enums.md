@@ -2,6 +2,7 @@
 id: ADR-0113-platform-queryable-intelligence-enums
 title: Platform Queryable Intelligence Enums
 type: adr
+domain: platform-core
 risk_profile:
   production_impact: low
   security_risk: none

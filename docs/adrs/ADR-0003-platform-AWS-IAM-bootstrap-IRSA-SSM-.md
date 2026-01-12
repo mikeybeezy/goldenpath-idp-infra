@@ -4,6 +4,7 @@ title: 'ADR-0003: Use AWS IAM for bootstrap access, IRSA for pod-to-AWS access, 
   SSM for node break-glass'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

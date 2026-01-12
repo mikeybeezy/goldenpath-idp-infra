@@ -2,10 +2,7 @@
 id: 35_SECRET_MANAGEMENT
 title: Secret Management Strategy
 type: strategy
-status: active
-owner: platform-team
 domain: security
-version: '1.0'
 risk_profile:
   production_impact: low
   security_risk: high
@@ -13,15 +10,15 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: active
-supported_until: 2028-01-10
-schema_version: 1
+  maturity: 1
 relates_to:
   - ADR-0138
   - ADR-0139
 tags:
   - security
   - secrets
+supported_until: 2028-01-10
+version: '1.0'
 ---
 
 # Secret Management Strategy

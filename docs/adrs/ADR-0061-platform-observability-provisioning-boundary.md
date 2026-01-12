@@ -4,6 +4,7 @@ title: 'ADR-0061: Observability provisioning boundary (Helm in-cluster, Terrafor
   external)'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

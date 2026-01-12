@@ -3,9 +3,6 @@ id: CONTRACT_REGISTRY
 title: Platform Contract Registry
 type: contract
 domain: governance
-owner: platform-team
-status: active
-lifecycle: active
 risk_profile:
   production_impact: none
   security_risk: none

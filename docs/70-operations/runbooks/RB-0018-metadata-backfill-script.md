@@ -2,11 +2,6 @@
 id: RB-0018-metadata-backfill-script
 title: Metadata Backfill Script - Usage & Operations
 type: runbook
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -14,26 +9,17 @@ risk_profile:
 reliability:
   rollback_strategy: not-applicable
   observability_tier: gold
-schema_version: 1
+  maturity: 1
 relates_to:
   - ADR-0084
   - CL-0043
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: runbooks
-status: active
+supported_until: 2028-01-01
 version: '1.0'
 dependencies:
   - chart:redis
   - module:aws_iam
   - module:vpc
-supported_until: 2028-01-01
 breaking_change: false
 ---
 

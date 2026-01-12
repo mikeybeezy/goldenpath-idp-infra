@@ -2,13 +2,15 @@
 id: CL-0055-self-service-registry-creation
 title: 'CL-0055: Self-Service ECR Registry Creation Workflow'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
 risk_profile:
   production_impact: low
   security_risk: low
   coupling_risk: medium
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
 version: '1.0'
 dependencies:
   - github-actions

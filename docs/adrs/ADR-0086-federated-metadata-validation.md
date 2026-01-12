@@ -3,14 +3,13 @@ id: ADR-0086-federated-metadata-validation
 title: 'ADR-0086: Federated Metadata Validation Strategy'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 dependencies:
   - module:github-actions
   - module:pre-commit
 relates_to:
   - ADR-0086
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

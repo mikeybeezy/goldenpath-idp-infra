@@ -1,15 +1,15 @@
 ---
 id: ADR-0143
 title: Secret Request Contract (V1)
-type: documentation
+type: adr
+status: active
 domain: security
 applies_to:
   - infra
   - ci
   - gitops
 owner: platform-team
-status: active
-version: "1.0"
+version: '1.0'
 relates_to:
   - how-it-works/SECRET_REQUEST_FLOW.md
 ---

@@ -9,6 +9,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
+  maturity: 1
 relates_to:
   - DEV_ENV_README
   - STAGING_ENV_README

@@ -1,27 +1,28 @@
 ---
-id: backstage-helm
-title: Backstage Helm Deployment Suite
-type: infrastructure
-domain: developer-experience
+id: APPS_BACKSTAGE_HELM_METADATA
+title: metadata
+type: documentation
+domain: platform-core
+applies_to: []
 owner: platform-team
 lifecycle: active
-status: active
-version: 1.0
-value_quantification:
-  vq_class: HV/HQ
-  impact_tier: high
-  potential_savings_hours: 500.0
+exempt: false
 risk_profile:
-  production_impact: medium
-  security_risk: medium
-  coupling_risk: high
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
 reliability:
-  rollback_strategy: helm-rollback
-  observability_tier: gold
-tags:
-  - idp
-  - backstage
-  - portal
-  - velocity-multiplier
-  - v1-gate
----
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform

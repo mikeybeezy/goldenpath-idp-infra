@@ -3,6 +3,7 @@ id: DOCS_ADRS_README
 title: ADR Directory Guide
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

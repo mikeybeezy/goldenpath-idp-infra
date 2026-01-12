@@ -2,6 +2,8 @@
 id: CL-0079
 title: 'CL-0079: Delivery Automation Backfill'
 type: changelog
+status: active
+owner: platform-team
 lifecycle: active
 schema_version: 1
 relates_to:

@@ -10,7 +10,6 @@ relates_to:
   - platform_health.py
   - CONFIDENCE_MATRIX.md
   - AUTOMATION_VERIFICATION_LOG.txt
-category: governance
 supported_until: 2028-01-01
 ---
 

@@ -2,6 +2,8 @@
 id: CL-0081
 title: 'CL-0081: Compliance & Maintenance Backfill'
 type: changelog
+status: active
+owner: platform-team
 lifecycle: active
 schema_version: 1
 relates_to:

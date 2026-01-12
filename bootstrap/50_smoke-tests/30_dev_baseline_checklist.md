@@ -12,6 +12,7 @@ risk_profile:
 reliability:
   rollback_strategy: rerun-bootstrap
   observability_tier: bronze
+  maturity: 1
 schema_version: 1
 relates_to:
   - BOOTSTRAP_README

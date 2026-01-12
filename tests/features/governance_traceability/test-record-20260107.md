@@ -2,6 +2,8 @@
 id: test-record-20260107
 title: metadata
 type: test-suite
+status: active
+category: platform
 ---
 
 # Governance & Traceability Validation Record (2026-01-07)

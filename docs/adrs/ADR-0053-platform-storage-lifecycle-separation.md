@@ -3,6 +3,7 @@ id: ADR-0053-platform-storage-lifecycle-separation
 title: 'ADR-0053: Separate storage lifecycle from bootstrap and teardown'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

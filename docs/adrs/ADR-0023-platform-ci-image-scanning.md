@@ -3,6 +3,7 @@ id: ADR-0023-platform-ci-image-scanning
 title: 'ADR-0023: CI image scanning standard'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

@@ -2,13 +2,15 @@
 id: CL-0056-risk-based-ecr-controls
 title: 'CL-0056: Risk-Based ECR Security Controls'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
 risk_profile:
   production_impact: medium
   security_risk: low
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
 version: '1.0'
 dependencies:
   - terraform

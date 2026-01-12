@@ -2,8 +2,6 @@
 id: 21_CI_ENVIRONMENT_CONTRACT
 title: CI Environment Contract
 type: contract
-owner: platform-team
-status: active
 risk_profile:
   production_impact: low
   security_risk: none
@@ -11,10 +9,6 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-lifecycle: active
-category: platform
-version: '1.0'
-dependencies: []
 relates_to:
   - 33_IAM_ROLES_AND_POLICIES
   - ADR-0030
@@ -23,6 +17,7 @@ relates_to:
   - ADR-0033-platform-ci-orchestrated-modes
   - ADR-0034
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

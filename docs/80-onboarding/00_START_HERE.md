@@ -2,13 +2,22 @@
 id: 00_START_HERE
 title: Start Here
 type: documentation
+domain: platform-core
+applies_to: []
 owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
 status: active
 category: onboarding
 ---
 
 # 🚀 START HERE (5-Minute Onboarding)
-
 
 Welcome to the **GoldenPath IDP Infra** repository. This guide is designed to get you (Human or Agent) fully operational in under 5 minutes.
 

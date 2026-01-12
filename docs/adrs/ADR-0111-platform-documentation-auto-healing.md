@@ -2,6 +2,7 @@
 id: ADR-0111-platform-documentation-auto-healing
 title: 'ADR-0111: Automated Documentation Auto-Healing'
 type: adr
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

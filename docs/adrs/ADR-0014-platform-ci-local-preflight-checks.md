@@ -3,11 +3,10 @@ id: ADR-0014-platform-ci-local-preflight-checks
 title: 'ADR-0014: Local preflight checks before PRs'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - ADR-0014
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

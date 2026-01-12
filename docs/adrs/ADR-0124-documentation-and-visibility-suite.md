@@ -2,7 +2,6 @@
 id: ADR-0124
 title: 'ADR-0124: Documentation & Visibility Suite'
 type: adr
-lifecycle: active
 schema_version: 1
 ---
 

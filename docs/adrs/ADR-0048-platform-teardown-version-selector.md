@@ -3,6 +3,7 @@ id: ADR-0048-platform-teardown-version-selector
 title: 'ADR-0048: Versioned teardown runners with selectable entrypoint'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

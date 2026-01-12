@@ -3,6 +3,7 @@ id: ADR-0042-platform-branching-strategy
 title: 'ADR-0042: Branching strategy (development → main)'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

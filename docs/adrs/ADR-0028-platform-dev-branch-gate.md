@@ -3,6 +3,7 @@ id: ADR-0028-platform-dev-branch-gate
 title: 'ADR-0028: Dev branch gate before main'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

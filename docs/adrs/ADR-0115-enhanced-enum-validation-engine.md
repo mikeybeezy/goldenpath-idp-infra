@@ -2,6 +2,7 @@
 id: ADR-0115-enhanced-enum-validation-engine
 title: Enhanced Enum Validation Engine
 type: adr
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

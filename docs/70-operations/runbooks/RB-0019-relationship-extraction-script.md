@@ -2,11 +2,6 @@
 id: RB-0019-relationship-extraction-script
 title: Relationship Extraction Script - Usage & Operations
 type: runbook
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -14,7 +9,7 @@ risk_profile:
 reliability:
   rollback_strategy: rerun-teardown
   observability_tier: gold
-schema_version: 1
+  maturity: 1
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0026
@@ -30,19 +25,9 @@ relates_to:
   - CL-0016
   - CL-0042
   - CL-0043
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: runbooks
-status: active
-version: '1.0'
-dependencies: []
 supported_until: 2028-01-01
+version: '1.0'
 breaking_change: false
 ---
 

@@ -3,10 +3,6 @@ id: METADATA_ARTIFACT_ADOPTION_POLICY
 title: Metadata Adoption Policy for Configs and Reports
 type: governance
 domain: governance
-owner: platform-team
-lifecycle: active
-status: active
-category: governance
 risk_profile:
   production_impact: low
   security_risk: low
@@ -14,8 +10,6 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
-supported_until: 2028-01-01
 relates_to:
   - METADATA_MAINTENANCE_GUIDE
   - METADATA_INJECTION_GUIDE
@@ -26,6 +20,8 @@ tags:
   - metadata
   - sidecar
   - governance
+category: governance
+supported_until: 2028-01-01
 ---
 
 # Metadata Adoption Policy for Configs and Reports

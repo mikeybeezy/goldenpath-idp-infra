@@ -2,13 +2,15 @@
 id: CL-0060-iam-policy-centralization
 title: 'CL-0060: IAM Policy Centralization'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 version: '1.0'
 lifecycle: active
 relates_to:

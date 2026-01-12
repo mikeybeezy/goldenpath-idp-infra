@@ -3,6 +3,7 @@ id: ADR-0036-platform-orphan-cleanup-workflow
 title: 'ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown'
 type: adr
 status: superseded
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

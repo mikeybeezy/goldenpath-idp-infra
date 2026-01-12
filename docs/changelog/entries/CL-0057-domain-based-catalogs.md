@@ -2,13 +2,15 @@
 id: CL-0057-domain-based-catalogs
 title: 'CL-0057: Domain-Based Resource Catalogs'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: medium
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
 version: '1.0'
 dependencies:
   - terraform

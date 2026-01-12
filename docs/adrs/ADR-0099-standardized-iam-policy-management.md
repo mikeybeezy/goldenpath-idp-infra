@@ -3,6 +3,7 @@ id: ADR-0099-standardized-iam-policy-management
 title: 'ADR-0099: Standardized IAM Policy Management'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

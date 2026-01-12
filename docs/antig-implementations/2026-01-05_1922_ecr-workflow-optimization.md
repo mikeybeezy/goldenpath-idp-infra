@@ -2,10 +2,10 @@
 id: 2026-01-05_1922_ecr-workflow-optimization
 title: 'Implementation Plan: ECR Workflow Optimization'
 type: implementation-plan
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
 category: governance
 status: active
 version: '1.0'

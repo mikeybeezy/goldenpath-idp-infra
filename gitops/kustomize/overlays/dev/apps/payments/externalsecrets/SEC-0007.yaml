@@ -1,3 +1,4 @@
+# Managed by scripts/standardize_metadata.py
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -7,6 +8,9 @@ metadata:
     goldenpath.idp/id: SEC-0007
     platform.idp/service: payments
     platform.idp/env: dev
+  annotations:
+    goldenpath.idp/id: APPS_EXTERNALSECRETS_METADATA
+    goldenpath.idp/owner: platform-team
 spec:
   refreshInterval: 1h
   secretStoreRef:

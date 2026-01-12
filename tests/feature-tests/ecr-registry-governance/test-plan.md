@@ -1,3 +1,9 @@
+---
+id: test-plan
+title: metadata
+type: test-suite
+---
+
 # Test Plan: ECR Registry Single Source of Truth
 
 **ID:** TEST-ECR-001

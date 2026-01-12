@@ -1,3 +1,9 @@
+---
+id: test-plan
+title: metadata
+type: test-suite
+---
+
 # Feature Test Plan: Secret Request Flow
 
 - **ID**: FT-SEC-001

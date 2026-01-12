@@ -3,6 +3,7 @@ id: ADR-0059-platform-ci-workflow-index-and-ownership
 title: 'ADR-0059: CI workflow index, ownership, and UI grouping'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

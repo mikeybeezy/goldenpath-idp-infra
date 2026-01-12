@@ -2,9 +2,8 @@
 id: test-results
 title: 'Test Results: ECR Catalog Generator'
 type: documentation
-applies_to: []
-lifecycle: active
-exempt: false
+domain: platform-core
+owner: platform-team
 risk_profile:
   production_impact: low
   security_risk: none
@@ -12,12 +11,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
-relates_to: []
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
+  maturity: 1
 value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: low
@@ -25,6 +19,7 @@ value_quantification:
 version: '1.0'
 supported_until: '2028-01-01'
 breaking_change: false
+category: platform
 ---
 
 # Test Results: ECR Catalog Generator

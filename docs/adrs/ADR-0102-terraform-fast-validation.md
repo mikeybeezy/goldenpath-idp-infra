@@ -1,15 +1,10 @@
 ---
 id: ADR-0102
 title: Layer 2 Terraform Validation (Fast Feedback Loop)
-status: accepted
-type: decision
-category: architecture
+type: adr
+domain: platform-core
 version: 1.0
 owner: platform-team
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

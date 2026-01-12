@@ -4,13 +4,12 @@ title: 'ADR-0006: Use AWS Secrets Manager/SSM as system of record for secrets an
   External Secrets to hydrate Kubernetes'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - ADR-0003
   - ADR-0006
   - ADR-0007
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

@@ -2,7 +2,6 @@
 id: ADR-0122
 title: 'ADR-0122: Automated VQ Enforcement and Mission Recovery'
 type: adr
-lifecycle: active
 schema_version: 1
 relates_to:
   - ADR-0121

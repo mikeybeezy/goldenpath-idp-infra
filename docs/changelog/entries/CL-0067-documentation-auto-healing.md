@@ -2,13 +2,15 @@
 id: CL-0067-documentation-auto-healing
 title: 'CL-0067: Automated Documentation Auto-Healing'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
 lifecycle: active
 version: 1.0
 relates_to:

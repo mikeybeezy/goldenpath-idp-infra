@@ -3,6 +3,7 @@ id: ADR-0094-automated-catalog-docs
 title: 'ADR-0094: Automated Registry Catalog Documentation'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 supported_until: '2028-01-01'

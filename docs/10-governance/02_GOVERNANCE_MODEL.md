@@ -2,11 +2,6 @@
 id: 02_GOVERNANCE_MODEL
 title: Governance Model – Golden Path IDP (Deprecated)
 type: policy
-domain: platform-core
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -14,25 +9,16 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - 01_GOVERNANCE
   - 05_OBSERVABILITY_DECISIONS
   - 28_SECURITY_FLOOR_V1
   - 29_CD_DEPLOYMENT_CONTRACT
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
-category: governance
 status: deprecated
-version: '1.0'
-dependencies: []
+category: governance
 supported_until: 2027-01-03
+version: '1.0'
 breaking_change: false
 ---
 

@@ -6,14 +6,13 @@ status: superseded
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
+supported_until: 2028-01-04
 version: '1.0'
 superseded_by: ADR-0046
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0044
   - ADR-0046
-supported_until: 2028-01-04
 breaking_change: false
 ---
 

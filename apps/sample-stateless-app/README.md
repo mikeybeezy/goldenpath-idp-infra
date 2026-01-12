@@ -13,6 +13,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
+  maturity: 1
 schema_version: 1
 relates_to:
   - FAST_API_APP_TEMPLATE

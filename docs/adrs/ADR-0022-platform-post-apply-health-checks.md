@@ -3,6 +3,7 @@ id: ADR-0022-platform-post-apply-health-checks
 title: 'ADR-0022: Post-apply health checks for platform readiness'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

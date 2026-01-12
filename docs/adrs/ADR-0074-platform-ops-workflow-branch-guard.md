@@ -3,6 +3,7 @@ id: ADR-0074-platform-ops-workflow-branch-guard
 title: 'ADR-0074: Ops workflow branch guard'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

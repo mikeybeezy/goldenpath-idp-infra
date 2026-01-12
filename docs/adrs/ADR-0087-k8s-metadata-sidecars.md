@@ -3,6 +3,7 @@ id: ADR-0087-k8s-metadata-sidecars
 title: 'ADR-0087: Integration of Governance Metadata with Kubernetes Resources'
 type: adr
 status: active
+domain: platform-core
 risk_profile:
   production_impact: low
   security_risk: none

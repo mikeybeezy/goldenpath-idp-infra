@@ -3,6 +3,7 @@ id: ADR-0034-platform-ci-environment-contract
 title: 'ADR-0034: CI Environment Contract'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

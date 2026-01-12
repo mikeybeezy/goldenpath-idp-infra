@@ -9,7 +9,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
+supported_until: 2028-01-05
 version: '1.0'
 dependencies:
   - terraform
@@ -18,7 +18,6 @@ relates_to:
   - ADR-0092
   - ADR-0094
   - CL-0057
-supported_until: 2028-01-05
 breaking_change: true
 ---
 

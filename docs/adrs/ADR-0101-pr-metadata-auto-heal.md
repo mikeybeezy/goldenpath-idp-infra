@@ -3,6 +3,7 @@ id: ADR-0101-pr-metadata-auto-heal
 title: 'ADR-0101: PR Metadata Auto-Heal and Scoped Validation'
 type: adr
 status: active
+domain: platform-core
 risk_profile:
   production_impact: low
   security_risk: none

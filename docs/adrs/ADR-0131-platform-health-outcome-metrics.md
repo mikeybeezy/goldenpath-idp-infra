@@ -6,13 +6,12 @@ status: proposed
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
+supported_until: 2028-01-08
 version: 1.0
 relates_to:
   - ADR-0090
   - ADR-0113
   - CL-0091
-supported_until: 2028-01-08
 breaking_change: false
 ---
 

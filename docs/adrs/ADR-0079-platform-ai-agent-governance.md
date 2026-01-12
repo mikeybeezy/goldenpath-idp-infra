@@ -3,6 +3,7 @@ id: ADR-0079-platform-ai-agent-governance
 title: 'ADR-0079: AI Agent Governance and Auditability'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

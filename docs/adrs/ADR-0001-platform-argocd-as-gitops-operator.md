@@ -3,6 +3,7 @@ id: ADR-0001-platform-argocd-as-gitops-operator
 title: 'ADR-0001: Adopt Argo CD as GitOps controller for platform deployments'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

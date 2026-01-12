@@ -2,7 +2,7 @@
 id: ADR-0132
 title: 'ADR-0132: Model ECR Registry as a Dedicated Backstage System'
 type: adr
-status: accepted
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

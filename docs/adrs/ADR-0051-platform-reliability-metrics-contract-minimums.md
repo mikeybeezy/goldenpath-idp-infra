@@ -6,7 +6,7 @@ status: active
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
+supported_until: 2028-01-04
 version: '1.0'
 relates_to:
   - 02_PLATFORM_BOUNDARIES
@@ -16,7 +16,6 @@ relates_to:
   - 35_RESOURCE_TAGGING
   - 40_CHANGELOG_GOVERNANCE
   - ADR-0051
-supported_until: 2028-01-04
 breaking_change: false
 ---
 

@@ -9,13 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
+supported_until: 2027-01-06
 version: 1.0
 date: 2026-01-06
 relates_to:
   - ADR-0110
   - ADR-0111
-supported_until: 2027-01-06
 breaking_change: false
 ---
 

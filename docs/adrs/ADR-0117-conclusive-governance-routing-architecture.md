@@ -9,13 +9,12 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
+supported_until: 2028-01-06
 version: 1.0
 relates_to:
   - DECISION_ROUTING_STRATEGY
   - agent-routing.yaml
 date: 2026-01-06
-supported_until: 2028-01-06
 breaking_change: false
 ---
 

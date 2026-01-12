@@ -2,6 +2,8 @@
 id: CL-0076-metadata-inheritance-active-governance-and-leak-protection
 title: 'CL-0076: Metadata Inheritance, Active Governance, and Leak Protection'
 type: changelog
+status: active
+owner: platform-team
 ---
 
 # CL-0076: Metadata Inheritance, Active Governance, and Leak Protection

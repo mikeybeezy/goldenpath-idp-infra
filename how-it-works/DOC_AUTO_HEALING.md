@@ -1,8 +1,7 @@
 ---
 id: HIW_DOC_AUTO_HEALING
-title: "How It Works: Documentation Auto-Healing"
-status: active
-version: "1.0"
+title: 'How It Works: Documentation Auto-Healing'
+type: documentation
 relates_to:
   - scripts/platform_health.py
   - scripts/generate_adr_index.py

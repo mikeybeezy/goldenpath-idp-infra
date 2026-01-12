@@ -2,13 +2,15 @@
 id: CL-0102-backstage-docs-linkout
 title: 'CL-0102: Backstage docs link-out (no TechDocs build)'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 lifecycle: active
 version: '1.0'
 relates_to:

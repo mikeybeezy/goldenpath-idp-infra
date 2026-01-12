@@ -2,7 +2,7 @@
 id: ADR-0133
 title: 'ADR-0133: Human-in-the-Loop PRs for Backstage Docs Generation'
 type: adr
-status: accepted
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

@@ -3,6 +3,7 @@ id: ADR-0065-platform-branch-policy-guard
 title: 'ADR-0065: Restore branch policy guard for main'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

@@ -9,6 +9,7 @@ risk_profile:
 reliability:
   rollback_strategy: none
   observability_tier: bronze
+  maturity: 1
 relates_to:
   - 25_DAY_ONE_CHECKLIST
   - CI_WORKFLOWS

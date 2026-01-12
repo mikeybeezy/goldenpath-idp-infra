@@ -3,6 +3,7 @@ id: ADR-0054-platform-observability-exporters-otel-split
 title: 'ADR-0054: Exporter vs OpenTelemetry split for platform observability'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

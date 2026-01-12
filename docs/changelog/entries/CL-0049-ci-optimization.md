@@ -2,13 +2,15 @@
 id: CL-0049-ci-optimization
 title: 'CL-0049: CI Pipeline Optimization & Standardization'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: low
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 version: 1.0
 dependencies:
   - CL-0048-automated-platform-health

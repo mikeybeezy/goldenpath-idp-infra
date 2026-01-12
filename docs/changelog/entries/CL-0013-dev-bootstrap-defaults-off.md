@@ -2,13 +2,15 @@
 id: CL-0013-dev-bootstrap-defaults-off
 title: 'CL-0013: Dev bootstrap defaults off'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 version: '1.0'
 lifecycle: active
 relates_to:

@@ -2,13 +2,15 @@
 id: CL-0006-loki-single-binary-monitoring-namespace
 title: 'CL-0006: Loki single-binary default and monitoring namespace'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 version: '1.0'
 lifecycle: active
 relates_to:

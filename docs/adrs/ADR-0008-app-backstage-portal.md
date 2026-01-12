@@ -4,11 +4,10 @@ title: 'ADR-0008: Use Backstage as the developer portal and the V1 demo applicat
   for env promotion'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - ADR-0008
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

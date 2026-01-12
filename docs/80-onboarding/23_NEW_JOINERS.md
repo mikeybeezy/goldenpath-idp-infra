@@ -2,7 +2,10 @@
 id: 23_NEW_JOINERS
 title: New Joiners Guide
 type: runbook
-applies_to: []
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
 relates_to:
   - 02_PLATFORM_BOUNDARIES
   - 13_COLLABORATION_GUIDE
@@ -10,11 +13,6 @@ relates_to:
   - 25_DAY_ONE_CHECKLIST
   - 26_AI_AGENT_PROTOCOLS
   - 38_BRANCHING_STRATEGY
-supersedes: []
-superseded_by: []
-tags: []
-inheritance: {}
-category: platform
 status: active
 version: '1.0'
 supported_until: 2028-01-01

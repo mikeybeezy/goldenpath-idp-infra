@@ -3,9 +3,8 @@ id: ADR-0090-automated-platform-health-dashboard
 title: 'ADR-0090: Automated Platform Health Dashboard'
 type: adr
 status: active
-lifecycle: active
-version: '1.0'
 supported_until: 2027-01-03
+version: '1.0'
 breaking_change: false
 ---
 

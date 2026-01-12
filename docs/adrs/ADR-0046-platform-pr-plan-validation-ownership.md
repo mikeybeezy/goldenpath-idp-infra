@@ -3,6 +3,7 @@ id: ADR-0046-platform-pr-plan-validation-ownership
 title: 'ADR-0046: PR plan owns validation (no auto infra checks dispatch)'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

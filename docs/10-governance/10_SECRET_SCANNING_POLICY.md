@@ -3,10 +3,6 @@ id: 10_SECRET_SCANNING_POLICY
 title: Secret Scanning Policy (Gitleaks)
 type: policy
 domain: security
-applies_to: []
-owner: platform-team
-lifecycle: active
-exempt: false
 risk_profile:
   production_impact: low
   security_risk: high
@@ -14,27 +10,18 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - 04_PR_GUARDRAILS
   - 09_GOVERNANCE_TESTING
   - CL-0100
-supersedes: []
-superseded_by: []
 tags:
   - security
   - secrets
   - gitleaks
-inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 category: governance
-status: active
-version: '1.0'
-dependencies: []
 supported_until: 2028-01-10
+version: '1.0'
 breaking_change: false
 ---
 

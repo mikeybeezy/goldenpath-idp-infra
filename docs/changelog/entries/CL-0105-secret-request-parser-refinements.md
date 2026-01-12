@@ -2,13 +2,15 @@
 id: CL-0105
 title: 'CL-0105: Secret Request Parser refinements and security upgrades'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: low
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 lifecycle: active
 version: '1.0'
 relates_to:

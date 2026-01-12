@@ -2,6 +2,22 @@
 id: ECR_PROVISIONING_FLOW
 title: 'Walkthrough: Streamlined ECR Provisioning'
 type: documentation
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+category: platform
 ---
 
 # Walkthrough: Streamlined ECR Provisioning

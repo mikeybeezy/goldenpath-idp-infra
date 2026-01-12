@@ -3,13 +3,12 @@ id: ADR-0011-platform-ci-environment-contract
 title: 'ADR-0011: CI Environment Contract (Superseded)'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - ADR-0011
   - ADR-0034
   - ADR-0034-platform-ci-environment-contract
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

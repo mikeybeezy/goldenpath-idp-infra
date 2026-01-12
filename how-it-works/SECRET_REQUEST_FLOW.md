@@ -1,8 +1,7 @@
 ---
 id: HIW_SECRET_FLOW
-title: "How It Works: Secret Request Flow"
-status: active
-version: "1.0"
+title: 'How It Works: Secret Request Flow'
+type: documentation
 relates_to:
   - docs/adrs/ADR-0143-secret-request-contract.md
   - docs/adrs/ADR-0135-platform-secrets-manager-eso-foundation.md

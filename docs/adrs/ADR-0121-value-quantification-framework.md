@@ -2,6 +2,7 @@
 id: ADR-0121-value-quantification-framework
 title: Value Quantification (VQ) Framework
 type: adr
+domain: platform-core
 risk_profile:
   production_impact: none
   security_risk: none

@@ -3,6 +3,7 @@ id: ADR-0038-platform-teardown-orphan-cleanup-gate
 title: 'ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

@@ -6,13 +6,12 @@ status: active
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
+supported_until: 2028-01-04
 version: '1.0'
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0060
   - CI_WORKFLOWS
-supported_until: 2028-01-04
 breaking_change: false
 ---
 

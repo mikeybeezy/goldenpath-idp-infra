@@ -7,13 +7,13 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 lifecycle: proposed
+supported_until: 2028-01-09
 version: 1.0
 relates_to:
   - ADR-0006
   - ADR-0015
   - ADR-0031
   - how-it-works/SECRET_REQUEST_FLOW.md
-supported_until: 2028-01-09
 breaking_change: false
 ---
 

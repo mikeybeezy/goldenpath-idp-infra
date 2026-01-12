@@ -2,13 +2,15 @@
 id: CL-0069-platform-queryable-intelligence-enums
 title: Platform Queryable Intelligence Enums
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
 version: 1.0
 lifecycle: active
 relates_to:

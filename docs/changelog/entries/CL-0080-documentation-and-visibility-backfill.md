@@ -2,6 +2,8 @@
 id: CL-0080
 title: 'CL-0080: Documentation & Visibility Backfill'
 type: changelog
+status: active
+owner: platform-team
 lifecycle: active
 schema_version: 1
 relates_to:

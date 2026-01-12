@@ -2,6 +2,7 @@
 id: ADR-0134-metadata-inheritance-active-governance-and-leak-protection
 title: metadata
 type: adr
+domain: platform-core
 ---
 
 id: ADR-0134-metadata-inheritance-active-governance-and-leak-protection

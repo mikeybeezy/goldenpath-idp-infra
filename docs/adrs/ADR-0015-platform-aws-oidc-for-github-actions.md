@@ -3,11 +3,10 @@ id: ADR-0015-platform-aws-oidc-for-github-actions
 title: 'ADR-0015: Use AWS OIDC for GitHub Actions authentication'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - ADR-0015
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

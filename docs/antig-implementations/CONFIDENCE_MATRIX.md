@@ -2,13 +2,26 @@
 id: CONFIDENCE_MATRIX
 title: Automation Confidence Matrix
 type: documentation
+domain: platform-core
+applies_to: []
 owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 status: active
 category: governance
 ---
 
 # IDP Automation Confidence Matrix (Five-Star Approval)
-
 
 > "As velocity increases, the cost of brittleness becomes exponential. We don't just ship; we certify."
 

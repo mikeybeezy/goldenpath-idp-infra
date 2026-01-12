@@ -2,6 +2,7 @@
 id: ADR-0120-metadata-inheritance-and-active-governance
 title: metadata
 type: adr
+domain: platform-core
 ---
 
 id: ADR-0120-metadata-inheritance-and-active-governance

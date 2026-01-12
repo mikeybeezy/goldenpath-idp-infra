@@ -6,7 +6,7 @@ status: superseded
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
-lifecycle: active
+supported_until: 2028-01-04
 version: '1.0'
 superseded_by: ADR-0049
 relates_to:
@@ -14,7 +14,6 @@ relates_to:
   - ADR-0049
   - ADR-0049-platform-pragmatic-observability-baseline
   - ADR-0069
-supported_until: 2028-01-04
 breaking_change: false
 ---
 

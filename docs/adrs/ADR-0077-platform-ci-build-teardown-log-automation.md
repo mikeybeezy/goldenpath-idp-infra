@@ -3,6 +3,7 @@ id: ADR-0077-platform-ci-build-teardown-log-automation
 title: 'ADR-0077: CI build/teardown log automation'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

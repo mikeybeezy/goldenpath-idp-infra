@@ -3,6 +3,7 @@ id: ADR-0070-platform-terraform-aws-lb-controller
 title: 'ADR-0070: Terraform Management of AWS Load Balancer Controller'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

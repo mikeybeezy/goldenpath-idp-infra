@@ -2,13 +2,15 @@
 id: CL-0072-emoji-usage-policy-and-enforcement
 title: Emoji Usage Policy & Automated Enforcement
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: none
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
 version: 1.0
 lifecycle: active
 relates_to:

@@ -3,6 +3,7 @@ id: ADR-0030-platform-precreated-iam-policies
 title: 'ADR-0030: Pre-create IAM policies for IRSA controllers in V1'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

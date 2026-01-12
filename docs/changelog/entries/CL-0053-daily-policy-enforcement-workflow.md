@@ -3,13 +3,14 @@ id: CL-0053-daily-policy-enforcement-workflow
 title: 'CL-0053: Daily Policy Enforcement Workflow'
 type: changelog
 status: planned
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 version: '1.0'
 lifecycle: active
 relates_to:

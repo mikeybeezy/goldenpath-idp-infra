@@ -3,6 +3,7 @@ id: ADR-0075-app-example-deployments
 title: 'ADR-0075: App example deployments via Argo CD, Helm, and Kustomize'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

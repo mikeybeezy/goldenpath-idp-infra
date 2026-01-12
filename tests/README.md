@@ -2,13 +2,26 @@
 id: TESTS_ROOT
 title: Testing Strategy
 type: documentation
-owner: platform-team
-status: active
+applies_to: []
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: none
+  maturity: 1
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 category: testing
 ---
 
 # 📊 Platform Testing Dashboard
-
 
 **Status:** ✅ 100% Pass Rate | **Automation Maturity:**  (Validated) | **Latest Update:** 2026-01-07
 

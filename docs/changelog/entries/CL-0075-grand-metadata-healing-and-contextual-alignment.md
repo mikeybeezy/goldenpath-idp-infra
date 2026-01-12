@@ -2,6 +2,8 @@
 id: CL-0075-grand-metadata-healing-and-contextual-alignment
 title: 'CL-0075: Grand Metadata Healing and Contextual Alignment'
 type: changelog
+status: active
+owner: platform-team
 ---
 
 # CL-0075: Grand Metadata Healing and Contextual Alignment

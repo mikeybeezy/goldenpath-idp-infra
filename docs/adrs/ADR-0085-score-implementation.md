@@ -3,11 +3,10 @@ id: ADR-0085-score-implementation
 title: 'ADR-0085: Implementing Score in V1'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - ADR-0085
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

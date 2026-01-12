@@ -3,6 +3,7 @@ id: ADR-0052-platform-kube-prometheus-stack-bundle
 title: 'ADR-0052: Use kube-prometheus-stack as the V1 monitoring bundle'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

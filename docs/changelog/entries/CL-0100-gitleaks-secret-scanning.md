@@ -2,13 +2,15 @@
 id: CL-0100
 title: 'CL-0100: Gitleaks secret scanning'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: low
   security_risk: medium
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 lifecycle: active
 version: '1.0'
 relates_to:

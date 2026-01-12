@@ -2,13 +2,15 @@
 id: CL-0073-conclusive-governance-routing-architecture
 title: Conclusive Governance Routing & Compliance Engine
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
 risk_profile:
   production_impact: medium
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
 version: 1.0
 lifecycle: active
 relates_to:

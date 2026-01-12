@@ -2,6 +2,10 @@
 id: AGENT_FIRST_BOOT
 title: AI Agent First-Boot Protocol
 type: documentation
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
 ---
 
 # AI Agent First-Boot Protocol

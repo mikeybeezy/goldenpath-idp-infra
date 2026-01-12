@@ -3,6 +3,7 @@ id: ADR-0012-platform-repo-decoupling-options
 title: 'ADR-0012: Repo decoupling options for infra and platform tooling'
 type: adr
 status: active
+domain: platform-core
 lifecycle: active
 version: '1.0'
 relates_to:

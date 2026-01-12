@@ -3,14 +3,13 @@ id: ADR-0047-platform-teardown-destroy-timeout-retry
 title: 'ADR-0047: Retry Terraform destroy after timeout with cluster-scoped LB cleanup'
 type: adr
 status: active
-lifecycle: active
+supported_until: 2027-01-03
 version: '1.0'
 relates_to:
   - 15_TEARDOWN_AND_CLEANUP
   - ADR-0045
   - ADR-0045-platform-teardown-lb-delete-default
   - ADR-0047
-supported_until: 2027-01-03
 breaking_change: false
 ---
 

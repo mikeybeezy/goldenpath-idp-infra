@@ -2,19 +2,12 @@
 id: pull_request_template
 title: Pull Request Template
 type: template
-owner: platform-team
-status: active
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 lifecycle: active
-category: platform
 version: 1.0
-dependencies: []
 relates_to:
   - 24_PR_GATES
   - 04_PR_GUARDRAILS

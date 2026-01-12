@@ -3,6 +3,7 @@ id: ADR-0089-closed-loop-metadata-injection
 title: 'ADR-0089: Closed-Loop Metadata Injection'
 type: adr
 status: active
+domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver

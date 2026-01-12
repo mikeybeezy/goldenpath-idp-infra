@@ -2,13 +2,15 @@
 id: CL-0097
 title: 'CL-0097: Tooling config identity sidecars'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
 risk_profile:
   production_impact: none
   security_risk: low
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
 lifecycle: active
 version: '1.0'
 relates_to:

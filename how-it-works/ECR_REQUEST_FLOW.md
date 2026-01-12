@@ -1,8 +1,7 @@
 ---
 id: HIW_ECR_FLOW
-title: "How It Works: ECR Request Flow"
-status: active
-version: "1.0"
+title: 'How It Works: ECR Request Flow'
+type: documentation
 relates_to:
   - docs/adrs/ADR-0095-self-service-registry-creation.md
   - scripts/scaffold_ecr.py

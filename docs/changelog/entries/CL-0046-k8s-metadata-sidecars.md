@@ -2,13 +2,15 @@
 id: CL-0046-k8s-metadata-sidecars
 title: 'CL-0046: K8s Metadata Sidecar Integration'
 type: changelog
+status: active
+owner: platform-team
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: silver
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: silver
 version: '1.0'
 lifecycle: active
 supported_until: 2028-01-01
