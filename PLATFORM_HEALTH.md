@@ -12,9 +12,9 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-12 20:53:22` | **V1 Readiness**: `93.5%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-12 23:52:01` | **V1 Readiness**: `93.5%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
-**Realized Value**: `0.0 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Realized Value**: `106.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
@@ -25,19 +25,19 @@ relates_to:
 | :--- | :--- | :--- |
 | **Metadata Integrity** | ✅ | 100.0% |
 | **Injection Integrity** | ✅ | 100.0% |
-| **Architecture Maturity** | 🚧 | 93/138 Active |
-| **Changelog Activity** | ✅ | 119 Entries |
+| **Architecture Maturity** | 🚧 | 95/141 Active |
+| **Changelog Activity** | ✅ | 120 Entries |
 
 ## Knowledge Graph Vitality
 
 | Metric | Count | Source |
 | :--- | :--- | :--- |
-| **Architecture Decisions** | 138 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
-| **Automation Scripts** | 40 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
-| **Certified Scripts (M3)** | 3/46 (7%) | [Certification Matrix](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md) |
-| **CI Workflows** | 43 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 119 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 545 | Repository Scan |
+| **Architecture Decisions** | 141 | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |
+| **Automation Scripts** | 45 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
+| **Certified Scripts (M3)** | 1/46 (2%) | [Certification Matrix](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md) |
+| **CI Workflows** | 47 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
+| **Change Logs** | 120 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 546 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -66,8 +66,8 @@ relates_to:
 pie title Production Impact distribution
     "HIGH" : 29
     "MEDIUM" : 33
-    "LOW" : 430
-    "NONE" : 52
+    "LOW" : 432
+    "NONE" : 51
 ```
 
 ## Governance Maturity
@@ -82,7 +82,7 @@ pie title Production Impact distribution
 ## Project Realized Value (Heartbeat)
 
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **0.0 hours**.
+> Total realized value reclaimed through automation heartbeats: **106.4 hours**.
 
 - **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)
 
