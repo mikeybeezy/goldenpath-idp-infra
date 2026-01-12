@@ -95,13 +95,13 @@ graph TD
 ### 🚫 CI-Only Write Boundary
 To maintain the integrity of the audit log, only the **GitHub Actions Service Account** is permitted to write to the registry branch. Humans have Read-Only access, protecting the log from accidental or malicious tampering.
 
-### 🏎️ Atomic Pulse Updates
+###  Atomic Pulse Updates
 When a "pulse" is recorded, the CI updates the `latest/` pointer, creates the `history/` entry, and regenerates the `UNIFIED_DASHBOARD.md` in a **single atomic commit**. This ensures the "Live" view and "History" are always perfectly synchronized.
 
-### 🚦 Concurrency & Ordering
+###  Concurrency & Ordering
 To prevent "last-writer-wins" collisions during rapid merges, the registry employs **Ordered Queueing**. Using GitHub Actions concurrency groups (e.g., `govreg-dev`), the engine ensures that updates are processed in strict chronological order, even if multiple PRs are merged seconds apart.
 
-### 🔗 Visibility & UX (PR Feedback Loop)
+###  Visibility & UX (PR Feedback Loop)
 The registry is "Hidden but Authoritative." To maintain developer visibility:
 1. **README Integration**: The root README.md links directly to the `latest` reports.
 2. **PR Comments**: On merge, the CI posts a comment with direct links to the new registry artifacts, the generation SHA, and a pass/fail summary.

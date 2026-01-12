@@ -42,10 +42,9 @@ def get_meta(path: Path) -> dict:
 
 def main() -> int:
     rows = []
-    
     # Filter for scripts, exclude dirs and lib/
     scripts = sorted([
-        p for p in SCRIPTS_DIR.glob("*") 
+        p for p in SCRIPTS_DIR.glob("*")
         if p.is_file() 
         and p.suffix in (".py", ".sh", ".bash")
         and p.name != "__init__.py"

@@ -38,7 +38,6 @@ class TestStandardizeMetadata(unittest.TestCase):
         """Test that dry_run=True prevents file modification."""
         filename = "docs/test_doc.md"
         original_content = "# My Test Doc\nContent."
-        
         # Create file without metadata
         self.create_file(filename, original_content)
         abs_path = os.path.join(self.test_dir, filename)
@@ -46,7 +45,6 @@ class TestStandardizeMetadata(unittest.TestCase):
         # Run with dry_run=True using context manager to capture print output
         with patch('builtins.print') as mock_print:
             standardize_metadata.standardize_file(abs_path, dry_run=True)
-            
             # Verify "Would" message printed
             # mock_print.assert_any_call(f"[DRY-RUN] Would standardize: {abs_path}")
 
@@ -57,7 +55,6 @@ class TestStandardizeMetadata(unittest.TestCase):
         """Test that normal run adds metadata frontmatter."""
         filename = "docs/test_doc_2.md"
         original_content = "# Test Doc 2\nContent."
-        
         self.create_file(filename, original_content)
         abs_path = os.path.join(self.test_dir, filename)
 
@@ -76,13 +73,13 @@ class TestStandardizeMetadata(unittest.TestCase):
         # Create a mandated zone directory
         zone_dir = os.path.join(self.test_dir, "envs/development")
         os.makedirs(zone_dir, exist_ok=True)
-        
+
         # Mock sys.argv or call main logic?
         # Since main() does the crawling, let's just test the logic concept
-        # or mock the main loop. 
-        # Actually, standardize_metadata.main() iterates and checks sidecars. 
+        # or mock the main loop.
+        # Actually, standardize_metadata.main() iterates and checks sidecars.
         # Testing main() is harder due to arg parsing.
-        
+
         # Let's trust the unit tests on standardize_file cover the core logic
         # and leave integration testing of directory crawling for later.
         pass
