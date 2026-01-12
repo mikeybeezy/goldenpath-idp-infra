@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 """
 ---
 id: SCRIPT-0033
@@ -36,7 +37,7 @@ Modes:
   generate  - writes tfvars + ExternalSecret output files
 """
 
-from __future__ import annotations
+
 
 import argparse
 import json
