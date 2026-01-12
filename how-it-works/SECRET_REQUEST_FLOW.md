@@ -162,3 +162,10 @@ graph LR
 *   **Out-of-Band Value Handling**: The YAML contract defines the *container* and *governance*, but **never** the secret value itself. Values are injected directly into AWS Secrets Manager via secure out-of-band channels, keeping sensitive data out of Git entirely.
 *   **Deterministic Naming**: To prevent collisions in a multi-tenant environment, the parser enforces a standardized naming convention: `goldenpath/<env>/<service>/<name>`.
 *   **Least-Privilege by Default**: Based on the `read_principals` and `write_principals` defined in the YAML, the parser automatically calculates and injects resource-level IAM policies, ensuring only authorized workloads can access the secret.
+
+---
+
+## 📖 Operational Guidance
+
+For detailed instructions on running the Secret Request Parser locally and performing surgical Terraform plans, see:
+*   **[RB-0026: Local Secret Generation & Targeting](file:///Users/mikesablaze/goldenpath-idp-infra/docs/70-operations/runbooks/RB-0026-local-secret-generation.md)**

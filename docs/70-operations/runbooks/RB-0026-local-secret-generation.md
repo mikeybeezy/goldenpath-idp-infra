@@ -3,7 +3,7 @@ id: RB-0026
 title: Local Secret Generation & Targeting
 type: runbook
 status: active
-version: "1.0"
+version: "1.1"
 relates_to:
   - how-it-works/SECRET_REQUEST_FLOW.md
   - ADR-0144-intent-to-projection-parser.md
@@ -74,11 +74,6 @@ In our platform, a secret isn't functional until it exists in both AWS and Kuber
 1.  **Infrastructure (AWS)**: The generated `*.auto.tfvars.json` tells Terraform to create the secret and the IAM policy in AWS Secrets Manager.
 2.  **Projection (K8s)**: The generated `ExternalSecret` manifest tells the **External Secrets Operator (ESO)** in your cluster *which* AWS secret to fetch and *where* to put it in Kubernetes.
 
-> [!IMPORTANT]
-> **Without the Parser**, you have a secret in the cloud but no way for your application to see it. **Without Terraform**, you have a request in the cluster that will fail because the cloud resource doesn't exist.
-
----
-
 ---
 
 ## 🚀 Next Steps (Closing the Loop)
@@ -86,18 +81,29 @@ In our platform, a secret isn't functional until it exists in both AWS and Kuber
 After the parser generates the implementation artifacts, you must follow these steps to bring the secret to life:
 
 ### 1. Provision the AWS Resource
-Navigate to the Terraform environment and apply the changes. 
+Navigate to the Terraform environment and apply the changes.
 
 > [!IMPORTANT]
 > **Subdirectory Discovery**: Terraform only automatically loads `*.auto.tfvars.json` from the **current directory**. Since the parser organizes files into `secrets/generated/`, you must explicitly pass the file using the `-var-file` flag.
 
 ```bash
+# Ensure you are in the environment root
 cd envs/dev
+
 # Target the specific secret and pass the generated var-file
 terraform plan \
   -target='module.app_secrets["payments-payments-db-credentials"]' \
   -var-file='secrets/generated/payments/SEC-0007.auto.tfvars.json'
+
+terraform apply \
+  -target='module.app_secrets["payments-payments-db-credentials"]' \
+  -var-file='secrets/generated/payments/SEC-0007.auto.tfvars.json'
 ```
+
+#### 🌍 Selecting the Region
+The AWS region is controlled by the `aws_region` variable in your environment's `terraform.tfvars`.
+*   To check: `grep "aws_region" terraform.tfvars` (from `envs/dev/`)
+*   To override locally: Use `-var="aws_region=us-east-1"` in your plan command.
 
 ### 2. Commit and Sync (GitOps)
 The `ExternalSecret` manifest must be committed to the repository for ArgoCD to pick it up.
@@ -114,16 +120,14 @@ git push origin <your-branch>
 
 ---
 
-### Linking to Terraform
-
----
-
 ## 🚑 Troubleshooting
 
 | Issue | Root Cause | Resolution |
 | :--- | :--- | :--- |
+| `AccessDeniedException` | Your local IAM user lacks `secretsmanager:CreateSecret`. | Ensure your local principal has the necessary permissions or run via CI/CD. |
 | `missing required fields` | The YAML is incomplete. | Check [ADR-0143](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0143-secret-request-contract.md) for required fields. |
 | `invalid rotationClass` | Governance violation. | Ensure `risk: high` secrets have a non-none rotation class. |
+| `Failed to read variables file` | Path mismatch. | Ensure you are in `envs/dev` and the relative path to the var-file is correct. |
 | `ModuleNotFoundError` | Missing Python dependency. | Run `pip install PyYAML`. |
 
 ---
