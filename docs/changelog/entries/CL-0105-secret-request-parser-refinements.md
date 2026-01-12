@@ -18,11 +18,11 @@ supported_until: 2028-01-11
 breaking_change: false
 ---
 
-# CL-0105: Secret Request Parser refinements and security upgrades
+## CL-0105: Secret Request Parser refinements and security upgrades
 
 Date: 2026-01-11
 Owner: platform-team
-Scope: Secret Manager Infrastructure, Secret Request Parser
+Scope: Secret Manager Infrastructure, `secret_request_parser.py`
 Related: PR #216, docs/adrs/ADR-0143-secret-request-contract.md, docs/adrs/ADR-0144-intent-to-projection-parser.md
 
 ## Summary

@@ -1,11 +1,8 @@
 ---
 id: ADR-0144
-title: "Architecture of the Intent-to-Projection Parser (The Golden Path Core)"
+title: Architecture of the Intent-to-Projection Parser (The Golden Path Core)
 type: adr
 domain: architecture
-owner: platform-team
-status: accepted
-lifecycle: active
 relates_to:
   - ADR-0142-declarative-platform-contracts.md
   - ADR-0143-secret-request-contract.md
@@ -30,8 +27,12 @@ We will centralize platform intelligence into a standalone **Intent-to-Projectio
 
 The Parser is responsible for translating human-readable **Intent** (YAML) into machine-efficient **Implementation** (IaC/GitOps).
 
+### The Engine: `secret_request_parser.py`
+The architectural core is the `secret_request_parser.py` script. It handles the validation of developer intent against the `SecretRequest` schema, enforces secondary governance policies (like mandatory rotation), and emits the project-specific implementations.
+
 ### Architecture Diagram
 ```mermaid
+
 graph TD
     subgraph Input ["Developer Intent"]
         A["Contract YAML (SecretRequest)"]
@@ -63,26 +64,33 @@ graph TD
 ## Internal Mechanisms
 
 ### 1. The Contract Layer (Input)
-The Parser accepts standardized YAML contracts (defined in `ADR-0142`). These contracts specify **What** is needed (e.g., "I need a database secret for payments in dev") rather than **How** to build it.
+
+The Parser consumes YAML files from `catalogs/secrets/<service>/<env>/<id>.yaml`.
 
 ### 2. The Governance Engine (Shift-Left)
-The Parser encodes the "Rules of the Platform" into executable code.
+
+The core logic validates the intent against organizational policies:
+
 - **Semantic Validation**: Ensures that `risk: high` is paired with `rotationClass: standard`.
 - **Naming Enforcement**: Generates deterministic paths (e.g., `goldenpath/<env>/<service>/<name>`) to prevent collisions and ensure observability.
 - **Least Privilege**: Calculates the minimum required IAM permissions based on the declared access list.
 
 ### 3. The Multi-Target Emitter (Output)
+
 A single input results in multiple synchronized outputs:
+
 - **Cloud Projection**: Emits JSON/HCL into the environment's `generated/` directory for Terraform to provision the physical resource.
 - **Cluster Projection**: Emits Kubernetes manifests (e.g., ExternalSecrets) into the cluster's GitOps overlay. **These manifests are placed in directories explicitly tracked and synced by ArgoCD**, ensuring the cluster state is automatically reconciled with the generated blueprints.
 
 ## Rationale
+
 - **Decoupling**: We can update the Terraform module or swap AWS for Vault entirely within the Parser's `Translation Layer` without the developer ever changing their YAML file.
 - **Security by Default**: Policy enforcement is moved from "Manual Review" to "Automated Build Gate."
 - **Velocity**: Developers can self-serve infrastructure in minutes using templates that they already understand (simple YAML).
 - **Parity**: Ensures that the resource in AWS is *exactly* what is projected into Kubernetes, eliminating "Ghost Secrets" or naming mismatches.
 
 ## Compliance
+
 - All new platform resources (S3, RDS, ECR, etc.) must implement a dedicated Parser module.
 - The Parser must be executed as a mandatory CI gate on every Infrastructure PR.
 - Core governance logic (rotation, encryption) must reside in the Parser, not solely in the Terraform modules.
