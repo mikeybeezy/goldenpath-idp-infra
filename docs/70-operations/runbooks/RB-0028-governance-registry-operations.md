@@ -92,7 +92,7 @@ Only CI may push to `governance-registry`.
 **Branch protection settings:**
 - Restrict who can push: ✅ Enabled
 - Allow GitHub Actions / CI bot identity: ✅ Enabled
-- Force pushes: ❌ Disabled
+- Force pushes:  Disabled
 
 ## Concurrency / Ordering
 Registry updates must be **atomic**:

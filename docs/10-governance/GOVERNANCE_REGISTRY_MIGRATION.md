@@ -6,8 +6,8 @@ type: documentation
 
 # Log Files - Governance Registry Migration Assessment
 
-**Date:** 2026-01-12  
-**Type:** Supplemental Migration Analysis  
+**Date:** 2026-01-12
+**Type:** Supplemental Migration Analysis
 
 ---
 
@@ -30,7 +30,7 @@ type: documentation
 
 ---
 
-### ❌ **DO NOT MIGRATE** - Hand-Maintained Documentation
+### **DO NOT MIGRATE** - Hand-Maintained Documentation
 
 | Artifact | Location | Type | Reason |
 |----------|----------|------|--------|
@@ -60,7 +60,7 @@ Last updated: `2026-01-12 06:03:12`
 - **Action:** Delete `HEALTH_AUDIT_LOG.md` from development and add a redirect:
   ```markdown
   # ⚠️ This file has been migrated
-  
+
   Platform Health reports are now maintained in the Governance Registry:
   - **Latest:** [governance-registry/environments/development/latest/PLATFORM_HEALTH.md]
   - **History:** [governance-registry/environments/development/history/]
@@ -108,8 +108,8 @@ Last updated: `2026-01-12 06:03:12`
   - Links to specific GitHub Actions runs
 
 **Why It Should NOT Migrate:**
-- ❌ **Partially manual** (humans add context and observations)
-- ❌ **Intent domain** (documents learnings and strategic decisions)
+-  **Partially manual** (humans add context and observations)
+-  **Intent domain** (documents learnings and strategic decisions)
 - ⚠️ **Hand-curated summaries** (not reproducible from code alone)
 
 **Recommendation:** **KEEP IN DEVELOPMENT**
@@ -125,31 +125,31 @@ Last updated: `2026-01-12 06:03:12`
 
 ## Migration Impact Summary
 
-### Files to Migrate to Governance Registry:
+### Files to Migrate to Governance Registry
 
 1. ✅ **HEALTH_AUDIT_LOG.md** → **DELETE** (duplicate of PLATFORM_HEALTH.md)
 2. ✅ **build-timings.csv** → **MIGRATE** (pure machine-generated data)
 
-### Files to Keep in Development:
+### Files to Keep in Development
 
-1. ❌ **BUILD_RUN_LOG.md** (valuable human context)
-2. ❌ **CHANGELOG_GOVERNANCE.md** (policy document)
-3. ❌ **AI_CHANGELOG.md** (agent instructions)
-4. ❌ **CHANGELOG_LABELS.md** (manual standards)
+1.  **BUILD_RUN_LOG.md** (valuable human context)
+2.  **CHANGELOG_GOVERNANCE.md** (policy document)
+3.  **AI_CHANGELOG.md** (agent instructions)
+4.  **CHANGELOG_LABELS.md** (manual standards)
 
 ---
 
 ## Updated Migration Plan
 
 ### Phase 1: Duplicate Cleanup (Immediate)
-- 🔲 Delete `HEALTH_AUDIT_LOG.md`
-- 🔲 Add redirect placeholder pointing to governance registry
+-  Delete `HEALTH_AUDIT_LOG.md`
+-  Add redirect placeholder pointing to governance registry
 
 ### Phase 2: Build Timings Migration (Week 1)
-- 🔲 Update `generate-build-log.sh` to write to `_govreg_out/`
-- 🔲 Update `generate-teardown-log.sh` to append to same file
-- 🔲 Add `build_timings.csv` to registry writer workflow
-- 🔲 Update `BUILD_RUN_LOG.md` to reference registry for raw data
+-  Update `generate-build-log.sh` to write to `_govreg_out/`
+-  Update `generate-teardown-log.sh` to append to same file
+-  Add `build_timings.csv` to registry writer workflow
+-  Update `BUILD_RUN_LOG.md` to reference registry for raw data
 
 ---
 

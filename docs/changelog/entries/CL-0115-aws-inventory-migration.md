@@ -90,7 +90,7 @@ fi
 ```python
 reports_dir = Path("reports/aws-inventory")
 inventory_reports = sorted(
-    [p for p in reports_dir.glob("aws-inventory-*.json") 
+    [p for p in reports_dir.glob("aws-inventory-*.json")
      if "aws-inventory-ecr-" not in p.name],
     ...
 )
@@ -184,7 +184,7 @@ integrity:
 **Manual Verification:**
 1. ✅ Workflow updated to include AWS inventory copying
 2. ✅ Find command tested locally (correctly excludes ECR files)
-3. 🔲 Workflow execution pending (will trigger on next push)
+3.  Workflow execution pending (will trigger on next push)
 
 **Expected Outcome:**
 - Inventory files appear in `governance-registry/environments/development/latest/aws-inventory/`
@@ -215,10 +215,10 @@ If issues arise:
 
 ## Next Steps
 
-1. 🔲 **Trigger Migration**: Push this change to trigger workflow
-2. 🔲 **Verify Artifacts**: Check governance-registry for AWS inventory files
-3. 🔲 **Update Documentation**: Add AWS inventory to migration guide
-4. 🔲 **Implement Cleanup**: Create workflow to remove old reports from development
+1.  **Trigger Migration**: Push this change to trigger workflow
+2.  **Verify Artifacts**: Check governance-registry for AWS inventory files
+3.  **Update Documentation**: Add AWS inventory to migration guide
+4.  **Implement Cleanup**: Create workflow to remove old reports from development
 
 ## Related Changes
 
@@ -228,6 +228,6 @@ If issues arise:
 
 ---
 
-**Migration Completed:** 2026-01-12  
-**Status:** ✅ Ready for Testing  
+**Migration Completed:** 2026-01-12
+**Status:** ✅ Ready for Testing
 **Next Trigger:** Automatic on push to development

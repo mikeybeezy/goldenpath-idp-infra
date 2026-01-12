@@ -6,12 +6,12 @@ type: test-suite
 
 # Governance Registry Mirror - Feature Test Plan
 
-**Test ID:** FT-GOVREG-001  
-**Feature:** Governance Registry Mirror Pattern  
-**Version:** 1.0  
-**Created:** 2026-01-12  
-**Owner:** Platform Team  
-**Test Type:** Feature Test  
+**Test ID:** FT-GOVREG-001
+**Feature:** Governance Registry Mirror Pattern
+**Version:** 1.0
+**Created:** 2026-01-12
+**Owner:** Platform Team
+**Test Type:** Feature Test
 
 ---
 
@@ -19,7 +19,7 @@ type: test-suite
 
 - [x] **What are we testing?** Governance Registry Mirror - First Pulse Generation
 - [x] **Why are we testing it?** To verify ADR-0145 implementation works end-to-end
-- [x] **What's the success criteria?** 
+- [x] **What's the success criteria?**
   - Platform health report generated with required metadata
   - Report committed to `governance-registry` branch
   - Both `latest/` and `history/` updated atomically
@@ -116,33 +116,33 @@ governance-registry/
 ## Test Steps
 
 ### Step 1: Trigger Workflow
-**Action:** Manually trigger `governance-registry-writer.yml` from GitHub Actions UI  
-**Expected:** Workflow runs successfully  
+**Action:** Manually trigger `governance-registry-writer.yml` from GitHub Actions UI
+**Expected:** Workflow runs successfully
 **Validation:** Check GitHub Actions run status
 
 ### Step 2: Verify Report Generation
-**Action:** Check workflow logs for "Generate governance artifacts" step  
-**Expected:** `PLATFORM_HEALTH.md` created in workspace  
+**Action:** Check workflow logs for "Generate governance artifacts" step
+**Expected:** `PLATFORM_HEALTH.md` created in workspace
 **Validation:** Logs show file creation
 
 ### Step 3: Verify Metadata Injection
-**Action:** Inspect generated `PLATFORM_HEALTH.md` in workflow artifacts  
-**Expected:** Contains all required frontmatter fields  
+**Action:** Inspect generated `PLATFORM_HEALTH.md` in workflow artifacts
+**Expected:** Contains all required frontmatter fields
 **Validation:** All fields from `govreg.schema.yaml` present
 
 ### Step 4: Verify Atomic Commit
-**Action:** Check `governance-registry` branch history  
-**Expected:** Single commit updating both `latest/` and `history/`  
+**Action:** Check `governance-registry` branch history
+**Expected:** Single commit updating both `latest/` and `history/`
 **Validation:** `git log --stat` shows both paths in one commit
 
 ### Step 5: Verify Validator Enforcement
-**Action:** Check `govreg-validate.yml` workflow run  
-**Expected:** Validation passes (green check)  
+**Action:** Check `govreg-validate.yml` workflow run
+**Expected:** Validation passes (green check)
 **Validation:** Workflow completes without errors
 
 ### Step 6: Verify Chain of Custody
-**Action:** Compare `source.sha` in report with triggering commit  
-**Expected:** SHA matches the development branch commit  
+**Action:** Compare `source.sha` in report with triggering commit
+**Expected:** SHA matches the development branch commit
 **Validation:** Manual inspection of frontmatter
 
 ---
@@ -184,11 +184,11 @@ If test fails:
 
 ## Test Schedule
 
-**Planned Execution:** 2026-01-12 (Today)  
-**Expected Duration:** 15 minutes  
+**Planned Execution:** 2026-01-12 (Today)
+**Expected Duration:** 15 minutes
 **Test Record:** `tests/feature-tests/governance-registry-mirror/test-record-20260112.md`
 
 ---
 
-**Test Plan Approved:** Ready for execution  
+**Test Plan Approved:** Ready for execution
 **Next Step:** Execute test and document results

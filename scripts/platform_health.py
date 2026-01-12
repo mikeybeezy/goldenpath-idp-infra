@@ -452,7 +452,7 @@ def generate_report(target_dir='.'):
     lines.append("")
     lines.append(f"| Metric | Count | Source |")
     lines.append(f"| :--- | :--- | :--- |")
-    
+
     cert_rate = (script_cert_stats['certified'] / script_cert_stats['total'] * 100) if script_cert_stats['total'] > 0 else 0
     lines.append(f"| **Architecture Decisions** | {adr_stats['total']} | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |")
     lines.append(f"| **Automation Scripts** | {script_stats['total']} | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |")

@@ -6,11 +6,11 @@ type: test-suite
 
 # Governance Registry Mirror - Test Record
 
-**Date:** 2026-01-12  
-**Tester:** Platform Team  
-**Status:** ✅ **PASS**  
-**Test Type:** Feature Test (End-to-End)  
-**Test Plan:** [test-plan.md](./test-plan.md)  
+**Date:** 2026-01-12
+**Tester:** Platform Team
+**Status:** ✅ **PASS**
+**Test Type:** Feature Test (End-to-End)
+**Test Plan:** [test-plan.md](./test-plan.md)
 
 ---
 
@@ -45,22 +45,22 @@ Successfully executed the first governance pulse to the `governance-registry` br
 ## Execution
 
 ### Step 1: Trigger Workflow
-**Action:** Push commit `dc65243` to development branch  
-**Command:** `git push origin development`  
-**Expected:** Workflow auto-triggers on push  
-**Actual:** Workflow triggered successfully (Run #6)  
+**Action:** Push commit `dc65243` to development branch
+**Command:** `git push origin development`
+**Expected:** Workflow auto-triggers on push
+**Actual:** Workflow triggered successfully (Run #6)
 **Status:** ✅ PASS
 
 ### Step 2: Verify Report Generation
-**Action:** Monitor "Generate governance artifacts" step in workflow  
-**Expected:** `PLATFORM_HEALTH.md` created with platform metrics  
-**Actual:** Report generated successfully in 3 seconds  
-**Status:** ✅ PASS  
+**Action:** Monitor "Generate governance artifacts" step in workflow
+**Expected:** `PLATFORM_HEALTH.md` created with platform metrics
+**Actual:** Report generated successfully in 3 seconds
+**Status:** ✅ PASS
 **Evidence:** Workflow logs show successful execution
 
 ### Step 3: Verify Metadata Injection
-**Action:** Inspect `PLATFORM_HEALTH.md` for required frontmatter  
-**Expected:** Contains all fields from `govreg.schema.yaml`  
+**Action:** Inspect `PLATFORM_HEALTH.md` for required frontmatter
+**Expected:** Contains all fields from `govreg.schema.yaml`
 **Actual:** All required metadata fields present:
 ```yaml
 ---
@@ -80,8 +80,8 @@ integrity:
 **Status:** ✅ PASS
 
 ### Step 4: Verify Atomic Commit
-**Action:** Check `governance-registry` branch commit history  
-**Expected:** Single commit updating both `latest/` and `history/`  
+**Action:** Check `governance-registry` branch commit history
+**Expected:** Single commit updating both `latest/` and `history/`
 **Actual:** Commit `8cb588d` with message `govreg: development @ dc652438...` updated:
 - `environments/development/latest/PLATFORM_HEALTH.md`
 - `environments/development/latest/scripts_index.md`
@@ -96,16 +96,16 @@ integrity:
 **Status:** ✅ PASS
 
 ### Step 5: Verify Validator Enforcement
-**Action:** Check `govreg-validate.yml` workflow status  
-**Expected:** Validation passes (no integrity violations)  
-**Actual:** No validation workflow runs found (workflow only triggers on push to `governance-registry`)  
-**Status:** ⚠️ **NOTE**: Validator workflow requires manual push to registry branch to trigger. This is expected behavior - validator runs when CI pushes, not when humans view.  
+**Action:** Check `govreg-validate.yml` workflow status
+**Expected:** Validation passes (no integrity violations)
+**Actual:** No validation workflow runs found (workflow only triggers on push to `governance-registry`)
+**Status:** ⚠️ **NOTE**: Validator workflow requires manual push to registry branch to trigger. This is expected behavior - validator runs when CI pushes, not when humans view.
 **Resolution:** Validator logic is correct; will be tested in future automated runs.
 
 ### Step 6: Verify Chain of Custody
-**Action:** Compare `source.sha` in report with triggering commit  
-**Expected:** SHA matches development branch commit  
-**Actual:** `source.sha: dc652438...` matches commit that triggered workflow  
+**Action:** Compare `source.sha` in report with triggering commit
+**Expected:** SHA matches development branch commit
+**Actual:** `source.sha: dc652438...` matches commit that triggered workflow
 **Status:** ✅ PASS
 
 ---
@@ -123,13 +123,13 @@ integrity:
 ## Evidence
 
 ### Workflow Run
-- **Link:** https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20918696393
+- **Link:** <https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/20918696393>
 - **Duration:** 23 seconds
 - **Status:** Completed successfully
 - **All steps:** Green ✅
 
 ### Registry Branch
-- **Link:** https://github.com/mikeybeezy/goldenpath-idp-infra/tree/governance-registry
+- **Link:** <https://github.com/mikeybeezy/goldenpath-idp-infra/tree/governance-registry>
 - **Latest Report:** [environments/development/latest/PLATFORM_HEALTH.md](https://github.com/mikeybeezy/goldenpath-idp-infra/blob/governance-registry/environments/development/latest/PLATFORM_HEALTH.md)
 - **History Snapshot:** [environments/development/history/2026-01-12-1205Z-dc65243/](https://github.com/mikeybeezy/goldenpath-idp-infra/tree/governance-registry/environments/development/history/2026-01-12-1205Z-dc65243)
 

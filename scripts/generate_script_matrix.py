@@ -45,14 +45,14 @@ def main() -> int:
     # Filter for scripts, exclude dirs and lib/
     scripts = sorted([
         p for p in SCRIPTS_DIR.glob("*")
-        if p.is_file() 
+        if p.is_file()
         and p.suffix in (".py", ".sh", ".bash")
         and p.name != "__init__.py"
     ])
 
     for p in scripts:
         meta = get_meta(p)
-        
+
         # Safe getters for nested dicts
         dry_run = meta.get("dry_run", {}) if isinstance(meta.get("dry_run"), dict) else {}
         test = meta.get("test", {}) if isinstance(meta.get("test"), dict) else {}
@@ -70,7 +70,7 @@ def main() -> int:
         })
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    
+
     md = []
     md.append("---")
     md.append("id: SCRIPT_CERTIFICATION_MATRIX")
@@ -83,11 +83,11 @@ def main() -> int:
     md.append(f"**Total Scripts**: {len(rows)}\n")
     md.append("| Script | ID | Owner | Maturity | Dry-run | Test Runner | Evidence | Prod Impact |")
     md.append("|---|---|---|---:|---:|---|---|---|")
-    
+
     for r in rows:
         # Format booleans nicely
         dry_run_icon = "✅" if r['dry_run'] is True else "❌"
-        
+
         # Format maturity
         mat = str(r['maturity'])
         if mat == "3": mat = "⭐⭐⭐ 3"
@@ -96,9 +96,9 @@ def main() -> int:
         else: mat = "0"
 
         md.append(f"| `{r['path']}` | `{r['id']}` | `{r['owner']}` | {mat} | {dry_run_icon} | `{r['test_runner']}` | `{r['evidence']}` | `{r['prod_impact']}` |")
-    
+
     md.append("\n*Generated automatically by CI. Do not edit manually.*")
-    
+
     OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
     print(f"[matrix] wrote {OUT}")
     return 0

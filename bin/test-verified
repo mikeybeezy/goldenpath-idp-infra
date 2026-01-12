@@ -52,7 +52,7 @@ def get_git_info():
 
 def generate_proof(script_id, script_path, runner, outcome, summary={}):
     PROOF_DIR.mkdir(parents=True, exist_ok=True)
-    
+
     proof = {
         "id": f"proof-{script_id}",
         "script_id": script_id,
@@ -64,11 +64,11 @@ def generate_proof(script_id, script_path, runner, outcome, summary={}):
         "outcome": outcome,
         "summary": summary
     }
-    
+
     proof_path = PROOF_DIR / f"proof-{script_id}.json"
     with open(proof_path, 'w') as f:
         json.dump(proof, f, indent=2)
-    
+
     print(f"🧾 Proof generated: {proof_path}")
 
 def run_test(script_path, dry_run=False):
@@ -97,7 +97,7 @@ def run_test(script_path, dry_run=False):
     if not command:
         print(f"❌ No test command declared for {script_path}")
         return False
-        
+
     print(f"🔍 Script: {script_id}")
     print(f"🏃 Runner: {test_config.get('runner', 'unknown')}")
     print(f"💻 Command: {command}")
@@ -111,9 +111,9 @@ def run_test(script_path, dry_run=False):
     try:
         # We start the subprocess
         result = subprocess.run(command, shell=True, check=False)
-        
+
         outcome = "passed" if result.returncode == 0 else "failed"
-        
+
         if outcome == "passed":
             print(f"\n✅ Tests Passed!")
             generate_proof(script_id, script_path, test_config.get('runner'), outcome)
@@ -131,7 +131,7 @@ def main():
     parser.add_argument("script", help="Script to test")
     parser.add_argument("--dry-run", action="store_true", help="Visualize execution")
     parser.add_argument("--self-test", action="store_true", help="Run self test")
-    
+
     args = parser.parse_args()
 
     if args.self_test:

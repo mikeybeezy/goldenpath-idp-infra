@@ -1,0 +1,18 @@
+fix end of files.........................................................Passed
+trim trailing whitespace.................................................Passed
+Terraform fmt............................................................Passed
+markdownlint.............................................................Failed
+- hook id: markdownlint
+- exit code: 1
+
+docs/production-readiness-gates/ROADMAP.md:161:198 MD056/table-column-count Table column count [Expected: 11; Actual: 12; Too many cells, extra data will be missing]
+docs/production-readiness-gates/ROADMAP.md:162:207 MD056/table-column-count Table column count [Expected: 11; Actual: 12; Too many cells, extra data will be missing]
+
+Detect hardcoded secrets.................................................Passed
+Doc Metadata Auto-Fix....................................................Passed
+Emoji Usage Policy Enforcer..............................................Passed
+Auto-Heal ADR Index......................................................Passed
+Auto-Heal Script Index...................................................Passed
+Auto-Heal Workflow Index.................................................Passed
+Auto-Heal Script Matrix..................................................Passed
+Validate Script Governance...............................................Passed

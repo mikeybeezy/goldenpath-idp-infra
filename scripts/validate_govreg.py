@@ -43,7 +43,7 @@ def load_schema() -> dict:
     if not SCHEMA_PATH.exists():
         print(f"[govreg-validate] FATAL: Schema not found at {SCHEMA_PATH}", file=sys.stderr)
         sys.exit(2)
-    
+
     with open(SCHEMA_PATH, 'r', encoding='utf-8') as f:
         try:
             # Parse the YAML, skip frontmatter if present
@@ -53,7 +53,7 @@ def load_schema() -> dict:
                 parts = content.split('---', 2)
                 if len(parts) >= 3:
                     content = parts[2]
-            
+
             schema = yaml.safe_load(content)
             return schema.get('properties', {})
         except yaml.YAMLError as e:
@@ -98,7 +98,7 @@ def validate_env_layout(root: Path) -> None:
         dir_path = root / required_dir
         if not dir_path.exists():
             fail(f"Missing required directory: {required_dir}/")
-    
+
     env_root = root / "environments"
     if not env_root.exists():
         return  # Already caught by required_dirs check
@@ -146,7 +146,7 @@ def main() -> None:
 
     print("[govreg-validate] Validating governance registry integrity...")
     print(f"[govreg-validate] Using schema: {SCHEMA_PATH}")
-    
+
     validate_top_level(root)
     validate_env_layout(root)
     validate_markdown_headers(root)

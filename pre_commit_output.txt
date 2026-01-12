@@ -1,0 +1,32 @@
+fix end of files.........................................................Passed
+trim trailing whitespace.................................................Passed
+Terraform fmt............................................................Passed
+markdownlint.............................................................Failed
+- hook id: markdownlint
+- exit code: 1
+
+docs/changelog/entries/CL-0116-standardize-metadata-dry-run.md:48:16 MD026/no-trailing-punctuation Trailing punctuation in heading [Punctuation: ':']
+docs/production-readiness-gates/ROADMAP.md:161:198 MD056/table-column-count Table column count [Expected: 11; Actual: 12; Too many cells, extra data will be missing]
+docs/production-readiness-gates/ROADMAP.md:162:207 MD056/table-column-count Table column count [Expected: 11; Actual: 12; Too many cells, extra data will be missing]
+docs/10-governance/GOVERNANCE_REGISTRY_MIGRATION.md:33:1 MD019/no-multiple-space-atx Multiple spaces after hash on atx style heading [Context: "###  **DO NOT MIGRATE** - Hand..."]
+docs/10-governance/GOVERNANCE_REGISTRY_MIGRATION.md:128:44 MD026/no-trailing-punctuation Trailing punctuation in heading [Punctuation: ':']
+docs/10-governance/GOVERNANCE_REGISTRY_MIGRATION.md:133:33 MD026/no-trailing-punctuation Trailing punctuation in heading [Punctuation: ':']
+tests/feature-tests/governance-registry-mirror/test-record-20260112.md:126:13 MD034/no-bare-urls Bare URL used [Context: "https://github.com/mikeybeezy/..."]
+tests/feature-tests/governance-registry-mirror/test-record-20260112.md:132:13 MD034/no-bare-urls Bare URL used [Context: "https://github.com/mikeybeezy/..."]
+how-it-works/GOVERNANCE_REGISTRY_MIRROR.md:98:1 MD019/no-multiple-space-atx Multiple spaces after hash on atx style heading [Context: "###  Atomic Pulse Updates"]
+how-it-works/GOVERNANCE_REGISTRY_MIRROR.md:101:1 MD019/no-multiple-space-atx Multiple spaces after hash on atx style heading [Context: "###  Concurrency & Ordering"]
+how-it-works/GOVERNANCE_REGISTRY_MIRROR.md:104:1 MD019/no-multiple-space-atx Multiple spaces after hash on atx style heading [Context: "###  Visibility & UX (PR Feedb..."]
+docs/adrs/ADR-0146-schema-driven-script-certification.md:133:1 MD004/ul-style Unordered list style [Expected: asterisk; Actual: dash]
+docs/adrs/ADR-0146-schema-driven-script-certification.md:134:1 MD004/ul-style Unordered list style [Expected: asterisk; Actual: dash]
+docs/adrs/ADR-0146-schema-driven-script-certification.md:135:1 MD004/ul-style Unordered list style [Expected: asterisk; Actual: dash]
+docs/10-governance/SCRIPT_CERTIFICATION_AUDIT.md:112:1 MD019/no-multiple-space-atx Multiple spaces after hash on atx style heading [Context: "##  Implementation Roadmap"]
+docs/10-governance/SCRIPT_CERTIFICATION_AUDIT.md:191:1 MD019/no-multiple-space-atx Multiple spaces after hash on atx style heading [Context: "##  Weekly Review Process"]
+
+Detect hardcoded secrets.................................................Passed
+Doc Metadata Auto-Fix....................................................Passed
+Emoji Usage Policy Enforcer..............................................Passed
+Auto-Heal ADR Index......................................................Passed
+Auto-Heal Script Index...................................................Passed
+Auto-Heal Workflow Index.................................................Passed
+Auto-Heal Script Matrix..................................................Passed
+Validate Script Governance...............................................Passed

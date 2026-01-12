@@ -33,14 +33,14 @@ def get_new_scripts():
     staged = os.popen("git diff --cached --name-only --diff-filter=A").read().strip()
     if not staged:
         return []
-    
+
     new_scripts = []
     for file in staged.split("\n"):
         if file.startswith("scripts/") and file.endswith(".py"):
             rel_path = file.replace("scripts/", "")
             if not is_exempt(rel_path):
                 new_scripts.append(file)
-    
+
     return new_scripts
 
 def has_unit_test(script_path: str) -> bool:
@@ -73,45 +73,45 @@ def has_docstring(script_path: str) -> bool:
 def check_script_certification(script_path: str):
     """Validate certification requirements for a script."""
     issues = []
-    
+
     # Check 1: Module docstring
     if not has_docstring(script_path):
         issues.append("Missing structured docstring (Purpose/Achievement/Value/Relates-To)")
-    
+
     # Check 2: Unit test OR Dry-run (at least one)
     has_test = has_unit_test(script_path)
     has_dry_run = has_dry_run_support(script_path)
-    
+
     if not has_test and not has_dry_run:
         issues.append("Missing BOTH unit test AND dry-run support (need at least one)")
-    
+
     return issues
 
 def main():
     """Main pre-commit hook logic."""
     new_scripts = get_new_scripts()
-    
+
     if not new_scripts:
         sys.exit(0)  # No new scripts, allow commit
-    
+
     print("🔍 Scanning new scripts for certification requirements...")
     print("-" * 60)
-    
+
     all_issues = {}
     for script in new_scripts:
         issues = check_script_certification(script)
         if issues:
             all_issues[script] = issues
-    
+
     if all_issues:
         print("❌ COMMIT BLOCKED: New scripts missing certification requirements\n")
-        
+
         for script, issues in all_issues.items():
             print(f"📄 {script}")
             for issue in issues:
                 print(f"   ❌ {issue}")
             print()
-        
+
         print("=" * 60)
         print("📋 TO FIX:")
         print("=" * 60)
@@ -131,9 +131,9 @@ def main():
         print("=" * 60)
         print("📖 Documentation: docs/10-governance/SCRIPT_CERTIFICATION_AUDIT.md")
         print("=" * 60)
-        
+
         sys.exit(1)  # Block commit
-    
+
     print("✅ All new scripts meet certification requirements")
     sys.exit(0)
 

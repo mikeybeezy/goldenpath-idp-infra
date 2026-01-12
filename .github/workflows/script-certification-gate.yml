@@ -54,7 +54,7 @@ jobs:
 
             This PR adds new scripts that don't meet certification standards.
 
-            ### 📋 Requirements
+            ###  Requirements
 
             Every new script must have **at least one** of:
             - ✅ Unit test in \`tests/unit/test_<script_name>.py\`
@@ -108,7 +108,7 @@ jobs:
       - name: Fail if certification missing
         if: steps.check.outputs.failed == 'true'
         run: |
-          echo "❌ Script certification gate failed"
+          echo " Script certification gate failed"
           echo "See PR comment for remediation steps"
           exit 1
 
@@ -119,7 +119,7 @@ jobs:
           script: |
             const body = `## ✅ Script Certification Passed
 
-            All new scripts meet certification requirements! 🎉
+            All new scripts meet certification requirements!
 
             - Structured documentation ✅
             - Unit tests OR dry-run support ✅

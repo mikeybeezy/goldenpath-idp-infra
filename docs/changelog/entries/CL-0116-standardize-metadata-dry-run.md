@@ -45,7 +45,7 @@ The `standardize_metadata.py` script performs mass edits on hundreds of files to
 ## Solution Implemented
 Refactored `standardize_metadata.py` to support `argparse` and a `--dry-run` flag.
 
-### Key Changes:
+### Key Changes
 1.  **State Protection**: All file write operations (`metadata.yaml` injection, frontmatter updates) are now wrapped in `if not dry_run:` checks.
 2.  **CLI Interface**: Updated from raw `sys.argv` to structured `argparse`.
 3.  **Preview Logging**: In dry-run mode, the script prints exactly what *would* be modified (e.g., `[DRY-RUN] Would standardize: ...`).

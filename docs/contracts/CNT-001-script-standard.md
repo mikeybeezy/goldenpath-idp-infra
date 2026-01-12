@@ -71,7 +71,7 @@ This standard defines explicit quality gates based on maturity `[0-3]`.
 
 | Level | Name | Requirements | Allowed Usage |
 | :--- | :--- | :--- | :--- |
-| **0** | **Ungoverned** | No metadata, no test, no dry-run. | ❌ Blocked by CI |
+| **0** | **Ungoverned** | No metadata, no test, no dry-run. |  Blocked by CI |
 | **1** | **Tracked** | Metadata present + Lintable. | ✅ Experimental / Local Only |
 | **2** | **Validated** | Metadata + Dry-Run supported + Test command declared. | ✅ Standard Automation |
 | **3** | **Certified** | All of Level 2 + **CI Proof** required for Med/High risk scripts. | ✅ High-Impact / Critical Path |

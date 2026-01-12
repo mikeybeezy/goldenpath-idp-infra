@@ -34,7 +34,7 @@ This directory contains git hooks to enforce script certification standards.
 
 ## Pre-Commit Hook: Script Certification
 
-**Purpose:** Prevents committing new scripts without tests or dry-run support  
+**Purpose:** Prevents committing new scripts without tests or dry-run support
 **Enforcement Level:** Local (developer machine) + CI (GitHub Actions)
 
 ### Installation
@@ -49,10 +49,10 @@ chmod +x .githooks/pre-commit-script-certification
 
 When you try to commit a new script in `scripts/`, it validates:
 
-1. **✅ Structured Docstring**  
+1. **✅ Structured Docstring**
    Must include: Purpose, Achievement, Value, Relates-To
 
-2. **✅ Test Coverage OR Dry-Run**  
+2. **✅ Test Coverage OR Dry-Run**
    Must have at least ONE of:
    - Unit test at `tests/unit/test_<script>.py`
    - `--dry-run` flag implementation
@@ -62,16 +62,16 @@ When you try to commit a new script in `scripts/`, it validates:
 ```
 $ git commit -m "add new script"
 
-🔍 Scanning new scripts for certification requirements...
+ Scanning new scripts for certification requirements...
 ------------------------------------------------------------
-❌ COMMIT BLOCKED: New scripts missing certification requirements
+ COMMIT BLOCKED: New scripts missing certification requirements
 
-📄 scripts/my_new_script.py
-   ❌ Missing structured docstring (Purpose/Achievement/Value/Relates-To)
-   ❌ Missing BOTH unit test AND dry-run support (need at least one)
+ scripts/my_new_script.py
+    Missing structured docstring (Purpose/Achievement/Value/Relates-To)
+    Missing BOTH unit test AND dry-run support (need at least one)
 
 ============================================================
-📋 TO FIX:
+ TO FIX:
 ============================================================
 
 Option 1: Add structured docstring

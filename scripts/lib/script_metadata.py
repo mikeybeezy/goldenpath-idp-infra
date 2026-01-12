@@ -29,10 +29,10 @@ from pathlib import Path
 def extract_frontmatter(content: str) -> str:
     """
     Extracts YAML frontmatter from Python docstrings or Bash comment blocks.
-    
+
     Args:
         content (str): The full file content.
-        
+
     Returns:
         str or None: The raw YAML string if found, else None.
     """
@@ -44,12 +44,12 @@ def extract_frontmatter(content: str) -> str:
     py_match = re.search(r'"""\s*\n---\n(.*?)\n---\s*\n', content, re.DOTALL)
     if py_match:
         return py_match.group(1)
-        
+
     # 2. Bash/Shell Comment Format: # ---\n# ...\n# ---
     lines = content.splitlines()
     yaml_lines = []
     in_block = False
-    
+
     for line in lines:
         # Robustly handle indentation:
         # Match optional leading whitespace, then '#', then optional single space
@@ -57,9 +57,9 @@ def extract_frontmatter(content: str) -> str:
         match = re.match(r'^\s*# ?(.*)', line)
         if not match:
             continue
-            
+
         cleaned = match.group(1).rstrip()
-        
+
         # Detect separator (---)
         if cleaned == '---':
             if in_block:
@@ -68,13 +68,13 @@ def extract_frontmatter(content: str) -> str:
             else:
                 in_block = True
                 continue
-        
+
         if in_block:
             yaml_lines.append(cleaned)
-            
+
     if yaml_lines:
         return "\n".join(yaml_lines)
-        
+
     return None
 
 def parse_header(content: str) -> dict:

@@ -74,13 +74,13 @@ def validate_file(filepath, schema, args):
             content = f.read()
     except:
         return ["Could not read file"]
-        
+
     data = parse_header(content)
     if not data:
         return ["Missing Metadata Header (YAML Frontmatter)"]
-    
+
     errors = []
-    
+
     # 1. Structural Requirements (Nested)
     req_checks = [
         "test.runner", "test.command", "test.evidence",
@@ -93,7 +93,7 @@ def validate_file(filepath, schema, args):
     if errors: return errors
 
     # 2. Logic & Policy Checks
-    
+
     # Policy: No manual evidence for Medium/High Impact
     impact = data["risk_profile"]["production_impact"]
     evidence = data["test"]["evidence"]
@@ -112,7 +112,7 @@ def validate_file(filepath, schema, args):
                     maturity = int(data.get('maturity', 1))
                 except:
                     maturity = 1
-                
+
                 if maturity >= 3:
                     errors.append(f"Declared pytest test file not found: {test_path} (Required for Maturity {maturity})")
                 else:
@@ -130,7 +130,7 @@ def validate_file(filepath, schema, args):
         proof_path = PROOF_DIR / f"proof-{script_id}.json"
         if not proof_path.exists():
             errors.append(f"Missing CI Proof file: {proof_path} (evidence='ci')")
-            
+
     return errors
 
 def main():
@@ -139,9 +139,9 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Print what would be checked")
     parser.add_argument("--verify-proofs", action="store_true", help="Check for existence of proof artifacts")
     args = parser.parse_args()
-    
+
     schema = load_schema()
-    
+
     scripts_to_check = []
     for path_str in args.paths:
         p = Path(path_str)
@@ -152,20 +152,20 @@ def main():
                 for file in f:
                     if file.endswith('.py') or file.endswith('.sh'):
                         scripts_to_check.append(Path(r) / file)
-                        
+
     # Filter out lib/ and exempted paths
     filtered_scripts = []
     for s in scripts_to_check:
         if 'lib' in s.parts or s.name == '__init__.py': continue
         filtered_scripts.append(s)
-    
+
     if args.dry_run:
         print(f"[DRY-RUN] Would validate {len(filtered_scripts)} scripts.")
         return
 
     failure_count = 0
     print(f"🔍 Validating {len(filtered_scripts)} scripts...")
-    
+
     for script in filtered_scripts:
         errors = validate_file(script, schema, args)
         if errors:
@@ -175,7 +175,7 @@ def main():
                 print(f"   - {e}")
         else:
             print(f"✅ {script}")
-            
+
     if failure_count > 0:
         sys.exit(1)
     else:

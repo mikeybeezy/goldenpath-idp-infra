@@ -197,10 +197,10 @@ If issues arise:
 ## Next Steps
 
 1. ✅ **DONE**: Migrate core indices and catalogs
-2. 🔲 **TODO**: Update Backstage TechDocs configuration
-3. 🔲 **TODO**: Implement retention policy for `history/` folder
-4. 🔲 **TODO**: Create unified dashboard aggregating all environments
-5. 🔲 **TODO**: Test production environment (merge to `main`)
+2.  **TODO**: Update Backstage TechDocs configuration
+3.  **TODO**: Implement retention policy for `history/` folder
+4.  **TODO**: Create unified dashboard aggregating all environments
+5.  **TODO**: Test production environment (merge to `main`)
 
 ## Related Changes
 
@@ -210,6 +210,6 @@ If issues arise:
 
 ---
 
-**Migration Completed:** 2026-01-12  
-**Verified By:** Platform Team  
+**Migration Completed:** 2026-01-12
+**Verified By:** Platform Team
 **Production Status:** ✅ Ready for Continuous Use

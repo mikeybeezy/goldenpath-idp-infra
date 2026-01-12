@@ -80,13 +80,13 @@ graph TD
 
     DEV -- "Push/Merge" --> CI_DEV
     PROD -- "Merge/Push" --> CI_PROD
-    
+
     CI_DEV -- "Commit Audit Result (source_sha)" --> EDEV
     CI_PROD -- "Commit Audit Result (source_sha)" --> EPROD
-    
+
     CI_DEV -- "Archive Result (date+sha)" --> HDEV
     CI_PROD -- "Archive Result (date+sha)" --> HPROD
-    
+
     EDEV -- "Automatic Aggregation" --> DASH
     EPROD -- "Automatic Aggregation" --> DASH
 ```
@@ -133,10 +133,10 @@ The registry is written exclusively by:
 - **Identity**: GitHub Actions service account using `GITHUB_TOKEN`
 - **Permissions**: `contents: write`
 - **Branch Protection**:
-  - Restrict who can push: ✅ Enabled
-  - Allow GitHub Actions to bypass: ✅ Enabled
-  - Block force-push: ✅ Enabled
-  - Require linear history: ✅ Enabled
+  - Restrict who can push:  Enabled
+  - Allow GitHub Actions to bypass:  Enabled
+  - Block force-push:  Enabled
+  - Require linear history:  Enabled
 
 ### 3. Concurrency Control
 To prevent race conditions during high-velocity merges:

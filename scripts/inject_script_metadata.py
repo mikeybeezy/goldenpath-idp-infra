@@ -74,16 +74,16 @@ def inject_py(path: Path, meta: dict, dry_run: bool = False) -> bool:
     txt = path.read_text(encoding="utf-8", errors="replace")
     if '---\n' in txt[:400] and PY_META_RE.search(txt[:800]):  # already has block
         return False
-    
+
     block = '"""\n---\n' + yaml.safe_dump(meta, sort_keys=False) + '---\n"""\n\n'
-    
+
     # keep shebang first if present
     if txt.startswith("#!"):
         first_line, rest = txt.split("\n", 1)
         new_txt = first_line + "\n" + block + rest
     else:
         new_txt = block + txt
-    
+
     if dry_run:
         print(f"[DRY-RUN] Would inject metadata into {path}")
     else:
@@ -96,14 +96,14 @@ def inject_sh(path: Path, meta: dict, dry_run: bool = False) -> bool:
         return False
     y = yaml.safe_dump(meta, sort_keys=False).strip().splitlines()
     block = "\n".join(["# ---"] + [f"# {line}" for line in y] + ["# ---", ""])
-    
+
     # keep shebang first if present
     if txt.startswith("#!"):
         first_line, rest = txt.split("\n", 1)
         new_txt = first_line + "\n" + block + rest
     else:
         new_txt = block + txt
-        
+
     if dry_run:
         print(f"[DRY-RUN] Would inject metadata into {path}")
     else:
@@ -138,7 +138,7 @@ def main() -> int:
 
     if not args.dry_run:
         save_id_registry(reg)
-        
+
     print(f"[inject] updated {changed} scripts")
     return 0
 
