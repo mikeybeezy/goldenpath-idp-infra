@@ -158,6 +158,8 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 | 076 | P2 | Governance | Tooling config identity sidecars | platform | Done | S | Q1 | Extend to additional config files if needed | docs/adrs/ADR-0136-platform-tooling-config-identity.md, docs/changelog/entries/CL-0097-tooling-config-identity-sidecars.md | Ensure tooling configs have explicit identity and audit trail |
 | 077 | P2 | Governance | Enforce tooling sidecar presence in validation/reporting | platform | Open | S | Q1 | Add validator/reporting coverage for root config sidecars | scripts/validate_metadata.py, PLATFORM_HEALTH.md | Turn identity sidecars into measurable governance coverage |
 | 078 | P2 | Observability | V2: full AWS inventory via Config Aggregator or Resource Explorer | platform | Open | M | Q2 | Evaluate costs + scope, then add cross-region inventory | docs/50-observability/05_OBSERVABILITY_DECISIONS.md | Surface tagged + untagged resources across all regions |
+| 079 | P1 | **🔴 HV/HQ** | Governance | Infra Governance: Inherit "Born Governed" for Terraform Modules | platform | Open | M | Q1 | Extend schema/validator to infra/modules/* | ADR-0146, CNT-001 | Prevent drift in infrastructure code quality |
+| 080 | P1 | **🔴 HV/HQ** | Governance | Script Cert: Achieve 100% Maturity 3 (Certified) on P0 scripts | platform | Open | M | Q1 | Backfill tests for critical path scripts | SCRIPT_CERTIFICATION_AUDIT.md | Eliminate "trust me" testing via cryptographic proofs |
 
 ## Rules
 
