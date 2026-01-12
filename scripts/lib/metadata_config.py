@@ -2,6 +2,28 @@ import os
 import yaml
 from typing import Any, Dict, List, Optional
 
+class PlatformYamlDumper(yaml.SafeDumper):
+    """
+    Standardized YAML dumper for the Golden Path IDP.
+    Ensures consistent indentation (especially for lists) to match yamllint and pre-commit.
+    """
+    def increase_indent(self, flow=False, indentless=False):
+        return super(PlatformYamlDumper, self).increase_indent(flow, False)
+
+def platform_yaml_dump(data: Any, stream=None, **kwargs) -> Optional[str]:
+    """
+    Helper function to dump YAML using the PlatformYamlDumper with standardized settings.
+    """
+    settings = {
+        'sort_keys': False,
+        'default_flow_style': False,
+        'allow_unicode': True,
+        'indent': 2,
+        'Dumper': PlatformYamlDumper
+    }
+    settings.update(kwargs)
+    return yaml.dump(data, stream, **settings)
+
 class MetadataConfig:
     """
     Central configuration manager for metadata governance.

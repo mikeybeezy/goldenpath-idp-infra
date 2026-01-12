@@ -36,23 +36,21 @@ jobs:
         run: |
           pip install pyyaml==6.0.1
 
-      - name: Validate Indices (No Drift Allowed)
+      - name: Auto-Heal Indices
         run: |
-          rc=0
-          python3 scripts/generate_script_index.py --validate || rc=1
-          python3 scripts/generate_workflow_index.py --validate || rc=1
-          python3 scripts/generate_adr_index.py --validate || rc=1
-          exit $rc
+          python3 scripts/generate_script_index.py
+          python3 scripts/generate_workflow_index.py
+          python3 scripts/generate_adr_index.py
 
-      - name: Report Drift
-        if: failure()
+      - name: Commit and Push Changes
         run: |
-          echo "##  Index Drift Detected" >> $GITHUB_STEP_SUMMARY
-          echo "Your PR includes new files but the global indexes (ADRs, Scripts, Workflows) were not updated." >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "###  Local Remediation" >> $GITHUB_STEP_SUMMARY
-          echo "Please run the following command to update your branch and then push the changes:" >> $GITHUB_STEP_SUMMARY
-          echo '```bash' >> $GITHUB_STEP_SUMMARY
-          echo 'bin/governance heal indexes' >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          exit 1
+          if [ -n "$(git status --porcelain)" ]; then
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git add .
+            git commit -m "chore(governance): auto-heal indexes [skip ci]"
+            git push
+            echo "✅ Indices were out of sync. Automated corrections have been pushed to your branch." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ Indices are up to date. No action required." >> $GITHUB_STEP_SUMMARY
+          fi

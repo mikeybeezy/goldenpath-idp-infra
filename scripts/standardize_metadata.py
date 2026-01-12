@@ -17,17 +17,13 @@ import sys
 
 # Add lib to path for imports
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
-from metadata_config import MetadataConfig
+from lib.metadata_config import MetadataConfig, PlatformYamlDumper, platform_yaml_dump
 
 cfg = MetadataConfig()
 
 # Fallback owner and versions if schema lookup fails
 OWNER = "platform-team"
 VERSION = "1.0"
-
-class IndentDumper(yaml.SafeDumper):
-    def increase_indent(self, flow=False, indentless=False):
-        return super(IndentDumper, self).increase_indent(flow, False)
 
 def get_type_from_path(filepath):
     if 'adrs/' in filepath: return 'adr'
@@ -172,7 +168,7 @@ def standardize_file(filepath):
             new_data['reliability']['observability_tier'] = 'bronze'
 
     # 8. Reconstruct and Save
-    new_fm = yaml.dump(new_data, Dumper=IndentDumper, sort_keys=False, default_flow_style=False, allow_unicode=True, indent=2)
+    new_fm = platform_yaml_dump(new_data)
     if is_yaml:
         # Standard YAML sidecars should only have a leading marker, trailing marker signals a second document.
         new_content = f"---\n{new_fm}"
@@ -268,7 +264,7 @@ def inject_governance(sidecar_path, data):
             if needs_update:
                 with open(cand, 'w', encoding='utf-8') as f:
                     f.write("# Managed by scripts/standardize_metadata.py\n")
-                    yaml.dump(v_data, f, Dumper=IndentDumper, sort_keys=False, default_flow_style=False, indent=2)
+                    platform_yaml_dump(v_data, f)
                 print(f"{'🏷️' if is_k8s else '💉'} {'Annotated' if is_k8s else 'Injected'} resource: {cand}")
         except Exception as e:
             print(f"⚠️ Failed injection for {cand}: {e}")

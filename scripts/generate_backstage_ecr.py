@@ -11,27 +11,19 @@ Value:
 """
 
 import os
-import yaml
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
+from metadata_config import platform_yaml_dump
 
 SOURCE_CATALOG = "docs/20-contracts/catalogs/ecr-catalog.yaml"
 TARGET_DIR = "backstage-helm/catalog/resources/ecr"
 ALL_RESOURCES_PATH = "backstage-helm/catalog/all-resources.yaml"
 
-class IndentDumper(yaml.SafeDumper):
-    """Ensure list items are indented under their parent keys."""
-
-    def increase_indent(self, flow=False, indentless=False):
-        return super().increase_indent(flow, False)
 
 def dump_yaml(data, path: str) -> None:
     with open(path, "w", encoding="utf-8") as f:
-        yaml.dump(
-            data,
-            f,
-            sort_keys=False,
-            default_flow_style=False,
-            Dumper=IndentDumper,
-        )
+        platform_yaml_dump(data, f)
 
 def generate():
     if not os.path.exists(SOURCE_CATALOG):

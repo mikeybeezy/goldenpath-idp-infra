@@ -7,9 +7,12 @@ making all governance documentation discoverable in the Backstage catalog.
 """
 
 import os
-import yaml
 import re
 from pathlib import Path
+
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
+from metadata_config import platform_yaml_dump
 
 ADR_DIR = "docs/adrs"
 CHANGELOG_DIR = "docs/changelog/entries"
@@ -20,21 +23,10 @@ REPO_BRANCH = "main"
 BLOB_BASE = f"https://github.com/{REPO_SLUG}/blob/{REPO_BRANCH}"
 EDIT_BASE = f"https://github.com/{REPO_SLUG}/edit/{REPO_BRANCH}"
 
-class IndentDumper(yaml.SafeDumper):
-    """Ensures list items are indented under their parent keys."""
-
-    def increase_indent(self, flow=False, indentless=False):
-        return super().increase_indent(flow, False)
 
 def dump_yaml(data, path: Path) -> None:
     with open(path, 'w', encoding='utf-8') as f:
-        yaml.dump(
-            data,
-            f,
-            sort_keys=False,
-            default_flow_style=False,
-            Dumper=IndentDumper,
-        )
+        platform_yaml_dump(data, f)
 
 def build_urls(rel_path: str) -> tuple[str, str]:
     view_url = f"{BLOB_BASE}/{rel_path}"

@@ -12,31 +12,21 @@ import json
 import os
 import subprocess
 import sys
-from pathlib import Path
-
 import yaml
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
+from metadata_config import platform_yaml_dump
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / "inventory-config.yaml"
 ENUMS_PATH = ROOT / "schemas/metadata/enums.yaml"
 COST_CENTER_KEYS = ["CostCenter", "cost_center", "cost-center", "Cost-Center"]
 
-class IndentDumper(yaml.SafeDumper):
-    """Ensure list items are indented under their parent keys."""
-
-    def increase_indent(self, flow=False, indentless=False):
-        return super().increase_indent(flow, False)
 
 def dump_yaml(data: dict, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
-        yaml.dump(
-            data,
-            f,
-            sort_keys=False,
-            default_flow_style=False,
-            Dumper=IndentDumper,
-        )
+        platform_yaml_dump(data, f)
 
 def load_yaml(path: Path) -> dict:
     if not path.exists():

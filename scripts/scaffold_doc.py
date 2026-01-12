@@ -19,17 +19,12 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT_DIR = SCRIPT_DIR.parent
 
 sys.path.append(str(SCRIPT_DIR / "lib"))
-from metadata_config import MetadataConfig  # noqa: E402
+from metadata_config import MetadataConfig, platform_yaml_dump  # noqa: E402
 
 ADR_TEMPLATE = ROOT_DIR / "docs" / "adrs" / "02_adr_template.md"
 CHANGELOG_TEMPLATE = ROOT_DIR / "docs" / "changelog" / "Changelog-template.md"
 
 
-class IndentDumper(yaml.SafeDumper):
-    """Ensure list items are indented under their parent keys."""
-
-    def increase_indent(self, flow=False, indentless=False):
-        return super().increase_indent(flow, False)
 
 
 def slug_to_title(value: str) -> str:
@@ -117,14 +112,7 @@ def build_metadata(cfg: MetadataConfig, doc_type: str, doc_id: str, title: str, 
 
 
 def render_frontmatter(metadata: dict) -> str:
-    fm = yaml.dump(
-        metadata,
-        Dumper=IndentDumper,
-        sort_keys=False,
-        default_flow_style=False,
-        allow_unicode=True,
-        indent=2,
-    )
+    fm = platform_yaml_dump(metadata)
     return f"---\n{fm}---\n\n"
 
 
