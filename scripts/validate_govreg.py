@@ -11,22 +11,45 @@ Relates-To: ADR-0145, RB-0028
 import os
 import re
 import sys
+import yaml
 from pathlib import Path
 
-REQUIRED_KEYS = [
-    "env",
-    "generated_at",
-    "source:",
-    "branch:",
-    "sha:",
-    "pipeline:",
-    "workflow:",
-    "run_id:",
-    "integrity:",
-    "derived_only:",
-]
+# Schema-driven configuration
+SCHEMA_PATH = Path(__file__).parent.parent / "schemas" / "governance" / "govreg.schema.yaml"
 
-ALLOWED_TOP_LEVEL = {"environments", "UNIFIED_DASHBOARD.md", ".git", ".github", "README.md"}
+def load_schema() -> dict:
+    """Load validation rules from the governance registry schema."""
+    if not SCHEMA_PATH.exists():
+        print(f"[govreg-validate] FATAL: Schema not found at {SCHEMA_PATH}", file=sys.stderr)
+        sys.exit(2)
+    
+    with open(SCHEMA_PATH, 'r', encoding='utf-8') as f:
+        try:
+            # Parse the YAML, skip frontmatter if present
+            content = f.read()
+            # Remove frontmatter if present
+            if content.startswith('---'):
+                parts = content.split('---', 2)
+                if len(parts) >= 3:
+                    content = parts[2]
+            
+            schema = yaml.safe_load(content)
+            return schema.get('properties', {})
+        except yaml.YAMLError as e:
+            print(f"[govreg-validate] FATAL: Invalid schema YAML: {e}", file=sys.stderr)
+            sys.exit(2)
+
+# Load configuration from schema
+SCHEMA_CONFIG = load_schema()
+
+# Extract validation rules
+ALLOWED_TOP_LEVEL = set(SCHEMA_CONFIG.get('allowed_top_level', {}).get('default', []))
+REQUIRED_DIRS = SCHEMA_CONFIG.get('required_dirs', {}).get('default', [])
+REQUIRED_ENV_SUBDIRS = SCHEMA_CONFIG.get('required_env_subdirs', {}).get('default', [])
+
+markdown_config = SCHEMA_CONFIG.get('markdown', {}).get('properties', {})
+frontmatter_config = markdown_config.get('frontmatter', {}).get('properties', {})
+REQUIRED_KEYS = frontmatter_config.get('required_keys', {}).get('default', [])
 
 # Basic frontmatter extractor (--- ... ---)
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
@@ -50,20 +73,23 @@ def validate_top_level(root: Path) -> None:
 
 def validate_env_layout(root: Path) -> None:
     """Ensure every environment has the required latest/ and history/ folders."""
+    for required_dir in REQUIRED_DIRS:
+        dir_path = root / required_dir
+        if not dir_path.exists():
+            fail(f"Missing required directory: {required_dir}/")
+    
     env_root = root / "environments"
     if not env_root.exists():
-        fail("Missing required 'environments/' directory")
+        return  # Already caught by required_dirs check
 
     for env_dir in env_root.iterdir():
         if not env_dir.is_dir():
             fail(f"Unexpected non-directory under environments/: {env_dir.name}")
 
-        latest = env_dir / "latest"
-        history = env_dir / "history"
-        if not latest.exists():
-            fail(f"Missing {env_dir.name}/latest/")
-        if not history.exists():
-            fail(f"Missing {env_dir.name}/history/")
+        for subdir_name in REQUIRED_ENV_SUBDIRS:
+            subdir = env_dir / subdir_name
+            if not subdir.exists():
+                fail(f"Missing {env_dir.name}/{subdir_name}/")
 
 def validate_frontmatter(md_file: Path) -> None:
     """Validate that the markdown file contains all required chain-of-custody fields."""
@@ -98,6 +124,7 @@ def main() -> None:
     root = Path(".").resolve()
 
     print("[govreg-validate] Validating governance registry integrity...")
+    print(f"[govreg-validate] Using schema: {SCHEMA_PATH}")
     
     validate_top_level(root)
     validate_env_layout(root)
