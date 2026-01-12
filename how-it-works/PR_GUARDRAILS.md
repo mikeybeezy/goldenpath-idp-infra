@@ -52,3 +52,11 @@ The engine is not a "dumb" gate; it understands context via labels:
 
 ## 3. Metadata Injection
 For infrastructure-heavy PRs (Terraform/Apps), the engine verifies that a corresponding `metadata.yaml` exists and that its `id` is properly injected as a tag in the actual cloud resource.
+
+## 4. Automated Remediation (Reducing Friction)
+To prevent "gate fatigue," the platform provides **Remediation Engines**:
+- **`bin/governance heal`**: Automatically reformats YAML and Markdown to meet strict `yamllint` and `markdownlint` standards.
+- **Marker-Based Indexing**: Replaces manual table maintenance with automated generation between safe comment markers.
+- **CI Auto-Healer**: A GitHub Action that automatically commits fixes for minor index drift on behalf of the developer.
+
+Refer to [**RB-0027: Frictionless PR Gates**](../docs/70-operations/runbooks/RB-0027-frictionless-pr-gates.md) for the recommended developer workflow.

@@ -182,6 +182,16 @@ Timing runs:
   config (cluster name, version, node-group sizes/types), run `terraform plan`, and apply. Comment them
   back out whenever you want to pause or remove EKS.
 
+## Governance & PR Gates
+
+To ensure platform stability, all changes must pass a multi-gate validation process. To pass these with **minimal friction**, follow the **Heal-First** workflow:
+
+1.  **Heal Locally**: Run `bin/governance heal .` to automatically align your files with platform standards.
+2.  **Verify**: Run `python3 -m pre_commit run --all-files` to catch linting errors.
+3.  **Push**: Push to your branch and let the CI Auto-Healer bot fix common index synchronization issues.
+
+For a detailed guide, see [**RB-0027: Frictionless PR Gates**](docs/70-operations/runbooks/RB-0027-frictionless-pr-gates.md).
+
 ## Tips
 
 - Commit changes per environment so you can trace who modified what.
