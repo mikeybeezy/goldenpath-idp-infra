@@ -2,12 +2,12 @@ name: Governance Enforcement
 
 on:
   push:
-    branches: [ main, development ]
+    branches: [main, development]
     paths:
       - 'scripts/**'
       - 'schemas/automation/**'
   pull_request:
-    branches: [ main, development ]
+    branches: [main, development]
     paths:
       - 'scripts/**'
       - 'schemas/automation/**'

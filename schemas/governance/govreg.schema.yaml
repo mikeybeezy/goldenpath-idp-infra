@@ -55,7 +55,7 @@ properties:
               - "environments/**/latest/**/*.md"
               - "environments/**/history/**/*.md"
               - "UNIFIED_DASHBOARD.md"
-          
+
           required_keys:
             type: array
             items:

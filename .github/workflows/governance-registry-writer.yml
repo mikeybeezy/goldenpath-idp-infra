@@ -44,30 +44,30 @@ jobs:
       - name: Generate governance artifacts (workspace)
         run: |
           mkdir -p _govreg_out
-          
+
           # Generate platform health report
           export PYTHONPATH=$PYTHONPATH:$(pwd)/scripts
           python3 scripts/platform_health.py . > _govreg_out/PLATFORM_HEALTH.md
-          
+
           # Generate all indices
           python3 scripts/generate_script_index.py
           python3 scripts/generate_workflow_index.py
           python3 scripts/generate_adr_index.py
           python3 scripts/generate_catalog_docs.py
           python3 scripts/generate_governance_vocab.py
-          
+
           # Copy generated indices to output
           cp scripts/index.md _govreg_out/scripts_index.md
           cp ci-workflows/CI_WORKFLOWS.md _govreg_out/workflows_index.md
           cp docs/adrs/01_adr_index.md _govreg_out/adr_index.md
           cp docs/REGISTRY_CATALOG.md _govreg_out/registry_catalog.md
           cp docs/10-governance/GOVERNANCE_VOCABULARY.md _govreg_out/governance_vocabulary.md
-          
+
           # Copy build timings if exists
           if [ -f docs/build-timings.csv ]; then
             cp docs/build-timings.csv _govreg_out/build_timings.csv
           fi
-          
+
           # Copy AWS inventory reports (latest snapshots)
           if [ -d reports/aws-inventory ]; then
             mkdir -p _govreg_out/aws-inventory
@@ -101,7 +101,7 @@ jobs:
             derived_only: true
           ---
           EOF
-          
+
           # Prepend header to artifacts
           for file in _govreg_out/*.md; do
             cat /tmp/header.yml "$file" > /tmp/temp.md
@@ -160,14 +160,14 @@ jobs:
             const sha = '${{ steps.meta.outputs.source_sha }}';
             const env = '${{ env.ENV_NAME }}';
             const body = `✅ **Governance state synchronized**
-            
+
             - **Environment**: \`${env}\`
             - **Source SHA**: \`${sha}\`
             - **Registry Links**:
               - [Latest Report](https://github.com/${{ github.repository }}/blob/governance-registry/environments/${env}/latest/PLATFORM_HEALTH.md)
               - [Historical Snapshot](https://github.com/${{ github.repository }}/tree/governance-registry/environments/${env}/history)
             `;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
