@@ -29,6 +29,7 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **HITL Governance**: Human-In-The-Loop guidance that replaces friction with actionable remediation.
 - **Policy-as-Code Guardrails**: Automated enforcement of security best-practices (encryption, rotation, retention) at the intent layer.
 - **Heal-First Workflow**: Pass 15+ governance gates on the first pull request with a single remediation command that aligns files with platform standards automatically.
+- **Script Certification**: Verifiable trust for automation scripts through cryptographic proofs and a rigorous "Born Governed" lifecycle.
 
 ## 🚀 Delivery & Self-Service
 *Automating the path from local code to a production-ready, governed environment.*
