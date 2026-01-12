@@ -45,7 +45,7 @@ Doc contract:
 
 - Purpose: Verify Argo CD apps can sync cleanly and required dependencies exist.
 - Owner: platform
-- Status: reference
+- Status: living
 - Review cadence: 90d
 - Related: docs/70-operations/runbooks/05_GOLDEN_PATH_VALIDATION.md, docs/20-contracts/29_CD_DEPLOYMENT_CONTRACT.md, docs/70-operations/10_INFRA_FAILURE_MODES.md
 

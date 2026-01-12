@@ -36,6 +36,13 @@ breaking_change: false
 
 # Platform System Map (Living)
 
+Doc contract:
+
+- Purpose: Visualize what lives where, who owns it, and how it stays fresh.
+- Owner: platform
+- Status: living
+- Review cadence: 90d
+
 Purpose: one place to see **what lives where**, **who owns it**, and **how it stays fresh**.
 
 ## System layers (simplified)

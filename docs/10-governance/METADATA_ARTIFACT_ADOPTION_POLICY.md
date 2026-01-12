@@ -30,6 +30,14 @@ tags:
 
 # Metadata Adoption Policy for Configs and Reports
 
+Doc contract:
+
+- Purpose: Define metadata placement rules for configs and reports to ensure schema compliance.
+- Owner: platform
+- Status: living
+- Review cadence: 90d
+- Related: docs/90-doc-system/30_DOCUMENTATION_FRESHNESS.md
+
 ## Refined Question
 Where should metadata live for non-doc artifacts (config YAML/JSON and generated reports)
 to remain schema-compliant and automation-friendly: sidecar files, frontmatter, or both?

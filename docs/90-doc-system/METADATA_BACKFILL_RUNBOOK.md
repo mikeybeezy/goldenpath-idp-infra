@@ -40,6 +40,13 @@ breaking_change: false
 
 ## Metadata Backfill Runbook
 
+Doc contract:
+
+- Purpose: Backfill metadata for docs and Terraform with deterministic steps and audit trails.
+- Owner: platform
+- Status: living
+- Review cadence: 90d
+
 Purpose: Backfill metadata for docs and Terraform with deterministic steps and
 audit trails, while keeping changes small and reversible.
 

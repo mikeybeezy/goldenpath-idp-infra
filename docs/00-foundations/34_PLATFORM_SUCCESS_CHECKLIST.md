@@ -44,6 +44,13 @@ breaking_change: false
 
 # Platform v1 Baseline Success Checklist (Living)
 
+Doc contract:
+
+- Purpose: Define what “success without a key operator” looks like and provide a practical acceptance bar for repeatable operation.
+- Owner: platform
+- Status: living
+- Review cadence: 90d
+
 This checklist defines what “success without a key operator” looks like.
 It is a practical acceptance bar for repeatable, low‑drama operation.
 

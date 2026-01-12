@@ -16,5 +16,5 @@ spec:
     name: payments-db-creds
     creationPolicy: Owner
   dataFrom:
-  - extract:
-      key: goldenpath/dev/payments/payments-db-credentials
+    - extract:
+        key: goldenpath/dev/payments/payments-db-credentials

@@ -81,6 +81,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [reliability-metrics.sh](file://scripts/reliability-metrics.sh) | Shell script utility. |
 | [scaffold_doc.py](file://scripts/scaffold_doc.py) | Doc Scaffold Utility |
 | [scaffold_test.py](file://scripts/scaffold_test.py) | Scaffold Test Utility |
+| [secret_request_parser.py](file://scripts/secret_request_parser.py) | SecretRequest parser/generator (Adapted Standard). |
 | [sync_backstage_entities.py](file://scripts/sync_backstage_entities.py) | Backstage Entity Sync Utility |
 | [sync_ecr_catalog.py](file://scripts/sync_ecr_catalog.py) | ECR Catalog Synchronization & Reconciliation Utility |
 | [test_hotfix.py](file://scripts/test_hotfix.py) | Purpose: Unit tests for PR Guardrails Hotfix Logic. |
