@@ -3,7 +3,7 @@ id: RB-0026
 title: Local Secret Generation & Targeting
 type: runbook
 status: active
-version: "1.1"
+version: "1.2"
 relates_to:
   - how-it-works/SECRET_REQUEST_FLOW.md
   - ADR-0144-intent-to-projection-parser.md
@@ -90,20 +90,22 @@ Navigate to the Terraform environment and apply the changes.
 # Ensure you are in the environment root
 cd envs/dev
 
-# Target the specific secret and pass the generated var-file
+# Target the secret and pass the var-file (and optional region override)
 terraform plan \
   -target='module.app_secrets["payments-payments-db-credentials"]' \
-  -var-file='secrets/generated/payments/SEC-0007.auto.tfvars.json'
+  -var-file='secrets/generated/payments/SEC-0007.auto.tfvars.json' \
+  -var="aws_region=us-east-1"  # Optional: only if different from terraform.tfvars default
 
 terraform apply \
   -target='module.app_secrets["payments-payments-db-credentials"]' \
-  -var-file='secrets/generated/payments/SEC-0007.auto.tfvars.json'
+  -var-file='secrets/generated/payments/SEC-0007.auto.tfvars.json' \
+  -var="aws_region=us-east-1"
 ```
 
 #### 🌍 Selecting the Region
 The AWS region is controlled by the `aws_region` variable in your environment's `terraform.tfvars`.
 *   To check: `grep "aws_region" terraform.tfvars` (from `envs/dev/`)
-*   To override locally: Use `-var="aws_region=us-east-1"` in your plan command.
+*   To override locally: Use `-var="aws_region=us-east-1"` in your plan/apply command.
 
 ### 2. Commit and Sync (GitOps)
 The `ExternalSecret` manifest must be committed to the repository for ArgoCD to pick it up.
