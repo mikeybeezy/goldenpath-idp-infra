@@ -80,7 +80,8 @@ CI Workflows (GitHub Actions)
 │   ├─ Apply - Infra Terraform Apply (prod)
 │   ├─ Apply - Infra Terraform Apply (staging)
 │   ├─ Apply - Infra Terraform Apply (test)
-│   └─ Apply - Infra Terraform Update (dev)
+│   ├─ Apply - Infra Terraform Update (dev)
+│   └─ Secret Requests (Apply)
 │
 ├─ Terraform Plan
 │   ├─ Plan - Infra Terraform Plan Pipeline
@@ -92,6 +93,7 @@ CI Workflows (GitHub Actions)
     ├─ Python Unit Tests
     ├─ Quality - Documentation Auto-Healing
     ├─ Request App Secret
+    ├─ Secret Requests (PR)
     └─ Security - Gitleaks
 ```
 <!-- WORKFLOW_TREE_END -->
@@ -272,6 +274,11 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
+### Secret Requests (Apply)
+- **File**: `secret-request-apply.yml`
+- **Owner**: platform
+- **Triggers**:
+
 ## Terraform Plan
 
 ### Plan - Infra Terraform Plan Pipeline
@@ -308,6 +315,11 @@ CI Workflows (GitHub Actions)
 
 ### Request App Secret
 - **File**: `request-app-secret.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### Secret Requests (PR)
+- **File**: `secret-request-pr.yml`
 - **Owner**: platform
 - **Triggers**:
 
