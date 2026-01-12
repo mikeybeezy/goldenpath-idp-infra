@@ -1,5 +1,26 @@
 #!/usr/bin/env python3
 """
+---
+id: SCRIPT-0039
+type: script
+owner: platform-team
+status: active
+maturity: 2
+dry_run:
+  supported: true
+  command_hint: --dry-run
+test:
+  runner: pytest
+  command: pytest -q tests/scripts/test_script_0039.py
+  evidence: declared
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+---
+"""
+
+"""
 Purpose: Enhanced Enum Consistency Validator
 Achievement: Implements recursive dot-path validation across MD and YAML artifacts.
              Supports both whole-repo scanning and targeted file validation (CI-friendly).

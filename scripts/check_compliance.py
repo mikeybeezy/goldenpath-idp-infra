@@ -1,5 +1,26 @@
 #!/usr/bin/env python3
 """
+---
+id: SCRIPT-0004
+type: script
+owner: platform-team
+status: active
+maturity: 2
+dry_run:
+  supported: true
+  command_hint: --dry-run
+test:
+  runner: pytest
+  command: pytest -q tests/scripts/test_script_0004.py
+  evidence: declared
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+---
+"""
+
+"""
 Purpose: Metadata Compliance Audit Tool
 Achievement: Performs deep inspection of YAML frontmatter syntax and mandatory field presence.
 Value: Used for secondary audits and legacy compliance checks before migrating to the

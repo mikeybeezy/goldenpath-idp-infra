@@ -1,4 +1,22 @@
 #!/bin/bash
+# ---
+# id: SCRIPT-0008
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 2
+# dry_run:
+#   supported: true
+#   command_hint: --dry-run
+# test:
+#   runner: shellcheck
+#   command: shellcheck scripts/deploy-backstage.sh
+#   evidence: declared
+# risk_profile:
+#   production_impact: low
+#   security_risk: low
+#   coupling_risk: low
+# ---
 # Purpose: Deploy Backstage with VQ Telemetry and Born Governed status.
 # Value: Reclaims 15 minutes of dev time per deployment attempt through automation.
 

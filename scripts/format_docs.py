@@ -1,4 +1,25 @@
 """
+---
+id: SCRIPT-0013
+type: script
+owner: platform-team
+status: active
+maturity: 2
+dry_run:
+  supported: true
+  command_hint: --dry-run
+test:
+  runner: pytest
+  command: pytest -q tests/scripts/test_script_0013.py
+  evidence: declared
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+---
+"""
+
+"""
 Purpose: Global Formatting & Whitespace Normalizer
 Achievement: Enforces strict EOF newlines, strips trailing whitespace, and standardizes
              frontmatter terminators across all text-based files.

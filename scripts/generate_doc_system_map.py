@@ -1,5 +1,26 @@
 #!/usr/bin/env python3
 """
+---
+id: SCRIPT-0020
+type: script
+owner: platform-team
+status: active
+maturity: 2
+dry_run:
+  supported: true
+  command_hint: --dry-run
+test:
+  runner: pytest
+  command: pytest -q tests/scripts/test_script_0020.py
+  evidence: declared
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+---
+"""
+
+"""
 Generate and refresh the platform documentation system map.
 
 Updates docs/90-doc-system/PLATFORM_SYSTEM_MAP.md with current counts for

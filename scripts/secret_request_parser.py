@@ -1,4 +1,26 @@
 #!/usr/bin/env python3
+"""
+---
+id: SCRIPT-0033
+type: script
+owner: platform-team
+status: active
+maturity: 2
+dry_run:
+  supported: true
+  command_hint: --dry-run
+test:
+  runner: pytest
+  command: pytest -q tests/scripts/test_script_0033.py
+  evidence: declared
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+---
+"""
+from __future__ import annotations
+
 # Owner: platform
 """
 SecretRequest parser/generator (Adapted Standard).
@@ -15,7 +37,7 @@ Modes:
   generate  - writes tfvars + ExternalSecret output files
 """
 
-from __future__ import annotations
+
 
 import argparse
 import json

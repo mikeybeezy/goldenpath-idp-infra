@@ -157,6 +157,26 @@ The platform optimizes developer experience by replacing manual compliance chore
 
 ---
 
+## 20. Governance Registry Mirror (Audit Ledger)
+The platform implements a **Governance Registry Mirror Pattern** to decouple machine-generated audit artifacts from human development branches, eliminating the "Commit Tug-of-War" while preserving high-integrity audit trails.
+- **Dedicated Branch Architecture**: All platform health reports, documentation indices, and audit logs are written to the CI-owned `governance-registry` branch, preventing merge conflicts on active development branches.
+- **Chain-of-Custody Enforcement**: Every artifact includes mandatory provenance metadata (`source.sha`, `pipeline.run_id`, `generated_at`) ensuring reproducibility and forensic traceability without requiring an external database.
+- **Ledger Integrity Validation**: The `validate_govreg.py` enforcer runs on every registry commit, blocking manual patches and validating folder structure, preventing the branch from becoming polluted with untracked files.
+- **Atomic State Mirroring**: Updates to the registry are atomic—updating both the "Latest View" and the "Historical Snapshot" in a single commit, with concurrency guards preventing race conditions during high-velocity merges.
+- **Relates-To**: [ADR-0145](/docs/adrs/ADR-0145-governance-registry-mirror.md), [RB-0028](/docs/70-operations/runbooks/RB-0028-governance-registry-operations.md)
+
+---
+
+## 21. "Born Governed" Script Automation
+The platform ensures that all automation code is treated as a first-class citizen with strict contracts, verifying safety and quality before execution.
+- **Contract-Driven Execution**: Every script carries a self-describing contract (ID, Owner, Risk, Test Strategy) that determines how it is validated and run.
+- **Legacy Backfill Injection**: The **Backfill Injector** automatically upgrades legacy scripts to the "Born Governed" standard, ensuring 100% repository compliance.
+- **Cryptographic Trust**: Critical scripts are verified via cryptographic proofs (`proof-*.json`) minted by the **Verified Runner**, ensuring that "Trusted Code" has actually passed its tests in the current context.
+- **Pre-Execution Safety**: The **Validator Gate** blocks any script execution if the contract is violated or if the proof is stale, preventing "works on my machine" unsafe operations.
+- **Real-Time Visibility**: The **Certification Matrix** provides a live, auto-generated dashboard of script maturity (M3 Certified vs M1 Tracked).
+
+---
+
 ## Technical Foundation
 - **Platform Core**: AWS EKS (Ubuntu/Bottlerocket)
 - **GitOps Engine**: Argo CD

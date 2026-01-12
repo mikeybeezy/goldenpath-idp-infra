@@ -1,5 +1,26 @@
 #!/usr/bin/env python3
 """
+---
+id: SCRIPT-0005
+type: script
+owner: platform-team
+status: active
+maturity: 2
+dry_run:
+  supported: true
+  command_hint: --dry-run
+test:
+  runner: pytest
+  command: pytest -q tests/scripts/test_script_0005.py
+  evidence: declared
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+---
+"""
+
+"""
 Purpose: Doc Freshness Auditor.
 Checks file modification ages and flags documentation that is older than its configured review cadence.
 """

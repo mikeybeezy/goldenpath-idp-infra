@@ -53,3 +53,6 @@ We will implement a **Value Quantification (VQ) Framework** that integrates dire
 - [VQ_PRINCIPLES.md](../product/VQ_PRINCIPLES.md)
 - [VQ_TAGGING_GUIDE.md](../product/VQ_TAGGING_GUIDE.md)
 - [CAPABILITY_LEDGER.md](../product/CAPABILITY_LEDGER.md)
+
+### Implementation
+- `cost_logger.py`: Provides automated ROI and spend telemetry for governance reporting.

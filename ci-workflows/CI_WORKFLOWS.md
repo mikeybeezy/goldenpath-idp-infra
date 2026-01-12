@@ -47,6 +47,7 @@ CI Workflows (GitHub Actions)
 │   ├─ Bootstrap - CI Backstage (Stub)
 │   ├─ Bootstrap - CI Bootstrap (Stub)
 │   ├─ Create ECR Registry
+│   ├─ Governance Registry Writer
 │   ├─ Quality - Backstage Entity Sync
 │   └─ Scaffold App Repository
 │
@@ -88,11 +89,14 @@ CI Workflows (GitHub Actions)
 │   └─ Plan - PR Terraform Plan
 │
 └─ Uncategorized
+    ├─ GovReg Validate (Ledger Integrity)
+    ├─ Governance Enforcement
     ├─ PR Gates
     ├─ PR Governance Gates
     ├─ Python Unit Tests
     ├─ Quality - Documentation Auto-Healing
     ├─ Request App Secret
+    ├─ Script Certification Gate
     ├─ Secret Requests (PR)
     └─ Security - Gitleaks
 ```
@@ -125,6 +129,11 @@ CI Workflows (GitHub Actions)
 
 ### Create ECR Registry
 - **File**: `create-ecr-registry.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### Governance Registry Writer
+- **File**: `governance-registry-writer.yml`
 - **Owner**: platform
 - **Triggers**:
 
@@ -293,6 +302,16 @@ CI Workflows (GitHub Actions)
 
 ## Uncategorized
 
+### GovReg Validate (Ledger Integrity)
+- **File**: `govreg-validate.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### Governance Enforcement
+- **File**: `ci-governance.yml`
+- **Owner**: platform
+- **Triggers**:
+
 ### PR Gates
 - **File**: `pr-gates.yml`
 - **Owner**: platform
@@ -315,6 +334,11 @@ CI Workflows (GitHub Actions)
 
 ### Request App Secret
 - **File**: `request-app-secret.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### Script Certification Gate
+- **File**: `script-certification-gate.yml`
 - **Owner**: platform
 - **Triggers**:
 

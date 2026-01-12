@@ -1,5 +1,26 @@
 #!/usr/bin/env python3
 """
+---
+id: SCRIPT-0041
+type: script
+owner: platform-team
+status: active
+maturity: 2
+dry_run:
+  supported: true
+  command_hint: --dry-run
+test:
+  runner: pytest
+  command: pytest -q tests/scripts/test_script_0041.py
+  evidence: declared
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+---
+"""
+
+"""
 Purpose: PR Quality Gate & Structural Validator
 Achievement: Enforces schema compliance and mandatory sidecar presence in core directories.
              Blocks non-compliant PRs to prevent "Dark Infrastructure" from entering the platform.
@@ -127,8 +148,9 @@ def validate_schema(data, filepath):
              is_cl_match = re.match(r'^CL-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
              is_rb_match = re.match(r'^RB-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
              is_sec_match = re.match(r'^SEC-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
+             is_cnt_match = re.match(r'^CNT-\d{3}$', doc_id) and (filename_base == doc_id or filename_base.startswith(doc_id + '-'))
 
-             if not (is_adr_match or is_cl_match or is_rb_match or is_sec_match):
+             if not (is_adr_match or is_cl_match or is_rb_match or is_sec_match or is_cnt_match):
                   errors.append(f"ID mismatch: '{doc_id}' found in header but filename is '{filename_base}'")
 
     if 'owner' in data:

@@ -1,5 +1,5 @@
 ---
-id: HIW_SECRET_FLOW
+id: SECRET_REQUEST_FLOW
 title: 'How It Works: Secret Request Flow'
 type: documentation
 relates_to:

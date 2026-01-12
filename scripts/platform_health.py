@@ -1,4 +1,25 @@
 """
+---
+id: SCRIPT-0025
+type: script
+owner: platform-team
+status: active
+maturity: 2
+dry_run:
+  supported: true
+  command_hint: --dry-run
+test:
+  runner: pytest
+  command: pytest -q tests/scripts/test_script_0025.py
+  evidence: declared
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+---
+"""
+
+"""
 Purpose: Platform Health & Compliance Reporter
 Achievement: Aggregates repository metadata into a human-readable dashboard (PLATFORM_HEALTH.md),
              highlighting orphaned resources, stale lifecycles, and risk distributions.
@@ -119,6 +140,21 @@ def get_script_stats():
             # Count [name.sh](...) links
             matches = re.findall(r'\[.*?\.(\w+)\]\(file://.*?\)', content)
             stats['total'] = len(matches)
+    return stats
+
+def get_script_certification_stats():
+    stats = {'total': 0, 'certified': 0}
+    path = 'docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md'
+    if os.path.exists(path):
+        with open(path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            # Count table rows (excluding header)
+            # Row starts with | `scripts/
+            rows = re.findall(r'^\| `scripts/.*', content, re.MULTILINE)
+            stats['total'] = len(rows)
+            # Count certified (Maturity 3)
+            # Matches | ⭐⭐⭐ 3 |
+            stats['certified'] = len(re.findall(r'\| ⭐⭐⭐ 3 \|', content))
     return stats
 
 def get_workflow_stats():
@@ -255,6 +291,7 @@ def generate_report(target_dir='.'):
     adr_stats = get_adr_stats()
     script_stats = get_script_stats()
     workflow_stats = get_workflow_stats()
+    script_cert_stats = get_script_certification_stats()
     catalog_stats = get_catalog_stats()
     compliance_data = get_compliance_stats()
     trends = get_historical_trends()
@@ -415,8 +452,11 @@ def generate_report(target_dir='.'):
     lines.append("")
     lines.append(f"| Metric | Count | Source |")
     lines.append(f"| :--- | :--- | :--- |")
+
+    cert_rate = (script_cert_stats['certified'] / script_cert_stats['total'] * 100) if script_cert_stats['total'] > 0 else 0
     lines.append(f"| **Architecture Decisions** | {adr_stats['total']} | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |")
     lines.append(f"| **Automation Scripts** | {script_stats['total']} | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |")
+    lines.append(f"| **Certified Scripts (M3)** | {script_cert_stats['certified']}/{script_cert_stats['total']} ({cert_rate:.0f}%) | [Certification Matrix](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md) |")
     lines.append(f"| **CI Workflows** | {workflow_stats['total']} | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |")
     lines.append(f"| **Change Logs** | {changelog_stats['total']} | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |")
     lines.append(f"| **Tracked Resources** | {stats['total_files']} | Repository Scan |")
