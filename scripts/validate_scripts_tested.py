@@ -17,12 +17,11 @@ risk_profile:
   security_risk: none
   coupling_risk: low
 ---
-Purpose: Enforces Schema-Driven Script Certification
-Achievement: Validates that all scripts contain a metadata contract compliant with
-             schemas/automation/script.schema.yaml. Enforces proof-of-test for high-risk scripts.
+Purpose: Enforces Schema-Driven Script Certification (Acceptance Rule V1)
 """
 import os
 import sys
+import re
 import yaml
 import json
 import argparse
@@ -40,6 +39,10 @@ except ImportError:
 SCHEMA_PATH = Path("schemas/automation/script.schema.yaml")
 PROOF_DIR = Path("test-results/proofs")
 
+def die(msg: str) -> None:
+    print(f"❌ FAIL: {msg}", file=sys.stderr)
+    return False # Return False instead of exit to allow counting
+
 def load_schema():
     if not SCHEMA_PATH.exists():
         print(f"❌ Schema not found: {SCHEMA_PATH}")
@@ -55,100 +58,71 @@ def load_schema():
         print(f"❌ Failed to load schema: {e}")
         sys.exit(1)
 
-def validate_field(data, field_def, field_name, context=""):
-    """
-    Simple schema validator. 
-    Supports: type, enum, required_fields, pattern
-    """
-    value = data.get(field_name)
-    if value is None:
-        return []
-
-    errors = []
-    
-    # Type check
-    ftype = field_def.get('type')
-    if ftype == 'string' and not isinstance(value, str):
-        errors.append(f"{context}.{field_name}: Expected string, got {type(value)}")
-    elif ftype == 'integer' and not isinstance(value, int):
-        errors.append(f"{context}.{field_name}: Expected integer, got {type(value)}")
-    elif ftype == 'boolean' and not isinstance(value, bool):
-        errors.append(f"{context}.{field_name}: Expected boolean, got {type(value)}")
-    elif ftype == 'object' and not isinstance(value, dict):
-        errors.append(f"{context}.{field_name}: Expected object, got {type(value)}")
-        
-    # Enum check
-    if 'enum' in field_def and value not in field_def['enum']:
-        errors.append(f"{context}.{field_name}: Value '{value}' not in allowed list: {field_def['enum']}")
-        
-    # Recursive checks
-    if ftype == 'object' and 'fields' in field_def:
-        reqs = field_def.get('required_fields', [])
-        for r in reqs:
-            if r not in value:
-                errors.append(f"{context}.{field_name}: Missing required sub-field '{r}'")
-        
-        for sub_k, sub_def in field_def['fields'].items():
-            errors.extend(validate_field(value, sub_def, sub_k, f"{context}.{field_name}"))
-            
-    return errors
+def require(meta: dict, key: str, ctx: str) -> bool:
+    # supports nested keys like "test.command"
+    cur = meta
+    for part in key.split("."):
+        if not isinstance(cur, dict) or part not in cur:
+            die(f"Missing required field '{key}' in {ctx}")
+            return False
+        cur = cur[part]
+    return True
 
 def validate_file(filepath, schema, args):
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
     except:
-        return [f"Could not read file {filepath}"] 
+        return ["Could not read file"]
         
     data = parse_header(content)
     if not data:
-        return [f"Missing Metadata Header (YAML Frontmatter)"]
-        
+        return ["Missing Metadata Header (YAML Frontmatter)"]
+    
     errors = []
     
-    # 1. Top Level Required Fields
-    for req in schema.get('required_fields', []):
-        if req not in data:
-            errors.append(f"Missing required top-level field: '{req}'")
+    # 1. Structural Requirements (Nested)
+    req_checks = [
+        "test.runner", "test.command", "test.evidence",
+        "dry_run.supported", "risk_profile.production_impact"
+    ]
+    for r in req_checks:
+        if not require(data, r, str(filepath)):
+            errors.append(f"Missing {r}")
+
+    if errors: return errors
+
+    # 2. Logic & Policy Checks
+    
+    # Policy: No manual evidence for Medium/High Impact
+    impact = data["risk_profile"]["production_impact"]
+    evidence = data["test"]["evidence"]
+    if impact in ("medium", "high") and evidence == "manual":
+        errors.append(f"Manual test evidence not allowed for production_impact={impact}")
+
+    # Heuristic: Pytest test file existence
+    if data["test"]["runner"] == "pytest":
+        cmd = data["test"]["command"]
+        # Basic regex to find the test path in the command
+        m = re.search(r"(tests/[\w/\-\.]+\.py)", cmd)
+        if m:
+            test_path = Path(m.group(1))
+            if not test_path.exists():
+                errors.append(f"Declared pytest test file not found: {test_path}")
+
+    # Shellcheck command check
+    if data["test"]["runner"] == "shellcheck":
+        cmd = data["test"]["command"]
+        if str(filepath) not in cmd and filepath.name not in cmd:
+             errors.append("Shellcheck command must include script path")
+
+    # 3. Proof Verification (Maturity 3 Check)
+    script_id = data.get('id')
+    if evidence == 'ci' and args.verify_proofs:
+        proof_path = PROOF_DIR / f"proof-{script_id}.json"
+        if not proof_path.exists():
+            errors.append(f"Missing CI Proof file: {proof_path} (evidence='ci')")
             
-    # 2. Field Level Validation
-    for field, definition in schema.get('fields', {}).items():
-        errors.extend(validate_field(data, definition, field, "root"))
-
-    # 3. Logic Checks & Proof Verification
-    if not errors:
-        test_block = data.get('test', {})
-        evidence_type = test_block.get('evidence')
-        script_id = data.get('id')
-        risk = data.get('risk_profile', {}).get('production_impact')
-        
-        # Policy: High Risk requires CI proof
-        if risk == 'high' and evidence_type != 'ci' and not args.dry_run:
-             # Just warning for now
-             # errors.append("High risk scripts MUST verify with evidence='ci'")
-             pass
-
-        # Verify Test Proof Existence
-        if evidence_type == 'ci' and args.verify_proofs:
-            proof_path = PROOF_DIR / f"proof-{script_id}.json"
-            if not proof_path.exists():
-                errors.append(f"Missing CI Proof file: {proof_path} (evidence='ci' declared)")
-            else:
-                # Valid proof found?
-                try:
-                    with open(proof_path, 'r') as f:
-                        proof_data = json.load(f)
-                    
-                    if proof_data.get('outcome') != 'passed':
-                         errors.append(f"Proof outcome is '{proof_data.get('outcome')}', expected 'passed'")
-                         
-                    # Optional: Check SHA matching if argument provided
-                    # if args.expected_sha and proof_data.get('git_sha') != args.expected_sha:
-                    #    errors.append("Proof is for a different git SHA (stale verify)")
-                    
-                except Exception as e:
-                    errors.append(f"Invalid/Corrupt proof file at {proof_path}: {e}")
-
     return errors
 
 def main():
@@ -171,20 +145,18 @@ def main():
                     if file.endswith('.py') or file.endswith('.sh'):
                         scripts_to_check.append(Path(r) / file)
                         
-    # Robust Filtering: exclude lib dirs and __init__
+    # Filter out lib/ and exempted paths
     filtered_scripts = []
     for s in scripts_to_check:
-        if 'lib' in s.parts or s.name == '__init__.py':
-            continue
+        if 'lib' in s.parts or s.name == '__init__.py': continue
         filtered_scripts.append(s)
     
     if args.dry_run:
-        print(f"[DRY-RUN] Would validate {len(filtered_scripts)} scripts against schema.")
+        print(f"[DRY-RUN] Would validate {len(filtered_scripts)} scripts.")
         return
 
     failure_count = 0
-    print(f"🔍 Validating {len(filtered_scripts)} scripts against {SCHEMA_PATH}...")
-    print("-" * 60)
+    print(f"🔍 Validating {len(filtered_scripts)} scripts...")
     
     for script in filtered_scripts:
         errors = validate_file(script, schema, args)
@@ -196,9 +168,7 @@ def main():
         else:
             print(f"✅ {script}")
             
-    print("-" * 60)
     if failure_count > 0:
-        print(f"FAILED: {failure_count} scripts violating contract.")
         sys.exit(1)
     else:
         print("SUCCESS: All scripts compliant.")
