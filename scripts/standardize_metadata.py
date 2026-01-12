@@ -180,11 +180,15 @@ def standardize_file(filepath):
         # Markdown frontmatter MANDATES markers at both ends.
         new_content = f"---\n{new_fm}---\n\n{body.lstrip()}"
 
-    new_content = re.sub(r'\n{3,}', '\n\n', new_content)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(new_content)
+    new_content = re.sub(r'\n{3,}', '\n\n', new_content).strip() + '\n'
 
-    print(f"✅ Standardized: {filepath}")
+    if new_content != content:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+        print(f"✅ Standardized: {filepath}")
+    else:
+        # print(f"ℹ️  No changes needed: {filepath}")
+        pass
 
     # CLOSED-LOOP GOVERNANCE: Inject metadata into associated K8s resources
     if filename_base == 'metadata':
@@ -237,19 +241,35 @@ def inject_governance(sidecar_path, data):
             v_data = yaml.safe_load(v_content) or {}
             if not isinstance(v_data, dict): continue
 
-            if v_data.get('apiVersion') and v_data.get('kind'):
-                if 'metadata' not in v_data: v_data['metadata'] = {}
-                if 'annotations' not in v_data['metadata']: v_data['metadata']['annotations'] = {}
-                v_data['metadata']['annotations']['goldenpath.idp/id'] = str(gov_block['id'])
-                v_data['metadata']['annotations']['goldenpath.idp/owner'] = str(gov_block.get('owner', 'unknown'))
-                print(f"🏷️  Annotated K8s resource: {cand}")
-            else:
-                v_data['governance'] = gov_block
-                print(f"💉 Injected governance into: {cand}")
+            # Check if change is needed
+            current_gov = v_data.get('governance', {})
+            current_ann = v_data.get('metadata', {}).get('annotations', {})
 
-            with open(cand, 'w', encoding='utf-8') as f:
-                f.write("# Managed by scripts/standardize_metadata.py\n")
-                yaml.dump(v_data, f, Dumper=IndentDumper, sort_keys=False, default_flow_style=False, indent=2)
+            is_k8s = v_data.get('apiVersion') and v_data.get('kind')
+            needs_update = False
+
+            if is_k8s:
+                anno_id = current_ann.get('goldenpath.idp/id')
+                anno_owner = current_ann.get('goldenpath.idp/owner')
+                target_id = str(gov_block['id'])
+                target_owner = str(gov_block.get('owner', 'unknown'))
+
+                if anno_id != target_id or anno_owner != target_owner:
+                    needs_update = True
+                    if 'metadata' not in v_data: v_data['metadata'] = {}
+                    if 'annotations' not in v_data['metadata']: v_data['metadata']['annotations'] = {}
+                    v_data['metadata']['annotations']['goldenpath.idp/id'] = target_id
+                    v_data['metadata']['annotations']['goldenpath.idp/owner'] = target_owner
+            else:
+                if current_gov != gov_block:
+                    needs_update = True
+                    v_data['governance'] = gov_block
+
+            if needs_update:
+                with open(cand, 'w', encoding='utf-8') as f:
+                    f.write("# Managed by scripts/standardize_metadata.py\n")
+                    yaml.dump(v_data, f, Dumper=IndentDumper, sort_keys=False, default_flow_style=False, indent=2)
+                print(f"{'🏷️' if is_k8s else '💉'} {'Annotated' if is_k8s else 'Injected'} resource: {cand}")
         except Exception as e:
             print(f"⚠️ Failed injection for {cand}: {e}")
 
