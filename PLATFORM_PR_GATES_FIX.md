@@ -41,7 +41,7 @@ Run Yaml lint and formatting
 
 markdownlint-cli2 not found. Install it for full CI parity.
 
-# Handled automatically by pre-commit, or run manually:
+# Handled automatically by pre-commit, or run manually
 python3 scripts/generate_script_index.py
 python3 scripts/generate_workflow_index.py
 
