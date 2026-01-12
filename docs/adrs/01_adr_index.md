@@ -181,6 +181,9 @@ relates_to:
   - ADR-0142
   - ADR-0143
   - ADR-0144
+  - ADR-0145
+  - ADR-0146
+  - ADR-0147
 <!-- ADR_RELATE_END -->
 ---
 
@@ -338,6 +341,9 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0142](ADR-0142-declarative-platform-contracts.md) | Platform | Strategic Adoption of Declarative Platform Contracts | Proposed | 2026-01-0? | As the Golden Path IDP scales, the gap between developer intent and infrastructure implementation (Terraform, Helm, IAM) is widening. Currently, infrastructure requests are handled via manual code ... |
 | [ADR-0143](ADR-0143-secret-request-contract.md) | Platform | Secret Request Contract (V1) | Active | 2026-01-0? | This contract defines how teams request application secrets through the platform in a governed, auditable way. It désigne kind: SecretRequest as the primary interface for managing sensitive data, b... |
 | [ADR-0144](ADR-0144-intent-to-projection-parser.md) | Platform | Architecture of the Intent-to-Projection Parser (The Golden Path Core) | Proposed | 2026-01-0? | As the Golden Path IDP matures, we face a fundamental challenge: **How do we allow developers to request complex infrastructure without requiring them to become cloud engineers?** |
+| [ADR-0145](ADR-0145-governance-registry-mirror.md) | Platform | Governance Registry Mirror Pattern | Proposed | 2026-01-0? | High-velocity interaction between humans and machine agents creates a "Commit Tug-of-War" when automated scripts attempt to mutate active development branches. Specifically, scripts updating`PLATFO... |
+| [ADR-0146](ADR-0146-schema-driven-script-certification.md) | Platform | Schema-Driven Script Certification | Active | 2026-01-12 | The platform currently relies on dozens of Python and Bash scripts to manage critical lifecycle events (metadata standardization, registry mirroring, secret management). While we have a high-level ... |
+| [ADR-0147](ADR-0147-automated-governance-backfill.md) | Platform | Automated Governance Backfill | Active | 2026-01-12 | Following the ratification of [ADR-0146](ADR-0146-schema-driven-script-certification.md), the platform faces a "Migration Gap". We have stringent new rules (CNT-001) but a legacy codebase that viol... |
 <!-- ADR_TABLE_END -->
 
 ---
