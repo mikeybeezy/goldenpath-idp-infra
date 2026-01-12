@@ -139,3 +139,7 @@ spec:
     - ./adrs/adr-0138.yaml
     - ./adrs/adr-0139.yaml
     - ./adrs/adr-0140.yaml
+    - ./adrs/adr-0141.yaml
+    - ./adrs/adr-0142.yaml
+    - ./adrs/adr-0143.yaml
+    - ./adrs/adr-0144.yaml

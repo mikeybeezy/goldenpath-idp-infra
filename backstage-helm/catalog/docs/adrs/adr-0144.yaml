@@ -1,0 +1,29 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0144
+  title: 'ADR-0144: Architecture of the Intent-to-Projection Parser'
+  description: 'Authoring low-level Infrastructure-as-Code (Terraform/HCL) or Kubernetes
+    manifests creates:
+
+    1.  **Cognitive Overload**: Developers must understand ARNs, security policies,
+    and resource dependencies.
+
+    2...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0144-intent-to-projection-parser.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0144-intent-to-projection-parser.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0144-intent-to-projection-parser.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records
