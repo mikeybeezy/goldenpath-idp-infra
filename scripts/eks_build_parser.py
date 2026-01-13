@@ -43,6 +43,8 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> Dict[str, Any]:
             "cluster_name": spec.get("clusterName"),
             "version": spec.get("version", "1.29"),
             "enable_ssh_break_glass": spec.get("enableSshBreakGlass", False),
+            "ssh_key_name": spec.get("sshKeyName", None),
+            "ssh_source_security_group_ids": spec.get("sshSourceSecurityGroupIds", []),
             "node_group": {
                 "name": node_group.get("name", "default"),
                 "min_size": node_group.get("minSize"),
