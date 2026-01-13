@@ -12,3 +12,8 @@ output "public_route_table_id" {
   description = "ID of the created public route table (if enabled)."
   value       = try(aws_route_table.public[0].id, null)
 }
+
+output "s3_endpoint_id" {
+  description = "ID of the S3 Gateway Endpoint (if enabled)."
+  value       = try(aws_vpc_endpoint.s3[0].id, null)
+}

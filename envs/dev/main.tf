@@ -137,6 +137,17 @@ module "private_route_table" {
   tags                   = local.common_tags
 }
 
+# Explicit association to ensure S3 Gateway Endpoint is linked to private route table
+# This fixes the circular dependency issue where module.vpc creates the endpoint
+# but needs the route table ID that's created after it
+resource "aws_vpc_endpoint_route_table_association" "s3_private" {
+  count           = 1
+  route_table_id  = module.private_route_table.route_table_id
+  vpc_endpoint_id = module.vpc.s3_endpoint_id
+
+  depends_on = [module.private_route_table, module.vpc]
+}
+
 ################################################################################
 # Compute & Standalone Instances
 ################################################################################
