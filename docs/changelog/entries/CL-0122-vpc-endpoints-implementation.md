@@ -37,13 +37,18 @@ Added AWS VPC Endpoints to the networking layer to resolve `NodeCreationFailure`
 
 ### Infrastructure (Terraform)
 - **Module**: `modules/vpc`
-  - Added `aws_vpc_endpoint` resources for:
-    - `ecr.api` (Interface)
-    - `ecr.dkr` (Interface)
-    - `s3` (Gateway)
-- **Module**: `envs/dev`
-  - Updated `main.tf` to inject necessary Security Groups for endpoints (if logic requires).
+  - Refactored to support Dynamic Interface Endpoints (`aws_vpc_endpoint.interface` loop).
+  - Added explicit `aws_vpc_endpoint_route_table_association` for S3 Gateway Endpoint to fix routing issues.
+- **Environment**: `envs/dev`
+  - Enabled Full Suite of Endpoints: `ec2`, `eks`, `sts`, `ssm`, `logs`, `ecr.api`, `ecr.dkr`.
+
+## Capabilities Delivered
+- **VPC Interface Endpoints**: EC2, EKS, SSM, ECR (API/DKR), STS.
+- **Explicit S3 Route**: The S3 Gateway Endpoint is now correctly routed in the Private Route Table.
+- **Strict IAM**: Node Role has SSM Core permissions (`AmazonSSMManagedInstanceCore`).
+- **No NAT Dependency**: The Critical Boot Path is entirely Private and reliable.
 
 ### Validation
-- Validated via `terraform plan` to ensure endpoints attach to private route tables.
-- Verification target: Deployment of `goldenpath-dev-eks` with functional node bootstrapping.
+- **Verified**: `kubectl get nodes` returns 4 Ready nodes in private subnets.
+- **Verified**: SSM Session Manager connectivity established to private nodes.
+- **Verified**: Manual `curl` tests to S3 and ECR from within the node.
