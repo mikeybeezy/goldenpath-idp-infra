@@ -85,7 +85,8 @@ def main():
         scripts_to_check = [os.path.join(SCRIPTS_DIR, target_script)]
     else:
         scripts_to_check = glob.glob(os.path.join(SCRIPTS_DIR, "*.py")) + \
-                           glob.glob(os.path.join(SCRIPTS_DIR, "*.sh"))
+                           glob.glob(os.path.join(SCRIPTS_DIR, "*.sh")) + \
+                           glob.glob(os.path.join("bootstrap", "*.sh"))
 
     scripts_to_check = [s for s in scripts_to_check if os.path.basename(s) not in EXEMPT_SCRIPTS]
     scripts_to_check.sort()

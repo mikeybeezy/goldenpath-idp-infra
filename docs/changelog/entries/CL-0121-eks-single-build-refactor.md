@@ -94,6 +94,7 @@ effort reduced by 80% (6 steps → 1 command).
 
 #### Scripts
 - `bootstrap/verify-deployment.sh` - Standalone verification script
+- `scripts/verify_deployment.py` - Core Python deployment verifier and health scoring engine
   - Health scoring (0-100%)
   - ArgoCD credentials retrieval
   - Access instructions

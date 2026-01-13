@@ -213,15 +213,15 @@ variable "enable_post_deployment_verification" {
 Post-Deployment Verification
 =========================================
 
-⏳ Waiting for ArgoCD API to be ready...
+ Waiting for ArgoCD API to be ready...
 ✅ ArgoCD API is ready
 
-⏳ Waiting for critical applications to be created...
+ Waiting for critical applications to be created...
   ✅ cert-manager application exists
   ✅ external-secrets application exists
   ✅ cluster-autoscaler application exists
 
-⏳ Checking ArgoCD application sync status...
+ Checking ArgoCD application sync status...
   cert-manager: Sync=Synced, Health=Healthy
   external-secrets: Sync=Synced, Health=Progressing
   cluster-autoscaler: Sync=Synced, Health=Healthy
@@ -264,8 +264,8 @@ User-friendly script for manual verification after Terraform deployment.
  ║                                                           ║
  ╚═══════════════════════════════════════════════════════════╝
 
-ℹ️  Cluster: goldenpath-dev-eks
-ℹ️  Region: eu-west-2
+ℹ  Cluster: goldenpath-dev-eks
+ℹ  Region: eu-west-2
 
 =========================================
 Step 1: Configure kubectl

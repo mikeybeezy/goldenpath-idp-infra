@@ -182,23 +182,23 @@ cd ../../bootstrap  # From envs/dev
 === Golden Path IDP - Deployment Verification ===
 
 1. Checking Nodes...
-   ✓ All nodes are Ready (3/3)
+    All nodes are Ready (3/3)
 
 2. Checking ArgoCD Installation...
-   ✓ ArgoCD namespace exists
-   ✓ ArgoCD pods are ready (7/7)
-   ✓ ArgoCD server is accessible
+    ArgoCD namespace exists
+    ArgoCD pods are ready (7/7)
+    ArgoCD server is accessible
 
 3. Checking ArgoCD Applications...
-   ✓ cert-manager: Synced and Healthy
-   ✓ external-secrets: Synced and Healthy
-   ✓ cluster-autoscaler: Synced and Healthy
+    cert-manager: Synced and Healthy
+    external-secrets: Synced and Healthy
+    cluster-autoscaler: Synced and Healthy
    ...
 
 4. Checking Platform Components...
-   ✓ Metrics Server: Deployed
-   ✓ AWS Load Balancer Controller: Deployed
-   ✓ ArgoCD Image Updater: Deployed
+    Metrics Server: Deployed
+    AWS Load Balancer Controller: Deployed
+    ArgoCD Image Updater: Deployed
 
 === Deployment Health Score: 95% ===
 Status: HEALTHY
@@ -611,7 +611,7 @@ kubectl get --raw /apis/metrics.k8s.io/v1beta1/nodes
 ./bootstrap/verify-deployment.sh 2>&1 | tee verify.log
 
 # Check failed components
-cat verify.log | grep "✗"
+cat verify.log | grep ""
 ```
 
 **Solutions by component:**

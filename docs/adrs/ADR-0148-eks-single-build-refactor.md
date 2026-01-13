@@ -35,22 +35,22 @@ date: 2026-01-13
 context:
   - The kubernetes_addons module had grown to a monolithic 200+ line main.tf file
     mixing concerns (ArgoCD, AWS LB Controller, bootstrap apps, verification).
-  - Metrics Server was installed manually via kubectl after Terraform completed,
-    creating a state disconnect.
+  - Metrics Server was installed manually via kubectl after Terraform completed, creating
+    a state disconnect.
   - Cluster-autoscaler used brittle YAML string replacement for cluster name injection.
   - No automated image update mechanism existed, requiring manual deployment triggers.
   - Post-deployment validation was manual and inconsistent.
 decision:
-  - Refactor kubernetes_addons module into 7 focused component files (argocd.tf,
-    argocd_image_updater.tf, aws_lb_controller.tf, metrics_server.tf, bootstrap_apps.tf,
-    verification.tf, main.tf).
-  - Add ArgoCD Image Updater with full IRSA integration for ECR-based automated
-    image deployments.
+  - Refactor kubernetes_addons module into 7 focused component files (argocd.tf, argocd_image_updater.tf,
+    aws_lb_controller.tf, metrics_server.tf, bootstrap_apps.tf, verification.tf, main.tf).
+  - Add ArgoCD Image Updater with full IRSA integration for ECR-based automated image
+    deployments.
   - Move Metrics Server into Terraform management (no manual installation).
   - Implement token-based cluster name injection pattern ($CLUSTER_NAME) for ArgoCD
     applications.
   - Add post-deployment verification via null_resource with health checks.
-  - Create standalone verify-deployment.sh script for operator validation.
+  - Create standalone verification tools (`bootstrap/verify-deployment.sh` and `scripts/verify_deployment.py`)
+    for operator validation.
 consequences:
   - True single-build deployment achieved - single terraform apply installs entire
     platform.
@@ -239,7 +239,7 @@ resource "null_resource" "wait_for_core_apps" {
 }
 ```
 
-**Tier 2 - Operator Validation** (`bootstrap/verify-deployment.sh`):
+**Tier 2 - Operator Validation** (`bootstrap/verify-deployment.sh` and `scripts/verify_deployment.py`):
 - Comprehensive health scoring (0-100%)
 - Checks nodes, ArgoCD, applications, platform components
 - Retrieves admin credentials

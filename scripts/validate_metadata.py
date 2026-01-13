@@ -56,6 +56,7 @@ def extract_metadata(filepath):
     except Exception as e:
         return None, f"Read error: {e}"
 
+    # Standalone YAML/Sidecar
     if filepath.endswith('.yaml') or filepath.endswith('.yml'):
         try:
             # Handle possible multiple documents (e.g. if --- is used as a separator)
@@ -66,6 +67,18 @@ def extract_metadata(filepath):
             return None, "Empty YAML file"
         except yaml.YAMLError as e:
             return None, f"Invalid YAML: {e}"
+
+    # Embedded in Script (Python/Shell)
+    if filepath.endswith('.py') or filepath.endswith('.sh'):
+        from lib.script_metadata import extract_frontmatter as script_extract
+        raw_yaml = script_extract(content)
+        if not raw_yaml:
+            return None, "Missing embedded frontmatter (must be in docstring or # comment block)"
+        try:
+            data = yaml.safe_load(raw_yaml)
+            return data, None
+        except yaml.YAMLError as e:
+            return None, f"Invalid YAML in script: {e}"
 
     # Default to Markdown Frontmatter logic
     if not content.startswith('---'):
@@ -149,8 +162,9 @@ def validate_schema(data, filepath):
              is_rb_match = re.match(r'^RB-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
              is_sec_match = re.match(r'^SEC-\d{4}$', doc_id) and filename_base.startswith(doc_id + '-')
              is_cnt_match = re.match(r'^CNT-\d{3}$', doc_id) and (filename_base == doc_id or filename_base.startswith(doc_id + '-'))
+             is_script_match = re.match(r'^SCRIPT-\d{4}$', doc_id)
 
-             if not (is_adr_match or is_cl_match or is_rb_match or is_sec_match or is_cnt_match):
+             if not (is_adr_match or is_cl_match or is_rb_match or is_sec_match or is_cnt_match or is_script_match):
                   errors.append(f"ID mismatch: '{doc_id}' found in header but filename is '{filename_base}'")
 
     if 'owner' in data:
@@ -277,6 +291,10 @@ def scan_directory(target_path):
 
                 # Check SecretRequest YAMLs
                 if 'catalogs/secrets' in norm_root and file.endswith('.yaml'):
+                     files_to_check.append(os.path.join(root, file))
+
+                # Check Scripts (Recursively enforcing compliance)
+                if (file.endswith('.py') or file.endswith('.sh')) and file not in ['__init__.py', 'validate_metadata.py', 'platform_health.py', 'generate_script_index.py']:
                      files_to_check.append(os.path.join(root, file))
 
     # 1. Validate Existing Files

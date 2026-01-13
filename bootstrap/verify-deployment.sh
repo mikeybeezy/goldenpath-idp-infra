@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
+# ---
+# id: SCRIPT-0049
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 2
+# test:
+#   runner: manual
+#   command: ./bootstrap/verify-deployment.sh --help
+#   evidence: documentation
+# risk_profile:
+#   production_impact: low
+#   security_risk: low
+#   coupling_risk: low
+# relates_to:
+#   - ADR-0148
+#   - CL-0121
+#---
 # Single-Build Deployment Verification Script
 # Verifies that EKS cluster and ArgoCD applications are healthy after Terraform deployment
 #

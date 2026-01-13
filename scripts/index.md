@@ -97,4 +97,5 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [validate_govreg.py](file://scripts/validate_govreg.py) | --- |
 | [validate_routing_compliance.py](file://scripts/validate_routing_compliance.py) | --- |
 | [validate_scripts_tested.py](file://scripts/validate_scripts_tested.py) | --- |
+| [verify_deployment.py](file://scripts/verify_deployment.py) | --- |
 <!-- SCRIPTS_TABLE_END -->
