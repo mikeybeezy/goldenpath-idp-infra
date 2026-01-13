@@ -59,6 +59,12 @@ variable "allow_build_id_reuse" {
   default     = false
 }
 
+variable "governance_registry_branch" {
+  type        = string
+  description = "Git branch containing governance registry data (build timings, catalogs, etc.)."
+  default     = "governance-registry"
+}
+
 ################################################################################
 # Networking (VPC & Subnets)
 ################################################################################

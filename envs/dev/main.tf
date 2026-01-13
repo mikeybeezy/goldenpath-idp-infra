@@ -21,23 +21,26 @@ terraform {
 # Build ID Immutability Check
 ################################################################################
 
-# External data source to check if build_id exists in build-timings.csv
+# External data source to check if build_id exists in governance-registry
 data "external" "build_id_check" {
   count   = var.cluster_lifecycle == "ephemeral" && var.build_id != "" ? 1 : 0
   program = ["bash", "-c", <<-EOT
     set -e
     BUILD_ID="${var.build_id}"
     ENV="${var.environment}"
-    CSV_FILE="../../docs/build-timings.csv"
+    REGISTRY_BRANCH="${var.governance_registry_branch}"
+    CSV_PATH="environments/development/latest/build_timings.csv"
 
-    # Check if CSV exists
-    if [ ! -f "$CSV_FILE" ]; then
-      echo '{"exists":"false","error":"CSV file not found"}'
+    # Fetch latest CSV from governance-registry branch
+    CSV_CONTENT=$(git show "origin/$REGISTRY_BRANCH:$CSV_PATH" 2>/dev/null || echo "")
+
+    if [ -z "$CSV_CONTENT" ]; then
+      echo '{"exists":"false","error":"Registry CSV not found or git fetch needed"}'
       exit 0
     fi
 
     # Check if build_id exists for this environment (skip header)
-    if grep -q ",$ENV,$BUILD_ID," "$CSV_FILE" 2>/dev/null; then
+    if echo "$CSV_CONTENT" | grep -q ",$ENV,$BUILD_ID," 2>/dev/null; then
       echo '{"exists":"true","build_id":"'"$BUILD_ID"'","environment":"'"$ENV"'"}'
     else
       echo '{"exists":"false","build_id":"'"$BUILD_ID"'","environment":"'"$ENV"'"}'
@@ -63,7 +66,8 @@ resource "null_resource" "enforce_build_id_immutability" {
         1. Use a new build ID (recommended): increment the sequence number
         2. Set allow_build_id_reuse=true to override (NOT recommended for production)
 
-        Existing build record found in: docs/build-timings.csv
+        Existing build record found in: governance-registry branch
+        Path: environments/development/latest/build_timings.csv
       EOT
     }
   }
