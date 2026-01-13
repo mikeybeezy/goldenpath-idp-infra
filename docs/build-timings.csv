@@ -1,4 +1,4 @@
-start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,log_path
+start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,resources_added,resources_changed,resources_destroyed,log_path
 2025-12-25T12:22:06Z,2025-12-25T12:35:06Z,dev,20250115-03,780,0,logs/build-timings/dev-20250115-03-20251225T122206Z.log
 2025-12-25T13:29:35Z,2025-12-25T13:29:35Z,bootstrap,dev,20250115-02,0,255,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-20250115-02-20251225T132935Z.log
 2025-12-25T13:36:49Z,2025-12-25T13:36:50Z,bootstrap,dev,20250115-03,1,255,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-20250115-03-20251225T133649Z.log

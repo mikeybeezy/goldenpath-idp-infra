@@ -54,3 +54,85 @@ resource "aws_route_table" "public" {
     },
   )
 }
+
+# -----------------------------------------------------------------------------
+# VPC Endpoints (PrivateLink)
+# -----------------------------------------------------------------------------
+
+# S3 Gateway Endpoint (No cost, highly recommended for private subnets)
+resource "aws_vpc_endpoint" "s3" {
+  count             = var.enable_s3_endpoint ? 1 : 0
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.aws_region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = var.private_route_table_ids
+
+  tags = merge(
+    var.tags,
+    {
+      Name        = "${var.vpc_tag}-s3-endpoint"
+      Environment = var.environment
+    },
+  )
+}
+
+# Security Group for Interface Endpoints allows HTTPS from within VPC
+resource "aws_security_group" "vpc_endpoints" {
+  count       = var.enable_ecr_endpoints ? 1 : 0
+  name        = "${var.vpc_tag}-vpce-sg"
+  description = "Security group for VPC Interface Endpoints"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
+
+  tags = merge(
+    var.tags,
+    {
+      Name        = "${var.vpc_tag}-vpce-sg"
+      Environment = var.environment
+    },
+  )
+}
+
+# ECR API Endpoint (Interface)
+resource "aws_vpc_endpoint" "ecr_api" {
+  count               = var.enable_ecr_endpoints ? 1 : 0
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.aws_region}.ecr.api"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = var.private_subnet_ids
+  security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
+  private_dns_enabled = true
+
+  tags = merge(
+    var.tags,
+    {
+      Name        = "${var.vpc_tag}-ecr-api-endpoint"
+      Environment = var.environment
+    },
+  )
+}
+
+# ECR DKR Endpoint (Interface)
+resource "aws_vpc_endpoint" "ecr_dkr" {
+  count               = var.enable_ecr_endpoints ? 1 : 0
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.aws_region}.ecr.dkr"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = var.private_subnet_ids
+  security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
+  private_dns_enabled = true
+
+  tags = merge(
+    var.tags,
+    {
+      Name        = "${var.vpc_tag}-ecr-dkr-endpoint"
+      Environment = var.environment
+    },
+  )
+}

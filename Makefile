@@ -158,7 +158,13 @@ timed-build:
 	end_epoch=$$(date -u +%s); \
 	duration=$$((end_epoch-start_epoch)); \
 	end=$$(date -u +"%Y-%m-%dT%H:%M:%SZ"); \
-	echo "$$start,$$end,build,$(ENV),$${build_id},$${duration},$${status},\"$$flags\",$$log" >> docs/build-timings.csv; \
+	resources_added=$$(grep "Apply complete! Resources:" "$$log" | awk '{print $$3}'); \
+	resources_changed=$$(grep "Apply complete! Resources:" "$$log" | awk '{print $$5}'); \
+	resources_destroyed=$$(grep "Apply complete! Resources:" "$$log" | awk '{print $$7}'); \
+	if [ -z "$$resources_added" ]; then resources_added=0; fi; \
+	if [ -z "$$resources_changed" ]; then resources_changed=0; fi; \
+	if [ -z "$$resources_destroyed" ]; then resources_destroyed=0; fi; \
+	echo "$$start,$$end,build,$(ENV),$${build_id},$${duration},$${status},\"$$flags\",$$resources_added,$$resources_changed,$$resources_destroyed,$$log" >> docs/build-timings.csv; \
 	exit $$status; \
 	'
 

@@ -51,3 +51,33 @@ variable "public_route_table_name" {
   description = "Name tag applied to the public route table."
   default     = "public-route-table"
 }
+
+variable "private_route_table_ids" {
+  type        = list(string)
+  description = "List of private route table IDs for associating gateway endpoints."
+  default     = []
+}
+
+variable "enable_s3_endpoint" {
+  type        = bool
+  description = "Whether to create a VPC Gateway Endpoint for S3."
+  default     = false
+}
+
+variable "enable_ecr_endpoints" {
+  type        = bool
+  description = "Whether to create VPC Interface Endpoints for ECR (API and DKR)."
+  default     = false
+}
+
+variable "private_subnet_ids" {
+  type        = list(string)
+  description = "List of private subnet IDs for Interface Endpoints (required if enable_ecr_endpoints is true)."
+  default     = []
+}
+
+variable "aws_region" {
+  type        = string
+  description = "AWS region for endpoint service names."
+  default     = "eu-west-2"
+}

@@ -70,6 +70,13 @@ module "vpc" {
   vpc_tag     = "${local.name_prefix}-vpc"
   environment = local.environment
   tags        = local.common_tags
+
+  # VPC Endpoints needed for private EKS node bootstrapping
+  enable_s3_endpoint      = true
+  enable_ecr_endpoints    = true
+  private_route_table_ids = [module.private_route_table.route_table_id]
+  private_subnet_ids      = module.subnets.private_subnet_ids
+  aws_region              = var.aws_region
 }
 
 module "subnets" {
