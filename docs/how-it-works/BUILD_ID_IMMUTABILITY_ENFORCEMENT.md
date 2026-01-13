@@ -16,6 +16,8 @@ This guide details the **three-layer validation architecture** that prevents acc
 
 Ephemeral EKS clusters use `build_id` (format: `DD-MM-YY-NN`) to uniquely suffix resources and Terraform state keys. The immutability enforcement prevents operators from accidentally reusing a build_id, which would cause state corruption, resource conflicts, and audit trail loss.
 
+> **CRITICAL NOTE**: The governance-registry CSV is currently missing inventory tracking columns (`resources_added`, `resources_changed`, `resources_destroyed`) that exist in the local `docs/build-timings.csv`. See [CRITICAL-build-timings-csv-schema-fix.md](../CRITICAL-build-timings-csv-schema-fix.md) for details and remediation plan. The validation mechanism still works (only checks `env` and `build_id`), but we lose historical inventory data for builds until the schema is fixed.
+
 ## The Three-Layer Architecture
 
 ```mermaid
@@ -403,6 +405,57 @@ terraform plan \
   -var="build_id=31-12-25-04" \
   -var="allow_build_id_reuse=true"
 ```
+
+## CSV Schema
+
+### Required Schema (Complete)
+
+The governance-registry `build_timings.csv` **must** include inventory tracking columns:
+
+```csv
+start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,resources_added,resources_changed,resources_destroyed,log_path
+```
+
+### Column Descriptions
+
+| Column | Type | Required | Description |
+|--------|------|----------|-------------|
+| `start_time_utc` | ISO8601 | Yes | Build start time in UTC |
+| `end_time_utc` | ISO8601 | Yes | Build end time in UTC |
+| `phase` | string | Yes | Build phase (terraform-apply, bootstrap, teardown) |
+| `env` | string | Yes | Environment (dev, staging, prod) |
+| `build_id` | string | Yes | Unique build identifier (DD-MM-YY-NN) |
+| `duration_seconds` | integer | Yes | Build duration in seconds |
+| `exit_code` | integer | Yes | Exit code (0=success, non-zero=failure) |
+| `flags` | string | No | Build flags (quoted, comma-separated) |
+| `resources_added` | integer | Yes | Terraform resources added |
+| `resources_changed` | integer | Yes | Terraform resources changed |
+| `resources_destroyed` | integer | Yes | Terraform resources destroyed |
+| `log_path` | string | Yes | Relative path to build log file |
+
+### Example Record
+
+```csv
+2026-01-13T10:30:00Z,2026-01-13T10:45:00Z,terraform-apply,dev,13-01-26-01,900,0,"ENV_NAME=dev",47,12,0,logs/build-timings/dev-13-01-26-01-20260113T103000Z.log
+```
+
+This record shows:
+- 15-minute build (900 seconds)
+- 47 resources added (new infrastructure)
+- 12 resources changed (updated configuration)
+- 0 resources destroyed (no deletions)
+
+### Importance of Inventory Columns
+
+The `resources_added`, `resources_changed`, and `resources_destroyed` columns are critical for:
+
+1. **Capacity Planning**: Track infrastructure growth over time
+2. **Cost Analysis**: Correlate resource counts with AWS billing
+3. **Change Impact**: Understand deployment blast radius
+4. **Audit Trail**: Document what was built in each deployment
+5. **Performance Metrics**: Identify builds that provision many resources
+
+> **WARNING**: The governance-registry CSV currently lacks these columns. See [CRITICAL-build-timings-csv-schema-fix.md](../CRITICAL-build-timings-csv-schema-fix.md) for remediation plan.
 
 ## Security Considerations
 
