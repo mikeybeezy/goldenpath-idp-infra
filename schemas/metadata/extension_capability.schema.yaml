@@ -1,0 +1,147 @@
+id: extension_capability_schema
+title: Extension Capability Document Schema
+type: documentation
+status: active
+version: "1.0"
+
+required:
+  - id
+  - title
+  - status
+  - priority
+  - vq_class
+  - estimated_roi
+  - effort_estimate
+  - owner
+
+properties:
+  id:
+    type: string
+    pattern: "^EC-[0-9]{4}$"
+    description: "Extension Capability ID (e.g., EC-0001)"
+
+  title:
+    type: string
+    description: "Short descriptive title of the capability"
+    minLength: 10
+    maxLength: 100
+
+  status:
+    type: string
+    enum:
+      - proposed
+      - validated
+      - accepted
+      - rejected
+      - implemented
+    description: "Current lifecycle status of the capability"
+    default: proposed
+
+  priority:
+    type: string
+    enum:
+      - low
+      - medium
+      - high
+      - critical
+    description: "Business priority level"
+
+  vq_class:
+    type: string
+    enum:
+      - efficiency
+      - resilience
+      - velocity
+      - governance
+    description: "Value Quantification classification"
+
+  estimated_roi:
+    type: string
+    description: "Expected return on investment (e.g., '$13K/year' or 'High developer velocity')"
+
+  dependencies:
+    type: array
+    items:
+      type: string
+    description: "List of ADRs, existing capabilities, or external dependencies"
+    default: []
+
+  effort_estimate:
+    type: string
+    description: "Implementation effort (e.g., '9 weeks', '3 months', '1 quarter')"
+
+  owner:
+    type: string
+    enum_from: owners
+    description: "Team responsible for implementation"
+
+  relates_to:
+    type: array
+    items:
+      type: string
+    description: "Related ADRs, roadmap items, or other ECs"
+    default: []
+
+  implemented_as:
+    type: string
+    pattern: "^ADR-[0-9]{4}$"
+    description: "ADR ID if this EC has been implemented (e.g., ADR-0149)"
+    optional: true
+
+  rejected_reason:
+    type: string
+    description: "Explanation if status is 'rejected'"
+    optional: true
+
+  reviewed_date:
+    type: string
+    format: date
+    description: "Date of last platform team review (YYYY-MM-DD)"
+    optional: true
+
+content_sections:
+  required:
+    - executive_summary
+    - problem_statement
+    - proposed_solution
+    - architecture_integration
+    - strategic_use_cases
+    - implementation_roadmap
+    - risk_analysis
+    - alternatives_considered
+    - cost_analysis
+    - monitoring_metrics
+
+  optional:
+    - technical_deep_dive
+    - governance_compliance
+    - open_questions
+    - references
+    - approval_workflow
+
+validation_rules:
+  - rule: "EC documents must be in docs/extend-capabilities/"
+  - rule: "Filename must match pattern: EC-XXXX-kebab-case-title.md"
+  - rule: "Status 'implemented' requires 'implemented_as' field with ADR ID"
+  - rule: "Status 'rejected' requires 'rejected_reason' field"
+  - rule: "ROI must be quantified for 'efficiency' VQ class"
+  - rule: "Implementation roadmap must include phases and deliverables"
+  - rule: "At least 3 alternatives must be considered"
+
+metadata_example: |
+  ---
+  id: EC-0001
+  title: Knative Integration for Serverless Workloads
+  status: proposed
+  priority: medium
+  vq_class: efficiency
+  estimated_roi: $13,000/year
+  dependencies:
+    - EKS cluster (ADR-0148)
+    - ArgoCD (existing)
+  effort_estimate: 9 weeks
+  owner: platform-team
+  relates_to:
+    - ADR-0148
+    - ROADMAP.md
+  ---
