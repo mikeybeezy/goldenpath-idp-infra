@@ -451,7 +451,6 @@ module "kubernetes_addons" {
   depends_on = [
     module.eks,
     kubernetes_service_account_v1.aws_load_balancer_controller,
-    kubernetes_service_account_v1.argocd_image_updater,
     aws_eks_access_policy_association.terraform_admin
   ]
 }
