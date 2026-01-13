@@ -1,3 +1,7 @@
+data "aws_vpc" "this" {
+  id = var.vpc_id
+}
+
 locals {
   node_group             = var.node_group_config
   environment_tags       = var.environment != "" ? { Environment = var.environment } : {}
@@ -47,13 +51,15 @@ resource "aws_security_group" "cluster" {
   description = "Security group for EKS cluster control plane"
   vpc_id      = var.vpc_id
 
+  # Allow HTTPS from anywhere for public API access
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # This allows public API access if enabled
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Allow all traffic within the same security group
   ingress {
     from_port = 0
     to_port   = 0
@@ -61,6 +67,16 @@ resource "aws_security_group" "cluster" {
     self      = true
   }
 
+  # Allow node-to-control-plane communication from VPC
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [data.aws_vpc.this.cidr_block]
+    description = "Allow nodes to communicate with control plane"
+  }
+
+  # Allow all egress
   egress {
     from_port   = 0
     to_port     = 0
@@ -149,6 +165,7 @@ resource "aws_iam_role_policy_attachment" "node_group" {
     "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
     "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy",
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
   ])
 
   policy_arn = each.value
