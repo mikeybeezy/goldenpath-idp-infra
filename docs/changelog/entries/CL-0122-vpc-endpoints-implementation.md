@@ -33,7 +33,7 @@ Added AWS VPC Endpoints to the networking layer to resolve `NodeCreationFailure`
 ## Changes
 
 ### Governance
-- Added `docs/adrs/ADR-0149-vpc-endpoints-for-private-clusters.md`
+- Added `docs/adrs/ADR-0152-vpc-endpoints-for-private-clusters.md`
 
 ### Infrastructure (Terraform)
 - **Module**: `modules/vpc`
