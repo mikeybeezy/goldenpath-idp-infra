@@ -74,6 +74,10 @@ iam_config = {
   lb_controller_policy_arn                = "arn:aws:iam::593517239005:policy/goldenpath-load-balancer-controller-policy"
   lb_controller_service_account_namespace = "kube-system"
   lb_controller_service_account_name      = "aws-load-balancer-controller"
+  enable_image_updater_role               = true
+  image_updater_role_name                 = "goldenpath-idp-image-updater"
+  image_updater_service_account_namespace = "argocd"
+  image_updater_service_account_name      = "argocd-image-updater"
 }
 
 

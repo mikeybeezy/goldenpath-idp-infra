@@ -1,101 +1,49 @@
+# Kubernetes Add-ons Module
+# Orchestrates installation of ArgoCD, platform controllers, and bootstrap applications
+#
+# This module is split into logical components:
+# - argocd.tf                  : ArgoCD GitOps controller
+# - argocd_image_updater.tf    : ArgoCD Image Updater for automated image updates
+# - aws_lb_controller.tf       : AWS Load Balancer Controller
+# - metrics_server.tf          : Metrics Server for HPA and kubectl top
+# - bootstrap_apps.tf          : Deploys all ArgoCD Application manifests
+# - verification.tf            : Post-deployment validation checks
+#
+# Dependencies are managed via depends_on to ensure proper sequencing:
+# 1. ArgoCD (base)
+# 2. AWS LB Controller + Metrics Server (parallel)
+# 3. ArgoCD Image Updater (after ArgoCD)
+# 4. Bootstrap Apps (after all controllers)
+# 5. Verification (after bootstrap apps)
+
 terraform {
+  required_version = ">= 1.5.0"
+
   required_providers {
     helm = {
       source  = "hashicorp/helm"
       version = "~> 2.12"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.23"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.2"
+    }
   }
 }
 
-resource "helm_release" "argocd" {
-  name             = "argocd"
-  repository       = "https://argoproj.github.io/argo-helm"
-  chart            = "argo-cd"
-  version          = var.argocd_version
-  namespace        = "argocd"
-  create_namespace = true
-  wait             = true
-  timeout          = 600
+# Data source to get current AWS account ID for ECR
+data "aws_caller_identity" "current" {}
 
-  # Pass minimal values or rely on defaults.
-  # We use "server.insecure=true" if we are terminating TLS at an oversized ALB (common in simple setups),
-  # but here we stick to defaults unless specified.
-  values = [var.argocd_values]
+# Local values for reuse across components
+locals {
+  ecr_account_id = var.ecr_registry_id != "" ? var.ecr_registry_id : data.aws_caller_identity.current.account_id
 
-  set {
-    name  = "server.service.type"
-    value = "ClusterIP"
+  common_labels = {
+    "app.kubernetes.io/managed-by" = "terraform"
+    "goldenpath.idp/component"     = "platform-bootstrap"
   }
-
-  # Add common tags to the deployment if supported by the chart, or just track via Terraform state.
-}
-
-resource "helm_release" "aws_load_balancer_controller" {
-  name       = "aws-load-balancer-controller"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  namespace  = "kube-system"
-  wait       = true
-  timeout    = 300
-
-  set {
-    name  = "clusterName"
-    value = var.cluster_name
-  }
-
-  set {
-    name  = "region"
-    value = var.aws_region
-  }
-
-  set {
-    name  = "vpcId"
-    value = var.vpc_id
-  }
-
-  set {
-    name  = "serviceAccount.create"
-    value = "false"
-  }
-
-  set {
-    name  = "serviceAccount.name"
-    value = var.service_account_name
-  }
-}
-
-resource "helm_release" "bootstrap_apps" {
-  name             = "bootstrap-apps"
-  chart            = "${path.module}/bootstrap-chart"
-  version          = "0.1.0"
-  namespace        = "argocd"
-  create_namespace = true
-  wait             = true
-  timeout          = 300
-
-  # Collect all YAML files from the target directory and pass them as a list of strings
-  # Logic:
-  # 1. Recursive discovery (**/*.{yaml,yml})
-  # 2. Inject cluster name into cluster-autoscaler.yaml
-  values = [
-    yamlencode({
-      manifests = [
-        for f in(var.path_to_app_manifests != "" ? fileset(var.path_to_app_manifests, "**/*.{yaml,yml}") : []) :
-        (
-          basename(f) == "cluster-autoscaler.yaml" ?
-          replace(
-            file("${var.path_to_app_manifests}/${f}"),
-            "          valueFiles:",
-            "          parameters:\n            - name: autoDiscovery.clusterName\n              value: ${var.cluster_name}\n          valueFiles:"
-          ) :
-          file("${var.path_to_app_manifests}/${f}")
-        )
-      ]
-    })
-  ]
-
-  depends_on = [
-    helm_release.argocd,
-    helm_release.aws_load_balancer_controller
-  ]
 }

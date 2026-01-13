@@ -135,3 +135,27 @@ variable "oidc_subject" {
   type        = string
   description = "OIDC subject claim allowed to assume the role."
 }
+
+variable "enable_image_updater_role" {
+  type        = bool
+  description = "Whether to create the ArgoCD Image Updater IRSA role."
+  default     = false
+}
+
+variable "image_updater_role_name" {
+  type        = string
+  description = "Name for the ArgoCD Image Updater IAM role."
+  default     = "goldenpath-idp-image-updater"
+}
+
+variable "image_updater_service_account_namespace" {
+  type        = string
+  description = "Namespace for the ArgoCD Image Updater service account."
+  default     = "argocd"
+}
+
+variable "image_updater_service_account_name" {
+  type        = string
+  description = "Name of the ArgoCD Image Updater service account."
+  default     = "argocd-image-updater"
+}

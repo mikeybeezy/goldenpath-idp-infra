@@ -407,3 +407,82 @@ resource "aws_iam_role_policy_attachment" "eso" {
   role       = aws_iam_role.eso[0].name
   policy_arn = aws_iam_policy.eso[0].arn
 }
+
+################################################################################
+# ArgoCD Image Updater Role (IRSA)
+################################################################################
+
+data "aws_iam_policy_document" "image_updater_assume" {
+  count = var.enable_image_updater_role ? 1 : 0
+
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:aud"
+      values   = [var.oidc_audience]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:${var.image_updater_service_account_namespace}:${var.image_updater_service_account_name}"]
+    }
+
+    principals {
+      type        = "Federated"
+      identifiers = [var.oidc_provider_arn]
+    }
+  }
+}
+
+resource "aws_iam_role" "image_updater" {
+  count              = var.enable_image_updater_role ? 1 : 0
+  name               = var.image_updater_role_name
+  assume_role_policy = data.aws_iam_policy_document.image_updater_assume[0].json
+  tags               = merge(var.tags, local.environment_tags)
+}
+
+data "aws_iam_policy_document" "image_updater" {
+  count = var.enable_image_updater_role ? 1 : 0
+
+  # ECR read permissions for all repositories
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecr:GetAuthorizationToken"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:GetRepositoryPolicy",
+      "ecr:DescribeRepositories",
+      "ecr:ListImages",
+      "ecr:DescribeImages",
+      "ecr:BatchGetImage",
+      "ecr:DescribeImageScanFindings"
+    ]
+    resources = ["arn:aws:ecr:*:*:repository/*"]
+  }
+}
+
+resource "aws_iam_policy" "image_updater" {
+  count       = var.enable_image_updater_role ? 1 : 0
+  name        = "${var.image_updater_role_name}-policy"
+  description = "IAM policy for ArgoCD Image Updater to read ECR."
+  policy      = data.aws_iam_policy_document.image_updater[0].json
+  tags        = merge(var.tags, local.environment_tags)
+}
+
+resource "aws_iam_role_policy_attachment" "image_updater" {
+  count      = var.enable_image_updater_role ? 1 : 0
+  role       = aws_iam_role.image_updater[0].name
+  policy_arn = aws_iam_policy.image_updater[0].arn
+}

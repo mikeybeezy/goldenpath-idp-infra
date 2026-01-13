@@ -214,12 +214,16 @@ module "iam" {
   lb_controller_policy_arn                = var.iam_config.lb_controller_policy_arn
   lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
   lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
-  enable_eso_role                         = var.iam_config.enable_eso_role
-  eso_role_name                           = "${var.iam_config.eso_role_name}${local.role_suffix}"
-  eso_service_account_namespace           = var.iam_config.eso_service_account_namespace
-  eso_service_account_name                = var.iam_config.eso_service_account_name
-  environment                             = local.environment
-  tags                                    = local.common_tags
+  enable_eso_role                           = var.iam_config.enable_eso_role
+  eso_role_name                             = "${var.iam_config.eso_role_name}${local.role_suffix}"
+  eso_service_account_namespace             = var.iam_config.eso_service_account_namespace
+  eso_service_account_name                  = var.iam_config.eso_service_account_name
+  enable_image_updater_role                 = var.iam_config.enable_image_updater_role
+  image_updater_role_name                   = "${var.iam_config.image_updater_role_name}${local.role_suffix}"
+  image_updater_service_account_namespace   = var.iam_config.image_updater_service_account_namespace
+  image_updater_service_account_name        = var.iam_config.image_updater_service_account_name
+  environment                               = local.environment
+  tags                                      = local.common_tags
 
   depends_on = [module.eks]
 }
@@ -318,6 +322,24 @@ resource "kubernetes_service_account_v1" "external_secrets" {
   ]
 }
 
+resource "kubernetes_service_account_v1" "argocd_image_updater" {
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_image_updater_role ? 1 : 0
+
+  metadata {
+    name      = var.iam_config.image_updater_service_account_name
+    namespace = var.iam_config.image_updater_service_account_namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].image_updater_role_arn
+    }
+  }
+
+  depends_on = [
+    module.eks,
+    module.iam,
+    aws_eks_access_policy_association.terraform_admin
+  ]
+}
+
 provider "helm" {
   kubernetes {
     host                   = module.eks[0].cluster_endpoint
@@ -342,11 +364,19 @@ module "kubernetes_addons" {
   cluster_name = local.cluster_name_effective
   aws_region   = var.aws_region
 
+  # ArgoCD Image Updater configuration
+  enable_image_updater     = var.iam_config.enable_image_updater_role
+  ecr_registry_id          = data.aws_caller_identity.current.account_id
+  create_image_updater_sa  = false # Service account created via kubernetes_service_account_v1
+  image_updater_sa_name    = var.iam_config.image_updater_service_account_name
+  image_updater_role_arn   = var.iam_config.enable_image_updater_role ? module.iam[0].image_updater_role_arn : ""
+
   tags = local.common_tags
 
   depends_on = [
     module.eks,
     kubernetes_service_account_v1.aws_load_balancer_controller,
+    kubernetes_service_account_v1.argocd_image_updater,
     aws_eks_access_policy_association.terraform_admin
   ]
 }

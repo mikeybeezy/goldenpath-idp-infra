@@ -18,6 +18,9 @@ spec:
       chart: cluster-autoscaler
       targetRevision: 9.43.0
       helm:
+        parameters:
+          - name: autoDiscovery.clusterName
+            value: $CLUSTER_NAME
         valueFiles:
           - $values/gitops/helm/cluster-autoscaler/values/dev.yaml
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git

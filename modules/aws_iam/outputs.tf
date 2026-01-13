@@ -47,3 +47,13 @@ output "eso_role_arn" {
   description = "ARN of the External Secrets Operator IAM role."
   value       = try(aws_iam_role.eso[0].arn, null)
 }
+
+output "image_updater_role_name" {
+  description = "Name of the ArgoCD Image Updater IAM role."
+  value       = try(aws_iam_role.image_updater[0].name, null)
+}
+
+output "image_updater_role_arn" {
+  description = "ARN of the ArgoCD Image Updater IAM role."
+  value       = try(aws_iam_role.image_updater[0].arn, null)
+}
