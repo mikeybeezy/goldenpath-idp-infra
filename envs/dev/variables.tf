@@ -314,12 +314,6 @@ variable "apply_kubernetes_addons" {
   default     = false
 }
 
-variable "create_eks_access_entry" {
-  type        = bool
-  description = "Whether to create EKS access entry for the Terraform runner. Set to false for ephemeral builds if access entry already exists from a previous build (access entries are user-scoped, not cluster-scoped)."
-  default     = false
-}
-
 ################################################################################
 # Platform Catalogs (ECR & Secrets)
 ################################################################################
