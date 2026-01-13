@@ -306,7 +306,11 @@ module "iam" {
 data "aws_caller_identity" "current" {}
 
 # Grant the Terraform runner (CI role or local user) admin access to the cluster
+# NOTE: Access entries are user-scoped, not cluster-scoped. If you already have an access
+# entry from a previous ephemeral build, set create_eks_access_entry=false to skip creation.
 resource "aws_eks_access_entry" "terraform_admin" {
+  count = var.create_eks_access_entry ? 1 : 0
+
   cluster_name  = module.eks[0].cluster_name
   principal_arn = data.aws_caller_identity.current.arn
   type          = "STANDARD"
@@ -317,8 +321,10 @@ resource "aws_eks_access_entry" "terraform_admin" {
 }
 
 resource "aws_eks_access_policy_association" "terraform_admin" {
+  count = var.create_eks_access_entry ? 1 : 0
+
   cluster_name  = module.eks[0].cluster_name
-  principal_arn = aws_eks_access_entry.terraform_admin.principal_arn
+  principal_arn = aws_eks_access_entry.terraform_admin[0].principal_arn
   policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
 
   access_scope {
@@ -355,8 +361,7 @@ resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
 
   depends_on = [
     module.eks,
-    module.iam,
-    aws_eks_access_policy_association.terraform_admin
+    module.iam
   ]
 }
 
@@ -373,8 +378,7 @@ resource "kubernetes_service_account_v1" "cluster_autoscaler" {
 
   depends_on = [
     module.eks,
-    module.iam,
-    aws_eks_access_policy_association.terraform_admin
+    module.iam
   ]
 }
 
@@ -391,8 +395,7 @@ resource "kubernetes_service_account_v1" "external_secrets" {
 
   depends_on = [
     module.eks,
-    module.iam,
-    aws_eks_access_policy_association.terraform_admin
+    module.iam
   ]
 }
 
@@ -424,8 +427,7 @@ module "kubernetes_addons" {
 
   depends_on = [
     module.eks,
-    kubernetes_service_account_v1.aws_load_balancer_controller,
-    aws_eks_access_policy_association.terraform_admin
+    kubernetes_service_account_v1.aws_load_balancer_controller
   ]
 }
 
