@@ -83,7 +83,7 @@ resource "helm_release" "metrics_server" {
 
 **New Capability:** Automatically updates container images in ArgoCD Applications when new tags are pushed to ECR.
 
-#### Components Added:
+#### Components Added
 
 **A. Helm Release** (`modules/kubernetes_addons/argocd_image_updater.tf`)
 - Deploys Image Updater to `argocd` namespace
@@ -115,7 +115,7 @@ resource "kubernetes_service_account_v1" "argocd_image_updater" {
 - `image_updater_service_account_namespace` (default: `"argocd"`)
 - `image_updater_service_account_name` (default: `"argocd-image-updater"`)
 
-#### How to Enable:
+#### How to Enable
 
 In `envs/dev/terraform.tfvars`:
 ```hcl
@@ -128,7 +128,7 @@ iam_config = {
 }
 ```
 
-#### Use Case:
+#### Use Case
 
 1. Developer pushes new image: `123456789012.dkr.ecr.eu-west-2.amazonaws.com/backstage:v1.2.3`
 2. Image Updater detects it (every 2 minutes)
@@ -573,7 +573,7 @@ terraform apply
 
 This refactor achieves the original goal: **a single Terraform apply that provisions infrastructure, bootstraps the cluster, and deploys all platform applications via GitOps.**
 
-### Key Wins:
+### Key Wins
 
 1. ✅ **Simplified Workflow** - One command instead of multi-step manual process
 2. ✅ **Improved Maintainability** - Modular architecture, clear separation of concerns
@@ -581,7 +581,7 @@ This refactor achieves the original goal: **a single Terraform apply that provis
 4. ✅ **Better Observability** - Metrics Server + verification tooling
 5. ✅ **Production-Ready** - Follows best practices, fully declarative
 
-### Next Steps:
+### Next Steps
 
 1. **Test** - Deploy to dev environment and validate
 2. **Document** - Update README with new workflow

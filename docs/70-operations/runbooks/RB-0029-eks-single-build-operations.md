@@ -267,7 +267,7 @@ kubectl logs -n kube-system -l app.kubernetes.io/name=aws-load-balancer-controll
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
-Then open: https://localhost:8080
+- Then visit: <https://localhost:8080>
 
 **Method 2: LoadBalancer (Production - if configured)**
 ```bash
