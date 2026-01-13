@@ -64,10 +64,16 @@ variable "enable_s3_endpoint" {
   default     = false
 }
 
-variable "enable_ecr_endpoints" {
+variable "enable_interface_endpoints" {
   type        = bool
-  description = "Whether to create VPC Interface Endpoints for ECR (API and DKR)."
+  description = "Whether to create VPC Interface Endpoints for specified services."
   default     = false
+}
+
+variable "interface_endpoint_services" {
+  type        = list(string)
+  description = "List of service names (e.g. 'ec2', 'ecr.api') to create Interface Endpoints for."
+  default     = ["ec2", "ecr.api", "ecr.dkr", "sts", "logs", "ssm", "ssmmessages", "ec2messages", "eks"]
 }
 
 variable "private_subnet_ids" {

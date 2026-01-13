@@ -164,6 +164,11 @@ resource "aws_eks_node_group" "this" {
   disk_size       = local.node_group.disk_size
   instance_types  = local.node_group.instance_types
 
+  # Ensure IAM Role permissions are attached before creating the Node Group
+  depends_on = [
+    aws_iam_role_policy_attachment.node_group
+  ]
+
   dynamic "remote_access" {
     for_each = var.enable_ssh_break_glass ? [1] : []
 
@@ -197,7 +202,7 @@ resource "aws_eks_node_group" "this" {
     },
   )
 
-  depends_on = [aws_iam_role_policy_attachment.node_group]
+
 }
 
 resource "aws_eks_addon" "ebs_csi_driver" {

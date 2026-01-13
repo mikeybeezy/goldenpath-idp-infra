@@ -78,7 +78,7 @@ resource "aws_vpc_endpoint" "s3" {
 
 # Security Group for Interface Endpoints allows HTTPS from within VPC
 resource "aws_security_group" "vpc_endpoints" {
-  count       = var.enable_ecr_endpoints ? 1 : 0
+  count       = var.enable_interface_endpoints ? 1 : 0
   name        = "${var.vpc_tag}-vpce-sg"
   description = "Security group for VPC Interface Endpoints"
   vpc_id      = aws_vpc.main.id
@@ -99,11 +99,11 @@ resource "aws_security_group" "vpc_endpoints" {
   )
 }
 
-# ECR API Endpoint (Interface)
-resource "aws_vpc_endpoint" "ecr_api" {
-  count               = var.enable_ecr_endpoints ? 1 : 0
+# Dynamic Interface Endpoints (EC2, ECR, STS, Logs, SSM, etc.)
+resource "aws_vpc_endpoint" "interface" {
+  for_each            = var.enable_interface_endpoints ? toset(var.interface_endpoint_services) : []
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.aws_region}.ecr.api"
+  service_name        = "com.amazonaws.${var.aws_region}.${each.value}"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.private_subnet_ids
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -112,26 +112,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
   tags = merge(
     var.tags,
     {
-      Name        = "${var.vpc_tag}-ecr-api-endpoint"
-      Environment = var.environment
-    },
-  )
-}
-
-# ECR DKR Endpoint (Interface)
-resource "aws_vpc_endpoint" "ecr_dkr" {
-  count               = var.enable_ecr_endpoints ? 1 : 0
-  vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.aws_region}.ecr.dkr"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = var.private_subnet_ids
-  security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
-  private_dns_enabled = true
-
-  tags = merge(
-    var.tags,
-    {
-      Name        = "${var.vpc_tag}-ecr-dkr-endpoint"
+      Name        = "${var.vpc_tag}-${each.value}-endpoint"
       Environment = var.environment
     },
   )
