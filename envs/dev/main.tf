@@ -18,6 +18,58 @@ terraform {
 }
 
 ################################################################################
+# Build ID Immutability Check
+################################################################################
+
+# External data source to check if build_id exists in build-timings.csv
+data "external" "build_id_check" {
+  count   = var.cluster_lifecycle == "ephemeral" && var.build_id != "" ? 1 : 0
+  program = ["bash", "-c", <<-EOT
+    set -e
+    BUILD_ID="${var.build_id}"
+    ENV="${var.environment}"
+    CSV_FILE="../../docs/build-timings.csv"
+
+    # Check if CSV exists
+    if [ ! -f "$CSV_FILE" ]; then
+      echo '{"exists":"false","error":"CSV file not found"}'
+      exit 0
+    fi
+
+    # Check if build_id exists for this environment (skip header)
+    if grep -q ",$ENV,$BUILD_ID," "$CSV_FILE" 2>/dev/null; then
+      echo '{"exists":"true","build_id":"'"$BUILD_ID"'","environment":"'"$ENV"'"}'
+    else
+      echo '{"exists":"false","build_id":"'"$BUILD_ID"'","environment":"'"$ENV"'"}'
+    fi
+  EOT
+  ]
+}
+
+# Validation: Fail if build_id already exists (unless explicitly allowed)
+resource "null_resource" "enforce_build_id_immutability" {
+  count = var.cluster_lifecycle == "ephemeral" && var.build_id != "" && !var.allow_build_id_reuse ? 1 : 0
+
+  lifecycle {
+    precondition {
+      condition     = try(data.external.build_id_check[0].result.exists, "false") == "false"
+      error_message = <<-EOT
+        BUILD_ID IMMUTABILITY VIOLATION!
+
+        Build ID "${var.build_id}" already exists for environment "${var.environment}".
+        Build IDs are immutable and cannot be reused.
+
+        Options:
+        1. Use a new build ID (recommended): increment the sequence number
+        2. Set allow_build_id_reuse=true to override (NOT recommended for production)
+
+        Existing build record found in: docs/build-timings.csv
+      EOT
+    }
+  }
+}
+
+################################################################################
 # Global Metadata & Dynamic Resource Naming
 ################################################################################
 

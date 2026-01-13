@@ -41,12 +41,22 @@ variable "cluster_lifecycle" {
 
 variable "build_id" {
   type        = string
-  description = "Build ID used to suffix ephemeral resources."
+  description = "Build ID used to suffix ephemeral resources. Must be unique and immutable."
   default     = ""
   validation {
     condition     = var.cluster_lifecycle == "persistent" || trimspace(var.build_id) != ""
     error_message = "build_id must be set when cluster_lifecycle is ephemeral."
   }
+  validation {
+    condition     = can(regex("^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$", var.build_id)) || var.build_id == ""
+    error_message = "build_id must match format: DD-MM-YY-NN (e.g., 13-01-26-01)"
+  }
+}
+
+variable "allow_build_id_reuse" {
+  type        = bool
+  description = "Allow reusing an existing build_id (NOT recommended for production). Use for testing or recovery scenarios only."
+  default     = false
 }
 
 ################################################################################
