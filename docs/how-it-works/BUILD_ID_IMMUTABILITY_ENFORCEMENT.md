@@ -16,7 +16,7 @@ This guide details the **three-layer validation architecture** that prevents acc
 
 Ephemeral EKS clusters use `build_id` (format: `DD-MM-YY-NN`) to uniquely suffix resources and Terraform state keys. The immutability enforcement prevents operators from accidentally reusing a build_id, which would cause state corruption, resource conflicts, and audit trail loss.
 
-> **CRITICAL NOTE**: The governance-registry CSV is currently missing inventory tracking columns (`resources_added`, `resources_changed`, `resources_destroyed`) that exist in the local `docs/build-timings.csv`. See [CRITICAL-build-timings-csv-schema-fix.md](../CRITICAL-build-timings-csv-schema-fix.md) for details and remediation plan. The validation mechanism still works (only checks `env` and `build_id`), but we lose historical inventory data for builds until the schema is fixed.
+> **NOTE**: As of 2026-01-13, the governance-registry CSV has been updated to include inventory tracking columns (`resources_added`, `resources_changed`, `resources_destroyed`). Historical records were backfilled with `0,0,0` values. See [CRITICAL-build-timings-csv-schema-fix.md](../CRITICAL-build-timings-csv-schema-fix.md) for resolution details.
 
 ## The Three-Layer Architecture
 
@@ -455,7 +455,7 @@ The `resources_added`, `resources_changed`, and `resources_destroyed` columns ar
 4. **Audit Trail**: Document what was built in each deployment
 5. **Performance Metrics**: Identify builds that provision many resources
 
-> **WARNING**: The governance-registry CSV currently lacks these columns. See [CRITICAL-build-timings-csv-schema-fix.md](../CRITICAL-build-timings-csv-schema-fix.md) for remediation plan.
+> **RESOLVED**: The governance-registry CSV now includes these columns (fixed 2026-01-13). See [CRITICAL-build-timings-csv-schema-fix.md](../CRITICAL-build-timings-csv-schema-fix.md) for fix details.
 
 ## Security Considerations
 

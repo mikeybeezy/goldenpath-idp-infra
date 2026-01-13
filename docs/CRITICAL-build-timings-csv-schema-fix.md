@@ -1,15 +1,19 @@
-# CRITICAL: Build Timings CSV Schema Missing Inventory Columns
+# ✅ RESOLVED: Build Timings CSV Schema Missing Inventory Columns
 
-## Issue Summary
+> **STATUS**: Fixed on 2026-01-13
+> **Commit**: `f629112f` on governance-registry branch
+> **Resolution**: Added inventory columns and backfilled 38 historical records
 
-The `build_timings.csv` file in the governance-registry branch is **missing critical inventory tracking columns** that exist in the local `docs/build-timings.csv`:
+## Issue Summary (RESOLVED)
 
-### Current Schema (governance-registry - INCOMPLETE)
+The `build_timings.csv` file in the governance-registry branch **was missing** critical inventory tracking columns that exist in the local `docs/build-timings.csv`:
+
+### Old Schema (BEFORE FIX - 9 columns)
 ```csv
 start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,log_path
 ```
 
-### Required Schema (docs/build-timings.csv - COMPLETE)
+### Fixed Schema (AFTER FIX - 12 columns)
 ```csv
 start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,resources_added,resources_changed,resources_destroyed,log_path
 ```
@@ -32,7 +36,40 @@ start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,
 
 The governance-registry CSV was created or migrated without including the inventory columns that were present in the original `docs/build-timings.csv`.
 
-## Required Actions
+## ✅ Resolution (Completed 2026-01-13)
+
+### Actions Taken
+
+**1. Updated CSV Header**
+- Added 3 inventory columns to governance-registry CSV
+- Header now has 12 columns (was 9)
+- Commit: `f629112f` on governance-registry branch
+
+**2. Backfilled Historical Records**
+- Processed 38 existing records
+- Added `0,0,0` for missing inventory data
+- Fixed 1 record missing phase column (set to "unknown")
+- All 39 lines validated to have 12 columns
+
+**3. Verified Fix**
+```bash
+# Verified header
+$ git show origin/governance-registry:environments/development/latest/build_timings.csv | head -1 | awk -F',' '{print NF}'
+12  # ✅ Correct
+
+# Verified all rows
+$ git show origin/governance-registry:environments/development/latest/build_timings.csv | awk -F',' '{print NF}' | sort | uniq -c
+  39 12  # ✅ All rows have 12 columns
+```
+
+**4. Documentation Updated**
+- Updated how-it-works guide with CSV schema section
+- Removed critical warnings (issue resolved)
+- This file updated to reflect resolution status
+
+### Remaining Actions (For CI/CD Workflows)
+
+## Required Actions (Future Builds)
 
 ### 1. Update governance-registry CSV Header
 
