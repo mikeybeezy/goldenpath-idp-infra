@@ -71,7 +71,7 @@ endef
 #   make drain-nodegroup NODEGROUP=dev-default
 #   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 
-.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help
+.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help
 
 init:
 	$(TF_BIN) -chdir=$(ENV_DIR) init
@@ -167,6 +167,60 @@ fmt:
 
 validate:
 	$(TF_BIN) -chdir=$(ENV_DIR) validate
+
+################################################################################
+# Seamless Deployment (Two-Phase with Single Command)
+################################################################################
+
+deploy:
+	$(call require_build_id)
+	@echo "🚀 Starting seamless deployment for $(ENV) with BUILD_ID=$(BUILD_ID)"
+	@$(MAKE) _phase1-infrastructure ENV=$(ENV) BUILD_ID=$(BUILD_ID)
+	@$(MAKE) _phase2-bootstrap ENV=$(ENV) BUILD_ID=$(BUILD_ID)
+	@$(MAKE) _phase3-verify ENV=$(ENV)
+	@echo "✅ Deployment complete! Cluster ready."
+
+_phase1-infrastructure:
+	$(call require_build_id)
+	@echo "📦 Phase 1: Building infrastructure..."
+	@mkdir -p logs/build-timings
+	@bash -c 'set -e; \
+	log="logs/build-timings/terraform-apply-$(ENV)-$(CLUSTER)-$(BUILD_ID)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	echo "Infrastructure apply output streaming; full log at $$log"; \
+	$(TF_BIN) -chdir=$(ENV_DIR) apply \
+		-var="build_id=$(BUILD_ID)" \
+		-var="enable_k8s_resources=true" \
+		-var="apply_kubernetes_addons=false" \
+		-auto-approve 2>&1 | tee "$$log"; \
+	exit $${PIPESTATUS[0]}; \
+	'
+	@bash scripts/record-build-timing.sh $(ENV) $(BUILD_ID) terraform-apply
+	@echo "✅ Infrastructure ready (including service accounts)"
+
+_phase2-bootstrap:
+	$(call require_build_id_allow_reuse)
+	@echo "🔧 Phase 2: Bootstrapping platform..."
+	@mkdir -p logs/build-timings
+	@bash -c 'set -e; \
+	log="logs/build-timings/bootstrap-$(ENV)-$(CLUSTER)-$(BUILD_ID)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	echo "Bootstrap output streaming; full log at $$log"; \
+	SKIP_ARGO_SYNC_WAIT=$(SKIP_ARGO_SYNC_WAIT) \
+	NODE_INSTANCE_TYPE=$(NODE_INSTANCE_TYPE) \
+	ENV_NAME=$(ENV_NAME) \
+	ENABLE_TF_K8S_RESOURCES=false \
+	CONFIRM_TF_APPLY=true \
+	TF_DIR=$(ENV_DIR) \
+	bash $(BOOTSTRAP_SCRIPT) $(CLUSTER) $(REGION) $(KONG_NAMESPACE) 2>&1 | tee "$$log"; \
+	exit $${PIPESTATUS[0]}; \
+	'
+	@bash scripts/record-build-timing.sh $(ENV) $(BUILD_ID) bootstrap
+	@echo "✅ Platform bootstrapped"
+
+_phase3-verify:
+	@echo "✅ Phase 3: Verifying deployment..."
+	@kubectl get nodes || echo "⚠️  Warning: Could not verify nodes"
+	@kubectl -n argocd get applications || echo "⚠️  Warning: Could not verify ArgoCD applications"
+	@echo "✅ All systems operational"
 
 bootstrap:
 	$(call require_build_id_allow_reuse)
