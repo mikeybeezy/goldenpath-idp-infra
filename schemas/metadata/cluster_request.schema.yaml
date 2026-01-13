@@ -1,0 +1,78 @@
+id: cluster_request_schema
+title: EKS Cluster Request Schema
+type: documentation
+status: active
+version: "1.0"
+
+required:
+  - id
+  - title
+  - status
+  - owner
+  - spec
+
+properties:
+  id:
+    type: string
+    description: "Audit ID for the request (e.g. EKS-0001)"
+  title:
+    type: string
+  status:
+    type: string
+    enum_from: status
+  owner:
+    type: string
+    enum_from: owners
+  spec:
+    type: object
+    required:
+      - clusterName
+      - version
+      - region
+      - nodeGroup
+    properties:
+      clusterName:
+        type: string
+      version:
+        type: string
+        default: "1.29"
+      region:
+        type: string
+        default: "eu-west-2"
+      nodeGroup:
+        type: object
+        required:
+          - minSize
+          - maxSize
+          - desiredSize
+          - instanceTypes
+        properties:
+          name:
+            type: string
+            default: "default"
+          minSize:
+            type: integer
+          maxSize:
+            type: integer
+          desiredSize:
+            type: integer
+          instanceTypes:
+            type: array
+            items:
+              type: string
+          diskSize:
+            type: integer
+            default: 20
+          capacityType:
+            type: string
+            enum: ["ON_DEMAND", "SPOT"]
+            default: "ON_DEMAND"
+      bootstrapMode:
+        type: bool
+        default: false
+      enableStorageAddons:
+        type: bool
+        default: true
+      enableSshBreakGlass:
+        type: bool
+        default: false

@@ -95,10 +95,15 @@ effort reduced by 80% (6 steps → 1 command).
 #### Scripts
 - `bootstrap/verify-deployment.sh` - Standalone verification script
 - `scripts/verify_deployment.py` - Core Python deployment verifier and health scoring engine
+- `scripts/eks_build_parser.py` - Logic for converting Cluster Requests into Terraform vars
   - Health scoring (0-100%)
   - ArgoCD credentials retrieval
   - Access instructions
   - Platform component validation
+
+#### Governance
+- `schemas/metadata/cluster_request.schema.yaml` - Schema definition for cluster requests
+- `docs/catalogs/clusters/platform/dev/EKS-0001.yaml` - Initial cluster request record
 
 #### Terraform - kubernetes_addons Module (7 new files)
 - `modules/kubernetes_addons/argocd.tf` - ArgoCD GitOps controller Helm deployment

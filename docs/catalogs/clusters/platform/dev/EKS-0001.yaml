@@ -1,0 +1,26 @@
+apiVersion: goldenpath.io/v1
+kind: ClusterRequest
+type: cluster_request
+id: EKS-0001
+title: "Development EKS Cluster"
+status: active
+owner: platform-team
+metadata:
+  name: goldenpath-dev-eks
+  service: platform-core
+  environment: dev
+spec:
+  clusterName: "goldenpath-dev-eks"
+  version: "1.29"
+  region: "eu-west-2"
+  nodeGroup:
+    name: "default"
+    minSize: 3
+    maxSize: 5
+    desiredSize: 3
+    instanceTypes: ["t3.medium"]
+    diskSize: 20
+    capacityType: "ON_DEMAND"
+  bootstrapMode: true
+  enableStorageAddons: true
+  enableSshBreakGlass: false

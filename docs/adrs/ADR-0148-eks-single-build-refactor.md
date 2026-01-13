@@ -1,4 +1,28 @@
 ---
+id: ADR-0148-eks-single-build-refactor
+title: 'ADR-0148: EKS Single-Build Refactor with Image Updater'
+type: adr
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+---
+
 id: ADR-0148
 title: EKS Single-Build Refactor with Image Updater
 type: adr
@@ -48,9 +72,11 @@ decision:
   - Move Metrics Server into Terraform management (no manual installation).
   - Implement token-based cluster name injection pattern ($CLUSTER_NAME) for ArgoCD
     applications.
-  - Add post-deployment verification via null_resource with health checks.
-  - Create standalone verification tools (`bootstrap/verify-deployment.sh` and `scripts/verify_deployment.py`)
-    for operator validation.
+  - Create standalone verification tools (`bootstrap/verify-deployment.sh` and `scripts/verify_deployment.py`) for operator validation.
+  - Implement **Schema-Driven Cluster Configuration** pattern:
+      - Use `schemas/metadata/cluster_request.schema.yaml` for governance.
+      - Use `docs/catalogs/clusters/` for cluster requests.
+      - Use `scripts/eks_build_parser.py` to generate surgical `.auto.tfvars.json`.
 consequences:
   - True single-build deployment achieved - single terraform apply installs entire
     platform.
@@ -58,6 +84,7 @@ consequences:
   - Deployment time reduced by 25% (40min to 30min estimated).
   - Module maintainability improved with clear separation of concerns.
   - CI/CD readiness achieved with Image Updater auto-deploying on ECR pushes.
+  - **Governed Provisioning**: EKS clusters now follow the "Born Governed" request pattern used for Secrets.
   - IAM complexity increased (1 new role for Image Updater).
   - Terraform execution now requires network access to K8s API during apply.
 ---
