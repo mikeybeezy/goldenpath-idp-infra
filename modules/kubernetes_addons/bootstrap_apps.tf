@@ -33,6 +33,7 @@ resource "helm_release" "bootstrap_apps" {
   depends_on = [
     helm_release.argocd,
     helm_release.aws_load_balancer_controller,
-    helm_release.metrics_server
+    helm_release.metrics_server,
+    kubernetes_namespace.platform
   ]
 }
