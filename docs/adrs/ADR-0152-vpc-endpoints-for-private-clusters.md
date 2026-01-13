@@ -37,12 +37,20 @@ The "Born Governed" EKS platform mandates that worker nodes reside in private su
 Attempts to rely solely on NAT Gateways for this traffic have proven flaky during node initialization, leading to `NodeCreationFailure` and timeouts. Additionally, relying on NAT for internal AWS traffic incurs higher latency and data processing costs, while exposing traffic to the public internet egress path.
 
 ## Decision
-We will implement **AWS VPC Endpoints (PrivateLink)** for critical services required for EKS bootstrapping.
+We will implement the **Full Suite of AWS VPC Endpoints (PrivateLink)** to guarantee reliable EKS bootstrapping and debugging in private subnets without NAT dependency.
 
-Specifically, we will add:
-1.  **ECR API Endpoint** (`com.amazonaws.region.ecr.api`): For Docker login and image manifest retrieval.
-2.  **ECR DKR Endpoint** (`com.amazonaws.region.ecr.dkr`): For pulling the actual container image layers.
-3.  **S3 Gateway Endpoint** (`com.amazonaws.region.s3`): Required by ECR (which stores layers in S3) and generally useful for private subnet access to S3 without NAT.
+The implementation will use a `for_each` loop to provision independent Interface Endpoints for:
+
+### Critical Boot Path
+1.  **EC2** (`ec2`): Required by VPC CNI for ENI attachment and Node Naming.
+2.  **EKS** (`eks`): Required for Node Bootstrapping (cluster introspection via `aws eks describe-cluster`).
+3.  **ECR API/DKR** (`ecr.api`, `ecr.dkr`): Required for pulling container images.
+4.  **STS** (`sts`): Required for IAM Roles for Service Accounts (IRSA) and Node Roles.
+5.  **S3 Gateway**: Required for ECR layers and state storage.
+
+### Operational Excellence
+6.  **CloudWatch Logs** (`logs`): Ensures node startup logs (`/var/log/messages`, `cloud-init`) are captured even if networking fails.
+7.  **SSM Suite** (`ssm`, `ssmmessages`, `ec2messages`): Enables **AWS Systems Manager Session Manager** for secure, SSH-free debugging of nodes.
 
 ## Consequences
 ### Positive
