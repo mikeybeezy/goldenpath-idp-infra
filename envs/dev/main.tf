@@ -410,7 +410,8 @@ resource "kubernetes_service_account_v1" "argocd_image_updater" {
   depends_on = [
     module.eks,
     module.iam,
-    aws_eks_access_policy_association.terraform_admin
+    aws_eks_access_policy_association.terraform_admin,
+    module.kubernetes_addons
   ]
 }
 
