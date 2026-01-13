@@ -14,6 +14,14 @@ terraform {
       source  = "hashicorp/helm"
       version = "~> 2.12"
     }
+    external = {
+      source  = "hashicorp/external"
+      version = "~> 2.3"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.2"
+    }
   }
 }
 
@@ -57,6 +65,76 @@ locals {
     local.build_id != "" ? { BuildId = local.build_id } : {},
     var.common_tags,
   )
+}
+
+################################################################################
+# Build ID Immutability Enforcement
+################################################################################
+
+# External data source to check if build_id exists in governance-registry
+data "external" "build_id_check" {
+  count   = var.cluster_lifecycle == "ephemeral" && var.build_id != "" ? 1 : 0
+  program = ["bash", "-c", <<-EOT
+    set -e
+    BUILD_ID="${var.build_id}"
+    ENV="${var.environment}"
+    REGISTRY_BRANCH="${var.governance_registry_branch}"
+    CSV_PATH="environments/development/latest/build_timings.csv"
+
+    # Fetch latest CSV from governance-registry branch
+    CSV_CONTENT=$(git show "origin/$REGISTRY_BRANCH:$CSV_PATH" 2>/dev/null || echo "")
+
+    if [ -z "$CSV_CONTENT" ]; then
+      echo '{"exists":"false","error":"Registry CSV not found or git fetch needed"}'
+      exit 0
+    fi
+
+    # Check if build_id exists for this environment (skip header)
+    if echo "$CSV_CONTENT" | grep -q ",$ENV,$BUILD_ID," 2>/dev/null; then
+      echo '{"exists":"true","build_id":"'"$BUILD_ID"'","environment":"'"$ENV"'"}'
+    else
+      echo '{"exists":"false","build_id":"'"$BUILD_ID"'","environment":"'"$ENV"'"}'
+    fi
+  EOT
+  ]
+}
+
+# Enforce build_id immutability via lifecycle precondition
+resource "null_resource" "enforce_build_id_immutability" {
+  count = var.cluster_lifecycle == "ephemeral" && var.build_id != "" ? 1 : 0
+
+  lifecycle {
+    precondition {
+      condition     = !var.allow_build_id_reuse ? try(data.external.build_id_check[0].result.exists, "false") == "false" : true
+      error_message = <<-EOT
+        Build ID ${var.build_id} already exists for environment ${var.environment}.
+
+        This build_id was previously used. To prevent state corruption and resource conflicts,
+        you must use a unique build_id for each ephemeral cluster deployment.
+
+        Options:
+        1. Use a new build_id (recommended): Increment the sequence number
+           Example: If current is ${var.build_id}, try incrementing the last segment
+           ${substr(var.build_id, 0, 9)}${format("%02d", tonumber(substr(var.build_id, 9, 2)) + 1)}
+
+        2. Override protection (NOT recommended, only for testing/recovery):
+           terraform apply -var="build_id=${var.build_id}" -var="allow_build_id_reuse=true"
+
+           WARNING: Reusing build_ids can cause:
+           - Terraform state corruption (conflicting state keys)
+           - Resource naming conflicts in AWS
+           - Lost audit trail and compliance violations
+
+        Check governance registry for existing builds:
+        git show origin/${var.governance_registry_branch}:environments/development/latest/build_timings.csv
+      EOT
+    }
+  }
+
+  triggers = {
+    build_id    = var.build_id
+    environment = var.environment
+  }
 }
 
 ################################################################################
@@ -332,7 +410,7 @@ provider "helm" {
 
 module "kubernetes_addons" {
   source = "../../modules/kubernetes_addons"
-  count  = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
+  count  = var.eks_config.enabled && var.enable_k8s_resources && var.apply_kubernetes_addons ? 1 : 0
 
   path_to_app_manifests = "${path.module}/../../gitops/argocd/apps/dev"
   argocd_values         = file("${path.module}/../../gitops/helm/argocd/values/dev.yaml")

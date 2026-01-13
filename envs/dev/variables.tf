@@ -41,12 +41,28 @@ variable "cluster_lifecycle" {
 
 variable "build_id" {
   type        = string
-  description = "Build ID used to suffix ephemeral resources."
+  description = "Build ID used to suffix ephemeral resources. Must be unique and immutable. Format: DD-MM-YY-NN (e.g., 13-01-26-01)."
   default     = ""
   validation {
     condition     = var.cluster_lifecycle == "persistent" || trimspace(var.build_id) != ""
     error_message = "build_id must be set when cluster_lifecycle is ephemeral."
   }
+  validation {
+    condition     = can(regex("^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$", var.build_id)) || var.build_id == ""
+    error_message = "build_id must match format: DD-MM-YY-NN (e.g., 13-01-26-01). Day-Month-Year-Sequence."
+  }
+}
+
+variable "allow_build_id_reuse" {
+  type        = bool
+  description = "Allow reusing an existing build_id (NOT recommended for production). Use for testing or recovery scenarios only."
+  default     = false
+}
+
+variable "governance_registry_branch" {
+  type        = string
+  description = "Git branch containing governance registry data (build timings, catalogs, indices)."
+  default     = "governance-registry"
 }
 
 ################################################################################
@@ -289,6 +305,12 @@ variable "iam_config" {
 variable "enable_k8s_resources" {
   type        = bool
   description = "Enable Kubernetes resources managed by Terraform (service accounts). Set true only after kubeconfig is available."
+  default     = false
+}
+
+variable "apply_kubernetes_addons" {
+  type        = bool
+  description = "Whether to apply the kubernetes_addons module (Helm releases: ArgoCD, LB Controller, bootstrap-apps). Set false in Phase 1 (infra), true in Phase 2 (bootstrap). Requires enable_k8s_resources=true."
   default     = false
 }
 

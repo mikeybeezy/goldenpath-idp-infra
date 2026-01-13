@@ -139,6 +139,32 @@ and file touchpoints.
 
 If you prefer a simplified workflow, the Makefile wraps the standard Terraform commands per environment:
 
+#### Seamless Deployment (Recommended)
+
+For a complete platform deployment with build ID immutability enforcement:
+
+```bash
+make deploy ENV=dev BUILD_ID=13-01-26-03
+```
+
+This single command orchestrates:
+
+1. Phase 1: Infrastructure provisioning (Terraform apply)
+2. Phase 2: Platform bootstrap (ArgoCD, controllers, applications)
+3. Phase 3: Verification (kubectl checks)
+
+Build ID format: `DD-MM-YY-NN` (e.g., `13-01-26-03` for 13th day, January 2026, sequence 03)
+
+**Build ID Immutability**: Each build_id is validated against the governance-registry branch to prevent accidental reuse. If you need to override (emergency only):
+
+```bash
+make deploy ENV=dev BUILD_ID=13-01-26-03 ALLOW_REUSE_BUILD_ID=true
+```
+
+#### Traditional Terraform Commands
+
+For manual control or debugging:
+
 ```bash
 make init ENV=dev
 make plan ENV=dev
@@ -153,8 +179,18 @@ Step-by-step with the Makefile:
 2. Pick an environment name (`dev`, `test`, `staging`, `prod`). Example uses `dev`.
 3. Run `make init ENV=dev` to execute `terraform -chdir=envs/dev init` (downloads providers/state).
 4. Run `make plan ENV=dev` to execute `terraform -chdir=envs/dev plan` and preview changes.
-5. Run `make apply ENV=dev` to execute `terraform -chdir=envs/dev apply` and deploy (confirm when prompted).
+5. Run `make deploy ENV=dev BUILD_ID=<DD-MM-YY-NN>` for seamless deployment, or `make apply ENV=dev` for infrastructure only.
 6. Swap `ENV=dev` for `ENV=test`, `staging`, or `prod` to repeat; the Makefile just saves you from typing the `-chdir` commands manually.
+
+#### Advanced: Phase-by-Phase Deployment
+
+For debugging or advanced scenarios, run individual phases:
+
+```bash
+make _phase1-infrastructure ENV=dev BUILD_ID=13-01-26-03  # Infrastructure only
+make _phase2-bootstrap ENV=dev BUILD_ID=13-01-26-03       # Platform bootstrap
+make _phase3-verify ENV=dev                               # Verification checks
+```
 
 Timing runs:
 
