@@ -306,7 +306,10 @@ module "iam" {
 data "aws_caller_identity" "current" {}
 
 # Grant the Terraform runner (CI role or local user) admin access to the cluster
+# Only for persistent clusters - ephemeral clusters use kubeconfig for access
 resource "aws_eks_access_entry" "terraform_admin" {
+  count = local.cluster_lifecycle == "persistent" ? 1 : 0
+
   cluster_name  = module.eks[0].cluster_name
   principal_arn = data.aws_caller_identity.current.arn
   type          = "STANDARD"
@@ -317,8 +320,10 @@ resource "aws_eks_access_entry" "terraform_admin" {
 }
 
 resource "aws_eks_access_policy_association" "terraform_admin" {
+  count = local.cluster_lifecycle == "persistent" ? 1 : 0
+
   cluster_name  = module.eks[0].cluster_name
-  principal_arn = aws_eks_access_entry.terraform_admin.principal_arn
+  principal_arn = aws_eks_access_entry.terraform_admin[0].principal_arn
   policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
 
   access_scope {
@@ -355,8 +360,7 @@ resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
 
   depends_on = [
     module.eks,
-    module.iam,
-    aws_eks_access_policy_association.terraform_admin
+    module.iam
   ]
 }
 
@@ -373,8 +377,7 @@ resource "kubernetes_service_account_v1" "cluster_autoscaler" {
 
   depends_on = [
     module.eks,
-    module.iam,
-    aws_eks_access_policy_association.terraform_admin
+    module.iam
   ]
 }
 
@@ -391,8 +394,7 @@ resource "kubernetes_service_account_v1" "external_secrets" {
 
   depends_on = [
     module.eks,
-    module.iam,
-    aws_eks_access_policy_association.terraform_admin
+    module.iam
   ]
 }
 
@@ -424,8 +426,7 @@ module "kubernetes_addons" {
 
   depends_on = [
     module.eks,
-    kubernetes_service_account_v1.aws_load_balancer_controller,
-    aws_eks_access_policy_association.terraform_admin
+    kubernetes_service_account_v1.aws_load_balancer_controller
   ]
 }
 
@@ -477,7 +478,7 @@ module "ecr_repositories" {
 
 module "app_secrets" {
   source   = "../../modules/aws_secrets_manager"
-  for_each = var.app_secrets
+  for_each = local.cluster_lifecycle == "persistent" ? var.app_secrets : {}
 
   name        = each.key
   description = each.value.description
