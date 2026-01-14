@@ -38,7 +38,7 @@ type: report
 | `scripts/migrate_partial_metadata.py` | `SCRIPT-0024` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/platform_health.py` | `SCRIPT-0025` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/pr_guardrails.py` | `SCRIPT-0026` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
-| `scripts/record-build-timing.sh` | `SCRIPT-0046` | `platform-team` | ⭐⭐ 2 | ❌ | `bash` | `manual` | `low` |
+| `scripts/record-build-timing.sh` | `SCRIPT-0046` | `platform-team` | ⭐⭐ 2 | 🚫 | `bash` | `manual` | `low` |
 | `scripts/reliability-metrics.sh` | `SCRIPT-0027` | `platform-team` | ⭐⭐ 2 | ✅ | `shellcheck` | `declared` | `low` |
 | `scripts/render_template.py` | `SCRIPT-0028` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/repair_shebangs.py` | `repair_shebangs` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |

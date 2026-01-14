@@ -86,7 +86,7 @@ def main() -> int:
 
     for r in rows:
         # Format booleans nicely
-        dry_run_icon = "✅" if r['dry_run'] is True else "❌"
+        dry_run_icon = "✅" if r['dry_run'] is True else "🚫"
 
         # Format maturity
         mat = str(r['maturity'])
