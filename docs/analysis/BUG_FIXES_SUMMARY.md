@@ -105,7 +105,7 @@ Critical bugs in the seamless build deployment implementation have been identifi
 - EKS Node Group
 - IAM Roles (cluster, nodes, IRSA roles)
 - ✅ Service Accounts (aws-load-balancer-controller, cluster-autoscaler, external-secrets)
-- ❌ NO Helm releases (ArgoCD, LB Controller, etc.)
+-  NO Helm releases (ArgoCD, LB Controller, etc.)
 
 **Key Mechanism**: The `apply_kubernetes_addons` variable acts as a safety gate. Even though `enable_k8s_resources=true` enables the kubernetes provider and service account resources, the `kubernetes_addons` module is prevented from applying by the additional condition.
 
@@ -139,7 +139,7 @@ Phase 1:
   enable_k8s_resources=true
     ├─> kubernetes_service_account_v1 resources: count=1 ✅ CREATED
     ├─> kubernetes_manifest resources: count=1 ✅ CREATED
-    └─> kubernetes_addons module: count=0 ❌ SKIPPED (apply_kubernetes_addons=false)
+    └─> kubernetes_addons module: count=0  SKIPPED (apply_kubernetes_addons=false)
 
 Phase 2:
   ENABLE_TF_K8S_RESOURCES=false (bootstrap script env var)
@@ -152,13 +152,13 @@ Phase 2:
 **Before Fix**:
 ```hcl
 count = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
-#       ✅ true                && ❌ false                  → count=0
+#       ✅ true                &&  false                  → count=0
 ```
 
 **After Fix**:
 ```hcl
 count = var.eks_config.enabled && var.enable_k8s_resources && var.apply_kubernetes_addons ? 1 : 0
-#       ✅ true                && ✅ true                  && ❌ false                       → count=0
+#       ✅ true                && ✅ true                  &&  false                       → count=0
 ```
 
 The additional `apply_kubernetes_addons` condition gives us fine-grained control.
@@ -183,13 +183,13 @@ kubectl get sa -n kube-system cluster-autoscaler
 kubectl get sa -n external-secrets external-secrets
 ```
 
-❌ Verify NO Helm releases:
+ Verify NO Helm releases:
 ```bash
 helm list -A
 # Should show: No resources found
 ```
 
-❌ Verify NO ArgoCD:
+ Verify NO ArgoCD:
 ```bash
 kubectl get ns argocd
 # Should show: Error from server (NotFound): namespaces "argocd" not found
