@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 # Record build timing to governance-registry branch
+# ---
+# id: SCRIPT-0046
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 2
+# dry_run:
+#   supported: false
+#   command_hint: none
+# test:
+#   runner: bash
+#   command: bash tests/scripts/record-build-timing.sh --dry-run
+#   evidence: manual
+# risk_profile:
+#   production_impact: low
+#   security_risk: none
+#   coupling_risk: low
+# ---
 # Usage: record-build-timing.sh <env> <build_id> <phase>
 # Example: record-build-timing.sh dev 13-01-26-03 terraform-apply
 
