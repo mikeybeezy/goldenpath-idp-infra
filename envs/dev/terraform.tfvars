@@ -4,7 +4,7 @@ vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
 cluster_lifecycle = "ephemeral"
 # NEED TO UPDATE persistent or ephemeral
-build_id = "03-01-26-02"
+build_id = "13-01-26-90"
 
 
 public_subnets = [
@@ -95,9 +95,9 @@ eks_config = {
   ssh_source_security_group_ids = []
   node_group = {
     name           = "dev-default"
-    min_size       = 8
-    max_size       = 12
-    desired_size   = 8
+    min_size       = 6
+    max_size       = 8
+    desired_size   = 6
     instance_types = ["t3.small"]
     disk_size      = 20
     capacity_type  = "ON_DEMAND"
@@ -115,9 +115,9 @@ ssh_source_security_group_ids = []
 # Bootstrap mode keeps node sizing stable during bring-up.
 bootstrap_mode = true
 bootstrap_node_group = {
-  min_size     = 4
-  desired_size = 4
-  max_size     = 7
+  min_size     = 6
+  desired_size = 6
+  max_size     = 8
 }
 
 # Registry Catalog

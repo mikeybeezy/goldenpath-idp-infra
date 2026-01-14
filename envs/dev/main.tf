@@ -73,7 +73,7 @@ locals {
 
 # External data source to check if build_id exists in governance-registry
 data "external" "build_id_check" {
-  count   = var.cluster_lifecycle == "ephemeral" && var.build_id != "" ? 1 : 0
+  count = var.cluster_lifecycle == "ephemeral" && var.build_id != "" ? 1 : 0
   program = ["bash", "-c", <<-EOT
     set -e
     BUILD_ID="${var.build_id}"
@@ -306,27 +306,28 @@ module "iam" {
 data "aws_caller_identity" "current" {}
 
 # Grant the Terraform runner (CI role or local user) admin access to the cluster
-resource "aws_eks_access_entry" "terraform_admin" {
-  cluster_name  = module.eks[0].cluster_name
-  principal_arn = data.aws_caller_identity.current.arn
-  type          = "STANDARD"
+# NOTE: The cluster creator has admin access by default. Explicit creation causes ResourceInUseException.
+# resource "aws_eks_access_entry" "terraform_admin" {
+#   cluster_name  = module.eks[0].cluster_name
+#   principal_arn = data.aws_caller_identity.current.arn
+#   type          = "STANDARD"
+#
+#   tags = local.common_tags
+#
+#   depends_on = [module.eks]
+# }
 
-  tags = local.common_tags
-
-  depends_on = [module.eks]
-}
-
-resource "aws_eks_access_policy_association" "terraform_admin" {
-  cluster_name  = module.eks[0].cluster_name
-  principal_arn = aws_eks_access_entry.terraform_admin.principal_arn
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-
-  access_scope {
-    type = "cluster"
-  }
-
-  depends_on = [aws_eks_access_entry.terraform_admin]
-}
+# resource "aws_eks_access_policy_association" "terraform_admin" {
+#   cluster_name  = module.eks[0].cluster_name
+#   principal_arn = aws_eks_access_entry.terraform_admin.principal_arn
+#   policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+#
+#   access_scope {
+#     type = "cluster"
+#   }
+#
+#   depends_on = [aws_eks_access_entry.terraform_admin]
+# }
 
 ################################################################################
 # Managed Kubernetes Resources (ESO / Add-ons)
@@ -356,7 +357,7 @@ resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
   depends_on = [
     module.eks,
     module.iam,
-    aws_eks_access_policy_association.terraform_admin
+
   ]
 }
 
@@ -374,7 +375,7 @@ resource "kubernetes_service_account_v1" "cluster_autoscaler" {
   depends_on = [
     module.eks,
     module.iam,
-    aws_eks_access_policy_association.terraform_admin
+
   ]
 }
 
@@ -392,7 +393,7 @@ resource "kubernetes_service_account_v1" "external_secrets" {
   depends_on = [
     module.eks,
     module.iam,
-    aws_eks_access_policy_association.terraform_admin
+
   ]
 }
 
@@ -424,8 +425,7 @@ module "kubernetes_addons" {
 
   depends_on = [
     module.eks,
-    kubernetes_service_account_v1.aws_load_balancer_controller,
-    aws_eks_access_policy_association.terraform_admin
+    kubernetes_service_account_v1.aws_load_balancer_controller
   ]
 }
 

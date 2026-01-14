@@ -33,7 +33,8 @@ fi
 
 # Extract timing data
 # Try to get start time from log, fallback to file creation time
-START_TIME=$(head -20 "$LATEST_LOG" | grep -oP '\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z' | head -1 || \
+# Use sed/perl for extracting timestamps instead of grep -oP
+START_TIME=$(head -20 "$LATEST_LOG" | grep -E '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z' | head -1 | sed -E 's/.*([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z).*/\1/' || \
              stat -f "%Sm" -t "%Y-%m-%dT%H:%M:%SZ" "$LATEST_LOG" 2>/dev/null || \
              stat -c "%y" "$LATEST_LOG" 2>/dev/null | sed 's/ /T/' | sed 's/\..*/Z/' || \
              date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -65,15 +66,17 @@ RESOURCES_DESTROYED=0
 
 if [[ "$PHASE" == "terraform-apply" ]]; then
   if grep -q "Plan:" "$LATEST_LOG"; then
-    RESOURCES_ADDED=$(grep -oP 'Plan: \K\d+(?= to add)' "$LATEST_LOG" | tail -1 || echo "0")
-    RESOURCES_CHANGED=$(grep -oP ', \K\d+(?= to change)' "$LATEST_LOG" | tail -1 || echo "0")
-    RESOURCES_DESTROYED=$(grep -oP ', \K\d+(?= to destroy)' "$LATEST_LOG" | tail -1 || echo "0")
+    # Use sed to extract numbers: "Plan: 17 to add..." -> "17"
+    RESOURCES_ADDED=$(grep 'Plan:' "$LATEST_LOG" | tail -1 | sed -E 's/.*Plan: ([0-9]+) to add.*/\1/' || echo "0")
+    RESOURCES_CHANGED=$(grep 'Plan:' "$LATEST_LOG" | tail -1 | sed -E 's/.*, ([0-9]+) to change.*/\1/' || echo "0")
+    RESOURCES_DESTROYED=$(grep 'Plan:' "$LATEST_LOG" | tail -1 | sed -E 's/.*, ([0-9]+) to destroy.*/\1/' || echo "0")
   fi
   # Also check for "Apply complete!" which shows actual changes
   if grep -q "Apply complete!" "$LATEST_LOG"; then
-    APPLY_ADDED=$(grep -oP 'Apply complete! Resources: \K\d+(?= added)' "$LATEST_LOG" | tail -1 || echo "$RESOURCES_ADDED")
-    APPLY_CHANGED=$(grep -oP ', \K\d+(?= changed)' "$LATEST_LOG" | tail -1 || echo "$RESOURCES_CHANGED")
-    APPLY_DESTROYED=$(grep -oP ', \K\d+(?= destroyed)' "$LATEST_LOG" | tail -1 || echo "$RESOURCES_DESTROYED")
+    # "Apply complete! Resources: 3 added, 1 changed, 0 destroyed."
+    APPLY_ADDED=$(grep 'Apply complete!' "$LATEST_LOG" | tail -1 | sed -E 's/.*Resources: ([0-9]+) added.*/\1/' || echo "$RESOURCES_ADDED")
+    APPLY_CHANGED=$(grep 'Apply complete!' "$LATEST_LOG" | tail -1 | sed -E 's/.*, ([0-9]+) changed.*/\1/' || echo "$RESOURCES_CHANGED")
+    APPLY_DESTROYED=$(grep 'Apply complete!' "$LATEST_LOG" | tail -1 | sed -E 's/.*, ([0-9]+) destroyed.*/\1/' || echo "$RESOURCES_DESTROYED")
     RESOURCES_ADDED=$APPLY_ADDED
     RESOURCES_CHANGED=$APPLY_CHANGED
     RESOURCES_DESTROYED=$APPLY_DESTROYED
@@ -92,21 +95,20 @@ echo "  Exit Code: $EXIT_CODE"
 echo "  Resources: +$RESOURCES_ADDED ~$RESOURCES_CHANGED -$RESOURCES_DESTROYED"
 echo "  Log: $LOG_RELATIVE_PATH"
 
-# Fetch and checkout governance-registry branch
+# SKIP FAILURES: If we cannot fetch the branch, warn but do not fail the build.
 if ! git fetch origin "$REGISTRY_BRANCH" 2>/dev/null; then
-  echo "Warning: Cannot fetch $REGISTRY_BRANCH branch. It may not exist yet." >&2
-  echo "Create it with: git checkout -b $REGISTRY_BRANCH && mkdir -p $(dirname $CSV_PATH)" >&2
-  exit 1
+  echo "⚠️  Warning: Cannot fetch $REGISTRY_BRANCH branch. Skipping registry record." >&2
+  exit 0
 fi
 
 # Save current branch
 ORIGINAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # Checkout governance-registry
-git checkout "$REGISTRY_BRANCH" 2>/dev/null || {
-  echo "Error: Cannot checkout $REGISTRY_BRANCH branch" >&2
-  exit 1
-}
+if ! git checkout "$REGISTRY_BRANCH" 2>/dev/null; then
+  echo "⚠️  Error: Cannot checkout $REGISTRY_BRANCH branch. Skipping registry record." >&2
+  exit 0
+fi
 
 # Ensure CSV directory exists
 mkdir -p "$(dirname "$CSV_PATH")"
@@ -127,7 +129,7 @@ Duration: ${DURATION}s
 Exit Code: $EXIT_CODE
 Resources: +$RESOURCES_ADDED ~$RESOURCES_CHANGED -$RESOURCES_DESTROYED
 Log: $LOG_RELATIVE_PATH
-" || {
+" >/dev/null 2>&1 || {
   echo "Warning: Commit failed (maybe no changes)" >&2
 }
 
@@ -139,7 +141,7 @@ fi
 
 # Return to original branch
 git checkout "$ORIGINAL_BRANCH" 2>/dev/null || {
-  echo "Warning: Could not return to original branch $ORIGINAL_BRANCH" >&2
+  echo "⚠️  Warning: Could not return to original branch $ORIGINAL_BRANCH" >&2
 }
 
 echo "Done."
