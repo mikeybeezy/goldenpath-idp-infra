@@ -41,6 +41,7 @@ The build_id immutability guard in `envs/dev/main.tf` validates that a build_id 
 **The Problem**: When the governance-registry branch is not available (shallow clone, branch not fetched), the validation returns `exists=false` and allows the build to proceed. This is a **fail-open** behavior that defeats the purpose of the immutability check.
 
 This occurs because:
+
 1. GitHub Actions uses shallow clones by default (`fetch-depth: 1`)
 2. The checkout action only fetches the current branch, not `governance-registry`
 3. When `git show origin/governance-registry:...` fails, the script falls through to the "not found" path
@@ -136,4 +137,4 @@ Only enforce strict checking in CI, allow local builds to bypass.
 
 - [ADR-0148: Seamless Build Deployment](./ADR-0148-seamless-build-deployment-with-immutability.md)
 - [ADR-0149: Simplified Resource Lifecycle Separation](./ADR-0149-simplified-resource-lifecycle-separation.md)
-- GitHub Actions checkout documentation: https://github.com/actions/checkout
+- [GitHub Actions checkout documentation](https://github.com/actions/checkout)
