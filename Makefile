@@ -198,6 +198,7 @@ _phase1-infrastructure:
 		-var="build_id=$(BUILD_ID)" \
 		-var="enable_k8s_resources=true" \
 		-var="apply_kubernetes_addons=false" \
+		-var="allow_build_id_reuse=$(ALLOW_REUSE_BUILD_ID)" \
 		-auto-approve 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
