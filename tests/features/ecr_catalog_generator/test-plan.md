@@ -4,6 +4,7 @@ title: 'Test Plan: ECR Catalog Generator'
 type: documentation
 domain: platform-core
 owner: platform-team
+lifecycle: active
 risk_profile:
   production_impact: low
   security_risk: none

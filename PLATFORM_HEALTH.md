@@ -5,14 +5,14 @@ type: documentation
 category: governance
 status: active
 owner: platform-team
-version: '2026-01-12'
+version: '2026-01-14'
 relates_to:
   - platform_health.py
 ---
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-12 23:52:01` | **V1 Readiness**: `93.5%` | **Mean Confidence**: `⭐ (1.2/5.0)`
+**Generated**: `2026-01-14 07:22:48` | **V1 Readiness**: `93.5%` | **Mean Confidence**: `⭐ (1.2/5.0)`
 
 **Realized Value**: `106.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
@@ -26,7 +26,7 @@ relates_to:
 | **Metadata Integrity** | ✅ | 100.0% |
 | **Injection Integrity** | ✅ | 100.0% |
 | **Architecture Maturity** | 🚧 | 95/141 Active |
-| **Changelog Activity** | ✅ | 120 Entries |
+| **Changelog Activity** | ✅ | 122 Entries |
 
 ## Knowledge Graph Vitality
 
@@ -36,8 +36,8 @@ relates_to:
 | **Automation Scripts** | 45 | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |
 | **Certified Scripts (M3)** | 1/46 (2%) | [Certification Matrix](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md) |
 | **CI Workflows** | 47 | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 120 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
-| **Tracked Resources** | 546 | Repository Scan |
+| **Change Logs** | 122 | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |
+| **Tracked Resources** | 558 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -64,10 +64,10 @@ relates_to:
 
 ```mermaid
 pie title Production Impact distribution
-    "HIGH" : 29
+    "HIGH" : 33
     "MEDIUM" : 33
-    "LOW" : 432
-    "NONE" : 51
+    "LOW" : 435
+    "NONE" : 56
 ```
 
 ## Governance Maturity

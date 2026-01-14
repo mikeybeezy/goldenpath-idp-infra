@@ -12,5 +12,4 @@ risk_profile:
   coupling_risk: none
 reliability:
   observability_tier: none
-lifecycle:
-  supported_until: '2028-01-01'
+lifecycle: active

@@ -119,7 +119,8 @@ def get_total_reclaimed_hours():
         with open(LEDGER_FILE, 'r') as f:
             ledger = json.load(f)
             return ledger.get("total_reclaimed_hours", 0.0)
-    except:
+    except Exception as e:
+        sys.stderr.write(f"Error reading ledger: {e}\n")
         return 0.0
 
 if __name__ == "__main__":
