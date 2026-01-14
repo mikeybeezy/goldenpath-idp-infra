@@ -265,7 +265,7 @@ Create it before installing the AWS Load Balancer Controller.
 ```diff
 _phase1-infrastructure:
 	$(call require_build_id)
-	@echo "📦 Phase 1: Building infrastructure..."
+	@echo " Phase 1: Building infrastructure..."
 	@mkdir -p logs/build-timings
 	@bash -c 'set -e; \
 	log="logs/build-timings/terraform-apply-$(ENV)-$(CLUSTER)-$(BUILD_ID)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
@@ -411,7 +411,7 @@ stage_banner "STAGE 3B: SERVICE ACCOUNTS (IRSA)"
 ```bash
 _phase1-infrastructure:
 	$(call require_build_id)
-	@echo "📦 Phase 1: Building infrastructure..."
+	@echo " Phase 1: Building infrastructure..."
 	@mkdir -p logs/build-timings
 
 	# Step 1: Infrastructure (enable_k8s_resources=false)

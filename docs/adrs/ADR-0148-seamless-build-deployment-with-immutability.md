@@ -43,11 +43,11 @@ The platform requires a deployment process that:
 
 A previous refactor (eks-single-build-refactor branch) attempted to consolidate everything into a single Terraform apply using a `kubernetes_addons` module. This approach:
 
-- ❌ Introduced circular dependency issues (module ↔ service accounts)
-- ❌ Mixed infrastructure and platform concerns in one apply
-- ❌ Created complex dependency chains prone to race conditions
-- ✅ Introduced valuable build_id immutability enforcement
-- ✅ Documented governance registry pattern
+-  Introduced circular dependency issues (module ↔ service accounts)
+-  Mixed infrastructure and platform concerns in one apply
+-  Created complex dependency chains prone to race conditions
+-  Introduced valuable build_id immutability enforcement
+-  Documented governance registry pattern
 
 **Decision**: Keep the proven two-phase pattern from development branch, but add build_id immutability enforcement.
 
