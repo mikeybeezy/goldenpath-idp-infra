@@ -184,6 +184,9 @@ relates_to:
   - ADR-0145
   - ADR-0146
   - ADR-0147
+  - ADR-0148
+  - ADR-0153
+  - ADR-0154
 <!-- ADR_RELATE_END -->
 ---
 
@@ -344,6 +347,9 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0145](ADR-0145-governance-registry-mirror.md) | Platform | Governance Registry Mirror Pattern | Proposed | 2026-01-0? | High-velocity interaction between humans and machine agents creates a "Commit Tug-of-War" when automated scripts attempt to mutate active development branches. Specifically, scripts updating`PLATFO... |
 | [ADR-0146](ADR-0146-schema-driven-script-certification.md) | Platform | Schema-Driven Script Certification | Active | 2026-01-12 | The platform currently relies on dozens of Python and Bash scripts to manage critical lifecycle events (metadata standardization, registry mirroring, secret management). While we have a high-level ... |
 | [ADR-0147](ADR-0147-automated-governance-backfill.md) | Platform | Automated Governance Backfill | Active | 2026-01-12 | Following the ratification of [ADR-0146](ADR-0146-schema-driven-script-certification.md), the platform faces a "Migration Gap". We have stringent new rules (CNT-001) but a legacy codebase that viol... |
+| [ADR-0148](ADR-0148-seamless-build-deployment-with-immutability.md) | Platform | Seamless Build Deployment with Build ID Immutability | Proposed | 2026-01-0? | The platform requires a deployment process that: |
+| [ADR-0153](ADR-0153-cluster-provisioning-identity.md) | Platform | Cluster Provisioning Identity and Script Resilience | Proposed | 2026-01-14 | During the implementation of the "Seamless Build Deployment" (ADR-0148), two significant operational blockers were identified that affected the reliability and portability of the build process: |
+| [ADR-0154](ADR-0154-promote-bootstrap-v3.md) | Platform | Promote Bootstrap V3 as Default | Proposed | 2026-01-14 | The platform bootstrap logic (`bootstrap/`) has evolved through versions`v1`(legacy),`v2`(interim), and`v3`(current). The default`Makefile`configuration pointed to`v1`. However, during the implemen... |
 <!-- ADR_TABLE_END -->
 
 ---
