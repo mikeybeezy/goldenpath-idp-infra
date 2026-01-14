@@ -24,7 +24,7 @@ IFS=',' read -r -a exclude_list <<< "${exclude_apps}"
 for app_file in "${apps_dir}"/*.yaml; do
   # Handle case where no yaml files exist
   [ -e "$app_file" ] || continue
-  
+
   base_name="$(basename "${app_file}")"
   app_name="${base_name%.yaml}"
 
@@ -46,7 +46,7 @@ for app_file in "${apps_dir}"/*.yaml; do
     echo "Skipping excluded app: ${app_name}"
     continue
   fi
-  
+
   echo "Applying ${base_name}..."
   kubectl apply -f "${app_file}"
 done
