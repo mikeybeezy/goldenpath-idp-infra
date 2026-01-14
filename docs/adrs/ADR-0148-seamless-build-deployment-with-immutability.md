@@ -1,8 +1,9 @@
 # ADR-0148: Seamless Build Deployment with Build ID Immutability
 
-**Status**: Accepted
+**Status**: Superseded by [ADR-0149](./ADR-0149-simplified-resource-lifecycle-separation.md)
 **Date**: 2026-01-13
 **Supersedes**: [ADR-0153](./ADR-0153-build-id-immutability-enforcement.md) (from eks-single-build-refactor branch, not merged)
+**Superseded By**: [ADR-0149](./ADR-0149-simplified-resource-lifecycle-separation.md) - Adds resource lifecycle separation and simplifies developer experience
 
 ## Context
 
