@@ -207,8 +207,8 @@ make deploy ENV=dev BUILD_ID=13-01-26-03
 **Examples**:
 - ✅ `13-01-26-01` (13th day, January, 2026, sequence 01)
 - ✅ `13-01-26-02` (13th day, January, 2026, sequence 02)
-- ❌ `13-1-26-1` (missing leading zeros)
-- ❌ `2026-01-13-01` (wrong order)
+- `13-1-26-1` (missing leading zeros)
+- `2026-01-13-01` (wrong order)
 
 ### Governance Registry Setup
 

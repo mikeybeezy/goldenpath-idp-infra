@@ -35,7 +35,7 @@ description: Comprehensive fixes to the Seamless Build Deployment workflow to re
 
 This release stabilizes the `make deploy` workflow, enabling true zero-touch provisioning of the EKS platform.
 
-## 🐛 Bug Fixes
+##  Bug Fixes
 
 ### 1. Identity Collision (ResourceInUseException)
 *   **Issue**: Terraform attempted to create an `aws_eks_access_entry` for the cluster creator (current caller), conflicting with the default entry created by AWS.
