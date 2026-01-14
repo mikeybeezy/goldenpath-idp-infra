@@ -47,7 +47,8 @@ jobs:
 
           # Generate platform health report
           export PYTHONPATH=$PYTHONPATH:$(pwd)/scripts
-          python3 scripts/platform_health.py . > _govreg_out/PLATFORM_HEALTH.md
+          python3 scripts/platform_health.py .
+          cp PLATFORM_HEALTH.md _govreg_out/PLATFORM_HEALTH.md
 
           # Generate all indices
           python3 scripts/generate_script_index.py
