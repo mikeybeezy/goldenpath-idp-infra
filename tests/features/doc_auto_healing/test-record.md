@@ -13,6 +13,7 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: silver
+lifecycle: active
 relates_to:
   - ADR-0111
 version: '1.0'

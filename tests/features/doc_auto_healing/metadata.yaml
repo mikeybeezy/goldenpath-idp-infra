@@ -3,7 +3,6 @@ id: DOC_AUTO_HEALING_TEST
 title: Doc Auto-Healing Test Scenario
 type: documentation
 applies_to: []
-lifecycle: active
 exempt: false
 reliability:
   rollback_strategy: git-revert

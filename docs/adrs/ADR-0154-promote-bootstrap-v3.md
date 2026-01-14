@@ -1,15 +1,33 @@
 ---
 id: ADR-0154
 title: Promote Bootstrap V3 as Default
-status: Accepted
+type: adr
+domain: platform-core
+owner: platform-team
+lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
+relates_to:
+  - ADR-0148
+  - ADR-0153
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
 date: 2026-01-14
 deciders:
   - Platform Team
 consents:
   - Architecture Review Board
-relates_to:
-  - ADR-0148
-  - ADR-0153
 ---
 
 # Promote Bootstrap V3 as Default

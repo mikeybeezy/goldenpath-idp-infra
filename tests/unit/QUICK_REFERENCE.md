@@ -1,5 +1,5 @@
 ---
-id: UNIT_TEST_REF
+id: QUICK_REFERENCE
 title: Unit Test Quick Reference
 type: documentation
 applies_to: []

@@ -1,3 +1,9 @@
+---
+id: BRIDGE_ANALYSIS
+title: 'Bridge Analysis: Infrastructure to Bootstrap'
+type: documentation
+---
+
 # Bridge Analysis: Infrastructure to Bootstrap
 
 **Date**: 2026-01-13

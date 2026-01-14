@@ -1,3 +1,9 @@
+---
+id: SEAMLESS_BUILD_DEPLOYMENT
+title: 'How It Works: Seamless Build Deployment with Build ID Immutability'
+type: documentation
+---
+
 # How It Works: Seamless Build Deployment with Build ID Immutability
 
 This guide explains the detailed mechanics of the seamless two-phase deployment system with build_id immutability enforcement.
