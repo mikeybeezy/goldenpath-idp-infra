@@ -4,7 +4,7 @@ vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
 cluster_lifecycle = "ephemeral"
 # NEED TO UPDATE persistent or ephemeral
-build_id = "03-01-26-02"
+build_id = "13-01-26-92"
 
 
 public_subnets = [
@@ -95,9 +95,9 @@ eks_config = {
   ssh_source_security_group_ids = []
   node_group = {
     name           = "dev-default"
-    min_size       = 8
-    max_size       = 12
-    desired_size   = 8
+    min_size       = 6
+    max_size       = 8
+    desired_size   = 6
     instance_types = ["t3.small"]
     disk_size      = 20
     capacity_type  = "ON_DEMAND"
@@ -115,98 +115,105 @@ ssh_source_security_group_ids = []
 # Bootstrap mode keeps node sizing stable during bring-up.
 bootstrap_mode = true
 bootstrap_node_group = {
-  min_size     = 4
-  desired_size = 4
-  max_size     = 7
+  min_size     = 6
+  desired_size = 6
+  max_size     = 8
 }
 
 # Registry Catalog
+# NOTE: ECR repositories are account-scoped and persist across ephemeral builds.
+# They should be managed separately, not recreated per cluster.
+# Uncomment only for initial account setup or when adding new repositories.
 ecr_repositories = {
-  "test-app-dev" = {
-    metadata = {
-      id    = "REGISTRY_TEST_APP_DEV"
-      owner = "app-team-test"
-      risk  = "low"
-    }
-  }
+  # "test-app-dev" = {
+  #   metadata = {
+  #     id    = "REGISTRY_TEST_APP_DEV"
+  #     owner = "app-team-test"
+  #     risk  = "low"
+  #   }
+  # }
 
-  "new-wp-reg-2" = {
-    metadata = {
-      id    = "REGISTRY_NEW_WP_REG_2"
-      owner = "michael-babs-2"
-      risk  = "low"
-    }
-  }
+  # "new-wp-reg-2" = {
+  #   metadata = {
+  #     id    = "REGISTRY_NEW_WP_REG_2"
+  #     owner = "michael-babs-2"
+  #     risk  = "low"
+  #   }
+  # }
 
-  "new-app-16" = {
-    metadata = {
-      id    = "REGISTRY_NEW_APP_16"
-      owner = "michael-babs-16"
-      risk  = "low"
-    }
-  }
+  # "new-app-16" = {
+  #   metadata = {
+  #     id    = "REGISTRY_NEW_APP_16"
+  #     owner = "michael-babs-16"
+  #     risk  = "low"
+  #   }
+  # }
 
-  "new-app-15" = {
-    metadata = {
-      id    = "REGISTRY_NEW_APP_15"
-      owner = "michael-babs-15"
-      risk  = "low"
-    }
-  }
+  # "new-app-15" = {
+  #   metadata = {
+  #     id    = "REGISTRY_NEW_APP_15"
+  #     owner = "michael-babs-15"
+  #     risk  = "low"
+  #   }
+  # }
 
-  "new-app-14" = {
-    metadata = {
-      id    = "REGISTRY_NEW_APP_14"
-      owner = "michael-babs-14"
-      risk  = "low"
-    }
-  }
+  # "new-app-14" = {
+  #   metadata = {
+  #     id    = "REGISTRY_NEW_APP_14"
+  #     owner = "michael-babs-14"
+  #     risk  = "low"
+  #   }
+  # }
 
-  "new-app-13" = {
-    metadata = {
-      id    = "REGISTRY_NEW_APP_13"
-      owner = "michael-babs-13"
-      risk  = "low"
-    }
-  }
+  # "new-app-13" = {
+  #   metadata = {
+  #     id    = "REGISTRY_NEW_APP_13"
+  #     owner = "michael-babs-13"
+  #     risk  = "low"
+  #   }
+  # }
 
-  "new-app-10" = {
-    metadata = {
-      id    = "REGISTRY_NEW_APP_10"
-      owner = "michael-babs-10"
-      risk  = "low"
-    }
-  }
+  # "new-app-10" = {
+  #   metadata = {
+  #     id    = "REGISTRY_NEW_APP_10"
+  #     owner = "michael-babs-10"
+  #     risk  = "low"
+  #   }
+  # }
 
-  "my-reg-app-3" = {
-    metadata = {
-      id    = "REGISTRY_MY_REG_APP_3"
-      owner = "michael-babs-3"
-      risk  = "low"
-    }
-  }
+  # "my-reg-app-3" = {
+  #   metadata = {
+  #     id    = "REGISTRY_MY_REG_APP_3"
+  #     owner = "michael-babs-3"
+  #     risk  = "low"
+  #   }
+  # }
 
-  "new-wp-reg2" = {
-    metadata = {
-      id    = "REGISTRY_NEW_WP_REG2"
-      owner = "platform-team"
-      risk  = "low"
-    }
-  }
+  # "new-wp-reg2" = {
+  #   metadata = {
+  #     id    = "REGISTRY_NEW_WP_REG2"
+  #     owner = "platform-team"
+  #     risk  = "low"
+  #   }
+  # }
 }
 
 # Secret Catalog
+# NOTE: Secrets Manager is a platform service managed through Backstage SecretRequest workflow.
+# Secrets are environment-scoped, NOT cluster-scoped. They persist independently of EKS clusters.
+# DO NOT manage secrets through EKS terraform - use the SecretRequest workflow instead.
+# See: docs/adrs/ADR-0143-secret-request-contract.md
 app_secrets = {
-  "goldenpath-idp-secret-store" = {
-    description = "Managed secret for payments in dev"
-    metadata = {
-      id    = "SEC-0007"
-      owner = "app-team"
-      risk  = "medium"
-    }
-    # Security policy principals
-    read_principals        = ["arn:aws:iam::593517239005:role/goldenpath-idp-eso-role"]
-    write_principals       = ["arn:aws:iam::593517239005:role/github-actions-secrets-writer"]
-    break_glass_principals = ["arn:aws:iam::593517239005:role/platform-admin"]
-  }
+  # "goldenpath-idp-secret-store" = {
+  #   description = "Managed secret for payments in dev"
+  #   metadata = {
+  #     id    = "SEC-0007"
+  #     owner = "app-team"
+  #     risk  = "medium"
+  #   }
+  #   # Security policy principals
+  #   read_principals        = ["arn:aws:iam::593517239005:role/goldenpath-idp-eso-role"]
+  #   write_principals       = ["arn:aws:iam::593517239005:role/github-actions-secrets-writer"]
+  #   break_glass_principals = ["arn:aws:iam::593517239005:role/platform-admin"]
+  # }
 }

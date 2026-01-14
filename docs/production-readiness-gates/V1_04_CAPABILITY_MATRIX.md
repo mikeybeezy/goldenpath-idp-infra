@@ -46,6 +46,21 @@ Last updated: 2026-01-03
 | **Incident response expectations** | Clear lead, comms channel, postmortem cadence, and response steps. | runbooks |  In progress | Requires defined owner and SLA targets. |
 | **Secret rotation cadence** | Rotation schedule + trigger ownership for AWS Secrets Manager/SSM. | AWS Secrets Manager / SSM (TBD) |  In progress | Define cadence and audit evidence. |
 | **Compliance / audit logging** | Decisions and changes tracked with ADRs + changelog; retention expectations defined. | docs/adrs, docs/changelog |  In progress | Formalize retention + review cadence. |
+| **Poly-repo CI/CD** | Connect pipelines from external app repos to the IDP. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **Multi-env Flow** | Verified promotion: Dev → Staging → Prod. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **Prov: Stateless Apps** | Deploy standard web/worker services via PR/Backstage. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **Prov: Stateful Apps** | Deploy apps with Database/PVC via PR/Backstage. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **Prov: S3 Buckets** | Self-service S3 via PR/Backstage. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **Prov: RDS** | Self-service RDS via PR/Backstage. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **Prov: EC2/EBS** | Self-service Compute/Storage via PR/Backstage. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **Prov: ECR** | Self-service Container Registry via PR/Backstage. | modules/aws_ecr, .github/workflows/create-ecr-registry.yml | ✅ Verified | Automated PR flow via Backstage confirmed. |
+| **Prov: EKS** | Self-service EKS cluster via `make deploy`. | modules/aws_eks, Makefile, bootstrap/ | ✅ Verified | Build 14-01-26-06: Infrastructure + Platform in 18m. |
+| **Image Automation** | Build/Push/Track images via PR/Backstage. | docs/antig-implementations/ECR_PROVISIONING_FLOW.md | ✅ Verified | Documented flow with deterministic provisioning. |
+| **Ingress (Kong)** | Kong Ingress Controller shipped OOTB. | bootstrap/kong | ⚠️ Partial | Installed, config needs hardening. |
+| **Identity (Keycloak)** | OIDC User/Group management via Keycloak. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **Security Scanning (L1)** | Basic container and config scanning pipeline. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **Observability (OOTB)** | Health, Performance, Control dashboards. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **AI Agent Compatibility** | Platform traversable by AI (context, graph, tools). | docs/ | ⚠️ Early | Documentation graph exists; tool interfaces missing. |
 
 ## Legend
 

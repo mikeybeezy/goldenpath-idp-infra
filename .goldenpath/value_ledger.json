@@ -322,7 +322,7 @@
       "reclaimed_hours": 1.0
     },
     {
-      "timestam"2: "2026-01-12T06:43:00Z",
+      "timestamp": "2026-01-12T06:43:00Z",
       "script": "standardize_metadata.py",
       "reclaimed_hours": 1.0
     },

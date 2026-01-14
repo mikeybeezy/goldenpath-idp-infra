@@ -85,6 +85,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [generate_script_matrix.py](file://scripts/generate_script_matrix.py) | --- |
 | [inject_script_metadata.py](file://scripts/inject_script_metadata.py) | --- |
 | [migrate_partial_metadata.py](file://scripts/migrate_partial_metadata.py) | --- |
+| [record-build-timing.sh](file://scripts/record-build-timing.sh) | Record build timing to governance-registry branch |
 | [reliability-metrics.sh](file://scripts/reliability-metrics.sh) | --- |
 | [repair_shebangs.py](file://scripts/repair_shebangs.py) | --- |
 | [scaffold_doc.py](file://scripts/scaffold_doc.py) | --- |

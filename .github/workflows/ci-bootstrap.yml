@@ -131,6 +131,10 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Fetch governance registry for build_id validation
+        run: git fetch origin governance-registry:refs/remotes/origin/governance-registry
+
       - name: Validate branch
         run: |
           if [[ "${{ github.ref_name }}" != "main" && "${{ github.ref_name }}" != "development" ]]; then

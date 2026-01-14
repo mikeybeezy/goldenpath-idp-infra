@@ -104,6 +104,44 @@ Every V1 feature is classified as **🔴 HV/HQ** (High Value / High Quality). We
 - Advanced health (SLOs, error budgets, automated remediation).
 - Expanded dashboards beyond the core toolset.
 
+## Broadened V1 Requirements (End-to-End Product)
+
+The user has mandated that V1 must be a complete, end-to-end product, not just a core.
+**Minimum Requirements (Updated 2026-01-14)**:
+
+### 1. Delivery & Automation (The "Ship" Capability)
+- [ ] **Poly-repo CI/CD**: Connect pipelines from external app repos to the IDP.
+- [ ] **Multi-environment flow**: Verified promotion: `Dev` → `Staging` → `Prod`.
+- [ ] **Image Automation**: Build, track, and push images to ECR via PR & Backstage.
+- [ ] **ArgoCD Pipeline**: Fully automated "Ship" pipeline OOTB.
+- [ ] **End-to-End Automation**: From git push to running pod without manual steps.
+- [ ] **GitHub Repository**: Provisioning and management via IDP.
+
+### 2. Workloads & Provisioning (The "Run" Capability)
+**Must support provisioning via PR & Backstage for:**
+- [ ] **Stateless Apps**: Standard web/worker services.
+- [ ] **Stateful Apps**: Workloads requiring PVC/Database.
+- [ ] **S3 Buckets**: Object storage.
+- [ ] **EBS Volumes**: Block storage.
+- [ ] **RDS Databases**: Relational databases.
+- [ ] **EC2 Instances**: Compute instances.
+- [ ] **ECR Repositories**: Container registries.
+- [ ] **EKS Clusters**: Self-service cluster provisioning.
+
+### 3. Core Platform Features
+- [ ] **Identity**: Keycloak OIDC for user/group management.
+- [ ] **Ingress**: Out-of-the-box Kong Ingress Controller defaults.
+- [ ] **Observability**: OOTB Health, Performance, and Control dashboards.
+- [ ] **Self-Healing**: Automated drift detection and remediation.
+
+### 4. Governance & "The Brain"
+- [ ] **Security (L1)**: Basic scanning and hardening pipeline.
+- [ ] **Self-Governance**: Policy enforcement built-in (OPA/Kyverno).
+- [ ] **Traceability**: Full lineage for infrastructure components.
+- [ ] **Interrelationships**: Docs must capture "living" relationships.
+- [ ] **Knowledge Graph**: 100% metadata coverage for graph generation.
+- [ ] **AI Compatible**: Platform traversable by AI agents (Context/Tools).
+
 ---
 
 ## V1 delivery checklist (usable) with timeframes
