@@ -1,5 +1,5 @@
 ---
-id: EKS_END_TO_END_MILESTONE
+id: 2026-01-14_2213_eks-end-to-end-milestone
 title: 'Walkthrough: First Successful End-to-End EKS Deployment'
 type: documentation
 tags:
@@ -134,7 +134,7 @@ dev-wordpress-efs           OutOfSync     Missing
 
 **Status Summary**:
 - ✅ **4 Healthy**: Backstage, Cert-Manager, Cluster Autoscaler, Datree, Fluent-Bit
-- ⏳ **2 Progressing**: External Secrets, Loki
+- 🚧 **2 Progressing**: External Secrets, Loki
 - ⚠️ **5 Missing/OutOfSync**: Kong, Keycloak, Prometheus, Sample Apps
 
 **Note**: `OutOfSync`/`Missing` on Day 0 is expected. ArgoCD reconciliation can take 5-10 minutes for large charts.
@@ -151,13 +151,15 @@ dev-wordpress-efs           OutOfSync     Missing
 5. **Storage Ready**: EBS/EFS CSI drivers installed.
 6. **Logging Ready**: Fluent-Bit collecting logs.
 
-### ⏳ Pending Verification
+### 🚧 Pending Verification
+
 1. **Ingress**: Kong LoadBalancer not yet exposed.
 2. **Identity**: Keycloak not yet deployed.
 3. **Observability**: Prometheus/Grafana not yet synced.
 4. **Workloads**: Sample apps not deployed.
 
-### 🔧 Known Issues
+### 🛠️ Known Issues
+
 - Kong shows `Missing` (requires manual sync or wait for reconciliation).
 - Some apps show `Unknown` sync status (ArgoCD refresh lag).
 - Governance registry write failed (branch checkout issue - non-blocking).
@@ -172,7 +174,8 @@ This build represents the **first time** the platform has successfully completed
 **After**: One command (`make deploy`), 18 minutes, cluster ready.
 
 ### V1 Impact
-- **EKS Provisioning**: Moved from ❌ Missing → ✅ Verified
+
+- **EKS Provisioning**: Moved from 🚫 Missing → ✅ Verified
 - **Platform Value**: Moved from $14k (broken) → $72k+ (functional)
 - **Delivery Capability**: Proven "Infrastructure + Tooling" deployment mode
 

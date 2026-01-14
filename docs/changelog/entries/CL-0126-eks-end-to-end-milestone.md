@@ -15,7 +15,7 @@ risk_profile:
 schema_version: 1
 relates_to:
   - V1_SCOPE_AND_TIMELINE
-  - EKS_END_TO_END_MILESTONE
+  - 2026-01-14_2213_eks-end-to-end-milestone
   - ADR-0XXX-seamless-deployment
 supersedes: []
 superseded_by: []
@@ -68,7 +68,7 @@ Achieved the first successful end-to-end EKS cluster deployment using the seamle
 ## Impact
 
 ### V1 Progress
-Moved EKS Provisioning from ❌ **Missing** → ✅ **Verified** in the V1 Capability Matrix.
+Moved EKS Provisioning from 🚫 **Missing** → ✅ **Verified** in the V1 Capability Matrix.
 
 **V1 Status**: 3/24 capabilities complete
 1. ✅ ECR Provisioning
@@ -82,7 +82,8 @@ Moved EKS Provisioning from ❌ **Missing** → ✅ **Verified** in the V1 Capab
 
 ## Known Issues
 
-### ⏳ Day 0 Reconciliation
+### 🚧 Day 0 Reconciliation
+
 Several ArgoCD applications show `OutOfSync`/`Missing` immediately post-deployment:
 - Kong Ingress
 - Keycloak
@@ -91,7 +92,8 @@ Several ArgoCD applications show `OutOfSync`/`Missing` immediately post-deployme
 
 **Status**: Expected behavior. Applications typically sync within 5-10 minutes.
 
-### 🔧 Minor Issues
+### 🛠️ Minor Issues
+
 - Governance registry write failed (branch checkout issue) - non-blocking
 - Some apps show `Unknown` sync status (ArgoCD refresh lag)
 
