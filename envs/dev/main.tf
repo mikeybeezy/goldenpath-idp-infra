@@ -72,6 +72,8 @@ locals {
 ################################################################################
 
 # External data source to check if build_id exists in governance-registry
+# IMPORTANT: This guard FAILS CLOSED - if we cannot verify the build_id is unique,
+# we block the build to prevent state collisions. See ADR-0155.
 data "external" "build_id_check" {
   count = var.cluster_lifecycle == "ephemeral" && var.build_id != "" ? 1 : 0
   program = ["bash", "-c", <<-EOT
@@ -84,16 +86,18 @@ data "external" "build_id_check" {
     # Fetch latest CSV from governance-registry branch
     CSV_CONTENT=$(git show "origin/$REGISTRY_BRANCH:$CSV_PATH" 2>/dev/null || echo "")
 
+    # FAIL CLOSED: If we cannot read the registry, we cannot verify uniqueness.
+    # Block the build rather than allowing potential state collisions.
     if [ -z "$CSV_CONTENT" ]; then
-      echo '{"exists":"false","error":"Registry CSV not found or git fetch needed"}'
+      echo '{"exists":"unknown","registry_available":"false","error":"Cannot verify build_id uniqueness - governance-registry branch not available. Run: git fetch origin governance-registry"}'
       exit 0
     fi
 
     # Check if build_id exists for this environment (skip header)
     if echo "$CSV_CONTENT" | grep -q ",$ENV,$BUILD_ID," 2>/dev/null; then
-      echo '{"exists":"true","build_id":"'"$BUILD_ID"'","environment":"'"$ENV"'"}'
+      echo '{"exists":"true","registry_available":"true","build_id":"'"$BUILD_ID"'","environment":"'"$ENV"'"}'
     else
-      echo '{"exists":"false","build_id":"'"$BUILD_ID"'","environment":"'"$ENV"'"}'
+      echo '{"exists":"false","registry_available":"true","build_id":"'"$BUILD_ID"'","environment":"'"$ENV"'"}'
     fi
   EOT
   ]
@@ -104,8 +108,35 @@ resource "null_resource" "enforce_build_id_immutability" {
   count = var.cluster_lifecycle == "ephemeral" && var.build_id != "" ? 1 : 0
 
   lifecycle {
+    # PRECONDITION 1: Governance registry must be available (fail-closed guard)
     precondition {
-      condition     = !var.allow_build_id_reuse ? try(data.external.build_id_check[0].result.exists, "false") == "false" : true
+      condition     = var.allow_build_id_reuse || try(data.external.build_id_check[0].result.registry_available, "false") == "true"
+      error_message = <<-EOT
+        Cannot verify build_id uniqueness - governance-registry branch not available.
+
+        The build_id immutability guard requires access to the governance-registry branch
+        to verify that ${var.build_id} has not been previously used. Without this check,
+        we cannot guarantee state isolation and must block the build (fail-closed).
+
+        To fix this, run:
+          git fetch origin governance-registry
+
+        Then retry your terraform apply command.
+
+        If you are running in CI, ensure the workflow fetches the governance-registry branch:
+          - uses: actions/checkout@v4
+            with:
+              fetch-depth: 0
+          - run: git fetch origin governance-registry
+
+        To bypass this check (NOT recommended):
+          terraform apply -var="allow_build_id_reuse=true"
+      EOT
+    }
+
+    # PRECONDITION 2: Build ID must not already exist
+    precondition {
+      condition     = var.allow_build_id_reuse || try(data.external.build_id_check[0].result.exists, "true") == "false"
       error_message = <<-EOT
         Build ID ${var.build_id} already exists for environment ${var.environment}.
 

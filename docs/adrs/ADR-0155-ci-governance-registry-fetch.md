@@ -129,7 +129,7 @@ Only enforce strict checking in CI, allow local builds to bypass.
 
 ### Neutral
 
-- No change to terraform code required
+- Terraform code updated to fail-closed (returns `registry_available` flag)
 - No change to Makefile or local tooling
 - Existing governance-registry branch structure unchanged
 
