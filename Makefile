@@ -1,16 +1,8 @@
 TF_BIN ?= terraform
 ENV ?= dev
 ENV_DIR := envs/$(ENV)
-CLUSTER_BASE ?= $(shell awk -F'=' '/^[[:space:]]*cluster_name[[:space:]]*=/{gsub(/"/,"",$$2);gsub(/[[:space:]]/,"",$$2);print $$2;exit}' $(ENV_DIR)/terraform.tfvars 2>/dev/null)
 
-# Dynamic Cluster Discovery:
-# Try to find the cluster by BuildId tag. If found, use that name.
-# This decouples Makefile from Terraform naming conventions.
-CLUSTER_ARN := $(shell aws resourcegroupstaggingapi get-resources --tag-filters Key=BuildId,Values=$(BUILD_ID) --resource-type-filters eks:cluster --region $(REGION) --query 'ResourceTagMappingList[0].ResourceARN' --output text 2>/dev/null)
-CLUSTER_FOUND := $(notdir $(CLUSTER_ARN))
-
-# Use found cluster, or fallback to predicted name (prefix-buildid)
-CLUSTER ?= $(if $(CLUSTER_FOUND),$(CLUSTER_FOUND),$(CLUSTER_BASE)-$(BUILD_ID))
+# Defaults
 REGION ?= eu-west-2
 KONG_NAMESPACE ?= kong-system
 NODE_INSTANCE_TYPE ?= t3.small
@@ -20,12 +12,24 @@ SKIP_ARGO_SYNC_WAIT ?= true
 COMPACT_OUTPUT ?= false
 SCALE_DOWN_AFTER_BOOTSTRAP ?= false
 BOOTSTRAP_VERSION ?= v3
-# Defaults to envs/<env>; override on the command line for custom paths.
 TF_DIR ?= $(ENV_DIR)
-BUILD_ID ?= $(shell awk -F'=' '/^build_id[[:space:]]*=/{gsub(/"/,"",$$2);gsub(/[[:space:]]/,"",$$2);print $$2;exit}' $(ENV_DIR)/terraform.tfvars 2>/dev/null)
 NODEGROUP ?=
 CLEANUP_ORPHANS ?= false
 ALLOW_REUSE_BUILD_ID ?= false
+
+# Derived Variables
+CLUSTER_BASE ?= $(shell awk -F'=' '/^[[:space:]]*cluster_name[[:space:]]*=/{gsub(/"/,"",$$2);gsub(/[[:space:]]/,"",$$2);print $$2;exit}' $(ENV_DIR)/terraform.tfvars 2>/dev/null)
+BUILD_ID ?= $(shell awk -F'=' '/^build_id[[:space:]]*=/{gsub(/"/,"",$$2);gsub(/[[:space:]]/,"",$$2);print $$2;exit}' $(ENV_DIR)/terraform.tfvars 2>/dev/null)
+
+# Dynamic Cluster Discovery:
+# Try to find the cluster by BuildId tag. If found, use that name.
+# This decouples Makefile from Terraform naming conventions.
+CLUSTER_ARN := $(shell aws resourcegroupstaggingapi get-resources --tag-filters Key=BuildId,Values=$(BUILD_ID) --resource-type-filters eks:cluster --region $(REGION) --query 'ResourceTagMappingList[0].ResourceARN' --output text 2>/dev/null)
+CLUSTER_FOUND := $(notdir $(CLUSTER_ARN))
+
+# Use found cluster, or fallback to predicted name (prefix-buildid)
+CLUSTER ?= $(if $(CLUSTER_FOUND),$(CLUSTER_FOUND),$(CLUSTER_BASE)-$(BUILD_ID))
+
 
 ifeq ($(BOOTSTRAP_VERSION),v1)
 BOOTSTRAP_SCRIPT := bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
