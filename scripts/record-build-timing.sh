@@ -36,7 +36,10 @@ if [[ -z "$ENV" || -z "$BUILD_ID" || -z "$PHASE" ]]; then
 fi
 
 REGISTRY_BRANCH="${GOVERNANCE_REGISTRY_BRANCH:-governance-registry}"
-CSV_PATH="environments/development/latest/build_timings.csv"
+# Map env alias to full folder name
+ENV_FOLDER="$ENV"
+[[ "$ENV" == "dev" ]] && ENV_FOLDER="development"
+CSV_PATH="environments/$ENV_FOLDER/latest/build_timings.csv"
 LOG_DIR="logs/build-timings"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
