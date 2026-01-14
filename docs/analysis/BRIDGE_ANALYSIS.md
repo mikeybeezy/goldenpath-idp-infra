@@ -109,7 +109,7 @@ Create it before installing the AWS Load Balancer Controller.
 
 ## Critical Bug #2: Conflicting Documentation
 
-### ADR-0148 States (lines 60-72):
+### ADR-0148 States (lines 60-72)
 
 ```
 #### Phase 1: Infrastructure (Terraform)
@@ -127,7 +127,7 @@ Create it before installing the AWS Load Balancer Controller.
 
 But the Makefile sets `enable_k8s_resources=false`, which prevents service accounts from being created!
 
-### Changelog CL-0121 States (lines 22-25):
+### Changelog CL-0121 States (lines 22-25)
 
 ```
 Behind the scenes orchestrates:
@@ -141,7 +141,7 @@ Again claims service accounts are in Phase 1, but implementation contradicts thi
 
 ## Critical Bug #3: Bootstrap Script v3 Change
 
-### bootstrap-v2.sh Behavior (lines 275-294):
+### bootstrap-v2.sh Behavior (lines 275-294)
 
 ```bash
 stage_banner "STAGE 3B: SERVICE ACCOUNTS (IRSA)"
@@ -162,7 +162,7 @@ fi
 
 **v2 behavior**: If `ENABLE_TF_K8S_RESOURCES=true`, the bootstrap script CREATES the service accounts via targeted terraform apply.
 
-### bootstrap-v3.sh Behavior (lines 273-283):
+### bootstrap-v3.sh Behavior (lines 273-283)
 
 ```bash
 stage_banner "STAGE 3B: SERVICE ACCOUNTS (IRSA)"
@@ -248,37 +248,37 @@ Create it before installing the AWS Load Balancer Controller.
 
 **Change Phase 1 to set `enable_k8s_resources=true`**
 
-#### Pros:
+#### Pros
 - Matches documentation (ADR, Changelog)
 - Service accounts created with infrastructure
 - Bootstrap script validation passes
 - Aligns with original development branch pattern
 
-#### Cons:
+#### Cons
 - Must ensure kubernetes_addons module doesn't apply in Phase 1
 - Need to verify no circular dependencies
 
-#### Implementation:
+#### Implementation
 
 **File**: `Makefile` (line 192)
 
 ```diff
 _phase1-infrastructure:
-	$(call require_build_id)
-	@echo " Phase 1: Building infrastructure..."
-	@mkdir -p logs/build-timings
-	@bash -c 'set -e; \
-	log="logs/build-timings/terraform-apply-$(ENV)-$(CLUSTER)-$(BUILD_ID)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
-	echo "Infrastructure apply output streaming; full log at $$log"; \
-	$(TF_BIN) -chdir=$(ENV_DIR) apply \
-		-var="build_id=$(BUILD_ID)" \
--		-var="enable_k8s_resources=false" \
-+		-var="enable_k8s_resources=true" \
-		-auto-approve 2>&1 | tee "$$log"; \
-	exit $${PIPESTATUS[0]}; \
-	'
-	@bash scripts/record-build-timing.sh $(ENV) $(BUILD_ID) terraform-apply
-	@echo "✅ Infrastructure ready"
+    $(call require_build_id)
+    @echo " Phase 1: Building infrastructure..."
+    @mkdir -p logs/build-timings
+    @bash -c 'set -e; \
+    log="logs/build-timings/terraform-apply-$(ENV)-$(CLUSTER)-$(BUILD_ID)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+    echo "Infrastructure apply output streaming; full log at $$log"; \
+    $(TF_BIN) -chdir=$(ENV_DIR) apply \
+        -var="build_id=$(BUILD_ID)" \
+-        -var="enable_k8s_resources=false" \
++        -var="enable_k8s_resources=true" \
+        -auto-approve 2>&1 | tee "$$log"; \
+    exit $${PIPESTATUS[0]}; \
+    '
+    @bash scripts/record-build-timing.sh $(ENV) $(BUILD_ID) terraform-apply
+    @echo "✅ Infrastructure ready"
 ```
 
 **Verification Required**:
@@ -322,7 +322,7 @@ Update `_phase1-infrastructure`:
 
 Update `_phase2-bootstrap`:
 ```bash
-# In bootstrap script, run targeted terraform apply with:
+# In bootstrap script, run targeted terraform apply with
 terraform -chdir="${TF_DIR}" apply -auto-approve \
   -var-file="${tfvars_path}" \
   -var="enable_k8s_resources=true" \
@@ -335,17 +335,17 @@ terraform -chdir="${TF_DIR}" apply -auto-approve \
 
 **Revert bootstrap-v3 Stage 3B to v2 behavior**
 
-#### Pros:
+#### Pros
 - No changes to Makefile Phase 1
 - Keeps `enable_k8s_resources=false` in Phase 1 as intended
 - Bootstrap script creates service accounts dynamically
 
-#### Cons:
+#### Cons
 - Bootstrap script runs terraform apply (mixing concerns)
 - Requires TF_DIR to be set (already done)
 - Service accounts created in Phase 2 instead of Phase 1 (contradicts docs)
 
-#### Implementation:
+#### Implementation
 
 **File**: `bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v3.sh` (lines 273-283)
 
@@ -395,52 +395,52 @@ stage_banner "STAGE 3B: SERVICE ACCOUNTS (IRSA)"
 
 **Add targeted terraform apply for service accounts only in Phase 1**
 
-#### Pros:
+#### Pros
 - Service accounts created in Phase 1 (matches docs)
 - Keeps `enable_k8s_resources=false` for safety
 - Explicit control over what applies when
 
-#### Cons:
+#### Cons
 - More complex Makefile logic
 - Two terraform applies in Phase 1 (infrastructure + service accounts)
 
-#### Implementation:
+#### Implementation
 
 **File**: `Makefile` (_phase1-infrastructure target)
 
 ```bash
 _phase1-infrastructure:
-	$(call require_build_id)
-	@echo " Phase 1: Building infrastructure..."
-	@mkdir -p logs/build-timings
+    $(call require_build_id)
+    @echo " Phase 1: Building infrastructure..."
+    @mkdir -p logs/build-timings
 
-	# Step 1: Infrastructure (enable_k8s_resources=false)
-	@bash -c 'set -e; \
-	log="logs/build-timings/terraform-apply-infra-$(ENV)-$(CLUSTER)-$(BUILD_ID)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
-	echo "Infrastructure apply (AWS resources only)..."; \
-	$(TF_BIN) -chdir=$(ENV_DIR) apply \
-		-var="build_id=$(BUILD_ID)" \
-		-var="enable_k8s_resources=false" \
-		-auto-approve 2>&1 | tee "$$log"; \
-	exit $${PIPESTATUS[0]}; \
-	'
+    # Step 1: Infrastructure (enable_k8s_resources=false)
+    @bash -c 'set -e; \
+    log="logs/build-timings/terraform-apply-infra-$(ENV)-$(CLUSTER)-$(BUILD_ID)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+    echo "Infrastructure apply (AWS resources only)..."; \
+    $(TF_BIN) -chdir=$(ENV_DIR) apply \
+        -var="build_id=$(BUILD_ID)" \
+        -var="enable_k8s_resources=false" \
+        -auto-approve 2>&1 | tee "$$log"; \
+    exit $${PIPESTATUS[0]}; \
+    '
 
-	# Step 2: Service Accounts (enable_k8s_resources=true, targeted)
-	@bash -c 'set -e; \
-	log="logs/build-timings/terraform-apply-sa-$(ENV)-$(CLUSTER)-$(BUILD_ID)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
-	echo "Service accounts apply (targeted)..."; \
-	$(TF_BIN) -chdir=$(ENV_DIR) apply \
-		-var="build_id=$(BUILD_ID)" \
-		-var="enable_k8s_resources=true" \
-		-target="kubernetes_service_account_v1.aws_load_balancer_controller[0]" \
-		-target="kubernetes_service_account_v1.cluster_autoscaler[0]" \
-		-target="kubernetes_service_account_v1.external_secrets[0]" \
-		-auto-approve 2>&1 | tee "$$log"; \
-	exit $${PIPESTATUS[0]}; \
-	'
+    # Step 2: Service Accounts (enable_k8s_resources=true, targeted)
+    @bash -c 'set -e; \
+    log="logs/build-timings/terraform-apply-sa-$(ENV)-$(CLUSTER)-$(BUILD_ID)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+    echo "Service accounts apply (targeted)..."; \
+    $(TF_BIN) -chdir=$(ENV_DIR) apply \
+        -var="build_id=$(BUILD_ID)" \
+        -var="enable_k8s_resources=true" \
+        -target="kubernetes_service_account_v1.aws_load_balancer_controller[0]" \
+        -target="kubernetes_service_account_v1.cluster_autoscaler[0]" \
+        -target="kubernetes_service_account_v1.external_secrets[0]" \
+        -auto-approve 2>&1 | tee "$$log"; \
+    exit $${PIPESTATUS[0]}; \
+    '
 
-	@bash scripts/record-build-timing.sh $(ENV) $(BUILD_ID) terraform-apply
-	@echo "✅ Infrastructure ready (including service accounts)"
+    @bash scripts/record-build-timing.sh $(ENV) $(BUILD_ID) terraform-apply
+    @echo "✅ Infrastructure ready (including service accounts)"
 ```
 
 ---
