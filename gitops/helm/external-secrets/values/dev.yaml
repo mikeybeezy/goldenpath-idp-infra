@@ -1,6 +1,45 @@
 # Managed by scripts/standardize_metadata.py
 governance:
   id: HELM_EXTERNAL_SECRETS_METADATA
-  owner: null
-  risk_profile: null
-  reliability: null
+  owner: platform-team
+  risk_profile: low
+  reliability: silver
+
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned Version
+# -----------------------------------------------------------------------------
+image:
+  repository: ghcr.io/external-secrets/external-secrets
+  tag: v0.9.13
+  pullPolicy: IfNotPresent
+
+# External Secrets Operator configuration for dev environment
+# Uses IRSA for AWS Secrets Manager authentication
+#
+# NOTE: ServiceAccount is created by Terraform with correct IRSA annotation
+# for both ephemeral and persistent builds. Do NOT create via Helm.
+
+serviceAccount:
+  # ServiceAccount is pre-created by Terraform with IRSA annotation
+  create: false
+  name: external-secrets
+
+# Webhook configuration
+webhook:
+  create: true
+
+# Cert controller for webhook certificates
+certController:
+  create: true
+
+# Install CRDs
+installCRDs: true
+
+# Resource limits for dev
+resources:
+  requests:
+    cpu: 10m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi

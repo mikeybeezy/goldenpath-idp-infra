@@ -1,8 +1,9 @@
-# Kong Helm Values - Dev Environment
+# Kong Helm Values - Local Environment (Kind)
 # Chart: konghq/kong v2.47.0
-# Managed by scripts/standardize_metadata.py
+# Purpose: Local development without AWS dependencies
+# NOTE: For Kind, consider using nginx-ingress instead of Kong for simplicity
 governance:
-  id: HELM_KONG_METADATA
+  id: HELM_KONG_LOCAL_METADATA
   owner: null
   risk_profile: null
   reliability: null
@@ -16,22 +17,22 @@ image:
   pullPolicy: IfNotPresent
 
 # -----------------------------------------------------------------------------
-# Proxy Service (External LoadBalancer)
+# Proxy Service (NodePort for Kind)
 # -----------------------------------------------------------------------------
 proxy:
   enabled: true
-  type: LoadBalancer
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: nlb
-    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+  type: NodePort
+  annotations: {}
   http:
     enabled: true
     containerPort: 8000
     servicePort: 80
+    nodePort: 30080
   tls:
     enabled: true
     containerPort: 8443
     servicePort: 443
+    nodePort: 30443
 
 # -----------------------------------------------------------------------------
 # Admin API (Internal Only)
@@ -63,7 +64,7 @@ ingressController:
           optional: true
 
 # -----------------------------------------------------------------------------
-# Environment (DB-less mode for dev)
+# Environment (DB-less mode)
 # -----------------------------------------------------------------------------
 env:
   database: "off"
@@ -73,12 +74,12 @@ env:
   admin_error_log: /dev/stderr
 
 # -----------------------------------------------------------------------------
-# Resource Limits for Dev
+# Resource Limits (reduced for local)
 # -----------------------------------------------------------------------------
 resources:
   requests:
-    cpu: 100m
-    memory: 256Mi
+    cpu: 50m
+    memory: 128Mi
   limits:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 250m
+    memory: 256Mi

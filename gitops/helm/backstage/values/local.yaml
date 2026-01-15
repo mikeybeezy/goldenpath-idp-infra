@@ -1,8 +1,8 @@
-# Backstage Helm Values - Dev Environment
+# Backstage Helm Values - Local Environment (Kind)
 # Chart: backstage/backstage v1.12.0
-# Managed by scripts/standardize_metadata.py
+# Purpose: Local development without AWS dependencies
 governance:
-  id: HELM_BACKSTAGE_METADATA
+  id: HELM_BACKSTAGE_LOCAL_METADATA
   owner: null
   risk_profile: null
   reliability: null
@@ -22,13 +22,13 @@ backstage:
 # -----------------------------------------------------------------------------
 appConfig:
   app:
-    baseUrl: https://backstage.dev.goldenpath.io
-    title: Goldenpath IDP
+    baseUrl: http://backstage.localhost:7007
+    title: Goldenpath IDP (Local)
 
   backend:
-    baseUrl: https://backstage.dev.goldenpath.io
+    baseUrl: http://backstage.localhost:7007
     cors:
-      origin: https://backstage.dev.goldenpath.io
+      origin: http://backstage.localhost:7007
     database:
       client: pg
       connection:
@@ -51,24 +51,19 @@ appConfig:
           - allow:
               - Template
 
-  # GitHub Integration
+  # GitHub Integration (optional for local - can use dummy token)
   integrations:
     github:
       - host: github.com
         token: ${GITHUB_TOKEN}
 
-  # Auth configuration (OIDC via Keycloak)
+  # Auth disabled for local development (guest access)
   auth:
     environment: development
-    providers:
-      oidc:
-        development:
-          metadataUrl: https://keycloak.dev.goldenpath.io/realms/goldenpath/.well-known/openid-configuration
-          clientId: backstage
-          clientSecret: ${OIDC_CLIENT_SECRET}
+    providers: {}
 
 # -----------------------------------------------------------------------------
-# PostgreSQL (Bundled)
+# PostgreSQL (Bundled for Local)
 # -----------------------------------------------------------------------------
 postgresql:
   enabled: true
@@ -84,17 +79,16 @@ postgresql:
   primary:
     persistence:
       enabled: true
-      size: 8Gi
+      size: 1Gi
 
 # -----------------------------------------------------------------------------
-# Ingress
+# Ingress (Local)
 # -----------------------------------------------------------------------------
 ingress:
   enabled: true
-  className: kong
-  host: backstage.dev.goldenpath.io
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+  className: nginx
+  host: backstage.localhost
+  annotations: {}
 
 # -----------------------------------------------------------------------------
 # Environment Variables from Secrets
@@ -103,12 +97,12 @@ extraEnvVarsSecrets:
   - backstage-secrets
 
 # -----------------------------------------------------------------------------
-# Resource Limits for Dev
+# Resource Limits (reduced for local)
 # -----------------------------------------------------------------------------
 resources:
   requests:
-    cpu: 100m
-    memory: 256Mi
+    cpu: 50m
+    memory: 128Mi
   limits:
-    cpu: 500m
-    memory: 1Gi
+    cpu: 250m
+    memory: 512Mi

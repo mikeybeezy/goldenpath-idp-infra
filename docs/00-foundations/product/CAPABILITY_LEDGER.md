@@ -177,8 +177,24 @@ The platform ensures that all automation code is treated as a first-class citize
 
 ---
 
+## 22. Standalone Platform RDS (Persistent Data Layer)
+
+The platform provides a **Bounded Context** data layer that decouples persistent database infrastructure from ephemeral compute, enabling true cluster ephemerality while maintaining data continuity.
+
+- **Standalone Terraform Root**: RDS is deployed via its own Terraform state (`envs/{env}-rds/`), completely independent of EKS cluster state—enabling clusters to be destroyed and recreated without data loss.
+- **Multi-Tenant Database Engine**: A single PostgreSQL instance hosts isolated databases for platform tooling (Keycloak, Backstage), reducing operational overhead and cost while maintaining logical separation.
+- **VPC Discovery Pattern**: RDS discovers its target VPC via resource tags rather than direct Terraform references, enabling true state isolation between compute and data layers.
+- **Multi-Layer Deletion Protection**: Intentionally difficult deletion through AWS `deletion_protection`, Terraform `prevent_destroy` lifecycle, and absence of any `rds-destroy` Makefile target—requiring manual console intervention for destruction.
+- **CI-Enforced Secret Rotation**: Daily scheduled compliance checks (`secret-rotation-check.yml`) alert when credentials approach rotation deadlines, with soft PR gates warning on infrastructure changes without blocking velocity.
+- **Region-Agnostic Configuration**: Zero hardcoded AWS regions—all regional configuration flows through variables, enabling multi-region deployment patterns.
+- **Production-Grade Observability**: Auto-provisioned CloudWatch alarms for CPU, memory, storage, connections, and latency with configurable warning/critical thresholds.
+- **Relates-To**: [ADR-0158](/docs/adrs/ADR-0158-platform-standalone-rds-bounded-context.md), [RB-0029](/docs/70-operations/runbooks/RB-0029-rds-manual-secret-rotation.md), [RB-0030](/docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md)
+
+---
+
 ## Technical Foundation
 - **Platform Core**: AWS EKS (Ubuntu/Bottlerocket)
 - **GitOps Engine**: Argo CD
 - **Governance**: Metadata-Schema V1.0
 - **Observability**: Kube-Prometheus-Stack (Gold Tier)
+- **Data Layer**: AWS RDS PostgreSQL (Bounded Context)

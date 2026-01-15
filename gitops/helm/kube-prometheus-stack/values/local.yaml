@@ -1,84 +1,61 @@
-# Kube-Prometheus-Stack Helm Values - Dev Environment
+# Kube-Prometheus-Stack Helm Values - Local Environment (Kind)
 # Chart: prometheus-community/kube-prometheus-stack v45.7.1
-# Managed by scripts/standardize_metadata.py
+# Purpose: Local development with minimal resources
 governance:
-  id: HELM_KUBE_PROMETHEUS_STACK_METADATA
+  id: HELM_KUBE_PROMETHEUS_STACK_LOCAL_METADATA
   owner: null
   risk_profile: null
   reliability: null
 
 # -----------------------------------------------------------------------------
-# Image Configuration - Pinned Versions
+# Prometheus
 # -----------------------------------------------------------------------------
 prometheus:
   prometheusSpec:
     image:
       repository: quay.io/prometheus/prometheus
       tag: v2.47.2
-    retention: 7d
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 20Gi
+    retention: 24h
+    # No persistent storage for local
+    storageSpec: {}
     resources:
       requests:
-        cpu: 100m
-        memory: 512Mi
+        cpu: 50m
+        memory: 256Mi
       limits:
-        cpu: 1000m
-        memory: 2Gi
+        cpu: 500m
+        memory: 512Mi
 
 # -----------------------------------------------------------------------------
-# Alertmanager
+# Alertmanager (disabled for local)
 # -----------------------------------------------------------------------------
 alertmanager:
-  alertmanagerSpec:
-    image:
-      repository: quay.io/prometheus/alertmanager
-      tag: v0.26.0
-    storage:
-      volumeClaimTemplate:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 5Gi
-    resources:
-      requests:
-        cpu: 10m
-        memory: 64Mi
-      limits:
-        cpu: 100m
-        memory: 128Mi
+  enabled: false
 
 # -----------------------------------------------------------------------------
 # Grafana
 # -----------------------------------------------------------------------------
 grafana:
+  enabled: true
   image:
     repository: grafana/grafana
     tag: 10.2.3
     pullPolicy: IfNotPresent
+  # No persistence for local
   persistence:
-    enabled: true
-    size: 10Gi
-  additionalDataSources:
-    - name: Loki
-      type: loki
-      access: proxy
-      url: http://loki-gateway.monitoring.svc:3100
+    enabled: false
+  # Admin password for local
+  adminPassword: admin
+  service:
+    type: NodePort
+    nodePort: 30300
   resources:
     requests:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 25m
+      memory: 64Mi
     limits:
-      cpu: 500m
-      memory: 512Mi
+      cpu: 250m
+      memory: 256Mi
 
 # -----------------------------------------------------------------------------
 # Prometheus Operator
@@ -90,37 +67,51 @@ prometheusOperator:
   resources:
     requests:
       cpu: 10m
-      memory: 64Mi
+      memory: 32Mi
     limits:
-      cpu: 200m
-      memory: 256Mi
+      cpu: 100m
+      memory: 128Mi
 
 # -----------------------------------------------------------------------------
 # Node Exporter
 # -----------------------------------------------------------------------------
 nodeExporter:
+  enabled: true
   image:
     repository: quay.io/prometheus/node-exporter
     tag: v1.6.1
   resources:
     requests:
-      cpu: 10m
-      memory: 32Mi
+      cpu: 5m
+      memory: 16Mi
     limits:
-      cpu: 100m
-      memory: 64Mi
+      cpu: 50m
+      memory: 32Mi
 
 # -----------------------------------------------------------------------------
 # Kube State Metrics
 # -----------------------------------------------------------------------------
 kubeStateMetrics:
+  enabled: true
   image:
     repository: registry.k8s.io/kube-state-metrics/kube-state-metrics
     tag: v2.10.1
   resources:
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 5m
+      memory: 32Mi
     limits:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 50m
+      memory: 64Mi
+
+# -----------------------------------------------------------------------------
+# Disable components not needed for local
+# -----------------------------------------------------------------------------
+kubeEtcd:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false

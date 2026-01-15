@@ -1,8 +1,8 @@
-# Keycloak Helm Values - Dev Environment
+# Keycloak Helm Values - Local Environment (Kind)
 # Chart: bitnami/keycloak v22.1.6
-# Managed by scripts/standardize_metadata.py
+# Purpose: Local development without AWS dependencies
 governance:
-  id: HELM_KEYCLOAK_METADATA
+  id: HELM_KEYCLOAK_LOCAL_METADATA
   owner: null
   risk_profile: null
   reliability: null
@@ -21,49 +21,49 @@ image:
 # -----------------------------------------------------------------------------
 auth:
   adminUser: admin
-  # Password pulled from ExternalSecret -> keycloak-admin-secret
+  # For local dev, use static secret (created via kubectl or kustomize)
   existingSecret: keycloak-admin-secret
   passwordSecretKey: admin-password
 
 # -----------------------------------------------------------------------------
-# PostgreSQL (External RDS)
-# Bundled PostgreSQL is DISABLED - using shared platform RDS
-# Credentials synced via ExternalSecret from AWS Secrets Manager
+# PostgreSQL (Bundled for Local)
+# Using bundled PostgreSQL for local Kind clusters
 # -----------------------------------------------------------------------------
 postgresql:
-  enabled: false
+  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 15.6.0-debian-12-r8
+  auth:
+    existingSecret: keycloak-postgres-secret
+    secretKeys:
+      adminPasswordKey: postgres-password
+      userPasswordKey: password
+  primary:
+    persistence:
+      enabled: true
+      size: 1Gi
 
-# External database configuration
+# External database disabled for local
 externalDatabase:
-  host: "${DB_HOST}"
-  port: 5432
-  user: "${DB_USER}"
-  password: "${DB_PASSWORD}"
-  database: keycloak
-  existingSecret: keycloak-postgres-secret
-  existingSecretHostKey: host
-  existingSecretPortKey: port
-  existingSecretUserKey: username
-  existingSecretPasswordKey: password
+  host: ""
 
 # -----------------------------------------------------------------------------
 # Keycloak Configuration
 # -----------------------------------------------------------------------------
-# Proxy mode: edge = TLS terminated at load balancer/ingress
 proxy: edge
-# Production mode: false for dev (enables dev features, relaxed security)
 production: false
-# Single replica for dev
 replicaCount: 1
 
-# Resource limits for dev
+# Reduced resources for local development
 resources:
   requests:
-    cpu: 250m
-    memory: 512Mi
+    cpu: 100m
+    memory: 256Mi
   limits:
-    cpu: 1000m
-    memory: 1Gi
+    cpu: 500m
+    memory: 512Mi
 
 # -----------------------------------------------------------------------------
 # Service
@@ -75,19 +75,16 @@ service:
     https: 443
 
 # -----------------------------------------------------------------------------
-# Ingress
+# Ingress (Local - using nginx or port-forward)
 # -----------------------------------------------------------------------------
 ingress:
   enabled: true
-  ingressClassName: kong
-  hostname: keycloak.dev.goldenpath.io
+  ingressClassName: nginx
+  hostname: keycloak.localhost
   path: /
   pathType: Prefix
-  tls: true
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
-    # Use staging issuer for dev to avoid rate limits
-    # Switch to letsencrypt-prod for production
+  tls: false
+  annotations: {}
 
 # -----------------------------------------------------------------------------
 # Logging
@@ -97,34 +94,32 @@ logging:
   level: INFO
 
 # -----------------------------------------------------------------------------
-# Health Probes
+# Health Probes (relaxed for local)
 # -----------------------------------------------------------------------------
 livenessProbe:
   enabled: true
-  initialDelaySeconds: 120
+  initialDelaySeconds: 60
   periodSeconds: 10
   timeoutSeconds: 5
-  failureThreshold: 6
+  failureThreshold: 10
 
 readinessProbe:
   enabled: true
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5
-  failureThreshold: 6
+  failureThreshold: 10
 
 # -----------------------------------------------------------------------------
 # Extra Environment Variables
 # -----------------------------------------------------------------------------
 extraEnvVars:
-  # Keycloak hostname configuration
   - name: KC_HOSTNAME
-    value: keycloak.dev.goldenpath.io
+    value: keycloak.localhost
   - name: KC_HOSTNAME_STRICT
     value: "false"
   - name: KC_HOSTNAME_STRICT_HTTPS
     value: "false"
-  # Enable health and metrics endpoints
   - name: KC_HEALTH_ENABLED
     value: "true"
   - name: KC_METRICS_ENABLED

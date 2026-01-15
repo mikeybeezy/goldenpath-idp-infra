@@ -74,6 +74,11 @@ iam_config = {
   lb_controller_policy_arn                = "arn:aws:iam::593517239005:policy/goldenpath-load-balancer-controller-policy"
   lb_controller_service_account_namespace = "kube-system"
   lb_controller_service_account_name      = "aws-load-balancer-controller"
+  # External Secrets Operator IRSA
+  enable_eso_role                         = true
+  eso_role_name                           = "goldenpath-idp-eso-role"
+  eso_service_account_namespace           = "external-secrets"
+  eso_service_account_name                = "external-secrets"
 }
 
 
@@ -216,4 +221,32 @@ app_secrets = {
   #   write_principals       = ["arn:aws:iam::593517239005:role/github-actions-secrets-writer"]
   #   break_glass_principals = ["arn:aws:iam::593517239005:role/platform-admin"]
   # }
+}
+
+# Platform RDS (Shared PostgreSQL for Keycloak, Backstage, etc.)
+# NOTE: RDS is environment-scoped. For ephemeral builds, it gets suffixed with build_id.
+# Secrets are auto-generated and stored in AWS Secrets Manager for ESO to sync.
+rds_config = {
+  enabled               = true
+  identifier            = "goldenpath-platform-db"
+  instance_class        = "db.t3.micro"
+  engine_version        = "15.4"
+  allocated_storage     = 20
+  max_allocated_storage = 50
+  multi_az              = false
+  deletion_protection   = false
+  skip_final_snapshot   = true
+  backup_retention_days = 7
+
+  # Application databases - each gets its own user and credentials
+  application_databases = {
+    keycloak = {
+      database_name = "keycloak"
+      username      = "keycloak"
+    }
+    backstage = {
+      database_name = "backstage"
+      username      = "backstage"
+    }
+  }
 }

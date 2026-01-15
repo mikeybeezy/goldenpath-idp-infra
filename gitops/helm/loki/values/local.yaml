@@ -1,8 +1,8 @@
-# Loki Helm Values - Dev Environment
+# Loki Helm Values - Local Environment (Kind)
 # Chart: grafana/loki-stack v2.9.11
-# Managed by scripts/standardize_metadata.py
+# Purpose: Local development with minimal resources
 governance:
-  id: HELM_LOKI_METADATA
+  id: HELM_LOKI_LOCAL_METADATA
   owner: null
   risk_profile: null
   reliability: null
@@ -16,7 +16,7 @@ loki:
     tag: 2.9.4
     pullPolicy: IfNotPresent
 
-  # Deployment mode: SingleBinary for dev (simpler, lower resources)
+  # SingleBinary mode for local
   deploymentMode: SingleBinary
   singleBinary:
     replicas: 1
@@ -27,22 +27,22 @@ loki:
   backend:
     replicas: 0
 
-  # Storage configuration (local filesystem for dev)
+  # Local filesystem storage
   storage:
     type: filesystem
 
-  # Retention configuration
+  # Short retention for local
   limits_config:
-    retention_period: 168h  # 7 days
+    retention_period: 24h
 
-  # Resource limits for dev
+  # Reduced resources for local
   resources:
     requests:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 25m
+      memory: 64Mi
     limits:
-      cpu: 500m
-      memory: 512Mi
+      cpu: 250m
+      memory: 256Mi
 
 # Gateway configuration
 gateway:
@@ -53,8 +53,8 @@ gateway:
     pullPolicy: IfNotPresent
   resources:
     requests:
-      cpu: 10m
-      memory: 32Mi
+      cpu: 5m
+      memory: 16Mi
     limits:
-      cpu: 100m
-      memory: 64Mi
+      cpu: 50m
+      memory: 32Mi

@@ -40,6 +40,7 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Unified Secret Request Flow**: A streamlined, single-contract interface for managing the entire secret lifecycle across AWS and Kubernetes.
 - **GitOps Secret Projection**: Automated bridging of AWS Secrets Manager to Kubernetes namespaces via the External Secrets Operator.
 - **CI/CD Guardrails**: Automated branch policies and PR gates to protect the main development branch.
+- **Standalone Platform RDS**: Persistent multi-tenant PostgreSQL database as a bounded context, surviving cluster rebuilds with CI-enforced secret rotation and multi-layer deletion protection.
 
 ## Observability & Intelligence
 *Providing visibility into the state, cost, and architecture of the entire platform.*
