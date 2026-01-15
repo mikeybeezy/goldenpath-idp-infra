@@ -25,7 +25,7 @@ Verify that the `SecretRequest` manifest is correctly parsed, validated (camelCa
 5.  **Traceability**: All assets are linked via Audit ID (SEC-XXXX).
 
 ## 🛠️ Test Setup
-- **Source**: `docs/catalogs/secrets/payments/dev/SEC-0007.yaml`
+- **Source**: `docs/20-contracts/secret-requests/payments/dev/SEC-0007.yaml`
 - **Tool**: `scripts/secret_request_parser.py`
 - **Enums**: `schemas/metadata/enums.yaml`
 

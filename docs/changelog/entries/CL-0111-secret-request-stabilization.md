@@ -6,7 +6,7 @@ status: active
 owner: platform-team
 domain: platform-core
 applies_to:
-  - docs/catalogs/secrets
+  - docs/20-contracts/secret-requests
 lifecycle: active
 exempt: false
 risk_profile:

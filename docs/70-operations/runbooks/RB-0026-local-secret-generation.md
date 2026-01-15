@@ -36,7 +36,7 @@ Before generating any files, you can validate that your `SecretRequest` YAML sat
 python3 scripts/secret_request_parser.py \
   --mode validate \
   --enums schemas/metadata/enums.yaml \
-  --input-files docs/catalogs/secrets/payments/dev/SEC-0007.yaml
+  --input-files docs/20-contracts/secret-requests/payments/dev/SEC-0007.yaml
 ```
 
 ### 2. Generate Implementation (Targeting)
@@ -46,13 +46,13 @@ To generate the Terraform `.tfvars` and Kubernetes `ExternalSecret` manifests fo
 python3 scripts/secret_request_parser.py \
   --mode generate \
   --enums schemas/metadata/enums.yaml \
-  --input-files docs/catalogs/secrets/payments/dev/SEC-0007.yaml
+  --input-files docs/20-contracts/secret-requests/payments/dev/SEC-0007.yaml
 ```
 
 **Expected Output:**
 ```text
-[OK] docs/catalogs/secrets/payments/dev/SEC-0007.yaml -> envs/dev/secrets/generated/payments/SEC-0007.auto.tfvars.json
-[OK] docs/catalogs/secrets/payments/dev/SEC-0007.yaml -> gitops/kustomize/overlays/dev/apps/payments/externalsecrets/SEC-0007.yaml
+[OK] docs/20-contracts/secret-requests/payments/dev/SEC-0007.yaml -> envs/dev/secrets/generated/payments/SEC-0007.auto.tfvars.json
+[OK] docs/20-contracts/secret-requests/payments/dev/SEC-0007.yaml -> gitops/kustomize/overlays/dev/apps/payments/externalsecrets/SEC-0007.yaml
 ```
 
 > [!TIP]

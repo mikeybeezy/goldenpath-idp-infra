@@ -170,16 +170,16 @@ def get_workflow_stats():
 def get_catalog_stats():
     catalog_counts = {}
 
-    # 1. Standard YAML Catalogs (legacy + contracts)
+    # 1. Standard YAML Catalogs (contracts)
     catalog_dirs = [
-        'docs/catalogs',
-        'docs/20-contracts/resource-catalogs'
+        'docs/20-contracts/resource-catalogs',
+        'docs/20-contracts/secret-requests'
     ]
     for catalog_dir in catalog_dirs:
         if not os.path.exists(catalog_dir):
             continue
 
-        # Recursive scan for nested catalogs (e.g. docs/catalogs/secrets/**)
+        # Recursive scan for nested catalogs (e.g. docs/20-contracts/secret-requests/**)
         for root, _, files in os.walk(catalog_dir):
             for f in files:
                 if f.endswith('.yaml') and f != 'backstage-entities.yaml':

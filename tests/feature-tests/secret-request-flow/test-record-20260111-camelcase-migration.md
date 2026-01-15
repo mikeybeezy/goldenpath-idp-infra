@@ -22,9 +22,9 @@ Ref: [test-plan.md](./test-plan.md)
 ## Execution Results
 
 ### Step 1: Schema Validation (camelCase)
-**Command:** `python3 scripts/secret_request_parser.py --mode validate --input-files docs/catalogs/secrets/payments/dev/SEC-0007.yaml --enums schemas/metadata/enums.yaml`
+**Command:** `python3 scripts/secret_request_parser.py --mode validate --input-files docs/20-contracts/secret-requests/payments/dev/SEC-0007.yaml --enums schemas/metadata/enums.yaml`
 **Expected:** Manifest validated success.
-**Actual:** `[OK] docs/catalogs/secrets/payments/dev/SEC-0007.yaml validated`
+**Actual:** `[OK] docs/20-contracts/secret-requests/payments/dev/SEC-0007.yaml validated`
 **Status:** ✅
 
 ### Step 2: Artifact Generation

@@ -137,7 +137,7 @@ Decommissioning is intent-based to prevent accidental deletion and ensure audita
 This section demonstrates how the high-level `SecretRequest` manifest projects into low-level Kubernetes resources managed by the External Secrets Operator (ESO).
 
 ### 1. Developer Intent (Input)
-Location: `docs/catalogs/secrets/<service>/<env>/<secret-id>.yaml`
+Location: `docs/20-contracts/secret-requests/<service>/<env>/<secret-id>.yaml`
 
 ```yaml
 apiVersion: goldenpath.io/v1
