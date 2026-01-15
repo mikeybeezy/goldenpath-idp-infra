@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     permissions:
-      contents: read
+      contents: write
       id-token: write
       actions: read
     steps:
@@ -243,15 +243,32 @@ jobs:
             -backend-config="encrypt=true"
 
       - name: Terraform apply (dev)
+        id: tf_apply
         env:
           LIFECYCLE: ${{ steps.effective.outputs.lifecycle }}
           BUILD_ID: ${{ steps.effective.outputs.build_id }}
         run: |
+          echo "TF_APPLY_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "${GITHUB_ENV}"
           var_args=(-var "cluster_lifecycle=${LIFECYCLE}")
           if [[ "${LIFECYCLE}" == "ephemeral" ]]; then
             var_args+=(-var "build_id=${BUILD_ID}")
           fi
-          terraform -chdir=envs/dev apply -auto-approve -input=false -no-color "${var_args[@]}"
+          terraform -chdir=envs/dev apply -auto-approve -input=false -no-color "${var_args[@]}" 2>&1 | tee tf_apply.log
+          TF_EXIT=${PIPESTATUS[0]}
+          echo "TF_APPLY_END=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "${GITHUB_ENV}"
+          # Extract resource counts from Apply complete line
+          if grep -q "Apply complete!" tf_apply.log; then
+            ADDED=$(grep "Apply complete!" tf_apply.log | sed -E 's/.*Resources: ([0-9]+) added.*/\1/')
+            CHANGED=$(grep "Apply complete!" tf_apply.log | sed -E 's/.*, ([0-9]+) changed.*/\1/')
+            DESTROYED=$(grep "Apply complete!" tf_apply.log | sed -E 's/.*, ([0-9]+) destroyed.*/\1/')
+          else
+            ADDED=0; CHANGED=0; DESTROYED=0
+          fi
+          echo "TF_RESOURCES_ADDED=${ADDED}" >> "${GITHUB_ENV}"
+          echo "TF_RESOURCES_CHANGED=${CHANGED}" >> "${GITHUB_ENV}"
+          echo "TF_RESOURCES_DESTROYED=${DESTROYED}" >> "${GITHUB_ENV}"
+          echo "TF_EXIT_CODE=${TF_EXIT}" >> "${GITHUB_ENV}"
+          exit ${TF_EXIT}
 
       - name: Setup EKS access for runner
         if: ${{ steps.effective.outputs.lifecycle == 'ephemeral' }}
@@ -296,6 +313,51 @@ jobs:
         run: |
           echo "Running bootstrap for build ${BUILD_ID}..."
           make bootstrap ENV=dev BUILD_ID=${BUILD_ID} ALLOW_REUSE_BUILD_ID=true
+
+      - name: Record build timing to governance-registry
+        if: always()
+        env:
+          BUILD_ID: ${{ steps.effective.outputs.build_id }}
+          LIFECYCLE: ${{ steps.effective.outputs.lifecycle }}
+        run: |
+          # Calculate duration
+          START_EPOCH=$(date -d "${TF_APPLY_START}" +%s 2>/dev/null || echo 0)
+          END_EPOCH=$(date -d "${TF_APPLY_END}" +%s 2>/dev/null || echo 0)
+          DURATION=$((END_EPOCH - START_EPOCH))
+
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Checkout governance-registry branch
+          git fetch origin governance-registry
+          git checkout governance-registry
+
+          # Ensure directory exists
+          mkdir -p environments/development/latest
+
+          CSV_FILE="environments/development/latest/build_timings.csv"
+
+          # Create CSV with header if it doesn't exist
+          if [[ ! -f "$CSV_FILE" ]]; then
+            echo "start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,resources_added,resources_changed,resources_destroyed,workflow_run_url" > "$CSV_FILE"
+          fi
+
+          # Append terraform-apply record
+          echo "${TF_APPLY_START:-},${TF_APPLY_END:-},terraform-apply,dev,${BUILD_ID:-persistent},${DURATION},${TF_EXIT_CODE:-0},${TF_RESOURCES_ADDED:-0},${TF_RESOURCES_CHANGED:-0},${TF_RESOURCES_DESTROYED:-0},${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> "$CSV_FILE"
+
+          # Commit and push
+          git add "$CSV_FILE"
+          git commit -m "chore(registry): record terraform-apply for dev build ${BUILD_ID:-persistent}
+
+          Duration: ${DURATION}s
+          Resources: +${TF_RESOURCES_ADDED:-0} ~${TF_RESOURCES_CHANGED:-0} -${TF_RESOURCES_DESTROYED:-0}
+          Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || echo "No changes to commit"
+
+          git push origin governance-registry || echo "Warning: Could not push to governance-registry"
+
+          # Return to main branch
+          git checkout main || git checkout -
 
       - name: Runbook link
         if: always()
