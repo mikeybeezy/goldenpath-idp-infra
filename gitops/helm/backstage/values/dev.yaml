@@ -112,3 +112,61 @@ resources:
   limits:
     cpu: 500m
     memory: 1Gi
+
+# -----------------------------------------------------------------------------
+# Extra Manifests (External Secrets)
+# -----------------------------------------------------------------------------
+extraDeploy:
+  - |
+    apiVersion: external-secrets.io/v1beta1
+    kind: ExternalSecret
+    metadata:
+      name: backstage-postgres-secret
+    spec:
+      refreshInterval: 1m
+      secretStoreRef:
+        name: aws-secretsmanager
+        kind: ClusterSecretStore
+      target:
+        name: backstage-postgres-secret
+        creationPolicy: Owner
+      data:
+      - secretKey: password
+        remoteRef:
+          key: goldenpath/dev/backstage/postgres
+          property: password
+      - secretKey: host
+        remoteRef:
+          key: goldenpath/dev/backstage/postgres
+          property: host
+      - secretKey: port
+        remoteRef:
+          key: goldenpath/dev/backstage/postgres
+          property: port
+      - secretKey: username
+        remoteRef:
+          key: goldenpath/dev/backstage/postgres
+          property: username
+  - |
+    apiVersion: external-secrets.io/v1beta1
+    kind: ExternalSecret
+    metadata:
+      name: backstage-secrets
+    spec:
+      refreshInterval: 1m
+      secretStoreRef:
+        name: aws-secretsmanager
+        kind: ClusterSecretStore
+      target:
+        name: backstage-secrets
+        creationPolicy: Owner
+      data:
+      - secretKey: GITHUB_TOKEN
+        remoteRef:
+          key: goldenpath/dev/backstage/github
+          property: token
+      - secretKey: OIDC_CLIENT_SECRET
+        remoteRef:
+          key: goldenpath/dev/backstage/oidc
+          property: client-secret
+
