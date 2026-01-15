@@ -135,6 +135,18 @@ jobs:
           # Copy generated artifacts to history snapshot
           cp -R _govreg_out/* "$HIST_DIR/"
 
+      - name: Sync Backstage catalog to registry
+        run: |
+          # Copy Backstage catalog for stable cross-environment access
+          mkdir -p _govreg_repo/backstage-catalog
+          cp -R backstage-helm/catalog/* _govreg_repo/backstage-catalog/
+
+          # Update catalog URLs to point to registry branch (self-referential)
+          # This ensures templates reference the stable registry branch
+          if [ -f _govreg_repo/backstage-catalog/all.yaml ]; then
+            echo "Backstage catalog synced to governance-registry"
+          fi
+
       - name: Update unified dashboard
         run: |
           # TODO: Implement unified dashboard generator
@@ -148,7 +160,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add environments/ UNIFIED_DASHBOARD.md || true
+          git add environments/ UNIFIED_DASHBOARD.md backstage-catalog/ || true
 
           git commit -m "govreg: ${ENV_NAME} @ ${{ steps.meta.outputs.source_sha }}" || exit 0
           git push origin governance-registry

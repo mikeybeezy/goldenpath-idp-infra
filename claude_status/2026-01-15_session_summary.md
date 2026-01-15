@@ -154,6 +154,22 @@ backstage-helm/catalog/all.yaml                   # Registered RDS template
 
 ---
 
+## Backstage Catalog on Governance Registry
+
+The Backstage catalog is now synced to the `governance-registry` branch for stable, environment-agnostic access:
+
+- **Catalog URL**: `https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-catalog/all.yaml`
+- **Sync Workflow**: `governance-registry-writer.yml` copies catalog on every push to development/main
+- **Schema Update**: `govreg.schema.yaml` updated to allow `backstage-catalog/` directory
+
+Benefits:
+
+- All environments (dev/staging/prod) point to same stable catalog
+- Template changes flow through PR review before reaching registry
+- No need to update Backstage config per environment
+
+---
+
 ## Backstage Self-Service RDS Template
 
 ### Template: `backstage-helm/catalog/templates/rds-request.yaml`
