@@ -47,13 +47,13 @@ locals {
   identifier  = "${var.identifier_prefix}-${local.environment}"
 
   common_tags = {
-    Environment  = local.environment
-    Project      = "goldenpath-idp"
-    ManagedBy    = "terraform"
-    Owner        = var.owner_team
-    Component    = "platform-rds"
-    CostCenter   = var.cost_center
-    Application  = "platform-database"
+    Environment = local.environment
+    Project     = "goldenpath-idp"
+    ManagedBy   = "terraform"
+    Owner       = var.owner_team
+    Component   = "platform-rds"
+    CostCenter  = var.cost_center
+    Application = "platform-database"
     # No BuildId tag - this is persistent infrastructure
   }
 }
@@ -264,12 +264,12 @@ resource "aws_secretsmanager_secret" "master" {
 resource "aws_secretsmanager_secret_version" "master" {
   secret_id = aws_secretsmanager_secret.master.id
   secret_string = jsonencode({
-    username          = var.master_username
-    password          = random_password.master.result
-    host              = aws_db_instance.platform.address
-    port              = tostring(aws_db_instance.platform.port)
-    dbname            = var.database_name
-    engine            = "postgres"
+    username             = var.master_username
+    password             = random_password.master.result
+    host                 = aws_db_instance.platform.address
+    port                 = tostring(aws_db_instance.platform.port)
+    dbname               = var.database_name
+    engine               = "postgres"
     dbInstanceIdentifier = aws_db_instance.platform.identifier
   })
 }
@@ -302,15 +302,13 @@ resource "aws_secretsmanager_secret_version" "app" {
 
   secret_id = aws_secretsmanager_secret.app[each.key].id
   secret_string = jsonencode({
-    username          = each.value.username
-    password          = random_password.app[each.key].result
-    host              = aws_db_instance.platform.address
-    port              = tostring(aws_db_instance.platform.port)
-    dbname            = each.value.database_name
-    engine            = "postgres"
-    postgres-password = random_password.app[each.key].result
-    admin-password    = random_password.app[each.key].result
-    dbInstanceIdentifier = aws_db_instance.platform.identifier
+    username = each.value.username
+    password = random_password.app[each.key].result
+    host     = aws_db_instance.platform.address
+    port     = tostring(aws_db_instance.platform.port)
+    dbname   = each.value.database_name
+    engine   = "postgres"
+    # Standard connection string fields only - no redundant password aliases
   })
 }
 

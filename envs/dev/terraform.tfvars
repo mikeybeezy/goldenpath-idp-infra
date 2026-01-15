@@ -75,10 +75,10 @@ iam_config = {
   lb_controller_service_account_namespace = "kube-system"
   lb_controller_service_account_name      = "aws-load-balancer-controller"
   # External Secrets Operator IRSA
-  enable_eso_role                         = true
-  eso_role_name                           = "goldenpath-idp-eso-role"
-  eso_service_account_namespace           = "external-secrets"
-  eso_service_account_name                = "external-secrets"
+  enable_eso_role               = true
+  eso_role_name                 = "goldenpath-idp-eso-role"
+  eso_service_account_namespace = "external-secrets"
+  eso_service_account_name      = "external-secrets"
 }
 
 
@@ -223,11 +223,15 @@ app_secrets = {
   # }
 }
 
-# Platform RDS (Shared PostgreSQL for Keycloak, Backstage, etc.)
-# NOTE: RDS is environment-scoped. For ephemeral builds, it gets suffixed with build_id.
-# Secrets are auto-generated and stored in AWS Secrets Manager for ESO to sync.
+# Platform RDS - MIGRATED TO STANDALONE BOUNDED CONTEXT
+# RDS is now managed separately in envs/dev-rds/ per ADR-0158.
+# Deploy with: make rds-apply ENV=dev
+# See: docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md
+#
+# The rds_config variable below is kept for backwards compatibility but is UNUSED.
+# It will be removed in a future cleanup.
 rds_config = {
-  enabled               = true
+  enabled               = false # Disabled - use standalone envs/dev-rds/ instead
   identifier            = "goldenpath-platform-db"
   instance_class        = "db.t3.micro"
   engine_version        = "15.4"
@@ -237,16 +241,5 @@ rds_config = {
   deletion_protection   = false
   skip_final_snapshot   = true
   backup_retention_days = 7
-
-  # Application databases - each gets its own user and credentials
-  application_databases = {
-    keycloak = {
-      database_name = "keycloak"
-      username      = "keycloak"
-    }
-    backstage = {
-      database_name = "backstage"
-      username      = "backstage"
-    }
-  }
+  application_databases = {}
 }

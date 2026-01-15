@@ -38,7 +38,6 @@ spec:
             - security-team
             - operations-team
             - sre-team
-            - unknown
             - app-team
             - database-team
           default: platform-team
@@ -58,6 +57,7 @@ spec:
             - governance
             - security
             - cost
+            - application
           default: delivery
         environment:
           title: Environment

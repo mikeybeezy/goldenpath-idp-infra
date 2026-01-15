@@ -87,9 +87,9 @@ output "app_secret_names" {
 output "rotation_policy" {
   description = "Secret rotation policy for this environment"
   value = {
-    rotation_days       = var.rotation_days
-    enforcement_method  = "ci-workflow"
-    workflow            = ".github/workflows/secret-rotation-check.yml"
+    rotation_days      = var.rotation_days
+    enforcement_method = "ci-workflow"
+    workflow           = ".github/workflows/secret-rotation-check.yml"
   }
 }
 
@@ -100,14 +100,14 @@ output "rotation_policy" {
 output "cloudwatch_alarm_arns" {
   description = "Map of CloudWatch alarm ARNs"
   value = {
-    cpu_warning          = aws_cloudwatch_metric_alarm.cpu_warning.arn
-    cpu_critical         = aws_cloudwatch_metric_alarm.cpu_critical.arn
-    memory_warning       = aws_cloudwatch_metric_alarm.memory_warning.arn
-    memory_critical      = aws_cloudwatch_metric_alarm.memory_critical.arn
-    storage_warning      = aws_cloudwatch_metric_alarm.storage_warning.arn
-    storage_critical     = aws_cloudwatch_metric_alarm.storage_critical.arn
-    connections_warning  = aws_cloudwatch_metric_alarm.connections_warning.arn
-    read_latency_warning = aws_cloudwatch_metric_alarm.read_latency_warning.arn
+    cpu_warning           = aws_cloudwatch_metric_alarm.cpu_warning.arn
+    cpu_critical          = aws_cloudwatch_metric_alarm.cpu_critical.arn
+    memory_warning        = aws_cloudwatch_metric_alarm.memory_warning.arn
+    memory_critical       = aws_cloudwatch_metric_alarm.memory_critical.arn
+    storage_warning       = aws_cloudwatch_metric_alarm.storage_warning.arn
+    storage_critical      = aws_cloudwatch_metric_alarm.storage_critical.arn
+    connections_warning   = aws_cloudwatch_metric_alarm.connections_warning.arn
+    read_latency_warning  = aws_cloudwatch_metric_alarm.read_latency_warning.arn
     write_latency_warning = aws_cloudwatch_metric_alarm.write_latency_warning.arn
   }
 }

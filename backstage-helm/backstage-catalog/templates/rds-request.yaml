@@ -25,6 +25,7 @@ spec:
         - username
         - owner
         - requester
+        - domain
         - environment
         - risk
       properties:
@@ -77,6 +78,7 @@ spec:
           description: Target environment. Database will be created on the Platform RDS for this environment.
           enum:
             - dev
+            - test
             - staging
             - prod
           default: dev
