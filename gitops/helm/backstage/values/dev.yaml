@@ -16,20 +16,43 @@ image:
   pullPolicy: Always
 
 # -----------------------------------------------------------------------------
+# External Secrets Configuration
+# When enabled, chart skips creating secrets (ExternalSecret manages them)
+# -----------------------------------------------------------------------------
+externalSecret:
+  enabled: true
+  secretStoreRef:
+    name: aws-secretsmanager
+    kind: ClusterSecretStore
+  secrets:
+    postgresPassword:
+      remoteRef:
+        key: goldenpath/dev/backstage/postgres
+        property: password
+    postgresUser:
+      remoteRef:
+        key: goldenpath/dev/backstage/postgres
+        property: username
+    githubToken:
+      remoteRef:
+        key: goldenpath/dev/backstage/secrets
+        property: token
+
+# -----------------------------------------------------------------------------
 # PostgreSQL (External RDS)
-# Uses ExternalSecret to pull credentials from AWS Secrets Manager
+# Credentials injected via ExternalSecret -> backstage-secrets
 # -----------------------------------------------------------------------------
 postgres:
   host: goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com
   port: "5432"
   user: backstage_app
-  password: "${POSTGRES_PASSWORD}"
+  password: "placeholder"  # Not used when externalSecret.enabled=true
 
 # -----------------------------------------------------------------------------
 # GitHub Integration
 # -----------------------------------------------------------------------------
 github:
-  accessToken: "${GITHUB_TOKEN}"
+  accessToken: "placeholder"  # Not used when externalSecret.enabled=true
 
 # -----------------------------------------------------------------------------
 # Catalog Configuration
