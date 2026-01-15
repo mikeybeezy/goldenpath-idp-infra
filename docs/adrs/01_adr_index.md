@@ -188,6 +188,7 @@ relates_to:
   - ADR-0153
   - ADR-0154
   - ADR-0155
+  - ADR-0156
 <!-- ADR_RELATE_END -->
 ---
 
@@ -352,6 +353,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0153](ADR-0153-cluster-provisioning-identity.md) | Platform | Cluster Provisioning Identity and Script Resilience | Proposed | 2026-01-14 | During the implementation of the "Seamless Build Deployment" (ADR-0148), two significant operational blockers were identified that affected the reliability and portability of the build process: |
 | [ADR-0154](ADR-0154-promote-bootstrap-v3.md) | Platform | Promote Bootstrap V3 as Default | Proposed | 2026-01-14 | The platform bootstrap logic (`bootstrap/`) has evolved through versions`v1`(legacy),`v2`(interim), and`v3`(current). The default`Makefile`configuration pointed to`v1`. However, during the implemen... |
 | [ADR-0155](ADR-0155-ci-governance-registry-fetch.md) | Platform | CI Governance Registry Fetch for Build ID Validation | Proposed | 2026-01-0? | The build_id immutability guard in`envs/dev/main.tf`validates that a build_id has not been previously used by checking the governance-registry branch CSV file. However, there is a vulnerability in ... |
+| [ADR-0156](ADR-0156-platform-ci-build-timing-capture.md) | Platform | CI Build Timing Capture at Source | Proposed | 2026-01-0? | Build timing data for ephemeral cluster deployments was not being captured in the governance-registry`build_timings.csv`when deployments ran through CI workflows. |
 <!-- ADR_TABLE_END -->
 
 ---

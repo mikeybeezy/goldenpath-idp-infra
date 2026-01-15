@@ -279,6 +279,54 @@ jobs:
           commit_message: "docs: auto-generate teardown log for build ${{ inputs.build_id }}"
           file_pattern: "docs/build-run-logs/TD-*.md"
 
+      - name: Record teardown timing to governance-registry
+        if: always()
+        run: |
+          DURATION="${{ needs.teardown.outputs.duration }}"
+          OUTCOME="${{ steps.outcome.outputs.outcome }}"
+          EXIT_CODE=$([[ "$OUTCOME" == "Success" ]] && echo 0 || echo 1)
+
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Checkout governance-registry branch
+          git fetch origin governance-registry
+          git checkout governance-registry
+
+          # Ensure directory exists
+          ENV_FOLDER="${{ inputs.env }}"
+          [[ "$ENV_FOLDER" == "dev" ]] && ENV_FOLDER="development"
+          mkdir -p "environments/${ENV_FOLDER}/latest"
+
+          CSV_FILE="environments/${ENV_FOLDER}/latest/build_timings.csv"
+
+          # Create CSV with header if it doesn't exist
+          if [[ ! -f "$CSV_FILE" ]]; then
+            echo "start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,resources_added,resources_changed,resources_destroyed,workflow_run_url" > "$CSV_FILE"
+          fi
+
+          # Calculate approximate times from duration
+          END_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          START_EPOCH=$(($(date +%s) - ${DURATION:-0}))
+          START_TIME=$(date -u -d "@${START_EPOCH}" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          # Append teardown record (resources_destroyed captured from Destroy complete line would need log parsing)
+          echo "${START_TIME},${END_TIME},teardown,${{ inputs.env }},${{ inputs.build_id }},${DURATION:-0},${EXIT_CODE},0,0,0,${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> "$CSV_FILE"
+
+          # Commit and push
+          git add "$CSV_FILE"
+          git commit -m "chore(registry): record teardown for ${{ inputs.env }} build ${{ inputs.build_id }}
+
+          Duration: ${DURATION:-0}s
+          Outcome: ${OUTCOME}
+          Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || echo "No changes to commit"
+
+          git push origin governance-registry || echo "Warning: Could not push to governance-registry"
+
+          # Return to main branch
+          git checkout main || git checkout -
+
   teardown-resume:
     runs-on: ubuntu-latest
     needs: teardown
