@@ -21,6 +21,11 @@ We maintain two concurrent operating modes to balance **speed** with **productio
 *   **Target**: `make deploy ENV=dev ENV_NAME=local`
 *   **Infrastructure**: LocalStack, MinIO, Bitnami Postgres containers.
 *   **Purpose**: Velocity. This is strictly to unblock developers from the costs and provisioning times of real infrastructure during rapid iteration loops.
+*   **Command**:
+    ```bash
+    # NOTE: You must specify the BUILD_ID explicitly for ephemeral builds
+    make ENV=dev plan BUILD_ID=15-01-26-15
+    ```
 
 To achieve this, we employ a **"Simulation Strategy"**:
 *   **Local & CI** environments run on a **Simulated Cloud** inside the cluster.

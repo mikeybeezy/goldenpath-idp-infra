@@ -530,7 +530,9 @@ module "app_secrets" {
   description = each.value.description
   tags        = local.common_tags
 
-  read_principals        = each.value.read_principals
+  # Dynamically append the ESO role (if IAM is enabled) to ensure correct ordering and ARN logic
+  read_principals = var.iam_config.enabled ? distinct(concat(each.value.read_principals, [module.iam[0].eso_role_arn])) : each.value.read_principals
+
   write_principals       = each.value.write_principals
   break_glass_principals = each.value.break_glass_principals
 

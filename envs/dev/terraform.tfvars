@@ -18,9 +18,9 @@ app_secrets = {
     metadata = {
       id    = "SEC-KEYCLOAK-ADMIN"
       owner = "platform-team"
-      risk  = "critical"
+      risk  = "low"
     }
-    read_principals        = ["arn:aws:iam::593517239005:role/goldenpath-idp-eso-role"]
+    read_principals        = []
     write_principals       = ["arn:aws:iam::593517239005:role/platform-admin"]
     break_glass_principals = ["arn:aws:iam::593517239005:role/platform-admin"]
   }
@@ -30,9 +30,9 @@ app_secrets = {
     metadata = {
       id    = "SEC-BACKSTAGE-MAIN"
       owner = "platform-team"
-      risk  = "critical"
+      risk  = "high"
     }
-    read_principals        = ["arn:aws:iam::593517239005:role/goldenpath-idp-eso-role"]
+    read_principals        = []
     write_principals       = ["arn:aws:iam::593517239005:role/platform-admin"]
     break_glass_principals = ["arn:aws:iam::593517239005:role/platform-admin"]
   }
