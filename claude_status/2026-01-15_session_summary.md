@@ -88,16 +88,19 @@ appConfig:
 *   [x] **Image Cache Fix**: Set `pullPolicy: Always` to force refresh of cached image.
 *   [x] **Keycloak Init Container**: Passing successfully.
 *   [x] **ExternalSecret**: Now syncing all 4 DB properties (host, port, username, password).
-*   [x] **Keycloak DB Connection**: ✅ **CONNECTED** - Using hardcoded RDS endpoint in `externalDatabase.host`.
-*   [x] **Keycloak Startup**: Container running, logs confirm PostgreSQL connection established.
+*   [x] **Keycloak DB Connection**: ✅ Network connectivity established to RDS.
 *   [x] **Backstage Config**: Verified correct via logs.
 *   [x] **Changelog**: Created `CL-0132` documenting ClusterSecretStore addon fix.
-*   [ ] **In Progress**: Waiting for Keycloak readiness probe to pass (~1-2 minutes).
+*   [ ] **Keycloak DB Authentication**: ❌ Password authentication failing for user `keycloak_app`.
+    - Network connection to RDS is working
+    - Issue: User `keycloak_app` either doesn't exist or has incorrect password
+    - Secret contains admin password, but app needs application user credentials
 *   [ ] **Next Steps**:
-    1.  ✅ Keycloak DB connection resolved
-    2.  ⏳ Wait for Keycloak to become ready
-    3.  Restart `dev-backstage` to complete stack
-    4.  Verify full platform health
+    1.  ✅ Keycloak network connection to RDS established
+    2.  ❌ Verify/create `keycloak_app` user in RDS with correct password
+    3.  Restart Keycloak once auth is fixed
+    4.  Restart `dev-backstage` to complete stack
+    5.  Verify full platform health
 
 ## 5. Documentation Created
 *   **Session Summary**: `claude_status/2026-01-15_session_summary.md`
