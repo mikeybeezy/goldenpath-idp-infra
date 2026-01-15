@@ -13,8 +13,8 @@ governance:
 backstage:
   image:
     registry: ghcr.io
-    repository: backstage/backstage
-    tag: 1.24.0
+    repository: guymenahem/backstage-platformers
+    tag: 0.0.1
     pullPolicy: IfNotPresent
 
 # -----------------------------------------------------------------------------
