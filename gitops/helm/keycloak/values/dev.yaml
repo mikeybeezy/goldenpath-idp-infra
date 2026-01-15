@@ -1,6 +1,10 @@
 # Keycloak Helm Values - Dev Environment
 # Chart: bitnami/keycloak v22.1.6
 # Managed by scripts/standardize_metadata.py
+global:
+  security:
+    allowInsecureImages: true
+
 governance:
   id: HELM_KEYCLOAK_METADATA
   owner: null
