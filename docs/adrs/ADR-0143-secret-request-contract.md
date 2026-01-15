@@ -17,7 +17,7 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - how-it-works/SECRET_REQUEST_FLOW.md
+  - 85-how-it-works/secrets-flow/SECRET_REQUEST_FLOW.md
 supersedes: []
 superseded_by: []
 tags: []

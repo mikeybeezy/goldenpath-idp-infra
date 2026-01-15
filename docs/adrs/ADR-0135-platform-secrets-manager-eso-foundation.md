@@ -15,7 +15,7 @@ relates_to:
   - ADR-0006
   - ADR-0015
   - ADR-0031
-  - how-it-works/SECRET_REQUEST_FLOW.md
+  - 85-how-it-works/secrets-flow/SECRET_REQUEST_FLOW.md
 supersedes: []
 superseded_by: []
 tags: []

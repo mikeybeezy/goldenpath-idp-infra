@@ -272,7 +272,7 @@ make deploy ENV=dev BUILD_ID=13-01-26-03
 #### Documentation
 - `docs/adrs/ADR-0148-seamless-build-deployment-with-immutability.md` (this file)
 - `docs/changelog/entries/CL-0121-seamless-build-deployment.md`
-- `docs/how-it-works/SEAMLESS_BUILD_DEPLOYMENT.md` (detailed mechanics)
+- `docs/85-how-it-works/ci-terraform/SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT.md` (detailed mechanics)
 
 ### Deployment Commands
 

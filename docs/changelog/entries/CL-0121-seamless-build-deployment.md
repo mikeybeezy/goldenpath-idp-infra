@@ -129,7 +129,7 @@ start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,
 
 #### Documentation
 - `docs/adrs/ADR-0148-seamless-build-deployment-with-immutability.md`
-- `docs/how-it-works/SEAMLESS_BUILD_DEPLOYMENT.md`
+- `docs/85-how-it-works/ci-terraform/SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT.md`
 - `README.md` (updated deployment instructions)
 
 ## Problem Solved

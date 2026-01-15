@@ -1,5 +1,30 @@
+# ============================================================================
+# DEPRECATED: 2026-01-15
+# ============================================================================
+# Replaced by: infra-terraform.yml
+#
+# Reason: This workflow duplicates the functionality of infra-terraform.yml.
+# The main workflow supports all environments (dev/test/staging/prod) with
+# the same inputs and validation logic.
+#
+# Migration:
+#   Use infra-terraform.yml with the same inputs:
+#   - env: dev/test/staging/prod
+#   - lifecycle: ephemeral/persistent
+#   - build_id: dd-mm-yy-NN (for ephemeral)
+#   - new_build: true (for ephemeral)
+#   - require_state: true/false
+#
+# Key differences in the replacement:
+#   - Includes terraform-fmt and terraform-validate jobs
+#   - Fetches governance-registry for build_id uniqueness validation
+#   - Matrix validation across all modules
+#
+# See: .github/workflows/deprecated/README.md
+# ============================================================================
+
 # Owner: platform
-name: Plan - Infra Terraform Plan Pipeline
+name: "[DEPRECATED] Plan - Infra Terraform Plan Pipeline"
 run-name: "infra-plan-pipeline (env=${{ inputs.env }}, lifecycle=${{ inputs.lifecycle }}, build_id=${{ inputs.build_id }})"
 
 on:

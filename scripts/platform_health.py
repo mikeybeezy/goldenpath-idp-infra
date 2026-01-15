@@ -25,7 +25,7 @@ Achievement: Aggregates repository metadata into a human-readable dashboard (PLA
              highlighting orphaned resources, stale lifecycles, and risk distributions.
 Value: Provides the "Management Plane" for governance, shifting metadata from boilerplate
        into actionable operational intelligence for leadership.
-Relates-To: how-it-works/DOC_AUTO_HEALING.md
+Relates-To: 85-how-it-works/governance/DOC_AUTO_HEALING.md
 """
 import yaml
 import re

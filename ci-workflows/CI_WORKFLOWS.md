@@ -76,16 +76,13 @@ CI Workflows (GitHub Actions)
 │
 ├─ Terraform Apply
 │   ├─ Apply - ECR Auto-Apply
-│   ├─ Apply - Infra Terraform Apply (dev branch)
 │   ├─ Apply - Infra Terraform Apply (dev)
 │   ├─ Apply - Infra Terraform Apply (prod)
 │   ├─ Apply - Infra Terraform Apply (staging)
 │   ├─ Apply - Infra Terraform Apply (test)
-│   ├─ Apply - Infra Terraform Update (dev)
 │   └─ Secret Requests (Apply)
 │
 ├─ Terraform Plan
-│   ├─ Plan - Infra Terraform Plan Pipeline
 │   └─ Plan - PR Terraform Plan
 │
 └─ Uncategorized
@@ -253,11 +250,6 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
-### Apply - Infra Terraform Apply (dev branch)
-- **File**: `infra-terraform-apply-dev-branch.yml`
-- **Owner**: platform
-- **Triggers**:
-
 ### Apply - Infra Terraform Apply (dev)
 - **File**: `infra-terraform-apply-dev.yml`
 - **Owner**: platform
@@ -278,22 +270,12 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
-### Apply - Infra Terraform Update (dev)
-- **File**: `infra-terraform-update-dev.yml`
-- **Owner**: platform
-- **Triggers**:
-
 ### Secret Requests (Apply)
 - **File**: `secret-request-apply.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ## Terraform Plan
-
-### Plan - Infra Terraform Plan Pipeline
-- **File**: `infra-terraform-dev-pipeline.yml`
-- **Owner**: platform
-- **Triggers**:
 
 ### Plan - PR Terraform Plan
 - **File**: `pr-terraform-plan.yml`

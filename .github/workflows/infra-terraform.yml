@@ -116,6 +116,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Fetch governance registry for build_id validation
+        run: git fetch origin governance-registry:refs/remotes/origin/governance-registry
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
