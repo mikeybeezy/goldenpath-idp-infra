@@ -11,8 +11,8 @@ governance:
 # Image Configuration - Pinned Version
 # -----------------------------------------------------------------------------
 image:
-  registry: ghcr.io
-  repository: guymenahem/backstage-platformers
+  repository: ghcr.io/guymenahem/
+  name: backstage-platformers
   tag: 0.0.1
   pullPolicy: IfNotPresent
 
