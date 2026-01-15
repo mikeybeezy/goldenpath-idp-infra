@@ -10,12 +10,12 @@ governance:
 # -----------------------------------------------------------------------------
 # Image Configuration - Pinned Version
 # -----------------------------------------------------------------------------
-# Image Configuration - Using latest to unblock
-image:
-  registry: docker.io
-  repository: bitnami/keycloak
-  tag: latest
-  pullPolicy: IfNotPresent
+# Image Configuration - Using Chart Default
+#image:
+#  registry: docker.io
+#  repository: bitnami/keycloak
+#  tag: latest
+#  pullPolicy: IfNotPresent
 
 # -----------------------------------------------------------------------------
 # Authentication
