@@ -129,6 +129,21 @@ jobs:
             exit 1
           fi
 
+      - name: Sanitize inputs
+        run: |
+          # Trim whitespace from build_id to prevent state key issues
+          SANITIZED_BUILD_ID=$(echo "${{ inputs.build_id }}" | xargs)
+          if [[ "$SANITIZED_BUILD_ID" != "${{ inputs.build_id }}" ]]; then
+            echo "Warning: build_id had leading/trailing whitespace, sanitized to: ${SANITIZED_BUILD_ID}"
+          fi
+          echo "BUILD_ID=${SANITIZED_BUILD_ID}" >> "${GITHUB_ENV}"
+
+          # Validate build_id format
+          if [[ -n "${SANITIZED_BUILD_ID}" ]] && ! [[ "${SANITIZED_BUILD_ID}" =~ ^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]; then
+            echo "Invalid build_id format: '${SANITIZED_BUILD_ID}' (expected dd-mm-yy-NN)" >&2
+            exit 1
+          fi
+
       - name: Resolve cluster name
         run: |
           if [[ -z "${CLUSTER_NAME}" ]]; then
@@ -186,6 +201,14 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Setup kubeconfig for cluster access
+        run: |
+          echo "Configuring kubeconfig for cluster: ${CLUSTER_NAME}"
+          aws eks update-kubeconfig --name "${CLUSTER_NAME}" --region "${AWS_REGION}" || {
+            echo "Warning: Could not configure kubeconfig (cluster may not exist yet or may be deleted)"
+            echo "Teardown will proceed but kubernetes-dependent cleanup steps may be skipped"
+          }
+
       - name: Terraform init (backend)
         run: |
           terraform -chdir="${TF_DIR}" init -reconfigure \
@@ -195,13 +218,19 @@ jobs:
             -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
 
+      - name: Show terraform state resources
+        run: |
+          echo "=== Resources in state (to be destroyed) ==="
+          terraform -chdir="${TF_DIR}" state list 2>/dev/null | head -50 || echo "No resources in state or state not accessible"
+          RESOURCE_COUNT=$(terraform -chdir="${TF_DIR}" state list 2>/dev/null | wc -l || echo 0)
+          echo "Total resources in state: ${RESOURCE_COUNT}"
+
       - name: Run timed teardown
         id: timed_teardown
         run: |
           START_TIME=$(date +%s)
 
-          # Run make, capture output to both console and file
-          # If make fails, capture exit code and error message
+          # Run make with real-time output streaming via tee
           set +e
           TEARDOWN_CONFIRM="true" \
           RELAX_PDB="${{ inputs.relax_pdb }}" \
@@ -211,13 +240,10 @@ jobs:
           CLEANUP_ORPHANS="${CLEANUP_ORPHANS}" \
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
-          make timed-teardown ENV="${ENV}" BUILD_ID="${BUILD_ID}" > teardown.log 2>&1
+          make timed-teardown ENV="${ENV}" BUILD_ID="${BUILD_ID}" 2>&1 | tee teardown.log
 
-          EXIT_CODE=$?
+          EXIT_CODE=${PIPESTATUS[0]}
           set -e
-
-          # Restore output to console for visibility
-          cat teardown.log
 
           END_TIME=$(date +%s)
           DURATION=$((END_TIME - START_TIME))
@@ -413,6 +439,14 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Setup kubeconfig for cluster access
+        run: |
+          echo "Configuring kubeconfig for cluster: ${CLUSTER_NAME}"
+          aws eks update-kubeconfig --name "${CLUSTER_NAME}" --region "${AWS_REGION}" || {
+            echo "Warning: Could not configure kubeconfig (cluster may not exist yet or may be deleted)"
+            echo "Teardown will proceed but kubernetes-dependent cleanup steps may be skipped"
+          }
+
       - name: Terraform init (backend)
         run: |
           terraform -chdir="${TF_DIR}" init -reconfigure \
@@ -421,6 +455,13 @@ jobs:
             -backend-config="region=${AWS_REGION}" \
             -backend-config="dynamodb_table=${{ steps.backend.outputs.table }}" \
             -backend-config="encrypt=true"
+
+      - name: Show terraform state resources
+        run: |
+          echo "=== Resources in state (to be destroyed) ==="
+          terraform -chdir="${TF_DIR}" state list 2>/dev/null | head -50 || echo "No resources in state or state not accessible"
+          RESOURCE_COUNT=$(terraform -chdir="${TF_DIR}" state list 2>/dev/null | wc -l || echo 0)
+          echo "Total resources in state: ${RESOURCE_COUNT}"
 
       - name: Run teardown resume
         run: |
@@ -432,7 +473,7 @@ jobs:
           CLEANUP_ORPHANS="${CLEANUP_ORPHANS}" \
           CLUSTER="${CLUSTER_NAME}" \
           REGION="${AWS_REGION}" \
-          make teardown-resume ENV="${ENV}" BUILD_ID="${BUILD_ID}"
+          make teardown-resume ENV="${ENV}" BUILD_ID="${BUILD_ID}" 2>&1 | tee teardown-resume.log
       - name: Runbook link
         if: ${{ always() }}
         run: |

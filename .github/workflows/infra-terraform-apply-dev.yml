@@ -277,9 +277,14 @@ jobs:
         run: |
           CLUSTER_NAME="goldenpath-dev-eks-${BUILD_ID}"
 
-          # Get runner's IAM ARN
-          RUNNER_ARN=$(aws sts get-caller-identity --query Arn --output text)
-          echo "Runner ARN: $RUNNER_ARN"
+          # Get runner's IAM role ARN (convert STS assumed-role ARN to IAM role ARN)
+          STS_ARN=$(aws sts get-caller-identity --query Arn --output text)
+          echo "STS ARN: $STS_ARN"
+          # Convert: arn:aws:sts::ACCOUNT:assumed-role/ROLE/SESSION -> arn:aws:iam::ACCOUNT:role/ROLE
+          ACCOUNT_ID=$(echo "$STS_ARN" | cut -d: -f5)
+          ROLE_NAME=$(echo "$STS_ARN" | cut -d/ -f2)
+          RUNNER_ARN="arn:aws:iam::${ACCOUNT_ID}:role/${ROLE_NAME}"
+          echo "IAM Role ARN: $RUNNER_ARN"
 
           # Create access entry for runner
           echo "Creating EKS access entry..."
