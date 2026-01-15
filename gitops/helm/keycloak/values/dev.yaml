@@ -40,10 +40,6 @@ postgresql:
 
 # External database configuration
 externalDatabase:
-  host: "${DB_HOST}"
-  port: 5432
-  user: "${DB_USER}"
-  password: "${DB_PASSWORD}"
   database: keycloak
   existingSecret: keycloak-postgres-secret
   existingSecretHostKey: host

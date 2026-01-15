@@ -84,9 +84,16 @@ appConfig:
 ```
 
 ## 4. Current Status & Next Steps
-*   [x] **Keycloak Image**: Pushed to ECR (Verified AMD64).
+*   [x] **Keycloak Image**: Pushed to ECR (Verified AMD64 Bitnami).
+*   [x] **Image Cache Fix**: Set `pullPolicy: Always` to force refresh of cached image.
 *   [x] **Backstage Config**: Verified correct via logs.
+*   [x] **Changelog**: Created `CL-0132` documenting ClusterSecretStore addon fix.
 *   [ ] **Action Required**: 
-    1.  Restart `dev-keycloak-0` (it will pull the new AMD64 image).
-    2.  Wait for Keycloak healthy.
-    3.  Restart `dev-backstage` (needs Keycloak for OIDC).
+    1.  Verify `dev-keycloak-0` starts successfully (monitoring now).
+    2.  Once Keycloak healthy, restart `dev-backstage`.
+    3.  Verify full stack health.
+
+## 5. Documentation Created
+*   **Session Summary**: `claude_status/2026-01-15_session_summary.md`
+*   **Changelog**: `docs/changelog/entries/CL-0132-cluster-secret-store-addon-fix.md`
+*   **Artifacts**: `brain/fc919e57.../walkthrough.md`, `task.md`, `implementation_plan.md`
