@@ -86,10 +86,15 @@ appConfig:
 ## 4. Current Status & Next Steps
 *   [x] **Keycloak Image**: Pushed to ECR (Verified AMD64 Bitnami).
 *   [x] **Image Cache Fix**: Set `pullPolicy: Always` to force refresh of cached image.
+*   [x] **Keycloak Init Container**: Passing successfully.
+*   [x] **ExternalSecret**: Now syncing all 4 DB properties (host, port, username, password).
 *   [x] **Backstage Config**: Verified correct via logs.
 *   [x] **Changelog**: Created `CL-0132` documenting ClusterSecretStore addon fix.
-*   [ ] **Action Required**: 
-    1.  Verify `dev-keycloak-0` starts successfully (monitoring now).
+*   [ ] **Keycloak DB Connection**: ENV var approach (`KC_DB_URL_HOST`) not overriding chart config. Need to either:
+    - Use hardcoded RDS endpoint in `externalDatabase.host` (less secure, works immediately)
+    - OR: Investigate Bitnami chart's env var precedence for `KEYCLOAK_DATABASE_HOST`
+*   [ ] **Next Steps**:
+    1.  Resolve Keycloak DB connection configuration.
     2.  Once Keycloak healthy, restart `dev-backstage`.
     3.  Verify full stack health.
 
