@@ -59,6 +59,8 @@ appConfig:
 
   # Auth configuration (OIDC via Keycloak)
   auth:
+    keys:
+      - secret: "random-generated-secret-key-for-backend-auth"
     environment: development
     providers:
       oidc:
