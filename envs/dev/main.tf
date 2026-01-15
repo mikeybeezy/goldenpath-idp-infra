@@ -22,6 +22,10 @@ terraform {
       source  = "hashicorp/null"
       version = "~> 3.2"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.14.0"
+    }
   }
 }
 
@@ -428,6 +432,18 @@ resource "kubernetes_service_account_v1" "external_secrets" {
   ]
 }
 
+provider "kubectl" {
+  host                   = module.eks[0].cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
+  load_config_file       = false
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", local.cluster_name_effective, "--region", var.aws_region]
+    command     = "aws"
+  }
+}
+
 provider "helm" {
   kubernetes {
     host                   = module.eks[0].cluster_endpoint
@@ -461,10 +477,10 @@ module "kubernetes_addons" {
 }
 
 # Trust store for workload secret synchronization via ESO
-resource "kubernetes_manifest" "cluster_secret_store" {
+resource "kubectl_manifest" "cluster_secret_store" {
   count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
 
-  manifest = {
+  yaml_body = yamlencode({
     apiVersion = "external-secrets.io/v1beta1"
     kind       = "ClusterSecretStore"
     metadata = {
@@ -486,7 +502,7 @@ resource "kubernetes_manifest" "cluster_secret_store" {
         }
       }
     }
-  }
+  })
 
   depends_on = [
     kubernetes_service_account_v1.external_secrets,

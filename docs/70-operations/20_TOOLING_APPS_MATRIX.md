@@ -55,9 +55,13 @@ This living document captures the configuration requirements, dependencies, and 
 | [kube-prometheus-stack](#kube-prometheus-stack) | monitoring | prometheus-community/kube-prometheus-stack | 45.7.1 | v2.47.2 | Configured | P3 |
 | [loki](#loki) | monitoring | grafana/loki-stack | 2.9.11 | 2.9.4 | Configured | P3 |
 | [fluent-bit](#fluent-bit) | monitoring | fluent/fluent-bit | 0.47.0 | 3.0.3 | Configured | P3 |
+| [localstack](#localstack) | local-infra | localstack/localstack | 3.0.0 | 3.0.0 | Standard (Ephem) | P0 |
+| [minio](#minio) | local-infra | minio/minio | 5.0.0 | RELEASE.2024-01 | Standard (Ephem) | P0 |
+| [postgresql](#postgresql) | local-infra | bitnami/postgresql | 13.2.24 | 15.6.0 | Standard (Ephem) | P0 |
 
 **Status Key**:
 - **Configured**: Values file has required configuration
+- **Standard (Ephem)**: Standard mock stack for Ephemeral/Local environments
 - **Partial**: Has some config but missing critical pieces
 - **Minimal**: Basic config only (e.g., storage mode)
 - **Needs Config**: Only governance metadata, no actual values

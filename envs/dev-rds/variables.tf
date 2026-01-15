@@ -36,6 +36,12 @@ variable "cost_center" {
   default     = "platform"
 }
 
+variable "vpc_name" {
+  type        = string
+  description = "Name tag of the VPC to deploy into. Required for ephemeral environments."
+  default     = null
+}
+
 ################################################################################
 # Database Engine
 ################################################################################

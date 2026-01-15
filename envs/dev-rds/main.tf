@@ -73,6 +73,14 @@ data "aws_vpc" "platform" {
     name   = "tag:Environment"
     values = [local.environment]
   }
+
+  dynamic "filter" {
+    for_each = var.vpc_name != null ? [var.vpc_name] : []
+    content {
+      name   = "tag:Name"
+      values = [filter.value]
+    }
+  }
 }
 
 data "aws_subnets" "private" {
