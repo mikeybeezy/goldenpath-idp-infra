@@ -39,7 +39,10 @@ postgresql:
   enabled: false
 
 # External database configuration
+# Note: host is a dummy value to satisfy chart validation
+# Actual host is injected via KC_DB_URL_HOST env var from secret
 externalDatabase:
+  host: "placeholder.rds.amazonaws.com"
   database: keycloak
   existingSecret: keycloak-postgres-secret
   existingSecretUserKey: username
