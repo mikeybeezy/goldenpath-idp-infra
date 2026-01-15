@@ -12,7 +12,7 @@ governance:
 # -----------------------------------------------------------------------------
 # Image Configuration - Pinned to 25.0.0
 image:
-  registry: docker.io
+  registry: public.ecr.aws
   repository: bitnami/keycloak
   tag: 25.0.0
   pullPolicy: IfNotPresent
