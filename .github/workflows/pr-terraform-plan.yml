@@ -2,6 +2,11 @@
 name: Plan - PR Terraform Plan
 
 on:
+  push:
+    branches:
+      - development
+    paths:
+      - "envs/dev/terraform.tfvars"
   pull_request:
     branches:
       - main
@@ -121,7 +126,7 @@ jobs:
         run: infracost breakdown --path=plan.json --format=json --out-file=infracost.json
 
       - name: Comment Infracost on PR
-        if: env.INFRACOST_API_KEY != ''
+        if: env.INFRACOST_API_KEY != '' && github.event_name == 'pull_request'
         uses: infracost/actions/comment@v1
         with:
           path: infracost.json
@@ -129,6 +134,7 @@ jobs:
           github-token: ${{ github.token }}
 
       - name: Comment plan on PR
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         env:
           CLUSTER_LIFECYCLE: ${{ env.CLUSTER_LIFECYCLE }}
