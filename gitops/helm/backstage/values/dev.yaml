@@ -36,6 +36,17 @@ appConfig:
         port: ${POSTGRES_PORT}
         user: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
+    # Auth configuration
+    auth:
+      keys:
+        - secret: "random-generated-secret-key-for-backend-auth"
+      environment: development
+      providers:
+        oidc:
+          development:
+            metadataUrl: https://keycloak.dev.goldenpath.io/realms/goldenpath/.well-known/openid-configuration
+            clientId: backstage
+            clientSecret: ${OIDC_CLIENT_SECRET}
 
   # Catalog locations
   catalog:
@@ -57,17 +68,7 @@ appConfig:
       - host: github.com
         token: ${GITHUB_TOKEN}
 
-  # Auth configuration (OIDC via Keycloak)
-  auth:
-    keys:
-      - secret: "random-generated-secret-key-for-backend-auth"
-    environment: development
-    providers:
-      oidc:
-        development:
-          metadataUrl: https://keycloak.dev.goldenpath.io/realms/goldenpath/.well-known/openid-configuration
-          clientId: backstage
-          clientSecret: ${OIDC_CLIENT_SECRET}
+    # Auth configuration moved to backend block
 
 # -----------------------------------------------------------------------------
 # PostgreSQL (Bundled)
