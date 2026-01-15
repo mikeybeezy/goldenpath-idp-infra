@@ -42,8 +42,6 @@ postgresql:
 externalDatabase:
   database: keycloak
   existingSecret: keycloak-postgres-secret
-  existingSecretHostKey: host
-  existingSecretPortKey: port
   existingSecretUserKey: username
   existingSecretPasswordKey: password
 
@@ -130,6 +128,17 @@ extraEnvVars:
     value: "true"
   - name: KC_METRICS_ENABLED
     value: "true"
+  # Database connection from secret
+  - name: KC_DB_URL_HOST
+    valueFrom:
+      secretKeyRef:
+        name: keycloak-postgres-secret
+        key: host
+  - name: KC_DB_URL_PORT
+    valueFrom:
+      secretKeyRef:
+        name: keycloak-postgres-secret
+        key: port
 
 # -----------------------------------------------------------------------------
 # Extra Manifests (External Secrets)
@@ -175,4 +184,12 @@ extraDeploy:
         remoteRef:
           key: goldenpath/dev/keycloak/postgres
           property: username
+      - secretKey: host
+        remoteRef:
+          key: goldenpath/dev/keycloak/postgres
+          property: host
+      - secretKey: port
+        remoteRef:
+          key: goldenpath/dev/keycloak/postgres
+          property: port
 
