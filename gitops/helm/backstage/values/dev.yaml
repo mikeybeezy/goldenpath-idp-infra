@@ -1,6 +1,5 @@
 # Backstage Helm Values - Dev Environment
-# Chart: PlatformersCommunity/backstage-helm-chart
-# Managed by scripts/standardize_metadata.py
+# Chart: backstage-helm/charts/backstage (local chart)
 governance:
   id: HELM_BACKSTAGE_METADATA
   owner: null
@@ -8,7 +7,7 @@ governance:
   reliability: null
 
 # -----------------------------------------------------------------------------
-# Image Configuration - Pinned Version (ECR)
+# Image Configuration - ECR
 # -----------------------------------------------------------------------------
 image:
   repository: 593517239005.dkr.ecr.eu-west-2.amazonaws.com/
@@ -17,113 +16,33 @@ image:
   pullPolicy: Always
 
 # -----------------------------------------------------------------------------
-# App Configuration (YAML string format for Platformers chart)
+# PostgreSQL (External RDS)
+# Uses ExternalSecret to pull credentials from AWS Secrets Manager
 # -----------------------------------------------------------------------------
-appConfig: |
-  app:
-    baseUrl: https://backstage.dev.goldenpath.io
-    title: Goldenpath IDP
-
-  backend:
-    baseUrl: https://backstage.dev.goldenpath.io
-    cors:
-      origin: https://backstage.dev.goldenpath.io
-    database:
-      client: pg
-      connection:
-        host: ${POSTGRES_HOST}
-        port: ${POSTGRES_PORT}
-        user: ${POSTGRES_USER}
-        password: ${POSTGRES_PASSWORD}
-    auth:
-      keys:
-        - secret: ${BACKEND_AUTH_SECRET}
-
-  integrations:
-    github:
-      - host: github.com
-        token: ${GITHUB_TOKEN}
-
-  auth:
-    environment: development
-    providers:
-      oidc:
-        development:
-          metadataUrl: https://keycloak.dev.goldenpath.io/realms/goldenpath/.well-known/openid-configuration
-          clientId: backstage
-          clientSecret: ${OIDC_CLIENT_SECRET}
-
-  catalog:
-    locations:
-      - type: url
-        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/ci-apply-dev/template.yaml
-        rules:
-          - allow:
-              - Template
-      - type: url
-        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/app-template/template.yaml
-        rules:
-          - allow:
-              - Template
-
-  kubernetes:
-    serviceLocatorMethod:
-      type: multiTenant
-    clusterLocatorMethods:
-      - type: config
-        clusters:
-          - url: https://kubernetes.default.svc
-            name: local
-            authProvider: serviceAccount
-            skipTLSVerify: false
-            skipMetricsLookup: true
+postgres:
+  host: goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com
+  port: "5432"
+  user: backstage_app
+  password: "${POSTGRES_PASSWORD}"
 
 # -----------------------------------------------------------------------------
-# PostgreSQL (External - RDS)
+# GitHub Integration
 # -----------------------------------------------------------------------------
-postgresql:
-  enabled: false
+github:
+  accessToken: "${GITHUB_TOKEN}"
 
 # -----------------------------------------------------------------------------
-# Ingress
+# Catalog Configuration
 # -----------------------------------------------------------------------------
-ingress:
-  enabled: true
-  className: kong
-  host: backstage.dev.goldenpath.io
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+catalog:
+  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-catalog/all.yaml"
+  customCatalogLocation: "None"
 
 # -----------------------------------------------------------------------------
-# Environment Variables
+# Backstage Base URL
 # -----------------------------------------------------------------------------
-extraEnvVarsSecrets:
-  - backstage-secrets
-  - backstage-postgres-secret
-
-extraEnvVars:
-  - name: BACKEND_AUTH_SECRET
-    value: "random-generated-secret-key-for-backend-auth"
-  - name: POSTGRES_HOST
-    valueFrom:
-      secretKeyRef:
-        name: backstage-postgres-secret
-        key: host
-  - name: POSTGRES_PORT
-    valueFrom:
-      secretKeyRef:
-        name: backstage-postgres-secret
-        key: port
-  - name: POSTGRES_USER
-    valueFrom:
-      secretKeyRef:
-        name: backstage-postgres-secret
-        key: username
-  - name: POSTGRES_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: backstage-postgres-secret
-        key: password
+backstage:
+  baseURL: "https://backstage.dev.goldenpath.io"
 
 # -----------------------------------------------------------------------------
 # Resource Limits for Dev
@@ -137,58 +56,12 @@ resources:
     memory: 1Gi
 
 # -----------------------------------------------------------------------------
-# Extra Manifests (External Secrets)
+# Service Account
 # -----------------------------------------------------------------------------
-extraDeploy:
-  - |
-    apiVersion: external-secrets.io/v1beta1
-    kind: ExternalSecret
-    metadata:
-      name: backstage-postgres-secret
-    spec:
-      refreshInterval: 1m
-      secretStoreRef:
-        name: aws-secretsmanager
-        kind: ClusterSecretStore
-      target:
-        name: backstage-postgres-secret
-        creationPolicy: Owner
-      data:
-      - secretKey: password
-        remoteRef:
-          key: goldenpath/dev/backstage/postgres
-          property: password
-      - secretKey: host
-        remoteRef:
-          key: goldenpath/dev/backstage/postgres
-          property: host
-      - secretKey: port
-        remoteRef:
-          key: goldenpath/dev/backstage/postgres
-          property: port
-      - secretKey: username
-        remoteRef:
-          key: goldenpath/dev/backstage/postgres
-          property: username
-  - |
-    apiVersion: external-secrets.io/v1beta1
-    kind: ExternalSecret
-    metadata:
-      name: backstage-secrets
-    spec:
-      refreshInterval: 1m
-      secretStoreRef:
-        name: aws-secretsmanager
-        kind: ClusterSecretStore
-      target:
-        name: backstage-secrets
-        creationPolicy: Owner
-      data:
-      - secretKey: GITHUB_TOKEN
-        remoteRef:
-          key: goldenpath/dev/backstage/secrets
-          property: token
-      - secretKey: OIDC_CLIENT_SECRET
-        remoteRef:
-          key: goldenpath/dev/backstage/secrets
-          property: client-secret
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: ""
+
+clusterRoleBinding:
+  create: true

@@ -13,16 +13,13 @@ spec:
   destination:
     namespace: backstage
     server: https://kubernetes.default.svc
-  sources:
-    - repoURL: https://github.com/PlatformersCommunity/backstage-helm-chart.git
-      path: charts/backstage
-      targetRevision: main
-      helm:
-        valueFiles:
-          - $values/gitops/helm/backstage/values/dev.yaml
-    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: feature/tooling-apps-config
-      ref: values
+  source:
+    repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    path: backstage-helm/charts/backstage
+    targetRevision: feature/tooling-apps-config
+    helm:
+      valueFiles:
+        - ../../../gitops/helm/backstage/values/dev.yaml
   syncPolicy:
     automated:
       prune: true
