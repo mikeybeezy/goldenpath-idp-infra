@@ -21,8 +21,8 @@ app_secrets = {
       risk  = "low"
     }
     read_principals        = []
-    write_principals       = ["arn:aws:iam::593517239005:role/platform-admin"]
-    break_glass_principals = ["arn:aws:iam::593517239005:role/platform-admin"]
+    write_principals       = []
+    break_glass_principals = []
   }
 
   "goldenpath/dev/backstage/secrets" = {
@@ -33,8 +33,8 @@ app_secrets = {
       risk  = "high"
     }
     read_principals        = []
-    write_principals       = ["arn:aws:iam::593517239005:role/platform-admin"]
-    break_glass_principals = ["arn:aws:iam::593517239005:role/platform-admin"]
+    write_principals       = []
+    break_glass_principals = []
   }
 }
 
@@ -44,7 +44,7 @@ rds_config = {
   enabled               = true # ENABLED for Dev
   identifier            = "goldenpath-platform-db"
   instance_class        = "db.t3.micro"
-  engine_version        = "15.4"
+  engine_version        = "15.15"
   allocated_storage     = 20
   max_allocated_storage = 50
   multi_az              = false # Keep false for Dev/Cost

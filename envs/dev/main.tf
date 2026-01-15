@@ -414,6 +414,14 @@ resource "kubernetes_service_account_v1" "cluster_autoscaler" {
   ]
 }
 
+resource "kubernetes_namespace" "external_secrets" {
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+
+  metadata {
+    name = var.iam_config.eso_service_account_namespace
+  }
+}
+
 resource "kubernetes_service_account_v1" "external_secrets" {
   count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
 
@@ -428,7 +436,7 @@ resource "kubernetes_service_account_v1" "external_secrets" {
   depends_on = [
     module.eks,
     module.iam,
-
+    kubernetes_namespace.external_secrets
   ]
 }
 
