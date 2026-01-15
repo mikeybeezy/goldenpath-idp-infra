@@ -163,10 +163,10 @@ extraDeploy:
       data:
       - secretKey: GITHUB_TOKEN
         remoteRef:
-          key: goldenpath/dev/backstage/github
+          key: goldenpath/dev/backstage/secrets
           property: token
       - secretKey: OIDC_CLIENT_SECRET
         remoteRef:
-          key: goldenpath/dev/backstage/oidc
+          key: goldenpath/dev/backstage/secrets
           property: client-secret
 
