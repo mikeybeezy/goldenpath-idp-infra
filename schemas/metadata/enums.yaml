@@ -306,3 +306,30 @@ security:
       - deprecated
       - decommission_requested
       - decommissioned
+
+# --- RDS Request Enums ---
+# These govern the RDS Request schema and size mappings.
+rds:
+  instance_sizes:
+    description: "RDS instance size tiers for request schema."
+    values:
+      - small    # db.t3.micro - dev/test
+      - medium   # db.t3.small - staging
+      - large    # db.t3.medium - prod light
+      - xlarge   # db.r6g.large - prod heavy
+
+  engines:
+    description: "Supported database engines."
+    values:
+      - postgres
+
+  request_status:
+    description: "RDS request lifecycle states."
+    values:
+      - pending
+      - approved
+      - provisioning
+      - active
+      - failed
+      - decommissioning
+      - decommissioned

@@ -1,0 +1,273 @@
+################################################################################
+# RDS Request Schema - The Contract
+#
+# This schema defines the strict contract for RDS database requests.
+# All validation happens against this schema - Backstage templates and
+# CI workflows are "thin" consumers that just collect/validate input.
+#
+# Flow:
+#   1. Backstage collects input, validates against this schema
+#   2. Template opens PR with request YAML
+#   3. CI validates PR against schema (gate)
+#   4. On merge, parser generates Terraform + ESO manifests
+#   5. Terraform applies (no logic, just executes)
+#
+# Reference: ADR-0158 (Platform Standalone RDS Bounded Context)
+################################################################################
+
+id: RDS_REQUEST_V1
+version: "1.0"
+type: request
+domain: data
+owner: platform-team
+status: active
+
+# Schema metadata for governance tracking
+metadata:
+  description: "Contract for requesting RDS PostgreSQL databases"
+  backstage_template: "backstage-helm/backstage-catalog/templates/rds-request.yaml"
+  parser_module: "scripts/parsers/rds_request_parser.py"
+  terraform_root: "envs/{environment}-rds/"
+
+################################################################################
+# Property Definitions
+################################################################################
+
+properties:
+  # Unique request identifier - format enforced
+  id:
+    type: string
+    pattern: "^RDS-[0-9]{4}$"
+    description: "Unique request ID (e.g., RDS-0001)"
+    examples:
+      - "RDS-0001"
+      - "RDS-0042"
+
+  # Service type (postgres only for V1)
+  service:
+    type: string
+    enum:
+      - postgres
+    default: postgres
+    description: "Database engine type"
+
+  # Target environment
+  environment:
+    type: string
+    enum_from: environments  # References schemas/metadata/enums.yaml
+    description: "Deployment environment"
+
+  # Database name
+  database_name:
+    type: string
+    pattern: "^[a-z][a-z0-9_]{2,62}$"
+    description: "Database name (lowercase, alphanumeric, underscores)"
+    examples:
+      - "backstage_db"
+      - "keycloak_users"
+
+  # Username for application connection
+  username:
+    type: string
+    pattern: "^[a-z][a-z0-9_]{2,30}$"
+    description: "Database username for application"
+    examples:
+      - "backstage_app"
+      - "keycloak_svc"
+
+  # Instance sizing
+  size:
+    type: string
+    enum:
+      - small    # db.t3.micro (dev/test)
+      - medium   # db.t3.small (staging)
+      - large    # db.t3.medium (prod light)
+      - xlarge   # db.r6g.large (prod heavy)
+    description: "Instance size tier"
+    default: small
+
+  # Storage configuration
+  storage_gb:
+    type: integer
+    minimum: 20
+    maximum: 500
+    default: 20
+    description: "Allocated storage in GB"
+
+  max_storage_gb:
+    type: integer
+    minimum: 20
+    maximum: 1000
+    default: 50
+    description: "Maximum storage for autoscaling"
+
+  # Business domain classification
+  domain:
+    type: string
+    enum_from: domains  # References schemas/metadata/enums.yaml
+    description: "Business domain for cost allocation and governance"
+
+  # Ownership
+  owner:
+    type: string
+    enum_from: owners  # References schemas/metadata/enums.yaml
+    description: "Team responsible for this database"
+
+  requester:
+    type: string
+    description: "Person or service account making the request"
+
+  # Risk classification
+  risk:
+    type: string
+    enum_from: risk_profile_security_risk  # References schemas/metadata/enums.yaml
+    default: low
+    description: "Security risk classification"
+
+  # Optional: backup configuration
+  backup_retention_days:
+    type: integer
+    minimum: 1
+    maximum: 35
+    default: 7
+    description: "Number of days to retain automated backups"
+
+  # Optional: multi-az (prod only)
+  multi_az:
+    type: boolean
+    default: false
+    description: "Enable Multi-AZ deployment (recommended for prod)"
+
+  # Optional: performance insights
+  performance_insights:
+    type: boolean
+    default: true
+    description: "Enable Performance Insights monitoring"
+
+################################################################################
+# Required Fields
+################################################################################
+
+required:
+  - id
+  - service
+  - environment
+  - database_name
+  - username
+  - size
+  - domain
+  - owner
+  - requester
+
+################################################################################
+# Conditional Rules (environment-specific constraints)
+################################################################################
+
+conditional_rules:
+  - name: prod_requires_multi_az
+    description: "Production databases should be Multi-AZ"
+    when:
+      environment:
+        equals: prod
+    then:
+      multi_az:
+        recommended: true
+        warning: "Production databases without Multi-AZ may have availability gaps"
+
+  - name: prod_requires_backup
+    description: "Production requires minimum backup retention"
+    when:
+      environment:
+        equals: prod
+    then:
+      backup_retention_days:
+        minimum: 14
+
+  - name: dev_max_size
+    description: "Dev environments limited to small instances"
+    when:
+      environment:
+        equals: dev
+    then:
+      size:
+        enum:
+          - small
+
+  - name: storage_max_must_exceed_allocated
+    description: "Max storage must be greater than allocated"
+    when:
+      max_storage_gb:
+        defined: true
+    then:
+      max_storage_gb:
+        greater_than_field: storage_gb
+
+################################################################################
+# Instance Size Mapping (for parser/terraform)
+################################################################################
+
+size_mapping:
+  small:
+    instance_class: "db.t3.micro"
+    max_connections: 87
+    description: "Development and testing"
+  medium:
+    instance_class: "db.t3.small"
+    max_connections: 200
+    description: "Staging and light workloads"
+  large:
+    instance_class: "db.t3.medium"
+    max_connections: 400
+    description: "Production light workloads"
+  xlarge:
+    instance_class: "db.r6g.large"
+    max_connections: 1000
+    description: "Production heavy workloads"
+
+################################################################################
+# Output Artifacts (what parser generates)
+################################################################################
+
+generates:
+  terraform:
+    path: ".tmp/generated/{environment}/rds/{id}.auto.tfvars.json"
+    description: "Terraform variables for RDS provisioning"
+
+  external_secret:
+    path: ".tmp/generated/{environment}/rds/{id}-externalsecret.yaml"
+    description: "ExternalSecret manifest for K8s secret sync"
+
+  catalog_entry:
+    path: "docs/20-contracts/resource-catalogs/rds/{id}.yaml"
+    description: "Governance catalog entry for tracking"
+
+################################################################################
+# Approval Routing (based on risk/environment)
+################################################################################
+
+approval_routing:
+  - condition:
+      environment: prod
+      risk: high
+    approval_tier: platform-and-security
+    reviewers:
+      - platform-team
+      - security-team
+
+  - condition:
+      environment: prod
+    approval_tier: platform-approval
+    reviewers:
+      - platform-team
+
+  - condition:
+      risk: high
+    approval_tier: security-approval
+    reviewers:
+      - security-team
+
+  - condition:
+      environment:
+        in: [dev, test]
+    approval_tier: self-serve
+    reviewers: []
