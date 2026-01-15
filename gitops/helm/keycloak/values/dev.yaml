@@ -19,7 +19,7 @@ image:
   registry: 593517239005.dkr.ecr.eu-west-2.amazonaws.com
   repository: keycloak
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always # Force pull to refresh cached image
 
 # -----------------------------------------------------------------------------
 # Authentication
