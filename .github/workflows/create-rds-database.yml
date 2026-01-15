@@ -1,0 +1,320 @@
+# Owner: platform
+# Relates-To: 85-how-it-works/self-service/RDS_REQUEST_FLOW.md
+name: Create RDS Database
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_branch:
+        description: 'PR base branch'
+        required: true
+        default: development
+      environment:
+        description: 'Target environment'
+        type: choice
+        required: true
+        options: [dev, staging, prod]
+      database_name:
+        description: 'Database name (e.g., myapp)'
+        required: true
+      username:
+        description: 'Database username (e.g., myapp_user)'
+        required: true
+      owner:
+        description: 'Team owner'
+        type: choice
+        required: true
+        options:
+          - platform-team
+          - security-team
+          - operations-team
+          - sre-team
+          - app-team
+          - database-team
+      user:
+        description: 'Requesting user (e.g., daniel-deans)'
+        required: true
+      domain:
+        description: 'Domain'
+        type: choice
+        required: true
+        options:
+          - platform-core
+          - delivery
+          - observability
+          - governance
+          - security
+          - cost
+          - application
+      risk:
+        description: 'Risk level'
+        type: choice
+        required: true
+        options: [low, medium, high]
+      initial_schema:
+        description: 'Initial schema setup'
+        type: choice
+        required: false
+        default: none
+        options: [none, basic-app, event-sourcing]
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  propose:
+    name: Propose Database Creation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Calculate Database ID
+        id: calc
+        run: |
+          # Convert myapp to DATABASE_MYAPP
+          NAME="${{ inputs.database_name }}"
+          ID=$(echo "$NAME" | tr '-' '_' | tr '[:lower:]' '[:upper:]' | sed 's/^/DATABASE_/')
+          echo "id=$ID" >> $GITHUB_OUTPUT
+          echo "Calculated ID: $ID"
+
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Validate inputs
+        run: |
+          # Validate database name format
+          if ! echo "${{ inputs.database_name }}" | grep -qE '^[a-z][a-z0-9_]*$'; then
+            echo "Database name must be lowercase with underscores only, starting with a letter"
+            exit 1
+          fi
+
+          # Validate username format
+          if ! echo "${{ inputs.username }}" | grep -qE '^[a-z][a-z0-9_]*$'; then
+            echo "Username must be lowercase with underscores only, starting with a letter"
+            exit 1
+          fi
+
+          # Validate requesting user format
+          if ! echo "${{ inputs.user }}" | grep -qE '^[a-z0-9-]+$'; then
+            echo "User must be lowercase alphanumeric with dashes"
+            exit 1
+          fi
+
+          echo "All inputs validated"
+
+      - name: Update RDS catalog (idempotent)
+        run: |
+          set -euo pipefail
+          FILE="docs/20-contracts/catalogs/rds-catalog.yaml"
+          NAME="${{ inputs.database_name }}"
+          USERNAME="${{ inputs.username }}"
+          OWNER="${{ inputs.owner }}"
+          USER="${{ inputs.user }}"
+          DOMAIN="${{ inputs.domain }}"
+          RISK="${{ inputs.risk }}"
+          ID="${{ steps.calc.outputs.id }}"
+          ENV="${{ inputs.environment }}"
+
+          # Ensure file exists with proper structure
+          if [ ! -f "$FILE" ] || ! grep -q "^databases:" "$FILE"; then
+            cat > "$FILE" <<EOF
+          version: "1.0"
+          domain: "platform-core"
+          owner: "database-team"
+          last_updated: "$(date -u +%Y-%m-%d)"
+          managed_by: "platform-team"
+          rds_instance: "goldenpath-platform-db-${ENV}"
+          databases: {}
+          EOF
+          fi
+
+          # Add/update the database entry
+          yq -i \
+            ".databases.\"$NAME\".metadata.id = \"$ID\" |
+             .databases.\"$NAME\".metadata.owner = \"$OWNER\" |
+             .databases.\"$NAME\".metadata.requested_by = \"$USER\" |
+             .databases.\"$NAME\".metadata.domain = \"$DOMAIN\" |
+             .databases.\"$NAME\".metadata.risk = \"$RISK\" |
+             .databases.\"$NAME\".metadata.environment = \"$ENV\" |
+             .databases.\"$NAME\".metadata.status = \"pending\" |
+             .databases.\"$NAME\".metadata.created_date = \"$(date -u +%Y-%m-%d)\" |
+             .databases.\"$NAME\".configuration.username = \"$USERNAME\" |
+             .databases.\"$NAME\".configuration.secret_path = \"goldenpath/$ENV/$NAME/postgres\" |
+             .last_updated = \"$(date -u +%Y-%m-%d)\"" \
+            "$FILE"
+
+          echo "Updated catalog for database: $NAME (ID: $ID)"
+
+      - name: Update RDS Terraform tfvars
+        env:
+          INPUT_ENVIRONMENT: ${{ inputs.environment }}
+          INPUT_DATABASE_NAME: ${{ inputs.database_name }}
+          INPUT_USERNAME: ${{ inputs.username }}
+        run: |
+          python3 -c '
+          import os
+          import sys
+
+          env = os.environ.get("INPUT_ENVIRONMENT")
+          tfvars_path = f"envs/{env}-rds/terraform.tfvars"
+          db_name = os.environ.get("INPUT_DATABASE_NAME")
+          username = os.environ.get("INPUT_USERNAME")
+
+          # HCL Entry to insert
+          new_entry = f"""
+            {db_name} = {{
+              database_name = "{db_name}"
+              username      = "{username}"
+            }}
+          """
+
+          try:
+              with open(tfvars_path, "r") as f:
+                  content = f.read()
+
+              # Check if already exists
+              if f"{db_name} = {{" in content and "application_databases" in content:
+                  print(f"Database {db_name} appears to already exist in {tfvars_path}")
+                  sys.exit(0)
+
+              if "application_databases = {" in content:
+                  start_idx = content.find("application_databases = {")
+                  brace_count = 0
+                  insert_idx = -1
+
+                  for i in range(start_idx, len(content)):
+                      if content[i] == "{":
+                          brace_count += 1
+                      elif content[i] == "}":
+                          brace_count -= 1
+                          if brace_count == 0:
+                              insert_idx = i
+                              break
+
+                  if insert_idx != -1:
+                      new_content = content[:insert_idx] + new_entry + content[insert_idx:]
+                      with open(tfvars_path, "w") as f:
+                          f.write(new_content)
+                      print(f"Injected {db_name} into existing application_databases block.")
+                  else:
+                      print("Error: Could not parse application_databases block structure.")
+                      sys.exit(1)
+              else:
+                  print(f"Error: application_databases block not found in {tfvars_path}")
+                  sys.exit(1)
+
+          except FileNotFoundError:
+              print(f"Error: {tfvars_path} not found. RDS environment may not be configured.")
+              sys.exit(1)
+          except Exception as e:
+              print(f"Error updating tfvars: {e}")
+              sys.exit(1)
+          '
+
+      - name: Generate PR body
+        id: pr-body
+        env:
+          DB_NAME: ${{ inputs.database_name }}
+          USERNAME: ${{ inputs.username }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          OWNER: ${{ inputs.owner }}
+          USER: ${{ inputs.user }}
+          DOMAIN: ${{ inputs.domain }}
+          RISK: ${{ inputs.risk }}
+          DB_ID: ${{ steps.calc.outputs.id }}
+          SCHEMA: ${{ inputs.initial_schema }}
+        run: |
+          # Determine risk-based settings
+          RISK="${{ inputs.risk }}"
+          if [ "$RISK" == "high" ]; then
+            RETENTION="35 days"
+            ROTATION="14 days"
+            CONTROLS="- Audit logging enabled\n- Enhanced monitoring\n- Extended backup retention"
+          elif [ "$RISK" == "medium" ]; then
+            RETENTION="14 days"
+            ROTATION="30 days"
+            CONTROLS="- Standard monitoring\n- Regular backup retention"
+          else
+            RETENTION="7 days"
+            ROTATION="30 days"
+            CONTROLS="- Basic monitoring\n- Standard backup retention"
+          fi
+
+          cat > pr_body.txt <<EOF
+          ## Database Creation Request
+
+          **Database:** \`${DB_NAME}\`
+          **Username:** \`${USERNAME}\`
+          **Environment:** \`${ENVIRONMENT}\`
+          **Owner:** \`${OWNER}\`
+          **Requested By:** \`${USER}\`
+          **Domain:** \`${DOMAIN}\`
+          **Risk Level:** \`${RISK}\`
+          **ID:** \`${DB_ID}\`
+
+          ---
+
+          ## Platform RDS Details
+
+          This database will be created on the **Platform RDS** bounded context:
+          - **RDS Instance:** \`goldenpath-platform-db-${ENVIRONMENT}\`
+          - **Engine:** PostgreSQL 15.4
+          - **Secret Path:** \`goldenpath/${ENVIRONMENT}/${DB_NAME}/postgres\`
+
+          ---
+
+          ## Security Controls (Auto-Applied)
+
+          Based on risk level **${RISK}**:
+          ${CONTROLS}
+          - Backup Retention: ${RETENTION}
+          - Secret Rotation: ${ROTATION}
+
+          ---
+
+          ## What Happens Next
+
+          1. **Merge this PR** to add the database to the Platform RDS configuration
+          2. **Run \`make rds-apply ENV=${ENVIRONMENT}\`** to create the database and credentials
+          3. **Secrets** will be available in AWS Secrets Manager at \`goldenpath/${ENVIRONMENT}/${DB_NAME}/postgres\`
+          4. **ExternalSecrets** can sync credentials to Kubernetes namespace
+
+          ---
+
+          ## Changes Included
+
+          - Added to RDS catalog (\`docs/20-contracts/catalogs/rds-catalog.yaml\`)
+          - Added to Terraform tfvars (\`envs/${ENVIRONMENT}-rds/terraform.tfvars\`)
+
+          ---
+
+          ## Related Documentation
+
+          - [Platform RDS Architecture](docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md)
+          - [ADR-0158: Standalone RDS Bounded Context](docs/adrs/ADR-0158-platform-standalone-rds-bounded-context.md)
+          - [RB-0029: Secret Rotation](docs/70-operations/runbooks/RB-0029-rds-manual-secret-rotation.md)
+
+          /cc @platform-team @database-team
+          EOF
+
+          echo "PR body generated"
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          base: ${{ inputs.base_branch }}
+          branch: "database/create-${{ inputs.database_name }}"
+          title: "Create RDS Database: ${{ inputs.database_name }} (${{ inputs.environment }})"
+          commit-message: "database: create ${{ inputs.database_name }} in ${{ inputs.environment }}"
+          body-path: pr_body.txt
+          labels: |
+            rds-database
+            platform-team
+            ${{ inputs.environment }}
+            ${{ inputs.risk }}-risk

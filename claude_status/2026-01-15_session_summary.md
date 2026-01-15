@@ -132,18 +132,49 @@ envs/dev-rds/
 
 .github/workflows/
 ├── secret-rotation-check.yml
-└── pr-secret-rotation-warning.yml
+├── pr-secret-rotation-warning.yml
+└── create-rds-database.yml           # Backstage workflow for RDS requests
 
 docs/70-operations/runbooks/
 ├── RB-0029-rds-manual-secret-rotation.md
 └── RB-0030-rds-break-glass-deletion.md
+
+backstage-helm/catalog/templates/
+└── rds-request.yaml                  # Backstage self-service template
 ```
 
 ### Modified Files
 ```
 Makefile                                          # Added rds-* targets
 docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md  # Updated for bounded context
+docs/00-foundations/product/CAPABILITY_LEDGER.md  # Added capability #22
+docs/00-foundations/product/FEATURES.md           # Added RDS feature
+backstage-helm/catalog/all.yaml                   # Registered RDS template
 ```
+
+---
+
+## Backstage Self-Service RDS Template
+
+### Template: `backstage-helm/catalog/templates/rds-request.yaml`
+
+Teams can now request RDS databases via Backstage self-service. The template:
+
+- Collects database name, username, owner, domain, environment, risk level
+- Triggers `.github/workflows/create-rds-database.yml`
+- Workflow updates:
+  - `docs/20-contracts/catalogs/rds-catalog.yaml` (governance catalog)
+  - `envs/{env}-rds/terraform.tfvars` (Terraform configuration)
+- Creates a PR for platform team review
+
+### Flow
+
+1. Developer fills form in Backstage
+2. Template dispatches `create-rds-database.yml` workflow
+3. Workflow updates catalog + tfvars idempotently
+4. PR created with full details and security controls
+5. After merge: `make rds-apply ENV={env}` provisions database
+6. Credentials available in AWS Secrets Manager
 
 ---
 
