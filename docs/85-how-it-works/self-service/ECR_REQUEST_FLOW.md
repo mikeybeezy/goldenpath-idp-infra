@@ -54,7 +54,7 @@ Application teams use a "Self-Service" template in the Backstage Software Catalo
 ## 2. Processing: Deterministic Scaffolding
 The GHA workflow runs the specialized `scripts/scaffold_ecr.py` engine. This engine ensures the request follows the platform's governance contract:
 
-- **Catalog Sync**: Adds the registry to `docs/20-contracts/catalogs/ecr-catalog.yaml`.
+- **Catalog Sync**: Adds the registry to `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`.
 - **Infrastructure Bind**: Injects the repository definition into `envs/{env}/terraform.tfvars`.
 - **Naming Enforcement**: Validates that registry names and IDs follow the required regex (e.g., `REGISTRY_APP_NAME`).
 

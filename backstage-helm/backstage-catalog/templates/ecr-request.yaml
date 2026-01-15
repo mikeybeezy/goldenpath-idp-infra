@@ -118,4 +118,4 @@ spec:
       - title: PR List (fallback)
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls
       - title: Catalog Link (static; success = workflow run above)
-        url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/20-contracts/catalogs/ecr-catalog.yaml
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/20-contracts/resource-catalogs/ecr-catalog.yaml

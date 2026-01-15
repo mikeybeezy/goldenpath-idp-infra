@@ -39,7 +39,7 @@ type: test-suite
 ### Requirements
 - Python 3.x
 - `PyYAML` installed
-- Access to `docs/20-contracts/catalogs/ecr-catalog.yaml`
+- Access to `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`
 
 ### Steps
 1. Create a baseline snapshot of the catalog.
@@ -56,7 +56,7 @@ type: test-suite
 3. Verify output contains "Ghosts: X" including `phantom-test-repo`.
 
 ### Scenario 2: Backstage Parity
-1. Verify `backstage-helm/catalog/resources/ecr-registry.yaml` is updated.
+1. Verify `backstage-helm/backstage-catalog/resources/ecr-registry.yaml` is updated.
 2. Check description contains the new repo.
 3. Check `platform/last-sync` timestamp is current.
 

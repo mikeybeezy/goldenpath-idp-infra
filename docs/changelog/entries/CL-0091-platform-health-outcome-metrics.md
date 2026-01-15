@@ -43,7 +43,7 @@ Related: docs/adrs/ADR-0131-platform-health-outcome-metrics.md
 
 - propose outcome metrics for the platform health dashboard
 - add a matrix of recommended metrics, sources, and effort
-- extend catalog scans to include `docs/20-contracts/catalogs`
+- extend catalog scans to include `docs/20-contracts/resource-catalogs`
 
 ## Impact
 
@@ -58,7 +58,7 @@ Related: docs/adrs/ADR-0131-platform-health-outcome-metrics.md
 
 ### Changed
 
-- platform health catalog scan now includes `docs/20-contracts/catalogs`
+- platform health catalog scan now includes `docs/20-contracts/resource-catalogs`
 
 ### Documented
 

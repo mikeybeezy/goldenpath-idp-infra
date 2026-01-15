@@ -173,7 +173,7 @@ def get_catalog_stats():
     # 1. Standard YAML Catalogs (legacy + contracts)
     catalog_dirs = [
         'docs/catalogs',
-        'docs/20-contracts/catalogs'
+        'docs/20-contracts/resource-catalogs'
     ]
     for catalog_dir in catalog_dirs:
         if not os.path.exists(catalog_dir):
@@ -200,7 +200,7 @@ def get_catalog_stats():
                     except: pass
 
     # 2. Backstage Demo Catalog
-    backstage_dir = 'backstage-helm/catalog'
+    backstage_dir = 'backstage-helm/backstage-catalog'
     if os.path.exists(backstage_dir):
         for f in os.listdir(backstage_dir):
             if f.startswith('all-') and f.endswith('.yaml'):

@@ -47,7 +47,7 @@ breaking_change: false
 The Backstage Software Catalog provides self-service templates for developers to provision resources (ECR registries, RDS databases, etc.). Previously, the catalog URL in Backstage configuration pointed to the `main` branch:
 
 ```yaml
-catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage-helm/catalog/all.yaml"
+catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage-helm/backstage-catalog/all.yaml"
 ```
 
 This creates several operational challenges:
@@ -67,7 +67,7 @@ The platform already uses a `governance-registry` branch (ADR-0145) as a CI-owne
 
 ### Implementation
 
-1. **Extend `governance-registry-writer.yml`** to copy `backstage-helm/catalog/*` to `backstage-catalog/` on the registry branch
+1. **Extend `governance-registry-writer.yml`** to copy `backstage-helm/backstage-catalog/*` to `backstage-catalog/` on the registry branch
 2. **Update `govreg.schema.yaml`** to allow `backstage-catalog/` as a valid top-level directory
 3. **Update Backstage values.yaml** to reference the registry branch URL
 

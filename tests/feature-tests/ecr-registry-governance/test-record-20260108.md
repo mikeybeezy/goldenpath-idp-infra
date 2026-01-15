@@ -22,8 +22,8 @@ Reference: [test-plan.md](./test-plan.md)
 ## Environment
 - **OS:** MacOS
 - **Python Version:** 3.x
-- **Catalog:** `docs/20-contracts/catalogs/ecr-catalog.yaml`
-- **Output:** `backstage-helm/catalog/resources/ecr-registry.yaml`
+- **Catalog:** `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`
+- **Output:** `backstage-helm/backstage-catalog/resources/ecr-registry.yaml`
 
 ## Execution
 
@@ -46,7 +46,7 @@ Reference: [test-plan.md](./test-plan.md)
 **Status:** ✅
 
 ### Step 4: Backstage Parity
-**Command:** `grep "phantom-service-repo" backstage-helm/catalog/resources/ecr-registry.yaml`
+**Command:** `grep "phantom-service-repo" backstage-helm/backstage-catalog/resources/ecr-registry.yaml`
 **Expected:** Entry exists in the generated Resource entity.
 **Actual:** Entry found: `- phantom-service-repo (prod)'`.
 **Status:** ✅

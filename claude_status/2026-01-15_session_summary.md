@@ -139,7 +139,7 @@ docs/70-operations/runbooks/
 ├── RB-0029-rds-manual-secret-rotation.md
 └── RB-0030-rds-break-glass-deletion.md
 
-backstage-helm/catalog/templates/
+backstage-helm/backstage-catalog/templates/
 └── rds-request.yaml                  # Backstage self-service template
 ```
 
@@ -149,7 +149,7 @@ Makefile                                          # Added rds-* targets
 docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md  # Updated for bounded context
 docs/00-foundations/product/CAPABILITY_LEDGER.md  # Added capability #22
 docs/00-foundations/product/FEATURES.md           # Added RDS feature
-backstage-helm/catalog/all.yaml                   # Registered RDS template
+backstage-helm/backstage-catalog/all.yaml                   # Registered RDS template
 ```
 
 ---
@@ -172,14 +172,14 @@ Benefits:
 
 ## Backstage Self-Service RDS Template
 
-### Template: `backstage-helm/catalog/templates/rds-request.yaml`
+### Template: `backstage-helm/backstage-catalog/templates/rds-request.yaml`
 
 Teams can now request RDS databases via Backstage self-service. The template:
 
 - Collects database name, username, owner, domain, environment, risk level
 - Triggers `.github/workflows/create-rds-database.yml`
 - Workflow updates:
-  - `docs/20-contracts/catalogs/rds-catalog.yaml` (governance catalog)
+  - `docs/20-contracts/resource-catalogs/rds-catalog.yaml` (governance catalog)
   - `envs/{env}-rds/terraform.tfvars` (Terraform configuration)
 - Creates a PR for platform team review
 

@@ -5,7 +5,7 @@ type: documentation
 relates_to:
   - docs/adrs/ADR-0158-platform-standalone-rds-bounded-context.md
   - .github/workflows/create-rds-database.yml
-  - backstage-helm/catalog/templates/rds-request.yaml
+  - backstage-helm/backstage-catalog/templates/rds-request.yaml
   - docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md
 ---
 
@@ -84,7 +84,7 @@ The GitHub Actions workflow performs three key operations:
 
 ### 2.2 Catalog Update (Idempotent)
 
-Updates `docs/20-contracts/catalogs/rds-catalog.yaml` using `yq`:
+Updates `docs/20-contracts/resource-catalogs/rds-catalog.yaml` using `yq`:
 
 ```yaml
 databases:

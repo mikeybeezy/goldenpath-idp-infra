@@ -59,7 +59,7 @@ avoid missing relations.
 
 **Applies to:**
 - Backstage catalog entities for ECR (System, Component, Resource).
-- ECR catalog sync output (`backstage-helm/catalog/resources/ecr-registry.yaml`).
+- ECR catalog sync output (`backstage-helm/backstage-catalog/resources/ecr-registry.yaml`).
 
 **Does not apply to:**
 - AWS infrastructure configuration or Terraform modules.
@@ -91,6 +91,6 @@ avoid missing relations.
 ## Follow-ups
 
 - Add `container-registry` system entity and `delivery` domain entity.
-- Update `backstage-helm/catalog/components/ecr-registry.yaml`.
+- Update `backstage-helm/backstage-catalog/components/ecr-registry.yaml`.
 - Update `scripts/sync_ecr_catalog.py` output to use the new system.
 - Document the sync process in a runbook.

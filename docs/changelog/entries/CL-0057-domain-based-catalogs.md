@@ -52,7 +52,7 @@ Refactored from single platform-wide catalog to domain-based catalogs, where eac
 
 ### New Structure
 ```
-docs/20-contracts/catalogs/
+docs/20-contracts/resource-catalogs/
 ├── README.md              # Catalog index
 ├── ecr-catalog.yaml       # Container registries
 ├── rds-catalog.yaml       # Databases (future)
@@ -60,8 +60,8 @@ docs/20-contracts/catalogs/
 ```
 
 ### Created Files
-- `docs/20-contracts/catalogs/README.md` - Index of all catalogs
-- `docs/20-contracts/catalogs/ecr-catalog.yaml` - ECR registry catalog
+- `docs/20-contracts/resource-catalogs/README.md` - Index of all catalogs
+- `docs/20-contracts/resource-catalogs/ecr-catalog.yaml` - ECR registry catalog
 - `docs/adrs/ADR-0097-domain-based-resource-catalogs.md` - Decision record
 
 ### Modified Files (Pending)
@@ -69,7 +69,7 @@ docs/20-contracts/catalogs/
 - `scripts/generate_catalog_docs.py` - Update catalog path
 
 ### Removed Files (Pending)
-- `docs/registry-catalog.yaml` - Replaced by `docs/20-contracts/catalogs/ecr-catalog.yaml`
+- `docs/registry-catalog.yaml` - Replaced by `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`
 
 ## Rationale
 
@@ -82,9 +82,9 @@ docs/20-contracts/catalogs/
 ## Migration Path
 
 ### Phase 1: Structure ✅
-- [x] Create `docs/20-contracts/catalogs/` directory
-- [x] Create `docs/20-contracts/catalogs/README.md` index
-- [x] Create `docs/20-contracts/catalogs/ecr-catalog.yaml`
+- [x] Create `docs/20-contracts/resource-catalogs/` directory
+- [x] Create `docs/20-contracts/resource-catalogs/README.md` index
+- [x] Create `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`
 
 ### Phase 2: Update References
 - [ ] Update `.github/workflows/create-ecr-registry.yml`
@@ -98,7 +98,7 @@ docs/20-contracts/catalogs/
 ## Impact
 
 ### Breaking Changes
-- **Catalog path changed:** `docs/registry-catalog.yaml` → `docs/20-contracts/catalogs/ecr-catalog.yaml`
+- **Catalog path changed:** `docs/registry-catalog.yaml` → `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`
 - **Workflows need update:** Self-service workflows must point to new path
 - **Scripts need update:** Catalog generator must read new path
 

@@ -153,6 +153,6 @@ spec:
       - title: PR List (fallback)
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls
       - title: RDS Catalog
-        url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/20-contracts/catalogs/rds-catalog.yaml
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/20-contracts/resource-catalogs/rds-catalog.yaml
       - title: Platform RDS Architecture
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md

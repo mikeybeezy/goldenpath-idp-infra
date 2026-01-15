@@ -58,7 +58,7 @@ breaking_change: false
 ### Changed
 
 - Backstage `catalogLocation` URL: `main` → `governance-registry` branch
-  - Old: `https://raw.githubusercontent.com/.../main/backstage-helm/catalog/all.yaml`
+  - Old: `https://raw.githubusercontent.com/.../main/backstage-helm/backstage-catalog/all.yaml`
   - New: `https://raw.githubusercontent.com/.../governance-registry/backstage-catalog/all.yaml`
 
 ### Documented

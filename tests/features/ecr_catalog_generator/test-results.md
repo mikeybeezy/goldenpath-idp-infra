@@ -41,7 +41,7 @@ python scripts/generate_catalog_docs.py --verbose
 
 ### Output
 ```
-Loading catalog from docs/20-contracts/catalogs/ecr-catalog.yaml
+Loading catalog from docs/20-contracts/resource-catalogs/ecr-catalog.yaml
 Generating markdown documentation
 ✅ Generated catalog documentation: docs/REGISTRY_CATALOG.md
    Total registries: 3

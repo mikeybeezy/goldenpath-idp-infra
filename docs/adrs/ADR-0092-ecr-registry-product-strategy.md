@@ -67,7 +67,7 @@ Repositories are created **per-product** (bounded context), not per-app or per-t
 
 ### 3. Registry & Repository Catalog
 
-**Format:** YAML (`docs/20-contracts/catalogs/ecr-catalog.yaml`)
+**Format:** YAML (`docs/20-contracts/resource-catalogs/ecr-catalog.yaml`)
 
 **Schema:**
 ```yaml

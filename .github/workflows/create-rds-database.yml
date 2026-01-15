@@ -111,7 +111,7 @@ jobs:
       - name: Update RDS catalog (idempotent)
         run: |
           set -euo pipefail
-          FILE="docs/20-contracts/catalogs/rds-catalog.yaml"
+          FILE="docs/20-contracts/resource-catalogs/rds-catalog.yaml"
           NAME="${{ inputs.database_name }}"
           USERNAME="${{ inputs.username }}"
           OWNER="${{ inputs.owner }}"
@@ -289,7 +289,7 @@ jobs:
 
           ## Changes Included
 
-          - Added to RDS catalog (\`docs/20-contracts/catalogs/rds-catalog.yaml\`)
+          - Added to RDS catalog (\`docs/20-contracts/resource-catalogs/rds-catalog.yaml\`)
           - Added to Terraform tfvars (\`envs/${ENVIRONMENT}-rds/terraform.tfvars\`)
 
           ---

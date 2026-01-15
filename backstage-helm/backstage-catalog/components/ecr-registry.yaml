@@ -4,8 +4,8 @@ metadata:
   name: ecr-registry
   description: Multi-tenant ECR Registry for Golden Path microservices.
   annotations:
-    backstage.io/managed-by-location: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/main/backstage-helm/catalog/components/ecr-registry.yaml
-    backstage.io/managed-by-origin-location: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/main/backstage-helm/catalog/components/ecr-registry.yaml
+    backstage.io/managed-by-location: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/main/backstage-helm/backstage-catalog/components/ecr-registry.yaml
+    backstage.io/managed-by-origin-location: url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/main/backstage-helm/backstage-catalog/components/ecr-registry.yaml
   links:
     - url: https://console.aws.amazon.com/ecr/repositories
       title: AWS ECR Console

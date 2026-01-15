@@ -36,8 +36,8 @@ This checklist documents the validation steps required for **PR #156** to ensure
 
 ## 3. YAML & Linting Quality
 - [x] **Duplicate Key Audit:** Confirm `enforcement:` block is consolidated in `docs/10-governance/policies/POL-ECR-*.yaml`.
-- [x] **Catalog Indentation:** Verify `docs/20-contracts/catalogs/*.yaml` comments use standardized 0-indentation to satisfy `yamllint`.
-- [x] **Test Results:** Confirm `yamllint docs/10-governance/policies/ docs/20-contracts/catalogs/` returns "ALL GREEN" locally.
+- [x] **Catalog Indentation:** Verify `docs/20-contracts/resource-catalogs/*.yaml` comments use standardized 0-indentation to satisfy `yamllint`.
+- [x] **Test Results:** Confirm `yamllint docs/10-governance/policies/ docs/20-contracts/resource-catalogs/` returns "ALL GREEN" locally.
 
 ## 4. Onboarding & Documentation
 - [x] **ADR-0098:** Verify decision record created for Standardized PR Gates.
@@ -51,7 +51,7 @@ This checklist documents the validation steps required for **PR #156** to ensure
 python3 scripts/validate_metadata.py --path docs/
 
 # Validate YAML linting
-yamllint docs/10-governance/policies/POL-ECR-*.yaml docs/20-contracts/catalogs/*.yaml
+yamllint docs/10-governance/policies/POL-ECR-*.yaml docs/20-contracts/resource-catalogs/*.yaml
 
 # Check branch current status
 git branch --show-current

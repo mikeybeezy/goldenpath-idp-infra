@@ -54,10 +54,10 @@ Validate that `generate_catalog_docs.py` correctly displays risk-based security 
 
 ### Prerequisites
 - `scripts/generate_catalog_docs.py` updated with risk-based policy mapping
-- `docs/20-contracts/catalogs/ecr-catalog.yaml` contains sample registries
+- `docs/20-contracts/resource-catalogs/ecr-catalog.yaml` contains sample registries
 
 ### Test Data
-Created 3 sample registries in `docs/20-contracts/catalogs/ecr-catalog.yaml`:
+Created 3 sample registries in `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`:
 1. `wordpress-platform` (high risk)
 2. `staging-api` (medium risk)
 3. `test-app-dev` (low risk)
@@ -91,6 +91,6 @@ Created 3 sample registries in `docs/20-contracts/catalogs/ecr-catalog.yaml`:
 ## Related Files
 
 - Script: `scripts/generate_catalog_docs.py`
-- Input: `docs/20-contracts/catalogs/ecr-catalog.yaml`
+- Input: `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`
 - Output: `docs/REGISTRY_CATALOG.md`
 - Policy mapping: `modules/aws_ecr/locals.tf`

@@ -61,7 +61,7 @@ You must build a custom image to:
 Examples that do not require a custom image:
 - Enable TechDocs for ADRs/changelogs/governance via catalog entities.
 - Turn on Kubernetes plugin against in-cluster or remote clusters.
-- Extend scaffolder with new templates in `backstage-helm/catalog/templates`.
+- Extend scaffolder with new templates in `backstage-helm/backstage-catalog/templates`.
 - Enable additional search collators via config if the module exists.
 
 ## Gaps to Resolve Before Custom Image

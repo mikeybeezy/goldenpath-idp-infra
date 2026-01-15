@@ -1,0 +1,58 @@
+# an HA cluster with 3 control-plane nodes and 3 workers
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: ha-cluster
+nodes:
+  - role: control-plane
+    extraMounts:
+      - hostPath: /tmp/local-path-provisioner
+        containerPath: /tmp/local-path-provisioner
+    extraPortMappings:
+      - containerPort: 80 # port inside the Kind node
+        hostPort: 8085 # port on your laptop; adjust as needed
+        protocol: TCP
+      - containerPort: 32000 # port inside the Kind node
+        hostPort: 7007 # port on your laptop; adjust as needed /  # on your host
+        protocol: TCP
+      - containerPort: 30443 # port inside the Kind node
+        hostPort: 30443
+        protocol: TCP
+      - containerPort: 30080
+        hostPort: 8090
+      - containerPort: 3000
+        hostPort: 9000
+      - containerPort: 5001
+        hostPort: 9050
+      - containerPort: 3000
+        hostPort: 8060
+      - containerPort: 3010 # port inside the Kind node
+        hostPort: 8050 # port on your laptop; adjust as needed
+      - containerPort: 3015 # port inside the Kind node
+        hostPort: 8040 # port on your laptop; adjust as needed
+      - containerPort: 38080 # port inside the Kind node
+        hostPort: 38080 # port on your laptop; adjust as needed
+      - containerPort: 38200 # port inside the Kind node
+        hostPort: 7008 # port on your laptop; adjust as needed
+
+    kubeadmConfigPatches:
+      # adds a taint when adding an additional Node to the control plane.
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            register-with-taints: "my-taint=presence:NoSchedule"
+            node-labels: "ingress-ready=true"
+    # extraMounts:
+    # - hostPath: /path/to/my/files
+    #   containerPath: /files
+
+  # add a mount from /path/to/my/files on the host to /files on the node
+  - role: worker
+    extraMounts:
+      - hostPath: /tmp/local-path-provisioner
+        containerPath: /tmp/local-path-provisioner
+# add a mount from /path/to/my/files on the host to /files on the node
+# extraMounts:
+# - hostPath: /path/to/my/files
+#   containerPath: /files
+
