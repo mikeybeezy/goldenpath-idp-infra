@@ -14,9 +14,9 @@ spec:
     namespace: backstage
     server: https://kubernetes.default.svc
   sources:
-    - repoURL: https://backstage.github.io/charts
-      chart: backstage
-      targetRevision: 2.6.3
+    - repoURL: https://github.com/PlatformersCommunity/backstage-helm-chart.git
+      path: charts/backstage
+      targetRevision: main
       helm:
         valueFiles:
           - $values/gitops/helm/backstage/values/dev.yaml

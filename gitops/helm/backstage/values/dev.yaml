@@ -1,5 +1,5 @@
 # Backstage Helm Values - Dev Environment
-# Chart: backstage/backstage v1.12.0
+# Chart: PlatformersCommunity/backstage-helm-chart
 # Managed by scripts/standardize_metadata.py
 governance:
   id: HELM_BACKSTAGE_METADATA
@@ -10,17 +10,16 @@ governance:
 # -----------------------------------------------------------------------------
 # Image Configuration - Pinned Version
 # -----------------------------------------------------------------------------
-backstage:
-  image:
-    registry: ghcr.io
-    repository: guymenahem/backstage-platformers
-    tag: 0.0.1
-    pullPolicy: IfNotPresent
+image:
+  registry: ghcr.io
+  repository: guymenahem/backstage-platformers
+  tag: 0.0.1
+  pullPolicy: IfNotPresent
 
 # -----------------------------------------------------------------------------
-# App Configuration
+# App Configuration (YAML string format for Platformers chart)
 # -----------------------------------------------------------------------------
-appConfig:
+appConfig: |
   app:
     baseUrl: https://backstage.dev.goldenpath.io
     title: Goldenpath IDP
@@ -36,19 +35,24 @@ appConfig:
         port: ${POSTGRES_PORT}
         user: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
-    # Auth configuration
     auth:
       keys:
-        - secret: "random-generated-secret-key-for-backend-auth"
-      environment: development
-      providers:
-        oidc:
-          development:
-            metadataUrl: https://keycloak.dev.goldenpath.io/realms/goldenpath/.well-known/openid-configuration
-            clientId: backstage
-            clientSecret: ${OIDC_CLIENT_SECRET}
+        - secret: ${BACKEND_AUTH_SECRET}
 
-  # Catalog locations
+  integrations:
+    github:
+      - host: github.com
+        token: ${GITHUB_TOKEN}
+
+  auth:
+    environment: development
+    providers:
+      oidc:
+        development:
+          metadataUrl: https://keycloak.dev.goldenpath.io/realms/goldenpath/.well-known/openid-configuration
+          clientId: backstage
+          clientSecret: ${OIDC_CLIENT_SECRET}
+
   catalog:
     locations:
       - type: url
@@ -62,38 +66,23 @@ appConfig:
           - allow:
               - Template
 
-  # GitHub Integration
-  integrations:
-    github:
-      - host: github.com
-        token: ${GITHUB_TOKEN}
-
-  # Kubernetes plugin configuration (top-level, not under integrations)
   kubernetes:
     serviceLocatorMethod:
       type: multiTenant
     clusterLocatorMethods:
       - type: config
-        clusters: []
+        clusters:
+          - url: https://kubernetes.default.svc
+            name: local
+            authProvider: serviceAccount
+            skipTLSVerify: false
+            skipMetricsLookup: true
 
 # -----------------------------------------------------------------------------
-# PostgreSQL (Bundled)
+# PostgreSQL (External - RDS)
 # -----------------------------------------------------------------------------
 postgresql:
   enabled: false
-  image:
-    registry: docker.io
-    repository: bitnami/postgresql
-    tag: 15.6.0-debian-12-r8
-  auth:
-    existingSecret: backstage-postgres-secret
-    secretKeys:
-      adminPasswordKey: postgres-password
-      userPasswordKey: password
-  primary:
-    persistence:
-      enabled: true
-      size: 8Gi
 
 # -----------------------------------------------------------------------------
 # Ingress
@@ -106,14 +95,35 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-staging
 
 # -----------------------------------------------------------------------------
-# Environment Variables from Secrets
+# Environment Variables
 # -----------------------------------------------------------------------------
 extraEnvVarsSecrets:
   - backstage-secrets
+  - backstage-postgres-secret
 
 extraEnvVars:
-  - name: APP_CONFIG_backend_auth_keys_0_secret
+  - name: BACKEND_AUTH_SECRET
     value: "random-generated-secret-key-for-backend-auth"
+  - name: POSTGRES_HOST
+    valueFrom:
+      secretKeyRef:
+        name: backstage-postgres-secret
+        key: host
+  - name: POSTGRES_PORT
+    valueFrom:
+      secretKeyRef:
+        name: backstage-postgres-secret
+        key: port
+  - name: POSTGRES_USER
+    valueFrom:
+      secretKeyRef:
+        name: backstage-postgres-secret
+        key: username
+  - name: POSTGRES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: backstage-postgres-secret
+        key: password
 
 # -----------------------------------------------------------------------------
 # Resource Limits for Dev
@@ -182,4 +192,3 @@ extraDeploy:
         remoteRef:
           key: goldenpath/dev/backstage/secrets
           property: client-secret
-
