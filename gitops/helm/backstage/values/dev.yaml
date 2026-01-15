@@ -71,7 +71,7 @@ appConfig:
 # PostgreSQL (Bundled)
 # -----------------------------------------------------------------------------
 postgresql:
-  enabled: true
+  enabled: false
   image:
     registry: docker.io
     repository: bitnami/postgresql

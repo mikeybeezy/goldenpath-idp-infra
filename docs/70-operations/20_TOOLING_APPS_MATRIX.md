@@ -49,9 +49,9 @@ This living document captures the configuration requirements, dependencies, and 
 | --- | --------- | ----- | ------------- | --------- | ------ | -------- |
 | [external-secrets](#external-secrets) | external-secrets | external-secrets/external-secrets | 0.9.13 | v0.9.13 | Configured | P0 |
 | [cert-manager](#cert-manager) | cert-manager | jetstack/cert-manager | v1.14.4 | v1.14.4 | Configured | P0 |
-| [keycloak](#keycloak) | keycloak | bitnami/keycloak | 22.1.6 | 24.0.4-debian-12-r0 | Configured | P1 |
+| [keycloak](#keycloak) | keycloak | bitnami/keycloak | 25.2.0 | 26.3.3 | Configured | P1 |
 | [kong](#kong) | kong-system | konghq/kong | 2.47.0 | 3.6.1 | Configured | P1 |
-| [backstage](#backstage) | backstage | backstage/backstage | 1.12.0 | 1.24.0 | Configured | P2 |
+| [backstage](#backstage) | backstage | backstage/backstage | 2.6.3 | 1.29.0 | Configured | P2 |
 | [kube-prometheus-stack](#kube-prometheus-stack) | monitoring | prometheus-community/kube-prometheus-stack | 45.7.1 | v2.47.2 | Configured | P3 |
 | [loki](#loki) | monitoring | grafana/loki-stack | 2.9.11 | 2.9.4 | Configured | P3 |
 | [fluent-bit](#fluent-bit) | monitoring | fluent/fluent-bit | 0.47.0 | 3.0.3 | Configured | P3 |
@@ -235,8 +235,8 @@ spec:
 | Attribute | Value |
 | --------- | ----- |
 | Chart | bitnami/keycloak |
-| Chart Version | 22.1.6 |
-| Image Tag | 24.0.4-debian-12-r0 |
+| Chart Version | 25.2.0 |
+| Image Tag | 26.3.3 |
 | Namespace | keycloak |
 | Argo App | `gitops/argocd/apps/dev/keycloak.yaml` |
 | Values File | `gitops/helm/keycloak/values/dev.yaml` |
@@ -382,8 +382,8 @@ ingressController:
 | Attribute | Value |
 | --------- | ----- |
 | Chart | backstage/backstage |
-| Chart Version | 1.12.0 |
-| Image Tag | 1.24.0 |
+| Chart Version | 2.6.3 |
+| Image Tag | 1.29.0 |
 | PostgreSQL Tag | 15.6.0-debian-12-r8 |
 | Namespace | backstage |
 | Argo App | `gitops/argocd/apps/dev/backstage.yaml` |
@@ -629,6 +629,7 @@ goldenpath/{env}/{app}/{secret-name}
 | ---- | ------ | ------ |
 | 2026-01-15 | platform-team | Initial matrix creation |
 | 2026-01-15 | platform-team | Added chart/image version pinning, configured all apps |
+| 2026-01-15 | platform-team | Bumped Keycloak (25.2.0) and Backstage (2.6.3) chart versions |
 
 ---
 
