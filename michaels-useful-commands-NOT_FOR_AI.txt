@@ -1,0 +1,307 @@
+
+aws eks list-clusters --region eu-west-2 --output table
+
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+ENV=dev scripts/resolve-cluster-name.sh
+
+ aws eks update-kubeconfig --name goldenpath-dev-eks-26-12-25-03 --region eu-west-2
+
+
+For EKS clusters (list then filter by tag on the cluster ARN):
+aws ec2 describe-instances --region eu-west-2 \
+  --filters "Name=tag:BuildId,Values=20250115-06"
+
+##################
+
+Step 1
+terraform -chdir=envs/dev init
+
+##################
+
+TF_VAR_cluster_lifecycle=ephemeral
+TF_VAR_build_id=YYYYMMDD-01
+TF_VAR_owner_team=platform-team
+make timed-apply ENV=dev
+
+INFRA BUILD OPTION A: Timed infra build (streams + logs timing):
+
+make timed-apply ENV=dev
+
+make apply ENV=dev BUILD_ID=04-01-26-01
+
+-----------
+INFRA BUILD OPTION B: Non‑timed infra build:
+
+terraform -chdir=envs/dev apply
+
+-----------
+INFRA BUILD OPTION C: If you need to override from CI, add:
+
+TF_VAR_cluster_lifecycle=ephemeral TF_VAR_build_id=YYYYMMDD-01 TF_VAR_owner_team=platform-team make timed-apply ENV=dev
+
+
+
+Terraform builds the final name from eks_config.cluster_name + build_id (when ephemeral).
+aws eks list-clusters is only a snapshot and can return multiple clusters; it’s not deterministic for automation.
+Recommended approach (deterministic):
+
+Always compute the effective name from tfvars:
+If cluster_lifecycle = "ephemeral" and build_id is set:
+cluster_name_effective = eks_config.cluster_name + "-" + build_id
+Otherwise:
+cluster_name_effective = eks_config.cluster_name
+##################
+Phase 2
+
+2.A Step 1: create the IRSA service accounts (targeted, auto‑approve)
+
+
+make bootstrap ENV=dev BUILD_ID=<build-id>
+
+##################
+
+Step 2.B: run bootstrap with all flags explicitly set to defaults
+(Here I set ENABLE_TF_K8S_RESOURCES=false so it won’t re‑apply SAs you already created.)
+
+make bootstrap ENV=dev BUILD_ID=<build-id>
+
+make bootstrap ENV_NAME=dev \
+NODE_INSTANCE_TYPE=t3.small \
+SKIP_ARGO_SYNC_WAIT=true \
+SKIP_CERT_MANAGER_VALIDATION=true \
+COMPACT_OUTPUT=false \
+ENABLE_TF_K8S_RESOURCES=true \
+SCALE_DOWN_AFTER_BOOTSTRAP=true \
+TF_DIR=envs/dev \
+bash bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh
+
+
+make bootstrap ENV_NAME=dev \
+NODE_INSTANCE_TYPE=t3.small \
+SKIP_ARGO_SYNC_WAIT=true \
+SKIP_CERT_MANAGER_VALIDATION=true \
+COMPACT_OUTPUT=false \
+ENABLE_TF_K8S_RESOURCES=true \
+SCALE_DOWN_AFTER_BOOTSTRAP=true \
+TF_DIR=envs/dev \
+bash goldenpath-idp-bootstrap.sh
+
+Notes:
+
+BUILD_ID is required by both targets.
+ENV defaults to dev if omitted.
+CLUSTER/REGION are read from terraform.tfvars unless you override them (e.g., CLUSTER=... REGION=...).
+
+ENV_NAME: env name used for Argo app files (default: dev)
+NODE_INSTANCE_TYPE: required for preflight capacity checks
+SKIP_ARGO_SYNC_WAIT: skip waiting for autoscaler app sync (default: true)
+SKIP_CERT_MANAGER_VALIDATION: skip cert-manager validation (default: true)
+COMPACT_OUTPUT: suppress command output when true (default: false)
+ENABLE_TF_K8S_RESOURCES: when true, run Terraform to apply service accounts (default: true)
+SCALE_DOWN_AFTER_BOOTSTRAP: when true, re-apply Terraform with bootstrap_mode=false (default: false)
+TF_DIR: Terraform directory (required when ENABLE_TF_K8S_RESOURCES=true or SCALE_DOWN_AFTER_BOOTSTRAP=true)
+Positional args:
+
+<cluster-name> (required)
+<region> (required)
+[kong-namespace] (optional, default: kong-system)
+##################
+
+
+step 4nntttt
+
+timed
+make timed-teardown ENV=dev BUILD_ID=20250115-04 CLUSTER=goldenpath-dev-eks-20250115-04 REGION=eu-west-2
+
+non timed
+make teardown ENV=dev CLUSTER=goldenpath-dev-eks-26-12-25 REGION=eu-west-2
+
+goldenpath-dev-eks-26-12-25-03
+
+make timed-teardown ENV=dev BUILD_ID=26-12-25-03 \
+  CLUSTER=goldenpath-dev-eks-26-12-25-03 REGION=eu-west-2
+
+TF_DIR=envs/dev make timed-teardown ENV=dev BUILD_ID=20250115-067 \
+  CLUSTER=goldenpath-dev- REGION=eu-west-2
+
+
+
+make teardown ENV=dev BUILD_ID=20250115-06 \
+  CLUSTER=goldenpath-dev-eks-08-20250115-06 REGION=eu-west-2 \
+  TF_DIR=envs/dev
+
+Ok so the cluster can fully come up and down without breaking the flow; only
+human intervention required:
+
+1. Trigger the build stage
+2. Chain build stage to bootstrap
+3. Populate the BUILD_ID parameter
+4. Populate the CLUSTER parameter
+5. Trigger the bootstrap stage
+
+Infra build stage:
+make timed-apply ENV=dev BUILD_ID=26-12-25-03
+
+Bootstrap:
+make bootstrap ENV=dev BUILD_ID=26-12-25-03 \
+  ENV_NAME=dev \
+  NODE_INSTANCE_TYPE=t3.small \
+  SKIP_ARGO_SYNC_WAIT=true \
+  SKIP_CERT_MANAGER_VALIDATION=true \
+  COMPACT_OUTPUT=false \
+  ENABLE_TF_K8S_RESOURCES=true \
+  SCALE_DOWN_AFTER_BOOTSTRAP=false \
+  TF_DIR=envs/dev \
+  CLUSTER=goldenpath-dev-eks-26-12-25-03 \
+  REGION=eu-west-2
+
+Teardown:
+TF_DIR=envs/dev \
+make timed-teardown ENV=dev BUILD_ID=26-12-25-03 \
+  CLUSTER=goldenpath-dev-eks-26-12-25-03 \
+  REGION=eu-west-2
+
+
+  ===========
+
+TF_DIR=envs/dev \
+BUILD_ID=26-12-25-03 \
+CLUSTER=goldenpath-dev-eks-26-12-25-03 \
+REGION=eu-west-2 \
+make timed-teardown ENV=dev
+
+
+
+
+------
+Steps to access the cluster after boostarp or restor admin access
+
+STEP 1
+aws eks list-clusters --region eu-west-2 --output table
+
+
+
+
+STEP 2
+aws eks create-access-entry \
+  --cluster-name goldenpath-dev-eks-03-01-26-02  \
+  --principal-arn "arn:aws:iam::593517239005:user/michaelnouriel" \
+  --region eu-west-2
+
+
+STEP 3
+  aws eks associate-access-policy \
+  --cluster-name goldenpath-dev-eks-03-01-26-02 \
+  --principal-arn "arn:aws:iam::593517239005:user/michaelnouriel" \
+  --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
+  --access-scope type=cluster \
+  --region eu-west-2
+
+
+Step 4
+
+aws eks update-kubeconfig --name goldenpath-dev-eks-03-01-26-02 --region eu-west-2
+kubectl get ns
+
+
+elbv2.k8s.aws/goldenpath-dev-eks-03-01-26-02
+STEP 5
+Kubectl get pods -A
+
+
+====================
+Teardown recovery timeline (CI-only)
+
+- Workflow: CI Teardown
+  - Inputs: teardown_version=v2, lifecycle=ephemeral, build_id=<build-id>, env=dev, region=eu-west-2
+  - Result: teardown hung on LB/ENI cleanup, reran after v2 updates (see changelog)
+
+- Workflow: CI Force Unlock
+  - Reason: Terraform state lock blocked teardown
+  - Inputs: env=dev, lifecycle=ephemeral, build_id=<build-id>, lock_id=<uuid>, confirm_unlock=true
+  - Result: lock cleared, teardown could proceed
+
+- Workflow: CI Managed LB Cleanup
+  - Reason: VPC deletion blocked by LBC-managed SGs and cluster-tagged SGs
+  - Inputs: env=dev, lifecycle=ephemeral, build_id=<build-id>, dry_run=false,
+            delete_cluster_tagged_sgs=true, stack_tag optional
+  - Result: managed LB resources cleaned, VPC delete unblocked
+
+
+
+-------
+
+
+
+
+
+
+kubectl apply -f - << EOF
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: backstage
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/basic-auth
+metadata:
+  name: app-secret
+  namespace: backstage
+data:
+  username: YXBw
+  password: cGFzc3dvcmQ=
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: backstage
+  namespace: backstage
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 1Gi
+  bootstrap:
+    initdb:
+      secret:
+        name: app-secret
+      postInitSQL:
+        - ALTER ROLE app CREATEDB
+EOF
+
+New Build Command (With Backend Key)
+Here is the exact sequence to initialize a fresh state file (new backend key) and launch the build.
+
+1. Initialize New Backend Key
+Run this terraform init command to explicitly separate the state for build 02:
+
+terraform -chdir=envs/dev init \
+  -reconfigure \
+  -backend-config="bucket=goldenpath-idp-dev-bucket" \
+  -backend-config="key=envs/dev/14-01-26-05/terraform.tfstate" \
+  -backend-config="region=eu-west-2" \
+  -backend-config="dynamodb_table=goldenpath-idp-dev-locks"
+
+2. Launch Build
+Run this make command to launch the build:
+
+make env=dev apply build_id=14-01-26-05
+
+
+for V1  we need to broaden the requirements to be complet 
+
+- Be able to connect a CI CD piplen from a poly repo 
+- level 1 security scanning and hardening 
+- deploy acrous dev staging and production
+- deploy a staless aplication 
+- deploy stateful application with a database
+- Provision S3, EBS, EKS, RDS, ec2, ECR
+- ship arho CD pipeline
+- Out of the Montitoring and observability 
+- out of the box ingress controller with kong
+- Be able to buold images and push them to ECR
+
