@@ -170,7 +170,7 @@ extraDeploy:
       - secretKey: password
         remoteRef:
           key: goldenpath/dev/keycloak/postgres
-          property: postgres-password
+          property: password
       - secretKey: username
         remoteRef:
           key: goldenpath/dev/keycloak/postgres
