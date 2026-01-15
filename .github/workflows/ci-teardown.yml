@@ -201,6 +201,14 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Setup kubeconfig for cluster access
+        run: |
+          echo "Configuring kubeconfig for cluster: ${CLUSTER_NAME}"
+          aws eks update-kubeconfig --name "${CLUSTER_NAME}" --region "${AWS_REGION}" || {
+            echo "Warning: Could not configure kubeconfig (cluster may not exist yet or may be deleted)"
+            echo "Teardown will proceed but kubernetes-dependent cleanup steps may be skipped"
+          }
+
       - name: Terraform init (backend)
         run: |
           terraform -chdir="${TF_DIR}" init -reconfigure \
@@ -427,6 +435,14 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Setup kubeconfig for cluster access
+        run: |
+          echo "Configuring kubeconfig for cluster: ${CLUSTER_NAME}"
+          aws eks update-kubeconfig --name "${CLUSTER_NAME}" --region "${AWS_REGION}" || {
+            echo "Warning: Could not configure kubeconfig (cluster may not exist yet or may be deleted)"
+            echo "Teardown will proceed but kubernetes-dependent cleanup steps may be skipped"
+          }
 
       - name: Terraform init (backend)
         run: |
