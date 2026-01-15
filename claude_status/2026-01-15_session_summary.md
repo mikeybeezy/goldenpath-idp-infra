@@ -1,7 +1,7 @@
 # Claude Session Summary - 2026-01-15
 
-**Last Updated:** 2026-01-15T15:30:00Z
-**Status:** IN PROGRESS - Fixing terraform plan error
+**Last Updated:** 2026-01-15T18:57:31Z
+**Status:** COMPLETE - Strategic Pivot to Ephemeral Stack
 **Branch:** `feature/tooling-apps-config`
 **Latest Commit:** `9ff1a099` - fix: resolve RDS, Backstage, and workflow inconsistencies
 
@@ -17,7 +17,7 @@ This session has three phases:
 
 ---
 
-## Phase 3: RDS Toggle & Terraform Fix (Current Session)
+## Phase 3: RDS Toggle & Ephemeral Stack Strategy (Session Complete)
 
 ### 1. ADR-0160: RDS Optional Toggle Integration
 
@@ -27,45 +27,32 @@ Extends ADR-0158 to support TWO deployment options:
 - **Option A (Existing)**: Standalone RDS in `envs/dev-rds/` - wired to Backstage
 - **Option B (New)**: Coupled RDS with EKS via `rds_config.enabled` toggle
 
-**Key Insight:** Users can deploy EKS with/without RDS, and add RDS later if needed.
+### 2. ADR-0161: Ephemeral "Simulation" Stack
 
-### 2. Test Framework Compliance (SCRIPT-0034)
+**Created:** `docs/adrs/ADR-0161-ephemeral-infrastructure-stack.md`
 
-**Created test artifacts per PR gate requirements:**
-- `tests/scripts/rds-request-parser/test-plan.md` - 16 test cases
-- `tests/scripts/rds-request-parser/test-record-20260115.md` - 100% pass rate
-- `tests/scripts/rds-request-parser/actual-output.txt` - Raw pytest output
-- Updated `tests/README.md` dashboard with Script Unit Tests section
+Formalized "Option C" for ephemeral/local environments:
+- **Database**: Bitnami PostgreSQL (In-Cluster)
+- **Object Storage**: MinIO (In-Cluster)
+- **AWS Mock**: LocalStack (In-Cluster)
+- **Docs**: `docs/00-foundations/38_EPHEMERAL_STACK_STRATEGY.md`
 
-**Result:** 16/16 tests passed for RDS Request Parser
+### 3. Terraform Plan Fix (COMPLETED)
 
-### 3. Terraform Plan Error (IN PROGRESS)
-
-**Error:**
-```
-Error: Failed to construct REST client
-
-  with kubernetes_manifest.cluster_secret_store[0],
-  on main.tf line 464, in resource "kubernetes_manifest" "cluster_secret_store":
- 464: resource "kubernetes_manifest" "cluster_secret_store" {
-
-cannot create REST client: no client config
-```
-
-**Root Cause:** The `kubernetes_manifest` resource validates against the Kubernetes API during `terraform plan`, not just apply. When no cluster exists, this fails.
-
-**Fix:** Replace `kubernetes_manifest` with `kubectl_manifest` (gavinbunney/kubectl provider) which doesn't require cluster access during plan phase.
+**Error Resolved**: `kubernetes_manifest` failed during plan because it tried to connect to a non-existent cluster.
+**Fix**: Replaced with `kubectl_manifest` (gavinbunney/kubectl provider) in `envs/dev/main.tf`.
 
 ### Files Modified/Created in Phase 3
 
 ```
-docs/adrs/ADR-0160-rds-optional-toggle-integration.md     # NEW - RDS toggle architecture
-docs/changelog/entries/CL-0130-rds-optional-toggle-integration.md  # NEW
-tests/scripts/rds-request-parser/test-plan.md             # NEW - Test plan
-tests/scripts/rds-request-parser/test-record-20260115.md  # NEW - Test record
-tests/scripts/rds-request-parser/actual-output.txt        # NEW - Raw output
-tests/README.md                                           # UPDATED - Dashboard
-envs/dev/main.tf                                          # IN PROGRESS - kubectl fix
+docs/adrs/ADR-0160-rds-optional-toggle-integration.md     # NEW
+docs/adrs/ADR-0161-ephemeral-infrastructure-stack.md      # NEW
+docs/00-foundations/38_EPHEMERAL_STACK_STRATEGY.md        # NEW
+docs/changelog/entries/CL-0131-ephemeral-stack-standardization.md # NEW
+envs/dev/main.tf                                          # FIXED (kubectl_manifest)
+envs/dev-rds/variables.tf                                 # UPDATED (vpc_name target)
+envs/dev-rds/terraform.tfvars                             # CREATED
+docs/70-operations/20_TOOLING_APPS_MATRIX.md              # UPDATED (Added mocks)
 ```
 
 ---

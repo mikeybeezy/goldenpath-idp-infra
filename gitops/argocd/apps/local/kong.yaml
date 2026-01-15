@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: local-kong
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "3" # Deploy after infra, before apps
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    targetRevision: feature/tooling-apps-config
+    path: gitops/helm/kong
+    helm:
+      valueFiles:
+        - values/dev.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kong-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

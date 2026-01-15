@@ -43,6 +43,10 @@ The canonical stack consists of:
     *   The `bootstrap` scripts for Ephemeral/Local modes will automatically install these charts.
     *   `make apply` (in ephemeral mode) will eventually trigger the installation of these mocks via ArgoCD.
 
+4.  **Persistence**:
+    *   **Default**: Ephemeral (emptyDir) for speed.
+    *   **Option**: Supports standard PVC/EBS persistence for debugging if needed.
+
 ## Consequences
 
 ### Positive

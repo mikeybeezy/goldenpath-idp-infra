@@ -1,0 +1,55 @@
+# Default values for local-infra.
+# This is a YAML-formatted file.
+
+global:
+  isEphemeral: true
+
+# -----------------------------------------------------------------------------
+# PostgreSQL (Simulates AWS RDS)
+# -----------------------------------------------------------------------------
+postgresql:
+  enabled: true
+  auth:
+    postgresPassword: "password"
+    username: "app"
+    password: "password"
+    database: "platform"
+  primary:
+    persistence:
+      enabled: false  # Ephemeral storage for speed
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+# -----------------------------------------------------------------------------
+# MinIO (Simulates AWS S3)
+# -----------------------------------------------------------------------------
+minio:
+  enabled: true
+  mode: standalone
+  rootUser: "minioadmin"
+  rootPassword: "minioadmin"
+  persistence:
+    enabled: false  # Ephemeral storage
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# -----------------------------------------------------------------------------
+# LocalStack (Simulates generic AWS APIs)
+# -----------------------------------------------------------------------------
+localstack:
+  enabled: true
+  description: "LocalStack for mocking AWS APIs"
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    edgePort: 4566

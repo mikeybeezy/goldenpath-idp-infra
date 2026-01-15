@@ -29,25 +29,20 @@ auth:
 # PostgreSQL (Bundled for Local)
 # Using bundled PostgreSQL for local Kind clusters
 # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# PostgreSQL (Shared Local-Infra)
+# -----------------------------------------------------------------------------
 postgresql:
-  enabled: true
-  image:
-    registry: docker.io
-    repository: bitnami/postgresql
-    tag: 15.6.0-debian-12-r8
-  auth:
-    existingSecret: keycloak-postgres-secret
-    secretKeys:
-      adminPasswordKey: postgres-password
-      userPasswordKey: password
-  primary:
-    persistence:
-      enabled: true
-      size: 1Gi
+  enabled: false
 
-# External database disabled for local
+# External database points to local-infra service
 externalDatabase:
-  host: ""
+  host: "local-infra-postgresql.local-infra.svc.cluster.local"
+  port: 5432
+  user: "app"
+  password: "password"
+  database: "platform"
+  existingSecret: "" # Disable fetching from secret
 
 # -----------------------------------------------------------------------------
 # Keycloak Configuration
@@ -75,16 +70,17 @@ service:
     https: 443
 
 # -----------------------------------------------------------------------------
-# Ingress (Local - using nginx or port-forward)
+# Ingress (Local - using Kong)
 # -----------------------------------------------------------------------------
 ingress:
   enabled: true
-  ingressClassName: nginx
+  ingressClassName: kong
   hostname: keycloak.localhost
   path: /
   pathType: Prefix
   tls: false
-  annotations: {}
+  annotations:
+    konghq.com/strip-path: "true"
 
 # -----------------------------------------------------------------------------
 # Logging

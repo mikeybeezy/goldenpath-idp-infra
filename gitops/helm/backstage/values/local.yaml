@@ -20,6 +20,13 @@ backstage:
 # -----------------------------------------------------------------------------
 # App Configuration
 # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# PostgreSQL (Shared Local-Infra)
+# -----------------------------------------------------------------------------
+postgresql:
+  enabled: false
+
+# App Configuration
 appConfig:
   app:
     baseUrl: http://backstage.localhost:7007
@@ -32,61 +39,31 @@ appConfig:
     database:
       client: pg
       connection:
-        host: ${POSTGRES_HOST}
-        port: ${POSTGRES_PORT}
-        user: ${POSTGRES_USER}
-        password: ${POSTGRES_PASSWORD}
+        host: "local-infra-postgresql.local-infra.svc.cluster.local"
+        port: 5432
+        user: "app"
+        password: "password"
 
-  # Catalog locations
-  catalog:
-    locations:
-      - type: url
-        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/ci-apply-dev/template.yaml
-        rules:
-          - allow:
-              - Template
-      - type: url
-        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/app-template/template.yaml
-        rules:
-          - allow:
-              - Template
-
-  # GitHub Integration (optional for local - can use dummy token)
-  integrations:
-    github:
-      - host: github.com
-        token: ${GITHUB_TOKEN}
-
-  # Auth disabled for local development (guest access)
-  auth:
-    environment: development
-    providers: {}
-
-# -----------------------------------------------------------------------------
-# PostgreSQL (Bundled for Local)
-# -----------------------------------------------------------------------------
-postgresql:
-  enabled: true
-  image:
-    registry: docker.io
-    repository: bitnami/postgresql
-    tag: 15.6.0-debian-12-r8
-  auth:
-    existingSecret: backstage-postgres-secret
-    secretKeys:
-      adminPasswordKey: postgres-password
-      userPasswordKey: password
-  primary:
-    persistence:
-      enabled: true
-      size: 1Gi
+    # TechDocs using MinIO
+    techdocs:
+      builder: 'local'
+      generator:
+        runIn: 'local'
+      publisher:
+        type: 'awsS3'
+        awsS3:
+          bucketName: techdocs
+          endpoint: http://local-infra-minio.local-infra.svc.cluster.local:9000
+          s3ForcePathStyle: true
+          accessKeyId: minioadmin
+          secretAccessKey: minioadmin
 
 # -----------------------------------------------------------------------------
 # Ingress (Local)
 # -----------------------------------------------------------------------------
 ingress:
   enabled: true
-  className: nginx
+  className: kong
   host: backstage.localhost
   annotations: {}
 

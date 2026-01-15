@@ -8,6 +8,20 @@
 
 We believe that developer feedback loops should be measured in seconds, not minutes. Waiting 15 minutes for an RDS instance to spin up just to test a schema migration is unacceptable.
 
+## Dual Path Strategy: Reality vs. Simulation
+
+We maintain two concurrent operating modes to balance **speed** with **production realism**:
+
+### 1. The "Real Stack" (Default Dev)
+*   **Target**: `make deploy ENV=dev`
+*   **Infrastructure**: Real AWS RDS, Real S3, Real IAM Roles.
+*   **Purpose**: Production Parity. This is where we "learn lessons" about cloud latency, permissions, and network limits. It allows us to catch integration issues early.
+
+### 2. The "Simulation Stack" (Local/Ephemeral)
+*   **Target**: `make deploy ENV=dev ENV_NAME=local`
+*   **Infrastructure**: LocalStack, MinIO, Bitnami Postgres containers.
+*   **Purpose**: Velocity. This is strictly to unblock developers from the costs and provisioning times of real infrastructure during rapid iteration loops.
+
 To achieve this, we employ a **"Simulation Strategy"**:
 *   **Local & CI** environments run on a **Simulated Cloud** inside the cluster.
 *   **Staging & Production** environments run on the **Real Cloud** (AWS).
@@ -32,6 +46,14 @@ To achieve this, we employ a **"Simulation Strategy"**:
 *   **Why**: It provides the exact same wire protocol as AWS RDS Postgres. Your application cannot tell the difference.
 *   **Configuration**:
     *   Configured to match Prod version (e.g., PostgreSQL 15.4).
+
+### 4. Storage & Persistence
+By default, the simulation stack runs with **ephemeral storage** (emptyDir) for maximum speed.
+However, the stack is fully compatible with **Persistent Volume Claims (PVCs)** backed by AWS EBS if data durability is required.
+
+*   **Default**: `persistence.enabled: false` (Data lost on pod restart).
+*   **Capability**: Can be enabled in `gitops/helm/local-infra/values.yaml` to provision gp3 EBS volumes.
+*   **Use Case**: Debugging complex state issues that require data to survive pod restarts.
 
 ## How It Works (The "Switch")
 
