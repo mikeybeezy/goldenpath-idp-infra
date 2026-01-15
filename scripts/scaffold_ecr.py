@@ -22,7 +22,7 @@ risk_profile:
 
 """
 Purpose: Standardized ECR Repository Scaffolding.
-Relates-To: how-it-works/ECR_REQUEST_FLOW.md
+Relates-To: 85-how-it-works/self-service/ECR_REQUEST_FLOW.md
 """
 import sys
 import os

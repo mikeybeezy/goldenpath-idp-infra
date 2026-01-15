@@ -14,7 +14,7 @@ schema_version: 1
 relates_to:
   - ADR-0142-declarative-platform-contracts.md
   - ADR-0143-secret-request-contract.md
-  - how-it-works/SECRET_REQUEST_FLOW.md
+  - 85-how-it-works/secrets-flow/SECRET_REQUEST_FLOW.md
 supersedes: []
 superseded_by: []
 tags: []

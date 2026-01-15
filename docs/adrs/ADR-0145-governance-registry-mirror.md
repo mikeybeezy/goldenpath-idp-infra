@@ -185,4 +185,4 @@ Only the **CI identity** may push to `governance-registry`. Human contributors d
 - **Runbook**: [RB-0028: Governance Registry Operations](/docs/70-operations/runbooks/RB-0028-governance-registry-operations.md)
 - **Workflow**: [governance-registry-writer.yml](/.github/workflows/governance-registry-writer.yml)
 - **Validator**: `validate_govreg.py`: Ensures the registry branch structure is sound.
-- **Architecture**: [How it Works - Governance Registry Mirror](/how-it-works/GOVERNANCE_REGISTRY_MIRROR.md)
+- **Architecture**: [How it Works - Governance Registry Mirror](/85-how-it-works/governance/GOVERNANCE_REGISTRY_MIRROR.md)

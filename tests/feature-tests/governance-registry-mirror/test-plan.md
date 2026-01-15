@@ -178,7 +178,7 @@ If test fails:
 
 - **ADR-0145:** [Governance Registry Mirror Pattern](/docs/adrs/ADR-0145-governance-registry-mirror.md)
 - **RB-0028:** [Registry Operations Runbook](/docs/70-operations/runbooks/RB-0028-governance-registry-operations.md)
-- **How-it-Works:** [Governance Registry Mirror](/how-it-works/GOVERNANCE_REGISTRY_MIRROR.md)
+- **How-it-Works:** [Governance Registry Mirror](/85-how-it-works/governance/GOVERNANCE_REGISTRY_MIRROR.md)
 
 ---
 

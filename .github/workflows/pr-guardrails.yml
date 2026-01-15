@@ -1,5 +1,5 @@
 # Owner: platform
-# Relates-To: how-it-works/PR_GUARDRAILS.md
+# Relates-To: 85-how-it-works/governance/PR_GUARDRAILS.md
 name: Policy - PR Guardrails
 
 on:
