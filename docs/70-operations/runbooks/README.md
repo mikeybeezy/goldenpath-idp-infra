@@ -37,6 +37,11 @@ relates_to:
   - RB-0024
   - RB-0025
   - RB-0026
+  - RB-0027
+  - RB-0028
+  - RB-0029
+  - RB-0030
+  - RB-0031
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
@@ -69,6 +74,11 @@ breaking_change: false
 - [docs/70-operations/runbooks/RB-0020-git-troubleshooting.md](docs/70-operations/runbooks/RB-0020-git-troubleshooting.md) — Resolving branch drift and merge conflicts in governed repos.
 - [docs/70-operations/runbooks/RB-0025-ecr-catalog-sync.md](docs/70-operations/runbooks/RB-0025-ecr-catalog-sync.md) — Sync Backstage ECR registry to AWS physical state.
 - [docs/70-operations/runbooks/RB-0026-local-secret-generation.md](docs/70-operations/runbooks/RB-0026-local-secret-generation.md) — Execute the Secret Request Parser locally for dry-runs and targeting.
+- [docs/70-operations/runbooks/RB-0027-frictionless-pr-gates.md](docs/70-operations/runbooks/RB-0027-frictionless-pr-gates.md) — Managing PR gate policies and exemptions.
+- [docs/70-operations/runbooks/RB-0028-governance-registry-operations.md](docs/70-operations/runbooks/RB-0028-governance-registry-operations.md) — Syncing governance registry branch operations.
+- [docs/70-operations/runbooks/RB-0029-rds-manual-secret-rotation.md](docs/70-operations/runbooks/RB-0029-rds-manual-secret-rotation.md) — Manually rotate RDS credentials in Secrets Manager.
+- [docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md](docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md) — Emergency RDS instance deletion procedures.
+- [docs/70-operations/runbooks/RB-0031-idp-stack-deployment.md](docs/70-operations/runbooks/RB-0031-idp-stack-deployment.md) — Deploy Keycloak and Backstage IDP stack with ECR images and RDS.
 
 ### App Team Runbooks
 - [docs/70-operations/runbooks/app-team/RB-0021-fix-cve-guide.md](docs/70-operations/runbooks/app-team/RB-0021-fix-cve-guide.md) — Step-by-step guide to resolving CVEs in container images.

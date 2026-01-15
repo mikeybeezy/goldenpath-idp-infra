@@ -2,128 +2,113 @@
 
 **Date**: 2026-01-15
 **Environment**: AWS `dev` (EKS)
+**Cluster**: `goldenpath-dev-eks`
+**Region**: `eu-west-2`
 **Objective**: Fix persistent `CrashLoopBackOff` (Backstage) and `ImagePullBackOff` (Keycloak) to enable platform health.
 
 ## 1. Executive Summary
+
 This session focused on resolving critical startup failures in the core IDP stack. We successfully diagnosed and fixed a complex chain of issues involving **AWS Secrets Manager IAM policies**, **Backstage Configuration Loading**, **Keycloak Image Architecture mismatches**, and **RDS PostgreSQL user provisioning**.
 
 **Key Outcome**:
 
-*   **Keycloak**: ✅ Running 1/1 - AMD64 Bitnami image from ECR, connected to RDS.
-*   **Backstage**: ✅ Running 1/1 - Local `backstage-helm` chart with ECR image, SSL RDS connection working.
-*   **Infrastructure**: Secrets syncing fully operational via ExternalSecrets.
+- **Keycloak**: ✅ Running 1/1 - AMD64 Bitnami image from ECR, connected to RDS.
+- **Backstage**: ✅ Running 1/1 - Local `backstage-helm` chart with ECR image, SSL RDS connection working.
+- **Infrastructure**: Secrets syncing fully operational via ExternalSecrets.
 
 ## 2. Detailed Issue Log & Resolutions
 
 ### A. Keycloak: The Image Pull & Compatibility Saga
+
 **Problem**: `dev-keycloak-0` stuck in `Init:ErrImagePull`, then `Init:Error`.
+
 **Investigation Trace**:
-1.  **Bitnami Hub Failure**: Attempts to pull `docker.io/bitnami/keycloak` tags (`25.0.0`, `26.1.1`, `latest`) consistently failed with `Manifest Not Found`.
-    *   *Cause*: Docker Hub rate-limiting or regional availability issues for Bitnami's public repo.
-2.  **ECR Mirroring (Attempt 1 - Architecture Mismatch)**: 
-    *   Created private ECR: `aws ecr create-repository --repository-name keycloak --region eu-west-2`
-    *   Pulled `quay.io/keycloak/keycloak:latest` locally and pushed to ECR.
-    *   *Result*: Pod failed with `exec format error`.
-    *   *Root Cause*: Local machine (Apple Silicon) pulled `arm64`, but EKS nodes are `amd64`.
-3.  **Cross-Architecture Fix (Attempt 2 - Image Incompatibility Discovered)**:
-    *   Forced AMD64 pull: `docker pull --platform linux/amd64 quay.io/keycloak/keycloak:latest`
-    *   Pushed to ECR: `593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak:latest`
-    *   *Result*: **Still failed** with `exec format error` (misleading log).
-    *   *Root Cause*: Official Keycloak image lacks Bitnami-specific scripts (`/opt/bitnami/scripts/liblog.sh`) that the Bitnami Helm chart init container expects.
-4.  **Bitnami-Compatible Image (Attempt 3 - SUCCESS)**:
-    *   Discovered `public.ecr.aws/bitnami/keycloak` as an alternative source.
-    *   Forced AMD64 pull: `docker pull --platform linux/amd64 public.ecr.aws/bitnami/keycloak:latest`
-    *   **Verified Architecture**: `amd64` ✓
-    *   **Status**: Pushing to ECR (490.6MB, in progress at 22:25 UTC).
-    *   *Chart Update*: Already set `image.registry` to ECR private URL and enabled `global.security.allowInsecureImages: true`.
+
+1. **Bitnami Hub Failure**: Attempts to pull `docker.io/bitnami/keycloak` tags (`25.0.0`, `26.1.1`, `latest`) consistently failed with `Manifest Not Found`.
+   - *Cause*: Docker Hub rate-limiting or regional availability issues for Bitnami's public repo.
+
+2. **ECR Mirroring (Attempt 1 - Architecture Mismatch)**:
+   - Created private ECR: `aws ecr create-repository --repository-name keycloak --region eu-west-2`
+   - Pulled `quay.io/keycloak/keycloak:latest` locally and pushed to ECR.
+   - *Result*: Pod failed with `exec format error`.
+   - *Root Cause*: Local machine (Apple Silicon) pulled `arm64`, but EKS nodes are `amd64`.
+
+3. **Cross-Architecture Fix (Attempt 2 - Image Incompatibility Discovered)**:
+   - Forced AMD64 pull: `docker pull --platform linux/amd64 quay.io/keycloak/keycloak:latest`
+   - Pushed to ECR: `593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak:latest`
+   - *Result*: **Still failed** with `exec format error` (misleading log).
+   - *Root Cause*: Official Keycloak image lacks Bitnami-specific scripts (`/opt/bitnami/scripts/liblog.sh`) that the Bitnami Helm chart init container expects.
+
+4. **Bitnami-Compatible Image (Attempt 3 - SUCCESS)**:
+   - Discovered `public.ecr.aws/bitnami/keycloak` as an alternative source.
+   - Forced AMD64 pull: `docker pull --platform linux/amd64 public.ecr.aws/bitnami/keycloak:latest`
+   - **Verified Architecture**: `amd64` ✓
+   - Pushed to ECR: `593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak:latest`
+   - *Chart Update*: Set `image.registry` to ECR private URL and enabled `global.security.allowInsecureImages: true`.
 
 ### B. Backstage: Configuration & Crash Loops
-**Problem**: `dev-backstage` crashing immediately on startup.
+
+**Problem**: `dev-backstage` crashing immediately on startup with multiple sequential errors.
+
 **Investigation Trace**:
-1.  **Auth Key Missing**: Logged `Error: You must configure at least one key in backend.auth.keys`.
-    *   *Fix 1 (Failed)*: `appConfig` update was ignored by chart merging logic.
-    *   *Fix 2 (Success)*: Forced injection via Env Var `APP_CONFIG_backend_auth_keys_0_secret`.
-2.  **Kubernetes Plugin**: Logged `Error: Kubernetes configuration is missing`.
-    *   *Fix*: Added `kubernetes` block to `values.yaml` with `multiTenant` configuration.
-3.  **Image Update**: Switched to custom build `ghcr.io/guymenahem/backstage-platformers:0.0.1` as requested.
+
+1. **Auth Key Missing**: Logged `Error: You must configure at least one key in backend.auth.keys`.
+   - *Fix 1 (Failed)*: `appConfig` update was ignored by chart merging logic.
+   - *Fix 2 (Success)*: Forced injection via Env Var `APP_CONFIG_backend_auth_keys_0_secret`.
+
+2. **Kubernetes Plugin**: Logged `Error: Kubernetes configuration is missing`.
+   - *Fix*: Added `kubernetes` block to `values.yaml` with `multiTenant` configuration.
+
+3. **Wrong Helm Chart**: ArgoCD was using `backstage.github.io/charts` instead of local chart.
+   - User clarified: Use local `backstage-helm/charts/backstage` chart.
+
+4. **ArgoCD valueFiles Path Error**: Relative path `../../../gitops/helm/backstage/values/dev.yaml` failed with `permission denied`.
+   - *Fix*: Switched to multi-source pattern with `$values` reference.
+
+5. **RDS SSL Required**: Error `no pg_hba.conf entry for host ... no encryption`.
+   - *Fix*: Added `ssl.require: true` and `ssl.rejectUnauthorized: false` to database connection config.
+
+6. **CREATEDB Permission**: Error `permission denied to create database` for `backstage_plugin_scaffolder`.
+   - *Fix*: Granted `CREATEDB` privilege to `backstage_app` user via psql.
 
 ### C. Infrastructure: Secret Syncing
+
 **Problem**: ExternalSecrets failed to sync (`SecretSyncedError`).
-**Fix**: 
-*   Modified IAM Policy to allow wildcards (`goldenpath*`) matching secret names with slashes (e.g., `goldenpath/dev/backstage/...`).
-*   Manually created missing `ClusterSecretStore`.
 
-## 3. Configuration Changes Summary
+**Fix**:
 
-### Keycloak Helm Values (`gitops/helm/keycloak/values/dev.yaml`)
-```yaml
-image:
-  registry: 593517239005.dkr.ecr.eu-west-2.amazonaws.com
-  repository: keycloak
-  tag: latest # (AMD64 Official Build)
+- Modified IAM Policy to allow wildcards (`goldenpath*`) matching secret names with slashes (e.g., `goldenpath/dev/backstage/...`).
+- Manually created missing `ClusterSecretStore`.
 
-global:
-  security:
-    allowInsecureImages: true # Required for private ECR
-```
-
-### Backstage Helm Values (`gitops/helm/backstage/values/dev.yaml`)
-```yaml
-image:
-  registry: ghcr.io
-  repository: guymenahem/backstage-platformers
-  tag: 0.0.1
-
-extraEnvVars:
-  - name: APP_CONFIG_backend_auth_keys_0_secret # Forced Auth Key
-    value: "random-generated-secret-key-for-backend-auth"
-
-appConfig:
-  kubernetes: # Added Plugin Config
-    serviceLocatorMethod:
-      type: multiTenant
-```
-
-## 4. Current Status & Next Steps
-
-*   [x] **Keycloak Image**: Pushed to ECR (Verified AMD64 Bitnami).
-*   [x] **Image Cache Fix**: Set `pullPolicy: Always` to force refresh of cached image.
-*   [x] **Keycloak Init Container**: Passing successfully.
-*   [x] **ExternalSecret**: Now syncing all 4 DB properties (host, port, username, password).
-*   [x] **Keycloak DB Connection**: ✅ Network connectivity established to RDS.
-*   [x] **Backstage Config**: Verified correct via logs.
-*   [x] **Changelog**: Created `CL-0132` documenting ClusterSecretStore addon fix.
-*   [x] **Keycloak DB Authentication**: ✅ FIXED - Created `keycloak_app` and `backstage_app` users in RDS manually.
-*   [x] **Keycloak Running**: ✅ Pod is now 1/1 Running.
-*   [x] **Backstage ECR Repo**: Created and image pushed (AMD64).
-*   [x] **Backstage Chart**: Switched to local `backstage-helm/charts/backstage`.
-*   [x] **ArgoCD Multi-Source**: Fixed valueFiles path using `$values` reference pattern.
-*   [x] **ExternalSecret Template**: Added to chart for AWS Secrets Manager integration.
-*   [x] **SSL Config**: Added `ssl.require: true` for RDS connection.
-*   [ ] **Backstage Deployment**: Awaiting sync after SSL fix push.
-
-### D. RDS User Provisioning Gap (NEW)
+### D. RDS User Provisioning Gap
 
 **Problem**: Terraform creates AWS Secrets Manager secrets with credentials but does NOT create actual PostgreSQL users.
 
 **Root Cause**: The `rds_config.application_databases` in terraform.tfvars defines usernames, but no provisioner runs `CREATE USER` in PostgreSQL.
 
-**Fix (Manual)**:
+**Fix (Manual via psql pod)**:
 
 ```sql
--- Via psql pod in cluster
-CREATE USER keycloak_app WITH PASSWORD '<from-secret>';
+-- Connect as postgres master user
+-- RDS Host: goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com
+
+-- Keycloak user and database
+CREATE USER keycloak_app WITH PASSWORD '<from goldenpath/dev/keycloak/postgres secret>';
 CREATE DATABASE keycloak OWNER keycloak_app;
 GRANT ALL PRIVILEGES ON DATABASE keycloak TO keycloak_app;
 
-CREATE USER backstage_app WITH PASSWORD '<from-secret>';
+-- Backstage user and database
+CREATE USER backstage_app WITH PASSWORD '<from goldenpath/dev/backstage/postgres secret>';
 CREATE DATABASE backstage_plugin_catalog OWNER backstage_app;
 GRANT ALL PRIVILEGES ON DATABASE backstage_plugin_catalog TO backstage_app;
+
+-- Additional privilege for Backstage (creates plugin databases dynamically)
+ALTER USER backstage_app CREATEDB;
 ```
 
 **Future**: Consider adding a Terraform `null_resource` with `local-exec` provisioner or a Kubernetes Job to automate user creation.
 
-### E. Backstage Chart Migration (NEW)
+### E. Backstage Chart Migration
 
 **Problem**: Multiple Backstage chart issues - wrong chart source, image field names, values path errors.
 
@@ -134,7 +119,182 @@ GRANT ALL PRIVILEGES ON DATABASE backstage_plugin_catalog TO backstage_app;
 3. **ExternalSecret Integration**: Added conditional `externalsecret.yaml` template and made `secret.yaml` conditional via `externalSecret.enabled`.
 4. **SSL for RDS**: Added `ssl.require: true` and `ssl.rejectUnauthorized: false` in appConfig database connection.
 
+## 3. Configuration Changes Summary
+
+### ArgoCD Application (`gitops/argocd/apps/dev/backstage.yaml`)
+
+```yaml
+spec:
+  sources:
+    # Source 1: Values files from repo root
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: feature/tooling-apps-config
+      ref: values
+    # Source 2: Helm chart with values reference
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      path: backstage-helm/charts/backstage
+      targetRevision: feature/tooling-apps-config
+      helm:
+        valueFiles:
+          - $values/gitops/helm/backstage/values/dev.yaml
+```
+
+### Backstage Helm Values (`gitops/helm/backstage/values/dev.yaml`)
+
+```yaml
+# Image from private ECR
+image:
+  repository: 593517239005.dkr.ecr.eu-west-2.amazonaws.com/
+  name: backstage
+  tag: 0.0.1
+  pullPolicy: Always
+
+# ExternalSecret integration (disables chart's built-in secret)
+externalSecret:
+  enabled: true
+  secretStoreRef:
+    name: aws-secretsmanager
+    kind: ClusterSecretStore
+  secrets:
+    postgresPassword:
+      remoteRef:
+        key: goldenpath/dev/backstage/postgres
+        property: password
+    postgresUser:
+      remoteRef:
+        key: goldenpath/dev/backstage/postgres
+        property: username
+    githubToken:
+      remoteRef:
+        key: goldenpath/dev/backstage/secrets
+        property: token
+
+# PostgreSQL RDS connection
+postgres:
+  host: goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com
+  port: "5432"
+  user: backstage_app
+
+# SSL required for RDS (in appConfig)
+appConfig: |
+  backend:
+    database:
+      client: pg
+      connection:
+        host: ${POSTGRES_HOST}
+        port: ${POSTGRES_PORT}
+        user: ${POSTGRES_USER}
+        password: ${POSTGRES_PASSWORD}
+        ssl:
+          require: true
+          rejectUnauthorized: false
+```
+
+### Chart Templates Modified
+
+**`backstage-helm/charts/backstage/templates/secret.yaml`** - Made conditional:
+
+```yaml
+{{- if not .Values.externalSecret.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backstage-secrets
+data:
+  POSTGRES_USER: {{ .Values.postgres.user | b64enc}}
+  POSTGRES_PASSWORD: {{ .Values.postgres.password | b64enc}}
+  GITHUB_TOKEN: {{ .Values.github.accessToken | default "None" | b64enc}}
+{{- end }}
+```
+
+**`backstage-helm/charts/backstage/templates/externalsecret.yaml`** - New template:
+
+```yaml
+{{- if .Values.externalSecret.enabled }}
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: backstage-secrets
+spec:
+  refreshInterval: 1m
+  secretStoreRef:
+    name: {{ .Values.externalSecret.secretStoreRef.name }}
+    kind: {{ .Values.externalSecret.secretStoreRef.kind }}
+  target:
+    name: backstage-secrets
+    creationPolicy: Owner
+  data:
+    - secretKey: POSTGRES_PASSWORD
+      remoteRef:
+        key: {{ .Values.externalSecret.secrets.postgresPassword.remoteRef.key }}
+        property: {{ .Values.externalSecret.secrets.postgresPassword.remoteRef.property }}
+    - secretKey: POSTGRES_USER
+      remoteRef:
+        key: {{ .Values.externalSecret.secrets.postgresUser.remoteRef.key }}
+        property: {{ .Values.externalSecret.secrets.postgresUser.remoteRef.property }}
+    - secretKey: GITHUB_TOKEN
+      remoteRef:
+        key: {{ .Values.externalSecret.secrets.githubToken.remoteRef.key }}
+        property: {{ .Values.externalSecret.secrets.githubToken.remoteRef.property }}
+{{- end }}
+```
+
+### Keycloak Helm Values (`gitops/helm/keycloak/values/dev.yaml`)
+
+```yaml
+image:
+  registry: 593517239005.dkr.ecr.eu-west-2.amazonaws.com
+  repository: keycloak
+  tag: latest  # AMD64 Bitnami build
+
+global:
+  security:
+    allowInsecureImages: true  # Required for private ECR
+```
+
+## 4. Final Status
+
+| Component | Status | Pod | Details |
+|-----------|--------|-----|---------|
+| **Keycloak** | ✅ Running | `dev-keycloak-0` 1/1 | AMD64 Bitnami from ECR, connected to RDS |
+| **Backstage** | ✅ Running | `dev-backstage-*` 1/1 | Local chart, ECR image, SSL RDS connection |
+| **ExternalSecrets** | ✅ Synced | N/A | `backstage-secrets` syncing from AWS Secrets Manager |
+
+### Commits Made This Session
+
+| Commit | Message |
+|--------|---------|
+| `d4174ef7` | fix: use ArgoCD multi-source pattern for Backstage values |
+| `0e0bd2fa` | fix: add SSL config for Backstage RDS connection |
+| `5d13229e` | docs: update session summary with final platform status |
+
+### AWS Resources
+
+| Resource | ARN/ID | Purpose |
+|----------|--------|---------|
+| ECR: `backstage` | `593517239005.dkr.ecr.eu-west-2.amazonaws.com/backstage` | Backstage container image |
+| ECR: `keycloak` | `593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak` | Keycloak container image |
+| RDS | `goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com` | PostgreSQL 15.15 |
+| Secret | `goldenpath/dev/rds/master` | RDS master credentials |
+| Secret | `goldenpath/dev/backstage/postgres` | Backstage DB credentials |
+| Secret | `goldenpath/dev/backstage/secrets` | Backstage GitHub token |
+| Secret | `goldenpath/dev/keycloak/postgres` | Keycloak DB credentials |
+
 ## 5. Documentation Created
-*   **Session Summary**: `claude_status/2026-01-15_session_summary.md`
-*   **Changelog**: `docs/changelog/entries/CL-0132-cluster-secret-store-addon-fix.md`
-*   **Artifacts**: `brain/fc919e57.../walkthrough.md`, `task.md`, `implementation_plan.md`
+
+- **Session Summary**: `claude_status/2026-01-15_session_summary.md`
+- **Changelog**: `docs/changelog/entries/CL-0132-cluster-secret-store-addon-fix.md`
+
+## 6. Lessons Learned
+
+1. **ARM64 vs AMD64**: Always use `--platform linux/amd64` when pulling images on Apple Silicon for deployment to x86 clusters.
+
+2. **Bitnami Charts**: Require Bitnami-specific images (not official upstream images) due to init scripts.
+
+3. **ArgoCD Multi-Source**: For values files outside chart directory, use `sources` with `ref: values` and `$values/` prefix pattern.
+
+4. **RDS User Provisioning**: Terraform creates secrets but not PostgreSQL users - manual intervention or automation required.
+
+5. **RDS SSL**: AWS RDS requires SSL by default. Configure `ssl.require: true` in application database connections.
+
+6. **Backstage CREATEDB**: Backstage dynamically creates plugin databases, requiring `CREATEDB` privilege on its database user.
