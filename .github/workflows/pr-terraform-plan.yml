@@ -129,11 +129,18 @@ jobs:
 
       - name: Comment plan on PR
         uses: actions/github-script@v7
+        env:
+          CLUSTER_LIFECYCLE: ${{ env.CLUSTER_LIFECYCLE }}
+          BUILD_ID: ${{ env.BUILD_ID }}
+          STATE_KEY: ${{ env.STATE_KEY }}
         with:
           script: |
             const fs = require("fs");
             const plan = fs.readFileSync("plan.txt", "utf8");
             const planJson = JSON.parse(fs.readFileSync("plan.json", "utf8"));
+            const lifecycle = process.env.CLUSTER_LIFECYCLE || "unknown";
+            const buildId = process.env.BUILD_ID || "";
+            const stateKey = process.env.STATE_KEY || "";
             const escapeHtml = (value) =>
               value
                 .replace(/&/g, "&amp;")
@@ -154,6 +161,12 @@ jobs:
             const body = [
               "## Terraform plan (envs/dev)",
               "",
+              "| Parameter | Value |",
+              "|-----------|-------|",
+              `| Lifecycle | \`${lifecycle}\` |`,
+              buildId ? `| Build ID | \`${buildId}\` |` : "",
+              `| State Key | \`${stateKey}\` |`,
+              "",
               "<details>",
               "<summary>Plan summary</summary>",
               "",
@@ -173,8 +186,10 @@ jobs:
               `<pre>${planBody}</pre>`,
               "</details>",
               "",
-              truncated ? "_Truncated to 65k characters._" : ""
-            ].join("\\n");
+              truncated ? "_Truncated to 65k characters._" : "",
+              "",
+              "> Merging this PR will trigger auto-apply to dev."
+            ].filter(Boolean).join("\\n");
 
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
