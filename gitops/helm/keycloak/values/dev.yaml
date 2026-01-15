@@ -10,12 +10,12 @@ governance:
 # -----------------------------------------------------------------------------
 # Image Configuration - Pinned Version
 # -----------------------------------------------------------------------------
-# Image Configuration - Using Chart Default
-#image:
-#  registry: docker.io
-#  repository: bitnami/keycloak
-#  tag: latest
-#  pullPolicy: IfNotPresent
+# Image Configuration - Pinned to 25.0.0
+image:
+  registry: docker.io
+  repository: bitnami/keycloak
+  tag: 25.0.0
+  pullPolicy: IfNotPresent
 
 # -----------------------------------------------------------------------------
 # Authentication

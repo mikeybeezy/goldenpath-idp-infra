@@ -105,6 +105,10 @@ ingress:
 extraEnvVarsSecrets:
   - backstage-secrets
 
+extraEnvVars:
+  - name: APP_CONFIG_backend_auth_keys_0_secret
+    value: "random-generated-secret-key-for-backend-auth"
+
 # -----------------------------------------------------------------------------
 # Resource Limits for Dev
 # -----------------------------------------------------------------------------
