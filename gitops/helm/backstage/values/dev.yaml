@@ -8,13 +8,13 @@ governance:
   reliability: null
 
 # -----------------------------------------------------------------------------
-# Image Configuration - Pinned Version
+# Image Configuration - Pinned Version (ECR)
 # -----------------------------------------------------------------------------
 image:
-  repository: ghcr.io/guymenahem/
-  name: backstage-platformers
+  repository: 593517239005.dkr.ecr.eu-west-2.amazonaws.com/
+  name: backstage
   tag: 0.0.1
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 # -----------------------------------------------------------------------------
 # App Configuration (YAML string format for Platformers chart)
