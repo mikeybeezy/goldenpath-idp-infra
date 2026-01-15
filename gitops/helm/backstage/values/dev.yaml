@@ -68,6 +68,13 @@ appConfig:
       - host: github.com
         token: ${GITHUB_TOKEN}
 
+    kubernetes:
+      serviceLocatorMethod:
+        type: multiTenant
+      clusterLocatorMethods:
+        - type: config
+          clusters: []
+
     # Auth configuration moved to backend block
 
 # -----------------------------------------------------------------------------
