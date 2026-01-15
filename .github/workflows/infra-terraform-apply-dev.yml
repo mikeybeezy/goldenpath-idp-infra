@@ -242,37 +242,6 @@ jobs:
             -backend-config="dynamodb_table=goldenpath-idp-dev-db-key" \
             -backend-config="encrypt=true"
 
-      - name: DEBUG - Manual EKS Access Setup
-        if: ${{ steps.effective.outputs.lifecycle == 'ephemeral' }}
-        env:
-          BUILD_ID: ${{ steps.effective.outputs.build_id }}
-        run: |
-          # 1. Get Current Runner ARN
-          RUNNER_ARN=$(aws sts get-caller-identity --query Arn --output text)
-          echo "Runnner ARN: $RUNNER_ARN"
-
-          # 2. Create Access Entry (Ignore if exists)
-          echo "Creating Access Entry..."
-          aws eks create-access-entry \
-            --cluster-name "goldenpath-dev-eks-${BUILD_ID}" \
-            --principal-arn "$RUNNER_ARN" \
-            --region eu-west-2 || true
-
-          # 3. Associate Policy (Ignore if exists)
-          echo "Associating Policy..."
-          aws eks associate-access-policy \
-            --cluster-name "goldenpath-dev-eks-${BUILD_ID}" \
-            --principal-arn "$RUNNER_ARN" \
-            --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
-            --access-scope type=cluster \
-            --region eu-west-2 || true
-
-          # 4. Update Kubeconfig & Verify
-          echo "Verifying Connectivity..."
-          aws eks update-kubeconfig --name "goldenpath-dev-eks-${BUILD_ID}" --region eu-west-2 || true
-          kubectl get ns || true
-          kubectl get pods -A || true
-
       - name: Terraform apply (dev)
         env:
           LIFECYCLE: ${{ steps.effective.outputs.lifecycle }}
@@ -283,6 +252,51 @@ jobs:
             var_args+=(-var "build_id=${BUILD_ID}")
           fi
           terraform -chdir=envs/dev apply -auto-approve -input=false -no-color "${var_args[@]}"
+
+      - name: Setup EKS access for runner
+        if: ${{ steps.effective.outputs.lifecycle == 'ephemeral' }}
+        env:
+          BUILD_ID: ${{ steps.effective.outputs.build_id }}
+        run: |
+          CLUSTER_NAME="goldenpath-dev-eks-${BUILD_ID}"
+
+          # Get runner's IAM ARN
+          RUNNER_ARN=$(aws sts get-caller-identity --query Arn --output text)
+          echo "Runner ARN: $RUNNER_ARN"
+
+          # Create access entry for runner
+          echo "Creating EKS access entry..."
+          aws eks create-access-entry \
+            --cluster-name "${CLUSTER_NAME}" \
+            --principal-arn "$RUNNER_ARN" \
+            --region eu-west-2 || true
+
+          # Associate admin policy
+          echo "Associating admin policy..."
+          aws eks associate-access-policy \
+            --cluster-name "${CLUSTER_NAME}" \
+            --principal-arn "$RUNNER_ARN" \
+            --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
+            --access-scope type=cluster \
+            --region eu-west-2 || true
+
+          # Update kubeconfig
+          echo "Updating kubeconfig..."
+          aws eks update-kubeconfig --name "${CLUSTER_NAME}" --region eu-west-2
+
+          # Verify connectivity
+          echo "Verifying cluster connectivity..."
+          kubectl get ns
+
+      - name: Run bootstrap
+        if: ${{ steps.effective.outputs.lifecycle == 'ephemeral' }}
+        env:
+          BUILD_ID: ${{ steps.effective.outputs.build_id }}
+          AWS_REGION: eu-west-2
+        run: |
+          echo "Running bootstrap for build ${BUILD_ID}..."
+          make bootstrap ENV=dev BUILD_ID=${BUILD_ID} ALLOW_REUSE_BUILD_ID=true
+
       - name: Runbook link
         if: always()
         run: |
