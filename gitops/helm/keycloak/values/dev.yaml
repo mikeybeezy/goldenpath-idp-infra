@@ -10,11 +10,11 @@ governance:
 # -----------------------------------------------------------------------------
 # Image Configuration - Pinned Version
 # -----------------------------------------------------------------------------
-# Image Configuration - Pinned to known working version
+# Image Configuration - Using latest to unblock
 image:
   registry: docker.io
   repository: bitnami/keycloak
-  tag: 25.0.1-debian-12-r0
+  tag: latest
   pullPolicy: IfNotPresent
 
 # -----------------------------------------------------------------------------
