@@ -522,23 +522,76 @@ module "app_secrets" {
 }
 
 ################################################################################
-# Platform RDS: REMOVED - Now Standalone Bounded Context
+# Platform RDS: Two Deployment Models (ADR-0160)
 ################################################################################
 #
-# RDS has been migrated to a standalone bounded context per ADR-0158.
-# Deploy RDS separately using: make rds-apply ENV=dev
+# Option A: Standalone Bounded Context (ADR-0158)
+#   - Directory: envs/dev-rds/
+#   - Command: make rds-apply ENV=dev (separate from EKS)
+#   - Use case: RDS must survive cluster teardown, Backstage self-service
 #
-# The standalone RDS configuration lives in: envs/dev-rds/
-#
-# Key differences:
-# - RDS is NEVER ephemeral (no build_id suffix)
-# - RDS persists across cluster rebuilds
-# - RDS deletion requires console intervention (see RB-0016)
-#
-# Deployment order:
-# 1. make rds-apply ENV=dev    (deploy RDS first - creates VPC dependency)
-# 2. make apply ENV=dev        (deploy EKS cluster)
-# 3. make bootstrap ENV=dev    (bootstrap platform tooling)
+# Option B: Coupled with EKS (below)
+#   - Toggle: rds_config.enabled = true in terraform.tfvars
+#   - Command: make apply ENV=dev (single command)
+#   - Use case: Simple deployment, add RDS later via toggle
 #
 # See: docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md
 ################################################################################
+
+module "platform_rds" {
+  source = "../../modules/aws_rds"
+  count  = var.rds_config.enabled ? 1 : 0
+
+  identifier = "${local.base_name_prefix}-${var.rds_config.identifier}"
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.subnets.private_subnet_ids
+
+  # Engine
+  engine_version       = var.rds_config.engine_version
+  engine_version_major = split(".", var.rds_config.engine_version)[0]
+  instance_class       = var.rds_config.instance_class
+
+  # Storage
+  allocated_storage     = var.rds_config.allocated_storage
+  max_allocated_storage = var.rds_config.max_allocated_storage
+
+  # High Availability
+  multi_az = var.rds_config.multi_az
+
+  # Backup & Lifecycle
+  backup_retention_period = var.rds_config.backup_retention_days
+  deletion_protection     = var.rds_config.deletion_protection
+  skip_final_snapshot     = var.rds_config.skip_final_snapshot
+
+  # Network - allow from VPC CIDR
+  allowed_cidr_blocks = [var.vpc_cidr]
+
+  # Secrets
+  create_master_secret = true
+  master_secret_name   = "goldenpath/${local.environment}/rds/master"
+
+  # Application databases with secrets
+  application_databases = {
+    for k, v in var.rds_config.application_databases : k => {
+      database_name = v.database_name
+      username      = v.username
+      secret_name   = "goldenpath/${local.environment}/${k}/postgres"
+    }
+  }
+
+  # Force SSL
+  db_parameters = [
+    {
+      name  = "rds.force_ssl"
+      value = "1"
+    },
+    {
+      name  = "log_min_duration_statement"
+      value = "1000"
+    }
+  ]
+
+  tags = local.common_tags
+
+  depends_on = [module.vpc, module.subnets]
+}

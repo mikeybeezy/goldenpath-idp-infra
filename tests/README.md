@@ -68,10 +68,18 @@ python3 scripts/scaffold_test.py --script "scripts/my_script.py"
 | [**Secret Request Flow**](./feature-tests/secret-request-flow/) | ✅ PASS |  | End-to-end camelCase secret lifecycle. |
 
 ### **Operational Suites**
+
 | Suite | Type | Status | Coverage |
 | :--- | :--- | :--- | :--- |
 | [**Unit Tests**](./unit/) | Logic | ✅ 13/13 | Core Python governance utilities. |
+| [**Script Tests**](./scripts/) | Logic | ✅ 16/16 | Parser and automation scripts. |
 | [**Templates**](./templates/) | Scaffolding | ✅ Active | Standardized plans and records. |
+
+### **Script Unit Tests**
+
+| Script | Status | Tests | Focus |
+| :--- | :--- | :--- | :--- |
+| [**RDS Request Parser (SCRIPT-0034)**](./scripts/rds-request-parser/) | ✅ PASS | 16/16 | Contract-driven RDS provisioning. |
 
 ### Planned & In-Progress
 - [ ] **Risk-Based Policies**: Terraform control validation.
