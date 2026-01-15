@@ -414,7 +414,7 @@ resource "kubernetes_service_account_v1" "cluster_autoscaler" {
   ]
 }
 
-resource "kubernetes_namespace" "external_secrets" {
+resource "kubernetes_namespace_v1" "external_secrets" {
   count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
 
   metadata {
@@ -436,7 +436,7 @@ resource "kubernetes_service_account_v1" "external_secrets" {
   depends_on = [
     module.eks,
     module.iam,
-    kubernetes_namespace.external_secrets
+    kubernetes_namespace_v1.external_secrets
   ]
 }
 
@@ -486,7 +486,8 @@ module "kubernetes_addons" {
 
 # Trust store for workload secret synchronization via ESO
 resource "kubectl_manifest" "cluster_secret_store" {
-  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+  # Fix: Only create this if we are applying K8s addons (like ESO Helm chart), otherwise CRDs are missing.
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role && var.apply_kubernetes_addons ? 1 : 0
 
   yaml_body = yamlencode({
     apiVersion = "external-secrets.io/v1beta1"
