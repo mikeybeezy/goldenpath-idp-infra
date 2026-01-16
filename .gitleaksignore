@@ -1,0 +1,6 @@
+# Gitleaks ignore file
+# See: https://github.com/gitleaks/gitleaks#configuration
+
+# Local development secrets - these are intentionally hardcoded placeholder values
+# for local Kind cluster testing only. They are NOT used in any real environment.
+c6c524a7f4dd970a883522de0909e6fd223526c2:gitops/kustomize/overlays/local/secrets.yaml:generic-api-key:24
