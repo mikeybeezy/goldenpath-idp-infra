@@ -1,12 +1,7 @@
 ---
 id: RDS_DUAL_MODE_AUTOMATION
-title: "How It Works: Dual-Mode RDS Automation (Coupled + Standalone)"
+title: 'How It Works: Dual-Mode RDS Automation (Coupled + Standalone)'
 type: documentation
-domain: platform-core
-owner: platform-team
-lifecycle: active
-status: draft
-schema_version: 1
 relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0160-rds-optional-toggle-integration
@@ -20,6 +15,7 @@ tags:
   - provisioning
   - automation
   - how-it-works
+status: active
 ---
 
 # How It Works: Dual-Mode RDS Automation (Coupled + Standalone)

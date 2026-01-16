@@ -197,6 +197,8 @@ relates_to:
   - ADR-0162
   - ADR-0163
   - ADR-0164
+  - ADR-0165
+  - ADR-0166
 <!-- ADR_RELATE_END -->
 ---
 
@@ -370,6 +372,8 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0162](ADR-0162-kong-ingress-dns-strategy.md) | Platform | Kong Ingress DNS Strategy for Platform Tooling | Accepted | 2026-01-16 | Platform tooling applications (Backstage, Keycloak, ArgoCD, Grafana) are deployed on EKS clusters and need to be accessible to developers and operators. Previously, access required kubectl port-for... |
 | [ADR-0163](ADR-0163-agent-collaboration-governance.md) | Platform | Agent Collaboration Governance and Living Registry | Accepted | 2026-01-16 | The platform now relies on multiple AI agents running locally and in CI. We already have policy guardrails for agents, but we lack a single, living source of truth that defines who each agent is, w... |
 | [ADR-0164](ADR-0164-teardown-v3-enhanced-reliability.md) | Platform | Teardown V3 with Enhanced Reliability and RDS Support | Active | 2026-01-0? | ### Problem Statement |
+| [ADR-0165](ADR-0165-rds-user-db-provisioning-automation.md) | Platform | Automated RDS User and Database Provisioning | Accepted | 2026-01-16 | Terraform currently creates Secrets Manager entries for database credentials but does not create the corresponding Postgres roles or databases. This leaves a manual gap (psql access) and introduces... |
+| [ADR-0166](ADR-0166-rds-dual-mode-automation-and-enum-alignment.md) | Platform | Dual-Mode RDS Automation with Enum-Aligned Requests | Proposed | 2026-01-16 | The platform intentionally supports two RDS deployment modes: |
 <!-- ADR_TABLE_END -->
 
 ---

@@ -1,12 +1,12 @@
 ---
 id: agent_session_summary
-title: 'Agent Session Summary (Append-Only)'
+title: Agent Session Summary (Append-Only)
 type: documentation
 domain: platform-core
+applies_to: []
 owner: platform-team
 lifecycle: active
-status: active
-schema_version: 1
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,6 +15,18 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+status: active
+category: platform
 ---
 
 When switching agents or context windows:
@@ -38,7 +50,6 @@ Agents must:
 16. Read `agent_summary/session_summary_template.md`
 17. Read the latest session state from the canonical session summary document
 18. Acknowledge understanding before continuing work
-
 
 # Session Summary (Append-Only)
 
@@ -1192,3 +1203,148 @@ Goal: Align RDS enums across self-service, document dual-mode flow, and wire aut
 - Validation: Not run in this session
 
 Signed: Codex (2026-01-16T22:08:49Z)
+
+## 23. Teardown V3 Script Review (2026-01-16 17:05:58Z)
+
+**Objective**: Capture risks/gaps observed in `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh`.
+
+**Watch-outs**:
+
+- ALB ENIs are not explicitly handled (`list_lb_enis` filters only NLB); ALB ENIs can block subnet/VPC deletion.
+- Classic ELBs are not deleted (only `elbv2` paths are covered).
+- Target group cleanup relies on `elbv2.k8s.aws/cluster` tag; older tag schemes can leave TGs behind.
+- Load balancer deletion skips LBs missing service tags, so mis-tagged LBs can remain.
+- Finalizer removal covers Services only; stuck Ingress or TargetGroupBinding finalizers can keep LBs alive.
+- Fargate profiles are not deleted (only managed nodegroups handled).
+- RDS cleanup is BuildId-dependent; missing tags or unset `BUILD_ID` leaves RDS/subnet/param groups behind.
+- Orphan cleanup depends on BuildId tags; untagged resources (EBS, ENIs, SGs) will remain.
+
+## 24. Teardown V3.1.0 Enhancements (2026-01-16 17:15:00Z)
+
+**Objective**: Address all gaps identified in Section 23 by implementing comprehensive teardown improvements.
+
+**Changes Implemented**:
+
+1. **ALB ENI Handling**: Updated `list_lb_enis()` to detect both NLB (`ELB net/*`) and ALB (`ELB app/*`) ENIs.
+
+2. **Classic ELB Deletion**: Added `delete_classic_elbs_by_cluster_tag()` function that finds Classic ELBs using the `kubernetes.io/cluster/<cluster_name>` tag.
+
+3. **Broader Target Group Tag Patterns**: Enhanced `delete_target_groups_for_cluster()` to check:
+   - `elbv2.k8s.aws/cluster=<cluster_name>`
+   - `kubernetes.io/cluster/<cluster_name>`
+   - `ingress.k8s.aws/cluster=<cluster_name>`
+   - Name pattern matching `k8s-*-<cluster_suffix>-*`
+
+4. **Ingress Cleanup**: Added new functions:
+   - `list_ingress_resources()` - lists all Ingress resources
+   - `delete_ingress_resources()` - deletes Ingress resources
+   - `remove_ingress_finalizers()` - removes stuck finalizers
+   - `cleanup_ingress_resources()` - orchestrates Ingress cleanup
+   - Integrated into Stage 2 before LoadBalancer service cleanup
+
+5. **Fargate Profile Deletion**: Added:
+   - `delete_fargate_profiles()` - initiates deletion
+   - `wait_for_fargate_profile_deletion()` - waits with configurable timeout
+   - Integrated into Stage 4 before nodegroup deletion
+
+6. **RDS Fallback Strategies**: Enhanced `delete_rds_instances_for_build()` with:
+   - Strategy 1: Search by `BuildId` tag (original behavior)
+   - Strategy 2: Search by `kubernetes.io/cluster/<cluster_name>` or `ClusterName` tags
+   - Strategy 3: Search by name pattern containing cluster suffix
+   - Same fallback logic applied to subnet groups and parameter groups
+
+**New Environment Variables**:
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `DELETE_FARGATE_PROFILES` | `true` | Enable Fargate profile deletion |
+| `WAIT_FOR_FARGATE_DELETE` | `true` | Wait for Fargate deletion |
+| `FARGATE_PROFILE_DELETE_TIMEOUT` | `300` | Timeout in seconds |
+| `DELETE_INGRESS_RESOURCES` | `true` | Enable Ingress cleanup |
+| `FORCE_DELETE_INGRESS_FINALIZERS` | `true` | Force remove stuck Ingress finalizers |
+
+**Validation**:
+
+- `bash -n` syntax check: Passed
+- `validate-teardown-v3.sh`: **33 passed, 0 failed, 1 skipped**
+
+**Commit**: `a91a2663` - feat(teardown): enhance v3 with ALB, Classic ELB, Ingress, and Fargate support
+
+**Files Modified**:
+
+| File | Change |
+|------|--------|
+| `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh` | +423/-35 lines, version bumped to 3.1.0 |
+
+---
+
+**Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
+**Timestamp**: 2026-01-16T17:15:00Z
+
+## 25. Teardown V3 Complete Fixes - RDS Logging, NAT Gateway Ordering, Name-Pattern Fallback (2026-01-16 18:30:00Z)
+
+**Objective**: Fix remaining teardown issues causing VPC deletion failures.
+
+**Problem Analysis**:
+
+1. **RDS deletion showing "0"**: RDS instances were being deleted but the log showed "0 deleted" with no status updates
+2. **VPC deletion failing with DependencyViolation**: NAT gateways were not being found/deleted, blocking VPC cleanup
+3. **Tag search not finding resources**: NAT gateway with `BuildId=15-01-26-15` tag was not being found by the cleanup script
+
+**Root Causes**:
+
+1. RDS function lacked deletion count tracking and status logging
+2. NAT gateway cleanup was happening AFTER ENI cleanup (wrong order - NAT gateways hold ENIs)
+3. NAT gateway state filter was too restrictive (excluded `deleting` state)
+4. No fallback search mechanism when tag search fails
+
+**Solutions Implemented**:
+
+### Fix 1: RDS Deletion Logging (goldenpath-idp-teardown-v3.sh)
+
+Added deletion count tracking, status checking before deletion, and wait loop for RDS deletion before subnet group cleanup.
+
+### Fix 2: NAT Gateway Ordering (cleanup-orphans.sh v2.1.0)
+
+Moved NAT gateway cleanup BEFORE ENI cleanup:
+
+**Old order**: ENIs -> IAM -> NAT Gateways -> EIPs -> Subnets -> VPC
+**New order**: NAT Gateways -> Wait -> ENIs -> IAM -> EIPs -> Subnets -> VPC
+
+### Fix 3: Name-Pattern Fallback Search (cleanup-orphans.sh v2.2.0)
+
+Added fallback search by Name tag when BuildId tag search fails. Applied same fallback pattern to: NAT gateways, subnets, IGWs, VPCs.
+
+### Fix 4: Enhanced NAT Gateway Wait Loop
+
+Proper polling loop instead of fixed sleep with timeout check.
+
+### Fix 5: VPC Dependency Diagnostics
+
+When VPC deletion fails, now shows remaining dependencies (NAT gateways, subnets, ENIs, security groups, IGWs).
+
+**Files Modified**:
+
+| File | Version | Changes |
+|------|---------|---------|
+| `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh` | 3.1.0 | RDS deletion logging, count tracking, wait loop |
+| `bootstrap/60_tear_down_clean_up/cleanup-orphans.sh` | 2.2.0 | NAT gateway ordering, name-pattern fallback, VPC diagnostics |
+| `tests/scripts/teardown-v3/validate-teardown-v3.sh` | - | Updated version check regex for 2.x.x |
+
+**Validation**:
+
+- `bash -n` syntax check: Passed for both scripts
+- `validate-teardown-v3.sh`: **33 passed, 0 failed, 1 skipped**
+- Live teardown test: **PASSED** - VPC and all resources cleaned up successfully
+
+**Hotfix Branches**:
+
+- `hotfix/teardown-rds-logging-fix`
+- `hotfix/teardown-nat-gateway-ordering`
+- `hotfix/teardown-name-pattern-fallback`
+- `hotfix/teardown-v3-complete-fixes` (consolidated)
+
+---
+
+**Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
+**Timestamp**: 2026-01-16T18:30:00Z

@@ -1,11 +1,8 @@
 ---
-id: test-record-teardown-v3-20260116
+id: test-record-20260116
 title: Teardown V3 Validation Test Record
 type: test-record
 status: passed
-owner: platform-team
-domain: platform-core
-lifecycle: active
 exempt: false
 schema_version: 1
 relates_to:

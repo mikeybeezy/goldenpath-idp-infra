@@ -82,6 +82,7 @@ CI Workflows (GitHub Actions)
 │   ├─ Apply - Infra Terraform Apply (prod)
 │   ├─ Apply - Infra Terraform Apply (staging)
 │   ├─ Apply - Infra Terraform Apply (test)
+│   ├─ RDS Database Apply
 │   └─ Secret Requests (Apply)
 │
 ├─ Terraform Plan
@@ -281,6 +282,11 @@ CI Workflows (GitHub Actions)
 ### Apply - Infra Terraform Apply (test)
 - **File**: `infra-terraform-apply-test.yml`
 - **Owner**: platform
+- **Triggers**:
+
+### RDS Database Apply
+- **File**: `rds-database-apply.yml`
+- **Owner**: platform-team
 - **Triggers**:
 
 ### Secret Requests (Apply)

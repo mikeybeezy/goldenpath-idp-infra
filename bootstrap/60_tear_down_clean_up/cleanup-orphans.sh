@@ -5,8 +5,21 @@ set -euo pipefail
 # ORPHAN CLEANUP - Clean up orphaned AWS resources by BuildId tag
 # =============================================================================
 #
-# Version: 2.0.0
+# Version: 2.2.0
 # Purpose: Clean up AWS resources left behind by failed builds
+#
+# Key changes in 2.2.0:
+#   - Added name-pattern fallback search for NAT gateways, subnets, IGWs, VPCs
+#     (searches for resources with BuildId in Name tag when tag search fails)
+#   - Enhanced NAT gateway wait loop with proper polling (up to 90s timeout)
+#   - Added VPC dependency diagnostics on deletion failure (shows remaining
+#     NAT gateways, subnets, ENIs, security groups, IGWs)
+#   - Fixed NAT gateway state filter to include 'deleting' state
+#
+# Key changes in 2.1.0:
+#   - Moved NAT gateway cleanup BEFORE ENI cleanup (NAT gateways hold ENIs)
+#   - Added wait after NAT gateway deletion to allow ENI release
+#   - Skip wait if no NAT gateways found
 #
 # Usage:
 #   bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
@@ -287,6 +300,89 @@ else
 fi
 
 # =============================================================================
+# NAT GATEWAYS (must be deleted BEFORE ENIs - NAT gateways hold ENIs)
+# =============================================================================
+
+log_step "NAT_CLEANUP" "Finding NAT gateways with BuildId=${build_id}..."
+
+# Strategy 1: Search by BuildId tag (include all non-deleted states)
+nat_gws=$(aws ec2 describe-nat-gateways \
+  --filter "Name=tag:BuildId,Values=${build_id}" \
+  --region "${region}" \
+  --query "NatGateways[?State!='deleted'].NatGatewayId" --output text 2>/dev/null || true)
+
+# Strategy 2: Search by name pattern if no results from tag search
+# This handles cases where resources have the BuildId in name but tag search fails
+if [[ -z "${nat_gws}" ]]; then
+  log_info "No NAT gateways found by tag, searching by name pattern *${build_id}*..."
+  nat_gws=$(aws ec2 describe-nat-gateways \
+    --region "${region}" \
+    --query "NatGateways[?State!='deleted' && contains(Tags[?Key=='Name'].Value | [0], '${build_id}')].NatGatewayId" \
+    --output text 2>/dev/null || true)
+fi
+
+nat_deleted=0
+nat_waiting=0
+for nat in ${nat_gws}; do
+  # Check current state
+  nat_state=$(aws ec2 describe-nat-gateways \
+    --nat-gateway-ids "${nat}" \
+    --region "${region}" \
+    --query "NatGateways[0].State" --output text 2>/dev/null || echo "unknown")
+
+  if [[ "${nat_state}" == "deleting" ]]; then
+    log_info "NAT gateway ${nat} already deleting, will wait for it."
+    nat_waiting=$((nat_waiting + 1))
+  elif [[ "${nat_state}" == "available" || "${nat_state}" == "pending" || "${nat_state}" == "failed" ]]; then
+    log_step "DELETE_NAT_GW" "Deleting NAT gateway: ${nat} (state: ${nat_state})"
+    run aws ec2 delete-nat-gateway --nat-gateway-id "${nat}" --region "${region}"
+    nat_deleted=$((nat_deleted + 1))
+  else
+    log_info "NAT gateway ${nat} in state ${nat_state}, skipping."
+  fi
+done
+
+# Wait for NAT gateway deletion to complete (releases ENIs)
+if [[ "${nat_deleted}" -gt 0 || "${nat_waiting}" -gt 0 ]]; then
+  log_step "WAIT_NAT_GW" "Waiting for NAT gateway deletion to release ENIs..."
+
+  # Wait up to 90 seconds for NAT gateways to be deleted
+  nat_wait_timeout=90
+  nat_wait_start=$(date +%s)
+
+  while true; do
+    all_deleted=true
+    for nat in ${nat_gws}; do
+      nat_state=$(aws ec2 describe-nat-gateways \
+        --nat-gateway-ids "${nat}" \
+        --region "${region}" \
+        --query "NatGateways[0].State" --output text 2>/dev/null || echo "deleted")
+
+      if [[ "${nat_state}" != "deleted" ]]; then
+        all_deleted=false
+        log_info "  NAT gateway ${nat}: ${nat_state}"
+      fi
+    done
+
+    if [[ "${all_deleted}" == "true" ]]; then
+      log_info "All NAT gateways deleted."
+      break
+    fi
+
+    elapsed=$(($(date +%s) - nat_wait_start))
+    if [[ "${elapsed}" -ge "${nat_wait_timeout}" ]]; then
+      log_warn "Timed out waiting for NAT gateway deletion after ${elapsed}s. Continuing..."
+      break
+    fi
+
+    log_info "[WAIT] NAT gateways still deleting (${elapsed}s/${nat_wait_timeout}s)..."
+    sleep 15
+  done
+else
+  log_info "No NAT gateways found, skipping wait."
+fi
+
+# =============================================================================
 # ELASTIC NETWORK INTERFACES (unattached only)
 # =============================================================================
 
@@ -358,22 +454,6 @@ for arn in ${iam_roles}; do
 done
 
 # =============================================================================
-# NAT GATEWAYS
-# =============================================================================
-
-log_step "NAT_CLEANUP" "Finding NAT gateways with BuildId=${build_id}..."
-
-nat_gws=$(aws ec2 describe-nat-gateways \
-  --filter "Name=tag:BuildId,Values=${build_id}" \
-  --region "${region}" \
-  --query "NatGateways[].NatGatewayId" --output text 2>/dev/null || true)
-
-for nat in ${nat_gws}; do
-  log_step "DELETE_NAT_GW" "Deleting NAT gateway: ${nat}"
-  run aws ec2 delete-nat-gateway --nat-gateway-id "${nat}" --region "${region}"
-done
-
-# =============================================================================
 # ELASTIC IPS
 # =============================================================================
 
@@ -435,6 +515,15 @@ subnets=$(aws ec2 describe-subnets \
   --region "${region}" \
   --query "Subnets[].SubnetId" --output text 2>/dev/null || true)
 
+# Fallback: search by name pattern
+if [[ -z "${subnets}" ]]; then
+  log_info "No subnets found by tag, searching by name pattern *${build_id}*..."
+  subnets=$(aws ec2 describe-subnets \
+    --region "${region}" \
+    --query "Subnets[?contains(Tags[?Key=='Name'].Value | [0], '${build_id}')].SubnetId" \
+    --output text 2>/dev/null || true)
+fi
+
 for subnet in ${subnets}; do
   log_step "DELETE_SUBNET" "Deleting subnet: ${subnet}"
   run aws ec2 delete-subnet --subnet-id "${subnet}" --region "${region}"
@@ -467,6 +556,15 @@ igws=$(aws ec2 describe-internet-gateways \
   --region "${region}" \
   --query "InternetGateways[].InternetGatewayId" --output text 2>/dev/null || true)
 
+# Fallback: search by name pattern
+if [[ -z "${igws}" ]]; then
+  log_info "No IGWs found by tag, searching by name pattern *${build_id}*..."
+  igws=$(aws ec2 describe-internet-gateways \
+    --region "${region}" \
+    --query "InternetGateways[?contains(Tags[?Key=='Name'].Value | [0], '${build_id}')].InternetGatewayId" \
+    --output text 2>/dev/null || true)
+fi
+
 for igw in ${igws}; do
   log_step "DELETE_IGW" "Processing internet gateway: ${igw}"
 
@@ -495,9 +593,75 @@ vpcs=$(aws ec2 describe-vpcs \
   --region "${region}" \
   --query "Vpcs[].VpcId" --output text 2>/dev/null || true)
 
+# Fallback: search by name pattern
+if [[ -z "${vpcs}" ]]; then
+  log_info "No VPCs found by tag, searching by name pattern *${build_id}*..."
+  vpcs=$(aws ec2 describe-vpcs \
+    --region "${region}" \
+    --query "Vpcs[?contains(Tags[?Key=='Name'].Value | [0], '${build_id}')].VpcId" \
+    --output text 2>/dev/null || true)
+fi
+
 for vpc in ${vpcs}; do
   log_step "DELETE_VPC" "Deleting VPC: ${vpc}"
-  run aws ec2 delete-vpc --vpc-id "${vpc}" --region "${region}"
+
+  # Try to delete the VPC
+  if [[ "${dry_run}" == "true" ]]; then
+    echo "[DRY-RUN] aws ec2 delete-vpc --vpc-id ${vpc} --region ${region}"
+  elif ! aws ec2 delete-vpc --vpc-id "${vpc}" --region "${region}" 2>&1; then
+    log_warn "VPC deletion failed, checking for remaining dependencies..."
+
+    # Check for remaining NAT gateways
+    remaining_nats=$(aws ec2 describe-nat-gateways \
+      --filter "Name=vpc-id,Values=${vpc}" \
+      --region "${region}" \
+      --query "NatGateways[?State!='deleted'].[NatGatewayId,State]" --output text 2>/dev/null || true)
+    if [[ -n "${remaining_nats}" ]]; then
+      log_warn "  Remaining NAT gateways in VPC:"
+      echo "${remaining_nats}" | while read -r nat_id nat_state; do
+        log_warn "    - ${nat_id}: ${nat_state}"
+      done
+    fi
+
+    # Check for remaining subnets
+    remaining_subnets=$(aws ec2 describe-subnets \
+      --filters "Name=vpc-id,Values=${vpc}" \
+      --region "${region}" \
+      --query "Subnets[].SubnetId" --output text 2>/dev/null || true)
+    if [[ -n "${remaining_subnets}" ]]; then
+      log_warn "  Remaining subnets in VPC: ${remaining_subnets}"
+    fi
+
+    # Check for remaining ENIs
+    remaining_enis=$(aws ec2 describe-network-interfaces \
+      --filters "Name=vpc-id,Values=${vpc}" \
+      --region "${region}" \
+      --query "NetworkInterfaces[].[NetworkInterfaceId,Status,Description]" --output text 2>/dev/null || true)
+    if [[ -n "${remaining_enis}" ]]; then
+      log_warn "  Remaining ENIs in VPC:"
+      echo "${remaining_enis}" | while read -r eni_id eni_status eni_desc; do
+        log_warn "    - ${eni_id}: ${eni_status} (${eni_desc})"
+      done
+    fi
+
+    # Check for remaining security groups (non-default)
+    remaining_sgs=$(aws ec2 describe-security-groups \
+      --filters "Name=vpc-id,Values=${vpc}" \
+      --region "${region}" \
+      --query "SecurityGroups[?GroupName!='default'].GroupId" --output text 2>/dev/null || true)
+    if [[ -n "${remaining_sgs}" ]]; then
+      log_warn "  Remaining security groups in VPC: ${remaining_sgs}"
+    fi
+
+    # Check for remaining internet gateways
+    remaining_igws=$(aws ec2 describe-internet-gateways \
+      --filters "Name=attachment.vpc-id,Values=${vpc}" \
+      --region "${region}" \
+      --query "InternetGateways[].InternetGatewayId" --output text 2>/dev/null || true)
+    if [[ -n "${remaining_igws}" ]]; then
+      log_warn "  Remaining internet gateways attached to VPC: ${remaining_igws}"
+    fi
+  fi
 done
 
 # =============================================================================
