@@ -4,7 +4,7 @@
 
 catalog:
   # Catalog served from governance-registry branch (stable, doesn't change with feature branches)
-  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-helm/backstage-catalog/all.yaml"
+  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-catalog/all.yaml"
   customCatalogLocation: "None"
 
 backstage:
@@ -64,7 +64,7 @@ appConfig: |
   catalog:
     locations:
     - type: url
-      target: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-helm/backstage-catalog/all.yaml"
+      target: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-catalog/all.yaml"
       rules:
       - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User] # [ADR-0130] Trusted Zone
     - type: url

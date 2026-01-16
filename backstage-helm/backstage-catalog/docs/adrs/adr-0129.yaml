@@ -13,7 +13,7 @@ metadata:
 
     - **Decision type:** Governance | Architecture
 
-    - **Related:** [ECR Product Strategy](docs/adrs/ADR-0092-ecr-registry-product-strategy.md)'
+    - **Related:** [ECR Product Strategy](ADR-0092-ecr-reg...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0129-platform-eventual-consistency-ecr-governance.md
@@ -28,6 +28,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: active
+  lifecycle: accepted
   owner: platform-team
   subcomponentOf: architecture-decision-records

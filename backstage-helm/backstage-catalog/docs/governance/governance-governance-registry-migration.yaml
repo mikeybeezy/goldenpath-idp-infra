@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-governance-registry-migration
+  title: Log Files - Governance Registry Migration Assessment
+  description: '**Date:** 2026-01-12
+
+    **Type:** Supplemental Migration Analysis'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/GOVERNANCE_REGISTRY_MIGRATION.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/GOVERNANCE_REGISTRY_MIGRATION.md
+  tags:
+    - gove
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/GOVERNANCE_REGISTRY_MIGRATION.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

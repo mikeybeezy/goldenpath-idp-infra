@@ -143,3 +143,17 @@ spec:
     - ./adrs/adr-0142.yaml
     - ./adrs/adr-0143.yaml
     - ./adrs/adr-0144.yaml
+    - ./adrs/adr-0145.yaml
+    - ./adrs/adr-0146.yaml
+    - ./adrs/adr-0147.yaml
+    - ./adrs/adr-0148.yaml
+    - ./adrs/adr-0153.yaml
+    - ./adrs/adr-0154.yaml
+    - ./adrs/adr-0155.yaml
+    - ./adrs/adr-0156.yaml
+    - ./adrs/adr-0157.yaml
+    - ./adrs/adr-0158.yaml
+    - ./adrs/adr-0159.yaml
+    - ./adrs/adr-0160.yaml
+    - ./adrs/adr-0161.yaml
+    - ./adrs/adr-0162.yaml

@@ -9,7 +9,7 @@ metadata:
 
     Scope: Backstage, CI workflow UX
 
-    Related: `backstage/templates/ci-apply-dev/template.yaml`, `.github/workflows/infra-terraform-apply-dev.yml`'
+    Related: `backstage-helm/backstage-catalog/templates/ci-apply-dev/template.yaml`, `.github/workflows/infra-terraform-apply-dev.yml`'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0012-backstage-ci-apply-dev-template.md

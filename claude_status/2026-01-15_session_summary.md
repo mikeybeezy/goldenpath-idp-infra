@@ -763,3 +763,14 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 - `scripts/generate_script_index.py --validate`: ✅ (after regeneration)
 - `scripts/platform_health.py`: refreshed `PLATFORM_HEALTH.md` and `HEALTH_AUDIT_LOG.md`
 - `scripts/validate_metadata.py`: ✅ 745 passed, ❌ 0 failed
+
+## 12. Backstage Template Migration + Catalog Path Fix (2026-01-16 08:47:34Z)
+
+**Objective**: Remove unused `/backstage` directory, migrate templates into catalog, and align catalog URLs with governance-registry layout.
+
+**Actions**:
+
+- Moved Backstage templates into `backstage-helm/backstage-catalog/templates/` and updated catalog `all.yaml` to include them.
+- Updated Backstage test catalog locations to use governance-registry URLs for templates.
+- Repointed dev/staging/prod/local `catalogLocation` to `governance-registry/backstage-catalog/all.yaml`.
+- Deleted the legacy `/backstage` directory after updating references.

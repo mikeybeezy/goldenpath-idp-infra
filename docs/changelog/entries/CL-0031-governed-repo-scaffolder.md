@@ -63,7 +63,7 @@ Related: docs/adrs/ADR-0078-platform-governed-repo-scaffolder.md
 
 ### Changed
 
-- `backstage/templates/app-template/template.yaml` uses governance inputs and
+- `backstage-helm/backstage-catalog/templates/app-template/template.yaml` uses governance inputs and
   registers `catalog-info.yaml` at repo root.
 - `apps/fast-api-app-template/catalog-info.yaml` includes governance annotations.
 - Backstage catalog locations include the app template in all envs.

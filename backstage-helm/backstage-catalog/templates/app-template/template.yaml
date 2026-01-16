@@ -170,7 +170,7 @@ spec:
       name: Fetch app template
       action: fetch:template
       input:
-        url: ../../apps/fast-api-app-template
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/tree/main/apps/fast-api-app-template
         targetPath: .
         values:
           app_name: ${{ parameters.app_name }}
