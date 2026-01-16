@@ -1262,7 +1262,7 @@ elif [[ -z "${BUILD_ID:-}" ]]; then
   log_error "ORPHAN_CLEANUP_MODE=${ORPHAN_CLEANUP_MODE} but BUILD_ID is not set."
   exit 1
 else
-  local cleanup_dry_run="false"
+  cleanup_dry_run="false"
   if [[ "${ORPHAN_CLEANUP_MODE}" == "dry_run" ]]; then
     cleanup_dry_run="true"
   fi
