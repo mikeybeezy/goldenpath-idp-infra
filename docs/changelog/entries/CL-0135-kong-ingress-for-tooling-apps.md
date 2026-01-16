@@ -64,9 +64,9 @@ Added `backstage-helm/charts/backstage/templates/ingress.yaml` with:
 
 | Environment | Hostname | Cert Issuer |
 |-------------|----------|-------------|
-| dev | `backstage.dev.goldenpath.io` | letsencrypt-staging |
-| staging | `backstage.staging.goldenpath.io` | letsencrypt-staging |
-| prod | `backstage.goldenpath.io` | letsencrypt-prod |
+| dev | `backstage.dev.goldenpathidp.io` | letsencrypt-staging |
+| staging | `backstage.staging.goldenpathidp.io` | letsencrypt-staging |
+| prod | `backstage.goldenpathidp.io` | letsencrypt-prod |
 
 ### Configuration Pattern
 
@@ -74,7 +74,7 @@ Added `backstage-helm/charts/backstage/templates/ingress.yaml` with:
 ingress:
   enabled: true
   ingressClassName: kong
-  hostname: backstage.dev.goldenpath.io
+  hostname: backstage.dev.goldenpathidp.io
   path: /
   pathType: Prefix
   tls: true
@@ -95,20 +95,20 @@ backend:
 
 ## Benefits
 
-1. **No Port-Forwarding Required**: Access Backstage via `https://backstage.dev.goldenpath.io`
+1. **No Port-Forwarding Required**: Access Backstage via `https://backstage.dev.goldenpathidp.io`
 2. **TLS Termination**: Kong handles HTTPS with Let's Encrypt certificates
 3. **Consistent Pattern**: Matches Keycloak ingress configuration
 4. **Environment Isolation**: Each environment has its own subdomain
 
 ## DNS Requirements
 
-Ensure the following DNS records exist (or wildcard `*.goldenpath.io`):
+Ensure the following DNS records exist (or wildcard `*.goldenpathidp.io`):
 
 | Record | Type | Target |
 |--------|------|--------|
-| `backstage.dev.goldenpath.io` | A/CNAME | Kong LoadBalancer |
-| `backstage.staging.goldenpath.io` | A/CNAME | Kong LoadBalancer |
-| `backstage.goldenpath.io` | A/CNAME | Kong LoadBalancer |
+| `backstage.dev.goldenpathidp.io` | A/CNAME | Kong LoadBalancer |
+| `backstage.staging.goldenpathidp.io` | A/CNAME | Kong LoadBalancer |
+| `backstage.goldenpathidp.io` | A/CNAME | Kong LoadBalancer |
 
 ## Verification
 
@@ -120,7 +120,7 @@ kubectl get ingress -n backstage
 kubectl get certificate -n backstage
 
 # Access Backstage (once DNS propagates)
-curl -I https://backstage.dev.goldenpath.io
+curl -I https://backstage.dev.goldenpathidp.io
 ```
 
 ## Files Modified

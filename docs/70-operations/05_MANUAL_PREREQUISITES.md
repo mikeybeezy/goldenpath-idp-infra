@@ -49,9 +49,9 @@ Go to your DNS Provider (e.g., Route53, GoDaddy) and create **CNAME Records** po
 
 | Type | Name | Value |
 | :--- | :--- | :--- |
-| CNAME | `keycloak.dev.goldenpath.io` | `[Load-Balancer-Hostname]` |
-| CNAME | `backstage.dev.goldenpath.io` | `[Load-Balancer-Hostname]` |
-| CNAME | `argocd.dev.goldenpath.io` | `[Load-Balancer-Hostname]` |
+| CNAME | `keycloak.dev.goldenpathidp.io` | `[Load-Balancer-Hostname]` |
+| CNAME | `backstage.dev.goldenpathidp.io` | `[Load-Balancer-Hostname]` |
+| CNAME | `argocd.dev.goldenpathidp.io` | `[Load-Balancer-Hostname]` |
 
 ### Why?
 1.  **Connectivity**: Allows you to access the tools.
