@@ -21,9 +21,9 @@ breaking_change: false
 
 # PRD-0001: Automated RDS User and Database Provisioning
 
-Status: draft  
-Owner: platform  
-Date: 2026-01-16  
+Status: draft
+Owner: platform
+Date: 2026-01-16
 
 ## Problem Statement
 

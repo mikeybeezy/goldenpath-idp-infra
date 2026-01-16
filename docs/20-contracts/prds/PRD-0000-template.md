@@ -18,9 +18,9 @@ breaking_change: false
 
 # PRD-0000: <short title>
 
-Status: draft  
-Owner: <team/role>  
-Date: <YYYY-MM-DD>  
+Status: draft
+Owner: <team/role>
+Date: <YYYY-MM-DD>
 
 ## Problem Statement
 
