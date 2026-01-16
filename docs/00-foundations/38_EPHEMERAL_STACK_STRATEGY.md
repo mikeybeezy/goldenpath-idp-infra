@@ -1,3 +1,8 @@
+---
+id: 38_EPHEMERAL_STACK_STRATEGY
+title: 'Ephemeral Stack Strategy: "The Simulation"'
+---
+
 # Ephemeral Stack Strategy: "The Simulation"
 
 **Owner**: Platform Team

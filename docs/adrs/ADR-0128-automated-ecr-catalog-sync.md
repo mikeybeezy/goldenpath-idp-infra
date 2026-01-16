@@ -2,6 +2,7 @@
 id: ADR-0128
 title: 'ADR-0128: Automated IDP Catalog Mapping for AWS ECR'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

@@ -1,3 +1,22 @@
+---
+id: 2026-01-15_session_summary
+title: 'Session Report: Backstage & Keycloak Stabilization'
+type: documentation
+domain: platform-core
+owner: platform-team
+lifecycle: active
+status: active
+schema_version: 1
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
+---
+
 # Session Report: Backstage & Keycloak Stabilization
 
 **Date**: 2026-01-15 / 2026-01-16 (continued)
@@ -165,10 +184,10 @@ https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-reg
 
 | Service | Dev URL | Ingress Status |
 |---------|---------|----------------|
-| Backstage | `backstage.dev.goldenpath.io` | New template added |
-| Keycloak | `keycloak.dev.goldenpath.io` | Already configured |
-| ArgoCD | `argocd.dev.goldenpath.io` | Configured |
-| Grafana | `grafana.dev.goldenpath.io` | Configured |
+| Backstage | `backstage.dev.goldenpathidp.io` | New template added |
+| Keycloak | `keycloak.dev.goldenpathidp.io` | Already configured |
+| ArgoCD | `argocd.dev.goldenpathidp.io` | Configured |
+| Grafana | `grafana.dev.goldenpathidp.io` | Configured |
 
 **Pattern** (consistent across all tooling apps):
 
@@ -176,7 +195,7 @@ https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-reg
 ingress:
   enabled: true
   ingressClassName: kong
-  hostname: <service>.dev.goldenpath.io
+  hostname: <service>.dev.goldenpathidp.io
   tls: true
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-staging
@@ -409,8 +428,8 @@ global:
 
 ```bash
 # DNS-based access (after ingress deployment)
-# Backstage: https://backstage.dev.goldenpath.io
-# Keycloak: https://keycloak.dev.goldenpath.io
+# Backstage: https://backstage.dev.goldenpathidp.io
+# Keycloak: https://keycloak.dev.goldenpathidp.io
 
 # Port-forward fallback (if DNS not configured)
 kubectl port-forward svc/dev-backstage -n backstage 7007:7007
@@ -546,14 +565,14 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
 **Action**: Merged `origin/feature/tooling-apps-config` into local branch.
 
 **Updates Received**:
-- **Kong Ingress**: Grafana now exposed at `grafana.dev.goldenpath.io` (no port-forward needed).
+- **Kong Ingress**: Grafana now exposed at `grafana.dev.goldenpathidp.io` (no port-forward needed).
 - **DNS Management**: New documentation on DNS strategies.
 - **Conflict Resolution**: Successfully merged local Sidecar config with remote Ingress config in `dev.yaml`.
 
 **Current Access URLs**:
-- **Grafana**: `https://grafana.dev.goldenpath.io`
-- **Backstage**: `https://backstage.dev.goldenpath.io`
-- **Keycloak**: `https://keycloak.dev.goldenpath.io`
+- **Grafana**: `https://grafana.dev.goldenpathidp.io`
+- **Backstage**: `https://backstage.dev.goldenpathidp.io`
+- **Keycloak**: `https://keycloak.dev.goldenpathidp.io`
 
 ## 9. Dashboard Auto-Discovery Debugging (2026-01-16)
 

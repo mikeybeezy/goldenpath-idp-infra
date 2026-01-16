@@ -1,5 +1,5 @@
 ---
-id: TEST_PLAN_SCRIPT_0034
+id: test-plan
 title: RDS Request Parser Test Plan
 type: test-plan
 category: testing

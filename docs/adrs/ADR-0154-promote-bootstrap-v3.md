@@ -2,6 +2,7 @@
 id: ADR-0154
 title: Promote Bootstrap V3 as Default
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

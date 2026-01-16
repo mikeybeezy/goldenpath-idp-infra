@@ -2,6 +2,7 @@
 id: ADR-0140
 title: 'ADR-0140: Doc scaffolding and metadata auto-fix'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

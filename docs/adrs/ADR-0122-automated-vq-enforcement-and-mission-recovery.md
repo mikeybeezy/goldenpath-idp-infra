@@ -2,6 +2,7 @@
 id: ADR-0122
 title: 'ADR-0122: Automated VQ Enforcement and Mission Recovery'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

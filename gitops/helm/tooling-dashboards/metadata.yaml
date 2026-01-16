@@ -1,4 +1,7 @@
 # Managed by scripts/standardize_metadata.py
+id: HELM_TOOLING_DASHBOARDS_METADATA
+title: metadata
+type: documentation
 governance:
   id: TOOLING_DASHBOARDS_METADATA
   owner: platform-team

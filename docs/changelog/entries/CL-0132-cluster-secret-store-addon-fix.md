@@ -1,3 +1,22 @@
+---
+id: CL-0132
+title: ClusterSecretStore Addon Deployment Fix
+type: changelog
+status: active
+date: 2026-01-15
+domain: platform-core
+owner: platform-team
+lifecycle: active
+schema_version: 1
+relates_to:
+  - ADR-0135
+  - ADR-0143
+tags:
+  - secrets
+  - eso
+  - addons
+---
+
 # CL-0132: ClusterSecretStore Addon Deployment Fix
 
 **Type**: Bug Fix

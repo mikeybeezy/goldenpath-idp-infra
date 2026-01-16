@@ -2,6 +2,7 @@
 id: ADR-0127
 title: 'ADR-0127: Backstage Helm Deployment with ROI Telemetry'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

@@ -2,6 +2,7 @@
 id: ADR-0096-risk-based-ecr-controls
 title: 'ADR-0096: Risk-Based ECR Security Controls'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

@@ -2,6 +2,7 @@
 id: ADR-0121-value-quantification-framework
 title: Value Quantification (VQ) Framework
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

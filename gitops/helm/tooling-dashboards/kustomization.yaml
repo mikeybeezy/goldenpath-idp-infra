@@ -13,3 +13,4 @@ resources:
 commonLabels:
   app.kubernetes.io/part-of: goldenpath-idp
   app.kubernetes.io/component: observability
+  goldenpath.idp/id: HELM_TOOLING_DASHBOARDS_METADATA

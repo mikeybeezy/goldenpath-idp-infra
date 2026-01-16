@@ -2,6 +2,7 @@
 id: ADR-0133
 title: 'ADR-0133: Human-in-the-Loop PRs for Backstage Docs Generation'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

@@ -2,6 +2,7 @@
 id: ADR-0112-automated-adr-index-generation
 title: 'ADR-0112: Automated ADR Index Generation'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

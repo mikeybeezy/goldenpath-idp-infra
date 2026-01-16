@@ -2,6 +2,7 @@
 id: ADR-0148-seamless-build-deployment-with-immutability
 title: 'ADR-0148: Seamless Build Deployment with Build ID Immutability'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

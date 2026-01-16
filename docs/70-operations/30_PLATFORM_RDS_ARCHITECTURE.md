@@ -1,3 +1,8 @@
+---
+id: 30_PLATFORM_RDS_ARCHITECTURE
+title: Platform RDS Architecture
+---
+
 # Platform RDS Architecture
 
 This living document describes the standalone RDS PostgreSQL bounded context for platform tooling applications.

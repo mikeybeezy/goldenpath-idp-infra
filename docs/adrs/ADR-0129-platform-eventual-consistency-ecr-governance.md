@@ -2,6 +2,7 @@
 id: ADR-0129
 title: 'ADR-0129: Eventual Consistency for ECR Registry Governance'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

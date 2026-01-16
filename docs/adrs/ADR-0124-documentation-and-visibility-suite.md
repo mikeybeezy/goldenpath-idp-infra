@@ -2,6 +2,7 @@
 id: ADR-0124
 title: 'ADR-0124: Documentation & Visibility Suite'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

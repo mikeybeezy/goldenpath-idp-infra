@@ -1,6 +1,9 @@
 # Default values for local-infra.
 # This is a YAML-formatted file.
 
+governance:
+  id: HELM_LOCAL_INFRA_METADATA
+
 global:
   isEphemeral: true
 

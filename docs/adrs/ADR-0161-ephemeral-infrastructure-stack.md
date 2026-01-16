@@ -1,3 +1,26 @@
+---
+id: ADR-0161
+title: 'ADR-0161: Standard Ephemeral Infrastructure Stack'
+type: adr
+status: accepted
+date: 2026-01-15
+deciders:
+  - platform-team
+domain: platform-core
+owner: platform-team
+lifecycle: active
+schema_version: 1
+tags:
+  - ephemeral
+  - localstack
+  - minio
+  - postgres
+  - simulation
+relates_to: []
+supersedes: []
+superseded_by: []
+---
+
 # ADR-0161: Standard Ephemeral Infrastructure Stack
 
 **Status**: Accepted

@@ -2,6 +2,7 @@
 id: ADR-0114-automated-enum-consistency-validation
 title: Automated Enum Consistency Validation
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

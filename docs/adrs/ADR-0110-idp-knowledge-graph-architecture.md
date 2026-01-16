@@ -2,6 +2,7 @@
 id: ADR-0110-idp-knowledge-graph-architecture
 title: IDP Knowledge Graph Node Architecture
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

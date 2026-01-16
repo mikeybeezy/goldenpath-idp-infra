@@ -1,10 +1,10 @@
 ---
-id: TEST_RECORD_SCRIPT_0034_20260115
+id: test-record-20260115
 title: RDS Request Parser Test Record
 type: test-record
 category: testing
 relates_to:
-  - TEST_PLAN_SCRIPT_0034
+  - test-plan
   - SCRIPT-0034
   - ADR-0160
 ---

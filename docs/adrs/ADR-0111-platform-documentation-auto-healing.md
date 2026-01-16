@@ -2,6 +2,7 @@
 id: ADR-0111-platform-documentation-auto-healing
 title: 'ADR-0111: Automated Documentation Auto-Healing'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

@@ -1,11 +1,21 @@
 ---
 id: CL-0137
-type: feat
-date: 2026-01-16
 title: "OOTB Observability: Logs RED & Golden Signals"
-authors: [platform-team]
-relates_to: [ADR-0052, PLATFORM_DASHBOARDS.md]
-description: "Enabled automatic discovery of application dashboards, providing instant Golden Signals and Logs RED metrics for all platform services."
+type: changelog
+status: active
+date: 2026-01-16
+domain: platform-core
+owner: platform-team
+lifecycle: active
+schema_version: 1
+relates_to:
+  - ADR-0052
+  - PLATFORM_DASHBOARDS.md
+description: Enabled automatic discovery of application dashboards, providing instant Golden Signals and Logs RED metrics for all platform services.
+tags:
+  - grafana
+  - dashboards
+  - observability
 ---
 
 # Feature: Out-of-the-Box Observability (Golden Signals & RED)

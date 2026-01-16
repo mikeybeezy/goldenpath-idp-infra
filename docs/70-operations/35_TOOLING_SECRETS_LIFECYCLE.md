@@ -1,3 +1,8 @@
+---
+id: 35_TOOLING_SECRETS_LIFECYCLE
+title: Tooling Secrets Lifecycle
+---
+
 # Tooling Secrets Lifecycle
 
 This document describes how secrets are managed for platform tooling applications, including when they are generated, how they are stored, and the sync mechanism to Kubernetes.

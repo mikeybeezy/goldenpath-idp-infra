@@ -1,3 +1,8 @@
+---
+id: 05_MANUAL_PREREQUISITES
+title: Manual Prerequisites & One-Time Setup
+---
+
 # Manual Prerequisites & One-Time Setup
 
 This document captures the **only two manual steps** required to bring the "Dev" (AWS) environment to a fully healthy, accessible state after the initial infrastructure provisioning.

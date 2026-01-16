@@ -2,6 +2,7 @@
 id: ADR-0153
 title: Cluster Provisioning Identity and Script Resilience
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

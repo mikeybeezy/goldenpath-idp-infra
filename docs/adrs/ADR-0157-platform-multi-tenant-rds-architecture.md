@@ -2,7 +2,7 @@
 id: ADR-0157-platform-multi-tenant-rds-architecture
 title: 'ADR-0157: Multi-Tenant RDS for Platform Tooling Applications'
 type: adr
-status: accepted
+status: superseded
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -16,7 +16,8 @@ relates_to:
   - ADR-0007
   - ADR-0053
 supersedes: []
-superseded_by: []
+superseded_by:
+  - ADR-0158
 tags:
   - rds
   - database
@@ -35,7 +36,7 @@ breaking_change: false
 
 # ADR-0157: Multi-Tenant RDS for Platform Tooling Applications
 
-- **Status:** Accepted
+- **Status:** Superseded (by ADR-0158)
 - **Date:** 2026-01-15
 - **Owners:** Platform Team
 - **Domain:** Platform

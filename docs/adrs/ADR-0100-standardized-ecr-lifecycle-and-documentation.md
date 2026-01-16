@@ -2,6 +2,7 @@
 id: ADR-0100-standardized-ecr-lifecycle-and-documentation
 title: Standardized ECR Lifecycle and Documentation
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

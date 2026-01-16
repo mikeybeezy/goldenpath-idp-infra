@@ -2,6 +2,7 @@
 id: ADR-0144
 title: Architecture of the Intent-to-Projection Parser (The Golden Path Core)
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

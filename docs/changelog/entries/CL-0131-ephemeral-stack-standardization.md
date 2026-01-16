@@ -1,3 +1,22 @@
+---
+id: CL-0131
+title: Ephemeral Stack Standardization
+type: changelog
+status: active
+date: 2026-01-15
+domain: platform-core
+owner: platform-team
+lifecycle: active
+schema_version: 1
+relates_to:
+  - ADR-0161
+tags:
+  - ephemeral
+  - localstack
+  - minio
+  - postgres
+---
+
 # Changelog: Ephemeral Stack Standardization
 
 **Date**: 2026-01-15

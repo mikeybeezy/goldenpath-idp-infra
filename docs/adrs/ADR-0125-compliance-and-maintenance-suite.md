@@ -2,6 +2,7 @@
 id: ADR-0125
 title: 'ADR-0125: Compliance & Maintenance Suite'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

@@ -2,6 +2,7 @@
 id: ADR-0120-metadata-inheritance-and-active-governance
 title: metadata
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

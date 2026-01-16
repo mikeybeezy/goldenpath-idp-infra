@@ -2,6 +2,7 @@
 id: ADR-0132
 title: 'ADR-0132: Model ECR Registry as a Dedicated Backstage System'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active

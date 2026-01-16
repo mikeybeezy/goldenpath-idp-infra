@@ -2,6 +2,7 @@
 id: ADR-0145
 title: 'ADR-0145: Governance Registry Mirror Pattern'
 type: adr
+status: accepted
 domain: platform-governance
 owner: platform-team
 lifecycle: active
@@ -105,6 +106,7 @@ Every artifact written to the `governance-registry` branch MUST include the foll
 
 ```yaml
 ---
+
 type: governance-report
 env: <ENVIRONMENT_NAME>
 generated_at: <TIMESTAMP_UTC>

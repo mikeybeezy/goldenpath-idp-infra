@@ -2,6 +2,7 @@
 id: CL-0130
 title: RDS Optional Toggle Integration
 type: changelog
+status: active
 date: 2026-01-15
 adr_ref: ADR-0160
 domain: platform-core

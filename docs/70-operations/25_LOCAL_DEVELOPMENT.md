@@ -1,3 +1,8 @@
+---
+id: 25_LOCAL_DEVELOPMENT
+title: Local Development Environment
+---
+
 # Local Development Environment
 
 This document describes how to run the Goldenpath IDP platform locally using Kind (Kubernetes in Docker) without AWS dependencies.

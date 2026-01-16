@@ -2,6 +2,7 @@
 id: ADR-0155-ci-governance-registry-fetch
 title: 'ADR-0155: CI Governance Registry Fetch for Build ID Validation'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
