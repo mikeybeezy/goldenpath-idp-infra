@@ -1,13 +1,13 @@
 ## Database Creation Request
 
-**Database:** `test_inventory`
-**Username:** `test_inventory_user`
+**Database:** `test_inventory2`
+**Username:** `test_inventory2_user`
 **Environment:** `dev`
 **Owner:** `app-team`
 **Requested By:** `daniel-deans`
 **Domain:** `application`
 **Risk Level:** `medium`
-**ID:** `DATABASE_TEST_INVENTORY`
+**ID:** `DATABASE_TEST_INVENTORY2`
 
 ---
 
@@ -16,7 +16,7 @@
 This database will be created on the **Platform RDS** bounded context:
 - **RDS Instance:** `goldenpath-platform-db-dev`
 - **Engine:** PostgreSQL 15.4
-- **Secret Path:** `goldenpath/dev/test_inventory/postgres`
+- **Secret Path:** `goldenpath/dev/test_inventory2/postgres`
 
 ---
 
@@ -33,7 +33,7 @@ Based on risk level **medium**:
 
 1. **Merge this PR** to add the database to the Platform RDS configuration
 2. **Run `make rds-apply ENV=dev`** to create the database and credentials
-3. **Secrets** will be available in AWS Secrets Manager at `goldenpath/dev/test_inventory/postgres`
+3. **Secrets** will be available in AWS Secrets Manager at `goldenpath/dev/test_inventory2/postgres`
 4. **ExternalSecrets** can sync credentials to Kubernetes namespace
 
 ---
