@@ -196,6 +196,7 @@ relates_to:
   - ADR-0161
   - ADR-0162
   - ADR-0163
+  - ADR-0164
 <!-- ADR_RELATE_END -->
 ---
 
@@ -368,6 +369,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0161](ADR-0161-ephemeral-infrastructure-stack.md) | Platform | Standard Ephemeral Infrastructure Stack | Accepted | 2026-01-15 | Our platform supports multiple deployment contexts: |
 | [ADR-0162](ADR-0162-kong-ingress-dns-strategy.md) | Platform | Kong Ingress DNS Strategy for Platform Tooling | Accepted | 2026-01-16 | Platform tooling applications (Backstage, Keycloak, ArgoCD, Grafana) are deployed on EKS clusters and need to be accessible to developers and operators. Previously, access required kubectl port-for... |
 | [ADR-0163](ADR-0163-agent-collaboration-governance.md) | Platform | Agent Collaboration Governance and Living Registry | Accepted | 2026-01-16 | The platform now relies on multiple AI agents running locally and in CI. We already have policy guardrails for agents, but we lack a single, living source of truth that defines who each agent is, w... |
+| [ADR-0164](ADR-0164-teardown-v3-enhanced-reliability.md) | Platform | Teardown V3 with Enhanced Reliability and RDS Support | Active | 2026-01-0? | ### Problem Statement |
 <!-- ADR_TABLE_END -->
 
 ---
