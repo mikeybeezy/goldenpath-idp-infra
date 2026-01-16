@@ -1,0 +1,190 @@
+# Owner: platform-team
+# Relates-To: docs/85-how-it-works/self-service/RDS_USER_DB_PROVISIONING.md
+name: RDS Database Apply
+
+on:
+  push:
+    branches:
+      - development
+    paths:
+      - "envs/*-rds/terraform.tfvars"
+      - "docs/20-contracts/resource-catalogs/rds-catalog.yaml"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        type: choice
+        required: true
+        default: dev
+        options: [dev, staging, prod]
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: eu-west-2
+
+jobs:
+  detect-environment:
+    name: Detect Changed Environment
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.detect.outputs.env }}
+      should_run: ${{ steps.detect.outputs.should_run }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect environment from changed files
+        id: detect
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "env=${{ inputs.environment }}" >> $GITHUB_OUTPUT
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          else
+            # Check which env-rds directory changed
+            CHANGED=$(git diff --name-only HEAD~1 HEAD | grep 'envs/.*-rds/' | head -1 || true)
+            if [ -n "$CHANGED" ]; then
+              ENV=$(echo "$CHANGED" | sed -E 's|envs/([^/]+)-rds/.*|\1|')
+              echo "env=$ENV" >> $GITHUB_OUTPUT
+              echo "should_run=true" >> $GITHUB_OUTPUT
+              echo "Detected environment: $ENV"
+            else
+              echo "should_run=false" >> $GITHUB_OUTPUT
+              echo "No RDS tfvars changes detected"
+            fi
+          fi
+
+  terraform-apply:
+    name: Terraform Apply (RDS)
+    needs: detect-environment
+    if: needs.detect-environment.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    environment: ${{ needs.detect-environment.outputs.environment }}
+    env:
+      ENV: ${{ needs.detect-environment.outputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+
+      - name: Terraform Init
+        working-directory: envs/${{ env.ENV }}-rds
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: envs/${{ env.ENV }}-rds
+        run: terraform apply -auto-approve
+
+  trigger-provisioning:
+    name: Trigger K8s Provisioning Job
+    needs: [detect-environment, terraform-apply]
+    if: needs.detect-environment.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    env:
+      ENV: ${{ needs.detect-environment.outputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV }}
+
+      - name: Get EKS cluster credentials
+        run: |
+          # Find cluster by environment tag
+          CLUSTER=$(aws eks list-clusters --query 'clusters[0]' --output text)
+          aws eks update-kubeconfig --name "$CLUSTER" --region ${{ env.AWS_REGION }}
+
+      - name: Create RDS Provisioning Job
+        run: |
+          cat <<EOF | kubectl apply -f -
+          apiVersion: batch/v1
+          kind: Job
+          metadata:
+            name: rds-provision-${{ env.ENV }}-${{ github.run_number }}
+            namespace: platform-system
+            labels:
+              app: rds-provisioning
+              environment: ${{ env.ENV }}
+              run-id: "${{ github.run_id }}"
+          spec:
+            ttlSecondsAfterFinished: 3600
+            backoffLimit: 2
+            template:
+              metadata:
+                labels:
+                  app: rds-provisioning
+              spec:
+                serviceAccountName: platform-provisioner
+                restartPolicy: Never
+                containers:
+                  - name: provisioner
+                    image: python:3.11-slim
+                    command:
+                      - /bin/bash
+                      - -c
+                      - |
+                        pip install boto3 psycopg2-binary pyyaml
+                        cd /workspace
+                        python3 scripts/rds_provision.py \
+                          --env ${{ env.ENV }} \
+                          --tfvars envs/${{ env.ENV }}-rds/terraform.tfvars \
+                          --master-secret goldenpath/${{ env.ENV }}/rds/master \
+                          --build-id ci-${{ github.run_number }} \
+                          --run-id ${{ github.run_id }} \
+                          --audit-output /tmp/audit.csv
+                        echo "Provisioning complete"
+                        cat /tmp/audit.csv
+                    volumeMounts:
+                      - name: workspace
+                        mountPath: /workspace
+                    env:
+                      - name: AWS_REGION
+                        value: ${{ env.AWS_REGION }}
+                initContainers:
+                  - name: clone-repo
+                    image: alpine/git
+                    command:
+                      - git
+                      - clone
+                      - --depth=1
+                      - https://github.com/${{ github.repository }}.git
+                      - /workspace
+                    volumeMounts:
+                      - name: workspace
+                        mountPath: /workspace
+                volumes:
+                  - name: workspace
+                    emptyDir: {}
+          EOF
+
+      - name: Wait for Job completion
+        run: |
+          echo "Waiting for provisioning job to complete..."
+          kubectl wait --for=condition=complete \
+            job/rds-provision-${{ env.ENV }}-${{ github.run_number }} \
+            -n platform-system \
+            --timeout=300s || {
+            echo "Job failed or timed out. Fetching logs..."
+            kubectl logs job/rds-provision-${{ env.ENV }}-${{ github.run_number }} -n platform-system
+            exit 1
+          }
+          echo "Provisioning completed successfully"
+          kubectl logs job/rds-provision-${{ env.ENV }}-${{ github.run_number }} -n platform-system

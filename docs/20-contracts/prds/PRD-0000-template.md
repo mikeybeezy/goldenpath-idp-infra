@@ -87,5 +87,6 @@ Date: <YYYY-MM-DD>
 ---
 
 ## Comments and Feedback
+When providing feedbackk, leave a comment and timestamop your comment.
 
 - <Reviewer name/date>: <comment>

@@ -2,7 +2,7 @@
 id: ADR-0165
 title: Automated RDS User and Database Provisioning
 type: adr
-status: proposed
+status: accepted
 date: 2026-01-16
 deciders:
   - platform-team
@@ -19,11 +19,13 @@ relates_to:
   - PRD-0001-rds-user-db-provisioning
   - 30_PLATFORM_RDS_ARCHITECTURE
   - 10_PLATFORM_REQUIREMENTS
+  - SCRIPT-0035
+  - RB-0032
 ---
 
 ## Status
 
-Proposed
+Accepted (Implemented 2026-01-16)
 
 ## Context
 
@@ -80,7 +82,25 @@ prod environments.
 
 ## Follow-ups
 
-1. Finalize the trigger path (CI vs Argo) and approval gates.
-2. Define tagging and naming conventions aligned with teardown.
-3. Implement the idempotent SQL and provisioning job.
+1. ~~Finalize the trigger path (CI vs Argo) and approval gates.~~ Done: CI post-apply
+2. ~~Define tagging and naming conventions aligned with teardown.~~ Done: Uses existing conventions
+3. ~~Implement the idempotent SQL and provisioning job.~~ Done: SCRIPT-0035
 4. Add a changelog entry after implementation.
+5. Consider Lambda fallback for v2 (K8s-independent execution).
+
+## Implementation Details (2026-01-16)
+
+**Script**: `scripts/rds_provision.py` (SCRIPT-0035)
+
+**Trigger**: Makefile targets `rds-provision` and `rds-provision-dry-run`
+
+**Approval Gate**: `ALLOW_DB_PROVISION=true` required for non-dev environments
+
+**Key Design Decisions**:
+- Python script (consistent with existing parsers)
+- Uses master credentials for v1 (delegated admin deferred to v2)
+- Idempotent SQL patterns for role/database creation
+- CSV audit trail to stdout
+- Dry-run mode for safe preview
+
+**Runbook**: RB-0032-rds-user-provision.md
