@@ -1,0 +1,122 @@
+# Keycloak Helm Values - Local Environment (Kind)
+# Chart: bitnami/keycloak v22.1.6
+# Purpose: Local development without AWS dependencies
+governance:
+  id: HELM_KEYCLOAK_LOCAL_METADATA
+  owner: null
+  risk_profile: null
+  reliability: null
+
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned Version
+# -----------------------------------------------------------------------------
+image:
+  registry: docker.io
+  repository: bitnami/keycloak
+  tag: 24.0.4-debian-12-r0
+  pullPolicy: IfNotPresent
+
+# -----------------------------------------------------------------------------
+# Authentication
+# -----------------------------------------------------------------------------
+auth:
+  adminUser: admin
+  # For local dev, use static secret (created via kubectl or kustomize)
+  existingSecret: keycloak-admin-secret
+  passwordSecretKey: admin-password
+
+# -----------------------------------------------------------------------------
+# PostgreSQL (Bundled for Local)
+# Using bundled PostgreSQL for local Kind clusters
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# PostgreSQL (Shared Local-Infra)
+# -----------------------------------------------------------------------------
+postgresql:
+  enabled: false
+
+# External database points to local-infra service
+externalDatabase:
+  host: "local-infra-postgresql.local-infra.svc.cluster.local"
+  port: 5432
+  user: "app"
+  password: "password"
+  database: "platform"
+  existingSecret: ""  # Disable fetching from secret
+
+# -----------------------------------------------------------------------------
+# Keycloak Configuration
+# -----------------------------------------------------------------------------
+proxy: edge
+production: false
+replicaCount: 1
+
+# Reduced resources for local development
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+# -----------------------------------------------------------------------------
+# Service
+# -----------------------------------------------------------------------------
+service:
+  type: ClusterIP
+  ports:
+    http: 80
+    https: 443
+
+# -----------------------------------------------------------------------------
+# Ingress (Local - using Kong)
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: true
+  ingressClassName: kong
+  hostname: keycloak.localhost
+  path: /
+  pathType: Prefix
+  tls: false
+  annotations:
+    konghq.com/strip-path: "true"
+
+# -----------------------------------------------------------------------------
+# Logging
+# -----------------------------------------------------------------------------
+logging:
+  output: default
+  level: INFO
+
+# -----------------------------------------------------------------------------
+# Health Probes (relaxed for local)
+# -----------------------------------------------------------------------------
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 10
+
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 10
+
+# -----------------------------------------------------------------------------
+# Extra Environment Variables
+# -----------------------------------------------------------------------------
+extraEnvVars:
+  - name: KC_HOSTNAME
+    value: keycloak.localhost
+  - name: KC_HOSTNAME_STRICT
+    value: "false"
+  - name: KC_HOSTNAME_STRICT_HTTPS
+    value: "false"
+  - name: KC_HEALTH_ENABLED
+    value: "true"
+  - name: KC_METRICS_ENABLED
+    value: "true"

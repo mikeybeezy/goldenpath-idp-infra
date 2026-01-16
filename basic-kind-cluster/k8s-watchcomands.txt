@@ -1,0 +1,17 @@
+Watch every pod across namespaces
+kubectl get pods -A --watch
+
+Watch pods just in the Argo CD namespace
+kubectl get pods -n argocd --watch
+
+Watch deployment status in Argo CD namespace
+kubectl get deployments -n argocd --watch
+
+Watch Argo CD Application CR sync/health changes
+kubectl get applications.argoproj.io -n argocd --watch
+
+Watch namespace events for troubleshooting
+kubectl get events -n argocd --watch
+
+Refresh a wide pod view with label selector every 2s
+watch -n 2 'kubectl get pods -n argocd -l app.kubernetes.io/part-of=argocd -o wide'

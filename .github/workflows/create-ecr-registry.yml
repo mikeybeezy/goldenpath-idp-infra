@@ -102,7 +102,7 @@ jobs:
       - name: Update catalog (idempotent)
         run: |
           set -euo pipefail
-          FILE="docs/20-contracts/catalogs/ecr-catalog.yaml"
+          FILE="docs/20-contracts/resource-catalogs/ecr-catalog.yaml"
           NAME="${{ inputs.registry_name }}"
           OWNER="${{ inputs.owner }}"
           USER="${{ inputs.user }}"
@@ -291,7 +291,7 @@ jobs:
           ---
 
           ##  Changes Policy
-          - ✅ Added to registry catalog (`docs/20-contracts/catalogs/ecr-catalog.yaml`)
+          - ✅ Added to registry catalog (`docs/20-contracts/resource-catalogs/ecr-catalog.yaml`)
           - ✅ Updated documentation catalog ([REGISTRY_CATALOG.md](docs/REGISTRY_CATALOG.md))
           - ✅ Added to Terraform tfvars (`envs/${{ inputs.environment }}/terraform.tfvars`)
 

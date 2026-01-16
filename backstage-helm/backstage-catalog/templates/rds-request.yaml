@@ -1,0 +1,160 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: rds-request
+  title: Request Platform RDS Database
+  description: |
+    Request a new database on the Platform RDS PostgreSQL instance.
+    Creates an isolated database with dedicated credentials in AWS Secrets Manager.
+    The database is provisioned as part of the standalone RDS bounded context (ADR-0158).
+  tags:
+    - aws
+    - rds
+    - database
+    - postgresql
+    - infrastructure
+    - gitops
+spec:
+  owner: platform-team
+  type: service
+
+  parameters:
+    - title: Database Details
+      required:
+        - database_name
+        - username
+        - owner
+        - requester
+        - domain
+        - environment
+        - risk
+      properties:
+        database_name:
+          title: Database Name
+          type: string
+          description: Name for the database (e.g., myapp). Will be created on the shared Platform RDS instance.
+          ui:autofocus: true
+          pattern: '^[a-z][a-z0-9_]*$'
+          ui:help: "Lowercase letters, numbers, and underscores only. Must start with a letter."
+        username:
+          title: Database Username
+          type: string
+          description: Username for database access (e.g., myapp_user). Will have full access to this database only.
+          pattern: '^[a-z][a-z0-9_]*$'
+          ui:help: "Lowercase letters, numbers, and underscores only. Must start with a letter."
+        owner:
+          title: Owner Team
+          type: string
+          description: Team that owns this database.
+          enum:
+            - platform-team
+            - security-team
+            - operations-team
+            - sre-team
+            - app-team
+            - database-team
+          default: app-team
+        requester:
+          title: Requesting User
+          type: string
+          description: Your username (e.g., daniel-deans).
+          pattern: '^[a-z0-9-]+$'
+        domain:
+          title: Domain
+          type: string
+          description: Business domain for this database.
+          enum:
+            - platform-core
+            - delivery
+            - observability
+            - governance
+            - security
+            - cost
+            - application
+          default: application
+        environment:
+          title: Environment
+          type: string
+          description: Target environment. Database will be created on the Platform RDS for this environment.
+          enum:
+            - dev
+            - test
+            - staging
+            - prod
+          default: dev
+        risk:
+          title: Risk Classification
+          type: string
+          description: Data sensitivity level. Affects backup retention and access controls.
+          enum:
+            - low
+            - medium
+            - high
+          default: medium
+          ui:help: |
+            - Low: Non-sensitive data, standard retention
+            - Medium: Internal data, extended retention
+            - High: PII/sensitive data, maximum retention, audit logging
+
+    - title: Database Configuration
+      properties:
+        initial_schema:
+          title: Initial Schema Setup
+          type: string
+          description: Optional SQL schema to run on database creation.
+          enum:
+            - none
+            - basic-app
+            - event-sourcing
+          default: none
+          ui:help: |
+            - none: Empty database
+            - basic-app: Standard tables (users, settings, audit_log)
+            - event-sourcing: Event store schema with projections
+
+  steps:
+    - id: debug-inputs
+      name: Debug Inputs
+      action: debug:log
+      input:
+        message: |
+          RDS Database Request:
+          database_name=${{ parameters.database_name }}
+          username=${{ parameters.username }}
+          owner=${{ parameters.owner }}
+          requester=${{ parameters.requester }}
+          domain=${{ parameters.domain }}
+          environment=${{ parameters.environment }}
+          risk=${{ parameters.risk }}
+          initial_schema=${{ parameters.initial_schema }}
+
+    - id: trigger-workflow
+      name: Trigger Creation Workflow
+      action: github:actions:dispatch
+      input:
+        repoUrl: github.com?owner=mikeybeezy&repo=goldenpath-idp-infra
+        workflowId: create-rds-database.yml
+        branchOrTagName: main
+        workflowInputs:
+          base_branch: development
+          database_name: ${{ parameters.database_name }}
+          username: ${{ parameters.username }}
+          owner: ${{ parameters.owner }}
+          user: ${{ parameters.requester }}
+          domain: ${{ parameters.domain }}
+          environment: ${{ parameters.environment }}
+          risk: ${{ parameters.risk }}
+          initial_schema: ${{ parameters.initial_schema }}
+
+  output:
+    links:
+      - title: Open Workflow Runs
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/workflows/create-rds-database.yml
+      - title: PR Link (filtered by branch)
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls?q=is%3Apr+head%3Adatabase%2Fcreate-${{ parameters.database_name }}
+      - title: PR List (fallback)
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls
+      - title: RDS Catalog
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/20-contracts/resource-catalogs/rds-catalog.yaml
+      - title: Platform RDS Architecture
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md

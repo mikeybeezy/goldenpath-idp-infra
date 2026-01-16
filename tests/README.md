@@ -21,13 +21,14 @@ value_quantification:
 category: testing
 ---
 
-# 📊 Platform Testing Dashboard
+## 📊 Platform Testing Dashboard
 
 **Status:** ✅ 100% Pass Rate | **Automation Maturity:**  (Validated) | **Latest Update:** 2026-01-07
 
 ---
 
 ## 🏗️ Testing-as-a-Forethought
+
 Testing is a proactive part of our development loop. Use the scaffolding utility to initialize new tests:
 
 ```bash
@@ -44,36 +45,47 @@ python3 scripts/scaffold_test.py --script "scripts/my_script.py"
 ---
 
 ## Automation Confidence Matrix
+
 *Every component is certified using the [Five-Star Approval Scale](./TESTING_STANDARDS.md#maturity-rating-scale).*
 
-| Rating | Certification | Requirements |
-| :--- | :--- | :--- |
-|  | **Experimental** | Passes linter (`ruff`/`yamllint`). |
-|  | **Documented** | Linked to ADR/CL; has explicit owner. |
-|  | **Validated** | Supports Idempotency + unit tests pass. |
-|  | **Certified** | Verified via manual/automated "Field Test". |
-|  | **Golden Core** | Immutable, observable, multi-env verified. |
+|Rating|Certification|Requirements|
+|:---|:---|:---|
+||**Experimental**|Passes linter (`ruff`/`yamllint`).|
+||**Documented**|Linked to ADR/CL; has explicit owner.|
+||**Validated**|Supports Idempotency + unit tests pass.|
+||**Certified**|Verified via manual/automated "Field Test".|
+||**Golden Core**|Immutable, observable, multi-env verified.|
 
 ---
 
 ## Current Test Scenarios
 
 ### **Core Scenarios** (High-Fidelity)
-| Scenario | Status | Maturity | Focus |
-| :--- | :--- | :--- | :--- |
-| [**ECR Catalog Generator**](./features/ecr_catalog_generator/) | ✅ PASS |  | Risk-based security controls documentation. |
-| [**Doc Auto-Healing**](./features/doc_auto_healing/) | ✅ PASS |  | Frontmatter normalization & link repair. |
-| [**Governance Traceability**](./features/governance_traceability/) | ✅ PASS |  | Hard-gate link between code and ADRs. |
-| [**Enum Consistency**](./features/enum_consistency/) | ✅ PASS |  | Intelligence-ready metadata validation. |
-| [**Secret Request Flow**](./feature-tests/secret-request-flow/) | ✅ PASS |  | End-to-end camelCase secret lifecycle. |
+
+|Scenario|Status|Maturity|Focus|
+|:---|:---|:---|:---|
+|[**ECR Catalog Generator**](./features/ecr_catalog_generator/)|✅ PASS||Risk-based security controls documentation.|
+|[**Doc Auto-Healing**](./features/doc_auto_healing/)|✅ PASS||Frontmatter normalization & link repair.|
+|[**Governance Traceability**](./features/governance_traceability/)|✅ PASS||Hard-gate link between code and ADRs.|
+|[**Enum Consistency**](./features/enum_consistency/)|✅ PASS||Intelligence-ready metadata validation.|
+|[**Secret Request Flow**](./feature-tests/secret-request-flow/)|✅ PASS||End-to-end camelCase secret lifecycle.|
 
 ### **Operational Suites**
-| Suite | Type | Status | Coverage |
-| :--- | :--- | :--- | :--- |
-| [**Unit Tests**](./unit/) | Logic | ✅ 13/13 | Core Python governance utilities. |
-| [**Templates**](./templates/) | Scaffolding | ✅ Active | Standardized plans and records. |
+
+|Suite|Type|Status|Coverage|
+|:---|:---|:---|:---|
+|[**Unit Tests**](./unit/)|Logic|✅ 13/13|Core Python governance utilities.|
+|[**Script Tests**](./scripts/)|Logic|✅ 16/16|Parser and automation scripts.|
+|[**Templates**](./templates/)|Scaffolding|✅ Active|Standardized plans and records.|
+
+### **Script Unit Tests**
+
+|Script|Status|Tests|Focus|
+|:---|:---|:---|:---|
+|[**RDS Request Parser (SCRIPT-0034)**](./scripts/rds-request-parser/)|✅ PASS|16/16|Contract-driven RDS provisioning.|
 
 ### Planned & In-Progress
+
 - [ ] **Risk-Based Policies**: Terraform control validation.
 - [ ] **Self-Service Workflow**: End-to-end registry creation.
 - [ ] **Leak Protection**: Secret-scanning integration verification.
@@ -81,12 +93,14 @@ python3 scripts/scaffold_test.py --script "scripts/my_script.py"
 ---
 
 ## Protocols & Standards
--  [**Testing Standards**](./TESTING_STANDARDS.md): The "Testing Bible" (5-Phase Model).
--  [**Quick Reference**](./unit/QUICK_REFERENCE.md): Command cheat sheet for operators.
+
+- [**Testing Standards**](./TESTING_STANDARDS.md): The "Testing Bible" (5-Phase Model).
+- [**Quick Reference**](./unit/QUICK_REFERENCE.md): Command cheat sheet for operators.
 
 ---
 
 ## Performance Metrics
+
 - **Mean Confidence Score:** .2
 - **Test Execution Time (Total):** 0.12s
 - **CI Reliability:** 99.8%
@@ -96,9 +110,11 @@ python3 scripts/scaffold_test.py --script "scripts/my_script.py"
 ---
 
 ## Maintenance
+
 Every Friday, the `platform-team` performs a **Maturity Audit** to ensure all feature tests remain valid and unit test coverage is expanded for new utilities.
 
-**Rules of Engagement:**
+### Rules of Engagement
+
 1. ✅ No PR is merged without corresponding tests.
 2. ✅ All tests MUST produce a signed-off record.
 3. ✅ "Red" statuses must be resolved within 2 hours.

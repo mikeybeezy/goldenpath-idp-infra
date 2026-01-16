@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0111
+  title: 'ADR-0111: Automated Documentation Auto-Healing'
+  description: '- **Status:** Accepted (Supersedes ADR-0103, ADR-0104)
+
+    - **Date:** 2026-01-06
+
+    - **Owners:** `platform-team`
+
+    - **Domain:** Platform
+
+    - **Decision type:** Governance
+
+    owner: platform-team- **Related:** [A...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0111-platform-documentation-auto-healing.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0111-platform-documentation-auto-healing.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0111-platform-documentation-auto-healing.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: accepted
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

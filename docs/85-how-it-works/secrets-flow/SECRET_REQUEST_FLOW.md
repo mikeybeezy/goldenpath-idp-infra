@@ -134,7 +134,7 @@ The lifecycle is enforced by two distinct workflows ensuring a clean separation 
 
 ### A. `secret-request-pr.yml` (PR: Validate + Plan)
 
-- **Trigger**: `pull_request` on `docs/catalogs/secrets/**`.
+- **Trigger**: `pull_request` on `docs/20-contracts/secret-requests/**`.
 
 - **Steps**:
     1. **Schema Validation**: Ensures the `SecretRequest` manifest is valid.
@@ -144,7 +144,7 @@ The lifecycle is enforced by two distinct workflows ensuring a clean separation 
 
 ### B. `secret-request-apply.yml` (Merge: Apply + Sync)
 
-- **Trigger**: `push` to `development/main` on `docs/catalogs/secrets/**`.
+- **Trigger**: `push` to `development/main` on `docs/20-contracts/secret-requests/**`.
 
 - **Steps**:
     1. **Terraform Apply**: Provisions the secret in AWS and configures rotation.
@@ -188,4 +188,4 @@ graph LR
 
 For detailed instructions on running the Secret Request Parser locally and performing surgical Terraform plans, see:
 
-- **[RB-0026: Local Secret Generation & Targeting](file:///Users/mikesablaze/goldenpath-idp-infra/docs/70-operations/runbooks/RB-0026-local-secret-generation.md)**
+- **[RB-0026: Local Secret Generation & Targeting](../../70-operations/runbooks/RB-0026-local-secret-generation.md)**

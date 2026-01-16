@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0147
+  title: 'ADR-0147: Automated Governance Backfill'
+  description: Validation reveals 43+ scripts failing compliance. Asking developers
+    to manually edit each one is a significant productivity tax and risks inconsistencies
+    (e.g., duplicate IDs, typo'd schema fields).
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0147-automated-governance-backfill.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0147-automated-governance-backfill.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0147-automated-governance-backfill.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

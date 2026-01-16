@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0137
+  title: 'Feature: Out-of-the-Box Observability (Golden Signals & RED)'
+  description: The platform now provides **Zero-Configuration Observability** for
+    all applications. By enabling the Grafana dashboard sidecar and standardizing
+    dashboard ConfigMaps, every service deployed via the Go...
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0137-ootb-observability-dashboards.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0137-ootb-observability-dashboards.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0137-ootb-observability-dashboards.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

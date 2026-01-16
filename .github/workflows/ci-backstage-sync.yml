@@ -5,7 +5,7 @@ on:
     branches:
       - development
     paths:
-      - 'docs/catalogs/ecr-catalog.yaml'
+      - 'docs/20-contracts/resource-catalogs/ecr-catalog.yaml'
       - 'scripts/sync_backstage_entities.py'
   workflow_dispatch:
 
@@ -39,7 +39,7 @@ jobs:
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add docs/catalogs/backstage-entities.yaml
+            git add docs/20-contracts/resource-catalogs/backstage-entities.yaml
             git commit -m "chore: sync backstage entities [skip ci]"
             git push origin development
           else

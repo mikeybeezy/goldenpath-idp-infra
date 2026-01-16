@@ -4,3 +4,45 @@ governance:
   owner: null
   risk_profile: null
   reliability: null
+
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned Versions
+# -----------------------------------------------------------------------------
+image:
+  repository: quay.io/jetstack/cert-manager-controller
+  tag: v1.14.4
+  pullPolicy: IfNotPresent
+
+webhook:
+  image:
+    repository: quay.io/jetstack/cert-manager-webhook
+    tag: v1.14.4
+    pullPolicy: IfNotPresent
+
+cainjector:
+  image:
+    repository: quay.io/jetstack/cert-manager-cainjector
+    tag: v1.14.4
+    pullPolicy: IfNotPresent
+
+startupapicheck:
+  image:
+    repository: quay.io/jetstack/cert-manager-startupapicheck
+    tag: v1.14.4
+    pullPolicy: IfNotPresent
+
+# -----------------------------------------------------------------------------
+# CRDs
+# -----------------------------------------------------------------------------
+installCRDs: true
+
+# -----------------------------------------------------------------------------
+# Resource Limits for Dev
+# -----------------------------------------------------------------------------
+resources:
+  requests:
+    cpu: 10m
+    memory: 32Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi

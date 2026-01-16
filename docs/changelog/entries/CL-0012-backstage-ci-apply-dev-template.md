@@ -31,12 +31,12 @@ version: '1.0'
 breaking_change: false
 ---
 
-# CL-0012: Backstage template for dev Terraform apply
+## CL-0012: Backstage template for dev Terraform apply
 
 Date: 2025-12-31
 Owner: platform
 Scope: Backstage, CI workflow UX
-Related: `backstage/templates/ci-apply-dev/template.yaml`, `.github/workflows/infra-terraform-apply-dev.yml`
+Related: `backstage-helm/backstage-catalog/templates/ci-apply-dev/template.yaml`, `.github/workflows/infra-terraform-apply-dev.yml`
 
 ## Summary
 

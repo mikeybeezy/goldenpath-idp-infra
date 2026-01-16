@@ -2,6 +2,7 @@
 id: ADR-0140
 title: 'ADR-0140: Doc scaffolding and metadata auto-fix'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -27,7 +28,7 @@ version: 1.0
 breaking_change: false
 ---
 
-# ADR-0140: Doc scaffolding and metadata auto-fix
+## ADR-0140: Doc scaffolding and metadata auto-fix
 
 - **Status:** Accepted
 - **Date:** 2026-01-10
@@ -57,10 +58,12 @@ We will enforce a three-layer flow for new documentation:
 
 ## Scope
 
-**Applies to:**
+### Applies to
+
 - Markdown docs under `docs/`.
 
-**Does not apply to:**
+### Does not apply to
+
 - Generated reports or config files (use sidecar metadata).
 - Non-doc source code.
 

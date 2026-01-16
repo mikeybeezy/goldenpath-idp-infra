@@ -33,18 +33,21 @@ date: 2026-01-06
 breaking_change: false
 ---
 
-# CL-0072: Emoji Usage Policy & Automated Enforcement
+## CL-0072: Emoji Usage Policy & Automated Enforcement
 
 ## Summary
+
 Formalized the platform's emoji usage standards and implemented automated enforcement guardrails.
 
 ## Changes
-- **Policy Creation**: Established [**`EMOJI_POLICY.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/EMOJI_POLICY.md).
-- **Automation Logic**: Implemented [**`enforce_emoji_policy.py`**](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/enforce_emoji_policy.py).
+
+- **Policy Creation**: Established [**`EMOJI_POLICY.md`**](../../10-governance/EMOJI_POLICY.md).
+- **Automation Logic**: Implemented [**`enforce_emoji_policy.py`**](../../../scripts/enforce_emoji_policy.py).
 - **PR Guardrail**: Integrated the policy into `ci-metadata-validation.yml`.
 - **Pre-commit Hook**: Added `emoji-enforcer` to `.pre-commit-config.yaml`.
 - **Repo Cleanup**: Executed a global cleanup, fixing 106 violations across 739 files.
 
 ## Verification
+
 - Verified script correctly identifies and removes forbidden emojis.
 - Confirmed pre-commit hook blocks non-compliant commits.

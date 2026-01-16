@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0155
+  title: 'ADR-0155: CI Governance Registry Fetch for Build ID Validation'
+  description: '**Status**: Accepted
+
+    **Date**: 2026-01-14
+
+    **Relates to**: [ADR-0148](./ADR-0148-seamless-build-deployment-with-immutability.md),
+    [ADR-0149](./ADR-0149-simplified-resource-lifecycle-separation.md)'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0155-ci-governance-registry-fetch.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0155-ci-governance-registry-fetch.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0155-ci-governance-registry-fetch.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: accepted
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

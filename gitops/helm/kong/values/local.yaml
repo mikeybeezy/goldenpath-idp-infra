@@ -1,0 +1,85 @@
+# Kong Helm Values - Local Environment (Kind)
+# Chart: konghq/kong v2.47.0
+# Purpose: Local development without AWS dependencies
+# NOTE: For Kind, consider using nginx-ingress instead of Kong for simplicity
+governance:
+  id: HELM_KONG_LOCAL_METADATA
+  owner: null
+  risk_profile: null
+  reliability: null
+
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned Version
+# -----------------------------------------------------------------------------
+image:
+  repository: kong
+  tag: "3.6.1"
+  pullPolicy: IfNotPresent
+
+# -----------------------------------------------------------------------------
+# Proxy Service (NodePort for Kind)
+# -----------------------------------------------------------------------------
+proxy:
+  enabled: true
+  type: NodePort
+  annotations: {}
+  http:
+    enabled: true
+    containerPort: 8000
+    servicePort: 80
+    nodePort: 30080
+  tls:
+    enabled: true
+    containerPort: 8443
+    servicePort: 443
+    nodePort: 30443
+
+# -----------------------------------------------------------------------------
+# Admin API (Internal Only)
+# -----------------------------------------------------------------------------
+admin:
+  enabled: true
+  type: ClusterIP
+  http:
+    enabled: true
+    containerPort: 8001
+    servicePort: 8001
+
+# -----------------------------------------------------------------------------
+# Ingress Controller
+# -----------------------------------------------------------------------------
+ingressController:
+  enabled: true
+  image:
+    repository: kong/kubernetes-ingress-controller
+    tag: "3.1.2"
+    pullPolicy: IfNotPresent
+  installCRDs: false
+  env:
+    kong_admin_token:
+      valueFrom:
+        secretKeyRef:
+          name: kong-admin-secret
+          key: admin-token
+          optional: true
+
+# -----------------------------------------------------------------------------
+# Environment (DB-less mode)
+# -----------------------------------------------------------------------------
+env:
+  database: "off"
+  proxy_access_log: /dev/stdout
+  admin_access_log: /dev/stdout
+  proxy_error_log: /dev/stderr
+  admin_error_log: /dev/stderr
+
+# -----------------------------------------------------------------------------
+# Resource Limits (reduced for local)
+# -----------------------------------------------------------------------------
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi

@@ -1,0 +1,23 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0116
+  title: 'ADR-0116: Emoji Usage Policy & Automated Enforcement'
+  description: ''
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0116-emoji-usage-policy-and-enforcement.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0116-emoji-usage-policy-and-enforcement.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0116-emoji-usage-policy-and-enforcement.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: accepted
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

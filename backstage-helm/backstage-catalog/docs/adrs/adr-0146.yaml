@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0146
+  title: 'ADR-0146: Schema-Driven Script Certification'
+  description: 'There was no way for a machine to look at `scripts/remediate_everything.py`
+    and answer:
+
+    1. Is this safe to run? (Dry-run support)
+
+    2. How do I test it? (Runner command)
+
+    3. Is it production ready? (Matu...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0146-schema-driven-script-certification.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0146-schema-driven-script-certification.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0146-schema-driven-script-certification.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

@@ -1,19 +1,190 @@
-# Managed by scripts/standardize_metadata.py
-appConfig:
-  catalog:
-    locations:
-      - type: url
-        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/ci-apply-dev/template.yaml
-        rules:
-          - allow:
-              - Template
-      - type: url
-        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/app-template/template.yaml
-        rules:
-          - allow:
-              - Template
+# Backstage Helm Values - Dev Environment
+# Chart: backstage-helm/charts/backstage (local chart)
 governance:
   id: HELM_BACKSTAGE_METADATA
   owner: null
   risk_profile: null
   reliability: null
+
+# -----------------------------------------------------------------------------
+# Image Configuration - ECR
+# -----------------------------------------------------------------------------
+image:
+  repository: 593517239005.dkr.ecr.eu-west-2.amazonaws.com/
+  name: backstage
+  tag: 0.0.1
+  pullPolicy: Always
+
+# -----------------------------------------------------------------------------
+# External Secrets Configuration
+# When enabled, chart skips creating secrets (ExternalSecret manages them)
+# -----------------------------------------------------------------------------
+externalSecret:
+  enabled: true
+  secretStoreRef:
+    name: aws-secretsmanager
+    kind: ClusterSecretStore
+  secrets:
+    postgresPassword:
+      remoteRef:
+        key: goldenpath/dev/backstage/postgres
+        property: password
+    postgresUser:
+      remoteRef:
+        key: goldenpath/dev/backstage/postgres
+        property: username
+    githubToken:
+      remoteRef:
+        key: goldenpath/dev/backstage/secrets
+        property: token
+
+# -----------------------------------------------------------------------------
+# PostgreSQL (External RDS)
+# Credentials injected via ExternalSecret -> backstage-secrets
+# -----------------------------------------------------------------------------
+postgres:
+  host: goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com
+  port: "5432"
+  user: backstage_app
+  password: "placeholder"  # Not used when externalSecret.enabled=true
+
+# -----------------------------------------------------------------------------
+# GitHub Integration
+# -----------------------------------------------------------------------------
+github:
+  accessToken: "placeholder"  # Not used when externalSecret.enabled=true
+
+# -----------------------------------------------------------------------------
+# Catalog Configuration
+# -----------------------------------------------------------------------------
+catalog:
+  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-catalog/all.yaml"
+  customCatalogLocation: "None"
+
+# -----------------------------------------------------------------------------
+# Backstage Base URL
+# -----------------------------------------------------------------------------
+backstage:
+  baseURL: "https://backstage.dev.goldenpathidp.io"
+
+# -----------------------------------------------------------------------------
+# Ingress Configuration - Kong
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: true
+  ingressClassName: kong
+  hostname: backstage.dev.goldenpathidp.io
+  path: /
+  pathType: Prefix
+  tls: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    # Use staging issuer for dev to avoid rate limits
+    # Switch to letsencrypt-prod for production
+
+# -----------------------------------------------------------------------------
+# Resource Limits for Dev
+# -----------------------------------------------------------------------------
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
+# -----------------------------------------------------------------------------
+# Service Account
+# -----------------------------------------------------------------------------
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: ""
+
+clusterRoleBinding:
+  create: true
+
+# -----------------------------------------------------------------------------
+# Backstage App Config Override
+# Adds SSL settings for AWS RDS connection
+# -----------------------------------------------------------------------------
+appConfig: |
+  organization:
+    name: Platformers Community
+
+  app:
+    title: Platformers Community Backstage
+    baseUrl: ${BASE_URL}
+
+  backend:
+    baseUrl: ${BASE_URL}
+    listen: ':7007'
+
+    reading:
+      allow:
+        - host: raw.githubusercontent.com
+        - host: '*.githubusercontent.com'
+
+    database:
+      client: pg
+      connection:
+        host: ${POSTGRES_HOST}
+        port: ${POSTGRES_PORT}
+        user: ${POSTGRES_USER}
+        password: ${POSTGRES_PASSWORD}
+        ssl:
+          require: true
+          rejectUnauthorized: false
+
+  integrations:
+    github:
+      - host: github.com
+        token: ${GITHUB_TOKEN}
+  auth:
+    providers: {}
+
+  scaffolder:
+    allowedActions:
+      - fetch:plain
+      - command:execute
+      - publish:github:pull-request
+      - github:actions:dispatch
+      - debug:log
+
+  techdocs:
+    builder: 'external'
+    generator:
+      runIn: 'local'
+    publisher:
+      type: 'local'
+
+  scorecards:
+    test: none
+
+  catalog:
+    locations:
+    - type: url
+      target: ${CATALOG_LOCATION}
+      rules:
+      - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User]
+    - type: url
+      target: ${CUSTOM_CATALOG_LOCATION}
+      rules:
+      - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User]
+    import:
+      entityFilename: catalog-info.yaml
+      pullRequestBranchName: backstage-integration
+    rules:
+      - allow: [Component, System, API, Resource, Location, Template, Domain, Group, User]
+
+  kubernetes:
+    serviceLocatorMethod:
+      type: 'multiTenant'
+    clusterLocatorMethods:
+      - type: 'config'
+        clusters:
+          - url: kubernetes.default.svc.cluster.local:443
+            name: local
+            authProvider: 'serviceAccount'
+            skipTLSVerify: false
+            skipMetricsLookup: true

@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0097
+  title: 'ADR-0097: Domain-Based Resource Catalogs'
+  description: 'As the platform grows, we need to manage multiple resource types (ECR
+    registries, RDS databases, S3 buckets, EKS clusters, etc.). We must decide between:'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0097-domain-based-resource-catalogs.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0097-domain-based-resource-catalogs.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0097-domain-based-resource-catalogs.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: accepted
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

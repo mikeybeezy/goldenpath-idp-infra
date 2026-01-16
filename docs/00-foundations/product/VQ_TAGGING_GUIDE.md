@@ -12,25 +12,26 @@ reliability:
   maturity: 1
 ---
 
-# VQ Tagging Guide: Scripts & Workflows
+## VQ Tagging Guide: Scripts & Workflows
 
-# Metadata Enums Index
+## Metadata Enums Index
 
 ## vq_class
-| Value | Meaning | Notes |
+
+|Value|Meaning|Notes|
 |------|--------|------|
-| 🔴 HV/HQ | High value, high quality | Trust-critical, must be hardened |
-| 🟡 HV/LQ | High value, low quality | Ship fast, reversible |
-| 🔵 MV/HQ | Medium value, high quality | Bound tightly |
-| ⚫ LV/LQ | Low value, low quality | Avoid |
+|🔴 HV/HQ|High value, high quality|Trust-critical, must be hardened|
+|🟡 HV/LQ|High value, low quality|Ship fast, reversible|
+|🔵 MV/HQ|Medium value, high quality|Bound tightly|
+|⚫ LV/LQ|Low value, low quality|Avoid|
 
 ## lifecycle
 
 To track the value of your automation, we use the `value_quantification` object in your metadata sidecars.
 
-**How this maps to your platform (concrete)**
+### How this maps to your platform (concrete)
 
-**🔴 High Value + High Quality (TOP PRIORITY) 🔴 HV/HQ**
+### 🔴 High Value + High Quality (TOP PRIORITY) 🔴 HV/HQ
 
 These must be done slow enough to be right.
 
@@ -45,11 +46,12 @@ Examples from your work:
 
 These are non-negotiable. They form trust.
 
-**🟡 High Value + Low Quality (MOVE FAST) 🟡 HV/LQ**
+### 🟡 High Value + Low Quality (MOVE FAST) 🟡 HV/LQ
 
 These can be rough, reversible, or experimental.
 
 Examples:
+
 - Backstage templates
 - UX surfaces
 - dashboards v1
@@ -58,21 +60,24 @@ Examples:
 
 Rule: If it breaks, no one loses trust or data.
 
-**🔵 Low Value + High Quality (BOUND IT) 🔵 MV/HQ**
+### 🔵 Low Value + High Quality (BOUND IT) 🔵 MV/HQ
 
 Do it once, do it safely, then stop touching it.
 
 Examples:
+
 - legacy compatibility
 - rare workflows
 - edge-case compliance
 
 Rule: Don’t polish; contain.
 
-**⚫ Low Value + Low Quality (DROP IT) ⚫ LV/LQ**
+### ⚫ Low Value + Low Quality (DROP IT) ⚫ LV/LQ
+
 This is how you protect your energy.
 
 Examples:
+
 - perfect docs nobody uses
 - edge tooling no one depends on
 - premature integrations
@@ -80,9 +85,11 @@ Examples:
 Rule: If it doesn’t compound, don’t carry it.
 
 ## 1. Tagging Python Scripts
+
 Scripts are tagged using an adjacent `metadata.yaml` or a directory-level default.
 
-### Example: [standardize_metadata.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/metadata.yaml)
+### Example: [standardize_metadata.py](../../../scripts/metadata.yaml)
+
 ```yaml
 id: APPS_SCRIPTS_METADATA
 type: automation-script
@@ -94,9 +101,11 @@ value_quantification:
 ---
 
 ## 🤖 2. Tagging GitHub Workflows
+
 Since GitHub Actions YAML files don't support custom governance keys, we use a **Metadata Sidecar** in the `.github/workflows/` directory.
 
-### Example: [.github/workflows/create-ecr-registry.metadata.yaml](file:///Users/mikesablaze/goldenpath-idp-infra/.github/workflows/create-ecr-registry.metadata.yaml)
+### Example: [.github/workflows/create-ecr-registry.metadata.yaml](.github/workflows/create-ecr-registry.metadata.yaml)
+
 ```yaml
 id: WORKFLOW_CREATE_ECR
 type: documentation
@@ -109,6 +118,7 @@ value_quantification:
 ---
 
 ## 3. Why Tag Both?
+
 - **Scripts** represent "Architectural Force Multipliers" (O(1) fixes).
 - **Workflows** represent "Developer Lifecycle Reclaim" (Time saved per PR).
 

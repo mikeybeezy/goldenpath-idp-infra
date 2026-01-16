@@ -24,7 +24,7 @@ risk_profile:
 Backstage ECR Entity Generator
 
 Purpose:
-    Transforms the governance-layer ECR catalog (docs/20-contracts/catalogs/ecr-catalog.yaml)
+    Transforms the governance-layer ECR catalog (docs/20-contracts/resource-catalogs/ecr-catalog.yaml)
     into Backstage-compliant Resource entities for visualization in the IDP.
 
 Value:
@@ -38,9 +38,9 @@ import yaml
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from metadata_config import platform_yaml_dump
 
-SOURCE_CATALOG = "docs/20-contracts/catalogs/ecr-catalog.yaml"
-TARGET_DIR = "backstage-helm/catalog/resources/ecr"
-ALL_RESOURCES_PATH = "backstage-helm/catalog/all-resources.yaml"
+SOURCE_CATALOG = "docs/20-contracts/resource-catalogs/ecr-catalog.yaml"
+TARGET_DIR = "backstage-helm/backstage-catalog/resources/ecr"
+ALL_RESOURCES_PATH = "backstage-helm/backstage-catalog/all-resources.yaml"
 
 
 def dump_yaml(data, path: str) -> None:

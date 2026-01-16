@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-script-certification-audit
+  title: Platform Scripts Certification Audit Matrix
+  description: '**Purpose:** Track certification progress of all platform automation
+    scripts
+
+    **Target:** Achieve Validated status or higher for all scripts
+
+    **Audit Date:** 2026-01-12'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/SCRIPT_CERTIFICATION_AUDIT.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/SCRIPT_CERTIFICATION_AUDIT.md
+  tags:
+    - gove
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/SCRIPT_CERTIFICATION_AUDIT.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

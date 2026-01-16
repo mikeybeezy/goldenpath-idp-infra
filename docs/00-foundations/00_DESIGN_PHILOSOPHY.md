@@ -19,12 +19,13 @@ relates_to:
   - IDP_PRODUCT_FEATURES
   - 34_PLATFORM_SUCCESS_CHECKLIST
   - 37_V1_SCOPE_AND_TIMELINE
+  - 90_DOC_SYSTEM
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
 
-# GoldenPath Design Philosophy
+## GoldenPath Design Philosophy
 
 Doc contract:
 
@@ -66,6 +67,28 @@ There is a single delivery system. The platform itself is simply the first workl
 
 Every recommendation in GoldenPath is backed by a working example. If the platform cannot support
 its own build and delivery needs, it is not ready to support others.
+
+## 6) Externalized memory over tribal knowledge
+
+Documentation is not an afterthought—it is the platform's memory. We write abundantly because:
+
+- **We are not afraid of information loss.** Decisions, context, and rationale live in structured files, not in someone's head.
+- **Infrastructure is traversable by design.** Documents are interconnected through explicit `relates_to` links, enabling navigation by humans and agents alike.
+- **Safe iteration requires captured decisions.** When decisions are recorded, we can confidently change course because we understand what led us here and can rollback with context.
+- **Onboarding serves humans and agents equally.** The same documentation that helps a new engineer ramp up enables an AI agent to provide accurate assistance.
+- **Outcomes trace back to decisions.** Any current state can be audited back through the evolutionary path of ADRs, changelogs, and governance records.
+
+This makes the platform **robust but malleable**: stable enough to trust, flexible enough to evolve.
+
+### The paradigm shift
+
+Traditional documentation assumes humans read, memorize, and recall. We assume instead that:
+
+1. Machines retrieve and surface relevant context on demand
+2. Humans focus on judgment and synthesis, not memorization
+3. Abundance of structured information beats sparse, polished documentation
+
+The documentation need not be optimized for human reading speed—it must be optimized for **machine traversability** and **completeness**. If the information exists and is findable, agents can surface it when needed.
 
 ## Documentation as product
 

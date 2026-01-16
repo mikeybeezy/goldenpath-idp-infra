@@ -1,0 +1,232 @@
+# Backstage RED/Golden Signals Dashboard
+# Deploy to backstage namespace for Grafana sidecar auto-discovery
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backstage-golden-signals-dashboard
+  namespace: backstage
+  labels:
+    grafana_dashboard: "1"
+    app: backstage
+  annotations:
+    k8s-sidecar-target-directory: "/tmp/dashboards/tooling"
+    goldenpath.idp/id: TOOLING_DASHBOARDS_BACKSTAGE
+    goldenpath.idp/owner: platform-team
+data:
+  backstage-golden-signals.json: |
+    {
+      "title": "Backstage - Golden Signals",
+      "uid": "backstage-golden-signals",
+      "tags": ["tooling", "backstage", "golden-signals", "red-metrics"],
+      "timezone": "browser",
+      "schemaVersion": 30,
+      "refresh": "30s",
+      "editable": false,
+      "templating": {
+        "list": [
+          {
+            "name": "datasource",
+            "type": "datasource",
+            "query": "prometheus",
+            "current": { "text": "Prometheus", "value": "Prometheus" }
+          }
+        ]
+      },
+      "panels": [
+        {
+          "type": "row",
+          "title": "RED Metrics - Traffic & Errors",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+          "collapsed": false
+        },
+        {
+          "title": "Request Rate (RPS)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(http_request_duration_seconds_count{namespace=\"backstage\"}[2m])) by (method)",
+              "legendFormat": "{{method}}"
+            },
+            {
+              "expr": "sum(rate(http_request_duration_seconds_count{namespace=\"backstage\"}[2m]))",
+              "legendFormat": "Total"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "title": "Error Rate (%)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(http_request_duration_seconds_count{namespace=\"backstage\", status_code=~\"5..\"}[2m])) / sum(rate(http_request_duration_seconds_count{namespace=\"backstage\"}[2m])) * 100",
+              "legendFormat": "5xx Error Rate"
+            },
+            {
+              "expr": "sum(rate(http_request_duration_seconds_count{namespace=\"backstage\", status_code=~\"4..\"}[2m])) / sum(rate(http_request_duration_seconds_count{namespace=\"backstage\"}[2m])) * 100",
+              "legendFormat": "4xx Error Rate"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1 },
+                  { "color": "red", "value": 5 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Latency P50/P95/P99",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket{namespace=\"backstage\"}[5m])) by (le))",
+              "legendFormat": "P50"
+            },
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace=\"backstage\"}[5m])) by (le))",
+              "legendFormat": "P95"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{namespace=\"backstage\"}[5m])) by (le))",
+              "legendFormat": "P99"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "custom": { "drawStyle": "line" }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Saturation - Resource Usage",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 },
+          "collapsed": false
+        },
+        {
+          "title": "CPU Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 10 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"backstage\", container!=\"\", container!=\"POD\"}[2m])) by (pod)",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "title": "Memory Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 10 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(container_memory_usage_bytes{namespace=\"backstage\", container!=\"\", container!=\"POD\"}) by (pod)",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "title": "Pod Restarts",
+          "type": "stat",
+          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 10 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(kube_pod_container_status_restarts_total{namespace=\"backstage\"})",
+              "legendFormat": "Total Restarts"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1 },
+                  { "color": "red", "value": 5 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Logs (Loki)",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 18 },
+          "collapsed": false
+        },
+        {
+          "title": "Recent Error Logs",
+          "type": "logs",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 19 },
+          "datasource": { "type": "loki", "uid": "loki" },
+          "targets": [
+            {
+              "expr": "{namespace=\"backstage\"} |~ \"(?i)(error|exception|fatal|panic)\"",
+              "legendFormat": ""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none",
+            "enableLogDetails": true
+          }
+        },
+        {
+          "title": "All Application Logs",
+          "type": "logs",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 29 },
+          "datasource": { "type": "loki", "uid": "loki" },
+          "targets": [
+            {
+              "expr": "{namespace=\"backstage\"}",
+              "legendFormat": ""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none",
+            "enableLogDetails": true
+          }
+        }
+      ]
+    }
