@@ -37,7 +37,7 @@ This plan establishes a secure software supply chain by integrating AWS Elastic 
 ## Proposed Changes
 
 ### [Platform Repo] (`goldenpath-idp-infra`)
-#### [NEW] [envs/dev/ecr.tf](file:///Users/mikesablaze/goldenpath-idp-infra/envs/dev/ecr.tf)
+#### [NEW] [envs/dev/ecr.tf](envs/dev/ecr.tf)
 Create the ECR repository for the WordPress application.
 - **Resource**: `aws_ecr_repository`
 - **Name**: `goldenpath-wordpress-app` (Aligned with repo name)
@@ -45,12 +45,12 @@ Create the ECR repository for the WordPress application.
 - **Encryption**: AES-256 (Default)
 
 ### [App Repo] (`goldenpath-wordpress-app`)
-#### [NEW] [Dockerfile](file:///Users/mikesablaze/Documents/relaunch/goldenpath-wordpress-app/Dockerfile)
+#### [NEW] [Dockerfile](../goldenpath-wordpress-app/Dockerfile)
 Create a buildable artifact for the pipeline.
 - **Base**: `wordpress:latest`
 - **Content**: Standard WordPress image (customizable later).
 
-#### [NEW] [.github/workflows/ci-build-push.yml](file:///Users/mikesablaze/Documents/relaunch/goldenpath-wordpress-app/.github/workflows/ci-build-push.yml)
+#### [NEW] [.github/workflows/ci-build-push.yml](../goldenpath-wordpress-app/.github/workflows/ci-build-push.yml)
 Create a reusable workflow to build and push images.
 - **Trigger**: Push to `main`.
 - **Steps**:

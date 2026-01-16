@@ -31,8 +31,8 @@ We have successfully implemented the "Trusted Delivery Pipeline" enabling distri
     - Command: `make create-ecr APP=my-app ...`
     - Result: Appends fully compliant Terraform to `envs/dev/ecr.tf`.
 3.  **Documentation**:
-    - [Trusted Delivery Strategy](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/TRUSTED_DELIVERY_STRATEGY.md)
-    - [Terraform Standard](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/METADATA_INJECTION_GUIDE.md#4-terraform-module-standard)
+    - [Trusted Delivery Strategy](docs/10-governance/TRUSTED_DELIVERY_STRATEGY.md)
+    - [Terraform Standard](../10-governance/METADATA_INJECTION_GUIDE.md#4-terraform-module-standard)
 
 ### ✅ Verification Results
 - **ECR Module**: `terraform validate` passed (Governance Logic Valid).

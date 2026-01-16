@@ -34,7 +34,7 @@ breaking_change: false
 - **Owners:** `platform-team`
 - **Domain:** Platform
 - **Decision type:** Governance | Architecture
-- **Related:** [ECR Product Strategy](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0092-ecr-registry-product-strategy.md)
+- **Related:** [ECR Product Strategy](ADR-0092-ecr-registry-product-strategy.md)
 
 ---
 

@@ -51,7 +51,7 @@ We have implemented **Cascading Metadata Inheritance** paired with an **Active G
 
 ### 3. Active Governance Loop
 - **Automated Audit**: A recurring process (`audit_metadata.py`) validates all artifacts and generates immutable health snapshots.
-- **Governance Vocabulary**: Auto-generated human-readable documentation ([GOVERNANCE_VOCABULARY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/GOVERNANCE_VOCABULARY.md)) ensures stakeholders are always aligned on valid enums.
+- **Governance Vocabulary**: Auto-generated human-readable documentation ([GOVERNANCE_VOCABULARY.md](../10-governance/GOVERNANCE_VOCABULARY.md)) ensures stakeholders are always aligned on valid enums.
 
 ### 4. Local DX Helper
 - A new `bin/governance` binary provides developers with instant local feedback (`governance check`) before they push to CI.

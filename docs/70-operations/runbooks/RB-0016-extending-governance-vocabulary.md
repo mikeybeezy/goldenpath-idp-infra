@@ -42,12 +42,12 @@ This runbook guides you through adding new values (owners, domains, artifact typ
 
 ### 1. Confirm the Need
 Is your value truly new, or is it a synonym of an existing one?
-*   Check [**`GOVERNANCE_VOCABULARY.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/GOVERNANCE_VOCABULARY.md).
+*   Check [**`GOVERNANCE_VOCABULARY.md`**](../../10-governance/GOVERNANCE_VOCABULARY.md).
 *   If you find a suitable synonym, use it instead to reduce fragmentation.
 
 ### 2. Propose the Addition
 If a new value is necessary:
-1.  Navigate to [**`schemas/metadata/enums.yaml`**](file:///Users/mikesablaze/goldenpath-idp-infra/schemas/metadata/enums.yaml).
+1.  Navigate to [**`schemas/metadata/enums.yaml`**](../../../schemas/metadata/enums.yaml).
 2.  Add your value to the appropriate list (e.g., `owners`, `domains`).
 3.  Ensure the syntax is correct (valid YAML list).
 

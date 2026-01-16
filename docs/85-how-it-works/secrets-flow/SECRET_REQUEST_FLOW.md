@@ -188,4 +188,4 @@ graph LR
 
 For detailed instructions on running the Secret Request Parser locally and performing surgical Terraform plans, see:
 
-- **[RB-0026: Local Secret Generation & Targeting](file:///Users/mikesablaze/goldenpath-idp-infra/docs/70-operations/runbooks/RB-0026-local-secret-generation.md)**
+- **[RB-0026: Local Secret Generation & Targeting](../../70-operations/runbooks/RB-0026-local-secret-generation.md)**

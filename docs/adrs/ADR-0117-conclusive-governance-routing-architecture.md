@@ -40,7 +40,7 @@ As the platform grows, managing which teams review which changes (and what docum
 ## Decision
 We will implement a **Conclusive Governance Matrix** and an automated compliance engine.
 
-### 1. The Matrix ([`agent-routing.yaml`](file:///Users/mikesablaze/goldenpath-idp-infra/schemas/routing/agent-routing.yaml))
+### 1. The Matrix ([`agent-routing.yaml`](../../schemas/routing/agent-routing.yaml))
 - **100% Coverage**: Every domain and component in the platform is mapped to a mandatory path.
 - **Unified Review**: The `platform-team` is a required reviewer for all changes.
 - **Specialized Gates**: `security-team`, `operations-team`, and `sre-team` are automatically included for their respective domains.
@@ -51,7 +51,7 @@ The routing engine enforces a "Born Governed" standard by requiring specific art
 - **Agents/Policy**: Require dual-approval and full architectural documentation.
 - **Operational Changes**: Require a `Changelog`.
 
-### 3. Compliance Engine ([`validate_routing_compliance.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/validate_routing_compliance.py))
+### 3. Compliance Engine ([`validate_routing_compliance.py`](../../scripts/validate_routing_compliance.py))
 A new CI gate will analyze Pull Requests to ensure:
 - The metadata in changed files aligns with the routing matrix.
 - All mandatory documentation (ADRs/CLs) is included in the PR commit set.

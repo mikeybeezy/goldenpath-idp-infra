@@ -746,3 +746,20 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 - `value_ledger.json` updated with the new metadata inventory
 
 **Commit**: `99922e58` - chore: normalize metadata and fix validation
+
+## 11. Link Normalization & Secrets Path Alignment (2026-01-16)
+
+**Objective**: Remove `file://` links repo-wide, align Backstage GitHub token secret path, and re-validate coherence.
+
+**Actions**:
+
+- Replaced `file://` links with repo-relative paths across docs and auto-generated reports.
+- Standardized Backstage GitHub token secret path to `goldenpath/{env}/backstage/secrets` in docs and ExternalSecrets.
+- Updated generators to emit relative links for script index and platform health output.
+- Repaired truncated catalog link in Backstage ADR metadata.
+
+**Validation**:
+
+- `scripts/generate_script_index.py --validate`: ✅ (after regeneration)
+- `scripts/platform_health.py`: refreshed `PLATFORM_HEALTH.md` and `HEALTH_AUDIT_LOG.md`
+- `scripts/validate_metadata.py`: ✅ 745 passed, ❌ 0 failed

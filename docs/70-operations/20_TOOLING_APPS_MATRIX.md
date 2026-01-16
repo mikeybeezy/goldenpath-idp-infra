@@ -222,7 +222,7 @@ spec:
 | Secret Name | Consumers | AWS SM Path |
 |-------------|-----------|-------------|
 | keycloak-admin | Keycloak | `goldenpath/dev/keycloak/admin` |
-| backstage-github-token | Backstage | `goldenpath/dev/backstage/github` |
+| backstage-github-token | Backstage | `goldenpath/dev/backstage/secrets` |
 | backstage-db-credentials | Backstage | `goldenpath/dev/backstage/postgres` |
 | kong-admin-credentials | Kong | `goldenpath/dev/kong/admin` |
 
@@ -675,7 +675,7 @@ goldenpath/{env}/{app}/{secret-name}
 | `goldenpath/dev/keycloak/admin` | `admin-password` | Keycloak |
 | `goldenpath/dev/keycloak/postgres` | `postgres-password` | Keycloak |
 | `goldenpath/dev/backstage/postgres` | `password`, `username`, `host` | Backstage |
-| `goldenpath/dev/backstage/github` | `token` | Backstage |
+| `goldenpath/dev/backstage/secrets` | `token` | Backstage |
 | `goldenpath/dev/backstage/oidc` | `client-secret` | Backstage |
 | `goldenpath/dev/kong/admin` | `password` | Kong Manager |
 | `goldenpath/dev/grafana/admin` | `password` | Grafana |

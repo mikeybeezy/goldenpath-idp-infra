@@ -29,7 +29,7 @@ breaking_change: false
 
 `scripts/backfill-metadata.py` is an automated tool that adds YAML frontmatter metadata to all markdown files in the repository. It enables Knowledge Graph capabilities by ensuring 100% metadata coverage.
 
-**Script Location:** [`scripts/backfill-metadata.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/backfill-metadata.py)
+**Script Location:** [`scripts/backfill-metadata.py`](scripts/backfill-metadata.py)
 
 ## What It Does
 
@@ -339,10 +339,10 @@ Edit `get_risk_profile()` function to adjust defaults per type.
 
 ## Related Documentation
 
-- [ADR-0084: Enhanced Metadata Schema](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0084-platform-enhanced-metadata-schema.md)
-- [CL-0043: Complete Metadata Backfill](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/entries/CL-0043-complete-metadata-backfill.md)
-- [METADATA_STRATEGY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/90-doc-system/METADATA_STRATEGY.md)
-- [Relationship Extraction Script Runbook](file:///Users/mikesablaze/goldenpath-idp-infra/docs/70-operations/runbooks/RELATIONSHIP_EXTRACTION_SCRIPT.md)
+- [ADR-0084: Enhanced Metadata Schema](../../adrs/ADR-0084-platform-enhanced-metadata-schema.md)
+- [CL-0043: Complete Metadata Backfill](../../changelog/entries/CL-0043-complete-metadata-backfill.md)
+- [METADATA_STRATEGY.md](../../90-doc-system/METADATA_STRATEGY.md)
+- [Relationship Extraction Script Runbook](docs/70-operations/runbooks/RELATIONSHIP_EXTRACTION_SCRIPT.md)
 
 ## Support
 

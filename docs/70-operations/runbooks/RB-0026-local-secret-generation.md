@@ -15,7 +15,7 @@ This runbook explains how to execute the **Secret Request Parser** locally. This
 
 ## 🧭 Context
 
-The [Secret Request Parser](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/secret_request_parser.py) is the intelligence layer that translates developer YAMLs into Terraform and Kubernetes configurations. Running it locally allows you to verify that your "Intent" will produce the expected "Implementation."
+The [Secret Request Parser](../../../scripts/secret_request_parser.py) is the intelligence layer that translates developer YAMLs into Terraform and Kubernetes configurations. Running it locally allows you to verify that your "Intent" will produce the expected "Implementation."
 
 ---
 
@@ -159,7 +159,7 @@ rm gitops/kustomize/overlays/dev/apps/payments/externalsecrets/SEC-0007.yaml
 | Issue | Root Cause | Resolution |
 | :--- | :--- | :--- |
 | `AccessDeniedException` | Your local IAM user lacks `secretsmanager:CreateSecret`. | Ensure your local principal has the necessary permissions or run via CI/CD. |
-| `missing required fields` | The YAML is incomplete. | Check [ADR-0143](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0143-secret-request-contract.md) for required fields. |
+| `missing required fields` | The YAML is incomplete. | Check [ADR-0143](../../adrs/ADR-0143-secret-request-contract.md) for required fields. |
 | `invalid rotationClass` | Governance violation. | Ensure `risk: high` secrets have a non-none rotation class. |
 | `Failed to read variables file` | Path mismatch. | Ensure you are in `envs/dev` and the relative path to the var-file is correct. |
 | `ModuleNotFoundError` | Missing Python dependency. | Run `pip install PyYAML`. |

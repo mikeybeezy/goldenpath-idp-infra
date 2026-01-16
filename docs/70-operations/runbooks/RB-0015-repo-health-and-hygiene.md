@@ -35,10 +35,10 @@ Generate a repository-wide compliance snapshot to identify pockets of "Technical
 bin/governance audit
 ```
 *   **Target**: 100% compliance.
-*   **Failure Mode**: If the audit finds drift, use [**RB-0013**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/70-operations/runbooks/RB-0013-metadata-and-enum-alignment.md) to remediate.
+*   **Failure Mode**: If the audit finds drift, use [**RB-0013**](docs/70-operations/runbooks/RB-0013-metadata-and-enum-alignment.md) to remediate.
 
 ### 2. Registry Verification
-The [**`PLATFORM_HEALTH.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md) dashboard tracks how well our sidecars are "bonded" to physical resources.
+The [**`PLATFORM_HEALTH.md`**](../../../PLATFORM_HEALTH.md) dashboard tracks how well our sidecars are "bonded" to physical resources.
 *   **Fixing `⚠️ Injection Integrity`**: Ensure that the K8s name labels match the sidecar `id` exactly.
 
 ### 3. Emoji & Visual Policy

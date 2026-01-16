@@ -39,9 +39,9 @@ This document serves as the high-integrity map for all operational and strategic
 
 | Dashboard | Location | Purpose |
 | :--- | :--- | :--- |
-| **Platform Health** | [**`PLATFORM_HEALTH.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md) | Real-time compliance, risk, and coverage metrics. |
-| **Testing Dashboard** | [**`tests/README.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/tests/README.md) | Unit & Feature test status, and Confidence Matrix ratings. |
-| **Registry Catalog** | [**`docs/REGISTRY_CATALOG.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/REGISTRY_CATALOG.md) | Logical inventory of all registries and logical repositories. |
+| **Platform Health** | [**`PLATFORM_HEALTH.md`**](PLATFORM_HEALTH.md) | Real-time compliance, risk, and coverage metrics. |
+| **Testing Dashboard** | [**`tests/README.md`**](tests/README.md) | Unit & Feature test status, and Confidence Matrix ratings. |
+| **Registry Catalog** | [**`docs/REGISTRY_CATALOG.md`**](docs/REGISTRY_CATALOG.md) | Logical inventory of all registries and logical repositories. |
 
 ---
 
@@ -49,8 +49,8 @@ This document serves as the high-integrity map for all operational and strategic
 
 | Dashboard | Location | Purpose |
 | :--- | :--- | :--- |
-| **Value Quantification** | [**`VQ_TAGGING_GUIDE.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/00-foundations/product/VQ_TAGGING_GUIDE.md) | ROI tracking and value-reclamation principles. |
-| **Product Features** | [**`IDP_PRODUCT_FEATURES.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/00-foundations/product/IDP_PRODUCT_FEATURES.md) | Capability ledger and roadmap status. |
+| **Value Quantification** | [**`VQ_TAGGING_GUIDE.md`**](docs/00-foundations/product/VQ_TAGGING_GUIDE.md) | ROI tracking and value-reclamation principles. |
+| **Product Features** | [**`IDP_PRODUCT_FEATURES.md`**](docs/00-foundations/product/IDP_PRODUCT_FEATURES.md) | Capability ledger and roadmap status. |
 | **Governance Pulse** | `bin/governance pulse` | (CLI) Live view of mission alignment and total ROI. |
 
 ---
@@ -59,9 +59,9 @@ This document serves as the high-integrity map for all operational and strategic
 
 | Dashboard | Location | Purpose |
 | :--- | :--- | :--- |
-| **ADR Index** | [**`01_adr_index.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) | Central log of all architectural decisions. |
-| **Changelog Index** | [**`00_index.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/00_index.md) | Chronological record of all platform changes. |
-| **Vocabulary Index** | [**`GOVERNANCE_VOCABULARY.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/GOVERNANCE_VOCABULARY.md) | Source of truth for all valid metadata enums. |
+| **ADR Index** | [**`01_adr_index.md`**](docs/adrs/01_adr_index.md) | Central log of all architectural decisions. |
+| **Changelog Index** | [**`00_index.md`**](docs/changelog/00_index.md) | Chronological record of all platform changes. |
+| **Vocabulary Index** | [**`GOVERNANCE_VOCABULARY.md`**](docs/10-governance/GOVERNANCE_VOCABULARY.md) | Source of truth for all valid metadata enums. |
 
 ---
 
@@ -69,8 +69,8 @@ This document serves as the high-integrity map for all operational and strategic
 
 | Dashboard | Location | Purpose |
 | :--- | :--- | :--- |
-| **Friction Report** | [**`FRICTION_REPORT.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/FRICTION_REPORT.md) | Log of identified and resolved ecosystem friction. |
-| **Certification Matrix** | [**`CONFIDENCE_MATRIX.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/tests/TESTING_STANDARDS.md#maturity-rating-scale) | The five-star rating system for automation. |
+| **Friction Report** | [**`FRICTION_REPORT.md`**](docs/10-governance/FRICTION_REPORT.md) | Log of identified and resolved ecosystem friction. |
+| **Certification Matrix** | [**`CONFIDENCE_MATRIX.md`**](tests/TESTING_STANDARDS.md#maturity-rating-scale) | The five-star rating system for automation. |
 
 ---
 

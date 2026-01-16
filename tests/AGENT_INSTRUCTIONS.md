@@ -46,12 +46,12 @@ Run your tests and capture **Raw Output** and **Evidence**:
 - **Evidence**: Artifact logs or screenshots (using `generate_image` if UI is affected).
 
 ### 3. **RECORD** (Traceability)
-Populate the [**`TEST_RECORD_TEMPLATE.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/tests/templates/TEST_RECORD_TEMPLATE.md) in the test folder.
+Populate the [**`TEST_RECORD_TEMPLATE.md`**](templates/TEST_RECORD_TEMPLATE.md) in the test folder.
 - Link to the **ADR** and **Changelog**.
 - Assign a **Confidence Rating** based on the [**Confidence Matrix**](../TESTING_STANDARDS.md#maturity-rating-scale).
 
 ### 4. **DASHBOARD SYNC**
-Update the top-level [**`tests/README.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/tests/README.md) with your results.
+Update the top-level [**`tests/README.md`**](README.md) with your results.
 
 ---
 

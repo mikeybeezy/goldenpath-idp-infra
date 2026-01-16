@@ -31,5 +31,5 @@ The global `catalog.rules` are restricted to `Component` and `API`. This prevent
 ---
 
 ## Related Documentation
-- [Security Decision (ADR-0130)](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0130-platform-catalog-zoned-defense-security.md)
-- [Consistency Model (ADR-0129)](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0129-platform-eventual-consistency-ecr-governance.md)
+- [Security Decision (ADR-0130)](../docs/adrs/ADR-0130-platform-catalog-zoned-defense-security.md)
+- [Consistency Model (ADR-0129)](../docs/adrs/ADR-0129-platform-eventual-consistency-ecr-governance.md)

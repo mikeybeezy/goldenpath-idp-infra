@@ -137,6 +137,6 @@ N/A - This is a new capability, not a change to existing systems.
 
 ## References
 
-- [Walkthrough: EKS End-to-End Milestone](file:///Users/mikesablaze/goldenpath-idp-infra/docs/antig-walkthroughs/2026-01-14_2213_eks-end-to-end-milestone.md)
-- [V1 Scope and Timeline](file:///Users/mikesablaze/goldenpath-idp-infra/docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md)
-- [V1 Capability Matrix](file:///Users/mikesablaze/goldenpath-idp-infra/docs/production-readiness-gates/V1_04_CAPABILITY_MATRIX.md)
+- [Walkthrough: EKS End-to-End Milestone](../../antig-walkthroughs/2026-01-14_2213_eks-end-to-end-milestone.md)
+- [V1 Scope and Timeline](../../00-foundations/37_V1_SCOPE_AND_TIMELINE.md)
+- [V1 Capability Matrix](../../production-readiness-gates/V1_04_CAPABILITY_MATRIX.md)

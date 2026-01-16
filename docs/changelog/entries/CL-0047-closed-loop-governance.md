@@ -42,7 +42,7 @@ Implemented "Phase 2: Closed-Loop Governance," enabling the automatic propagatio
 - **Metadata Propagation**: Automatically enriched 80+ `values.yaml` files and ArgoCD manifests with ownership and risk data.
 - **Template Support**: Upgraded `scripts/render-template.py` to support nested key resolution (e.g. `values.governance.id`).
 - **Application Hardening**: Updated application templates to render governance annotations (`goldenpath.idp/id`, etc.).
-- **Registry Update**: Created [Platform Automation Scripts Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md).
+- **Registry Update**: Created [Platform Automation Scripts Index](../../../scripts/index.md).
 
 ## Business Value
 - **100% Auditability**: Live cluster resources now advertise their own ownership and risk profiles.

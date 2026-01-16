@@ -58,7 +58,7 @@ These secrets must be created manually before deployment:
 | Secret | Purpose | Path | When Needed |
 |--------|---------|------|-------------|
 | Keycloak Admin | Initial admin password | `goldenpath/{env}/keycloak/admin` | Before Keycloak deploy |
-| GitHub Token | Backstage GitHub integration | `goldenpath/{env}/backstage/github` | Before Backstage deploy |
+| GitHub Token | Backstage GitHub integration | `goldenpath/{env}/backstage/secrets` | Before Backstage deploy |
 | OIDC Client Secret | Backstage auth | `goldenpath/{env}/backstage/oidc` | After Keycloak configured |
 
 ### 3. App-Generated Secrets
@@ -84,7 +84,7 @@ These are created by applications after deployment:
   • goldenpath/{env}/keycloak/admin
     └── { "admin-password": "<your-secure-password>" }
 
-  • goldenpath/{env}/backstage/github
+  • goldenpath/{env}/backstage/secrets
     └── { "token": "ghp_xxxxx" }
 
   ──────────────────────────────────────────────────────────────────────────
@@ -153,7 +153,7 @@ goldenpath/{environment}/{component}/{secret-type}
 | `goldenpath/dev/keycloak/admin` | Manual | `admin-password` | Operator |
 | `goldenpath/dev/keycloak/postgres` | Auto | `username`, `password`, `host`, `port`, `dbname` | Terraform |
 | `goldenpath/dev/backstage/postgres` | Auto | `username`, `password`, `host`, `port`, `dbname` | Terraform |
-| `goldenpath/dev/backstage/github` | Manual | `token` | Operator |
+| `goldenpath/dev/backstage/secrets` | Manual | `token` | Operator |
 | `goldenpath/dev/backstage/oidc` | Manual | `client-secret` | Operator |
 | `goldenpath/dev/kong/admin` | Optional | `admin-token` | Operator |
 
@@ -174,7 +174,7 @@ aws secretsmanager create-secret \
 ```bash
 # Create GitHub PAT with repo scope at https://github.com/settings/tokens
 aws secretsmanager create-secret \
-  --name "goldenpath/dev/backstage/github" \
+  --name "goldenpath/dev/backstage/secrets" \
   --description "GitHub token for Backstage" \
   --secret-string '{"token":"ghp_xxxxxxxxxxxxx"}'
 ```
@@ -316,7 +316,7 @@ Before deploying the platform, ensure:
 
 - [ ] Manual secrets created in AWS Secrets Manager:
   - [ ] `goldenpath/{env}/keycloak/admin`
-  - [ ] `goldenpath/{env}/backstage/github`
+  - [ ] `goldenpath/{env}/backstage/secrets`
 - [ ] IAM role for ESO has SecretsManager read permissions
 - [ ] OIDC provider configured for IRSA
 - [ ] ClusterSecretStore manifest in Git

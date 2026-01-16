@@ -67,7 +67,7 @@ Engineering work that is "invisible" is work that is at risk of being defunded o
 VQ is the fuel for our **Human-In-The-Loop** philosophy. By quantifying the time spent in CI failures, we can identify which "Hard Gates" are causing excessive friction and transition them into "Auto-Healing Guidance."
 
 ### How We Use VQ to Decide
-- **Work on it if**: The [VQ Reclamation Value](file:///Users/mikesablaze/goldenpath-idp-infra/docs/product/VQ_TAGGING_GUIDE.md) is high and the "Friction Tax" is currently blocking delivery.
+- **Work on it if**: The [VQ Reclamation Value](docs/product/VQ_TAGGING_GUIDE.md) is high and the "Friction Tax" is currently blocking delivery.
 - **Skip it if**: The cost of implementing and maintaining the governance check outweighs the theoretical risk it mitigates.
 
 ---

@@ -128,17 +128,17 @@ While **Scripts** (the "Healers") mine the data and build the graph, we introduc
 
 ### [Docs & Research]
 
-#### [NEW] [docs/adrs/ADR-0110-idp-knowledge-graph-architecture.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0110-idp-knowledge-graph-architecture.md)
+#### [NEW] [docs/adrs/ADR-0110-idp-knowledge-graph-architecture.md](../adrs/ADR-0110-idp-knowledge-graph-architecture.md)
 -   Define the formal schema for the Knowledge Graph.
 -   Document the transition from `metadata.yaml` to JSON-LD or Graph-compatible structures.
 
 ### [Tooling]
 
-#### [MODIFY] [scripts/extract_relationships.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/extract_relationships.py)
+#### [MODIFY] [scripts/extract_relationships.py](../../scripts/extract_relationships.py)
 -   Upgrade to handle complex node types.
 -   Implement "Edge Discovery" logic (e.g., parsing Terraform `depends_on` to create `DEPENDS_ON` edges in the graph).
 
-#### [NEW] [scripts/graph_validator.py](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/graph_validator.py)
+#### [NEW] [scripts/graph_validator.py](scripts/graph_validator.py)
 -   Ensure that every `Infra` node has a mandatory `OWNED_BY` relationship to an `Identity` node.
 -   Verify that `Service` nodes mapped to `High Risk` have required `Security Policy` nodes linked.
 

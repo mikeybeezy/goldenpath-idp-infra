@@ -48,12 +48,12 @@ The dashboard is maintained by a fully automated "Closed-Loop" process:
 | :--- | :--- | :--- |
 | **Push** | Repository-wide | Re-generates report and commits it to `development`. |
 | **Schedule** | Daily (Midnight) | Audits lifecycle staleness and commits updates. |
-| **Manual** | On Demand | Can be triggered via [GitHub Actions](file:///Users/mikesablaze/goldenpath-idp-infra/.github/workflows/quality-platform-health.yaml). |
+| **Manual** | On Demand | Can be triggered via [GitHub Actions](../../.github/workflows/quality-platform-health.yaml). |
 
 ## Technical Implementation
 
-- **Engine**: [`scripts/platform_health.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/platform_health.py)
-- **Workflow**: [`.github/workflows/quality-platform-health.yaml`](file:///Users/mikesablaze/goldenpath-idp-infra/.github/workflows/quality-platform-health.yaml)
+- **Engine**: [`scripts/platform_health.py`](../../scripts/platform_health.py)
+- **Workflow**: [`.github/workflows/quality-platform-health.yaml`](../../.github/workflows/quality-platform-health.yaml)
 - **Automation**: Uses the `git-auto-commit-action` to ensure the dashboard state is persisted as a "stateful record" in Git.
 
 ## How to use this data

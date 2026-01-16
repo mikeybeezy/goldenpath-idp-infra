@@ -21,7 +21,7 @@ This task successfully transition the Platform Health Dashboard from a transient
 ## Persistent Health Dashboard
 The `PLATFORM_HEALTH.md` file is now automatically generated, persisted to the repository, and updated on every push to the development branch. It provides a real-time view of metadata compliance, risk profiles, and injection coverage.
 
-render_diffs(file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md)
+render_diffs(PLATFORM_HEALTH.md)
 
 ## Key Achievements
 - **100% Metadata Compliance**: All 352 tracked resources successfully pass the metadata validation schema.

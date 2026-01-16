@@ -47,7 +47,7 @@ This command performs contextual inference (e.g., mapping `categories: unknown` 
 
 ### 2. Resolving Enum Drift
 If `heal` doesn't work, you are likely using a value that doesn't exist in the system vocabulary.
-1.  Check [**`GOVERNANCE_VOCABULARY.md`**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/GOVERNANCE_VOCABULARY.md) for valid values.
+1.  Check [**`GOVERNANCE_VOCABULARY.md`**](../../10-governance/GOVERNANCE_VOCABULARY.md) for valid values.
 2.  Update your `metadata.yaml` to use a supported value for `domain`, `owner`, `risk_profile`, etc.
 
 ### 3. Schema Failure

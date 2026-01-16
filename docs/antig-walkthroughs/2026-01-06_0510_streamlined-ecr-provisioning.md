@@ -25,7 +25,7 @@ The `Create ECR Registry` workflow has been upgraded to a "Wizard" style experie
 - **Bounded Context**: Using the `-target` flag, it ignores unrelated cluster state and only validates the new registry definition.
 - **PR Injection**: The plan output is injected directly into the PR description, so reviewers see the exact impact immediately.
 
-[create-ecr-registry.yml](file:///Users/mikesablaze/goldenpath-idp-infra/.github/workflows/create-ecr-registry.yml)
+[create-ecr-registry.yml](../../.github/workflows/create-ecr-registry.yml)
 
 ## 2. Automated Apply on Merge
 A new workflow governs the transition from "Approved Plan" to "Resource Created".
@@ -34,7 +34,7 @@ A new workflow governs the transition from "Approved Plan" to "Resource Created"
 - **Targeted Apply**: Runs `terraform apply` using the same precise targeting used in the plan.
 - **Auto-Approval**: Since the plan was already reviewed in the PR, the apply is automated for speed and reliability.
 
-[ecr-auto-apply.yml](file:///Users/mikesablaze/goldenpath-idp-infra/.github/workflows/ecr-auto-apply.yml)
+[ecr-auto-apply.yml](../../.github/workflows/ecr-auto-apply.yml)
 
 ## Verification Results
 
