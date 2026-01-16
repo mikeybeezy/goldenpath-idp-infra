@@ -726,3 +726,23 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 - **Logs**: Loki panels for error investigation + full application logs
 
 **Commit**: `f8e33b94` - feat: add RED/Golden Signals dashboards for tooling applications
+
+## 10. Metadata Governance Cleanup (2026-01-16)
+
+**Objective**: Normalize ADR/CL metadata and clear schema validation failures repo-wide.
+
+**Actions**:
+
+- Normalized ADR/CL frontmatter and status fields; marked superseded ADRs consistently.
+- Added missing metadata sidecars and IDs where required (e.g., envs and Helm overlays).
+- Fixed governance IDs/labels for tooling dashboards and local infra values.
+- Added metadata for previously missing docs, reports, and local audit logs.
+- Corrected test metadata IDs to match filenames for validation.
+
+**Validation**:
+
+- `scripts/validate_metadata.py`: ✅ 745 passed, ❌ 0 failed
+- `bin/governance audit`: generated `docs/10-governance/reports/compliance_snapshot_2026-01-16.json`
+- `value_ledger.json` updated with the new metadata inventory
+
+**Commit**: `99922e58` - chore: normalize metadata and fix validation
