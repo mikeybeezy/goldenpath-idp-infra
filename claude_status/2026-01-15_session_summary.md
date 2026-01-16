@@ -636,11 +636,38 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 4. Old pod keeps running (holds volume)
 5. Deployment never completes rollout
 
-**Potential Solutions**:
-1. **Delete PVC and redeploy** (loses Grafana settings/dashboards - HIGH RISK)
-2. **Change to `ReadWriteMany` volume** (requires storage class change)
-3. **Disable persistence temporarily** (lose dashboard customizations)
-4. **Use `Recreate` strategy instead of `RollingUpdate`** (causes downtime)
-5. **Manually scale down old ReplicaSet to 0** (force volume release)
+**Resolution (2026-01-16 02:45 UTC)**:
+
+1. **Scaled down old ReplicaSet**: `kubectl scale replicaset <old-rs> -n monitoring --replicas=0`
+2. **Volume released**: New pod was able to attach PVC and start
+3. **Correct Helm values**: Used `searchNamespace: ALL` with `labelValue: "1"`:
+
+   ```yaml
+   grafana:
+     sidecar:
+       dashboards:
+         enabled: true
+         label: grafana_dashboard
+         labelValue: "1"
+         searchNamespace: ALL
+       datasources:
+         enabled: true
+         searchNamespace: ALL
+   ```
+
+4. **Result**: Sidecar now has `NAMESPACE=ALL` env var and discovers dashboards from all namespaces
+
+**Final State**:
+
+- ✅ **Grafana Pod**: Running with 3/3 containers
+- ✅ **Sidecar Config**: `NAMESPACE=ALL` environment variable set
+- ✅ **Application Dashboards**: All 3 discovered and loaded
+  - `sample-stateless-app - Golden Signals`
+  - `stateful-app - Golden Signals`
+  - `wordpress-efs - Golden Signals`
+- ✅ **Total Dashboards**: 29 (26 infrastructure + 3 application)
+- ✅ **Ingress**: `grafana.dev.goldenpathidp.io` configured
+
+**Key Learning**: The `extraEnv` field didn't work with this chart version. The correct approach is to use `searchNamespace: ALL` directly under `sidecar.dashboards`, which the chart translates to the `NAMESPACE` env var internally
 
 
