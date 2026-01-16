@@ -5,16 +5,24 @@ set -euo pipefail
 # TEARDOWN V3 - Enhanced EKS Cluster Teardown Runner
 # =============================================================================
 #
-# Version: 3.0.0
+# Version: 3.1.0
 # Purpose: Reliable teardown of EKS clusters with proper resource ordering
 #
 # Key improvements over v2:
 #   - Nodegroup deletion via AWS CLI works even when k8s API is unavailable
 #   - Explicit step logging for every operation (no "unknown" steps)
 #   - Proper LoadBalancer drain -> LB delete -> ENI cleanup ordering
-#   - RDS instance cleanup support
-#   - Target group cleanup before LB deletion
+#   - RDS instance cleanup support with fallback strategies
+#   - Target group cleanup with multiple tag pattern matching
 #   - Detailed break-glass logging for troubleshooting
+#
+# Key improvements in v3.1.0:
+#   - ALB ENI handling (not just NLB)
+#   - Classic ELB deletion support
+#   - Broader target group tag search patterns
+#   - Ingress finalizer removal
+#   - Fargate profile deletion
+#   - RDS fallback for missing BuildId (uses cluster name tags/patterns)
 #
 # Usage:
 #   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh <cluster-name> <region>
@@ -27,12 +35,17 @@ set -euo pipefail
 #   DELETE_NODEGROUPS=true|false (default true)
 #   WAIT_FOR_NODEGROUP_DELETE=true|false (default true)
 #   NODEGROUP_DELETE_TIMEOUT=<seconds> (default 600)
+#   DELETE_FARGATE_PROFILES=true|false (default true)
+#   WAIT_FOR_FARGATE_DELETE=true|false (default true)
+#   FARGATE_PROFILE_DELETE_TIMEOUT=<seconds> (default 300)
 #   DELETE_CLUSTER=true|false (default true, ignored when TF_DIR is set)
 #   SUSPEND_ARGO_APP=true|false (default false)
 #   DELETE_ARGO_APP=true|false (default true)
 #   DELETE_KONG_RESOURCES=true|false (default true)
 #   KONG_NAMESPACE=<namespace> (default kong-system)
 #   KONG_RELEASE=<helm release> (default dev-kong)
+#   DELETE_INGRESS_RESOURCES=true|false (default true)
+#   FORCE_DELETE_INGRESS_FINALIZERS=true|false (default true)
 #   SCALE_DOWN_LB_CONTROLLER=true|false (default true)
 #   LB_CONTROLLER_NAMESPACE=<namespace> (default kube-system)
 #   LB_CONTROLLER_DEPLOYMENT=<name> (default aws-load-balancer-controller)
@@ -86,6 +99,7 @@ require_cmd() {
 require_cmd aws
 require_cmd kubectl
 require_cmd date
+require_cmd jq
 
 # =============================================================================
 # CONFIGURATION
@@ -325,6 +339,102 @@ remove_lb_service_finalizers() {
   done <<< "${services}"
 }
 
+# =============================================================================
+# INGRESS CLEANUP FUNCTIONS
+# =============================================================================
+
+list_ingress_resources() {
+  kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" get ingress -A \
+    -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}' 2>/dev/null || true
+}
+
+delete_ingress_resources() {
+  log_step "DELETE_INGRESSES" "Deleting Ingress resources..."
+
+  local ingresses=""
+  ingresses="$(list_ingress_resources)"
+
+  if [[ -z "${ingresses}" ]]; then
+    log_info "No Ingress resources found."
+    return 0
+  fi
+
+  local deleted_count=0
+  while read -r ing; do
+    [[ -z "${ing}" ]] && continue
+    local ns="${ing%%/*}"
+    local name="${ing##*/}"
+    log_step "DELETE_INGRESS" "Deleting Ingress ${ns}/${name}..."
+    if kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" delete ingress "${name}" --wait=false --ignore-not-found 2>/dev/null; then
+      log_info "  Deleted Ingress: ${ns}/${name}"
+      deleted_count=$((deleted_count + 1))
+    else
+      log_warn "  Failed to delete Ingress: ${ns}/${name}"
+    fi
+  done <<< "${ingresses}"
+
+  log_info "Deleted ${deleted_count} Ingress resources."
+}
+
+remove_ingress_finalizers() {
+  log_step "REMOVE_INGRESS_FINALIZERS" "Checking for stuck Ingress finalizers..."
+
+  local ingresses=""
+  ingresses="$(list_ingress_resources)"
+
+  if [[ -z "${ingresses}" ]]; then
+    return 0
+  fi
+
+  while read -r ing; do
+    [[ -z "${ing}" ]] && continue
+    local ns="${ing%%/*}"
+    local name="${ing##*/}"
+    local deletion_ts=""
+    local finalizers=""
+
+    deletion_ts="$(kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" get ingress "${name}" \
+      -o jsonpath='{.metadata.deletionTimestamp}' 2>/dev/null || true)"
+    finalizers="$(kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" get ingress "${name}" \
+      -o jsonpath='{.metadata.finalizers[*]}' 2>/dev/null || true)"
+
+    if [[ -z "${finalizers}" ]]; then
+      continue
+    fi
+
+    if [[ -z "${deletion_ts}" ]]; then
+      log_info "Ingress ${ns}/${name} not marked for deletion; skipping finalizer removal."
+      continue
+    fi
+
+    log_breakglass "Removing finalizers from Ingress ${ns}/${name}..."
+    kubectl --request-timeout="${KUBECTL_REQUEST_TIMEOUT}" -n "${ns}" patch ingress "${name}" \
+      --type=merge -p '{"metadata":{"finalizers":[]}}' >/dev/null 2>&1 || true
+  done <<< "${ingresses}"
+}
+
+cleanup_ingress_resources() {
+  if [[ "${DELETE_INGRESS_RESOURCES:-true}" != "true" ]]; then
+    log_info "Skipping Ingress cleanup (DELETE_INGRESS_RESOURCES=false)."
+    return 0
+  fi
+
+  delete_ingress_resources
+
+  # Wait briefly for ingresses to be deleted
+  sleep 5
+
+  # Check for stuck ingresses and remove finalizers
+  local remaining=""
+  remaining="$(list_ingress_resources)"
+  if [[ -n "${remaining}" ]]; then
+    log_warn "Some Ingresses still present after deletion request."
+    if [[ "${FORCE_DELETE_INGRESS_FINALIZERS:-true}" == "true" ]]; then
+      remove_ingress_finalizers
+    fi
+  fi
+}
+
 get_cluster_subnet_filter() {
   local subnet_ids=""
   subnet_ids="$(aws eks describe-cluster \
@@ -343,13 +453,31 @@ list_lb_enis() {
   if [[ -z "${subnet_filter}" ]]; then
     return 0
   fi
-  aws ec2 describe-network-interfaces \
+
+  # List NLB ENIs
+  local nlb_enis=""
+  nlb_enis="$(aws ec2 describe-network-interfaces \
     --region "${region}" \
     --filters "Name=subnet-id,Values=${subnet_filter}" \
               "Name=interface-type,Values=network_load_balancer" \
               "Name=description,Values=ELB net/*" \
     --query 'NetworkInterfaces[].[NetworkInterfaceId,Description,Status]' \
-    --output text 2>/dev/null || true
+    --output text 2>/dev/null || true)"
+
+  # List ALB ENIs (interface-type is 'interface' for ALBs, filter by description)
+  local alb_enis=""
+  alb_enis="$(aws ec2 describe-network-interfaces \
+    --region "${region}" \
+    --filters "Name=subnet-id,Values=${subnet_filter}" \
+              "Name=description,Values=ELB app/*" \
+    --query 'NetworkInterfaces[].[NetworkInterfaceId,Description,Status]' \
+    --output text 2>/dev/null || true)"
+
+  # Combine results
+  {
+    [[ -n "${nlb_enis}" ]] && echo "${nlb_enis}"
+    [[ -n "${alb_enis}" ]] && echo "${alb_enis}"
+  } | grep -v '^$' || true
 }
 
 extract_lb_names_from_enis() {
@@ -361,7 +489,14 @@ extract_lb_names_from_enis() {
 
   while IFS=$'\t' read -r eni_id desc status; do
     [[ -z "${desc}" ]] && continue
+    # Match NLB pattern: "ELB net/<lb-name>/<suffix>"
     if [[ "${desc}" =~ ^ELB\ net/([^/]+)/ ]]; then
+      local lb_name="${BASH_REMATCH[1]}"
+      if [[ "${lb_name}" == k8s-* ]]; then
+        lb_names["${lb_name}"]=1
+      fi
+    # Match ALB pattern: "ELB app/<lb-name>/<suffix>"
+    elif [[ "${desc}" =~ ^ELB\ app/([^/]+)/ ]]; then
       local lb_name="${BASH_REMATCH[1]}"
       if [[ "${lb_name}" == k8s-* ]]; then
         lb_names["${lb_name}"]=1
@@ -372,6 +507,53 @@ extract_lb_names_from_enis() {
   for lb_name in "${!lb_names[@]}"; do
     echo "${lb_name}"
   done
+}
+
+# =============================================================================
+# CLASSIC ELB FUNCTIONS
+# =============================================================================
+
+delete_classic_elbs_by_cluster_tag() {
+  log_step "DELETE_CLASSIC_ELBS" "Scanning Classic load balancers by cluster tag..."
+
+  local elb_names=""
+  elb_names="$(aws elb describe-load-balancers \
+    --region "${region}" \
+    --query 'LoadBalancerDescriptions[].LoadBalancerName' \
+    --output text 2>/dev/null || true)"
+
+  if [[ -z "${elb_names}" ]]; then
+    log_info "No Classic load balancers found."
+    return 0
+  fi
+
+  local deleted_count=0
+  for elb_name in ${elb_names}; do
+    # Get tags for this ELB
+    local cluster_tag=""
+    cluster_tag="$(aws elb describe-tags \
+      --region "${region}" \
+      --load-balancer-names "${elb_name}" \
+      --query 'TagDescriptions[0].Tags[?Key==`kubernetes.io/cluster/'"${cluster_name}"'`].Value | [0]' \
+      --output text 2>/dev/null || true)"
+
+    # Check for owned tag (value could be "owned" or just present)
+    if [[ -z "${cluster_tag}" || "${cluster_tag}" == "None" ]]; then
+      continue
+    fi
+
+    log_step "DELETE_CLASSIC_ELB" "Deleting Classic ELB: ${elb_name} (cluster tag present)"
+    log_breakglass "Classic ELB Name: ${elb_name}"
+
+    if aws elb delete-load-balancer --region "${region}" --load-balancer-name "${elb_name}" 2>/dev/null; then
+      log_info "  Deleted Classic ELB: ${elb_name}"
+      deleted_count=$((deleted_count + 1))
+    else
+      log_error "  Failed to delete Classic ELB: ${elb_name}"
+    fi
+  done
+
+  log_info "Deleted ${deleted_count} Classic load balancers for cluster ${cluster_name}"
 }
 
 delete_target_groups_for_cluster() {
@@ -390,14 +572,62 @@ delete_target_groups_for_cluster() {
 
   local deleted_count=0
   for tg_arn in ${tg_arns}; do
-    local cluster_tag=""
-    cluster_tag="$(aws elbv2 describe-tags \
+    local should_delete="false"
+    local match_reason=""
+
+    # Get all tags for this target group
+    local tags_json=""
+    tags_json="$(aws elbv2 describe-tags \
       --region "${region}" \
       --resource-arns "${tg_arn}" \
-      --query 'TagDescriptions[0].Tags[?Key==`elbv2.k8s.aws/cluster`].Value | [0]' \
-      --output text 2>/dev/null || true)"
+      --query 'TagDescriptions[0].Tags' \
+      --output json 2>/dev/null || echo "[]")"
 
-    if [[ "${cluster_tag}" != "${cluster_name}" ]]; then
+    # Check multiple tag patterns for cluster ownership
+    # Pattern 1: elbv2.k8s.aws/cluster = <cluster_name>
+    local elbv2_cluster_tag=""
+    elbv2_cluster_tag="$(echo "${tags_json}" | jq -r '.[] | select(.Key=="elbv2.k8s.aws/cluster") | .Value' 2>/dev/null || true)"
+    if [[ "${elbv2_cluster_tag}" == "${cluster_name}" ]]; then
+      should_delete="true"
+      match_reason="elbv2.k8s.aws/cluster=${cluster_name}"
+    fi
+
+    # Pattern 2: kubernetes.io/cluster/<cluster_name> tag exists
+    if [[ "${should_delete}" == "false" ]]; then
+      local k8s_cluster_tag=""
+      k8s_cluster_tag="$(echo "${tags_json}" | jq -r '.[] | select(.Key=="kubernetes.io/cluster/'"${cluster_name}"'") | .Value' 2>/dev/null || true)"
+      if [[ -n "${k8s_cluster_tag}" ]]; then
+        should_delete="true"
+        match_reason="kubernetes.io/cluster/${cluster_name}"
+      fi
+    fi
+
+    # Pattern 3: ingress.k8s.aws/cluster = <cluster_name>
+    if [[ "${should_delete}" == "false" ]]; then
+      local ingress_cluster_tag=""
+      ingress_cluster_tag="$(echo "${tags_json}" | jq -r '.[] | select(.Key=="ingress.k8s.aws/cluster") | .Value' 2>/dev/null || true)"
+      if [[ "${ingress_cluster_tag}" == "${cluster_name}" ]]; then
+        should_delete="true"
+        match_reason="ingress.k8s.aws/cluster=${cluster_name}"
+      fi
+    fi
+
+    # Pattern 4: Name pattern matching k8s-<namespace>-<cluster>-*
+    if [[ "${should_delete}" == "false" ]]; then
+      local tg_name_check=""
+      tg_name_check="$(aws elbv2 describe-target-groups \
+        --region "${region}" \
+        --target-group-arns "${tg_arn}" \
+        --query 'TargetGroups[0].TargetGroupName' \
+        --output text 2>/dev/null || true)"
+      # Match pattern like k8s-<namespace>-<cluster_name_part>-<hash>
+      if [[ "${tg_name_check}" =~ ^k8s-.*-${cluster_name##*-} ]]; then
+        should_delete="true"
+        match_reason="name-pattern=${tg_name_check}"
+      fi
+    fi
+
+    if [[ "${should_delete}" == "false" ]]; then
       continue
     fi
 
@@ -408,7 +638,7 @@ delete_target_groups_for_cluster() {
       --query 'TargetGroups[0].TargetGroupName' \
       --output text 2>/dev/null || true)"
 
-    log_step "DELETE_TARGET_GROUP" "Deleting target group: ${tg_name} (${tg_arn})"
+    log_step "DELETE_TARGET_GROUP" "Deleting target group: ${tg_name} (match: ${match_reason})"
     if aws elbv2 delete-target-group --region "${region}" --target-group-arn "${tg_arn}" 2>/dev/null; then
       log_info "  Deleted target group: ${tg_name}"
       deleted_count=$((deleted_count + 1))
@@ -715,22 +945,59 @@ delete_rds_instances_for_build() {
   fi
 
   local build_id="${BUILD_ID:-}"
-  if [[ -z "${build_id}" ]]; then
-    log_info "Skipping RDS cleanup (BUILD_ID not set)."
-    return 0
+  local rds_arns=""
+
+  # Strategy 1: Search by BuildId tag if available
+  if [[ -n "${build_id}" ]]; then
+    log_step "DELETE_RDS" "Searching for RDS instances with BuildId=${build_id}..."
+
+    rds_arns="$(aws resourcegroupstaggingapi get-resources \
+      --tag-filters "Key=BuildId,Values=${build_id}" \
+      --resource-type-filters "rds:db" \
+      --region "${region}" \
+      --query "ResourceTagMappingList[].ResourceARN" --output text 2>/dev/null || true)"
   fi
 
-  log_step "DELETE_RDS" "Searching for RDS instances with BuildId=${build_id}..."
+  # Strategy 2: Fallback to cluster name tag if no BuildId or no results
+  if [[ -z "${rds_arns}" ]]; then
+    log_step "DELETE_RDS_FALLBACK" "Searching for RDS instances with kubernetes.io/cluster/${cluster_name} tag..."
 
-  local rds_arns=""
-  rds_arns="$(aws resourcegroupstaggingapi get-resources \
-    --tag-filters "Key=BuildId,Values=${build_id}" \
-    --resource-type-filters "rds:db" \
-    --region "${region}" \
-    --query "ResourceTagMappingList[].ResourceARN" --output text 2>/dev/null || true)"
+    rds_arns="$(aws resourcegroupstaggingapi get-resources \
+      --tag-filters "Key=kubernetes.io/cluster/${cluster_name},Values=owned" \
+      --resource-type-filters "rds:db" \
+      --region "${region}" \
+      --query "ResourceTagMappingList[].ResourceARN" --output text 2>/dev/null || true)"
+
+    # Also try ClusterName tag
+    if [[ -z "${rds_arns}" ]]; then
+      rds_arns="$(aws resourcegroupstaggingapi get-resources \
+        --tag-filters "Key=ClusterName,Values=${cluster_name}" \
+        --resource-type-filters "rds:db" \
+        --region "${region}" \
+        --query "ResourceTagMappingList[].ResourceARN" --output text 2>/dev/null || true)"
+    fi
+  fi
+
+  # Strategy 3: Search by name pattern if no tags found
+  if [[ -z "${rds_arns}" ]]; then
+    log_step "DELETE_RDS_PATTERN" "Searching for RDS instances by name pattern..."
+
+    # Extract cluster identifier suffix (last part after dash)
+    local cluster_suffix="${cluster_name##*-}"
+    local all_instances=""
+    all_instances="$(aws rds describe-db-instances \
+      --region "${region}" \
+      --query "DBInstances[?contains(DBInstanceIdentifier, '${cluster_suffix}')].DBInstanceArn" \
+      --output text 2>/dev/null || true)"
+
+    if [[ -n "${all_instances}" ]]; then
+      log_info "Found RDS instances by name pattern containing '${cluster_suffix}'"
+      rds_arns="${all_instances}"
+    fi
+  fi
 
   if [[ -z "${rds_arns}" ]]; then
-    log_info "No RDS instances found with BuildId=${build_id}."
+    log_info "No RDS instances found for cluster ${cluster_name}."
     return 0
   fi
 
@@ -764,13 +1031,25 @@ delete_rds_instances_for_build() {
     fi
   done
 
-  # Delete RDS subnet groups
+  # Delete RDS subnet groups (search by build_id or cluster name pattern)
   log_step "DELETE_RDS_SUBNET_GROUPS" "Searching for RDS subnet groups..."
   local subnet_groups=""
-  subnet_groups="$(aws rds describe-db-subnet-groups \
-    --region "${region}" \
-    --query "DBSubnetGroups[?contains(DBSubnetGroupName, '${build_id}')].DBSubnetGroupName" \
-    --output text 2>/dev/null || true)"
+  local cluster_suffix="${cluster_name##*-}"
+
+  # Try build_id first, then cluster name pattern
+  if [[ -n "${build_id}" ]]; then
+    subnet_groups="$(aws rds describe-db-subnet-groups \
+      --region "${region}" \
+      --query "DBSubnetGroups[?contains(DBSubnetGroupName, '${build_id}')].DBSubnetGroupName" \
+      --output text 2>/dev/null || true)"
+  fi
+
+  if [[ -z "${subnet_groups}" ]]; then
+    subnet_groups="$(aws rds describe-db-subnet-groups \
+      --region "${region}" \
+      --query "DBSubnetGroups[?contains(DBSubnetGroupName, '${cluster_suffix}')].DBSubnetGroupName" \
+      --output text 2>/dev/null || true)"
+  fi
 
   for sg in ${subnet_groups}; do
     log_step "DELETE_RDS_SUBNET_GROUP" "Deleting RDS subnet group: ${sg}"
@@ -778,15 +1057,29 @@ delete_rds_instances_for_build() {
       log_warn "  Failed to delete subnet group: ${sg} (may be in use)"
   done
 
-  # Delete RDS parameter groups
+  # Delete RDS parameter groups (search by build_id or cluster name pattern)
   log_step "DELETE_RDS_PARAM_GROUPS" "Searching for RDS parameter groups..."
   local param_groups=""
-  param_groups="$(aws rds describe-db-parameter-groups \
-    --region "${region}" \
-    --query "DBParameterGroups[?contains(DBParameterGroupName, '${build_id}')].DBParameterGroupName" \
-    --output text 2>/dev/null || true)"
+
+  if [[ -n "${build_id}" ]]; then
+    param_groups="$(aws rds describe-db-parameter-groups \
+      --region "${region}" \
+      --query "DBParameterGroups[?contains(DBParameterGroupName, '${build_id}')].DBParameterGroupName" \
+      --output text 2>/dev/null || true)"
+  fi
+
+  if [[ -z "${param_groups}" ]]; then
+    param_groups="$(aws rds describe-db-parameter-groups \
+      --region "${region}" \
+      --query "DBParameterGroups[?contains(DBParameterGroupName, '${cluster_suffix}')].DBParameterGroupName" \
+      --output text 2>/dev/null || true)"
+  fi
 
   for pg in ${param_groups}; do
+    # Skip default parameter groups
+    if [[ "${pg}" == default.* ]]; then
+      continue
+    fi
     log_step "DELETE_RDS_PARAM_GROUP" "Deleting RDS parameter group: ${pg}"
     aws rds delete-db-parameter-group --db-parameter-group-name "${pg}" --region "${region}" 2>/dev/null || \
       log_warn "  Failed to delete parameter group: ${pg} (may be in use)"
@@ -870,6 +1163,86 @@ run_tf_destroy() {
     log_warn "timeout command not found; running terraform destroy without a max wait."
   fi
   run_with_heartbeat "Terraform destroy in ${tf_dir}" "$@"
+}
+
+# =============================================================================
+# FARGATE PROFILE FUNCTIONS
+# =============================================================================
+
+delete_fargate_profiles() {
+  log_step "DELETE_FARGATE_PROFILES" "Listing Fargate profiles for cluster ${cluster_name}..."
+
+  local profiles=""
+  profiles="$(aws eks list-fargate-profiles \
+    --cluster-name "${cluster_name}" \
+    --region "${region}" \
+    --query 'fargateProfileNames[]' \
+    --output text 2>/dev/null || true)"
+
+  if [[ -z "${profiles}" ]]; then
+    log_info "No Fargate profiles found for cluster ${cluster_name}."
+    return 0
+  fi
+
+  for profile in ${profiles}; do
+    log_step "DELETE_FARGATE_PROFILE" "Deleting Fargate profile: ${profile}"
+
+    if aws eks delete-fargate-profile \
+        --cluster-name "${cluster_name}" \
+        --fargate-profile-name "${profile}" \
+        --region "${region}" 2>/dev/null; then
+      log_info "  Initiated deletion of Fargate profile: ${profile}"
+    else
+      log_warn "  Failed to delete Fargate profile: ${profile} (may already be deleting)"
+    fi
+  done
+}
+
+wait_for_fargate_profile_deletion() {
+  log_step "WAIT_FARGATE_PROFILES" "Waiting for Fargate profiles to be deleted..."
+
+  local max_wait="${FARGATE_PROFILE_DELETE_TIMEOUT:-300}"
+  local interval=15
+  local start_epoch
+  start_epoch="$(date -u +%s)"
+
+  while true; do
+    local profiles=""
+    profiles="$(aws eks list-fargate-profiles \
+      --cluster-name "${cluster_name}" \
+      --region "${region}" \
+      --query 'fargateProfileNames[]' \
+      --output text 2>/dev/null || true)"
+
+    if [[ -z "${profiles}" ]]; then
+      log_info "All Fargate profiles deleted."
+      return 0
+    fi
+
+    local now_epoch
+    now_epoch="$(date -u +%s)"
+    local elapsed=$((now_epoch - start_epoch))
+
+    if [[ "${elapsed}" -ge "${max_wait}" ]]; then
+      log_warn "Timed out waiting for Fargate profile deletion after ${elapsed}s. Continuing..."
+      log_breakglass "Remaining Fargate profiles: ${profiles}"
+      return 0
+    fi
+
+    log_info "Fargate profiles still deleting (${elapsed}s/${max_wait}s):"
+    for profile in ${profiles}; do
+      local status=""
+      status="$(aws eks describe-fargate-profile \
+        --cluster-name "${cluster_name}" \
+        --fargate-profile-name "${profile}" \
+        --region "${region}" \
+        --query 'fargateProfile.status' \
+        --output text 2>/dev/null || echo "UNKNOWN")"
+      log_info "  ${profile}: ${status}"
+    done
+
+    sleep "${interval}"
+  done
 }
 
 # =============================================================================
@@ -1020,6 +1393,7 @@ elif [[ "${kube_access}" == "false" ]]; then
     if [[ "${FORCE_DELETE_LBS}" == "true" ]]; then
       log_step "AWS_LB_CLEANUP" "Attempting AWS-only LoadBalancer cleanup..."
       delete_lbs_by_cluster_tag || true
+      delete_classic_elbs_by_cluster_tag || true
       if [[ "${DELETE_TARGET_GROUPS}" == "true" ]]; then
         delete_target_groups_for_cluster || true
       fi
@@ -1030,6 +1404,9 @@ else
   # Full k8s-based cleanup
   delete_argo_application
   delete_kong_resources
+
+  # Clean up Ingress resources before LoadBalancer services
+  cleanup_ingress_resources
 
   log_step "RUN_PRE_DESTROY_SCRIPT" "Running pre-destroy cleanup script..."
   if [[ -f "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh" ]]; then
@@ -1077,6 +1454,7 @@ else
       if [[ "${FORCE_DELETE_LBS}" == "true" ]]; then
         log_breakglass "Force deleting remaining load balancers..."
         delete_lbs_by_cluster_tag || true
+        delete_classic_elbs_by_cluster_tag || true
 
         if [[ "${DELETE_TARGET_GROUPS}" == "true" ]]; then
           delete_target_groups_for_cluster || true
@@ -1130,10 +1508,18 @@ stage_banner "4" "DELETE NODEGROUPS"
 # KEY FIX: Delete nodegroups via AWS CLI even when k8s API is unavailable
 # Only skip if cluster doesn't exist
 if [[ "${cluster_exists}" == "false" ]]; then
-  log_info "Cluster does not exist; skipping nodegroup deletion."
+  log_info "Cluster does not exist; skipping nodegroup and Fargate profile deletion."
 elif [[ "${DELETE_NODEGROUPS:-true}" != "true" ]]; then
   log_info "Skipping nodegroup deletion (DELETE_NODEGROUPS=false)."
 else
+  # Delete Fargate profiles first (they can block cluster deletion)
+  if [[ "${DELETE_FARGATE_PROFILES:-true}" == "true" ]]; then
+    delete_fargate_profiles
+    if [[ "${WAIT_FOR_FARGATE_DELETE:-true}" == "true" ]]; then
+      wait_for_fargate_profile_deletion
+    fi
+  fi
+
   delete_nodegroups_via_aws
 
   if [[ "${WAIT_FOR_NODEGROUP_DELETE:-true}" == "true" ]]; then
@@ -1149,12 +1535,13 @@ stage_done "4" "DELETE NODEGROUPS"
 
 stage_banner "5" "DELETE RDS INSTANCES"
 
-if [[ "${DELETE_RDS_INSTANCES}" == "true" && -n "${BUILD_ID:-}" ]]; then
+if [[ "${DELETE_RDS_INSTANCES}" == "true" ]]; then
+  # The function now has fallback logic for missing BUILD_ID
   delete_rds_instances_for_build
   # Don't wait for RDS deletion - it can take a long time
   # Orphan cleanup will catch any remaining instances
 else
-  log_info "Skipping RDS cleanup (DELETE_RDS_INSTANCES=${DELETE_RDS_INSTANCES}, BUILD_ID=${BUILD_ID:-unset})."
+  log_info "Skipping RDS cleanup (DELETE_RDS_INSTANCES=${DELETE_RDS_INSTANCES})."
 fi
 
 stage_done "5" "DELETE RDS INSTANCES"
@@ -1198,6 +1585,7 @@ if [[ -n "${TF_DIR:-}" ]]; then
 
           if [[ "${FORCE_DELETE_LBS}" == "true" ]]; then
             delete_lbs_by_cluster_tag || true
+            delete_classic_elbs_by_cluster_tag || true
             if [[ "${DELETE_TARGET_GROUPS}" == "true" ]]; then
               delete_target_groups_for_cluster || true
             fi
@@ -1262,7 +1650,7 @@ elif [[ -z "${BUILD_ID:-}" ]]; then
   log_error "ORPHAN_CLEANUP_MODE=${ORPHAN_CLEANUP_MODE} but BUILD_ID is not set."
   exit 1
 else
-  local cleanup_dry_run="false"
+  cleanup_dry_run="false"
   if [[ "${ORPHAN_CLEANUP_MODE}" == "dry_run" ]]; then
     cleanup_dry_run="true"
   fi
