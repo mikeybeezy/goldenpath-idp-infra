@@ -786,14 +786,14 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 - Documented approval model, access matrix, and Backstage-to-PR flow.
 - Clarified ESO naming and V1 acceptance criteria.
 
-## 14. PR Guardrails & Pre-Merge Checks (2026-01-16 09:37:49Z)
+## 14. PR Guardrails & Pre-Merge Checks (2026-01-16 09:40:40Z)
 
 **Objective**: Run required pre-merge checks before opening a PR to `development`.
 
 **Results**:
 
 - `bin/governance lint`: reported YAML lint warnings and errors (comments spacing, blank lines, indentation) in existing files.
-- `bin/governance audit`: failed to write `docs/10-governance/reports/compliance_snapshot_2026-01-16.json` due to permission error.
+- `bin/governance audit`: ✅ snapshot saved to `docs/10-governance/reports/compliance_snapshot_2026-01-16.json`.
 - `scripts/validate_metadata.py`: ✅ 745 passed, ❌ 0 failed.
 
 **Notes**:
