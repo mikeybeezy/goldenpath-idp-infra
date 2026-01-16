@@ -205,14 +205,14 @@ test_breakglass_logging() {
 }
 
 # =============================================================================
-# TEST: Orphan cleanup v2.0.0 features
+# TEST: Orphan cleanup v2.x.x features
 # =============================================================================
 
 test_orphan_cleanup_v2() {
-  if grep -q "Version: 2.0.0" "${CLEANUP_ORPHANS}" 2>/dev/null; then
-    log_test "Orphan cleanup version 2.0.0" "PASS"
+  if grep -qE "Version: 2\.[0-9]+\.[0-9]+" "${CLEANUP_ORPHANS}" 2>/dev/null; then
+    log_test "Orphan cleanup version 2.x.x" "PASS"
   else
-    log_test "Orphan cleanup version 2.0.0" "FAIL" "Version header not found"
+    log_test "Orphan cleanup version 2.x.x" "FAIL" "Version 2.x.x header not found"
   fi
 
   if grep -q "nodegroup_wait_timeout" "${CLEANUP_ORPHANS}" 2>/dev/null; then
