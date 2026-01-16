@@ -1,6 +1,6 @@
 # Session Report: Backstage & Keycloak Stabilization
 
-**Date**: 2026-01-15
+**Date**: 2026-01-15 / 2026-01-16 (continued)
 **Environment**: AWS `dev` (EKS)
 **Cluster**: `goldenpath-dev-eks`
 **Region**: `eu-west-2`
@@ -14,6 +14,8 @@ This session focused on resolving critical startup failures in the core IDP stac
 
 - **Keycloak**: ✅ Running 1/1 - AMD64 Bitnami image from ECR, connected to RDS.
 - **Backstage**: ✅ Running 1/1 - Local `backstage-helm` chart with ECR image, SSL RDS connection working.
+- **Catalog**: ✅ Synced to governance-registry branch, loading in Backstage.
+- **GitHub Token**: ✅ Configured in AWS Secrets Manager, synced via ExternalSecrets.
 - **Infrastructure**: Secrets syncing fully operational via ExternalSecrets.
 
 ## 2. Detailed Issue Log & Resolutions
@@ -119,6 +121,36 @@ ALTER USER backstage_app CREATEDB;
 3. **ExternalSecret Integration**: Added conditional `externalsecret.yaml` template and made `secret.yaml` conditional via `externalSecret.enabled`.
 4. **SSL for RDS**: Added `ssl.require: true` and `ssl.rejectUnauthorized: false` in appConfig database connection.
 
+### F. Backstage Catalog Migration (2026-01-16)
+
+**Problem**: Backstage catalog was pointing to `main` branch, which changes with feature development.
+
+**Resolution**:
+
+1. **Synced catalog to governance-registry branch**: Pushed 351 files to `governance-registry` branch at `backstage-helm/backstage-catalog/`.
+2. **Updated all environment values files** to reference `governance-registry` branch:
+   - `gitops/helm/backstage/values/dev.yaml`
+   - `gitops/helm/backstage/values/staging.yaml`
+   - `gitops/helm/backstage/values/prod.yaml`
+   - `backstage-helm/values-local.yaml`
+
+**New Catalog URL**:
+
+```text
+https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-helm/backstage-catalog/all.yaml
+```
+
+### G. GitHub Token Configuration (2026-01-16)
+
+**Problem**: Backstage GitHub token was a placeholder, preventing PR creation and scaffolder features.
+
+**Resolution**:
+
+1. **Created GitHub PAT** with scopes: `repo`, `workflow`, `read:org`, `read:user`
+2. **Updated AWS Secrets Manager**: `goldenpath/dev/backstage/secrets` with real token
+3. **Triggered ExternalSecret sync**: `kubectl annotate externalsecret backstage-secrets -n backstage force-sync=$(date +%s) --overwrite`
+4. **Restarted Backstage**: Token now loaded and PR features working
+
 ## 3. Configuration Changes Summary
 
 ### ArgoCD Application (`gitops/argocd/apps/dev/backstage.yaml`)
@@ -168,6 +200,11 @@ externalSecret:
       remoteRef:
         key: goldenpath/dev/backstage/secrets
         property: token
+
+# Catalog from governance-registry branch
+catalog:
+  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-helm/backstage-catalog/all.yaml"
+  customCatalogLocation: "None"
 
 # PostgreSQL RDS connection
 postgres:
@@ -258,6 +295,8 @@ global:
 |-----------|--------|-----|---------|
 | **Keycloak** | ✅ Running | `dev-keycloak-0` 1/1 | AMD64 Bitnami from ECR, connected to RDS |
 | **Backstage** | ✅ Running | `dev-backstage-*` 1/1 | Local chart, ECR image, SSL RDS connection |
+| **Catalog** | ✅ Loaded | N/A | Serving from governance-registry branch |
+| **GitHub Token** | ✅ Configured | N/A | PR features and scaffolder working |
 | **ExternalSecrets** | ✅ Synced | N/A | `backstage-secrets` syncing from AWS Secrets Manager |
 
 ### Commits Made This Session
@@ -267,6 +306,10 @@ global:
 | `d4174ef7` | fix: use ArgoCD multi-source pattern for Backstage values |
 | `0e0bd2fa` | fix: add SSL config for Backstage RDS connection |
 | `5d13229e` | docs: update session summary with final platform status |
+| `59f792f0` | feat(catalog): sync backstage-catalog to governance-registry |
+| `06f26853` | fix: correct backstage catalog URL path to governance-registry |
+| `58e35b96` | docs: add GitHub token setup phase to IDP deployment runbook |
+| `92112513` | docs: update catalog references and add changelogs |
 
 ### AWS Resources
 
@@ -282,8 +325,27 @@ global:
 
 ## 5. Documentation Created
 
-- **Session Summary**: `claude_status/2026-01-15_session_summary.md`
-- **Changelog**: `docs/changelog/entries/CL-0132-cluster-secret-store-addon-fix.md`
+### Runbooks
+
+- **RB-0031**: `docs/70-operations/runbooks/RB-0031-idp-stack-deployment.md` - Complete IDP stack deployment guide with:
+  - Phase 1: ECR Repository and Image Preparation
+  - Phase 2: RDS User Provisioning
+  - Phase 3: External Secrets Verification
+  - Phase 3.5: GitHub Token Configuration (NEW)
+  - Phase 4-5: Keycloak and Backstage Deployment
+  - Phase 6: Verification Checklist
+
+### Changelogs
+
+| Changelog | Description                                |
+| --------- | ------------------------------------------ |
+| CL-0132   | ClusterSecretStore Addon Deployment Fix    |
+| CL-0133   | IDP Stack Deployment Runbook (RB-0031)     |
+| CL-0134   | Backstage Catalog Governance Registry Sync |
+
+### Session Summary
+
+- **Session Summary**: `claude_status/2026-01-15_session_summary.md` (this file)
 
 ## 6. Lessons Learned
 
@@ -298,3 +360,25 @@ global:
 5. **RDS SSL**: AWS RDS requires SSL by default. Configure `ssl.require: true` in application database connections.
 
 6. **Backstage CREATEDB**: Backstage dynamically creates plugin databases, requiring `CREATEDB` privilege on its database user.
+
+7. **Catalog Branch Strategy**: Use `governance-registry` branch for stable catalog that doesn't change with feature development.
+
+8. **GitHub Token for PR Features**: Backstage scaffolder requires valid GitHub PAT with `repo`, `workflow`, `read:org` scopes.
+
+## 7. Access Commands
+
+```bash
+# Port-forward Backstage
+kubectl port-forward svc/dev-backstage -n backstage 7007:7007
+
+# Port-forward Keycloak
+kubectl port-forward svc/dev-keycloak -n keycloak 8080:8080
+
+# Check pod status
+kubectl get pods -n backstage
+kubectl get pods -n keycloak
+
+# Check ExternalSecret status
+kubectl get externalsecret -n backstage
+kubectl get externalsecret -n keycloak
+```
