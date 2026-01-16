@@ -398,6 +398,120 @@ kubectl get secret backstage-secrets -n backstage -o jsonpath='{.data}' | jq 'ke
 
 ---
 
+## Phase 3.5: GitHub Token Configuration (Bootstrap Prerequisite)
+
+### Why This Matters
+
+Backstage requires a GitHub Personal Access Token (PAT) for:
+
+- **Catalog Integration**: Reading catalog files from private repositories
+- **Scaffolder Templates**: Creating repositories and pull requests
+- **GitHub Actions**: Triggering workflow dispatches
+- **Software Templates**: Publishing repos and PRs via Backstage templates
+
+Without a valid token, Backstage will start but PR-based features and private catalog access will fail.
+
+### Step 3.5.1: Create GitHub Personal Access Token
+
+1. Go to [GitHub Settings → Developer Settings → Personal Access Tokens → Fine-grained tokens](https://github.com/settings/tokens?type=beta) (recommended) or [Classic tokens](https://github.com/settings/tokens)
+
+2. Create a new token with these scopes:
+
+**For Classic Tokens:**
+
+| Scope       | Purpose                                                       |
+| ----------- | ------------------------------------------------------------- |
+| `repo`      | Full control of private repositories (scaffolder PR creation) |
+| `workflow`  | Update GitHub Action workflows                                |
+| `read:org`  | Read organization membership                                  |
+| `read:user` | Read user profile data                                        |
+
+**For Fine-grained Tokens:**
+
+| Permission                              | Access Level   |
+| --------------------------------------- | -------------- |
+| Repository permissions → Contents       | Read and write |
+| Repository permissions → Pull requests  | Read and write |
+| Repository permissions → Workflows      | Read and write |
+| Organization permissions → Members      | Read-only      |
+
+### Step 3.5.2: Store Token in AWS Secrets Manager
+
+```bash
+# Set your environment
+export ENV=dev
+
+# Option 1: Interactive (more secure - token not in shell history)
+read -sp "Enter GitHub PAT: " GITHUB_PAT && echo
+
+# Update the secret (preserves existing keys)
+CURRENT_SECRET=$(aws secretsmanager get-secret-value \
+  --secret-id goldenpath/${ENV}/backstage/secrets \
+  --region eu-west-2 \
+  --query 'SecretString' --output text)
+
+# Merge with new token
+NEW_SECRET=$(echo "$CURRENT_SECRET" | jq --arg token "$GITHUB_PAT" '.token = $token')
+
+aws secretsmanager put-secret-value \
+  --secret-id goldenpath/${ENV}/backstage/secrets \
+  --region eu-west-2 \
+  --secret-string "$NEW_SECRET"
+
+# Clear sensitive variables
+unset GITHUB_PAT CURRENT_SECRET NEW_SECRET
+```
+
+```bash
+# Option 2: Direct update (simpler but token visible in history)
+aws secretsmanager put-secret-value \
+  --secret-id goldenpath/${ENV}/backstage/secrets \
+  --region eu-west-2 \
+  --secret-string '{"token":"ghp_YOUR_TOKEN_HERE","client-secret":"placeholder"}'
+```
+
+### Step 3.5.3: Verify Secret Update
+
+```bash
+# Check token was stored (shows first 10 chars only)
+aws secretsmanager get-secret-value \
+  --secret-id goldenpath/${ENV}/backstage/secrets \
+  --region eu-west-2 \
+  --query 'SecretString' --output text | jq -r '.token' | head -c 10
+echo "...(truncated)"
+```
+
+### Step 3.5.4: Trigger ExternalSecret Sync
+
+```bash
+# Force ExternalSecret to resync from AWS
+kubectl annotate externalsecret backstage-secrets -n backstage \
+  force-sync=$(date +%s) --overwrite
+
+# Verify sync status
+kubectl get externalsecret backstage-secrets -n backstage \
+  -o jsonpath='{.status.conditions[0].type}{" "}{.status.conditions[0].status}'
+# Expected: Ready True
+```
+
+### Step 3.5.5: Verify Token in Kubernetes Secret
+
+```bash
+# Confirm token synced to K8s (shows first 10 chars)
+kubectl get secret backstage-secrets -n backstage \
+  -o jsonpath='{.data.GITHUB_TOKEN}' | base64 -d | head -c 10
+echo "...(truncated)"
+```
+
+### Step 3.5.6: Restart Backstage to Load New Token
+
+```bash
+kubectl rollout restart deployment/dev-backstage -n backstage
+kubectl rollout status deployment/dev-backstage -n backstage
+```
+
+---
+
 ## Phase 4: Deploy Keycloak
 
 ### Step 4.1: Verify ArgoCD Application
