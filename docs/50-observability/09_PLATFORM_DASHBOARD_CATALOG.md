@@ -91,6 +91,66 @@ The standard View automatically provisioned for every new service created via th
 
 ---
 
+## 4. Tooling Dashboards (Platform Services)
+
+The platform provides dedicated Golden Signals dashboards for each core tooling application. These are deployed as ConfigMaps and auto-discovered by Grafana.
+
+### 4.1 Backstage Dashboard
+
+**File:** `gitops/helm/tooling-dashboards/backstage-dashboard.yaml`
+**Namespace:** `backstage`
+**Audience:** Platform Engineers, Developer Experience Team.
+
+#### Backstage Panels
+
+* **RED Metrics:** Request Rate, Error Rate (4xx/5xx), Latency (P50/P95/P99)
+* **Saturation:** CPU/Memory usage, Pod Restarts
+* **Logs:** Error logs and full application logs via Loki
+
+### 4.2 Keycloak Dashboard
+
+**File:** `gitops/helm/tooling-dashboards/keycloak-dashboard.yaml`
+**Namespace:** `keycloak`
+**Audience:** Platform Engineers, Security Team.
+
+#### Keycloak Panels
+
+* **Auth Metrics:** Login Attempts (success/failed), Active Sessions
+* **RED Metrics:** HTTP Request Rate, Error Rate, Login Failure Rate
+* **Duration:** HTTP Latency percentiles
+* **Saturation:** CPU/Memory, JVM Heap Usage
+* **Logs:** Authentication events and errors
+
+### 4.3 ArgoCD Dashboard
+
+**File:** `gitops/helm/tooling-dashboards/argocd-dashboard.yaml`
+**Namespace:** `argocd`
+**Audience:** Platform Engineers, SREs.
+
+#### ArgoCD Panels
+
+* **GitOps Health:** Total Apps, Healthy, Degraded, Out of Sync counts
+* **RED Metrics:** API Request Rate (HTTP/gRPC), Error Rate, Duration
+* **Operations:** Sync Operations Rate, Git Operations Rate
+* **Saturation:** CPU/Memory by component (server, repo-server, controller)
+* **Logs:** Sync events and reconciliation errors
+
+### 4.4 Kong Dashboard
+
+**File:** `gitops/helm/tooling-dashboards/kong-dashboard.yaml`
+**Namespace:** `kong-system`
+**Audience:** Platform Engineers, Network/SRE Team.
+
+#### Kong Panels
+
+* **Traffic:** Total Request Rate, Requests by Status Code
+* **RED Metrics:** Error Rate (4xx/5xx), Request Latency, Upstream Latency
+* **Connections:** Active Connections, Bandwidth In/Out
+* **Health:** Upstream Health status
+* **Logs:** Kong errors, warnings, and upstream issues
+
+---
+
 ## How to edit these dashboards
 
 These dashboards are managed as **Code**.

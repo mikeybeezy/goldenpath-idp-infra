@@ -1,0 +1,15 @@
+# Kustomization for Tooling Dashboards
+# These ConfigMaps are deployed to their respective namespaces
+# and auto-discovered by Grafana sidecar
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - backstage-dashboard.yaml
+  - keycloak-dashboard.yaml
+  - argocd-dashboard.yaml
+  - kong-dashboard.yaml
+
+commonLabels:
+  app.kubernetes.io/part-of: goldenpath-idp
+  app.kubernetes.io/component: observability
