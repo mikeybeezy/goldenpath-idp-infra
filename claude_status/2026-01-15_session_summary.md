@@ -381,4 +381,87 @@ kubectl get pods -n keycloak
 # Check ExternalSecret status
 kubectl get externalsecret -n backstage
 kubectl get externalsecret -n keycloak
+
+# Port-forward Grafana (monitoring stack)
+kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
+```
+
+## 8. Monitoring Stack Resolution (2026-01-16)
+
+### H. Prometheus Monitoring Stack Fix
+
+**Problem**: Grafana dashboards were empty and datasource connections returning HTTP 500 errors. No Prometheus server pod existed despite the kube-prometheus-stack Helm chart being deployed.
+
+**Investigation Trace**:
+
+1. **Initial Symptoms**:
+   - Grafana accessible but dashboards showed no data
+   - Datasource test for Prometheus failed with "Error reading Prometheus: An error occurred within the plugin"
+   - Loki datasource test failed with "Failed to call resource"
+   - PromQL queries in Explore view returned HTTP 500 errors
+
+2. **Root Cause Discovery**:
+   - Prometheus StatefulSet was completely missing from the `monitoring` namespace
+   - Only Alertmanager StatefulSet existed
+   - Prometheus Operator logs showed continuous errors:
+     ```
+     failed to list *v1.Prometheus: the server could not find the requested resource (get prometheuses.monitoring.coreos.com)
+     ```
+   - **Critical Finding**: The `prometheuses.monitoring.coreos.com` CRD was **not installed**
+   - All other monitoring CRDs were present (ServiceMonitors, PodMonitors, AlertManagers, PrometheusRules)
+
+3. **Resolution Steps**:
+   ```bash
+   # 1. Install missing Prometheus CRD
+   kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.68.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
+   
+   # Result: customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com serverside-applied
+   
+   # 2. Trigger ArgoCD sync for monitoring stack
+   kubectl -n argocd patch application dev-kube-prometheus-stack --type merge -p '{"operation": {"sync": {"prune": true}}}'
+   
+   # 3. Wait for Prometheus StatefulSet creation
+   kubectl wait --for=condition=ready pod/prometheus-dev-kube-prometheus-stack-prometheus-0 -n monitoring --timeout=120s
+   ```
+
+4. **Verification Results**:
+   - **Prometheus Pod**: `prometheus-dev-kube-prometheus-stack-prometheus-0` - 2/2 Running
+   - **Prometheus Version**: v2.42.0
+   - **Metrics Collection**: **38 time series** actively scraped (query: `up`)
+   - **Active Targets**: All ServiceMonitors successfully discovered
+   - **Grafana Dashboards**: Now populated with live data
+   - **Cluster Metrics**:
+     - CPU Utilization: 1.70%
+     - CPU Requests Commitment: 28.4%
+     - Memory Utilization: 33.5%
+     - Memory Requests Commitment: 18.7%
+
+**Status**: ✅ **RESOLVED** - Monitoring stack fully operational
+
+**Components Now Functional**:
+| Component | Status | Details |
+|-----------|--------|---------|
+| **Prometheus Server** | ✅ Running | StatefulSet deployed with 1/1 ready replicas |
+| **Grafana Datasources** | ✅ Connected | Both Prometheus and Loki passing connection tests |
+| **Dashboards** | ✅ Populated | 26 pre-provisioned dashboards showing live metrics |
+| **Metrics Scraping** | ✅ Active | 38 targets being scraped across monitoring, kube-system, keycloak namespaces |
+| **Alertmanager** | ✅ Running | Already operational, unaffected by CRD issue |
+
+**Root Cause Analysis**:
+The Prometheus CRD was likely excluded during the initial kube-prometheus-stack deployment, possibly due to:
+- CRD installation being disabled in Helm values (`crds.enabled: false`)
+- Manual CRD deletion during troubleshooting
+- ArgoCD sync policy excluding CRDs
+
+**Screenshots**:
+- Prometheus metrics query results: `grafana_explore_up_results_1768523234215.png`
+- Kubernetes cluster dashboard with live data: `grafana_kubernetes_cluster_data_1768523284777.png`
+
+**Access**:
+```bash
+# Grafana UI
+kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
+# URL: http://localhost:8080
+# Username: admin
+# Password: prom-operator
 ```
