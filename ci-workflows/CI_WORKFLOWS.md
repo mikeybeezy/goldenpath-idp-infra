@@ -108,49 +108,41 @@ CI Workflows (GitHub Actions)
 ## Bootstrap / Tooling
 
 ### Backstage Docs Catalog PR
-
 - **File**: `backstage-docs-pr.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Backstage ECR Sync PR
-
 - **File**: `ecr-backstage-sync.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Bootstrap - CI Backstage (Stub)
-
 - **File**: `ci-backstage.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Bootstrap - CI Bootstrap (Stub)
-
 - **File**: `ci-bootstrap.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Create ECR Registry
-
 - **File**: `create-ecr-registry.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Governance Registry Writer
-
 - **File**: `governance-registry-writer.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Quality - Backstage Entity Sync
-
 - **File**: `ci-backstage-sync.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Scaffold App Repository
-
 - **File**: `repo-scaffold-app.yml`
 - **Owner**: platform
 - **Triggers**:
@@ -158,103 +150,86 @@ CI Workflows (GitHub Actions)
 ## Guardrails / Policy (PR)
 
 ### Daily Policy Enforcement
-
 - **File**: `policy-enforcement.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Ops - Secret Rotation Compliance Check
-
 - **File**: `secret-rotation-check.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Plan - Infra Terraform Checks
-
 - **File**: `infra-terraform.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Policy - ADR Policy
-
 - **File**: `adr-policy.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Policy - Branch Policy Guard
-
 - **File**: `branch-policy.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Policy - Changelog Policy
-
 - **File**: `changelog-policy.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Policy - PR Guardrails
-
 - **File**: `pr-guardrails.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Policy - PR Labeler
-
 - **File**: `pr-labeler.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Policy - Production Readiness Review Cadence
-
 - **File**: `production-readiness-review.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Policy - Secret Rotation Warning (Soft Gate)
-
 - **File**: `pr-secret-rotation-warning.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Quality - Doc Freshness Check
-
 - **File**: `doc-freshness.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Quality - Docs & Config Linter
-
 - **File**: `super-linter.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Quality - Metadata Validation
-
 - **File**: `ci-metadata-validation.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Quality - Platform Health Check
-
 - **File**: `quality-platform-health.yaml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Quality - Pre-commit checks
-
 - **File**: `pre-commit.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Quality - Terraform Lint
-
 - **File**: `ci-terraform-lint.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Quality - YAML Lint
-
 - **File**: `yamllint.yml`
 - **Owner**: platform
 - **Triggers**:
@@ -262,25 +237,21 @@ CI Workflows (GitHub Actions)
 ## Teardown / Recovery
 
 ### Ops - CI Force Unlock
-
 - **File**: `ci-force-unlock.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Ops - CI Managed LB Cleanup
-
 - **File**: `ci-managed-lb-cleanup.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Ops - CI Orphan Cleanup
-
 - **File**: `ci-orphan-cleanup.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Ops - CI Teardown
-
 - **File**: `ci-teardown.yml`
 - **Owner**: platform
 - **Triggers**:
@@ -288,37 +259,31 @@ CI Workflows (GitHub Actions)
 ## Terraform Apply
 
 ### Apply - ECR Auto-Apply
-
 - **File**: `ecr-auto-apply.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Apply - Infra Terraform Apply (dev)
-
 - **File**: `infra-terraform-apply-dev.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Apply - Infra Terraform Apply (prod)
-
 - **File**: `infra-terraform-apply-prod.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Apply - Infra Terraform Apply (staging)
-
 - **File**: `infra-terraform-apply-staging.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Apply - Infra Terraform Apply (test)
-
 - **File**: `infra-terraform-apply-test.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Secret Requests (Apply)
-
 - **File**: `secret-request-apply.yml`
 - **Owner**: platform
 - **Triggers**:
@@ -326,7 +291,6 @@ CI Workflows (GitHub Actions)
 ## Terraform Plan
 
 ### Plan - PR Terraform Plan
-
 - **File**: `pr-terraform-plan.yml`
 - **Owner**: platform
 - **Triggers**:
@@ -334,67 +298,56 @@ CI Workflows (GitHub Actions)
 ## Uncategorized
 
 ### Create RDS Database
-
 - **File**: `create-rds-database.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### GovReg Validate (Ledger Integrity)
-
 - **File**: `govreg-validate.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Governance Enforcement
-
 - **File**: `ci-governance.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### PR Gates
-
 - **File**: `pr-gates.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### PR Governance Gates
-
 - **File**: `pr-governance-gates.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Python Unit Tests
-
 - **File**: `python-tests.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Quality - Documentation Auto-Healing
-
 - **File**: `ci-index-auto-heal.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Request App Secret
-
 - **File**: `request-app-secret.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Script Certification Gate
-
 - **File**: `script-certification-gate.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Secret Requests (PR)
-
 - **File**: `secret-request-pr.yml`
 - **Owner**: platform
 - **Triggers**:
 
 ### Security - Gitleaks
-
 - **File**: `gitleaks.yml`
 - **Owner**: platform
 - **Triggers**:
