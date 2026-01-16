@@ -112,4 +112,61 @@ prod environments.
 
 ## Comments and Feedback
 
-- <Reviewer name/date>: <comment>
+### Claude Opus 4.5 / 2026-01-16
+
+**Overall Assessment**: Well-structured PRD with clear requirements. The following points should be considered before implementation:
+
+#### 1. Teardown Integration (High Priority)
+
+Given recent teardown v3 work, provisioned databases must be tagged for cleanup:
+
+- Add `BuildId`, `ClusterName`, and `ManagedBy=platform` tags to all created resources
+- Teardown searches by `BuildId` tag or name pattern - provisioning MUST follow same conventions
+- Consider adding `RDS_CLEANUP_POLICY` variable: `retain` | `delete` | `snapshot-and-delete`
+
+#### 2. Kubernetes Job Resilience (Medium Priority)
+
+PRD states "Must not break when Kubernetes API is unavailable" but proposes K8s Job:
+
+- **Option A**: Fallback mechanism if K8s Job fails to schedule
+- **Option B**: Run as Terraform `null_resource` with `local-exec` (avoids K8s dependency)
+- **Option C**: AWS Lambda triggered by Terraform (true K8s-independence)
+- **Recommendation**: Option B for v1, migrate to Option C for production-grade
+
+#### 3. Open Question Recommendations
+
+| Question                       | Recommendation                          | Rationale                                                            |
+| ------------------------------ | --------------------------------------- | -------------------------------------------------------------------- |
+| Delegated admin vs master?     | **Delegated admin from day 1**          | Using master creates security debt and complicates audit trails      |
+| Audit record location?         | **Both CI logs AND governance report**  | Append to `docs/governance/audit/` with build_id reference           |
+| CI vs Argo sync wave?          | **CI for initial, Argo for subsequent** | Explicit control for first deployment                                |
+
+#### 4. Missing Considerations
+
+- **Secret Rotation**: How will password rotation be handled post-provisioning? Consider AWS Secrets Manager rotation Lambda integration path.
+- **Connection Pooling**: Will PgBouncer or RDS Proxy be used? Affects user/role creation strategy.
+- **Shared Instance Cleanup**: Current teardown deletes RDS instances but doesn't handle user-created databases within shared instances.
+
+#### 5. Naming Convention Suggestion
+
+Standardize for pattern-based cleanup and auditing:
+
+```text
+Database: <app_name>_<env>_db
+Role:     <app_name>_<env>_user
+```
+
+#### 6. Integration with Existing Teardown
+
+The `delete_rds_instances_for_build()` function in teardown v3 currently:
+
+- Searches by `BuildId` tag
+- Falls back to `kubernetes.io/cluster/<cluster_name>` tag
+- Falls back to name pattern matching
+
+**Action Required**: Ensure provisioning script tags databases with at least one of these patterns.
+
+**Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
+**Timestamp**: 2026-01-16T18:45:00Z
+
+---
