@@ -33,6 +33,18 @@ service:
   type: ClusterIP
   port: 7007
 
+# -----------------------------------------------------------------------------
+# Ingress Configuration
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: false
+  ingressClassName: ""
+  hostname: backstage.local
+  path: /
+  pathType: Prefix
+  tls: false
+  annotations: {}
+
 resources:
   limits:
     cpu: 1000m

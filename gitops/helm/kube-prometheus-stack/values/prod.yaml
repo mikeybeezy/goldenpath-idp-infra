@@ -24,11 +24,27 @@ grafana:
   persistence:
     enabled: true
     size: 20Gi
+  # Ingress Configuration - Kong
+  ingress:
+    enabled: true
+    ingressClassName: kong
+    hosts:
+      - grafana.goldenpath.io
+    tls:
+      - secretName: grafana-goldenpath-io-tls
+        hosts:
+          - grafana.goldenpath.io
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+  grafana.ini:
+    server:
+      root_url: https://grafana.goldenpath.io
   additionalDataSources:
     - name: Loki
       type: loki
       access: proxy
       url: http://loki-gateway.monitoring.svc:3100
+
 governance:
   id: HELM_KUBE_PROMETHEUS_STACK_METADATA
   owner: null

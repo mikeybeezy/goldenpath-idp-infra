@@ -6,6 +6,26 @@ catalog:
   catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-helm/backstage-catalog/all.yaml"
   customCatalogLocation: "None"
 
+# -----------------------------------------------------------------------------
+# Backstage Base URL
+# -----------------------------------------------------------------------------
+backstage:
+  baseURL: "https://backstage.goldenpath.io"
+
+# -----------------------------------------------------------------------------
+# Ingress Configuration - Kong
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: true
+  ingressClassName: kong
+  hostname: backstage.goldenpath.io
+  path: /
+  pathType: Prefix
+  tls: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # Production uses real Let's Encrypt certificates
+
 governance:
   id: HELM_BACKSTAGE_METADATA
   owner: null

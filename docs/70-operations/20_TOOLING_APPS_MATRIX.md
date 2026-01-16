@@ -40,8 +40,67 @@ breaking_change: false
 
 This living document captures the configuration requirements, dependencies, and operational status of all platform tooling applications deployed via Argo CD.
 
-**Last Updated**: 2026-01-15
+**Last Updated**: 2026-01-16
 **Maintainer**: platform-team
+
+---
+
+## Tooling Access URLs
+
+All platform tooling applications are accessible via Kong Ingress with TLS termination via cert-manager.
+
+### Dev Environment
+
+| Service | URL | Port-Forward Fallback | Namespace |
+|---------|-----|----------------------|-----------|
+| **Backstage** | `https://backstage.dev.goldenpath.io` | `kubectl port-forward svc/dev-backstage -n backstage 7007:7007` | backstage |
+| **Keycloak** | `https://keycloak.dev.goldenpath.io` | `kubectl port-forward svc/dev-keycloak -n keycloak 8080:8080` | keycloak |
+| **ArgoCD** | `https://argocd.dev.goldenpath.io` | `kubectl port-forward svc/argocd-server -n argocd 8080:443` | argocd |
+| **Grafana** | `https://grafana.dev.goldenpath.io` | `kubectl port-forward svc/kube-prometheus-stack-grafana -n monitoring 3000:80` | monitoring |
+| **Prometheus** | Internal only | `kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090` | monitoring |
+| **Alertmanager** | Internal only | `kubectl port-forward svc/kube-prometheus-stack-alertmanager -n monitoring 9093:9093` | monitoring |
+
+### Staging Environment
+
+| Service | URL |
+|---------|-----|
+| **Backstage** | `https://backstage.staging.goldenpath.io` |
+| **Keycloak** | `https://keycloak.staging.goldenpath.io` |
+| **ArgoCD** | `https://argocd.staging.goldenpath.io` |
+| **Grafana** | `https://grafana.staging.goldenpath.io` |
+
+### Production Environment
+
+| Service | URL |
+|---------|-----|
+| **Backstage** | `https://backstage.goldenpath.io` |
+| **Keycloak** | `https://keycloak.goldenpath.io` |
+| **ArgoCD** | `https://argocd.goldenpath.io` |
+| **Grafana** | `https://grafana.goldenpath.io` |
+
+### DNS Requirements
+
+All URLs require DNS records pointing to the Kong LoadBalancer:
+
+```bash
+# Get Kong LoadBalancer address
+kubectl get svc -n kong-system kong-kong-proxy -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+
+# Verify ingress resources
+kubectl get ingress -A
+```
+
+For wildcard DNS, configure `*.dev.goldenpath.io`, `*.staging.goldenpath.io`, and `*.goldenpath.io` to point to the respective Kong LoadBalancer addresses.
+
+### Certificate Issuers
+
+| Environment | Issuer | Notes |
+|-------------|--------|-------|
+| dev | `letsencrypt-staging` | Staging certs (browser warnings expected) |
+| staging | `letsencrypt-staging` | Staging certs |
+| prod | `letsencrypt-prod` | Production certs (trusted) |
+
+---
 
 ## Quick Reference
 
@@ -630,6 +689,8 @@ goldenpath/{env}/{app}/{secret-name}
 | 2026-01-15 | platform-team | Initial matrix creation |
 | 2026-01-15 | platform-team | Added chart/image version pinning, configured all apps |
 | 2026-01-15 | platform-team | Bumped Keycloak (25.2.0) and Backstage (2.6.3) chart versions |
+| 2026-01-16 | platform-team | Added Tooling Access URLs section with Kong Ingress configuration |
+| 2026-01-16 | platform-team | Configured ingress for Backstage, ArgoCD, and Grafana across all environments |
 
 ---
 

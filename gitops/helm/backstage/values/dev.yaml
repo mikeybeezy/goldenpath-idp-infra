@@ -68,6 +68,21 @@ backstage:
   baseURL: "https://backstage.dev.goldenpath.io"
 
 # -----------------------------------------------------------------------------
+# Ingress Configuration - Kong
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: true
+  ingressClassName: kong
+  hostname: backstage.dev.goldenpath.io
+  path: /
+  pathType: Prefix
+  tls: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    # Use staging issuer for dev to avoid rate limits
+    # Switch to letsencrypt-prod for production
+
+# -----------------------------------------------------------------------------
 # Resource Limits for Dev
 # -----------------------------------------------------------------------------
 resources:
@@ -99,10 +114,10 @@ appConfig: |
 
   app:
     title: Platformers Community Backstage
-    baseUrl: ${BASE_URL}:7007
+    baseUrl: ${BASE_URL}
 
   backend:
-    baseUrl: ${BASE_URL}:7007
+    baseUrl: ${BASE_URL}
     listen: ':7007'
 
     reading:

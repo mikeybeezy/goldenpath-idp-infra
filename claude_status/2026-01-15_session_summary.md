@@ -151,6 +151,43 @@ https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-reg
 3. **Triggered ExternalSecret sync**: `kubectl annotate externalsecret backstage-secrets -n backstage force-sync=$(date +%s) --overwrite`
 4. **Restarted Backstage**: Token now loaded and PR features working
 
+### H. Kong Ingress for Tooling Apps (2026-01-16)
+
+**Problem**: Accessing Backstage and other tooling apps requires port-forwarding, which is inconvenient for daily use.
+
+**Resolution**:
+
+1. **Added ingress template** to Backstage Helm chart (`backstage-helm/charts/backstage/templates/ingress.yaml`)
+2. **Configured Kong ingress** for all environments with TLS via cert-manager
+3. **Updated base URLs** to remove `:7007` port suffix since Kong handles routing
+
+**Services Configured**:
+
+| Service | Dev URL | Ingress Status |
+|---------|---------|----------------|
+| Backstage | `backstage.dev.goldenpath.io` | New template added |
+| Keycloak | `keycloak.dev.goldenpath.io` | Already configured |
+| ArgoCD | `argocd.dev.goldenpath.io` | Configured |
+| Grafana | `grafana.dev.goldenpath.io` | Configured |
+
+**Pattern** (consistent across all tooling apps):
+
+```yaml
+ingress:
+  enabled: true
+  ingressClassName: kong
+  hostname: <service>.dev.goldenpath.io
+  tls: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+```
+
+**Documentation Created**:
+
+- ADR-0162: Kong Ingress DNS Strategy for Platform Tooling
+- CL-0136: Tooling Apps Ingress Configuration
+- Living Doc: `docs/70-operations/45_DNS_MANAGEMENT.md`
+
 ## 3. Configuration Changes Summary
 
 ### ArgoCD Application (`gitops/argocd/apps/dev/backstage.yaml`)
@@ -342,6 +379,7 @@ global:
 | CL-0132   | ClusterSecretStore Addon Deployment Fix    |
 | CL-0133   | IDP Stack Deployment Runbook (RB-0031)     |
 | CL-0134   | Backstage Catalog Governance Registry Sync |
+| CL-0135   | Kong Ingress for Tooling Apps              |
 
 ### Session Summary
 
@@ -365,18 +403,30 @@ global:
 
 8. **GitHub Token for PR Features**: Backstage scaffolder requires valid GitHub PAT with `repo`, `workflow`, `read:org` scopes.
 
+9. **Kong Ingress for Tooling**: Use Kong ingress with cert-manager to provide DNS-based access to tooling apps, eliminating port-forwarding.
+
 ## 7. Access Commands
 
 ```bash
-# Port-forward Backstage
-kubectl port-forward svc/dev-backstage -n backstage 7007:7007
+# DNS-based access (after ingress deployment)
+# Backstage: https://backstage.dev.goldenpath.io
+# Keycloak: https://keycloak.dev.goldenpath.io
 
-# Port-forward Keycloak
+# Port-forward fallback (if DNS not configured)
+kubectl port-forward svc/dev-backstage -n backstage 7007:7007
 kubectl port-forward svc/dev-keycloak -n keycloak 8080:8080
 
 # Check pod status
 kubectl get pods -n backstage
 kubectl get pods -n keycloak
+
+# Check ingress status
+kubectl get ingress -n backstage
+kubectl get ingress -n keycloak
+
+# Check certificate status
+kubectl get certificate -n backstage
+kubectl get certificate -n keycloak
 
 # Check ExternalSecret status
 kubectl get externalsecret -n backstage

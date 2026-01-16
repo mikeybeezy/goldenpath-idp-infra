@@ -67,6 +67,22 @@ grafana:
   persistence:
     enabled: true
     size: 10Gi
+  # Ingress Configuration - Kong
+  ingress:
+    enabled: true
+    ingressClassName: kong
+    hosts:
+      - grafana.dev.goldenpath.io
+    tls:
+      - secretName: grafana-dev-goldenpath-io-tls
+        hosts:
+          - grafana.dev.goldenpath.io
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-staging
+  # Grafana root URL for proper redirect handling
+  grafana.ini:
+    server:
+      root_url: https://grafana.dev.goldenpath.io
   additionalDataSources:
     - name: Loki
       type: loki
