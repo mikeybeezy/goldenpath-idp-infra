@@ -42,7 +42,7 @@ Agents must:
 
 # Session Summary (Append-Only)
 
-This file is an **append-only handoff log**.  
+This file is an **append-only handoff log**.
 Do **not** edit or rewrite previous entries. Add a new timestamped block at the end.
 
 ---
