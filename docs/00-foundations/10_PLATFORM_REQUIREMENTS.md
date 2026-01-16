@@ -97,9 +97,9 @@ See `docs/10-governance/01_GOVERNANCE.md` for the authoritative policy context.
 |Action|Non-platform teams|Platform team|
 |---|---|---|
 |Create request via Backstage|✅|✅|
-|Merge PR for infra/app provisioning|❌|✅|
-|Run elevated GitHub Actions (manual dropdown)|❌|✅|
-|Run privileged CLI/Make actions|❌|✅|
+|Merge PR for infra/app provisioning|🚫|✅|
+|Run elevated GitHub Actions (manual dropdown)|🚫|✅|
+|Run privileged CLI/Make actions|🚫|✅|
 
 ## Golden Path Flow (V1)
 

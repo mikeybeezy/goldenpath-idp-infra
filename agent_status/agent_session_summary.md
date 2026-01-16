@@ -63,7 +63,7 @@ This session focused on resolving critical startup failures in the core IDP stac
 4. **Bitnami-Compatible Image (Attempt 3 - SUCCESS)**:
    - Discovered `public.ecr.aws/bitnami/keycloak` as an alternative source.
    - Forced AMD64 pull: `docker pull --platform linux/amd64 public.ecr.aws/bitnami/keycloak:latest`
-   - **Verified Architecture**: `amd64` ✓
+   - **Verified Architecture**: `amd64`
    - Pushed to ECR: `593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak:latest`
    - *Chart Update*: Set `image.registry` to ECR private URL and enabled `global.security.allowInsecureImages: true`.
 
@@ -486,12 +486,12 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
    ```bash
    # 1. Install missing Prometheus CRD
    kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.68.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
-   
+
    # Result: customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com serverside-applied
-   
+
    # 2. Trigger ArgoCD sync for monitoring stack
    kubectl -n argocd patch application dev-kube-prometheus-stack --type merge -p '{"operation": {"sync": {"prune": true}}}'
-   
+
    # 3. Wait for Prometheus StatefulSet creation
    kubectl wait --for=condition=ready pod/prometheus-dev-kube-prometheus-stack-prometheus-0 -n monitoring --timeout=120s
    ```
@@ -659,8 +659,8 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
 - ✅ Application ConfigMaps exist with correct label (`grafana_dashboard: "1"`)
 - ✅ RBAC ClusterRole grants `get, watch, list` on ConfigMaps cluster-wide
 - ✅ Sidecar container running and healthy in current pod
-- ❌ `NAMESPACE: ALL` environment variable not present in running pod
-- ❌ Application dashboards not discovered by sidecar
+-  `NAMESPACE: ALL` environment variable not present in running pod
+-  Application dashboards not discovered by sidecar
 
 **Root Cause Hypothesis**:
 The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce` persistent volumes, causing a continuous deadlock where:
@@ -757,7 +757,7 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 
 **Validation**:
 
-- `scripts/validate_metadata.py`: ✅ 745 passed, ❌ 0 failed
+- `scripts/validate_metadata.py`: ✅ 745 passed,  0 failed
 - `bin/governance audit`: generated `docs/10-governance/reports/compliance_snapshot_2026-01-16.json`
 - `value_ledger.json` updated with the new metadata inventory
 
@@ -778,7 +778,7 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 
 - `scripts/generate_script_index.py --validate`: ✅ (after regeneration)
 - `scripts/platform_health.py`: refreshed `PLATFORM_HEALTH.md` and `HEALTH_AUDIT_LOG.md`
-- `scripts/validate_metadata.py`: ✅ 745 passed, ❌ 0 failed
+- `scripts/validate_metadata.py`: ✅ 745 passed,  0 failed
 
 ## 12. Backstage Template Migration + Catalog Path Fix (2026-01-16 08:47:34Z)
 
@@ -810,7 +810,7 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 
 - `bin/governance lint`: reported YAML lint warnings and errors (comments spacing, blank lines, indentation) in existing files.
 - `bin/governance audit`: ✅ snapshot saved to `docs/10-governance/reports/compliance_snapshot_2026-01-16.json`.
-- `scripts/validate_metadata.py`: ✅ 745 passed, ❌ 0 failed.
+- `scripts/validate_metadata.py`: ✅ 745 passed,  0 failed.
 
 **Notes**:
 

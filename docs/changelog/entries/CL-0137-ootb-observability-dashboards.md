@@ -43,7 +43,7 @@ Every application dashboard now standardizes on the **RED** method (Rate, Errors
 - **Log Correlation**: Application logs are correlated directly with metrics in the same view.
 - **Error Context**: "Recent Application Logs" panel filters for `error` level logs, providing immediate context for metric spikes.
 
-## 📋 Implementation Details
+## Implementation Details
 
 - **Grafana Config**:
 

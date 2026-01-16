@@ -40,6 +40,6 @@ tags:
 - `docs/00-foundations/38_EPHEMERAL_STACK_STRATEGY.md`: Guide to the "Simulation" strategy.
 - Updated `docs/70-operations/20_TOOLING_APPS_MATRIX.md` (Pending) to include local mock configurations.
 
-## 💡 Rationale
+## Rationale
 
 This change decouples local development and CI previews from costly and slow-to-provision real AWS infrastructure, enabling a "seconds-based" feedback loop for developers.

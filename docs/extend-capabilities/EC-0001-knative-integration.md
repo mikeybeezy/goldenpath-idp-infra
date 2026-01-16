@@ -26,7 +26,7 @@ Knative provides a Kubernetes-native serverless platform that could enhance Gold
 
 **Estimated ROI**: $13,000/year from compute savings alone, plus developer velocity improvements.
 
-**Strategic Fit**: ⭐⭐⭐⭐☆ (4/5) - Strong alignment with platform goals, moderate integration complexity.
+**Strategic Fit**: 4/5 - Strong alignment with platform goals, moderate integration complexity.
 
 ## Problem Statement
 
