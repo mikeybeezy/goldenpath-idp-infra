@@ -44,6 +44,15 @@ grafana:
       type: loki
       access: proxy
       url: http://loki-gateway.monitoring.svc:3100
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: ALL
+    datasources:
+      enabled: true
+      searchNamespace: ALL
 
 governance:
   id: HELM_KUBE_PROMETHEUS_STACK_METADATA
