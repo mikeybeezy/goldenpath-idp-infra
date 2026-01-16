@@ -48,7 +48,7 @@ version: 1.0
 breaking_change: false
 ---
 
-# Runbooks
+## Runbooks
 
 ## Index
 
@@ -81,6 +81,7 @@ breaking_change: false
 - [docs/70-operations/runbooks/RB-0031-idp-stack-deployment.md](RB-0031-idp-stack-deployment.md) — Deploy Keycloak and Backstage IDP stack with ECR images and RDS.
 
 ### App Team Runbooks
+
 - [docs/70-operations/runbooks/app-team/RB-0021-fix-cve-guide.md](app-team/RB-0021-fix-cve-guide.md) — Step-by-step guide to resolving CVEs in container images.
 - [docs/70-operations/runbooks/app-team/RB-0022-pull-image-guide.md](app-team/RB-0022-pull-image-guide.md) — How to pull images from the ECR registry with correct credentials.
 - [docs/70-operations/runbooks/app-team/RB-0023-push-image-guide.md](app-team/RB-0023-push-image-guide.md) — Authenticating and pushing images to the platform registry.

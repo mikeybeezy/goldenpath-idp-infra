@@ -31,7 +31,7 @@ dependencies:
 breaking_change: false
 ---
 
-# ADR-0111: Automated Documentation Auto-Healing
+## ADR-0111: Automated Documentation Auto-Healing
 
 - **Status:** Accepted (Supersedes ADR-0103, ADR-0104)
 - **Date:** 2026-01-06

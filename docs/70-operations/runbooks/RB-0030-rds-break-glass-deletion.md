@@ -22,7 +22,7 @@ dependencies:
 breaking_change: false
 ---
 
-# RDS Break-Glass Deletion Procedure (Runbook)
+## RDS Break-Glass Deletion Procedure (Runbook)
 
 This runbook documents the intentionally difficult process for deleting platform RDS instances.
 

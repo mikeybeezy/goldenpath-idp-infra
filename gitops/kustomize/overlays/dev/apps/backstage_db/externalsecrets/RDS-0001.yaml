@@ -17,5 +17,5 @@ spec:
     name: backstage_db-db-credentials
     creationPolicy: Owner
   dataFrom:
-  - extract:
-      key: goldenpath/dev/rds/backstage_db
+    - extract:
+        key: goldenpath/dev/rds/backstage_db

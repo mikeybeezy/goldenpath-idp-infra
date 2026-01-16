@@ -36,7 +36,7 @@ version: 1.0
 breaking_change: false
 ---
 
-# Platform Tooling Apps Configuration Matrix
+## Platform Tooling Apps Configuration Matrix
 
 This living document captures the configuration requirements, dependencies, and operational status of all platform tooling applications deployed via Argo CD.
 
@@ -51,32 +51,32 @@ All platform tooling applications are accessible via Kong Ingress with TLS termi
 
 ### Dev Environment
 
-| Service | URL | Port-Forward Fallback | Namespace |
+|Service|URL|Port-Forward Fallback|Namespace|
 |---------|-----|----------------------|-----------|
-| **Backstage** | `https://backstage.dev.goldenpathidp.io` | `kubectl port-forward svc/dev-backstage -n backstage 7007:7007` | backstage |
-| **Keycloak** | `https://keycloak.dev.goldenpathidp.io` | `kubectl port-forward svc/dev-keycloak -n keycloak 8080:8080` | keycloak |
-| **ArgoCD** | `https://argocd.dev.goldenpathidp.io` | `kubectl port-forward svc/argocd-server -n argocd 8080:443` | argocd |
-| **Grafana** | `https://grafana.dev.goldenpathidp.io` | `kubectl port-forward svc/kube-prometheus-stack-grafana -n monitoring 3000:80` | monitoring |
-| **Prometheus** | Internal only | `kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090` | monitoring |
-| **Alertmanager** | Internal only | `kubectl port-forward svc/kube-prometheus-stack-alertmanager -n monitoring 9093:9093` | monitoring |
+|**Backstage**|`https://backstage.dev.goldenpathidp.io`|`kubectl port-forward svc/dev-backstage -n backstage 7007:7007`|backstage|
+|**Keycloak**|`https://keycloak.dev.goldenpathidp.io`|`kubectl port-forward svc/dev-keycloak -n keycloak 8080:8080`|keycloak|
+|**ArgoCD**|`https://argocd.dev.goldenpathidp.io`|`kubectl port-forward svc/argocd-server -n argocd 8080:443`|argocd|
+|**Grafana**|`https://grafana.dev.goldenpathidp.io`|`kubectl port-forward svc/kube-prometheus-stack-grafana -n monitoring 3000:80`|monitoring|
+|**Prometheus**|Internal only|`kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090`|monitoring|
+|**Alertmanager**|Internal only|`kubectl port-forward svc/kube-prometheus-stack-alertmanager -n monitoring 9093:9093`|monitoring|
 
 ### Staging Environment
 
-| Service | URL |
+|Service|URL|
 |---------|-----|
-| **Backstage** | `https://backstage.staging.goldenpathidp.io` |
-| **Keycloak** | `https://keycloak.staging.goldenpathidp.io` |
-| **ArgoCD** | `https://argocd.staging.goldenpathidp.io` |
-| **Grafana** | `https://grafana.staging.goldenpathidp.io` |
+|**Backstage**|`https://backstage.staging.goldenpathidp.io`|
+|**Keycloak**|`https://keycloak.staging.goldenpathidp.io`|
+|**ArgoCD**|`https://argocd.staging.goldenpathidp.io`|
+|**Grafana**|`https://grafana.staging.goldenpathidp.io`|
 
 ### Production Environment
 
-| Service | URL |
+|Service|URL|
 |---------|-----|
-| **Backstage** | `https://backstage.goldenpathidp.io` |
-| **Keycloak** | `https://keycloak.goldenpathidp.io` |
-| **ArgoCD** | `https://argocd.goldenpathidp.io` |
-| **Grafana** | `https://grafana.goldenpathidp.io` |
+|**Backstage**|`https://backstage.goldenpathidp.io`|
+|**Keycloak**|`https://keycloak.goldenpathidp.io`|
+|**ArgoCD**|`https://argocd.goldenpathidp.io`|
+|**Grafana**|`https://grafana.goldenpathidp.io`|
 
 ### DNS Requirements
 
@@ -94,31 +94,32 @@ For wildcard DNS, configure `*.dev.goldenpathidp.io`, `*.staging.goldenpathidp.i
 
 ### Certificate Issuers
 
-| Environment | Issuer | Notes |
+|Environment|Issuer|Notes|
 |-------------|--------|-------|
-| dev | `letsencrypt-staging` | Staging certs (browser warnings expected) |
-| staging | `letsencrypt-staging` | Staging certs |
-| prod | `letsencrypt-prod` | Production certs (trusted) |
+|dev|`letsencrypt-staging`|Staging certs (browser warnings expected)|
+|staging|`letsencrypt-staging`|Staging certs|
+|prod|`letsencrypt-prod`|Production certs (trusted)|
 
 ---
 
 ## Quick Reference
 
-| App | Namespace | Chart | Chart Version | Image Tag | Status | Priority |
-| --- | --------- | ----- | ------------- | --------- | ------ | -------- |
-| [external-secrets](#external-secrets) | external-secrets | external-secrets/external-secrets | 0.9.13 | v0.9.13 | Configured | P0 |
-| [cert-manager](#cert-manager) | cert-manager | jetstack/cert-manager | v1.14.4 | v1.14.4 | Configured | P0 |
-| [keycloak](#keycloak) | keycloak | bitnami/keycloak | 25.2.0 | 26.3.3 | Configured | P1 |
-| [kong](#kong) | kong-system | konghq/kong | 2.47.0 | 3.6.1 | Configured | P1 |
-| [backstage](#backstage) | backstage | backstage/backstage | 2.6.3 | 1.29.0 | Configured | P2 |
-| [kube-prometheus-stack](#kube-prometheus-stack) | monitoring | prometheus-community/kube-prometheus-stack | 45.7.1 | v2.47.2 | Configured | P3 |
-| [loki](#loki) | monitoring | grafana/loki-stack | 2.9.11 | 2.9.4 | Configured | P3 |
-| [fluent-bit](#fluent-bit) | monitoring | fluent/fluent-bit | 0.47.0 | 3.0.3 | Configured | P3 |
-| [localstack](#localstack) | local-infra | localstack/localstack | 3.0.0 | 3.0.0 | Standard (Ephem) | P0 |
-| [minio](#minio) | local-infra | minio/minio | 5.0.0 | RELEASE.2024-01 | Standard (Ephem) | P0 |
-| [postgresql](#postgresql) | local-infra | bitnami/postgresql | 13.2.24 | 15.6.0 | Standard (Ephem) | P0 |
+|App|Namespace|Chart|Chart Version|Image Tag|Status|Priority|
+|---|---------|-----|-------------|---------|------|--------|
+|[external-secrets](#external-secrets)|external-secrets|external-secrets/external-secrets|0.9.13|v0.9.13|Configured|P0|
+|[cert-manager](#cert-manager)|cert-manager|jetstack/cert-manager|v1.14.4|v1.14.4|Configured|P0|
+|[keycloak](#keycloak)|keycloak|bitnami/keycloak|25.2.0|26.3.3|Configured|P1|
+|[kong](#kong)|kong-system|konghq/kong|2.47.0|3.6.1|Configured|P1|
+|[backstage](#backstage)|backstage|backstage/backstage|2.6.3|1.29.0|Configured|P2|
+|[kube-prometheus-stack](#kube-prometheus-stack)|monitoring|prometheus-community/kube-prometheus-stack|45.7.1|v2.47.2|Configured|P3|
+|[loki](#loki)|monitoring|grafana/loki-stack|2.9.11|2.9.4|Configured|P3|
+|[fluent-bit](#fluent-bit)|monitoring|fluent/fluent-bit|0.47.0|3.0.3|Configured|P3|
+|[localstack](#localstack)|local-infra|localstack/localstack|3.0.0|3.0.0|Standard (Ephem)|P0|
+|[minio](#minio)|local-infra|minio/minio|5.0.0|RELEASE.2024-01|Standard (Ephem)|P0|
+|[postgresql](#postgresql)|local-infra|bitnami/postgresql|13.2.24|15.6.0|Standard (Ephem)|P0|
 
 **Status Key**:
+
 - **Configured**: Values file has required configuration
 - **Standard (Ephem)**: Standard mock stack for Ephemeral/Local environments
 - **Partial**: Has some config but missing critical pieces
@@ -126,6 +127,7 @@ For wildcard DNS, configure `*.dev.goldenpathidp.io`, `*.staging.goldenpathidp.i
 - **Needs Config**: Only governance metadata, no actual values
 
 **Priority Key**:
+
 - **P0**: Foundation - must be configured first (other apps depend on it)
 - **P1**: Core Platform - identity and API gateway
 - **P2**: Developer Experience - portals and tooling
@@ -175,23 +177,23 @@ For wildcard DNS, configure `*.dev.goldenpathidp.io`, `*.staging.goldenpathidp.i
 
 **Purpose**: Syncs secrets from AWS Secrets Manager into Kubernetes Secrets
 
-| Attribute | Value |
-| --------- | ----- |
-| Chart | external-secrets/external-secrets |
-| Chart Version | 0.9.13 |
-| Image Tag | v0.9.13 |
-| Namespace | external-secrets |
-| Argo App | `gitops/argocd/apps/dev/external-secrets.yaml` |
-| Values File | `gitops/helm/external-secrets/values/dev.yaml` |
-| Risk Level | Low (but critical dependency) |
+|Attribute|Value|
+|---------|-----|
+|Chart|external-secrets/external-secrets|
+|Chart Version|0.9.13|
+|Image Tag|v0.9.13|
+|Namespace|external-secrets|
+|Argo App|`gitops/argocd/apps/dev/external-secrets.yaml`|
+|Values File|`gitops/helm/external-secrets/values/dev.yaml`|
+|Risk Level|Low (but critical dependency)|
 
-#### Required Configuration
+#### external-secrets Required Configuration
 
-| Config Item | Description | Source | Status |
-| ----------- | ----------- | ------ | ------ |
-| ServiceAccount IRSA | IAM role for AWS Secrets Manager access | Terraform output | Configured |
-| ClusterSecretStore | Points to AWS Secrets Manager backend | Kustomize | Configured |
-| RefreshInterval | How often to sync secrets | Values file | Default (1h) |
+|Config Item|Description|Source|Status|
+|-----------|-----------|------|------|
+|ServiceAccount IRSA|IAM role for AWS Secrets Manager access|Terraform output|Configured|
+|ClusterSecretStore|Points to AWS Secrets Manager backend|Kustomize|Configured|
+|RefreshInterval|How often to sync secrets|Values file|Default (1h)|
 
 #### ClusterSecretStore Required
 
@@ -212,19 +214,19 @@ spec:
             namespace: external-secrets
 ```
 
-#### Dependencies
+#### external-secrets Dependencies
 
 - **Upstream**: AWS IAM Role (IRSA), AWS Secrets Manager
 - **Downstream**: All apps requiring secrets (Keycloak, Backstage, Kong)
 
 #### Secrets This App Provides
 
-| Secret Name | Consumers | AWS SM Path |
+|Secret Name|Consumers|AWS SM Path|
 |-------------|-----------|-------------|
-| keycloak-admin | Keycloak | `goldenpath/dev/keycloak/admin` |
-| backstage-github-token | Backstage | `goldenpath/dev/backstage/secrets` |
-| backstage-db-credentials | Backstage | `goldenpath/dev/backstage/postgres` |
-| kong-admin-credentials | Kong | `goldenpath/dev/kong/admin` |
+|keycloak-admin|Keycloak|`goldenpath/dev/keycloak/admin`|
+|backstage-github-token|Backstage|`goldenpath/dev/backstage/secrets`|
+|backstage-db-credentials|Backstage|`goldenpath/dev/backstage/postgres`|
+|kong-admin-credentials|Kong|`goldenpath/dev/kong/admin`|
 
 ---
 
@@ -232,23 +234,23 @@ spec:
 
 **Purpose**: Automated TLS certificate management via Let's Encrypt or internal CA
 
-| Attribute | Value |
-| --------- | ----- |
-| Chart | jetstack/cert-manager |
-| Chart Version | v1.14.4 |
-| Image Tag | v1.14.4 |
-| Namespace | cert-manager |
-| Argo App | `gitops/argocd/apps/dev/cert-manager.yaml` |
-| Values File | `gitops/helm/cert-manager/values/dev.yaml` |
-| Risk Level | Medium |
+|Attribute|Value|
+|---------|-----|
+|Chart|jetstack/cert-manager|
+|Chart Version|v1.14.4|
+|Image Tag|v1.14.4|
+|Namespace|cert-manager|
+|Argo App|`gitops/argocd/apps/dev/cert-manager.yaml`|
+|Values File|`gitops/helm/cert-manager/values/dev.yaml`|
+|Risk Level|Medium|
 
-#### Required Configuration
+#### cert-manager Required Configuration
 
-| Config Item | Description | Source | Status |
-| ----------- | ----------- | ------ | ------ |
-| installCRDs | Install Certificate CRDs | Values file | Configured |
-| ClusterIssuer | Let's Encrypt or self-signed issuer | Kustomize | Configured |
-| DNS01 Solver | Route53 credentials for DNS challenge | External Secrets | N/A (HTTP01) |
+|Config Item|Description|Source|Status|
+|-----------|-----------|------|------|
+|installCRDs|Install Certificate CRDs|Values file|Configured|
+|ClusterIssuer|Let's Encrypt or self-signed issuer|Kustomize|Configured|
+|DNS01 Solver|Route53 credentials for DNS challenge|External Secrets|N/A (HTTP01)|
 
 #### ClusterIssuer Required (Let's Encrypt)
 
@@ -280,7 +282,7 @@ spec:
   selfSigned: {}
 ```
 
-#### Dependencies
+#### cert-manager Dependencies
 
 - **Upstream**: DNS provider (Route53) for ACME DNS challenge
 - **Downstream**: Kong (ingress TLS), Keycloak (HTTPS), Backstage (HTTPS)
@@ -291,28 +293,28 @@ spec:
 
 **Purpose**: Identity provider for SSO across platform applications
 
-| Attribute | Value |
-| --------- | ----- |
-| Chart | bitnami/keycloak |
-| Chart Version | 25.2.0 |
-| Image Tag | 26.3.3 |
-| Namespace | keycloak |
-| Argo App | `gitops/argocd/apps/dev/keycloak.yaml` |
-| Values File | `gitops/helm/keycloak/values/dev.yaml` |
-| Risk Level | High |
-| ADR | ADR-0005 |
+|Attribute|Value|
+|---------|-----|
+|Chart|bitnami/keycloak|
+|Chart Version|25.2.0|
+|Image Tag|26.3.3|
+|Namespace|keycloak|
+|Argo App|`gitops/argocd/apps/dev/keycloak.yaml`|
+|Values File|`gitops/helm/keycloak/values/dev.yaml`|
+|Risk Level|High|
+|ADR|ADR-0005|
 
-#### Required Configuration
+#### keycloak Required Configuration
 
-| Config Item | Description | Source | Status |
-| ----------- | ----------- | ------ | ------ |
-| auth.adminUser | Admin username | Values file | Configured |
-| auth.adminPassword | Admin password | External Secret | Configured |
-| postgresql.enabled | Enable bundled PostgreSQL | Values file | Configured |
-| postgresql.auth.password | PostgreSQL password | External Secret | Configured |
-| proxy | Proxy mode (edge/passthrough) | Values file | Configured |
-| production | Production mode flag | Values file | Configured |
-| replicaCount | Number of replicas | Values file | Configured |
+|Config Item|Description|Source|Status|
+|-----------|-----------|------|------|
+|auth.adminUser|Admin username|Values file|Configured|
+|auth.adminPassword|Admin password|External Secret|Configured|
+|postgresql.enabled|Enable bundled PostgreSQL|Values file|Configured|
+|postgresql.auth.password|PostgreSQL password|External Secret|Configured|
+|proxy|Proxy mode (edge/passthrough)|Values file|Configured|
+|production|Production mode flag|Values file|Configured|
+|replicaCount|Number of replicas|Values file|Configured|
 
 #### Minimum Values Required
 
@@ -347,14 +349,14 @@ ingress:
 
 #### OIDC Clients Required
 
-| Client ID | Purpose | Redirect URIs |
+|Client ID|Purpose|Redirect URIs|
 |-----------|---------|---------------|
-| backstage | Backstage SSO | `https://backstage.dev.goldenpathidp.io/api/auth/oidc/handler/frame` |
-| kong | Kong Admin SSO | `https://kong.dev.goldenpathidp.io/callback` |
-| argocd | Argo CD SSO | `https://argocd.dev.goldenpathidp.io/auth/callback` |
-| grafana | Grafana SSO | `https://grafana.dev.goldenpathidp.io/login/generic_oauth` |
+|backstage|Backstage SSO|`https://backstage.dev.goldenpathidp.io/api/auth/oidc/handler/frame`|
+|kong|Kong Admin SSO|`https://kong.dev.goldenpathidp.io/callback`|
+|argocd|Argo CD SSO|`https://argocd.dev.goldenpathidp.io/auth/callback`|
+|grafana|Grafana SSO|`https://grafana.dev.goldenpathidp.io/login/generic_oauth`|
 
-#### Dependencies
+#### keycloak Dependencies
 
 - **Upstream**: external-secrets, cert-manager, PostgreSQL (bundled or external)
 - **Downstream**: Kong (OIDC), Backstage (SSO), Argo CD (SSO), Grafana (SSO)
@@ -365,27 +367,27 @@ ingress:
 
 **Purpose**: API Gateway and Ingress Controller
 
-| Attribute | Value |
-| --------- | ----- |
-| Chart | konghq/kong |
-| Chart Version | 2.47.0 |
-| Image Tag | 3.6.1 |
-| Ingress Controller Tag | 3.1.2 |
-| Namespace | kong-system |
-| Argo App | `gitops/argocd/apps/dev/kong.yaml` |
-| Values File | `gitops/helm/kong/values/dev.yaml` |
-| Risk Level | High |
+|Attribute|Value|
+|---------|-----|
+|Chart|konghq/kong|
+|Chart Version|2.47.0|
+|Image Tag|3.6.1|
+|Ingress Controller Tag|3.1.2|
+|Namespace|kong-system|
+|Argo App|`gitops/argocd/apps/dev/kong.yaml`|
+|Values File|`gitops/helm/kong/values/dev.yaml`|
+|Risk Level|High|
 
-#### Required Configuration
+#### kong Required Configuration
 
-| Config Item | Description | Source | Status |
-| ----------- | ----------- | ------ | ------ |
-| proxy.type | LoadBalancer for external access | Values file | Configured |
-| admin.enabled | Enable Admin API | Values file | Configured |
-| env.database | Database backend (off/postgres) | Values file | Configured (off) |
-| ingressController.enabled | Enable K8s ingress controller | Values file | Configured |
+|Config Item|Description|Source|Status|
+|-----------|-----------|------|------|
+|proxy.type|LoadBalancer for external access|Values file|Configured|
+|admin.enabled|Enable Admin API|Values file|Configured|
+|env.database|Database backend (off/postgres)|Values file|Configured (off)|
+|ingressController.enabled|Enable K8s ingress controller|Values file|Configured|
 
-#### Additional Values Required
+#### kong Additional Values Required
 
 ```yaml
 admin:
@@ -420,14 +422,14 @@ ingressController:
 
 #### Plugins to Configure
 
-| Plugin | Purpose | Config Location |
+|Plugin|Purpose|Config Location|
 |--------|---------|-----------------|
-| rate-limiting | API rate limits | KongPlugin CRD |
-| oidc | Keycloak authentication | KongPlugin CRD |
-| cors | Cross-origin requests | KongPlugin CRD |
-| request-transformer | Header manipulation | KongPlugin CRD |
+|rate-limiting|API rate limits|KongPlugin CRD|
+|oidc|Keycloak authentication|KongPlugin CRD|
+|cors|Cross-origin requests|KongPlugin CRD|
+|request-transformer|Header manipulation|KongPlugin CRD|
 
-#### Dependencies
+#### kong Dependencies
 
 - **Upstream**: cert-manager (TLS), external-secrets (credentials)
 - **Downstream**: All ingress traffic, Backstage, Keycloak admin
@@ -438,28 +440,28 @@ ingressController:
 
 **Purpose**: Internal Developer Portal and Service Catalog
 
-| Attribute | Value |
-| --------- | ----- |
-| Chart | backstage/backstage |
-| Chart Version | 2.6.3 |
-| Image Tag | 1.29.0 |
-| PostgreSQL Tag | 15.6.0-debian-12-r8 |
-| Namespace | backstage |
-| Argo App | `gitops/argocd/apps/dev/backstage.yaml` |
-| Values File | `gitops/helm/backstage/values/dev.yaml` |
-| Risk Level | Medium |
+|Attribute|Value|
+|---------|-----|
+|Chart|backstage/backstage|
+|Chart Version|2.6.3|
+|Image Tag|1.29.0|
+|PostgreSQL Tag|15.6.0-debian-12-r8|
+|Namespace|backstage|
+|Argo App|`gitops/argocd/apps/dev/backstage.yaml`|
+|Values File|`gitops/helm/backstage/values/dev.yaml`|
+|Risk Level|Medium|
 
-#### Required Configuration
+#### backstage Required Configuration
 
-| Config Item | Description | Source | Status |
-| ----------- | ----------- | ------ | ------ |
-| appConfig.app.baseUrl | Frontend URL | Values file | Configured |
-| appConfig.backend.baseUrl | Backend API URL | Values file | Configured |
-| appConfig.backend.database | PostgreSQL connection | Values file | Configured |
-| appConfig.auth.providers | OIDC/GitHub auth config | Values file | Configured |
-| appConfig.integrations.github | GitHub API token | External Secret | Configured |
+|Config Item|Description|Source|Status|
+|-----------|-----------|------|------|
+|appConfig.app.baseUrl|Frontend URL|Values file|Configured|
+|appConfig.backend.baseUrl|Backend API URL|Values file|Configured|
+|appConfig.backend.database|PostgreSQL connection|Values file|Configured|
+|appConfig.auth.providers|OIDC/GitHub auth config|Values file|Configured|
+|appConfig.integrations.github|GitHub API token|External Secret|Configured|
 
-#### Additional Values Required
+#### backstage Additional Values Required
 
 ```yaml
 appConfig:
@@ -502,7 +504,7 @@ ingress:
   host: backstage.dev.goldenpathidp.io
 ```
 
-#### Dependencies
+#### backstage Dependencies
 
 - **Upstream**: Keycloak (OIDC), external-secrets, cert-manager, PostgreSQL
 - **Downstream**: Developer self-service workflows
@@ -513,20 +515,20 @@ ingress:
 
 **Purpose**: Metrics collection, alerting, and visualization
 
-| Attribute | Value |
-| --------- | ----- |
-| Chart | prometheus-community/kube-prometheus-stack |
-| Chart Version | 45.7.1 |
-| Prometheus Tag | v2.47.2 |
-| Alertmanager Tag | v0.26.0 |
-| Grafana Tag | 10.2.3 |
-| Operator Tag | v0.68.0 |
-| Node Exporter Tag | v1.6.1 |
-| Kube State Metrics Tag | v2.10.1 |
-| Namespace | monitoring |
-| Argo App | `gitops/argocd/apps/dev/kube-prometheus-stack.yaml` |
-| Values File | `gitops/helm/kube-prometheus-stack/values/dev.yaml` |
-| Risk Level | Low |
+|Attribute|Value|
+|---------|-----|
+|Chart|prometheus-community/kube-prometheus-stack|
+|Chart Version|45.7.1|
+|Prometheus Tag|v2.47.2|
+|Alertmanager Tag|v0.26.0|
+|Grafana Tag|10.2.3|
+|Operator Tag|v0.68.0|
+|Node Exporter Tag|v1.6.1|
+|Kube State Metrics Tag|v2.10.1|
+|Namespace|monitoring|
+|Argo App|`gitops/argocd/apps/dev/kube-prometheus-stack.yaml`|
+|Values File|`gitops/helm/kube-prometheus-stack/values/dev.yaml`|
+|Risk Level|Low|
 
 #### Current Configuration
 
@@ -565,14 +567,14 @@ grafana:
 
 #### Optional Enhancements
 
-| Config Item | Description | Status |
+|Config Item|Description|Status|
 |-------------|-------------|--------|
-| grafana.adminPassword | Grafana admin password | Default (prom-operator) |
-| grafana.ingress | External access to Grafana | Not configured |
-| alertmanager.config | Alert routing rules | Not configured |
-| additionalPrometheusRules | Custom alert rules | Not configured |
+|grafana.adminPassword|Grafana admin password|Default (prom-operator)|
+|grafana.ingress|External access to Grafana|Not configured|
+|alertmanager.config|Alert routing rules|Not configured|
+|additionalPrometheusRules|Custom alert rules|Not configured|
 
-#### Dependencies
+#### kube-prometheus-stack Dependencies
 
 - **Upstream**: Storage class (EBS), Loki
 - **Downstream**: Platform observability
@@ -583,26 +585,26 @@ grafana:
 
 **Purpose**: Log aggregation and storage
 
-| Attribute | Value |
-| --------- | ----- |
-| Chart | grafana/loki-stack |
-| Chart Version | 2.9.11 |
-| Image Tag | 2.9.4 |
-| Gateway Tag | 1.25-alpine |
-| Namespace | monitoring |
-| Argo App | `gitops/argocd/apps/dev/loki.yaml` |
-| Values File | `gitops/helm/loki/values/dev.yaml` |
-| Risk Level | Low |
+|Attribute|Value|
+|---------|-----|
+|Chart|grafana/loki-stack|
+|Chart Version|2.9.11|
+|Image Tag|2.9.4|
+|Gateway Tag|1.25-alpine|
+|Namespace|monitoring|
+|Argo App|`gitops/argocd/apps/dev/loki.yaml`|
+|Values File|`gitops/helm/loki/values/dev.yaml`|
+|Risk Level|Low|
 
 #### Loki Configuration
 
-| Config Item | Description | Status |
-| ----------- | ----------- | ------ |
-| deploymentMode | SingleBinary for dev | Configured |
-| storage | Local filesystem for dev | Configured |
-| limits_config.retention | 7 days retention | Configured |
+|Config Item|Description|Status|
+|-----------|-----------|------|
+|deploymentMode|SingleBinary for dev|Configured|
+|storage|Local filesystem for dev|Configured|
+|limits_config.retention|7 days retention|Configured|
 
-#### Dependencies
+#### loki Dependencies
 
 - **Upstream**: Storage (local or S3)
 - **Downstream**: Grafana (visualization), Fluent-bit (log source)
@@ -613,22 +615,22 @@ grafana:
 
 **Purpose**: Log collection and forwarding to Loki
 
-| Attribute | Value |
-| --------- | ----- |
-| Chart | fluent/fluent-bit |
-| Chart Version | 0.47.0 |
-| Image Tag | 3.0.3 |
-| Namespace | monitoring |
-| Argo App | `gitops/argocd/apps/dev/fluent-bit.yaml` |
-| Values File | `gitops/helm/fluent-bit/values/dev.yaml` |
-| Risk Level | Low |
+|Attribute|Value|
+|---------|-----|
+|Chart|fluent/fluent-bit|
+|Chart Version|0.47.0|
+|Image Tag|3.0.3|
+|Namespace|monitoring|
+|Argo App|`gitops/argocd/apps/dev/fluent-bit.yaml`|
+|Values File|`gitops/helm/fluent-bit/values/dev.yaml`|
+|Risk Level|Low|
 
-#### Required Configuration
+#### fluent-bit Required Configuration
 
-| Config Item | Description | Source | Status |
-| ----------- | ----------- | ------ | ------ |
-| config.outputs | Loki output destination | Values file | Configured |
-| config.filters | Log parsing and enrichment | Values file | Configured |
+|Config Item|Description|Source|Status|
+|-----------|-----------|------|------|
+|config.outputs|Loki output destination|Values file|Configured|
+|config.filters|Log parsing and enrichment|Values file|Configured|
 
 #### Values Required
 
@@ -653,7 +655,7 @@ config:
         K8S-Logging.Exclude On
 ```
 
-#### Dependencies
+#### fluent-bit Dependencies
 
 - **Upstream**: Node filesystem access, Kubernetes API
 - **Downstream**: Loki
@@ -664,33 +666,102 @@ config:
 
 All secrets should be stored in AWS Secrets Manager with the following path convention:
 
-```
+```text
 goldenpath/{env}/{app}/{secret-name}
 ```
 
+### localstack
+
+**Purpose**: Local AWS emulator for ephemeral/local development.
+
+|Attribute|Value|
+|---|---|
+|Chart|localstack/localstack|
+|Chart Version|3.0.0|
+|Image Tag|3.0.0|
+|Namespace|local-infra|
+|Argo App|`gitops/argocd/apps/local/local-infra.yaml`|
+|Values File|`gitops/helm/local-infra/values.yaml`|
+|Risk Level|Low (local-only)|
+
+#### localstack Required Configuration
+
+- Managed via `gitops/helm/local-infra/values.yaml` when local-infra is enabled.
+
+#### localstack Dependencies
+
+- **Upstream**: None (local-only)
+- **Downstream**: Optional (local dev/test tooling)
+
+### minio
+
+**Purpose**: S3-compatible object storage for ephemeral/local development.
+
+|Attribute|Value|
+|---|---|
+|Chart|minio/minio|
+|Chart Version|5.0.0|
+|Image Tag|RELEASE.2024-01|
+|Namespace|local-infra|
+|Argo App|`gitops/argocd/apps/local/local-infra.yaml`|
+|Values File|`gitops/helm/local-infra/values.yaml`|
+|Risk Level|Low (local-only)|
+
+#### minio Required Configuration
+
+- Managed via `gitops/helm/local-infra/values.yaml` when local-infra is enabled.
+
+#### minio Dependencies
+
+- **Upstream**: None (local-only)
+- **Downstream**: Optional (local dev/test tooling)
+
+### postgresql
+
+**Purpose**: Local PostgreSQL database for ephemeral/local development.
+
+|Attribute|Value|
+|---|---|
+|Chart|bitnami/postgresql|
+|Chart Version|13.2.24|
+|Image Tag|15.6.0|
+|Namespace|local-infra|
+|Argo App|`gitops/argocd/apps/local/local-infra.yaml`|
+|Values File|`gitops/helm/local-infra/values.yaml`|
+|Risk Level|Low (local-only)|
+
+#### postgresql Required Configuration
+
+- Managed via `gitops/helm/local-infra/values.yaml` when local-infra is enabled.
+
+#### postgresql Dependencies
+
+- **Upstream**: None (local-only)
+- **Downstream**: Optional (local dev/test tooling)
+
 ### Required Secrets
 
-| Path | Keys | Used By |
+|Path|Keys|Used By|
 |------|------|---------|
-| `goldenpath/dev/keycloak/admin` | `admin-password` | Keycloak |
-| `goldenpath/dev/keycloak/postgres` | `postgres-password` | Keycloak |
-| `goldenpath/dev/backstage/postgres` | `password`, `username`, `host` | Backstage |
-| `goldenpath/dev/backstage/secrets` | `token` | Backstage |
-| `goldenpath/dev/backstage/oidc` | `client-secret` | Backstage |
-| `goldenpath/dev/kong/admin` | `password` | Kong Manager |
-| `goldenpath/dev/grafana/admin` | `password` | Grafana |
+|`goldenpath/dev/keycloak/admin`|`admin-password`|Keycloak|
+|`goldenpath/dev/keycloak/postgres`|`postgres-password`|Keycloak|
+|`goldenpath/dev/backstage/postgres`|`password`, `username`, `host`|Backstage|
+|`goldenpath/dev/backstage/secrets`|`token`|Backstage|
+|`goldenpath/dev/backstage/oidc`|`client-secret`|Backstage|
+|`goldenpath/dev/kong/admin`|`password`|Kong Manager|
+|`goldenpath/dev/grafana/admin`|`password`|Grafana|
 
 ---
 
 ## Changelog
 
-| Date | Author | Change |
-| ---- | ------ | ------ |
-| 2026-01-15 | platform-team | Initial matrix creation |
-| 2026-01-15 | platform-team | Added chart/image version pinning, configured all apps |
-| 2026-01-15 | platform-team | Bumped Keycloak (25.2.0) and Backstage (2.6.3) chart versions |
-| 2026-01-16 | platform-team | Added Tooling Access URLs section with Kong Ingress configuration |
-| 2026-01-16 | platform-team | Configured ingress for Backstage, ArgoCD, and Grafana across all environments |
+|Date|Author|Change|
+|----|------|------|
+|2026-01-15|platform-team|Initial matrix creation|
+|2026-01-15|platform-team|Added chart/image version pinning, configured all apps|
+|2026-01-15|platform-team|Bumped Keycloak (25.2.0) and Backstage (2.6.3) chart versions|
+|2026-01-16|platform-team|Added Tooling Access URLs section with Kong Ingress configuration|
+|2026-01-16|platform-team|Configured ingress for Backstage, ArgoCD, and Grafana across all environments|
 
 ---
 

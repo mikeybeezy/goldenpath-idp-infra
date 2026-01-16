@@ -34,7 +34,7 @@ version: 1.0
 breaking_change: false
 ---
 
-# ADR-0157: Multi-Tenant RDS for Platform Tooling Applications
+## ADR-0157: Multi-Tenant RDS for Platform Tooling Applications
 
 - **Status:** Superseded (by ADR-0158)
 - **Date:** 2026-01-15
@@ -75,18 +75,18 @@ We will use a **shared multi-tenant RDS PostgreSQL instance** for platform tooli
 
 ### Resource Naming
 
-| Environment | RDS Identifier |
+|Environment|RDS Identifier|
 |-------------|----------------|
-| Persistent (dev/staging/prod) | `goldenpath-platform-db` |
-| Ephemeral | `goldenpath-platform-db-{build_id}` |
+|Persistent (dev/staging/prod)|`goldenpath-platform-db`|
+|Ephemeral|`goldenpath-platform-db-{build_id}`|
 
 ### Secret Paths
 
-| Application | Secret Path | Contents |
+|Application|Secret Path|Contents|
 |-------------|-------------|----------|
-| Master | `goldenpath/{env}/platform-db/master` | Master credentials |
-| Keycloak | `goldenpath/{env}/keycloak/postgres` | App-specific credentials |
-| Backstage | `goldenpath/{env}/backstage/postgres` | App-specific credentials |
+|Master|`goldenpath/{env}/platform-db/master`|Master credentials|
+|Keycloak|`goldenpath/{env}/keycloak/postgres`|App-specific credentials|
+|Backstage|`goldenpath/{env}/backstage/postgres`|App-specific credentials|
 
 ---
 
@@ -141,7 +141,7 @@ We will use a **shared multi-tenant RDS PostgreSQL instance** for platform tooli
 
 RDS and secrets must be provisioned **before** the EKS cluster and tooling apps:
 
-```
+```text
 Phase 0: Pre-cluster Infrastructure
 ├── VPC, Subnets, Security Groups
 ├── RDS Instance (goldenpath-platform-db)

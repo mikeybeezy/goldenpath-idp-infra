@@ -13,20 +13,24 @@ reliability:
 category: governance
 ---
 
-# Config-Driven Metadata Governance
+## Config-Driven Metadata Governance
 
 ## Overview
+
 This document defines the strategy for **Config-Driven Metadata Governance**. Historically, platform rules (standardization and validation) were hardcoded in Python scripts. This strategy moves those rules into **YAML Schemas**, making the governance model easier to evolve and audit.
 
 ## The Governance Stack
 
 ### 1. The Source of Truth ([`enums.yaml`](../../schemas/metadata/enums.yaml))
+
 Defines the allowed values for all metadata fields (Owners, Domains, Statuses, Risk Levels).
 
 ### 2. The Rule Sets (`schemas/metadata/*.schema.yaml`)
+
 Define the structure, required fields, and default values for specific document kinds (ADRs, Changelogs, Runbooks).
 
 ### 3. The Control Engine (`scripts/lib/metadata_config.py`)
+
 A shared library that connects the schemas to the enforcement scripts.
 
 ## How it Works
@@ -38,6 +42,7 @@ A shared library that connects the schemas to the enforcement scripts.
    - **Standardization**: Injects missing fields based on the `default` values defined in the schema.
 
 ## Benefits
+
 - **O(1) Schema Evolution**: To add a new required field across the whole repo, you only edit one YAML file.
 - **Visual Consistency**: Ensures all metadata blocks use the same casing and order.
 - **Zero-Code Rules**: Security and Architects can update platform standards without writing Python.

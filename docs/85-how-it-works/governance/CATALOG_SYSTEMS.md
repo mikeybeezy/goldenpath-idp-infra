@@ -8,7 +8,7 @@ relates_to:
   - docs/20-contracts/resource-catalogs/README.md
 ---
 
-# How It Works: Platform Catalog Systems
+## How It Works: Platform Catalog Systems
 
 This document explains the two catalog systems in the platform and how they work together.
 
@@ -16,12 +16,13 @@ This document explains the two catalog systems in the platform and how they work
 
 The platform uses two complementary catalog systems:
 
-| System | Location | Purpose | Audience |
+|System|Location|Purpose|Audience|
 |--------|----------|---------|----------|
-| **Resource Catalogs** | `docs/20-contracts/resource-catalogs/` | Source of truth for governance | Automation, Terraform, CI |
-| **Backstage Catalog** | `backstage-helm/backstage-catalog/` | Developer portal UI | Developers via Backstage |
+|**Resource Catalogs**|`docs/20-contracts/resource-catalogs/`|Source of truth for governance|Automation, Terraform, CI|
+|**Backstage Catalog**|`backstage-helm/backstage-catalog/`|Developer portal UI|Developers via Backstage|
 
 Think of it as:
+
 - **Resource Catalogs** = The database (authoritative record)
 - **Backstage Catalog** = The frontend (user interface)
 
@@ -48,14 +49,14 @@ repositories:
 
 ### What They Track
 
-| Catalog | Resources |
+|Catalog|Resources|
 |---------|-----------|
-| `ecr-catalog.yaml` | ECR container registries |
-| `rds-catalog.yaml` | RDS databases |
-| `s3-catalog.yaml` | S3 buckets |
-| `secrets-catalog.yaml` | AWS Secrets Manager secrets |
-| `vpc-catalog.yaml` | VPC configurations |
-| `eks-catalog.yaml` | EKS clusters |
+|`ecr-catalog.yaml`|ECR container registries|
+|`rds-catalog.yaml`|RDS databases|
+|`s3-catalog.yaml`|S3 buckets|
+|`secrets-catalog.yaml`|AWS Secrets Manager secrets|
+|`vpc-catalog.yaml`|VPC configurations|
+|`eks-catalog.yaml`|EKS clusters|
 
 ### Who Uses Them
 
@@ -103,14 +104,14 @@ spec:
 
 ### What It Contains
 
-| Content | Purpose |
+|Content|Purpose|
 |---------|---------|
-| **Templates** | Self-service forms (ECR, RDS requests) |
-| **Components** | Services, applications |
-| **Systems** | Logical groupings |
-| **Resources** | Infrastructure displayed in UI |
-| **APIs** | API documentation |
-| **Domains** | Business domains |
+|**Templates**|Self-service forms (ECR, RDS requests)|
+|**Components**|Services, applications|
+|**Systems**|Logical groupings|
+|**Resources**|Infrastructure displayed in UI|
+|**APIs**|API documentation|
+|**Domains**|Business domains|
 
 ### Where It Lives
 
@@ -230,31 +231,31 @@ backstage-helm/
 
 ### Why This Naming?
 
-| Old Name | New Name | Reason |
+|Old Name|New Name|Reason|
 |----------|----------|--------|
-| `docs/20-contracts/catalogs/` | `docs/20-contracts/resource-catalogs/` | Clarifies these are **resource governance** catalogs |
-| `backstage-helm/catalog/` | `backstage-helm/backstage-catalog/` | Clarifies this is the **Backstage UI** catalog |
+|`docs/20-contracts/catalogs/`|`docs/20-contracts/resource-catalogs/`|Clarifies these are **resource governance** catalogs|
+|`backstage-helm/catalog/`|`backstage-helm/backstage-catalog/`|Clarifies this is the **Backstage UI** catalog|
 
 ## 5. Quick Reference
 
 ### "Where do I look for...?"
 
-| Question | Location |
+|Question|Location|
 |----------|----------|
-| What ECR repos exist? | `docs/20-contracts/resource-catalogs/ecr-catalog.yaml` |
-| What RDS databases exist? | `docs/20-contracts/resource-catalogs/rds-catalog.yaml` |
-| How do I request a new database? | Backstage → "Request Platform RDS Database" template |
-| How do I request a new ECR repo? | Backstage → "Request ECR Registry" template |
-| Who owns a resource? | Check the resource catalog (authoritative) |
-| What templates are available? | `backstage-helm/backstage-catalog/templates/` |
+|What ECR repos exist?|`docs/20-contracts/resource-catalogs/ecr-catalog.yaml`|
+|What RDS databases exist?|`docs/20-contracts/resource-catalogs/rds-catalog.yaml`|
+|How do I request a new database?|Backstage → "Request Platform RDS Database" template|
+|How do I request a new ECR repo?|Backstage → "Request ECR Registry" template|
+|Who owns a resource?|Check the resource catalog (authoritative)|
+|What templates are available?|`backstage-helm/backstage-catalog/templates/`|
 
 ### "What happens when...?"
 
-| Action | Flow |
+|Action|Flow|
 |--------|------|
-| Developer requests resource | Template → Workflow → Resource Catalog → PR → Terraform |
-| Resource catalog updated | CI validates → Terraform provisions (after merge) |
-| Backstage catalog changed | Synced to governance-registry → All envs see update |
+|Developer requests resource|Template → Workflow → Resource Catalog → PR → Terraform|
+|Resource catalog updated|CI validates → Terraform provisions (after merge)|
+|Backstage catalog changed|Synced to governance-registry → All envs see update|
 
 ## Related Documentation
 

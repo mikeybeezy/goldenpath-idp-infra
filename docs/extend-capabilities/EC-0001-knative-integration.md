@@ -19,6 +19,7 @@ effort_estimate: 9 weeks
 ## Executive Summary
 
 Knative provides a Kubernetes-native serverless platform that could enhance Golden Path IDP by enabling:
+
 - **Cost Optimization**: Scale-to-zero for development/staging workloads (~$13K/year savings)
 - **Developer Self-Service**: Event-driven microservices without Kubernetes expertise
 - **Operational Efficiency**: Automated scaling and traffic management
@@ -41,11 +42,13 @@ Golden Path IDP currently lacks native serverless capabilities. Development team
 Integrate Knative to provide two core capabilities:
 
 ### 1. Knative Serving
+
 - Serverless containers with scale-to-zero
 - Automatic traffic splitting for canary deployments
 - Built-in revision management
 
 ### 2. Knative Eventing
+
 - CloudEvents-native event routing
 - Event source bindings (AWS EventBridge, SQS, Kafka)
 - Declarative event subscriptions
@@ -54,7 +57,7 @@ Integrate Knative to provide two core capabilities:
 
 ### Current Stack Enhancement
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │                  Golden Path IDP                     │
 ├─────────────────────────────────────────────────────┤
@@ -107,92 +110,109 @@ spec:
 ## Strategic Use Cases
 
 ### Use Case 1: Cost Optimization for Dev/Staging
+
 **Problem**: Development services consume resources 24/7 despite sporadic usage.
 
 **Solution**:
+
 - Knative Serving with scale-to-zero for non-prod workloads
 - Automatic cold-start warming for production-like testing
 
 **Value**:
+
 - Estimated 60% reduction in non-prod compute costs
 - $13,000/year savings for 20 dev services
 
 ### Use Case 2: Event-Driven Microservices
+
 **Problem**: Teams build custom event handling with Lambda + SQS, creating operational silos.
 
 **Solution**:
+
 - Knative Eventing with CloudEvents standard
 - Kubernetes-native event routing with observability
 
 **Value**:
+
 - Unified platform for event-driven services
 - Reduced AWS Lambda sprawl
 - Built-in tracing and monitoring
 
 ### Use Case 3: Developer Self-Service
+
 **Problem**: Developers need Kubernetes expertise for basic deployments.
 
 **Solution**:
+
 - Knative Services as simple abstraction over Deployments/Services/Ingress
 - Schema-driven service requests (SVC-XXXX)
 
 **Value**:
+
 - Reduced onboarding time for service deployments
 - Platform team focuses on policy, not individual service configs
 
 ## Implementation Roadmap
 
 ### Phase 1: Foundation (Weeks 1-3)
+
 - [ ] Choose networking layer (Istio vs. Contour)
 - [ ] Create Terraform module for Knative Operator
 - [ ] Deploy to dev cluster with basic Serving
 - [ ] Create ADR-0149: Knative Integration Architecture
 
 **Deliverables**:
+
 - `modules/knative/` Terraform module
 - ADR-0149 approved
 - Basic "Hello World" Knative Service deployed
 
 ### Phase 2: Governance Integration (Weeks 4-6)
+
 - [ ] Create `schemas/metadata/service_request.schema.yaml`
 - [ ] Build `scripts/knative_service_parser.py` (SCRIPT-0051)
 - [ ] Integrate with ArgoCD workflow
 - [ ] Create first governed service (SVC-0001)
 
 **Deliverables**:
+
 - Schema-driven Knative Service provisioning
 - SCRIPT-0051 with Born Governed metadata
 - Documentation: RB-0030-knative-operations.md
 
 ### Phase 3: Eventing & Observability (Weeks 7-9)
+
 - [ ] Deploy Knative Eventing with AWS EventBridge source
 - [ ] Configure CloudEvents routing
 - [ ] Integrate with existing Prometheus/Grafana
 - [ ] Create runbooks for troubleshooting
 
 **Deliverables**:
+
 - Event-driven service examples
 - Grafana dashboards for Knative metrics
 - Runbook: RB-0030
 
 ## Risk Analysis
 
-| Risk | Impact | Mitigation |
+|Risk|Impact|Mitigation|
 |------|--------|------------|
-| **Networking Complexity** | High | Start with Contour (simpler than Istio), defer service mesh |
-| **Cold Start Latency** | Medium | Production services keep minScale=1, optimize container images |
-| **Team Learning Curve** | Medium | Provide templates, runbooks, and examples first |
-| **Cost of Networking Layer** | Low | Contour is lightweight; Istio deferred until needed |
-| **Integration Testing** | Medium | Schema validation + dry-run mode in parser script |
+|**Networking Complexity**|High|Start with Contour (simpler than Istio), defer service mesh|
+|**Cold Start Latency**|Medium|Production services keep minScale=1, optimize container images|
+|**Team Learning Curve**|Medium|Provide templates, runbooks, and examples first|
+|**Cost of Networking Layer**|Low|Contour is lightweight; Istio deferred until needed|
+|**Integration Testing**|Medium|Schema validation + dry-run mode in parser script|
 
 ## Monitoring & Success Metrics
 
 ### Technical Metrics
+
 - **Scale-to-zero effectiveness**: % of time pods at zero replicas
 - **Cold start P95**: <2 seconds for dev services
 - **Event delivery latency**: P95 <500ms
 
 ### Business Metrics
+
 - **Cost savings**: Target 60% reduction in non-prod compute
 - **Developer velocity**: Service deployment time <10 minutes
 - **Platform adoption**: 20% of services on Knative by Q3
@@ -200,8 +220,10 @@ spec:
 ## Alternatives Considered
 
 ### Option 1: AWS Lambda + API Gateway
+
 **Pros**: Fully managed, proven serverless
 **Cons**:
+
 - Vendor lock-in
 - Operational silos (Lambda vs. Kubernetes)
 - No CloudEvents standard
@@ -209,8 +231,10 @@ spec:
 **Decision**: Rejected - Breaks unified platform model
 
 ### Option 2: KEDA (Kubernetes Event-Driven Autoscaling)
+
 **Pros**: Lighter weight, works with existing Deployments
 **Cons**:
+
 - Doesn't provide traffic splitting
 - No built-in eventing model
 - Still requires manual HPA configuration
@@ -218,8 +242,10 @@ spec:
 **Decision**: Consider for Phase 2 if Knative Serving too heavy
 
 ### Option 3: Status Quo (Standard Kubernetes)
+
 **Pros**: No new dependencies
 **Cons**:
+
 - Manual scaling configuration
 - No scale-to-zero
 - Custom solutions for traffic management
@@ -324,6 +350,7 @@ spec:
 ## Governance Compliance
 
 ### Born Governed Checklist
+
 - [x] Schema-driven provisioning (service_request.schema.yaml)
 - [x] Metadata header for scripts (SCRIPT-0051)
 - [x] ADR documentation (ADR-0149)
@@ -335,26 +362,31 @@ spec:
 
 ### Testing Requirements (TESTING_STANDARDS.md)
 
-**Phase 1: PLAN**
+### Phase 1: PLAN
+
 - [ ] Test plan for Knative installation
 - [ ] Schema validation test cases
 - [ ] Cold start performance benchmarks
 
-**Phase 2: SETUP**
+### Phase 2: SETUP
+
 - [ ] Test cluster isolation
 - [ ] Sample Knative Services
 - [ ] Event source mocks
 
-**Phase 3: EXECUTE**
+### Phase 3: EXECUTE
+
 - [ ] Scale-to-zero verification
 - [ ] Traffic splitting validation
 - [ ] Event delivery tests
 
-**Phase 4: DOCUMENT**
+### Phase 4: DOCUMENT
+
 - [ ] Test results in tests/reports/
 - [ ] Known issues documented
 
-**Phase 5: VERIFY**
+### Phase 5: VERIFY
+
 - [ ] Runbook validation
 - [ ] Rollback procedures tested
 
@@ -362,19 +394,19 @@ spec:
 
 ### Infrastructure Costs
 
-| Component | Monthly Cost | Annual Cost |
+|Component|Monthly Cost|Annual Cost|
 |-----------|--------------|-------------|
-| **Contour Ingress** | $50 (2 pods, t3.small) | $600 |
-| **Knative Operator** | $20 (1 pod, minimal) | $240 |
-| **Total New Costs** | $70/month | $840/year |
+|**Contour Ingress**|$50 (2 pods, t3.small)|$600|
+|**Knative Operator**|$20 (1 pod, minimal)|$240|
+|**Total New Costs**|$70/month|$840/year|
 
 ### Savings
 
-| Optimization | Monthly Savings | Annual Savings |
+|Optimization|Monthly Savings|Annual Savings|
 |--------------|-----------------|----------------|
-| **Dev Services Scale-to-Zero** | ~$800 (20 services) | $9,600 |
-| **Staging Optimization** | ~$300 | $3,600 |
-| **Total Savings** | $1,100/month | $13,200/year |
+|**Dev Services Scale-to-Zero**|~$800 (20 services)|$9,600|
+|**Staging Optimization**|~$300|$3,600|
+|**Total Savings**|$1,100/month|$13,200/year|
 
 **Net ROI**: $13,200 - $840 = **$12,360/year** (~1,400% return)
 

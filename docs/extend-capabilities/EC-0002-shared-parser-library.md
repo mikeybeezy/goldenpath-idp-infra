@@ -17,7 +17,7 @@ effort_estimate: 2-3 weeks
 owner: platform-team
 ---
 
-# Shared Parser Library for Contract-Driven Requests
+## Shared Parser Library for Contract-Driven Requests
 
 This document proposes extracting common functionality from parser scripts into a shared library to reduce duplication and accelerate new parser development.
 
@@ -50,7 +50,7 @@ As we add ECR, Knative, and other parsers, this duplication compounds.
 
 ### Directory Structure
 
-```
+```text
 scripts/
   lib/
     __init__.py
@@ -74,6 +74,7 @@ scripts/
 ### Shared Modules
 
 #### `schema_loader.py`
+
 ```python
 """Schema and YAML loading utilities."""
 from pathlib import Path
@@ -93,6 +94,7 @@ def load_enums(enums_path: Path, section: str) -> Dict[str, list]:
 ```
 
 #### `validation.py`
+
 ```python
 """Validation helpers for request contracts."""
 from typing import List
@@ -110,6 +112,7 @@ def check_required(fields: Dict[str, Any], src_path: Path) -> None:
 ```
 
 #### `render.py`
+
 ```python
 """Template rendering for generated artifacts."""
 from typing import Any, Dict
@@ -140,6 +143,7 @@ def render_externalsecret(
 ```
 
 #### `fs.py`
+
 ```python
 """File system operations."""
 from pathlib import Path
@@ -162,6 +166,7 @@ def write_json(path: Path, obj: Dict[str, Any]) -> None:
 ```
 
 #### `policy.py`
+
 ```python
 """Policy enforcement for request validation."""
 from dataclasses import dataclass
@@ -264,6 +269,7 @@ class BaseParser(ABC):
 ### CLI Tools
 
 #### `validate_request.py`
+
 ```bash
 # Validate any request against its schema
 python3 scripts/validate_request.py \
@@ -272,6 +278,7 @@ python3 scripts/validate_request.py \
 ```
 
 #### `validate_schemas.py`
+
 ```bash
 # Validate all schemas in schemas/requests/
 python3 scripts/validate_schemas.py --schemas-dir schemas/requests/
@@ -280,16 +287,19 @@ python3 scripts/validate_schemas.py --schemas-dir schemas/requests/
 ## Migration Strategy
 
 ### Phase 1: Extract Library (No Breaking Changes)
+
 1. Create `scripts/lib/` with shared modules
 2. Existing parsers continue to work unchanged
 3. New code imports from lib
 
 ### Phase 2: Refactor Existing Parsers
+
 1. Refactor `secret_request_parser.py` to use lib
 2. Refactor `rds_request_parser.py` to use lib
 3. Maintain CLI compatibility
 
 ### Phase 3: Add Base Parser
+
 1. Create `BaseParser` class
 2. Create parser subclasses in `scripts/parsers/`
 3. CLI wrappers delegate to parser classes
@@ -310,11 +320,11 @@ python3 scripts/validate_schemas.py --schemas-dir schemas/requests/
 
 ## Risk Analysis
 
-| Risk | Impact | Mitigation |
+|Risk|Impact|Mitigation|
 |------|--------|------------|
-| **Premature Abstraction** | Medium | Wait for 3+ parsers before extracting |
-| **Breaking Changes** | Low | Maintain CLI compatibility throughout |
-| **Over-Engineering** | Medium | Start with simple extractions, not full framework |
+|**Premature Abstraction**|Medium|Wait for 3+ parsers before extracting|
+|**Breaking Changes**|Low|Maintain CLI compatibility throughout|
+|**Over-Engineering**|Medium|Start with simple extractions, not full framework|
 
 ## References
 

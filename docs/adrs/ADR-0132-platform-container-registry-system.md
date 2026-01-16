@@ -28,7 +28,7 @@ version: 1.0
 breaking_change: false
 ---
 
-# ADR-0132: Model ECR Registry as a Dedicated Backstage System
+## ADR-0132: Model ECR Registry as a Dedicated Backstage System
 
 - **Status:** Accepted
 - **Date:** 2026-01-09
@@ -58,26 +58,31 @@ avoid missing relations.
 
 ## Scope
 
-**Applies to:**
+### Applies to
+
 - Backstage catalog entities for ECR (System, Component, Resource).
 - ECR catalog sync output (`backstage-helm/backstage-catalog/resources/ecr-registry.yaml`).
 
-**Does not apply to:**
+### Does not apply to
+
 - AWS infrastructure configuration or Terraform modules.
 - Runtime ECR policy or access controls.
 
 ## Consequences
 
 ### Positive
+
 - Clear ownership boundary for registry capabilities.
 - Improved catalog grouping for registry-related workflows.
 - Scales as more registry automation (scanning, lifecycle, replication) lands.
 
 ### Tradeoffs / Risks
+
 - Adds a new catalog entity to maintain.
 - Requires explicit domain taxonomy alignment (`delivery` domain).
 
 ### Operational impact
+
 - Add the `container-registry` system and `delivery` domain to the catalog.
 - Update ECR component/resource references to the new system.
 - Keep the sync script aligned with the system boundary.

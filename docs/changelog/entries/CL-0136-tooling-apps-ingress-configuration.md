@@ -40,7 +40,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# CL-0136: Platform Tooling Apps Ingress Configuration
+## CL-0136: Platform Tooling Apps Ingress Configuration
 
 **Type**: Feature
 **Component**: Platform Tooling / Kong Ingress
@@ -57,70 +57,70 @@ Configured Kong Ingress for all platform tooling applications (Backstage, ArgoCD
 
 Added new ingress template to Backstage Helm chart and configured for all environments:
 
-| File | Change |
+|File|Change|
 |------|--------|
-| `backstage-helm/charts/backstage/templates/ingress.yaml` | New template |
-| `backstage-helm/charts/backstage/values.yaml` | Default ingress config |
-| `gitops/helm/backstage/values/dev.yaml` | `backstage.dev.goldenpathidp.io` |
-| `gitops/helm/backstage/values/staging.yaml` | `backstage.staging.goldenpathidp.io` |
-| `gitops/helm/backstage/values/prod.yaml` | `backstage.goldenpathidp.io` |
+|`backstage-helm/charts/backstage/templates/ingress.yaml`|New template|
+|`backstage-helm/charts/backstage/values.yaml`|Default ingress config|
+|`gitops/helm/backstage/values/dev.yaml`|`backstage.dev.goldenpathidp.io`|
+|`gitops/helm/backstage/values/staging.yaml`|`backstage.staging.goldenpathidp.io`|
+|`gitops/helm/backstage/values/prod.yaml`|`backstage.goldenpathidp.io`|
 
 ### ArgoCD Ingress
 
 Configured ArgoCD server ingress with `--insecure` flag for TLS termination at Kong:
 
-| File | Change |
+|File|Change|
 |------|--------|
-| `gitops/helm/argocd/values/dev.yaml` | `argocd.dev.goldenpathidp.io` |
-| `gitops/helm/argocd/values/staging.yaml` | `argocd.staging.goldenpathidp.io` |
-| `gitops/helm/argocd/values/prod.yaml` | `argocd.goldenpathidp.io` |
+|`gitops/helm/argocd/values/dev.yaml`|`argocd.dev.goldenpathidp.io`|
+|`gitops/helm/argocd/values/staging.yaml`|`argocd.staging.goldenpathidp.io`|
+|`gitops/helm/argocd/values/prod.yaml`|`argocd.goldenpathidp.io`|
 
 ### Grafana Ingress
 
 Configured Grafana ingress within kube-prometheus-stack with root_url setting:
 
-| File | Change |
+|File|Change|
 |------|--------|
-| `gitops/helm/kube-prometheus-stack/values/dev.yaml` | `grafana.dev.goldenpathidp.io` |
-| `gitops/helm/kube-prometheus-stack/values/staging.yaml` | `grafana.staging.goldenpathidp.io` |
-| `gitops/helm/kube-prometheus-stack/values/prod.yaml` | `grafana.goldenpathidp.io` |
+|`gitops/helm/kube-prometheus-stack/values/dev.yaml`|`grafana.dev.goldenpathidp.io`|
+|`gitops/helm/kube-prometheus-stack/values/staging.yaml`|`grafana.staging.goldenpathidp.io`|
+|`gitops/helm/kube-prometheus-stack/values/prod.yaml`|`grafana.goldenpathidp.io`|
 
 ### Documentation Updated
 
-| Document | Change |
+|Document|Change|
 |----------|--------|
-| `docs/70-operations/20_TOOLING_APPS_MATRIX.md` | Added Tooling Access URLs section |
-| `docs/70-operations/45_DNS_MANAGEMENT.md` | New living doc for DNS management |
-| `docs/adrs/ADR-0162-kong-ingress-dns-strategy.md` | New ADR documenting strategy |
+|`docs/70-operations/20_TOOLING_APPS_MATRIX.md`|Added Tooling Access URLs section|
+|`docs/70-operations/45_DNS_MANAGEMENT.md`|New living doc for DNS management|
+|`docs/adrs/ADR-0162-kong-ingress-dns-strategy.md`|New ADR documenting strategy|
 
 ## Access URLs
 
 ### Dev Environment
 
-| Service | URL |
+|Service|URL|
 |---------|-----|
-| Backstage | `https://backstage.dev.goldenpathidp.io` |
-| Keycloak | `https://keycloak.dev.goldenpathidp.io` |
-| ArgoCD | `https://argocd.dev.goldenpathidp.io` |
-| Grafana | `https://grafana.dev.goldenpathidp.io` |
+|Backstage|`https://backstage.dev.goldenpathidp.io`|
+|Keycloak|`https://keycloak.dev.goldenpathidp.io`|
+|ArgoCD|`https://argocd.dev.goldenpathidp.io`|
+|Grafana|`https://grafana.dev.goldenpathidp.io`|
 
 ### Staging Environment
 
-| Service | URL |
+|Service|URL|
 |---------|-----|
-| Backstage | `https://backstage.staging.goldenpathidp.io` |
-| Keycloak | `https://keycloak.staging.goldenpathidp.io` |
-| ArgoCD | `https://argocd.staging.goldenpathidp.io` |
-| Grafana | `https://grafana.staging.goldenpathidp.io` |
+|Backstage|`https://backstage.staging.goldenpathidp.io`|
+|Keycloak|`https://keycloak.staging.goldenpathidp.io`|
+|ArgoCD|`https://argocd.staging.goldenpathidp.io`|
+|Grafana|`https://grafana.staging.goldenpathidp.io`|
 
 ### Production Environment
 
-| Service | URL |
+|Service|URL|
 |---------|-----|
-| Backstage | `https://backstage.goldenpathidp.io` |
-| Keycloak | `https://keycloak.goldenpathidp.io` |
-| ArgoCD | `https://argocd.goldenpathidp.io` |
-| Grafana | `https://grafana.goldenpathidp.io` |
+|Backstage|`https://backstage.goldenpathidp.io`|
+|Keycloak|`https://keycloak.goldenpathidp.io`|
+|ArgoCD|`https://argocd.goldenpathidp.io`|
+|Grafana|`https://grafana.goldenpathidp.io`|
 
 ## DNS Requirements
 

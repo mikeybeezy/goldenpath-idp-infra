@@ -12,8 +12,10 @@ reliability:
   maturity: 1
 relates_to:
   - 04_PR_GUARDRAILS
+  - 09_AGENT_COLLABORATION_MATRIX
   - 26_AI_AGENT_PROTOCOLS
   - AI_CHANGELOG
+  - ADR-0163
   - ADR-0133
 category: governance
 supported_until: 2027-01-03
@@ -29,7 +31,7 @@ Doc contract:
 - Owner: platform
 - Status: living
 - Review cadence: 90d
-- Related: docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md, docs/10-governance/04_PR_GUARDRAILS.md, docs/90-doc-system/AI_CHANGELOG.md
+- Related: docs/10-governance/09_AGENT_COLLABORATION_MATRIX.md, docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md, docs/10-governance/04_PR_GUARDRAILS.md, docs/90-doc-system/AI_CHANGELOG.md
 
 This policy defines how AI agents are authorized, audited, and validated to
 preserve quality and trust in the platform.
@@ -38,6 +40,18 @@ preserve quality and trust in the platform.
 
 AI may accelerate execution, but ownership, authority, and risk acceptance
 remain human.
+
+## Collaboration registry
+
+The living roster of agents, models, and responsibilities lives in
+`docs/10-governance/09_AGENT_COLLABORATION_MATRIX.md`. Any permission changes
+must be captured there and reviewed via PR.
+
+## Session logging
+
+Each agent session must append to the immutable session log at
+`agent_status/agent_session_summary.md`. This file is append-only and captures
+what changed in each session for audit and traceability.
 
 ## 1) Scope and authority
 

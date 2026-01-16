@@ -24,7 +24,7 @@ supported_until: '2028-01-01'
 breaking_change: false
 ---
 
-# ECR Registry Catalog
+## ECR Registry Catalog
 
 > **Auto-generated from `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`**
 > **Generated:** 2026-01-05 08:48:32 UTC
@@ -35,10 +35,11 @@ breaking_change: false
 **Total Registries:** 3
 **Active:** 3 | **Deprecated:** 0
 
-**Risk Distribution:**
+### Risk Distribution
+
 - 🟢 Low: 1
 - 🟡 Medium: 1
--  High: 1
+- High: 1
 
 **Last Updated:** 2026-01-05
 **Managed By:** platform-team
@@ -47,11 +48,11 @@ breaking_change: false
 
 ## Registry Inventory
 
-| Registry | Owner | Risk | Status | Scanning | Lifecycle |
+|Registry|Owner|Risk|Status|Scanning|Lifecycle|
 |----------|-------|------|--------|----------|-----------|
-| `staging-api` | app-team-api | 🟡 medium | active |  |  |
-| `test-app-dev` | app-team-test | 🟢 low | active |  |  |
-| `wordpress-platform` | app-team-wordpress |  high | active |  |  |
+|`staging-api`|app-team-api|🟡 medium|active|||
+|`test-app-dev`|app-team-test|🟢 low|active|||
+|`wordpress-platform`|app-team-wordpress|high|active|||
 
 ---
 
@@ -67,12 +68,14 @@ breaking_change: false
 **Status:** active
 **Created:** 2026-01-05
 
-**AWS Details:**
+### AWS Details - wordpress-platform
+
 - **Region:** N/A
 - **Repository URL:** `N/A`
 - **ARN:** `N/A`
 
-**🔒 Security Controls (Risk-Based):**
+### 🔒 Security Controls (Risk-Based) - wordpress-platform
+
 - **Encryption:** KMS (customer-managed keys)
 - **Tag Mutability:** IMMUTABLE
 - **Image Retention:** 50 images
@@ -80,6 +83,7 @@ breaking_change: false
 - **Use For:** Production, customer-facing, PCI/HIPAA
 
 ---
+
 ## 🟡 Medium Risk Registries
 
 ### staging-api
@@ -90,12 +94,14 @@ breaking_change: false
 **Status:** active
 **Created:** 2026-01-05
 
-**AWS Details:**
+### AWS Details - staging-api
+
 - **Region:** N/A
 - **Repository URL:** `N/A`
 - **ARN:** `N/A`
 
-**🔒 Security Controls (Risk-Based):**
+### 🔒 Security Controls (Risk-Based) - staging-api
+
 - **Encryption:** AES256 (AWS-managed)
 - **Tag Mutability:** MUTABLE
 - **Image Retention:** 30 images
@@ -103,6 +109,7 @@ breaking_change: false
 - **Use For:** Staging, internal tools, non-critical production
 
 ---
+
 ## 🟢 Low Risk Registries
 
 ### test-app-dev
@@ -113,12 +120,14 @@ breaking_change: false
 **Status:** active
 **Created:** 2026-01-05
 
-**AWS Details:**
+### AWS Details - test-app-dev
+
 - **Region:** N/A
 - **Repository URL:** `N/A`
 - **ARN:** `N/A`
 
-**🔒 Security Controls (Risk-Based):**
+### 🔒 Security Controls (Risk-Based) - test-app-dev
+
 - **Encryption:** AES256 (AWS-managed)
 - **Tag Mutability:** MUTABLE
 - **Image Retention:** 20 images

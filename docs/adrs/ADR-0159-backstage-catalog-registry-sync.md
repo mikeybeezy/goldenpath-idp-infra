@@ -31,7 +31,7 @@ version: 1.0
 breaking_change: false
 ---
 
-# ADR-0159: Backstage Catalog Sync to Governance Registry
+## ADR-0159: Backstage Catalog Sync to Governance Registry
 
 - **Status:** Accepted
 - **Date:** 2026-01-15
@@ -111,20 +111,20 @@ development/main branch          governance-registry branch
 
 ### Positive
 
-| Benefit | Description |
+|Benefit|Description|
 |---------|-------------|
-| **Single URL** | All environments reference same stable catalog location |
-| **Review gate** | Catalog changes must merge to dev/main before reaching registry |
-| **No env config** | Eliminate per-environment Backstage configuration updates |
-| **Consistency** | Follows established governance-registry pattern (ADR-0145) |
-| **Auditability** | Catalog syncs are tracked via CI commit history |
+|**Single URL**|All environments reference same stable catalog location|
+|**Review gate**|Catalog changes must merge to dev/main before reaching registry|
+|**No env config**|Eliminate per-environment Backstage configuration updates|
+|**Consistency**|Follows established governance-registry pattern (ADR-0145)|
+|**Auditability**|Catalog syncs are tracked via CI commit history|
 
 ### Negative
 
-| Risk | Mitigation |
+|Risk|Mitigation|
 |------|------------|
-| **Sync delay** | Catalog changes have ~1-2 min delay before available (acceptable) |
-| **Branch dependency** | If registry branch is broken, catalog unavailable (same as any branch) |
+|**Sync delay**|Catalog changes have ~1-2 min delay before available (acceptable)|
+|**Branch dependency**|If registry branch is broken, catalog unavailable (same as any branch)|
 
 ### Neutral
 
@@ -153,15 +153,15 @@ development/main branch          governance-registry branch
 
 ---
 
-## Implementation
+## Implementation Details
 
 ### Files Modified
 
-| File | Change |
+|File|Change|
 |------|--------|
-| `.github/workflows/governance-registry-writer.yml` | Add catalog sync step |
-| `backstage-helm/charts/backstage/values.yaml` | Update catalogLocation URL |
-| `schemas/governance/govreg.schema.yaml` | Allow `backstage-catalog/` directory |
+|`.github/workflows/governance-registry-writer.yml`|Add catalog sync step|
+|`backstage-helm/charts/backstage/values.yaml`|Update catalogLocation URL|
+|`schemas/governance/govreg.schema.yaml`|Allow `backstage-catalog/` directory|
 
 ### Validation
 

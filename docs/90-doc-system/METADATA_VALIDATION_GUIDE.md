@@ -59,11 +59,11 @@ This script runs automatically on Pull Requests affecting any `.md` or `metadata
 
 ## Troubleshooting Errors
 
-| Error Message | Meaning | Fix |
-| :--- | :--- | :--- |
-| `Missing required field: 'owner'` | The YAML header/file is missing the owner key. | Add `owner: platform-team` |
-| `ID mismatch` | The ID in the header doesn't match the filename. | Rename file or update ID. |
-| `Invalid YAML` | Indentation or syntax error (check for multiple `---`). | Use `yaml.safe_load_all` compatible syntax. |
+|Error Message|Meaning|Fix|
+|:---|:---|:---|
+|`Missing required field: 'owner'`|The YAML header/file is missing the owner key.|Add `owner: platform-team`|
+|`ID mismatch`|The ID in the header doesn't match the filename.|Rename file or update ID.|
+|`Invalid YAML`|Indentation or syntax error (check for multiple `---`).|Use `yaml.safe_load_all` compatible syntax.|
 
 ## Evolution
 

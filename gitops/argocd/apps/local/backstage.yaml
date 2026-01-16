@@ -4,7 +4,7 @@ metadata:
   name: local-backstage
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "5" # Deploy after Keycloak
+    argocd.argoproj.io/sync-wave: "5"  # Deploy after Keycloak
 spec:
   project: default
   source:

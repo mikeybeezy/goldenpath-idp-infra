@@ -4,7 +4,7 @@ metadata:
   name: local-keycloak
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1" # Deploy after infra
+    argocd.argoproj.io/sync-wave: "1"  # Deploy after infra
 spec:
   project: default
   source:

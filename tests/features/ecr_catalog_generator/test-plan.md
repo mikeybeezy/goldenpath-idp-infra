@@ -24,7 +24,7 @@ supported_until: '2028-01-01'
 breaking_change: false
 ---
 
-# Test Plan: ECR Catalog Generator
+## Test Plan: ECR Catalog Generator
 
 **Feature:** Risk-Based Security Controls Display
 **Date:** 2026-01-05
@@ -43,7 +43,8 @@ Validate that `generate_catalog_docs.py` correctly displays risk-based security 
 
 **Feature:** Catalog generator shows different security controls based on registry risk level
 
-**Expected Behavior:**
+### Expected Behavior
+
 - High-risk registries show: KMS encryption, IMMUTABLE tags, 50 image retention
 - Medium-risk registries show: AES256 encryption, MUTABLE tags, 30 image retention
 - Low-risk registries show: AES256 encryption, MUTABLE tags, 20 image retention
@@ -53,11 +54,14 @@ Validate that `generate_catalog_docs.py` correctly displays risk-based security 
 ## Test Setup
 
 ### Prerequisites
+
 - `scripts/generate_catalog_docs.py` updated with risk-based policy mapping
 - `docs/20-contracts/resource-catalogs/ecr-catalog.yaml` contains sample registries
 
 ### Test Data
+
 Created 3 sample registries in `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`:
+
 1. `wordpress-platform` (high risk)
 2. `staging-api` (medium risk)
 3. `test-app-dev` (low risk)
@@ -69,9 +73,11 @@ Created 3 sample registries in `docs/20-contracts/resource-catalogs/ecr-catalog.
 1. **Update script** with risk-based policy mapping
 2. **Add test data** to catalog (3 registries)
 3. **Run script:**
+
    ```bash
    python scripts/generate_catalog_docs.py --verbose
    ```
+
 4. **Verify output** in `docs/REGISTRY_CATALOG.md`
 
 ---

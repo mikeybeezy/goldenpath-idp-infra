@@ -36,7 +36,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# CL-0134: Backstage Catalog Synced to Governance Registry
+## CL-0134: Backstage Catalog Synced to Governance Registry
 
 **Type**: Configuration
 **Component**: Backstage / Catalog
@@ -51,28 +51,31 @@ Synced the `backstage-catalog/` directory to the `governance-registry` branch an
 
 ### Catalog Location Migration
 
-**Before:**
+### Before
+
 ```yaml
 catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage-helm/backstage-catalog/all.yaml"
 ```
 
-**After:**
+### After
+
 ```yaml
 catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-helm/backstage-catalog/all.yaml"
 ```
 
 ### Files Updated
 
-| File | Change |
+|File|Change|
 |------|--------|
-| `gitops/helm/backstage/values/dev.yaml` | Catalog URL updated |
-| `gitops/helm/backstage/values/staging.yaml` | Catalog URL updated |
-| `gitops/helm/backstage/values/prod.yaml` | Catalog URL updated |
-| `backstage-helm/values-local.yaml` | Catalog URL updated (2 locations) |
+|`gitops/helm/backstage/values/dev.yaml`|Catalog URL updated|
+|`gitops/helm/backstage/values/staging.yaml`|Catalog URL updated|
+|`gitops/helm/backstage/values/prod.yaml`|Catalog URL updated|
+|`backstage-helm/values-local.yaml`|Catalog URL updated (2 locations)|
 
 ### Governance Registry Sync
 
 Pushed 351 catalog files to `governance-registry` branch including:
+
 - APIs, components, domains, systems, resources
 - ADRs and changelogs index
 - ECR and RDS request templates

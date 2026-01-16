@@ -25,7 +25,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# GoldenPath Design Philosophy
+## GoldenPath Design Philosophy
 
 Doc contract:
 

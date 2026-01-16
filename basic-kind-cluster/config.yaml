@@ -8,13 +8,13 @@ nodes:
       - hostPath: /tmp/local-path-provisioner
         containerPath: /tmp/local-path-provisioner
     extraPortMappings:
-      - containerPort: 80 # port inside the Kind node
-        hostPort: 8085 # port on your laptop; adjust as needed
+      - containerPort: 80  # port inside the Kind node
+        hostPort: 8085  # port on your laptop; adjust as needed
         protocol: TCP
-      - containerPort: 32000 # port inside the Kind node
-        hostPort: 7007 # port on your laptop; adjust as needed /  # on your host
+      - containerPort: 32000  # port inside the Kind node
+        hostPort: 7007  # port on your laptop; adjust as needed
         protocol: TCP
-      - containerPort: 30443 # port inside the Kind node
+      - containerPort: 30443  # port inside the Kind node
         hostPort: 30443
         protocol: TCP
       - containerPort: 30080
@@ -25,15 +25,14 @@ nodes:
         hostPort: 9050
       - containerPort: 3000
         hostPort: 8060
-      - containerPort: 3010 # port inside the Kind node
-        hostPort: 8050 # port on your laptop; adjust as needed
-      - containerPort: 3015 # port inside the Kind node
-        hostPort: 8040 # port on your laptop; adjust as needed
-      - containerPort: 38080 # port inside the Kind node
-        hostPort: 38080 # port on your laptop; adjust as needed
-      - containerPort: 38200 # port inside the Kind node
-        hostPort: 7008 # port on your laptop; adjust as needed
-
+      - containerPort: 3010  # port inside the Kind node
+        hostPort: 8050  # port on your laptop; adjust as needed
+      - containerPort: 3015  # port inside the Kind node
+        hostPort: 8040  # port on your laptop; adjust as needed
+      - containerPort: 38080  # port inside the Kind node
+        hostPort: 38080  # port on your laptop; adjust as needed
+      - containerPort: 38200  # port inside the Kind node
+        hostPort: 7008  # port on your laptop; adjust as needed
     kubeadmConfigPatches:
       # adds a taint when adding an additional Node to the control plane.
       - |
@@ -55,4 +54,3 @@ nodes:
 # extraMounts:
 # - hostPath: /path/to/my/files
 #   containerPath: /files
-

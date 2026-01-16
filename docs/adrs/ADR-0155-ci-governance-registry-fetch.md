@@ -29,7 +29,7 @@ value_quantification:
 supported_until: '2028-01-14'
 ---
 
-# ADR-0155: CI Governance Registry Fetch for Build ID Validation
+## ADR-0155: CI Governance Registry Fetch for Build ID Validation
 
 **Status**: Accepted
 **Date**: 2026-01-14
@@ -75,12 +75,12 @@ Add the following step after checkout in deployment workflows:
 
 ### Behavior After Fix
 
-| Scenario | Before | After |
+|Scenario|Before|After|
 |----------|--------|-------|
-| Registry available, build_id exists | Block | Block |
-| Registry available, build_id new | Allow | Allow |
-| Registry unavailable (shallow clone) | **Allow** (unsafe) | Block (safe) |
-| Registry unavailable (branch not fetched) | **Allow** (unsafe) | Block (safe) |
+|Registry available, build_id exists|Block|Block|
+|Registry available, build_id new|Allow|Allow|
+|Registry unavailable (shallow clone)|**Allow** (unsafe)|Block (safe)|
+|Registry unavailable (branch not fetched)|**Allow** (unsafe)|Block (safe)|
 
 ### Local Development
 

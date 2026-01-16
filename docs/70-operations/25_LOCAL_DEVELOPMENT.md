@@ -3,7 +3,7 @@ id: 25_LOCAL_DEVELOPMENT
 title: Local Development Environment
 ---
 
-# Local Development Environment
+## Local Development Environment
 
 This document describes how to run the Goldenpath IDP platform locally using Kind (Kubernetes in Docker) without AWS dependencies.
 
@@ -21,13 +21,13 @@ This allows full platform testing without AWS costs or connectivity.
 
 ## Architecture Comparison
 
-| Component | AWS (dev/staging/prod) | Local (Kind) |
+|Component|AWS (dev/staging/prod)|Local (Kind)|
 |-----------|------------------------|--------------|
-| Database | RDS PostgreSQL | Bundled PostgreSQL containers |
-| Secrets | AWS Secrets Manager + ESO | Static Kubernetes Secrets |
-| Ingress | Kong + AWS NLB | Nginx + NodePort |
-| TLS | cert-manager + Let's Encrypt | Disabled (HTTP only) |
-| Storage | EBS/EFS CSI drivers | local-path-provisioner |
+|Database|RDS PostgreSQL|Bundled PostgreSQL containers|
+|Secrets|AWS Secrets Manager + ESO|Static Kubernetes Secrets|
+|Ingress|Kong + AWS NLB|Nginx + NodePort|
+|TLS|cert-manager + Let's Encrypt|Disabled (HTTP only)|
+|Storage|EBS/EFS CSI drivers|local-path-provisioner|
 
 ## Kind Cluster Configuration
 
@@ -127,26 +127,26 @@ helm install prometheus prometheus-community/kube-prometheus-stack \
 
 Each tooling app has a `local.yaml` values file:
 
-| App | Values File | Key Differences |
+|App|Values File|Key Differences|
 |-----|-------------|-----------------|
-| Keycloak | `gitops/helm/keycloak/values/local.yaml` | Bundled PostgreSQL, nginx ingress, `keycloak.localhost` |
-| Backstage | `gitops/helm/backstage/values/local.yaml` | Bundled PostgreSQL, guest auth, `backstage.localhost` |
-| Kong | `gitops/helm/kong/values/local.yaml` | NodePort (30080/30443), no AWS annotations |
-| Prometheus | `gitops/helm/kube-prometheus-stack/values/local.yaml` | No persistence, Grafana NodePort 30300 |
-| Loki | `gitops/helm/loki/values/local.yaml` | 24h retention, filesystem storage |
-| Fluent-Bit | `gitops/helm/fluent-bit/values/local.yaml` | Minimal resources |
+|Keycloak|`gitops/helm/keycloak/values/local.yaml`|Bundled PostgreSQL, nginx ingress, `keycloak.localhost`|
+|Backstage|`gitops/helm/backstage/values/local.yaml`|Bundled PostgreSQL, guest auth, `backstage.localhost`|
+|Kong|`gitops/helm/kong/values/local.yaml`|NodePort (30080/30443), no AWS annotations|
+|Prometheus|`gitops/helm/kube-prometheus-stack/values/local.yaml`|No persistence, Grafana NodePort 30300|
+|Loki|`gitops/helm/loki/values/local.yaml`|24h retention, filesystem storage|
+|Fluent-Bit|`gitops/helm/fluent-bit/values/local.yaml`|Minimal resources|
 
 ## Local Secrets
 
 Static secrets are defined in `gitops/kustomize/overlays/local/secrets.yaml`:
 
-| Secret | Namespace | Purpose |
+|Secret|Namespace|Purpose|
 |--------|-----------|---------|
-| `keycloak-admin-secret` | keycloak | Admin password: `localadmin123` |
-| `keycloak-postgres-secret` | keycloak | PostgreSQL credentials |
-| `backstage-postgres-secret` | backstage | PostgreSQL credentials |
-| `backstage-secrets` | backstage | GitHub token, OIDC, DB connection |
-| `kong-admin-secret` | kong | Admin API token |
+|`keycloak-admin-secret`|keycloak|Admin password: `localadmin123`|
+|`keycloak-postgres-secret`|keycloak|PostgreSQL credentials|
+|`backstage-postgres-secret`|backstage|PostgreSQL credentials|
+|`backstage-secrets`|backstage|GitHub token, OIDC, DB connection|
+|`kong-admin-secret`|kong|Admin API token|
 
 > **Warning**: These are development-only credentials. Never use in production.
 
@@ -154,12 +154,12 @@ Static secrets are defined in `gitops/kustomize/overlays/local/secrets.yaml`:
 
 ### Via Port Mappings (Kind extraPortMappings)
 
-| Service | URL |
+|Service|URL|
 |---------|-----|
-| Backstage | http://localhost:7007 |
-| Kong HTTP | http://localhost:8090 |
-| Kong HTTPS | https://localhost:30443 |
-| Grafana | http://localhost:9000 |
+|Backstage|<http://localhost:7007>|
+|Kong HTTP|<http://localhost:8090>|
+|Kong HTTPS|<https://localhost:30443>|
+|Grafana|<http://localhost:9000>|
 
 ### Via kubectl port-forward
 
@@ -184,19 +184,19 @@ Add to `/etc/hosts`:
 
 Then access via:
 
-- http://keycloak.localhost:8085
-- http://backstage.localhost:8085
+- <http://keycloak.localhost:8085>
+- <http://backstage.localhost:8085>
 
 ## Resource Comparison
 
 Local values use reduced resources for laptop-friendly operation:
 
-| Component | AWS (dev) | Local |
+|Component|AWS (dev)|Local|
 |-----------|-----------|-------|
-| Keycloak | 250m/512Mi | 100m/256Mi |
-| Backstage | 100m/256Mi | 50m/128Mi |
-| Prometheus | 100m/512Mi | 50m/256Mi |
-| Grafana | 50m/128Mi | 25m/64Mi |
+|Keycloak|250m/512Mi|100m/256Mi|
+|Backstage|100m/256Mi|50m/128Mi|
+|Prometheus|100m/512Mi|50m/256Mi|
+|Grafana|50m/128Mi|25m/64Mi|
 
 ## Troubleshooting
 

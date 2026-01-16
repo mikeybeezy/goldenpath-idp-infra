@@ -32,7 +32,7 @@ dependencies:
 breaking_change: false
 ---
 
-# ECR Catalog Sync (AWS Source of Truth)
+## ECR Catalog Sync (AWS Source of Truth)
 
 This runbook keeps Backstage aligned to the physical AWS ECR state by generating
 `backstage-helm/backstage-catalog/resources/ecr-registry.yaml` from AWS. The catalog file

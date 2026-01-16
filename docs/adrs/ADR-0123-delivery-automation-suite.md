@@ -24,7 +24,7 @@ value_quantification:
 supported_until: '2028-01-01'
 ---
 
-# ADR-0123: Delivery Automation Suite (ECR & Logs)
+## ADR-0123: Delivery Automation Suite (ECR & Logs)
 
 ## Status
 
@@ -38,10 +38,10 @@ The GoldenPath IDP requires a standardized set of utilities to handle ECR regist
 
 We officially adopt the following scripts as the core Delivery Automation Suite:
 
-1.  **`scaffold_ecr.py`**: Handles standardized ECR repository creation with baseline policies.
-2.  **`ecr-build-push.sh`**: The primary wrapper for ECR authentication and image delivery.
-3.  **`generate-build-log.sh` / `generate-teardown-log.sh`**: Standardizes telemetry capture for build and destruction phases.
-4.  **`resolve-cluster-name.sh`**: Provides deterministic cluster naming across environments.
+1. **`scaffold_ecr.py`**: Handles standardized ECR repository creation with baseline policies.
+2. **`ecr-build-push.sh`**: The primary wrapper for ECR authentication and image delivery.
+3. **`generate-build-log.sh` / `generate-teardown-log.sh`**: Standardizes telemetry capture for build and destruction phases.
+4. **`resolve-cluster-name.sh`**: Provides deterministic cluster naming across environments.
 
 ## Consequences
 

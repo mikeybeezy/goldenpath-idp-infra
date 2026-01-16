@@ -34,7 +34,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# CL-0031: Governance-driven app repo scaffolder
+## CL-0031: Governance-driven app repo scaffolder
 
 Date: 2026-01-03
 Owner: platform

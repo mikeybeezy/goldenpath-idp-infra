@@ -32,7 +32,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# CL-0092: ECR registry system boundary and sync updates
+## CL-0092: ECR registry system boundary and sync updates
 
 Date: 2026-01-09
 Owner: platform-team

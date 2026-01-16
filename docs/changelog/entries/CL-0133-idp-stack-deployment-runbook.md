@@ -39,7 +39,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# CL-0133: IDP Stack Deployment Runbook
+## CL-0133: IDP Stack Deployment Runbook
 
 **Type**: Documentation
 **Component**: Operations / Runbooks

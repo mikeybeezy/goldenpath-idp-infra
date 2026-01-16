@@ -17,7 +17,7 @@ reliability:
   maturity: 1
 ---
 
-# Session Report: Backstage & Keycloak Stabilization
+## Session Report: Backstage & Keycloak Stabilization
 
 **Date**: 2026-01-15 / 2026-01-16 (continued)
 **Environment**: AWS `dev` (EKS)
@@ -182,12 +182,12 @@ https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-reg
 
 **Services Configured**:
 
-| Service | Dev URL | Ingress Status |
+|Service|Dev URL|Ingress Status|
 |---------|---------|----------------|
-| Backstage | `backstage.dev.goldenpathidp.io` | New template added |
-| Keycloak | `keycloak.dev.goldenpathidp.io` | Already configured |
-| ArgoCD | `argocd.dev.goldenpathidp.io` | Configured |
-| Grafana | `grafana.dev.goldenpathidp.io` | Configured |
+|Backstage|`backstage.dev.goldenpathidp.io`|New template added|
+|Keycloak|`keycloak.dev.goldenpathidp.io`|Already configured|
+|ArgoCD|`argocd.dev.goldenpathidp.io`|Configured|
+|Grafana|`grafana.dev.goldenpathidp.io`|Configured|
 
 **Pattern** (consistent across all tooling apps):
 
@@ -347,37 +347,37 @@ global:
 
 ## 4. Final Status
 
-| Component | Status | Pod | Details |
+|Component|Status|Pod|Details|
 |-----------|--------|-----|---------|
-| **Keycloak** | ✅ Running | `dev-keycloak-0` 1/1 | AMD64 Bitnami from ECR, connected to RDS |
-| **Backstage** | ✅ Running | `dev-backstage-*` 1/1 | Local chart, ECR image, SSL RDS connection |
-| **Catalog** | ✅ Loaded | N/A | Serving from governance-registry branch |
-| **GitHub Token** | ✅ Configured | N/A | PR features and scaffolder working |
-| **ExternalSecrets** | ✅ Synced | N/A | `backstage-secrets` syncing from AWS Secrets Manager |
+|**Keycloak**|✅ Running|`dev-keycloak-0` 1/1|AMD64 Bitnami from ECR, connected to RDS|
+|**Backstage**|✅ Running|`dev-backstage-*` 1/1|Local chart, ECR image, SSL RDS connection|
+|**Catalog**|✅ Loaded|N/A|Serving from governance-registry branch|
+|**GitHub Token**|✅ Configured|N/A|PR features and scaffolder working|
+|**ExternalSecrets**|✅ Synced|N/A|`backstage-secrets` syncing from AWS Secrets Manager|
 
 ### Commits Made This Session
 
-| Commit | Message |
+|Commit|Message|
 |--------|---------|
-| `d4174ef7` | fix: use ArgoCD multi-source pattern for Backstage values |
-| `0e0bd2fa` | fix: add SSL config for Backstage RDS connection |
-| `5d13229e` | docs: update session summary with final platform status |
-| `59f792f0` | feat(catalog): sync backstage-catalog to governance-registry |
-| `06f26853` | fix: correct backstage catalog URL path to governance-registry |
-| `58e35b96` | docs: add GitHub token setup phase to IDP deployment runbook |
-| `92112513` | docs: update catalog references and add changelogs |
+|`d4174ef7`|fix: use ArgoCD multi-source pattern for Backstage values|
+|`0e0bd2fa`|fix: add SSL config for Backstage RDS connection|
+|`5d13229e`|docs: update session summary with final platform status|
+|`59f792f0`|feat(catalog): sync backstage-catalog to governance-registry|
+|`06f26853`|fix: correct backstage catalog URL path to governance-registry|
+|`58e35b96`|docs: add GitHub token setup phase to IDP deployment runbook|
+|`92112513`|docs: update catalog references and add changelogs|
 
 ### AWS Resources
 
-| Resource | ARN/ID | Purpose |
+|Resource|ARN/ID|Purpose|
 |----------|--------|---------|
-| ECR: `backstage` | `593517239005.dkr.ecr.eu-west-2.amazonaws.com/backstage` | Backstage container image |
-| ECR: `keycloak` | `593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak` | Keycloak container image |
-| RDS | `goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com` | PostgreSQL 15.15 |
-| Secret | `goldenpath/dev/rds/master` | RDS master credentials |
-| Secret | `goldenpath/dev/backstage/postgres` | Backstage DB credentials |
-| Secret | `goldenpath/dev/backstage/secrets` | Backstage GitHub token |
-| Secret | `goldenpath/dev/keycloak/postgres` | Keycloak DB credentials |
+|ECR: `backstage`|`593517239005.dkr.ecr.eu-west-2.amazonaws.com/backstage`|Backstage container image|
+|ECR: `keycloak`|`593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak`|Keycloak container image|
+|RDS|`goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com`|PostgreSQL 15.15|
+|Secret|`goldenpath/dev/rds/master`|RDS master credentials|
+|Secret|`goldenpath/dev/backstage/postgres`|Backstage DB credentials|
+|Secret|`goldenpath/dev/backstage/secrets`|Backstage GitHub token|
+|Secret|`goldenpath/dev/keycloak/postgres`|Keycloak DB credentials|
 
 ## 5. Documentation Created
 
@@ -393,12 +393,12 @@ global:
 
 ### Changelogs
 
-| Changelog | Description                                |
-| --------- | ------------------------------------------ |
-| CL-0132   | ClusterSecretStore Addon Deployment Fix    |
-| CL-0133   | IDP Stack Deployment Runbook (RB-0031)     |
-| CL-0134   | Backstage Catalog Governance Registry Sync |
-| CL-0135   | Kong Ingress for Tooling Apps              |
+|Changelog|Description|
+|---------|------------------------------------------|
+|CL-0132|ClusterSecretStore Addon Deployment Fix|
+|CL-0133|IDP Stack Deployment Runbook (RB-0031)|
+|CL-0134|Backstage Catalog Governance Registry Sync|
+|CL-0135|Kong Ingress for Tooling Apps|
 
 ### Session Summary
 
@@ -473,13 +473,16 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
    - Prometheus StatefulSet was completely missing from the `monitoring` namespace
    - Only Alertmanager StatefulSet existed
    - Prometheus Operator logs showed continuous errors:
-     ```
+
+```text
      failed to list *v1.Prometheus: the server could not find the requested resource (get prometheuses.monitoring.coreos.com)
      ```
+
    - **Critical Finding**: The `prometheuses.monitoring.coreos.com` CRD was **not installed**
    - All other monitoring CRDs were present (ServiceMonitors, PodMonitors, AlertManagers, PrometheusRules)
 
 3. **Resolution Steps**:
+
    ```bash
    # 1. Install missing Prometheus CRD
    kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.68.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
@@ -493,7 +496,7 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
    kubectl wait --for=condition=ready pod/prometheus-dev-kube-prometheus-stack-prometheus-0 -n monitoring --timeout=120s
    ```
 
-4. **Verification Results**:
+1. **Verification Results**:
    - **Prometheus Pod**: `prometheus-dev-kube-prometheus-stack-prometheus-0` - 2/2 Running
    - **Prometheus Version**: v2.42.0
    - **Metrics Collection**: **38 time series** actively scraped (query: `up`)
@@ -508,25 +511,29 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
 **Status**: ✅ **RESOLVED** - Monitoring stack fully operational
 
 **Components Now Functional**:
-| Component | Status | Details |
+
+|Component|Status|Details|
 |-----------|--------|---------|
-| **Prometheus Server** | ✅ Running | StatefulSet deployed with 1/1 ready replicas |
-| **Grafana Datasources** | ✅ Connected | Both Prometheus and Loki passing connection tests |
-| **Dashboards** | ✅ Populated | 26 pre-provisioned dashboards showing live metrics |
-| **Metrics Scraping** | ✅ Active | 38 targets being scraped across monitoring, kube-system, keycloak namespaces |
-| **Alertmanager** | ✅ Running | Already operational, unaffected by CRD issue |
+|**Prometheus Server**|✅ Running|StatefulSet deployed with 1/1 ready replicas|
+|**Grafana Datasources**|✅ Connected|Both Prometheus and Loki passing connection tests|
+|**Dashboards**|✅ Populated|26 pre-provisioned dashboards showing live metrics|
+|**Metrics Scraping**|✅ Active|38 targets being scraped across monitoring, kube-system, keycloak namespaces|
+|**Alertmanager**|✅ Running|Already operational, unaffected by CRD issue|
 
 **Root Cause Analysis**:
 The Prometheus CRD was likely excluded during the initial kube-prometheus-stack deployment, possibly due to:
+
 - CRD installation being disabled in Helm values (`crds.enabled: false`)
 - Manual CRD deletion during troubleshooting
 - ArgoCD sync policy excluding CRDs
 
 **Screenshots**:
+
 - Prometheus metrics query results: `grafana_explore_up_results_1768523234215.png`
 - Kubernetes cluster dashboard with live data: `grafana_kubernetes_cluster_data_1768523284777.png`
 
 **Access**:
+
 ```bash
 # Grafana UI
 kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
@@ -541,11 +548,12 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
 
 **Resolution**:
 
-1.  **Enabled Grafana Sidecar**: Configured `sidecar.dashboards.enabled: true` in `dev.yaml` and `local.yaml`.
-2.  **Global Namespace Watch**: Set `sidecar.dashboards.searchNamespace: ALL` to allow decentralized dashboards in app namespaces.
-3.  **Label Selector**: Configured sidecar to watch for label `grafana_dashboard: "1"`.
+1. **Enabled Grafana Sidecar**: Configured `sidecar.dashboards.enabled: true` in `dev.yaml` and `local.yaml`.
+2. **Global Namespace Watch**: Set `sidecar.dashboards.searchNamespace: ALL` to allow decentralized dashboards in app namespaces.
+3. **Label Selector**: Configured sidecar to watch for label `grafana_dashboard: "1"`.
 
 **Verification**:
+
 - ConfigMaps in `apps/*/dashboards/` are now automatically detected.
 - Dashboards for Wordpress, FastAPI, and Stateful apps appear in Grafana without manual import.
 
@@ -555,21 +563,23 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
 
 **Resolution**:
 
-1.  **Changelog Created**: `CL-0137-ootb-observability-dashboards.md` documenting the "Zero-Config" capability.
+1. **Changelog Created**: `CL-0137-ootb-observability-dashboards.md` documenting the "Zero-Config" capability.
     - *Note*: Renamed from `CL-0135` to `CL-0137` to resolve conflict with remote changes.
-2.  **Capability Ledger Updated**: Added **Section 23** to `CAPABILITY_LEDGER.md` detailing Golden Signals & RED.
-3.  **Features List Updated**: Added "OOTB Golden Signals" to `FEATURES.md`.
+2. **Capability Ledger Updated**: Added **Section 23** to `CAPABILITY_LEDGER.md` detailing Golden Signals & RED.
+3. **Features List Updated**: Added "OOTB Golden Signals" to `FEATURES.md`.
 
 ### K. Remote Synchronization & Ingress (2026-01-16)
 
 **Action**: Merged `origin/feature/tooling-apps-config` into local branch.
 
 **Updates Received**:
+
 - **Kong Ingress**: Grafana now exposed at `grafana.dev.goldenpathidp.io` (no port-forward needed).
 - **DNS Management**: New documentation on DNS strategies.
 - **Conflict Resolution**: Successfully merged local Sidecar config with remote Ingress config in `dev.yaml`.
 
 **Current Access URLs**:
+
 - **Grafana**: `https://grafana.dev.goldenpathidp.io`
 - **Backstage**: `https://backstage.dev.goldenpathidp.io`
 - **Keycloak**: `https://keycloak.dev.goldenpathidp.io`
@@ -586,6 +596,7 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
 
 1. **Initial Configuration (Attempt 1)**:
    - Added sidecar configuration to `gitops/helm/kube-prometheus-stack/values/dev.yaml`:
+
      ```yaml
      grafana:
        sidecar:
@@ -594,6 +605,7 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
            label: grafana_dashboard
            searchNamespace: ALL
      ```
+
    - Triggered ArgoCD sync
    - Result: Deployment stuck due to ArgoCD pointing to wrong branch
 
@@ -602,7 +614,7 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
    - Result: New pod created but stuck in `Init:0/1` state for 30+ minutes
 
 3. **Volume Attachment Deadlock Discovery**:
-   - Root Cause: PersistentVolume (`pvc-3fd53380-07c7-4506-933b-a011fcc10a82`) is `ReadWriteOnce` 
+   - Root Cause: PersistentVolume (`pvc-3fd53380-07c7-4506-933b-a011fcc10a82`) is `ReadWriteOnce`
    - Old pod holds volume, new pod requires volume to initialize
    - Deployment strategy prevents graceful handoff
    - Resolution: Manually deleted old pod `dev-kube-prometheus-stack-grafana-f67c5df7f-7w7xt`
@@ -620,6 +632,7 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
 
 6. **Explicit Environment Variable (Attempt 2)**:
    - Updated `gitops/helm/kube-prometheus-stack/values/dev.yaml`:
+
      ```yaml
      grafana:
        sidecar:
@@ -631,6 +644,7 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
              - name: NAMESPACE
                value: ALL
      ```
+
    - Triggered ArgoCD sync
    - Result: **Same volume deadlock** - new ReplicaSet created but pod stuck in Init
 
@@ -641,6 +655,7 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
    - **Dashboard Status**: Only infrastructure dashboards visible (26 total)
 
 **Verified Configuration**:
+
 - ✅ Application ConfigMaps exist with correct label (`grafana_dashboard: "1"`)
 - ✅ RBAC ClusterRole grants `get, watch, list` on ConfigMaps cluster-wide
 - ✅ Sidecar container running and healthy in current pod
@@ -649,6 +664,7 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
 
 **Root Cause Hypothesis**:
 The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce` persistent volumes, causing a continuous deadlock where:
+
 1. ArgoCD detects configuration change
 2. Creates new ReplicaSet with updated config
 3. New pod cannot start (waiting for volume)
@@ -799,3 +815,30 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 **Notes**:
 
 - `markdownlint-cli2` is not installed locally (lint reported missing dependency).
+
+## 15. PR-Scoped Markdown Lint Remediation (2026-01-16 10:56:48Z)
+
+**Objective**: Fix markdownlint issues for files changed in the PR without touching the rest of the repo.
+
+**Actions**:
+
+- Ran markdownlint over PR-changed files and applied auto-fixes plus targeted cleanup for duplicate headings, heading punctuation, and table styles.
+- Normalized repeated headings by adding context-specific suffixes (e.g., security controls per registry) to avoid duplicate anchors.
+- Added local-infra app sections to the tooling apps matrix so localstack/minio/postgresql anchors resolve correctly.
+
+**Validation**:
+
+- `markdownlint-cli2` on PR-changed files: ✅ 0 errors.
+- `bin/governance lint`: still fails repo-wide due to pre-existing markdownlint issues outside PR scope (YAML lint is clean).
+
+## 16. Agent Collaboration Governance Additions (2026-01-16 11:18:21Z)
+
+**Objective**: Formalize agent collaboration governance with a living registry and session log requirements.
+
+**Actions**:
+
+- Added `docs/10-governance/09_AGENT_COLLABORATION_MATRIX.md` as the living registry for agent roles, models, and responsibilities.
+- Documented environment access levels (local/CI/cluster/cloud) and per-agent access columns.
+- Captured the append-only session log requirement for `agent_status/agent_session_summary.md`.
+- Linked the registry and session log expectations into `docs/10-governance/07_AI_AGENT_GOVERNANCE.md`.
+- Added ADR `docs/adrs/ADR-0163-agent-collaboration-governance.md` to formalize the collaboration model.

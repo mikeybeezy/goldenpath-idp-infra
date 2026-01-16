@@ -13,7 +13,7 @@ reliability:
 category: runbooks
 ---
 
-# RB-0015: Extending Governance Vocabulary
+## RB-0015: Extending Governance Vocabulary
 
 ```text
        [ NEW VALUE? ]
@@ -41,26 +41,33 @@ This runbook guides you through adding new values (owners, domains, artifact typ
 ## Steps to Take
 
 ### 1. Confirm the Need
+
 Is your value truly new, or is it a synonym of an existing one?
-*   Check [**`GOVERNANCE_VOCABULARY.md`**](../../10-governance/GOVERNANCE_VOCABULARY.md).
-*   If you find a suitable synonym, use it instead to reduce fragmentation.
+
+* Check [**`GOVERNANCE_VOCABULARY.md`**](../../10-governance/GOVERNANCE_VOCABULARY.md).
+* If you find a suitable synonym, use it instead to reduce fragmentation.
 
 ### 2. Propose the Addition
+
 If a new value is necessary:
-1.  Navigate to [**`schemas/metadata/enums.yaml`**](../../../schemas/metadata/enums.yaml).
-2.  Add your value to the appropriate list (e.g., `owners`, `domains`).
-3.  Ensure the syntax is correct (valid YAML list).
+
+1. Navigate to [**`schemas/metadata/enums.yaml`**](../../../schemas/metadata/enums.yaml).
+2. Add your value to the appropriate list (e.g., `owners`, `domains`).
+3. Ensure the syntax is correct (valid YAML list).
 
 ### 3. Open a "Vocabulary PR"
-*   **Title**: `feat: add <value> to governance enums`
-*   **Description**: Briefly explain why this new category or owner is needed.
-*   **Labels**: Apply the `governance` label.
+
+* **Title**: `feat: add <value> to governance enums`
+* **Description**: Briefly explain why this new category or owner is needed.
+* **Labels**: Apply the `governance` label.
 
 ### 4. Wait for Approval
+
 The Platform Team will review your request. Once merged, the system will automatically rebuild the indexes, and your main PR will pass the validation gate.
 
 ## Why This Exists
+
 By centralising the vocabulary, we ensure that the platform's Knowledge Graph remains clean, searchable, and trustworthy. Without this gate, the catalog would quickly fill with typos and inconsistent terminology.
 
 ---
-*Last Updated: 2026-01-07*
+Last Updated: 2026-01-07

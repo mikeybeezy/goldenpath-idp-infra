@@ -4,7 +4,7 @@ metadata:
   name: local-cert-manager
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1" # Deploy early
+    argocd.argoproj.io/sync-wave: "1"  # Deploy early
 spec:
   project: default
   source:

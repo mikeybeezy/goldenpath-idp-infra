@@ -24,7 +24,7 @@ value_quantification:
 supported_until: '2028-01-01'
 ---
 
-# ADR-0125: Compliance & Maintenance Suite
+## ADR-0125: Compliance & Maintenance Suite
 
 ## Status
 
@@ -38,13 +38,13 @@ The GoldenPath IDP requires continuous auditing and maintenance of its metadata 
 
 We officially adopt the following scripts as the core Compliance & Maintenance Suite:
 
-1.  **`check_compliance.py`**: A CLI tool for scanning assets against the latest governance policy.
-2.  **`fix_yaml_syntax.py`**: Remediates syntactical issues in YAML templates.
-3.  **`migrate_partial_metadata.py`**: Handles bulk migration of legacy metadata to the enhanced schema.
-4.  **`backfill_metadata.py`**: Injects mandatory tags into untagged or legacy assets.
-5.  **`reliability-metrics.sh`**: Collects MTTR/MTTF metrics for the Platform Health dashboard.
-6.  **`test_platform_health.py` / `test_hotfix.py`**: Ensures the integrity of the health and guardrail logic.
-7.  **`render_template.py`**: Standardizes how Backstage templates are tested and rendered locally.
+1. **`check_compliance.py`**: A CLI tool for scanning assets against the latest governance policy.
+2. **`fix_yaml_syntax.py`**: Remediates syntactical issues in YAML templates.
+3. **`migrate_partial_metadata.py`**: Handles bulk migration of legacy metadata to the enhanced schema.
+4. **`backfill_metadata.py`**: Injects mandatory tags into untagged or legacy assets.
+5. **`reliability-metrics.sh`**: Collects MTTR/MTTF metrics for the Platform Health dashboard.
+6. **`test_platform_health.py` / `test_hotfix.py`**: Ensures the integrity of the health and guardrail logic.
+7. **`render_template.py`**: Standardizes how Backstage templates are tested and rendered locally.
 
 ## Consequences
 

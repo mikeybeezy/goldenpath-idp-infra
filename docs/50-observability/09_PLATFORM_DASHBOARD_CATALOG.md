@@ -16,7 +16,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# Platform Dashboard Catalog
+## Platform Dashboard Catalog
 
 **Status:** Living
 **Owner:** platform
@@ -31,11 +31,11 @@ This catalog documents the standard observability dashboards provided "out of th
 **File:** `gitops/helm/kube-prometheus-stack/dashboards/cluster-overview.yaml`
 **Audience:** Platform Engineers, SREs.
 
-### Purpose
+### Purpose (Cluster Overview)
 
 The "Bird's Eye View" of the cluster. Use this to determine if a problem is **Systemic** (Infrastructure/Capacity) or **Localized** (specific workload).
 
-### Key Panels
+### Key Panels (Cluster Overview)
 
 * **Cluster Capacity (Gauges):**
   * **CPU/Memory:** Aggregate saturation across all nodes.
@@ -54,11 +54,11 @@ The "Bird's Eye View" of the cluster. Use this to determine if a problem is **Sy
 **File:** `gitops/helm/kube-prometheus-stack/dashboards/platform-health.yaml`
 **Audience:** Platform Engineers.
 
-### Purpose
+### Purpose (Platform Health)
 
 Monitors the "Plumbing" of the IDP itself. Use this when deployments are failing or external access is broken.
 
-### Key Panels
+### Key Panels (Platform Health)
 
 * **GitOps Health (ArgoCD):**
   * **Degraded Apps:** Applications where the deployment is failing (Health Checks failing).
@@ -74,11 +74,11 @@ Monitors the "Plumbing" of the IDP itself. Use this when deployments are failing
 **File:** `apps/fast-api-app-template/dashboards/configmap-dashboard.yaml`
 **Audience:** Application Developers.
 
-### Purpose
+### Purpose (Application Golden Signals)
 
 The standard View automatically provisioned for every new service created via the Backstage template.
 
-### Key Panels
+### Key Panels (Application Golden Signals)
 
 * **RED Method (User Experience):**
   * **Request Rate:** Traffic volume.

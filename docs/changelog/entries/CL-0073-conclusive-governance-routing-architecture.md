@@ -33,17 +33,20 @@ date: 2026-01-06
 breaking_change: false
 ---
 
-# CL-0073: Conclusive Governance Routing & Compliance Engine
+## CL-0073: Conclusive Governance Routing & Compliance Engine
 
 ## Summary
+
 Architected and implemented a repository-wide governance routing engine that ensures 100% auditability for platform changes.
 
 ## Changes
+
 - **Conclusive Matrix**: Established [**`agent-routing.yaml`**](../../../schemas/routing/agent-routing.yaml) as the source of truth for reviewer and artifact requirements.
 - **Automation Engine**: Created [**`validate_routing_compliance.py`**](../../../scripts/validate_routing_compliance.py).
 - **Platform-wide Strategy**: Published the [**`DECISION_ROUTING_STRATEGY.md`**](../../10-governance/DECISION_ROUTING_STRATEGY.md).
 - **CI Gate**: Integrated routing compliance into the mandatory PR quality workflow.
 
 ## Verification
+
 - Verified that PRs touching `infra` or `agents` are correctly flagged when missing ADRs.
 - Confirmed specialized teams are correctly identified as required reviewers.

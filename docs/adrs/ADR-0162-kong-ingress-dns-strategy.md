@@ -49,21 +49,21 @@ Adopt a standardized Kong Ingress pattern for all platform tooling applications 
 
 ### Services Exposed via Ingress
 
-| Service | Dev | Staging | Prod |
+|Service|Dev|Staging|Prod|
 |---------|-----|---------|------|
-| Backstage | backstage.dev.goldenpathidp.io | backstage.staging.goldenpathidp.io | backstage.goldenpathidp.io |
-| Keycloak | keycloak.dev.goldenpathidp.io | keycloak.staging.goldenpathidp.io | keycloak.goldenpathidp.io |
-| ArgoCD | argocd.dev.goldenpathidp.io | argocd.staging.goldenpathidp.io | argocd.goldenpathidp.io |
-| Grafana | grafana.dev.goldenpathidp.io | grafana.staging.goldenpathidp.io | grafana.goldenpathidp.io |
+|Backstage|backstage.dev.goldenpathidp.io|backstage.staging.goldenpathidp.io|backstage.goldenpathidp.io|
+|Keycloak|keycloak.dev.goldenpathidp.io|keycloak.staging.goldenpathidp.io|keycloak.goldenpathidp.io|
+|ArgoCD|argocd.dev.goldenpathidp.io|argocd.staging.goldenpathidp.io|argocd.goldenpathidp.io|
+|Grafana|grafana.dev.goldenpathidp.io|grafana.staging.goldenpathidp.io|grafana.goldenpathidp.io|
 
 ### Services NOT Exposed (Internal Only)
 
-| Service | Reason | Access Method |
+|Service|Reason|Access Method|
 |---------|--------|---------------|
-| Prometheus | Security - metrics data | Port-forward or Grafana |
-| Alertmanager | Security - alert management | Port-forward |
-| Loki | Backend service | Via Grafana Explore |
-| Kong Admin | Security - gateway config | Port-forward |
+|Prometheus|Security - metrics data|Port-forward or Grafana|
+|Alertmanager|Security - alert management|Port-forward|
+|Loki|Backend service|Via Grafana Explore|
+|Kong Admin|Security - gateway config|Port-forward|
 
 ### Standard Ingress Configuration Pattern
 
@@ -83,15 +83,15 @@ ingress:
 
 ### Certificate Issuers by Environment
 
-| Environment | Issuer | Reason |
+|Environment|Issuer|Reason|
 |-------------|--------|--------|
-| dev | letsencrypt-staging | Avoid rate limits, browser warnings acceptable |
-| staging | letsencrypt-staging | Testing environment, browser warnings acceptable |
-| prod | letsencrypt-prod | Production-trusted certificates required |
+|dev|letsencrypt-staging|Avoid rate limits, browser warnings acceptable|
+|staging|letsencrypt-staging|Testing environment, browser warnings acceptable|
+|prod|letsencrypt-prod|Production-trusted certificates required|
 
 ### DNS Configuration Options
 
-**Option 1: Wildcard DNS (Recommended)**
+### Option 1: Wildcard DNS (Recommended)
 
 Configure wildcard records for each environment subdomain:
 
@@ -101,7 +101,7 @@ Configure wildcard records for each environment subdomain:
 *.goldenpathidp.io         -> Kong LoadBalancer (prod cluster)
 ```
 
-**Option 2: Individual Records**
+### Option 2: Individual Records
 
 Create individual A/CNAME records for each service pointing to the respective Kong LoadBalancer.
 
@@ -123,25 +123,25 @@ Create individual A/CNAME records for each service pointing to the respective Ko
 
 ### Risks and Mitigations
 
-| Risk | Mitigation |
+|Risk|Mitigation|
 |------|------------|
-| Unauthorized access | Keycloak SSO integration via Kong OIDC plugin |
-| DDoS on tooling | Kong rate-limiting plugin |
-| Certificate expiry | cert-manager auto-renewal |
-| DNS misconfiguration | Document in runbook, health checks |
+|Unauthorized access|Keycloak SSO integration via Kong OIDC plugin|
+|DDoS on tooling|Kong rate-limiting plugin|
+|Certificate expiry|cert-manager auto-renewal|
+|DNS misconfiguration|Document in runbook, health checks|
 
 ## Implementation
 
 ### Files Modified
 
-| File | Change |
+|File|Change|
 |------|--------|
-| `backstage-helm/charts/backstage/templates/ingress.yaml` | New template |
-| `backstage-helm/charts/backstage/values.yaml` | Ingress defaults |
-| `gitops/helm/backstage/values/{dev,staging,prod}.yaml` | Ingress enabled |
-| `gitops/helm/argocd/values/{dev,staging,prod}.yaml` | Ingress enabled |
-| `gitops/helm/kube-prometheus-stack/values/{dev,staging,prod}.yaml` | Grafana ingress |
-| `gitops/helm/keycloak/values/dev.yaml` | Already configured |
+|`backstage-helm/charts/backstage/templates/ingress.yaml`|New template|
+|`backstage-helm/charts/backstage/values.yaml`|Ingress defaults|
+|`gitops/helm/backstage/values/{dev,staging,prod}.yaml`|Ingress enabled|
+|`gitops/helm/argocd/values/{dev,staging,prod}.yaml`|Ingress enabled|
+|`gitops/helm/kube-prometheus-stack/values/{dev,staging,prod}.yaml`|Grafana ingress|
+|`gitops/helm/keycloak/values/dev.yaml`|Already configured|
 
 ### Verification Commands
 

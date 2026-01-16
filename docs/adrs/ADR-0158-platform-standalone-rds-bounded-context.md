@@ -35,7 +35,7 @@ version: 1.0
 breaking_change: true
 ---
 
-# ADR-0158: Standalone RDS as Bounded Context with Deletion Protection
+## ADR-0158: Standalone RDS as Bounded Context with Deletion Protection
 
 - **Status:** Accepted
 - **Date:** 2026-01-15
@@ -58,10 +58,10 @@ ADR-0157 established multi-tenant RDS for platform tooling but coupled it to the
 
 Our platform philosophy emphasizes **bounded contexts** with clear separation of concerns. The data layer (RDS) and compute layer (EKS) have fundamentally different lifecycles:
 
-| Layer | Lifecycle | Rebuild Frequency | Data Sensitivity |
+|Layer|Lifecycle|Rebuild Frequency|Data Sensitivity|
 |-------|-----------|-------------------|------------------|
-| EKS Cluster | Ephemeral | Weekly/Daily | None (stateless) |
-| RDS Database | Persistent | Never (ideally) | High (stateful) |
+|EKS Cluster|Ephemeral|Weekly/Daily|None (stateless)|
+|RDS Database|Persistent|Never (ideally)|High (stateful)|
 
 ---
 
@@ -80,7 +80,7 @@ We will extract Platform RDS into a **standalone Terraform root** with its own s
 
 ### Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                    BOUNDED CONTEXT SEPARATION                                │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -112,15 +112,16 @@ We will extract Platform RDS into a **standalone Terraform root** with its own s
 
 RDS deletion is **intentionally difficult** via multiple layers:
 
-| Protection Layer | Mechanism | Bypass Method |
+|Protection Layer|Mechanism|Bypass Method|
 |------------------|-----------|---------------|
-| Terraform `deletion_protection` | RDS API refuses delete | Console disable required |
-| Terraform `prevent_destroy` | Lifecycle meta-argument | Manual state removal |
-| S3 State Lock | DynamoDB locking | Manual unlock |
-| No CI Destroy Workflow | No automated teardown | Manual only |
-| AWS Console MFA | IAM policy | Physical MFA required |
+|Terraform `deletion_protection`|RDS API refuses delete|Console disable required|
+|Terraform `prevent_destroy`|Lifecycle meta-argument|Manual state removal|
+|S3 State Lock|DynamoDB locking|Manual unlock|
+|No CI Destroy Workflow|No automated teardown|Manual only|
+|AWS Console MFA|IAM policy|Physical MFA required|
 
-**To delete RDS, an operator must:**
+### To delete RDS, an operator must
+
 1. Log into AWS Console (not CLI/Terraform)
 2. Disable deletion protection on RDS instance
 3. Confirm deletion with MFA
@@ -130,7 +131,7 @@ This is intentional friction to prevent accidental data loss.
 
 ### Deployment Sequence
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                         DEPLOYMENT ORDER                                     │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -183,7 +184,7 @@ This is intentional friction to prevent accidental data loss.
 
 ### Trade-Off: Deploy RDS First
 
-**The price of persistence is deployment order.**
+### The price of persistence is deployment order
 
 Users who want platform apps with external RDS must deploy RDS first. This is an acceptable trade-off because:
 
@@ -265,7 +266,7 @@ Users who want platform apps with external RDS must deploy RDS first. This is an
 
 ### Directory Structure
 
-```
+```text
 envs/
 ├── dev/                          # EKS cluster (ephemeral)
 │   ├── main.tf
@@ -286,13 +287,13 @@ envs/
 
 ### State Keys
 
-| Environment | Resource | State Key |
+|Environment|Resource|State Key|
 |-------------|----------|-----------|
-| dev | RDS | `envs/dev-rds/terraform.tfstate` |
-| dev | Cluster (persistent) | `envs/dev/terraform.tfstate` |
-| dev | Cluster (ephemeral) | `envs/dev/builds/{build_id}/terraform.tfstate` |
-| staging | RDS | `envs/staging-rds/terraform.tfstate` |
-| prod | RDS | `envs/prod-rds/terraform.tfstate` |
+|dev|RDS|`envs/dev-rds/terraform.tfstate`|
+|dev|Cluster (persistent)|`envs/dev/terraform.tfstate`|
+|dev|Cluster (ephemeral)|`envs/dev/builds/{build_id}/terraform.tfstate`|
+|staging|RDS|`envs/staging-rds/terraform.tfstate`|
+|prod|RDS|`envs/prod-rds/terraform.tfstate`|
 
 ### Makefile Targets
 
@@ -337,32 +338,32 @@ aws_region = "eu-west-2"  # London
 
 ### V1 Must Have
 
-| Feature | Description | Status |
+|Feature|Description|Status|
 |---------|-------------|--------|
-| Separate Terraform root | `envs/{env}-rds/` with own state | Planned |
-| Deletion protection | `deletion_protection = true` | Planned |
-| Prevent destroy lifecycle | Terraform refuses to destroy | Planned |
-| Automated snapshots | 7 days (dev), 35 days (prod) | Planned |
-| CloudWatch alarms | CPU, memory, storage, connections | Planned |
-| Encryption at rest | KMS-managed key | Planned |
-| SSL/TLS required | `rds.force_ssl` parameter | Planned |
-| Makefile targets | `rds-init`, `rds-plan`, `rds-apply` (no destroy) | Planned |
-| Deployment documentation | Sequence, runbooks | Planned |
-| Performance Insights | Query analysis enabled | Planned |
-| Operational runbooks | Backup, restore, rotation, scaling | Planned |
-| Cost tags | `CostCenter`, `Environment`, `Application` | Planned |
-| Password rotation documentation | Manual procedure documented | Planned |
-| Automated secret rotation | AWS Secrets Manager Lambda rotation | Planned |
+|Separate Terraform root|`envs/{env}-rds/` with own state|Planned|
+|Deletion protection|`deletion_protection = true`|Planned|
+|Prevent destroy lifecycle|Terraform refuses to destroy|Planned|
+|Automated snapshots|7 days (dev), 35 days (prod)|Planned|
+|CloudWatch alarms|CPU, memory, storage, connections|Planned|
+|Encryption at rest|KMS-managed key|Planned|
+|SSL/TLS required|`rds.force_ssl` parameter|Planned|
+|Makefile targets|`rds-init`, `rds-plan`, `rds-apply` (no destroy)|Planned|
+|Deployment documentation|Sequence, runbooks|Planned|
+|Performance Insights|Query analysis enabled|Planned|
+|Operational runbooks|Backup, restore, rotation, scaling|Planned|
+|Cost tags|`CostCenter`, `Environment`, `Application`|Planned|
+|Password rotation documentation|Manual procedure documented|Planned|
+|Automated secret rotation|AWS Secrets Manager Lambda rotation|Planned|
 
 ### V2 Future Enhancements
 
-| Feature | Description | Rationale for Deferral |
+|Feature|Description|Rationale for Deferral|
 |---------|-------------|------------------------|
-| Cross-region snapshot copy | DR to secondary region | Adds complexity, evaluate after prod usage |
-| PgBouncer connection pooling | Connection multiplexing | Only needed at scale |
-| Read replicas | Offload read queries | Only if Backstage catalog queries become heavy |
-| IAM database authentication | Token-based auth | Current secret-based auth is sufficient |
-| Separate AWS account | Maximum isolation | Overkill for current scale |
+|Cross-region snapshot copy|DR to secondary region|Adds complexity, evaluate after prod usage|
+|PgBouncer connection pooling|Connection multiplexing|Only needed at scale|
+|Read replicas|Offload read queries|Only if Backstage catalog queries become heavy|
+|IAM database authentication|Token-based auth|Current secret-based auth is sufficient|
+|Separate AWS account|Maximum isolation|Overkill for current scale|
 
 ---
 
@@ -370,18 +371,19 @@ aws_region = "eu-west-2"  # London
 
 ### CloudWatch Alarms
 
-| Metric | Warning Threshold | Critical Threshold | Action |
+|Metric|Warning Threshold|Critical Threshold|Action|
 |--------|-------------------|---------------------|--------|
-| CPUUtilization | > 70% for 5min | > 90% for 5min | Scale up instance |
-| FreeableMemory | < 512MB | < 256MB | Scale up instance |
-| FreeStorageSpace | < 30% | < 15% | Increase storage |
-| DatabaseConnections | > 70% of max | > 90% of max | Check for leaks, add pooling |
-| ReadLatency | > 50ms | > 100ms | Check queries, add read replica |
-| WriteLatency | > 50ms | > 100ms | Check queries, scale IOPS |
+|CPUUtilization|> 70% for 5min|> 90% for 5min|Scale up instance|
+|FreeableMemory|< 512MB|< 256MB|Scale up instance|
+|FreeStorageSpace|< 30%|< 15%|Increase storage|
+|DatabaseConnections|> 70% of max|> 90% of max|Check for leaks, add pooling|
+|ReadLatency|> 50ms|> 100ms|Check queries, add read replica|
+|WriteLatency|> 50ms|> 100ms|Check queries, scale IOPS|
 
 ### Performance Insights
 
 Enabled by default for query analysis:
+
 - Top SQL by wait time
 - Database load by wait type
 - Slice-and-dice by application
@@ -424,9 +426,9 @@ publicly_accessible = false
 
 ## Secret Rotation (V1)
 
-### Architecture
+### Secret Rotation Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                    AUTOMATED SECRET ROTATION                                 │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -454,11 +456,11 @@ publicly_accessible = false
 
 ### Rotation Schedule
 
-| Environment | Rotation Period | Rationale |
+|Environment|Rotation Period|Rationale|
 |-------------|-----------------|-----------|
-| dev | 30 days | Balance security with operational overhead |
-| staging | 30 days | Match dev for consistency |
-| prod | 14 days | Higher security posture |
+|dev|30 days|Balance security with operational overhead|
+|staging|30 days|Match dev for consistency|
+|prod|14 days|Higher security posture|
 
 ### ESO Refresh
 
@@ -473,7 +475,8 @@ Apps using connection pools may need pod restart to pick up new credentials.
 
 **Purpose:** Restore database from automated snapshot or point-in-time recovery.
 
-**Steps:**
+### Steps (RB-0012: RDS Backup and Restore)
+
 1. Identify target snapshot or PITR timestamp
 2. Create new RDS instance from snapshot
 3. Update Secrets Manager with new endpoint
@@ -484,7 +487,8 @@ Apps using connection pools may need pod restart to pick up new credentials.
 
 **Purpose:** Rotate application database passwords manually.
 
-**Steps:**
+### Steps (RB-0013: RDS Password Rotation (Manual))
+
 1. Generate new 32-character password
 2. Update AWS Secrets Manager secret
 3. Force ESO refresh: `kubectl annotate externalsecret ... force-sync=$(date +%s)`
@@ -496,7 +500,9 @@ Apps using connection pools may need pod restart to pick up new credentials.
 **Purpose:** Handle Multi-AZ failover events.
 
 **Automatic:** AWS handles failover automatically (~60-120s)
-**Manual verification:**
+
+### Manual verification
+
 1. Check RDS events in console
 2. Verify new primary endpoint
 3. Confirm app reconnection
@@ -506,7 +512,8 @@ Apps using connection pools may need pod restart to pick up new credentials.
 
 **Purpose:** Vertically scale RDS instance class.
 
-**Steps:**
+### Steps (RB-0015: RDS Scaling)
+
 1. Schedule maintenance window (if not apply_immediately)
 2. Modify instance class via console or Terraform
 3. Monitor failover during modification
@@ -517,12 +524,14 @@ Apps using connection pools may need pod restart to pick up new credentials.
 
 **Purpose:** Permanently delete RDS instance (irreversible).
 
-**Prerequisites:**
+### Prerequisites
+
 - Explicit approval from platform lead
 - Final snapshot taken and verified
 - All dependent apps migrated or decommissioned
 
-**Steps:**
+### Steps (RB-0016: RDS Deletion (Break-Glass))
+
 1. Log into AWS Console (not CLI)
 2. Navigate to RDS > Databases
 3. Select instance, click Modify

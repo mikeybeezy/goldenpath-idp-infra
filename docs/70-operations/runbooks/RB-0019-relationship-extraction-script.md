@@ -31,7 +31,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# Relationship Extraction Script - Usage & Operations
+## Relationship Extraction Script - Usage & Operations
 
 ## Overview
 
@@ -79,7 +79,7 @@ For each file, extracts references using **13 detection patterns**:
 
 Converts file paths to document IDs:
 
-```
+```text
 docs/adrs/ADR-0026-platform-cd-deployment.md → ADR-0026
 docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md → 21_CI_ENVIRONMENT_CONTRACT
 PR #107 → PR-107
@@ -122,7 +122,7 @@ python3 scripts/extract-relationships.py --dry-run --verbose
 
 ### Output Example
 
-```
+```text
 Found 304 markdown files
 Indexed 304 document IDs
 Mode: LIVE
@@ -260,7 +260,7 @@ grep -r "relates_to: \[\]" docs/ | wc -l
 
 **Cause:** Referenced file doesn't exist or ID conversion failed
 
-**Check verbose mode:**
+### Check verbose mode
 
 ```bash
 python3 scripts/extract-relationships.py --dry-run --verbose
@@ -343,10 +343,10 @@ relates_to:
 
 ## Script Arguments
 
-| Argument | Description | Example |
+|Argument|Description|Example|
 |-------|-------|------|
-| `--dry-run` | Preview mode, no file changes | `python3 ... --dry-run` |
-| `--verbose` | Show all files including skipped | `python3 ... --verbose` |
+|`--dry-run`|Preview mode, no file changes|`python3 ... --dry-run`|
+|`--verbose`|Show all files including skipped|`python3 ... --verbose`|
 
 ## Advanced Usage
 

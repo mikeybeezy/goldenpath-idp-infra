@@ -33,22 +33,22 @@ version: 1.0
 breaking_change: false
 ---
 
-# Operations Documentation
+## Operations Documentation
 
 This directory contains operational documentation for running and maintaining the Goldenpath IDP platform.
 
 ## Contents
 
-| Document | Description |
+|Document|Description|
 |----------|-------------|
-| [01_LIFECYCLE_POLICY](./01_LIFECYCLE_POLICY.md) | Deprecation and upgrade policies for platform components |
-| [06_REBUILD_SEQUENCE](./06_REBUILD_SEQUENCE.md) | Steps to rebuild the platform from scratch |
-| [10_INFRA_FAILURE_MODES](./10_INFRA_FAILURE_MODES.md) | Common infrastructure failures and recovery procedures |
-| [15_TEARDOWN_AND_CLEANUP](./15_TEARDOWN_AND_CLEANUP.md) | Cluster teardown procedures and orphan resource cleanup |
-| [20_TOOLING_APPS_MATRIX](./20_TOOLING_APPS_MATRIX.md) | Configuration requirements for all platform tooling apps |
-| [32_TERRAFORM_STATE_AND_LOCKING](./32_TERRAFORM_STATE_AND_LOCKING.md) | Terraform state management and lock handling |
-| [36_STATE_KEY_STRATEGY](./36_STATE_KEY_STRATEGY.md) | State key naming conventions for ephemeral/persistent builds |
-| [40_COST_VISIBILITY](./40_COST_VISIBILITY.md) | Cost tracking and resource tagging for billing |
+|[01_LIFECYCLE_POLICY](./01_LIFECYCLE_POLICY.md)|Deprecation and upgrade policies for platform components|
+|[06_REBUILD_SEQUENCE](./06_REBUILD_SEQUENCE.md)|Steps to rebuild the platform from scratch|
+|[10_INFRA_FAILURE_MODES](./10_INFRA_FAILURE_MODES.md)|Common infrastructure failures and recovery procedures|
+|[15_TEARDOWN_AND_CLEANUP](./15_TEARDOWN_AND_CLEANUP.md)|Cluster teardown procedures and orphan resource cleanup|
+|[20_TOOLING_APPS_MATRIX](./20_TOOLING_APPS_MATRIX.md)|Configuration requirements for all platform tooling apps|
+|[32_TERRAFORM_STATE_AND_LOCKING](./32_TERRAFORM_STATE_AND_LOCKING.md)|Terraform state management and lock handling|
+|[36_STATE_KEY_STRATEGY](./36_STATE_KEY_STRATEGY.md)|State key naming conventions for ephemeral/persistent builds|
+|[40_COST_VISIBILITY](./40_COST_VISIBILITY.md)|Cost tracking and resource tagging for billing|
 
 ## Key Operational Concepts
 
@@ -78,13 +78,13 @@ See [36_STATE_KEY_STRATEGY](./36_STATE_KEY_STRATEGY.md) for details.
 
 The platform deploys these core applications via Argo CD:
 
-| Layer | Apps |
+|Layer|Apps|
 |-------|------|
-| Foundation | external-secrets, cert-manager |
-| Identity | keycloak |
-| Gateway | kong |
-| Portal | backstage |
-| Observability | prometheus, grafana, loki, fluent-bit |
+|Foundation|external-secrets, cert-manager|
+|Identity|keycloak|
+|Gateway|kong|
+|Portal|backstage|
+|Observability|prometheus, grafana, loki, fluent-bit|
 
 See [20_TOOLING_APPS_MATRIX](./20_TOOLING_APPS_MATRIX.md) for configuration requirements.
 

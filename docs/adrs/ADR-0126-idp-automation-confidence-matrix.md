@@ -24,7 +24,7 @@ value_quantification:
 supported_until: '2028-01-01'
 ---
 
-# ADR-0126: IDP Automation Confidence Matrix
+## ADR-0126: IDP Automation Confidence Matrix
 
 ## Status
 
@@ -38,14 +38,16 @@ As the GoldenPath IDP moves at high velocity, the accumulation of "Dark History"
 
 We officially adopt the **IDP Automation Confidence Matrix** as the standard for certifying all scripts and workflows. Approval is based on five "Surface Areas" of certification:
 
-1.  **Logic Integrity**: Verified via unit tests, linting, and graceful error handling.
-2.  **Operational Safety**: Verified via Idempotency and explicit Dry-Run support.
-3.  **Governance Context**: Verified via ADR/CL traceability and VQ classification.
-4.  **Interface Legibility**: Verified via `--help` documentation and clear logging.
-5.  **System Integration**: Verified via CI/CD gating and multi-environment parity.
+1. **Logic Integrity**: Verified via unit tests, linting, and graceful error handling.
+2. **Operational Safety**: Verified via Idempotency and explicit Dry-Run support.
+3. **Governance Context**: Verified via ADR/CL traceability and VQ classification.
+4. **Interface Legibility**: Verified via `--help` documentation and clear logging.
+5. **System Integration**: Verified via CI/CD gating and multi-environment parity.
 
 ### Maturity Ratings
+
 Scripts will be assigned a **Confidence Rating** (1-5 stars) based on these areas:
+
 - **(1 Star)**: Lint-clean only.
 - **(2 Stars)**: Documented and Owned.
 - **(3 Stars)**: Tested and Safe (Idempotency + Dry-run).

@@ -24,7 +24,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# Implementation Plan: Phase 4 - Trusted Delivery Pipeline (ECR)
+## Implementation Plan: Phase 4 - Trusted Delivery Pipeline (ECR)
 
 This plan establishes a secure software supply chain by integrating AWS Elastic Container Registry (ECR) and a "Build & Push" CI workflow using a **Poly-Repo** strategy.
 
@@ -37,21 +37,29 @@ This plan establishes a secure software supply chain by integrating AWS Elastic 
 ## Proposed Changes
 
 ### [Platform Repo] (`goldenpath-idp-infra`)
+
 #### [NEW] [envs/dev/ecr.tf](envs/dev/ecr.tf)
+
 Create the ECR repository for the WordPress application.
+
 - **Resource**: `aws_ecr_repository`
 - **Name**: `goldenpath-wordpress-app` (Aligned with repo name)
 - **Scanning**: Enabled (Scan on Push)
 - **Encryption**: AES-256 (Default)
 
 ### [App Repo] (`goldenpath-wordpress-app`)
+
 #### [NEW] [Dockerfile](../goldenpath-wordpress-app/Dockerfile)
+
 Create a buildable artifact for the pipeline.
+
 - **Base**: `wordpress:latest`
 - **Content**: Standard WordPress image (customizable later).
 
 #### [NEW] [.github/workflows/ci-build-push.yml](../goldenpath-wordpress-app/.github/workflows/ci-build-push.yml)
+
 Create a reusable workflow to build and push images.
+
 - **Trigger**: Push to `main`.
 - **Steps**:
   1. Checkout
@@ -63,9 +71,11 @@ Create a reusable workflow to build and push images.
 ## Verification Plan
 
 ### Automated Verification
+
 - **Terraform Plan**: Run `terraform plan` in `envs/dev` to verify ECR creation.
 - **CI Build**: Push changes to `goldenpath-wordpress-app` and verify the `Build & Push` workflow succeeds.
 - **ECR Validation**: Verify the image exists in AWS ECR (via CLI or Console).
 
 ### Manual Verification
+
 - Inspect the CI logs to ensure image security scanning is triggered.

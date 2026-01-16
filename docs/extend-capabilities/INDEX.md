@@ -18,19 +18,21 @@ Extension Capabilities (EC) are **decision documents** for evaluating new platfo
 ## When to Create an EC Document
 
 Create an EC when:
+
 - Evaluating a new platform capability or technology
 - Considering significant architectural additions
 - Need structured analysis before ADR commitment
 - Want to document "not now" decisions for future reference
 
 Do **NOT** create an EC for:
+
 - Minor feature additions (use standard ADR)
 - Bug fixes or maintenance work
 - Changes to existing capabilities (use ADR for modifications)
 
 ## EC Lifecycle
 
-```
+```text
 proposed → validated → accepted → [ADR created] → implemented → [EC archived]
          ↘ rejected → archived
 ```
@@ -77,22 +79,23 @@ relates_to: [ADRs, roadmap items]
 
 ## Active Extension Capabilities
 
-| ID                                                   | Title                                          | Status   | Priority | Estimated ROI       | Owner         |
+|ID|Title|Status|Priority|Estimated ROI|Owner|
 |------------------------------------------------------|------------------------------------------------|----------|----------|---------------------|---------------|
-| [EC-0001](EC-0001-knative-integration.md)            | Knative Integration for Serverless Workloads   | proposed | medium   | $13K/year           | platform-team |
-| [EC-0002](EC-0002-shared-parser-library.md)          | Shared Parser Library for Requests             | proposed | low      | Reduced duplication | platform-team |
+|[EC-0001](EC-0001-knative-integration.md)|Knative Integration for Serverless Workloads|proposed|medium|$13K/year|platform-team|
+|[EC-0002](EC-0002-shared-parser-library.md)|Shared Parser Library for Requests|proposed|low|Reduced duplication|platform-team|
 
 ## Implemented Capabilities
 
-*None yet - capabilities move here after implementation and ADR creation*
+None yet - capabilities move here after implementation and ADR creation
 
 ## Rejected/Archived Capabilities
 
-*None yet - rejected ideas preserved for future reference*
+None yet - rejected ideas preserved for future reference
 
 ## Quick Commands
 
 ### Create New EC
+
 ```bash
 # Copy template
 cp docs/extend-capabilities/TEMPLATE.md docs/extend-capabilities/EC-XXXX-title.md
@@ -102,16 +105,19 @@ ls docs/extend-capabilities/EC-*.md | wc -l
 ```
 
 ### Find EC by Topic
+
 ```bash
 grep -r "kubernetes" docs/extend-capabilities/
 ```
 
 ### List by Status
+
 ```bash
 grep -h "status:" docs/extend-capabilities/EC-*.md | sort | uniq -c
 ```
 
 ### Generate This Index
+
 ```bash
 # Automatically regenerate from EC files
 python3 scripts/generate_ec_index.py
@@ -120,17 +126,20 @@ python3 scripts/generate_ec_index.py
 ## Integration with Other Docs
 
 ### Relationship to ADRs
+
 - **EC**: "Should we build this?" (exploration)
 - **ADR**: "How will we build this?" (decision)
 
 **Workflow**: EC-XXXX (validated) → ADR-XXXX (architecture) → Implementation
 
 ### Relationship to Roadmap
+
 - Accepted ECs feed into `ROADMAP.md` prioritization
 - ROI calculations inform priority levels
 - Effort estimates guide sprint planning
 
 ### Relationship to Value Quantification
+
 - All ECs must include VQ class (efficiency/resilience/velocity/governance)
 - ROI calculations use VQ framework
 - Implemented ECs tracked in quarterly VQ reports
@@ -138,6 +147,7 @@ python3 scripts/generate_ec_index.py
 ## Governance Notes
 
 ### Approval Process
+
 1. Create EC with `status: proposed`
 2. Platform team review (technical feasibility)
 3. Update to `status: validated` with refined estimates
@@ -146,11 +156,13 @@ python3 scripts/generate_ec_index.py
 6. Mark `status: implemented` when deployed
 
 ### Review Cadence
+
 - Proposed ECs reviewed in weekly platform meetings
 - Validated ECs prioritized in quarterly planning
 - Rejected ECs reviewed annually for relevance
 
 ### Document Ownership
+
 - **Author**: Person who created the EC
 - **Owner**: Team responsible for implementation (if accepted)
 - Platform team maintains overall EC index
@@ -158,7 +170,7 @@ python3 scripts/generate_ec_index.py
 ## Questions?
 
 - Slack: #platform-engineering
-- Email: platform-team@goldenpath.io
+- Email: <platform-team@goldenpath.io>
 - ADR for this system: *TBD - consider ADR-0149 if EC process becomes formal*
 
 ---

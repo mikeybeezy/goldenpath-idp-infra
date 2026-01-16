@@ -35,8 +35,10 @@ breaking_change: false
 ## [1.0.0] - 2026-01-06
 
 ### Added
+
 - **Documentation**: Implemented `scripts/generate_workflow_index.py` to auto-generate the CI Workflows Index.
 - **Governance**: Added [ADR-0103](../../adrs/ADR-0103-automated-workflow-docs.md) defining the strategy for automated workflow documentation.
 
 ### Changed
+
 - **Index**: `ci-workflows/CI_WORKFLOWS.md` is now fully automated, featuring an ASCII tree visualization and detailed breakdown of all 30+ workflows. Manual edits to this file will now be overwritten.

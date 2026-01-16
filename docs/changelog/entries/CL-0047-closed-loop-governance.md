@@ -32,12 +32,14 @@ version: '1.0'
 breaking_change: false
 ---
 
-# CL-0047: Closed-Loop Governance & Metadata Injection
+## CL-0047: Closed-Loop Governance & Metadata Injection
 
 ## Summary
+
 Implemented "Phase 2: Closed-Loop Governance," enabling the automatic propagation of governance metadata from static sidecars into live Kubernetes deployment resources.
 
 ## Changes
+
 - **Tooling Enhancement**: Updated `scripts/standardize-metadata.py` with a **Governance Injection Pass**.
 - **Metadata Propagation**: Automatically enriched 80+ `values.yaml` files and ArgoCD manifests with ownership and risk data.
 - **Template Support**: Upgraded `scripts/render-template.py` to support nested key resolution (e.g. `values.governance.id`).
@@ -45,6 +47,7 @@ Implemented "Phase 2: Closed-Loop Governance," enabling the automatic propagatio
 - **Registry Update**: Created [Platform Automation Scripts Index](../../../scripts/index.md).
 
 ## Business Value
+
 - **100% Auditability**: Live cluster resources now advertise their own ownership and risk profiles.
 - **Unified Knowledge Graph**: The gap between "Documentation" and "Live State" is programmatically bridged.
 - **Operational Efficiency**: Zero manual effort required to synchronize governance data across the estate.

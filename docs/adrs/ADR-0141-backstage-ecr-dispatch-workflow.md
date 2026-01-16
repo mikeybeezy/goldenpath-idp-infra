@@ -27,7 +27,7 @@ version: 1.0
 breaking_change: false
 ---
 
-# ADR-0141: Backstage ECR requests use GitHub Actions dispatch
+## ADR-0141: Backstage ECR requests use GitHub Actions dispatch
 
 - **Status:** Accepted
 - **Date:** 2026-01-11
@@ -59,10 +59,12 @@ updates.
 
 ## Scope
 
-**Applies to:**
+### Applies to
+
 - ECR registry requests in Backstage.
 
-**Does not apply to:**
+### Does not apply to
+
 - Other scaffolder templates that do not rely on registry creation.
 
 ## Consequences

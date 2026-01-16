@@ -28,7 +28,7 @@ version: 1.0
 breaking_change: false
 ---
 
-# ADR-0133: Human-in-the-Loop PRs for Backstage Docs Generation
+## ADR-0133: Human-in-the-Loop PRs for Backstage Docs Generation
 
 - **Status:** Accepted
 - **Date:** 2026-01-09
@@ -55,26 +55,31 @@ workflow will not auto-merge changes.
 
 ## Scope
 
-**Applies to:**
+### Applies to
+
 - Backstage doc entity generation (`scripts/generate_backstage_docs.py`)
 - Catalog doc outputs under `backstage-helm/backstage-catalog/docs/`
 - Governance oversight via CODEOWNERS or required reviewers
 
-**Does not apply to:**
+### Does not apply to
+
 - Non-doc automation or runtime changes
 - Manual edits to Backstage catalog entities outside the docs scope
 
 ## Consequences
 
 ### Positive
+
 - Prevents drift between docs and Backstage catalog entities.
 - Enforces Human-in-the-Loop review for governance artifacts.
 
 ### Tradeoffs / Risks
+
 - Adds PR overhead for routine doc updates.
 - Requires a reviewer to keep the catalog fresh.
 
 ### Operational impact
+
 - Add a workflow to generate docs and open a PR.
 - Ensure CODEOWNERS require a human approval.
 

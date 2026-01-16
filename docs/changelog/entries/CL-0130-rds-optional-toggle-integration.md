@@ -38,10 +38,10 @@ Added optional RDS toggle to EKS environment configuration, providing a second d
 
 ## Two Deployment Models
 
-| Model | Command | Use Case |
-| --- | --- | --- |
-| Standalone (A) | `make rds-apply` then `make apply` | RDS survives cluster teardown |
-| Coupled (B) | `make apply` with `enabled = true` | Single-command deployment |
+|Model|Command|Use Case|
+|---|---|---|
+|Standalone (A)|`make rds-apply` then `make apply`|RDS survives cluster teardown|
+|Coupled (B)|`make apply` with `enabled = true`|Single-command deployment|
 
 ## Configuration (Coupled Option)
 

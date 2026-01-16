@@ -35,9 +35,10 @@ dependencies:
 breaking_change: true
 ---
 
-# ADR-0097: Domain-Based Resource Catalogs
+## ADR-0097: Domain-Based Resource Catalogs
 
 ## Status
+
 Accepted
 
 ## Context
@@ -49,14 +50,14 @@ As the platform grows, we need to manage multiple resource types (ECR registries
 
 ### Current State
 
-```
+```text
 docs/
 └── registry-catalog.yaml  # ECR only
 ```
 
 ### Future State (Option 1: Single Catalog)
 
-```
+```text
 docs/
 └── platform-catalog.yaml  # Everything in one file
     ├── ecr_registries
@@ -67,7 +68,7 @@ docs/
 
 ### Future State (Option 2: Domain-Based)
 
-```
+```text
 docs/20-contracts/resource-catalogs/
 ├── ecr-catalog.yaml
 ├── rds-catalog.yaml
@@ -81,7 +82,7 @@ docs/20-contracts/resource-catalogs/
 
 ### Catalog Structure
 
-```
+```text
 docs/20-contracts/resource-catalogs/
 ├── README.md              # Index of all catalogs
 ├── ecr-catalog.yaml       # Container registries
@@ -144,7 +145,7 @@ catalog:
 
 ## Architecture Diagram
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │  DOMAIN-BASED CATALOG ARCHITECTURE                  │
 └─────────────────────────────────────────────────────┘
@@ -176,90 +177,104 @@ Reads all catalogs → Unified service catalog
 
 ### Pros
 
-**Scalability:**
+### Scalability
+
 - Small, focused files (easier to work with)
 - No single file bottleneck
 - Scales to hundreds of resources
 
-**Ownership:**
+### Ownership
+
 - Different teams can own different catalogs
 - Database team owns `rds-catalog.yaml`
 - Storage team owns `s3-catalog.yaml`
 - Clear responsibility boundaries
 
-**Blast Radius:**
+### Blast Radius
+
 - Changes to ECR don't affect RDS
 - Reduced merge conflicts
 - Isolated failures
 
-**Performance:**
+### Performance
+
 - Terraform only reads relevant catalog
 - Faster parsing
 - Lower memory usage
 
-**Flexibility:**
+### Flexibility
+
 - Different schemas per domain
 - Domain-specific metadata
 - Independent versioning
 
 ### Cons
 
-**Complexity:**
+### Complexity
+
 - More files to maintain
 - Need catalog discovery mechanism
 - Aggregation required for platform-wide view
 
-**Migration:**
+### Migration
+
 - Breaking change (need to update references)
 - Workflow updates required
 - Documentation updates required
 
 ### Mitigations
 
-**Catalog Discovery:**
+### Catalog Discovery
+
 - Create `docs/20-contracts/resource-catalogs/README.md` as index
 - Backstage auto-discovers via config
 
-**Migration Path:**
+### Migration Path
+
 1. Create `docs/20-contracts/resource-catalogs/` directory
 2. Move `registry-catalog.yaml` → `ecr-catalog.yaml`
 3. Update all references (workflows, Terraform)
 4. Update documentation
 
-**Backward Compatibility:**
+### Backward Compatibility
+
 - Not possible (breaking change)
 - Acceptable since no production usage yet
 
 ## Trade-offs
 
-| Aspect | Single Catalog | Domain-Based | Winner |
+|Aspect|Single Catalog|Domain-Based|Winner|
 |--------|---------------|--------------|--------|
-| **Simplicity** |  One file |  Multiple files | Single |
-| **Scalability** |  Gets huge |  Stays small | Domain |
-| **Ownership** |  Shared |  Distributed | Domain |
-| **Performance** |  Parse all |  Parse needed | Domain |
-| **Merge Conflicts** |  High risk |  Low risk | Domain |
-| **Discovery** |  Easy |  Need index | Single |
+|**Simplicity**|One file|Multiple files|Single|
+|**Scalability**|Gets huge|Stays small|Domain|
+|**Ownership**|Shared|Distributed|Domain|
+|**Performance**|Parse all|Parse needed|Domain|
+|**Merge Conflicts**|High risk|Low risk|Domain|
+|**Discovery**|Easy|Need index|Single|
 
 **Overall:** Domain-based wins 4-2
 
 ## Implementation
 
 ### Phase 1: Structure
+
 - Create `docs/20-contracts/resource-catalogs/` directory
 - Create `docs/20-contracts/resource-catalogs/README.md` index
 - Move `registry-catalog.yaml` → `ecr-catalog.yaml`
 
 ### Phase 2: Update References
+
 - Update `.github/workflows/create-ecr-registry.yml`
 - Update `scripts/generate_catalog_docs.py`
 - Update Terraform (when implemented)
 
 ### Phase 3: Documentation
+
 - Update runbooks
 - Update ADRs
 - Create changelog
 
 ## Related
+
 - [ADR-0092: ECR Registry Product Strategy](./ADR-0092-ecr-registry-product-strategy.md)
 - [ADR-0094: Automated Catalog Documentation](./ADR-0094-automated-catalog-docs.md)

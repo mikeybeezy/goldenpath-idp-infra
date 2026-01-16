@@ -36,7 +36,7 @@ version: 1.0
 breaking_change: false
 ---
 
-# Platform DNS Management
+## Platform DNS Management
 
 This living document captures the DNS configuration strategy, naming conventions, and operational procedures for the GoldenPath IDP platform.
 
@@ -83,11 +83,11 @@ This living document captures the DNS configuration strategy, naming conventions
 
 ### Environment Subdomains
 
-| Environment | Subdomain Pattern | Example |
+|Environment|Subdomain Pattern|Example|
 |-------------|-------------------|---------|
-| Development | `*.dev.goldenpathidp.io` | `backstage.dev.goldenpathidp.io` |
-| Staging | `*.staging.goldenpathidp.io` | `backstage.staging.goldenpathidp.io` |
-| Production | `*.goldenpathidp.io` | `backstage.goldenpathidp.io` |
+|Development|`*.dev.goldenpathidp.io`|`backstage.dev.goldenpathidp.io`|
+|Staging|`*.staging.goldenpathidp.io`|`backstage.staging.goldenpathidp.io`|
+|Production|`*.goldenpathidp.io`|`backstage.goldenpathidp.io`|
 
 ---
 
@@ -95,21 +95,21 @@ This living document captures the DNS configuration strategy, naming conventions
 
 ### Platform Tooling Services
 
-| Service | Dev | Staging | Prod |
+|Service|Dev|Staging|Prod|
 |---------|-----|---------|------|
-| **Backstage** | backstage.dev.goldenpathidp.io | backstage.staging.goldenpathidp.io | backstage.goldenpathidp.io |
-| **Keycloak** | keycloak.dev.goldenpathidp.io | keycloak.staging.goldenpathidp.io | keycloak.goldenpathidp.io |
-| **ArgoCD** | argocd.dev.goldenpathidp.io | argocd.staging.goldenpathidp.io | argocd.goldenpathidp.io |
-| **Grafana** | grafana.dev.goldenpathidp.io | grafana.staging.goldenpathidp.io | grafana.goldenpathidp.io |
+|**Backstage**|backstage.dev.goldenpathidp.io|backstage.staging.goldenpathidp.io|backstage.goldenpathidp.io|
+|**Keycloak**|keycloak.dev.goldenpathidp.io|keycloak.staging.goldenpathidp.io|keycloak.goldenpathidp.io|
+|**ArgoCD**|argocd.dev.goldenpathidp.io|argocd.staging.goldenpathidp.io|argocd.goldenpathidp.io|
+|**Grafana**|grafana.dev.goldenpathidp.io|grafana.staging.goldenpathidp.io|grafana.goldenpathidp.io|
 
 ### Internal Services (Not Exposed)
 
-| Service | Access Method | Reason |
+|Service|Access Method|Reason|
 |---------|---------------|--------|
-| Prometheus | Port-forward | Security - metrics data |
-| Alertmanager | Port-forward | Security - alert config |
-| Loki | Via Grafana | Backend service |
-| Kong Admin | Port-forward | Security - gateway config |
+|Prometheus|Port-forward|Security - metrics data|
+|Alertmanager|Port-forward|Security - alert config|
+|Loki|Via Grafana|Backend service|
+|Kong Admin|Port-forward|Security - gateway config|
 
 ---
 
@@ -132,11 +132,11 @@ kubectl get svc -n kong-system kong-kong-proxy \
 
 Create wildcard CNAME records pointing to the Kong LoadBalancer:
 
-| Record | Type | Target |
+|Record|Type|Target|
 |--------|------|--------|
-| `*.dev.goldenpathidp.io` | CNAME | `<dev-kong-lb>.elb.eu-west-2.amazonaws.com` |
-| `*.staging.goldenpathidp.io` | CNAME | `<staging-kong-lb>.elb.eu-west-2.amazonaws.com` |
-| `*.goldenpathidp.io` | CNAME | `<prod-kong-lb>.elb.eu-west-2.amazonaws.com` |
+|`*.dev.goldenpathidp.io`|CNAME|`<dev-kong-lb>.elb.eu-west-2.amazonaws.com`|
+|`*.staging.goldenpathidp.io`|CNAME|`<staging-kong-lb>.elb.eu-west-2.amazonaws.com`|
+|`*.goldenpathidp.io`|CNAME|`<prod-kong-lb>.elb.eu-west-2.amazonaws.com`|
 
 **Pros**: Single record covers all services, automatic for new services
 
@@ -146,12 +146,12 @@ Create wildcard CNAME records pointing to the Kong LoadBalancer:
 
 Create individual CNAME records for each service:
 
-| Record | Type | Target |
+|Record|Type|Target|
 |--------|------|--------|
-| `backstage.dev.goldenpathidp.io` | CNAME | `<dev-kong-lb>...` |
-| `keycloak.dev.goldenpathidp.io` | CNAME | `<dev-kong-lb>...` |
-| `argocd.dev.goldenpathidp.io` | CNAME | `<dev-kong-lb>...` |
-| `grafana.dev.goldenpathidp.io` | CNAME | `<dev-kong-lb>...` |
+|`backstage.dev.goldenpathidp.io`|CNAME|`<dev-kong-lb>...`|
+|`keycloak.dev.goldenpathidp.io`|CNAME|`<dev-kong-lb>...`|
+|`argocd.dev.goldenpathidp.io`|CNAME|`<dev-kong-lb>...`|
+|`grafana.dev.goldenpathidp.io`|CNAME|`<dev-kong-lb>...`|
 
 **Pros**: Explicit control, only known services resolve
 
@@ -176,11 +176,11 @@ openssl s_client -connect backstage.dev.goldenpathidp.io:443 -servername backsta
 
 ### Certificate Issuers
 
-| Environment | ClusterIssuer | Certificate Type |
+|Environment|ClusterIssuer|Certificate Type|
 |-------------|---------------|------------------|
-| dev | `letsencrypt-staging` | Staging (browser warnings) |
-| staging | `letsencrypt-staging` | Staging (browser warnings) |
-| prod | `letsencrypt-prod` | Production (trusted) |
+|dev|`letsencrypt-staging`|Staging (browser warnings)|
+|staging|`letsencrypt-staging`|Staging (browser warnings)|
+|prod|`letsencrypt-prod`|Production (trusted)|
 
 ### Certificate Lifecycle
 
@@ -283,22 +283,22 @@ All publicly exposed services should be protected by:
 
 The following services are intentionally NOT exposed via ingress:
 
-| Service | Reason | Mitigation |
+|Service|Reason|Mitigation|
 |---------|--------|------------|
-| Prometheus | Contains sensitive metrics | Access via Grafana or port-forward |
-| Alertmanager | Alert configuration access | Port-forward only |
-| Loki | Log data access | Access via Grafana Explore |
-| Kong Admin | Gateway configuration | Port-forward only |
-| Kubernetes API | Cluster access | VPN or kubectl context |
+|Prometheus|Contains sensitive metrics|Access via Grafana or port-forward|
+|Alertmanager|Alert configuration access|Port-forward only|
+|Loki|Log data access|Access via Grafana Explore|
+|Kong Admin|Gateway configuration|Port-forward only|
+|Kubernetes API|Cluster access|VPN or kubectl context|
 
 ---
 
 ## Changelog
 
-| Date | Author | Change |
+|Date|Author|Change|
 |------|--------|--------|
-| 2026-01-16 | platform-team | Initial document creation |
-| 2026-01-16 | platform-team | Added tooling services DNS configuration |
+|2026-01-16|platform-team|Initial document creation|
+|2026-01-16|platform-team|Added tooling services DNS configuration|
 
 ---
 

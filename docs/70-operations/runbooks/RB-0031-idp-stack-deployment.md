@@ -20,7 +20,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# IDP Stack Deployment Runbook (Keycloak + Backstage)
+## IDP Stack Deployment Runbook (Keycloak + Backstage)
 
 This runbook provides the complete sequence to deploy and verify the IDP core stack (Keycloak and Backstage) on a new or existing EKS cluster.
 
@@ -35,12 +35,13 @@ This runbook provides the complete sequence to deploy and verify the IDP core st
 
 > **Current State**: This runbook uses **pre-baked community images** for both Keycloak and Backstage:
 >
-> | Application | Image Source | Notes |
-> |-------------|--------------|-------|
-> | Keycloak | `public.ecr.aws/bitnami/keycloak:latest` | Bitnami-maintained, required for Helm chart compatibility |
-> | Backstage | `ghcr.io/guymenahem/backstage-platformers:0.0.1` | Platformers community pre-built image |
+> |Application|Image Source|Notes|
+> |---|---|---|
+> |Keycloak|`public.ecr.aws/bitnami/keycloak:latest`|Bitnami-maintained, required for Helm chart compatibility|
+> |Backstage|`ghcr.io/guymenahem/backstage-platformers:0.0.1`|Platformers community pre-built image|
 >
 > **When building custom images**, the following will change:
+>
 > - **Backstage Dockerfile**: You'll need to maintain your own Dockerfile with custom plugins
 > - **Build pipeline**: CI/CD will build and push images to ECR on each release
 > - **Image tags**: Use semantic versioning instead of fixed tags
@@ -50,7 +51,7 @@ This runbook provides the complete sequence to deploy and verify the IDP core st
 
 ## Architecture Overview
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         EKS Cluster                                  │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────────┐  │
@@ -109,7 +110,8 @@ aws ecr describe-repositories \
   --query 'repositories[*].repositoryName'
 ```
 
-**Expected secrets:**
+### Expected secrets
+
 - `goldenpath/${ENV}/rds/master` - RDS master credentials
 - `goldenpath/${ENV}/keycloak/postgres` - Keycloak DB credentials
 - `goldenpath/${ENV}/backstage/postgres` - Backstage DB credentials
@@ -150,12 +152,12 @@ kubectl get pods -n kube-system -l k8s-app=kube-dns
 kubectl get svc -n kube-system kube-dns
 ```
 
-**Expected output:**
+### Expected output
 
 - CoreDNS pods: 2 replicas running
 - Service: ClusterIP on port 53 (UDP/TCP)
 
-**Verification tests:**
+### Verification tests
 
 ```bash
 # Test 1: Internal Kubernetes API resolution
@@ -188,7 +190,7 @@ aws eks describe-addon \
 
 ## Phase 1: ECR Repository and Image Preparation
 
-### Why This Matters
+### Why This Matters (RDS User Provisioning)
 
 - **ECR is required**: All IDP images must be stored in private ECR to avoid Docker Hub rate limits and ensure availability
 - **Architecture matters**: EKS nodes are AMD64 (x86_64). Images pulled on Apple Silicon (ARM64) Macs will fail with `exec format error`
@@ -204,11 +206,12 @@ aws ecr describe-repositories \
   --output table
 ```
 
-**Required repositories:**
-| Repository | Purpose | Source Image |
+### Required repositories
+
+|Repository|Purpose|Source Image|
 |------------|---------|--------------|
-| `keycloak` | Identity provider | `public.ecr.aws/bitnami/keycloak:latest` |
-| `backstage` | Developer portal | `ghcr.io/guymenahem/backstage-platformers:0.0.1` |
+|`keycloak`|Identity provider|`public.ecr.aws/bitnami/keycloak:latest`|
+|`backstage`|Developer portal|`ghcr.io/guymenahem/backstage-platformers:0.0.1`|
 
 ### Step 1.2: Create ECR Repositories (if missing)
 
@@ -280,7 +283,7 @@ docker push 593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak:latest
 
 ### Step 1.6: Pull and Push Backstage Image (if missing)
 
-**Option A: Use pre-built Platformers image**
+### Option A: Use pre-built Platformers image
 
 ```bash
 # Pull Backstage image (pre-built by Platformers community)
@@ -294,7 +297,7 @@ docker tag ghcr.io/guymenahem/backstage-platformers:0.0.1 \
 docker push 593517239005.dkr.ecr.eu-west-2.amazonaws.com/backstage:0.0.1
 ```
 
-**Option B: Build custom Backstage image from source**
+### Option B: Build custom Backstage image from source
 
 If you need to build a custom Backstage image with additional plugins:
 
@@ -331,7 +334,7 @@ docker inspect 593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak:latest \
 
 ## Phase 2: RDS User Provisioning
 
-### Why This Matters
+### Why This Matters (GitHub Token)
 
 Terraform creates AWS Secrets Manager secrets with credentials, but does NOT create the actual PostgreSQL users. This is a known gap that requires manual intervention.
 
@@ -463,23 +466,23 @@ Without a valid token, Backstage will start but PR-based features and private ca
 
 2. Create a new token with these scopes:
 
-**For Classic Tokens:**
+### For Classic Tokens
 
-| Scope       | Purpose                                                       |
-| ----------- | ------------------------------------------------------------- |
-| `repo`      | Full control of private repositories (scaffolder PR creation) |
-| `workflow`  | Update GitHub Action workflows                                |
-| `read:org`  | Read organization membership                                  |
-| `read:user` | Read user profile data                                        |
+|Scope|Purpose|
+|-----------|-------------------------------------------------------------|
+|`repo`|Full control of private repositories (scaffolder PR creation)|
+|`workflow`|Update GitHub Action workflows|
+|`read:org`|Read organization membership|
+|`read:user`|Read user profile data|
 
-**For Fine-grained Tokens:**
+### For Fine-grained Tokens
 
-| Permission                              | Access Level   |
-| --------------------------------------- | -------------- |
-| Repository permissions → Contents       | Read and write |
-| Repository permissions → Pull requests  | Read and write |
-| Repository permissions → Workflows      | Read and write |
-| Organization permissions → Members      | Read-only      |
+|Permission|Access Level|
+|---------------------------------------|--------------|
+|Repository permissions → Contents|Read and write|
+|Repository permissions → Pull requests|Read and write|
+|Repository permissions → Workflows|Read and write|
+|Organization permissions → Members|Read-only|
 
 ### Step 3.5.2: Store Token in AWS Secrets Manager
 
@@ -591,12 +594,12 @@ kubectl logs -n keycloak dev-keycloak-0 --tail=100
 
 ### Common Keycloak Issues
 
-| Symptom | Cause | Fix |
+|Symptom|Cause|Fix|
 |---------|-------|-----|
-| `exec format error` | ARM64 image on AMD64 nodes | Re-push with `--platform linux/amd64` |
-| `Init:Error` | Missing Bitnami scripts | Use `public.ecr.aws/bitnami/keycloak` |
-| `password authentication failed` | PostgreSQL user doesn't exist | Run Phase 2 user provisioning |
-| `ImagePullBackOff` | ECR auth or image missing | Check ECR login and image exists |
+|`exec format error`|ARM64 image on AMD64 nodes|Re-push with `--platform linux/amd64`|
+|`Init:Error`|Missing Bitnami scripts|Use `public.ecr.aws/bitnami/keycloak`|
+|`password authentication failed`|PostgreSQL user doesn't exist|Run Phase 2 user provisioning|
+|`ImagePullBackOff`|ECR auth or image missing|Check ECR login and image exists|
 
 ---
 
@@ -629,12 +632,12 @@ kubectl logs -n backstage -l app.kubernetes.io/name=backstage --tail=100
 
 ### Common Backstage Issues
 
-| Symptom | Cause | Fix |
+|Symptom|Cause|Fix|
 |---------|-------|-----|
-| `no pg_hba.conf entry ... no encryption` | SSL not configured | Add `ssl.require: true` to appConfig |
-| `permission denied to create database` | Missing CREATEDB privilege | Run `ALTER USER backstage_app CREATEDB` |
-| `Kubernetes configuration is missing` | Missing k8s config in appConfig | Add kubernetes block to values |
-| `Failed to connect to database` | Wrong host/port/credentials | Verify ExternalSecret syncing |
+|`no pg_hba.conf entry ... no encryption`|SSL not configured|Add `ssl.require: true` to appConfig|
+|`permission denied to create database`|Missing CREATEDB privilege|Run `ALTER USER backstage_app CREATEDB`|
+|`Kubernetes configuration is missing`|Missing k8s config in appConfig|Add kubernetes block to values|
+|`Failed to connect to database`|Wrong host/port/credentials|Verify ExternalSecret syncing|
 
 ---
 
@@ -687,7 +690,7 @@ kubectl logs -n backstage -l app.kubernetes.io/name=backstage | grep -i "migrati
 
 ## Troubleshooting Decision Tree
 
-```
+```text
 Pod not starting?
 ├── ImagePullBackOff
 │   ├── Check ECR authentication

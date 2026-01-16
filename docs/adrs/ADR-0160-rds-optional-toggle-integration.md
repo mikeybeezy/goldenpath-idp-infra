@@ -88,21 +88,21 @@ module "platform_rds" {
 
 ## When to Use Which
 
-| Requirement | Use Standalone (A) | Use Coupled (B) |
-| --- | --- | --- |
-| RDS must survive cluster teardown | Yes | No |
-| Single-command deployment | No | Yes |
-| Backstage self-service | Yes (wired) | Future |
-| Independent state management | Yes | No |
-| Simpler mental model | No | Yes |
+|Requirement|Use Standalone (A)|Use Coupled (B)|
+|---|---|---|
+|RDS must survive cluster teardown|Yes|No|
+|Single-command deployment|No|Yes|
+|Backstage self-service|Yes (wired)|Future|
+|Independent state management|Yes|No|
+|Simpler mental model|No|Yes|
 
 ## User Journey (Coupled Option)
 
-| Day | User Need | Action |
-| --- | --- | --- |
-| 1 | Just need a cluster | `enabled = false`, run `make apply` |
-| 30 | Now I need a database | Change to `enabled = true`, run `make apply` |
-| 60 | Add another app database | Add to `application_databases`, run `make apply` |
+|Day|User Need|Action|
+|---|---|---|
+|1|Just need a cluster|`enabled = false`, run `make apply`|
+|30|Now I need a database|Change to `enabled = true`, run `make apply`|
+|60|Add another app database|Add to `application_databases`, run `make apply`|
 
 ## Consequences
 

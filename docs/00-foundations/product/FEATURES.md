@@ -12,13 +12,14 @@ reliability:
   maturity: 1
 ---
 
-# Golden Path IDP Features
+## Golden Path IDP Features
 
 The Golden Path IDP provides a streamlined, self-service experience for developers to provision infrastructure, manage applications, and adhere to governance standards. This document provides a high-level overview of available features, while the [**Capability Ledger**](./CAPABILITY_LEDGER.md) provides a detailed technical breakdown of every platform ability.
 
 ---
 
 ## 🛡️ Platform Governance & Trust
+
 *Ensuring the ecosystem stays "Born Governed" without slowing down engineering velocity.*
 
 - **Metadata Sidecars**: Every resource carries its own identity, ownership, and risk profile.
@@ -32,6 +33,7 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Script Certification**: Verifiable trust for automation scripts through cryptographic proofs and a rigorous "Born Governed" lifecycle.
 
 ## 🚀 Delivery & Self-Service
+
 *Automating the path from local code to a production-ready, governed environment.*
 
 - **Repository Scaffolding**: One-click creation of governed GitHub repositories with pre-configured CI/CD.
@@ -43,6 +45,7 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Standalone Platform RDS**: Persistent multi-tenant PostgreSQL database as a bounded context, surviving cluster rebuilds with CI-enforced secret rotation and multi-layer deletion protection.
 
 ## Observability & Intelligence
+
 *Providing visibility into the state, cost, and architecture of the entire platform.*
 
 - **Platform Health Dashboard**: A real-time audit of governance coverage and infrastructure health.
@@ -52,6 +55,7 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **OOTB Golden Signals**: Instant RED metrics (Rate, Errors, Duration) and correlated logs for every application, with zero configuration required.
 
 ## Foundations (Internal)
+
 *The core engineering systems that power the Golden Path experience.*
 
 - **Enum Consistency**: Unified vocabulary across all metadata and automation engines.

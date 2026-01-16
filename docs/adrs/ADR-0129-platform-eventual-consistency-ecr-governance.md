@@ -27,7 +27,7 @@ version: 1.0
 breaking_change: false
 ---
 
-# ADR-0129: Eventual Consistency for ECR Registry Governance
+## ADR-0129: Eventual Consistency for ECR Registry Governance
 
 - **Status:** Accepted
 - **Date:** 2026-01-08

@@ -13,7 +13,7 @@ reliability:
 category: runbooks
 ---
 
-# RB-0014: Repo Health & Hygiene
+## RB-0014: Repo Health & Hygiene
 
 ```text
        [ PLATFORM HEALTH ]
@@ -29,34 +29,44 @@ This runbook is for **Platform Owners** managing the long-term cleanliness and c
 ## Operational Tasks
 
 ### 1. The Audit Loop
+
 Generate a repository-wide compliance snapshot to identify pockets of "Technical Debt" (orphaned sidecars or categories).
 
 ```bash
 bin/governance audit
 ```
-*   **Target**: 100% compliance.
-*   **Failure Mode**: If the audit finds drift, use [**RB-0013**](docs/70-operations/runbooks/RB-0013-metadata-and-enum-alignment.md) to remediate.
+
+* **Target**: 100% compliance.
+* **Failure Mode**: If the audit finds drift, use [**RB-0013**](docs/70-operations/runbooks/RB-0013-metadata-and-enum-alignment.md) to remediate.
 
 ### 2. Registry Verification
+
 The [**`PLATFORM_HEALTH.md`**](../../../PLATFORM_HEALTH.md) dashboard tracks how well our sidecars are "bonded" to physical resources.
-*   **Fixing `⚠️ Injection Integrity`**: Ensure that the K8s name labels match the sidecar `id` exactly.
+
+* **Fixing `⚠️ Injection Integrity`**: Ensure that the K8s name labels match the sidecar `id` exactly.
 
 ### 3. Emoji & Visual Policy
+
 To keep documentation professional and readable, we enforce a strict emoji policy.
-*   **Detection**: `scripts/enforce_emoji_policy.py` will flag illegal emojis in ADRs or Policies.
-*   **Recovery**:
+
+* **Detection**: `scripts/enforce_emoji_policy.py` will flag illegal emojis in ADRs or Policies.
+* **Recovery**:
+
   ```bash
   python3 scripts/enforce_emoji_policy.py --fix .
   ```
 
 ### 4. Vocabulary Maintenance
+
 Every time `enums.yaml` is updated, the human-readable docs must be refreshed.
+
 ```bash
 bin/governance vocab
 ```
 
 ## Why This Exists
+
 High-velocity platforms rot if not maintained. These hygiene tasks ensure that the "Total Governance" reach remains at 100%, providing users with trustworthy and predictable documentation.
 
 ---
-*Last Updated: 2026-01-07*
+Last Updated: 2026-01-07

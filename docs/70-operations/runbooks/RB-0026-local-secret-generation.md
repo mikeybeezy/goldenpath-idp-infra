@@ -9,7 +9,7 @@ category: runbooks
 version: '1.2'
 ---
 
-# RB-0026: Local Secret Generation & Targeting
+## RB-0026: Local Secret Generation & Targeting
 
 This runbook explains how to execute the **Secret Request Parser** locally. This is useful for dry-running new secret requests, validating intent YAMLs, or surgically generating infrastructure variables without waiting for a full CI cycle.
 
@@ -21,15 +21,16 @@ The [Secret Request Parser](../../../scripts/secret_request_parser.py) is the in
 
 ## 🛠️ Prerequisites
 
-1.  **Python 3.10+** installed.
-2.  **PyYAML** library: `pip install PyYAML`.
-3.  **Working directory must be the project root.** Commands will fail if run from inside `envs/dev` or other subdirectories.
+1. **Python 3.10+** installed.
+2. **PyYAML** library: `pip install PyYAML`.
+3. **Working directory must be the project root.** Commands will fail if run from inside `envs/dev` or other subdirectories.
 
 ---
 
 ## ⚡ Execution Steps
 
 ### 1. Validate Intent (Dry Run)
+
 Before generating any files, you can validate that your `SecretRequest` YAML satisfies the platform's schema and governance rules (e.g., rotation requirements).
 
 ```bash
@@ -40,6 +41,7 @@ python3 scripts/secret_request_parser.py \
 ```
 
 ### 2. Generate Implementation (Targeting)
+
 To generate the Terraform `.tfvars` and Kubernetes `ExternalSecret` manifests for a specific resource, use the `generate` mode and target the file explicitly.
 
 ```bash
@@ -49,7 +51,8 @@ python3 scripts/secret_request_parser.py \
   --input-files docs/20-contracts/secret-requests/payments/dev/SEC-0007.yaml
 ```
 
-**Expected Output:**
+### Expected Output
+
 ```text
 [OK] docs/20-contracts/secret-requests/payments/dev/SEC-0007.yaml -> envs/dev/secrets/generated/payments/SEC-0007.auto.tfvars.json
 [OK] docs/20-contracts/secret-requests/payments/dev/SEC-0007.yaml -> gitops/kustomize/overlays/dev/apps/payments/externalsecrets/SEC-0007.yaml
@@ -64,10 +67,10 @@ python3 scripts/secret_request_parser.py \
 
 Once execution succeeds, the parser will emit files to deterministic locations:
 
-| Target | Output Location | Purpose |
-| :--- | :--- | :--- |
-| **Terraform** | `envs/<env>/secrets/generated/<service>/SEC-XXXX.auto.tfvars.json` | Cloud resource provisioning |
-| **GitOps** | `gitops/kustomize/overlays/<env>/apps/<service>/externalsecrets/SEC-XXXX.yaml` | Cluster-side projection |
+|Target|Output Location|Purpose|
+|:---|:---|:---|
+|**Terraform**|`envs/<env>/secrets/generated/<service>/SEC-XXXX.auto.tfvars.json`|Cloud resource provisioning|
+|**GitOps**|`gitops/kustomize/overlays/<env>/apps/<service>/externalsecrets/SEC-XXXX.yaml`|Cluster-side projection|
 
 ---
 
@@ -77,8 +80,8 @@ A common question is: **Why can't I just run `terraform apply`?**
 
 In our platform, a secret isn't functional until it exists in both AWS and Kubernetes. Running `terraform apply` in isolation only completes the **infrastructure** half. The Parser script is the only component that bridges the two worlds:
 
-1.  **Infrastructure (AWS)**: The generated `*.auto.tfvars.json` tells Terraform to create the secret and the IAM policy in AWS Secrets Manager.
-2.  **Projection (K8s)**: The generated `ExternalSecret` manifest tells the **External Secrets Operator (ESO)** in your cluster *which* AWS secret to fetch and *where* to put it in Kubernetes.
+1. **Infrastructure (AWS)**: The generated `*.auto.tfvars.json` tells Terraform to create the secret and the IAM policy in AWS Secrets Manager.
+2. **Projection (K8s)**: The generated `ExternalSecret` manifest tells the **External Secrets Operator (ESO)** in your cluster *which* AWS secret to fetch and *where* to put it in Kubernetes.
 
 ---
 
@@ -87,6 +90,7 @@ In our platform, a secret isn't functional until it exists in both AWS and Kuber
 After the parser generates the implementation artifacts, you must follow these steps to bring the secret to life:
 
 ### 1. Provision the AWS Resource
+
 Navigate to the Terraform environment and apply the changes.
 
 > [!IMPORTANT]
@@ -109,11 +113,14 @@ terraform apply \
 ```
 
 #### Selecting the Region
+
 The AWS region is controlled by the `aws_region` variable in your environment's `terraform.tfvars`.
-*   To check: `grep "aws_region" terraform.tfvars` (from `envs/dev/`)
-*   To override locally: Use `-var="aws_region=us-east-1"` in your plan/apply command.
+
+* To check: `grep "aws_region" terraform.tfvars` (from `envs/dev/`)
+* To override locally: Use `-var="aws_region=us-east-1"` in your plan/apply command.
 
 ### 2. Commit and Sync (GitOps)
+
 The `ExternalSecret` manifest must be committed to the repository for ArgoCD to pick it up.
 
 ```bash
@@ -123,8 +130,9 @@ git push origin <your-branch>
 ```
 
 ### 3. Reconcile in Cluster
-*   **Automatic**: ArgoCD will sync the new manifest within its next refresh cycle (usually 3-5 minutes).
-*   **Surgical Sync**: You can trigger a manual sync in the ArgoCD UI or via CLI to prioritize this change.
+
+* **Automatic**: ArgoCD will sync the new manifest within its next refresh cycle (usually 3-5 minutes).
+* **Surgical Sync**: You can trigger a manual sync in the ArgoCD UI or via CLI to prioritize this change.
 
 ---
 
@@ -133,6 +141,7 @@ git push origin <your-branch>
 After your local testing or verification is complete, you should cleanup the created resources to prevent drift or accidental production usage.
 
 ### 1. Destroy AWS Resource
+
 Use the same target and var-file to surgically destroy only the secret you created.
 
 ```bash
@@ -144,6 +153,7 @@ terraform destroy \
 ```
 
 ### 2. Remove Generated Artifacts
+
 Delete the local files produced by the parser to keep the `generated/` directories clean.
 
 ```bash
@@ -156,15 +166,16 @@ rm gitops/kustomize/overlays/dev/apps/payments/externalsecrets/SEC-0007.yaml
 
 ## Troubleshooting
 
-| Issue | Root Cause | Resolution |
-| :--- | :--- | :--- |
-| `AccessDeniedException` | Your local IAM user lacks `secretsmanager:CreateSecret`. | Ensure your local principal has the necessary permissions or run via CI/CD. |
-| `missing required fields` | The YAML is incomplete. | Check [ADR-0143](../../adrs/ADR-0143-secret-request-contract.md) for required fields. |
-| `invalid rotationClass` | Governance violation. | Ensure `risk: high` secrets have a non-none rotation class. |
-| `Failed to read variables file` | Path mismatch. | Ensure you are in `envs/dev` and the relative path to the var-file is correct. |
-| `ModuleNotFoundError` | Missing Python dependency. | Run `pip install PyYAML`. |
+|Issue|Root Cause|Resolution|
+|:---|:---|:---|
+|`AccessDeniedException`|Your local IAM user lacks `secretsmanager:CreateSecret`.|Ensure your local principal has the necessary permissions or run via CI/CD.|
+|`missing required fields`|The YAML is incomplete.|Check [ADR-0143](../../adrs/ADR-0143-secret-request-contract.md) for required fields.|
+|`invalid rotationClass`|Governance violation.|Ensure `risk: high` secrets have a non-none rotation class.|
+|`Failed to read variables file`|Path mismatch.|Ensure you are in `envs/dev` and the relative path to the var-file is correct.|
+|`ModuleNotFoundError`|Missing Python dependency.|Run `pip install PyYAML`.|
 
 ---
 
 ## Support
+
 For complex policy violations or parser logic changes, contact the **@platform-team**.

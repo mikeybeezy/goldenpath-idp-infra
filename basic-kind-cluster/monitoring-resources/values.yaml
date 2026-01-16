@@ -11,5 +11,3 @@ grafana:
   sidecar:
     datasources:
       defaultDatasourceEnabled: true
-
-

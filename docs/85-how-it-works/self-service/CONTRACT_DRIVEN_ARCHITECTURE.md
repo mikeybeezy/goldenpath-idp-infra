@@ -10,13 +10,13 @@ relates_to:
   - scripts/secret_request_parser.py
 ---
 
-# Contract-Driven Architecture for Self-Service Requests
+## Contract-Driven Architecture for Self-Service Requests
 
 This document explains the contract-driven self-service architecture used by Golden Path IDP, including the "thin template" pattern where parsers generate all artifacts.
 
 ## Architecture Philosophy
 
-```
+```text
 Schema = The Contract (strict, machine-readable, single source of truth)
 Backstage = Thin UI (collect inputs, validate, open PR - nothing else)
 Parser = The Brain (reads contracts, generates all artifacts)
@@ -25,7 +25,7 @@ Terraform = Dumb Executor (no logic, just applies what parser generates)
 
 ## Current Request Flow
 
-```
+```text
 User fills Backstage form
        |
        v
@@ -81,7 +81,8 @@ steps:
       title: "RDS Request: ${{ parameters.id }}"
 ```
 
-**Benefits:**
+### Benefits
+
 1. PR is visible immediately - user can track status
 2. CI validates against schema before merge
 3. All generation logic lives in the parser (single place)
@@ -97,6 +98,7 @@ steps:
 **Input**: `docs/20-contracts/secret-requests/<service>/<env>/<secret-id>.yaml`
 
 **Outputs**:
+
 - `envs/<env>/secrets/generated/<service>/<secret-id>.auto.tfvars.json`
 - `gitops/kustomize/overlays/<env>/apps/<service>/externalsecrets/<secret-id>.yaml`
 
@@ -107,12 +109,13 @@ steps:
 **Input**: `docs/20-contracts/rds-requests/<env>/<rds-id>.yaml`
 
 **Outputs**:
+
 - `envs/<env>-rds/generated/<rds-id>.auto.tfvars.json`
 - `gitops/kustomize/overlays/<env>/apps/<service>/externalsecrets/<rds-id>.yaml`
 
 ## Schema Location and Structure
 
-```
+```text
 schemas/
   requests/
     rds.schema.yaml       # RDS database request contract
@@ -122,6 +125,7 @@ schemas/
 ```
 
 Each request schema defines:
+
 - **properties**: Field definitions with types, patterns, enums
 - **required**: Mandatory fields
 - **conditional_rules**: Environment-specific constraints
@@ -132,16 +136,17 @@ Each request schema defines:
 
 The codebase follows consistent case conventions:
 
-| Context | Convention | Example |
+|Context|Convention|Example|
 |---------|------------|---------|
-| YAML contracts | camelCase | `databaseName`, `storageGb`, `multiAz` |
-| Python internals | snake_case | `rds_id`, `database_name` |
-| Terraform | snake_case | `allocated_storage`, `multi_az` |
-| K8s labels | kebab-case | `platform.idp/service`, `goldenpath.idp/id` |
+|YAML contracts|camelCase|`databaseName`, `storageGb`, `multiAz`|
+|Python internals|snake_case|`rds_id`, `database_name`|
+|Terraform|snake_case|`allocated_storage`, `multi_az`|
+|K8s labels|kebab-case|`platform.idp/service`, `goldenpath.idp/id`|
 
 ## Running Parsers
 
 ### Validate Mode
+
 ```bash
 python3 scripts/rds_request_parser.py \
   --mode validate \
@@ -150,6 +155,7 @@ python3 scripts/rds_request_parser.py \
 ```
 
 ### Generate Mode (Dry Run)
+
 ```bash
 python3 scripts/rds_request_parser.py \
   --mode generate \
@@ -159,6 +165,7 @@ python3 scripts/rds_request_parser.py \
 ```
 
 ### Generate Mode (Write Files)
+
 ```bash
 python3 scripts/rds_request_parser.py \
   --mode generate \
@@ -173,6 +180,7 @@ python3 scripts/rds_request_parser.py \
 When a request is processed, the parser generates:
 
 ### Terraform Variables
+
 ```json
 {
   "rds_databases": {
@@ -192,6 +200,7 @@ When a request is processed, the parser generates:
 ```
 
 ### ExternalSecret Manifest
+
 ```yaml
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret

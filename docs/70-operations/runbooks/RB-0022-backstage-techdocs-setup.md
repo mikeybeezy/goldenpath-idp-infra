@@ -17,7 +17,7 @@ value_quantification:
 category: runbooks
 ---
 
-# Runbook: Enabling Native TechDocs Rendering
+## Runbook: Enabling Native TechDocs Rendering
 
 ## Overview
 
@@ -25,8 +25,9 @@ This runbook details how to enable native markdown rendering (TechDocs) for Back
 
 ## 🛠️ Prerequisites
 
-1.  **`mkdocs.yml`**: Must exist in the root of the repository (or the target directory).
-2.  **Helm Configuration**: `values.yaml` must enable local building.
+1. **`mkdocs.yml`**: Must exist in the root of the repository (or the target directory).
+2. **Helm Configuration**: `values.yaml` must enable local building.
+
     ```yaml
     backstage:
       techdocs:
@@ -36,7 +37,9 @@ This runbook details how to enable native markdown rendering (TechDocs) for Back
         publisher:
           type: 'local'
     ```
-3.  **Backend Permissions**: The `backend.reading.allow` list must include GitHub.
+
+3. **Backend Permissions**: The `backend.reading.allow` list must include GitHub.
+
     ```yaml
     backstage:
       appConfig:
@@ -50,10 +53,10 @@ This runbook details how to enable native markdown rendering (TechDocs) for Back
 
 To turn a standard Component into a Documentation Portal:
 
-1.  **Locate the Component YAML**
-    *   Example: `backstage-helm/backstage-catalog/components/platform-health.yaml`
+1. **Locate the Component YAML**
+    * Example: `backstage-helm/backstage-catalog/components/platform-health.yaml`
 
-2.  **Add the TechDocs Annotation**
+2. **Add the TechDocs Annotation**
     Add `backstage.io/techdocs-ref: dir:.` to the `metadata.annotations` section.
 
     ```yaml
@@ -66,29 +69,31 @@ To turn a standard Component into a Documentation Portal:
         backstage.io/techdocs-ref: dir:.  <-- THIS LINE ENABLES RENDERING
     ```
 
-    *   `dir:.` means "build the TechDocs site from the current directory (root) of the repo defined in project-slug".
+    * `dir:.` means "build the TechDocs site from the current directory (root) of the repo defined in project-slug".
 
-3.  **Deploy Changes**
-    *   Commit and push the YAML change.
-    *   Restart Backstage pods to pick up the catalog change immediately (or wait for refresh).
+3. **Deploy Changes**
+    * Commit and push the YAML change.
+    * Restart Backstage pods to pick up the catalog change immediately (or wait for refresh).
 
-4.  **Verify**
-    *   Open the Component in Backstage.
-    *   Click the **"Docs"** tab.
-    *   Verify the left navigation matches your `mkdocs.yml`.
+4. **Verify**
+    * Open the Component in Backstage.
+    * Click the **"Docs"** tab.
+    * Verify the left navigation matches your `mkdocs.yml`.
 
 ## Troubleshooting
 
 ### "Failed to generate docs" or "Builder not found"
-*   **Cause**: The Backstage container might lack `mkdocs` or `techdocs-core`.
-*   **Fix**: Ensure your Backstage image includes these dependencies, or switch to `techdocs.builder: 'external'` (requires S3/GCS).
+
+* **Cause**: The Backstage container might lack `mkdocs` or `techdocs-core`.
+* **Fix**: Ensure your Backstage image includes these dependencies, or switch to `techdocs.builder: 'external'` (requires S3/GCS).
 
 ### "Authentication failed" or "FetchUrlReader" errors
-*   **Cause**: The `GITHUB_TOKEN` in `backstage-secrets` is missing, invalid, or lacks scopes.
-*   **Fix**: Update the secret with a Classic Token having these scopes:
-    *   **repo** (Required for reading software components)
-    *   **read:org**, **read:user**, **user:email** (Reading organization data)
-    *   **workflow** (If templates include GitHub workflows)
+
+* **Cause**: The `GITHUB_TOKEN` in `backstage-secrets` is missing, invalid, or lacks scopes.
+* **Fix**: Update the secret with a Classic Token having these scopes:
+  * **repo** (Required for reading software components)
+  * **read:org**, **read:user**, **user:email** (Reading organization data)
+  * **workflow** (If templates include GitHub workflows)
 
 ```bash
 kubectl create secret generic backstage-secrets \
@@ -99,5 +104,6 @@ kubectl create secret generic backstage-secrets \
 ```
 
 ### Docs are stale
-*   **Cause**: Local builder caches builds.
-*   **Fix**: In a `local` setup, restarting the pod usually clears the cache. In production `external` setups, trigger a rebuild via the API.
+
+* **Cause**: Local builder caches builds.
+* **Fix**: In a `local` setup, restarting the pod usually clears the cache. In production `external` setups, trigger a rebuild via the API.

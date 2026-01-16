@@ -33,17 +33,20 @@ date: 2026-01-06
 breaking_change: false
 ---
 
-# CL-0074: Transition to Config-Driven Metadata Governance
+## CL-0074: Transition to Config-Driven Metadata Governance
 
 ## Summary
+
 Decoupled metadata standardization and validation logic from hardcoded Python scripts, moving the source of truth to YAML schemas and enums.
 
 ## Changes
+
 - **New Governance Framework**: Published [**`CONFIG_DRIVEN_METADATA.md`**](../../10-governance/CONFIG_DRIVEN_METADATA.md).
 - **Core Engine Implementation**: Created [**`metadata_config.py`**](../../../scripts/lib/metadata_config.py) to unify schema loading.
 - **Refactored Validators**: Updated index/schema validators to use config-driven logic.
 - **Refactored Healer**: Updated `standardize_metadata.py` to use dynamic schema skeletons.
 
 ## Verification
+
 - Verified validation gates still correctly flag missing required fields derived from schemas.
 - Confirmed that adding a field to a schema YAML automatically propagates to the "Healer" script.

@@ -42,7 +42,7 @@ externalDatabase:
   user: "app"
   password: "password"
   database: "platform"
-  existingSecret: "" # Disable fetching from secret
+  existingSecret: ""  # Disable fetching from secret
 
 # -----------------------------------------------------------------------------
 # Keycloak Configuration

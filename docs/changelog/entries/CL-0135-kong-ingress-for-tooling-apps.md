@@ -38,7 +38,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# CL-0135: Kong Ingress for Tooling Apps
+## CL-0135: Kong Ingress for Tooling Apps
 
 **Type**: Feature
 **Component**: Backstage / Kong
@@ -62,11 +62,11 @@ Added `backstage-helm/charts/backstage/templates/ingress.yaml` with:
 
 ### Values Updates
 
-| Environment | Hostname | Cert Issuer |
+|Environment|Hostname|Cert Issuer|
 |-------------|----------|-------------|
-| dev | `backstage.dev.goldenpathidp.io` | letsencrypt-staging |
-| staging | `backstage.staging.goldenpathidp.io` | letsencrypt-staging |
-| prod | `backstage.goldenpathidp.io` | letsencrypt-prod |
+|dev|`backstage.dev.goldenpathidp.io`|letsencrypt-staging|
+|staging|`backstage.staging.goldenpathidp.io`|letsencrypt-staging|
+|prod|`backstage.goldenpathidp.io`|letsencrypt-prod|
 
 ### Configuration Pattern
 
@@ -104,11 +104,11 @@ backend:
 
 Ensure the following DNS records exist (or wildcard `*.goldenpathidp.io`):
 
-| Record | Type | Target |
+|Record|Type|Target|
 |--------|------|--------|
-| `backstage.dev.goldenpathidp.io` | A/CNAME | Kong LoadBalancer |
-| `backstage.staging.goldenpathidp.io` | A/CNAME | Kong LoadBalancer |
-| `backstage.goldenpathidp.io` | A/CNAME | Kong LoadBalancer |
+|`backstage.dev.goldenpathidp.io`|A/CNAME|Kong LoadBalancer|
+|`backstage.staging.goldenpathidp.io`|A/CNAME|Kong LoadBalancer|
+|`backstage.goldenpathidp.io`|A/CNAME|Kong LoadBalancer|
 
 ## Verification
 
@@ -125,10 +125,10 @@ curl -I https://backstage.dev.goldenpathidp.io
 
 ## Files Modified
 
-| File | Change |
+|File|Change|
 |------|--------|
-| `backstage-helm/charts/backstage/templates/ingress.yaml` | New template |
-| `backstage-helm/charts/backstage/values.yaml` | Added ingress defaults |
-| `gitops/helm/backstage/values/dev.yaml` | Enabled Kong ingress |
-| `gitops/helm/backstage/values/staging.yaml` | Enabled Kong ingress |
-| `gitops/helm/backstage/values/prod.yaml` | Enabled Kong ingress |
+|`backstage-helm/charts/backstage/templates/ingress.yaml`|New template|
+|`backstage-helm/charts/backstage/values.yaml`|Added ingress defaults|
+|`gitops/helm/backstage/values/dev.yaml`|Enabled Kong ingress|
+|`gitops/helm/backstage/values/staging.yaml`|Enabled Kong ingress|
+|`gitops/helm/backstage/values/prod.yaml`|Enabled Kong ingress|

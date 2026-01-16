@@ -9,7 +9,7 @@ relates_to:
   - docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md
 ---
 
-# How It Works: RDS Database Request Flow
+## How It Works: RDS Database Request Flow
 
 This document explains the technical lifecycle of an RDS database request, from the developer form in Backstage to credential availability in AWS Secrets Manager.
 
@@ -53,15 +53,15 @@ The platform uses a "Bounded Context" approach to RDS provisioning. The Platform
 
 Application teams use the **"Request Platform RDS Database"** template in the Backstage Software Catalog. The template collects:
 
-| Field | Description | Example |
+|Field|Description|Example|
 |-------|-------------|---------|
-| `database_name` | Logical database name | `inventory_service` |
-| `username` | Database user | `inventory_user` |
-| `owner` | Owning team | `app-team` |
-| `requester` | Requesting user | `daniel-deans` |
-| `environment` | Target environment | `dev`, `staging`, `prod` |
-| `domain` | Business domain | `application` |
-| `risk` | Data classification | `low`, `medium`, `high` |
+|`database_name`|Logical database name|`inventory_service`|
+|`username`|Database user|`inventory_user`|
+|`owner`|Owning team|`app-team`|
+|`requester`|Requesting user|`daniel-deans`|
+|`environment`|Target environment|`dev`, `staging`, `prod`|
+|`domain`|Business domain|`application`|
+|`risk`|Data classification|`low`, `medium`, `high`|
 
 The template triggers `create-rds-database.yml` via `github:actions:dispatch`.
 
@@ -130,11 +130,11 @@ The workflow creates a PR with comprehensive details:
 
 ### Risk-Based Security Controls
 
-| Risk Level | Backup Retention | Secret Rotation | Additional Controls |
+|Risk Level|Backup Retention|Secret Rotation|Additional Controls|
 |------------|------------------|-----------------|---------------------|
-| Low | 7 days | 30 days | Basic monitoring |
-| Medium | 14 days | 30 days | Standard monitoring |
-| High | 35 days | 14 days | Audit logging, enhanced monitoring |
+|Low|7 days|30 days|Basic monitoring|
+|Medium|14 days|30 days|Standard monitoring|
+|High|35 days|14 days|Audit logging, enhanced monitoring|
 
 ## 4. Execution: Terraform Apply
 
@@ -222,14 +222,14 @@ See [RB-0029: Manual Secret Rotation](../../70-operations/runbooks/RB-0029-rds-m
 
 By abstracting the complexity of shared RDS management, the platform provides:
 
-| Benefit | Description |
+|Benefit|Description|
 |---------|-------------|
-| **Zero Bottlenecks** | Teams request databases without waiting for DBAs |
-| **100% Governance** | Every database is tagged with owner, domain, and risk |
-| **Credential Isolation** | Each database has dedicated credentials |
-| **Cost Efficiency** | Shared RDS instance reduces infrastructure overhead |
-| **Data Persistence** | RDS survives cluster rebuilds (bounded context) |
-| **Rotation Compliance** | CI-enforced secret rotation deadlines |
+|**Zero Bottlenecks**|Teams request databases without waiting for DBAs|
+|**100% Governance**|Every database is tagged with owner, domain, and risk|
+|**Credential Isolation**|Each database has dedicated credentials|
+|**Cost Efficiency**|Shared RDS instance reduces infrastructure overhead|
+|**Data Persistence**|RDS survives cluster rebuilds (bounded context)|
+|**Rotation Compliance**|CI-enforced secret rotation deadlines|
 
 ## Related Documentation
 

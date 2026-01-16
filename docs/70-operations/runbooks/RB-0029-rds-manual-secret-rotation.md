@@ -24,16 +24,16 @@ dependencies:
 breaking_change: false
 ---
 
-# RDS Manual Secret Rotation (Runbook)
+## RDS Manual Secret Rotation (Runbook)
 
 This runbook documents the manual process for rotating platform RDS database credentials.
 
-**Rotation Policy:**
+### Rotation Policy
 
 - Dev: 30 days
 - Staging/Prod: 14 days
 
-**CI Enforcement:**
+### CI Enforcement
 
 - Daily scheduled workflow alerts when secrets approach deadline
 - PR soft gate warns (non-blocking) for infrastructure changes
@@ -189,8 +189,8 @@ aws secretsmanager get-secret-value \
   --version-id "PREVIOUS_VERSION_ID"
 ```
 
-2. Restore previous password in database
-3. Revert secret to previous version
+1. Restore previous password in database
+2. Revert secret to previous version
 
 ## Automation (V1.1)
 

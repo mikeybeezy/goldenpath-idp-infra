@@ -30,7 +30,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# ADR-0078: Governance-driven app repository scaffolder
+## ADR-0078: Governance-driven app repository scaffolder
 
 - **Status:** Proposed
 - **Date:** 2026-01-03

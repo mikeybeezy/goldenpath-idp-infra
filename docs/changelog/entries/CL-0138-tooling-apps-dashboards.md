@@ -43,7 +43,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# CL-0138: RED/Golden Signals Dashboards for Tooling Applications
+## CL-0138: RED/Golden Signals Dashboards for Tooling Applications
 
 **Type**: Feature
 **Component**: Observability / Grafana Dashboards
@@ -66,65 +66,65 @@ Created dedicated ConfigMap-based dashboards for each tooling application that a
 
 ### 1. Backstage Dashboard (`backstage-golden-signals`)
 
-| Panel | Metric Type | Description |
+|Panel|Metric Type|Description|
 |-------|-------------|-------------|
-| Request Rate (RPS) | Rate | HTTP requests per second by method |
-| Error Rate (%) | Errors | 4xx and 5xx error percentages |
-| Latency P50/P95/P99 | Duration | Response time percentiles |
-| CPU/Memory Usage | Saturation | Container resource usage |
-| Pod Restarts | Saturation | Restart count indicator |
-| Error Logs | Logs | Loki panel filtering errors |
-| All Logs | Logs | Complete application logs |
+|Request Rate (RPS)|Rate|HTTP requests per second by method|
+|Error Rate (%)|Errors|4xx and 5xx error percentages|
+|Latency P50/P95/P99|Duration|Response time percentiles|
+|CPU/Memory Usage|Saturation|Container resource usage|
+|Pod Restarts|Saturation|Restart count indicator|
+|Error Logs|Logs|Loki panel filtering errors|
+|All Logs|Logs|Complete application logs|
 
 ### 2. Keycloak Dashboard (`keycloak-golden-signals`)
 
-| Panel | Metric Type | Description |
+|Panel|Metric Type|Description|
 |-------|-------------|-------------|
-| Login Attempts (RPS) | Rate | Successful and failed logins |
-| HTTP Request Rate | Rate | API requests per second |
-| Error Rate (%) | Errors | HTTP errors and login failure rate |
-| HTTP Latency | Duration | P50/P95/P99 response times |
-| Active Sessions | Traffic | Current authenticated sessions |
-| JVM Heap Usage | Saturation | Java memory usage |
-| Auth Events & Errors | Logs | Login/logout and error events |
+|Login Attempts (RPS)|Rate|Successful and failed logins|
+|HTTP Request Rate|Rate|API requests per second|
+|Error Rate (%)|Errors|HTTP errors and login failure rate|
+|HTTP Latency|Duration|P50/P95/P99 response times|
+|Active Sessions|Traffic|Current authenticated sessions|
+|JVM Heap Usage|Saturation|Java memory usage|
+|Auth Events & Errors|Logs|Login/logout and error events|
 
 ### 3. ArgoCD Dashboard (`argocd-golden-signals`)
 
-| Panel | Metric Type | Description |
+|Panel|Metric Type|Description|
 |-------|-------------|-------------|
-| Application Health | Overview | Healthy/Degraded/OutOfSync counts |
-| API Request Rate | Rate | HTTP and gRPC requests |
-| Error Rate (%) | Errors | 5xx and gRPC error percentages |
-| Request Duration P95 | Duration | HTTP and gRPC latency |
-| Sync Operations Rate | Rate | Sync operations by phase |
-| Git Operations Rate | Rate | Git requests by type |
-| CPU/Memory by Component | Saturation | Per-component resource usage |
-| Sync Events & Errors | Logs | Sync and reconciliation logs |
+|Application Health|Overview|Healthy/Degraded/OutOfSync counts|
+|API Request Rate|Rate|HTTP and gRPC requests|
+|Error Rate (%)|Errors|5xx and gRPC error percentages|
+|Request Duration P95|Duration|HTTP and gRPC latency|
+|Sync Operations Rate|Rate|Sync operations by phase|
+|Git Operations Rate|Rate|Git requests by type|
+|CPU/Memory by Component|Saturation|Per-component resource usage|
+|Sync Events & Errors|Logs|Sync and reconciliation logs|
 
 ### 4. Kong Dashboard (`kong-golden-signals`)
 
-| Panel | Metric Type | Description |
+|Panel|Metric Type|Description|
 |-------|-------------|-------------|
-| Total Request Rate | Rate | Overall and per-service RPS |
-| Requests by Status | Rate | Breakdown by HTTP status code |
-| Error Rate (%) | Errors | 4xx and 5xx percentages |
-| Request Latency | Duration | Client-facing latency P50/P95/P99 |
-| Upstream Latency | Duration | Backend latency percentiles |
-| Active Connections | Saturation | Connection states |
-| Bandwidth In/Out | Saturation | Network throughput |
-| Upstream Health | Traffic | Healthy upstream count |
-| Kong Errors & Warnings | Logs | Error and warning logs |
+|Total Request Rate|Rate|Overall and per-service RPS|
+|Requests by Status|Rate|Breakdown by HTTP status code|
+|Error Rate (%)|Errors|4xx and 5xx percentages|
+|Request Latency|Duration|Client-facing latency P50/P95/P99|
+|Upstream Latency|Duration|Backend latency percentiles|
+|Active Connections|Saturation|Connection states|
+|Bandwidth In/Out|Saturation|Network throughput|
+|Upstream Health|Traffic|Healthy upstream count|
+|Kong Errors & Warnings|Logs|Error and warning logs|
 
 ## Files Created
 
-| File | Purpose |
+|File|Purpose|
 |------|---------|
-| `gitops/helm/tooling-dashboards/backstage-dashboard.yaml` | Backstage ConfigMap |
-| `gitops/helm/tooling-dashboards/keycloak-dashboard.yaml` | Keycloak ConfigMap |
-| `gitops/helm/tooling-dashboards/argocd-dashboard.yaml` | ArgoCD ConfigMap |
-| `gitops/helm/tooling-dashboards/kong-dashboard.yaml` | Kong ConfigMap |
-| `gitops/helm/tooling-dashboards/kustomization.yaml` | Kustomize bundle |
-| `gitops/helm/tooling-dashboards/metadata.yaml` | Governance metadata |
+|`gitops/helm/tooling-dashboards/backstage-dashboard.yaml`|Backstage ConfigMap|
+|`gitops/helm/tooling-dashboards/keycloak-dashboard.yaml`|Keycloak ConfigMap|
+|`gitops/helm/tooling-dashboards/argocd-dashboard.yaml`|ArgoCD ConfigMap|
+|`gitops/helm/tooling-dashboards/kong-dashboard.yaml`|Kong ConfigMap|
+|`gitops/helm/tooling-dashboards/kustomization.yaml`|Kustomize bundle|
+|`gitops/helm/tooling-dashboards/metadata.yaml`|Governance metadata|
 
 ## Deployment
 

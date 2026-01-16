@@ -44,7 +44,7 @@ All 16 unit tests for the RDS Request Parser passed successfully. The parser cor
 
 ### Step 1: Run Unit Tests
 
-**Command:**
+### Command
 
 ```bash
 python -m pytest tests/scripts/test_script_0034.py -v
@@ -58,16 +58,16 @@ python -m pytest tests/scripts/test_script_0034.py -v
 
 ## Results Summary
 
-| Category | Tests | Passed | Failed |
-| --- | --- | --- | --- |
-| Parse Request | 4 | 4 | 0 |
-| Validate Enums | 4 | 4 | 0 |
-| Conditional Rules | 3 | 3 | 0 |
-| Generate Tfvars | 2 | 2 | 0 |
-| Generate ExternalSecret | 1 | 1 | 0 |
-| Derive Secret Key | 1 | 1 | 0 |
-| Integration | 1 | 1 | 0 |
-| **Total** | **16** | **16** | **0** |
+|Category|Tests|Passed|Failed|
+|---|---|---|---|
+|Parse Request|4|4|0|
+|Validate Enums|4|4|0|
+|Conditional Rules|3|3|0|
+|Generate Tfvars|2|2|0|
+|Generate ExternalSecret|1|1|0|
+|Derive Secret Key|1|1|0|
+|Integration|1|1|0|
+|**Total**|**16**|**16**|**0**|
 
 **Pass Rate:** 100%
 
@@ -81,14 +81,14 @@ python -m pytest tests/scripts/test_script_0034.py -v
 
 ## Test Coverage
 
-| Function | Tested |
-| --- | --- |
-| `parse_request()` | ✅ |
-| `validate_enums()` | ✅ |
-| `validate_conditional_rules()` | ✅ |
-| `generate_tfvars()` | ✅ |
-| `generate_external_secret()` | ✅ |
-| `derive_secret_key()` | ✅ |
+|Function|Tested|
+|---|---|
+|`parse_request()`|✅|
+|`validate_enums()`|✅|
+|`validate_conditional_rules()`|✅|
+|`generate_tfvars()`|✅|
+|`generate_external_secret()`|✅|
+|`derive_secret_key()`|✅|
 
 ---
 

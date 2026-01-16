@@ -19,7 +19,7 @@ image:
   registry: 593517239005.dkr.ecr.eu-west-2.amazonaws.com
   repository: keycloak
   tag: latest
-  pullPolicy: Always # Force pull to refresh cached image
+  pullPolicy: Always  # Force pull to refresh cached image
 
 # -----------------------------------------------------------------------------
 # Authentication
@@ -89,7 +89,6 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-staging
     # Use staging issuer for dev to avoid rate limits
     # Switch to letsencrypt-prod for production
-
 # -----------------------------------------------------------------------------
 # Logging
 # -----------------------------------------------------------------------------
@@ -183,4 +182,3 @@ extraDeploy:
         remoteRef:
           key: goldenpath/dev/keycloak/postgres
           property: port
-

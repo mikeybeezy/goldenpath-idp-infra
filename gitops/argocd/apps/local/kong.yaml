@@ -4,7 +4,7 @@ metadata:
   name: local-kong
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "3" # Deploy after infra, before apps
+    argocd.argoproj.io/sync-wave: "3"  # Deploy after infra, before apps
 spec:
   project: default
   source:

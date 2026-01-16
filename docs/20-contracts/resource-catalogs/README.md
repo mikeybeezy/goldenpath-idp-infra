@@ -17,7 +17,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# Platform Resource Catalogs
+## Platform Resource Catalogs
 
 **Purpose:** Index of all domain-based resource catalogs
 
@@ -26,6 +26,7 @@ breaking_change: false
 ## Active Catalogs
 
 ### Container Registries
+
 **File:** [ecr-catalog.yaml](./ecr-catalog.yaml)
 **Domain:** `container-registries`
 **Owner:** platform-team
@@ -37,6 +38,7 @@ breaking_change: false
 ## Placeholder Catalogs (Schema Defined, Awaiting Implementation)
 
 ### Databases - RDS
+
 **File:** [rds-catalog.yaml](./rds-catalog.yaml) (PLACEHOLDER)
 **Domain:** `databases-rds`
 **Owner:** database-team
@@ -44,6 +46,7 @@ breaking_change: false
 **Status:** Placeholder - needs Terraform module & workflow
 
 ### Databases - DynamoDB
+
 **File:** [dynamodb-catalog.yaml](./dynamodb-catalog.yaml) (PLACEHOLDER)
 **Domain:** `databases-dynamodb`
 **Owner:** database-team
@@ -51,6 +54,7 @@ breaking_change: false
 **Status:** Placeholder - needs Terraform module & workflow
 
 ### Storage - S3
+
 **File:** [s3-catalog.yaml](./s3-catalog.yaml) (PLACEHOLDER)
 **Domain:** `storage-s3`
 **Owner:** platform-team
@@ -58,6 +62,7 @@ breaking_change: false
 **Status:** Placeholder - needs Terraform module & workflow
 
 ### Storage - EFS
+
 **File:** [efs-catalog.yaml](./efs-catalog.yaml) (PLACEHOLDER)
 **Domain:** `storage-efs`
 **Owner:** platform-team
@@ -65,6 +70,7 @@ breaking_change: false
 **Status:** Placeholder - needs Terraform module & workflow
 
 ### Clusters - EKS
+
 **File:** [eks-catalog.yaml](./eks-catalog.yaml) (PLACEHOLDER)
 **Domain:** `kubernetes-clusters`
 **Owner:** platform-team
@@ -72,6 +78,7 @@ breaking_change: false
 **Status:** Placeholder - needs Terraform module & workflow
 
 ### Secrets Manager
+
 **File:** [secrets-catalog.yaml](./secrets-catalog.yaml) (PLACEHOLDER)
 **Domain:** `secrets-management`
 **Owner:** platform-team
@@ -79,6 +86,7 @@ breaking_change: false
 **Status:** Placeholder - needs Terraform module & workflow
 
 ### Compute - EC2
+
 **File:** [ec2-catalog.yaml](./ec2-catalog.yaml) (PLACEHOLDER)
 **Domain:** `compute-ec2`
 **Owner:** platform-team
@@ -86,6 +94,7 @@ breaking_change: false
 **Status:** Placeholder - needs Terraform module & workflow
 
 ### Networking - VPC
+
 **File:** [vpc-catalog.yaml](./vpc-catalog.yaml) (PLACEHOLDER)
 **Domain:** `networking-vpc`
 **Owner:** platform-team
@@ -118,7 +127,7 @@ managed_by: <team-name>
 
 ## How Catalogs Work
 
-```
+```text
 Developer Request
     ↓
 GitHub Workflow

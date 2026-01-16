@@ -15,7 +15,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# Platform Requirements
+## Platform Requirements
 
 This document defines the minimum functional and non-functional requirements for
 the Golden Path IDP platform and clarifies the platform’s scope for V1.
@@ -94,12 +94,12 @@ See `docs/10-governance/01_GOVERNANCE.md` for the authoritative policy context.
 
 ## Access Model (V1)
 
-| Action | Non-platform teams | Platform team |
-| --- | --- | --- |
-| Create request via Backstage | ✅ | ✅ |
-| Merge PR for infra/app provisioning | ❌ | ✅ |
-| Run elevated GitHub Actions (manual dropdown) | ❌ | ✅ |
-| Run privileged CLI/Make actions | ❌ | ✅ |
+|Action|Non-platform teams|Platform team|
+|---|---|---|
+|Create request via Backstage|✅|✅|
+|Merge PR for infra/app provisioning|❌|✅|
+|Run elevated GitHub Actions (manual dropdown)|❌|✅|
+|Run privileged CLI/Make actions|❌|✅|
 
 ## Golden Path Flow (V1)
 

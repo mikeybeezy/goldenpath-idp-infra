@@ -84,7 +84,7 @@ pip install pytest pyyaml
 **Objective:** Verify parser extracts all fields correctly
 **Priority:** [x] Critical
 
-**Pass Criteria:**
+### Pass Criteria (1)
 
 - [x] All required fields extracted
 - [x] Optional fields use defaults when missing
@@ -94,7 +94,7 @@ pip install pytest pyyaml
 **Objective:** Verify parser raises errors for missing required fields
 **Priority:** [x] Critical
 
-**Pass Criteria:**
+### Pass Criteria (2)
 
 - [x] KeyError raised for missing `rds_id`
 - [x] KeyError raised for missing `spec` section
@@ -104,7 +104,7 @@ pip install pytest pyyaml
 **Objective:** Verify invalid enum values are rejected
 **Priority:** [x] Critical
 
-**Pass Criteria:**
+### Pass Criteria (3)
 
 - [x] Invalid `size` raises ValueError
 - [x] Invalid `environment` raises ValueError
@@ -115,7 +115,7 @@ pip install pytest pyyaml
 **Objective:** Verify environment-specific business rules
 **Priority:** [x] High
 
-**Pass Criteria:**
+### Pass Criteria (4)
 
 - [x] Dev environment only allows small/medium sizes
 - [x] Prod environment requires 14+ day backup retention
@@ -126,7 +126,7 @@ pip install pytest pyyaml
 **Objective:** Verify correct Terraform output structure
 **Priority:** [x] Critical
 
-**Pass Criteria:**
+### Pass Criteria (5)
 
 - [x] All required keys present
 - [x] Size mapped to instance class correctly
@@ -137,7 +137,7 @@ pip install pytest pyyaml
 **Objective:** Verify correct K8s manifest structure
 **Priority:** [x] High
 
-**Pass Criteria:**
+### Pass Criteria (6)
 
 - [x] apiVersion correct
 - [x] Secret store reference correct
@@ -161,9 +161,9 @@ pip install pytest pyyaml
 
 ## 7. Test Execution Log
 
-| Date | Tester | Status | Notes |
-| --- | --- | --- | --- |
-| 2026-01-15 | Platform Team | Complete | 16/16 tests passed |
+|Date|Tester|Status|Notes|
+|---|---|---|---|
+|2026-01-15|Platform Team|Complete|16/16 tests passed|
 
 ---
 
@@ -175,7 +175,7 @@ pip install pytest pyyaml
 
 ---
 
-**Related Documents:**
+### Related Documents
 
 - Test Record: [test-record-20260115.md](./test-record-20260115.md)
 - ADR: [ADR-0160](../../../docs/adrs/ADR-0160-rds-optional-toggle-integration.md)
