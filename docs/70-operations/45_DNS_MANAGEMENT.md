@@ -56,7 +56,7 @@ This living document captures the DNS configuration strategy, naming conventions
             ┌─────────────────────────┼─────────────────────────┐
             │                         │                         │
             ▼                         ▼                         ▼
-   *.dev.goldenpath.io    *.staging.goldenpath.io     *.goldenpath.io
+   *.dev.goldenpathidp.io    *.staging.goldenpathidp.io     *.goldenpathidp.io
             │                         │                         │
             ▼                         ▼                         ▼
    ┌────────────────┐       ┌────────────────┐       ┌────────────────┐
@@ -77,17 +77,17 @@ This living document captures the DNS configuration strategy, naming conventions
 ### Pattern
 
 ```text
-<service>.<environment>.goldenpath.io   # Dev and Staging
-<service>.goldenpath.io                 # Production (no env prefix)
+<service>.<environment>.goldenpathidp.io   # Dev and Staging
+<service>.goldenpathidp.io                 # Production (no env prefix)
 ```
 
 ### Environment Subdomains
 
 | Environment | Subdomain Pattern | Example |
 |-------------|-------------------|---------|
-| Development | `*.dev.goldenpath.io` | `backstage.dev.goldenpath.io` |
-| Staging | `*.staging.goldenpath.io` | `backstage.staging.goldenpath.io` |
-| Production | `*.goldenpath.io` | `backstage.goldenpath.io` |
+| Development | `*.dev.goldenpathidp.io` | `backstage.dev.goldenpathidp.io` |
+| Staging | `*.staging.goldenpathidp.io` | `backstage.staging.goldenpathidp.io` |
+| Production | `*.goldenpathidp.io` | `backstage.goldenpathidp.io` |
 
 ---
 
@@ -97,10 +97,10 @@ This living document captures the DNS configuration strategy, naming conventions
 
 | Service | Dev | Staging | Prod |
 |---------|-----|---------|------|
-| **Backstage** | backstage.dev.goldenpath.io | backstage.staging.goldenpath.io | backstage.goldenpath.io |
-| **Keycloak** | keycloak.dev.goldenpath.io | keycloak.staging.goldenpath.io | keycloak.goldenpath.io |
-| **ArgoCD** | argocd.dev.goldenpath.io | argocd.staging.goldenpath.io | argocd.goldenpath.io |
-| **Grafana** | grafana.dev.goldenpath.io | grafana.staging.goldenpath.io | grafana.goldenpath.io |
+| **Backstage** | backstage.dev.goldenpathidp.io | backstage.staging.goldenpathidp.io | backstage.goldenpathidp.io |
+| **Keycloak** | keycloak.dev.goldenpathidp.io | keycloak.staging.goldenpathidp.io | keycloak.goldenpathidp.io |
+| **ArgoCD** | argocd.dev.goldenpathidp.io | argocd.staging.goldenpathidp.io | argocd.goldenpathidp.io |
+| **Grafana** | grafana.dev.goldenpathidp.io | grafana.staging.goldenpathidp.io | grafana.goldenpathidp.io |
 
 ### Internal Services (Not Exposed)
 
@@ -134,9 +134,9 @@ Create wildcard CNAME records pointing to the Kong LoadBalancer:
 
 | Record | Type | Target |
 |--------|------|--------|
-| `*.dev.goldenpath.io` | CNAME | `<dev-kong-lb>.elb.eu-west-2.amazonaws.com` |
-| `*.staging.goldenpath.io` | CNAME | `<staging-kong-lb>.elb.eu-west-2.amazonaws.com` |
-| `*.goldenpath.io` | CNAME | `<prod-kong-lb>.elb.eu-west-2.amazonaws.com` |
+| `*.dev.goldenpathidp.io` | CNAME | `<dev-kong-lb>.elb.eu-west-2.amazonaws.com` |
+| `*.staging.goldenpathidp.io` | CNAME | `<staging-kong-lb>.elb.eu-west-2.amazonaws.com` |
+| `*.goldenpathidp.io` | CNAME | `<prod-kong-lb>.elb.eu-west-2.amazonaws.com` |
 
 **Pros**: Single record covers all services, automatic for new services
 
@@ -148,10 +148,10 @@ Create individual CNAME records for each service:
 
 | Record | Type | Target |
 |--------|------|--------|
-| `backstage.dev.goldenpath.io` | CNAME | `<dev-kong-lb>...` |
-| `keycloak.dev.goldenpath.io` | CNAME | `<dev-kong-lb>...` |
-| `argocd.dev.goldenpath.io` | CNAME | `<dev-kong-lb>...` |
-| `grafana.dev.goldenpath.io` | CNAME | `<dev-kong-lb>...` |
+| `backstage.dev.goldenpathidp.io` | CNAME | `<dev-kong-lb>...` |
+| `keycloak.dev.goldenpathidp.io` | CNAME | `<dev-kong-lb>...` |
+| `argocd.dev.goldenpathidp.io` | CNAME | `<dev-kong-lb>...` |
+| `grafana.dev.goldenpathidp.io` | CNAME | `<dev-kong-lb>...` |
 
 **Pros**: Explicit control, only known services resolve
 
@@ -161,13 +161,13 @@ Create individual CNAME records for each service:
 
 ```bash
 # Check DNS resolution
-dig backstage.dev.goldenpath.io +short
+dig backstage.dev.goldenpathidp.io +short
 
 # Check HTTPS access
-curl -I https://backstage.dev.goldenpath.io
+curl -I https://backstage.dev.goldenpathidp.io
 
 # Check certificate
-openssl s_client -connect backstage.dev.goldenpath.io:443 -servername backstage.dev.goldenpath.io </dev/null 2>/dev/null | openssl x509 -noout -dates
+openssl s_client -connect backstage.dev.goldenpathidp.io:443 -servername backstage.dev.goldenpathidp.io </dev/null 2>/dev/null | openssl x509 -noout -dates
 ```
 
 ---
@@ -210,7 +210,7 @@ kubectl delete certificate <cert-name> -n <namespace>
 
 ### Checklist for New Tooling Service
 
-1. **Determine DNS name**: Follow naming convention `<service>.<env>.goldenpath.io`
+1. **Determine DNS name**: Follow naming convention `<service>.<env>.goldenpathidp.io`
 2. **Configure Helm values**: Add ingress configuration to values file
 3. **Verify Ingress created**: `kubectl get ingress -n <namespace>`
 4. **Verify Certificate issued**: `kubectl get certificate -n <namespace>`
@@ -223,7 +223,7 @@ kubectl delete certificate <cert-name> -n <namespace>
 ingress:
   enabled: true
   ingressClassName: kong
-  hostname: <service>.<env>.goldenpath.io
+  hostname: <service>.<env>.goldenpathidp.io
   path: /
   pathType: Prefix
   tls: true

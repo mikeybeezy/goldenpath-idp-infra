@@ -53,10 +53,10 @@ All platform tooling applications are accessible via Kong Ingress with TLS termi
 
 | Service | URL | Port-Forward Fallback | Namespace |
 |---------|-----|----------------------|-----------|
-| **Backstage** | `https://backstage.dev.goldenpath.io` | `kubectl port-forward svc/dev-backstage -n backstage 7007:7007` | backstage |
-| **Keycloak** | `https://keycloak.dev.goldenpath.io` | `kubectl port-forward svc/dev-keycloak -n keycloak 8080:8080` | keycloak |
-| **ArgoCD** | `https://argocd.dev.goldenpath.io` | `kubectl port-forward svc/argocd-server -n argocd 8080:443` | argocd |
-| **Grafana** | `https://grafana.dev.goldenpath.io` | `kubectl port-forward svc/kube-prometheus-stack-grafana -n monitoring 3000:80` | monitoring |
+| **Backstage** | `https://backstage.dev.goldenpathidp.io` | `kubectl port-forward svc/dev-backstage -n backstage 7007:7007` | backstage |
+| **Keycloak** | `https://keycloak.dev.goldenpathidp.io` | `kubectl port-forward svc/dev-keycloak -n keycloak 8080:8080` | keycloak |
+| **ArgoCD** | `https://argocd.dev.goldenpathidp.io` | `kubectl port-forward svc/argocd-server -n argocd 8080:443` | argocd |
+| **Grafana** | `https://grafana.dev.goldenpathidp.io` | `kubectl port-forward svc/kube-prometheus-stack-grafana -n monitoring 3000:80` | monitoring |
 | **Prometheus** | Internal only | `kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090` | monitoring |
 | **Alertmanager** | Internal only | `kubectl port-forward svc/kube-prometheus-stack-alertmanager -n monitoring 9093:9093` | monitoring |
 
@@ -64,19 +64,19 @@ All platform tooling applications are accessible via Kong Ingress with TLS termi
 
 | Service | URL |
 |---------|-----|
-| **Backstage** | `https://backstage.staging.goldenpath.io` |
-| **Keycloak** | `https://keycloak.staging.goldenpath.io` |
-| **ArgoCD** | `https://argocd.staging.goldenpath.io` |
-| **Grafana** | `https://grafana.staging.goldenpath.io` |
+| **Backstage** | `https://backstage.staging.goldenpathidp.io` |
+| **Keycloak** | `https://keycloak.staging.goldenpathidp.io` |
+| **ArgoCD** | `https://argocd.staging.goldenpathidp.io` |
+| **Grafana** | `https://grafana.staging.goldenpathidp.io` |
 
 ### Production Environment
 
 | Service | URL |
 |---------|-----|
-| **Backstage** | `https://backstage.goldenpath.io` |
-| **Keycloak** | `https://keycloak.goldenpath.io` |
-| **ArgoCD** | `https://argocd.goldenpath.io` |
-| **Grafana** | `https://grafana.goldenpath.io` |
+| **Backstage** | `https://backstage.goldenpathidp.io` |
+| **Keycloak** | `https://keycloak.goldenpathidp.io` |
+| **ArgoCD** | `https://argocd.goldenpathidp.io` |
+| **Grafana** | `https://grafana.goldenpathidp.io` |
 
 ### DNS Requirements
 
@@ -90,7 +90,7 @@ kubectl get svc -n kong-system kong-kong-proxy -o jsonpath='{.status.loadBalance
 kubectl get ingress -A
 ```
 
-For wildcard DNS, configure `*.dev.goldenpath.io`, `*.staging.goldenpath.io`, and `*.goldenpath.io` to point to the respective Kong LoadBalancer addresses.
+For wildcard DNS, configure `*.dev.goldenpathidp.io`, `*.staging.goldenpathidp.io`, and `*.goldenpathidp.io` to point to the respective Kong LoadBalancer addresses.
 
 ### Certificate Issuers
 
@@ -339,7 +339,7 @@ service:
 ingress:
   enabled: true
   ingressClassName: kong
-  hostname: keycloak.dev.goldenpath.io
+  hostname: keycloak.dev.goldenpathidp.io
   tls: true
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -349,10 +349,10 @@ ingress:
 
 | Client ID | Purpose | Redirect URIs |
 |-----------|---------|---------------|
-| backstage | Backstage SSO | `https://backstage.dev.goldenpath.io/api/auth/oidc/handler/frame` |
-| kong | Kong Admin SSO | `https://kong.dev.goldenpath.io/callback` |
-| argocd | Argo CD SSO | `https://argocd.dev.goldenpath.io/auth/callback` |
-| grafana | Grafana SSO | `https://grafana.dev.goldenpath.io/login/generic_oauth` |
+| backstage | Backstage SSO | `https://backstage.dev.goldenpathidp.io/api/auth/oidc/handler/frame` |
+| kong | Kong Admin SSO | `https://kong.dev.goldenpathidp.io/callback` |
+| argocd | Argo CD SSO | `https://argocd.dev.goldenpathidp.io/auth/callback` |
+| grafana | Grafana SSO | `https://grafana.dev.goldenpathidp.io/login/generic_oauth` |
 
 #### Dependencies
 
@@ -400,7 +400,7 @@ manager:
   ingress:
     enabled: true
     ingressClassName: kong
-    hostname: kong-admin.dev.goldenpath.io
+    hostname: kong-admin.dev.goldenpathidp.io
 
 env:
   database: "off"  # DB-less mode for dev
@@ -464,11 +464,11 @@ ingressController:
 ```yaml
 appConfig:
   app:
-    baseUrl: https://backstage.dev.goldenpath.io
+    baseUrl: https://backstage.dev.goldenpathidp.io
     title: Goldenpath IDP
 
   backend:
-    baseUrl: https://backstage.dev.goldenpath.io
+    baseUrl: https://backstage.dev.goldenpathidp.io
     database:
       client: pg
       connection:
@@ -482,7 +482,7 @@ appConfig:
     providers:
       oidc:
         development:
-          metadataUrl: https://keycloak.dev.goldenpath.io/realms/goldenpath/.well-known/openid-configuration
+          metadataUrl: https://keycloak.dev.goldenpathidp.io/realms/goldenpath/.well-known/openid-configuration
           clientId: backstage
           clientSecret: ${OIDC_CLIENT_SECRET}
 
@@ -499,7 +499,7 @@ postgresql:
 ingress:
   enabled: true
   className: kong
-  host: backstage.dev.goldenpath.io
+  host: backstage.dev.goldenpathidp.io
 ```
 
 #### Dependencies

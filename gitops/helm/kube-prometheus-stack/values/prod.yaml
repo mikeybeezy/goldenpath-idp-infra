@@ -29,16 +29,16 @@ grafana:
     enabled: true
     ingressClassName: kong
     hosts:
-      - grafana.goldenpath.io
+      - grafana.goldenpathidp.io
     tls:
       - secretName: grafana-goldenpath-io-tls
         hosts:
-          - grafana.goldenpath.io
+          - grafana.goldenpathidp.io
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
   grafana.ini:
     server:
-      root_url: https://grafana.goldenpath.io
+      root_url: https://grafana.goldenpathidp.io
   additionalDataSources:
     - name: Loki
       type: loki

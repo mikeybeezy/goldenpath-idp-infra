@@ -43,18 +43,18 @@ Adopt a standardized Kong Ingress pattern for all platform tooling applications 
 ### DNS Naming Convention
 
 ```text
-<service>.<env>.goldenpath.io     # Dev and Staging
-<service>.goldenpath.io           # Production
+<service>.<env>.goldenpathidp.io     # Dev and Staging
+<service>.goldenpathidp.io           # Production
 ```
 
 ### Services Exposed via Ingress
 
 | Service | Dev | Staging | Prod |
 |---------|-----|---------|------|
-| Backstage | backstage.dev.goldenpath.io | backstage.staging.goldenpath.io | backstage.goldenpath.io |
-| Keycloak | keycloak.dev.goldenpath.io | keycloak.staging.goldenpath.io | keycloak.goldenpath.io |
-| ArgoCD | argocd.dev.goldenpath.io | argocd.staging.goldenpath.io | argocd.goldenpath.io |
-| Grafana | grafana.dev.goldenpath.io | grafana.staging.goldenpath.io | grafana.goldenpath.io |
+| Backstage | backstage.dev.goldenpathidp.io | backstage.staging.goldenpathidp.io | backstage.goldenpathidp.io |
+| Keycloak | keycloak.dev.goldenpathidp.io | keycloak.staging.goldenpathidp.io | keycloak.goldenpathidp.io |
+| ArgoCD | argocd.dev.goldenpathidp.io | argocd.staging.goldenpathidp.io | argocd.goldenpathidp.io |
+| Grafana | grafana.dev.goldenpathidp.io | grafana.staging.goldenpathidp.io | grafana.goldenpathidp.io |
 
 ### Services NOT Exposed (Internal Only)
 
@@ -73,7 +73,7 @@ All tooling apps follow this pattern in their Helm values:
 ingress:
   enabled: true
   ingressClassName: kong
-  hostname: <service>.<env>.goldenpath.io
+  hostname: <service>.<env>.goldenpathidp.io
   path: /
   pathType: Prefix
   tls: true
@@ -96,9 +96,9 @@ ingress:
 Configure wildcard records for each environment subdomain:
 
 ```text
-*.dev.goldenpath.io     -> Kong LoadBalancer (dev cluster)
-*.staging.goldenpath.io -> Kong LoadBalancer (staging cluster)
-*.goldenpath.io         -> Kong LoadBalancer (prod cluster)
+*.dev.goldenpathidp.io     -> Kong LoadBalancer (dev cluster)
+*.staging.goldenpathidp.io -> Kong LoadBalancer (staging cluster)
+*.goldenpathidp.io         -> Kong LoadBalancer (prod cluster)
 ```
 
 **Option 2: Individual Records**
@@ -156,7 +156,7 @@ kubectl get certificate -A
 kubectl get svc -n kong-system kong-kong-proxy -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 
 # Test HTTPS access
-curl -I https://backstage.dev.goldenpath.io
+curl -I https://backstage.dev.goldenpathidp.io
 ```
 
 ## References

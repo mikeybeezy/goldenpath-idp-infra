@@ -9,7 +9,7 @@ server:
   ingress:
     enabled: true
     ingressClassName: kong
-    hostname: argocd.goldenpath.io
+    hostname: argocd.goldenpathidp.io
     tls: true
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod

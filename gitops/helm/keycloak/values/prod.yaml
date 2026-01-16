@@ -1,4 +1,30 @@
 # Managed by scripts/standardize_metadata.py
+# Keycloak Helm Values - Production Environment
+
+# -----------------------------------------------------------------------------
+# Ingress Configuration - Kong
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: true
+  ingressClassName: kong
+  hostname: keycloak.goldenpathidp.io
+  path: /
+  pathType: Prefix
+  tls: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+
+# -----------------------------------------------------------------------------
+# Extra Environment Variables
+# -----------------------------------------------------------------------------
+extraEnvVars:
+  - name: KC_HOSTNAME
+    value: keycloak.goldenpathidp.io
+  - name: KC_HOSTNAME_STRICT
+    value: "false"
+  - name: KC_HOSTNAME_STRICT_HTTPS
+    value: "false"
+
 governance:
   id: HELM_KEYCLOAK_METADATA
   owner: null

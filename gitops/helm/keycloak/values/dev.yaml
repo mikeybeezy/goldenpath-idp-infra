@@ -81,7 +81,7 @@ service:
 ingress:
   enabled: true
   ingressClassName: kong
-  hostname: keycloak.dev.goldenpath.io
+  hostname: keycloak.dev.goldenpathidp.io
   path: /
   pathType: Prefix
   tls: true
@@ -120,7 +120,7 @@ readinessProbe:
 extraEnvVars:
   # Keycloak hostname configuration
   - name: KC_HOSTNAME
-    value: keycloak.dev.goldenpath.io
+    value: keycloak.dev.goldenpathidp.io
   - name: KC_HOSTNAME_STRICT
     value: "false"
   - name: KC_HOSTNAME_STRICT_HTTPS

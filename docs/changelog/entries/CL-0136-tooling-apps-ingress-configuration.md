@@ -61,9 +61,9 @@ Added new ingress template to Backstage Helm chart and configured for all enviro
 |------|--------|
 | `backstage-helm/charts/backstage/templates/ingress.yaml` | New template |
 | `backstage-helm/charts/backstage/values.yaml` | Default ingress config |
-| `gitops/helm/backstage/values/dev.yaml` | `backstage.dev.goldenpath.io` |
-| `gitops/helm/backstage/values/staging.yaml` | `backstage.staging.goldenpath.io` |
-| `gitops/helm/backstage/values/prod.yaml` | `backstage.goldenpath.io` |
+| `gitops/helm/backstage/values/dev.yaml` | `backstage.dev.goldenpathidp.io` |
+| `gitops/helm/backstage/values/staging.yaml` | `backstage.staging.goldenpathidp.io` |
+| `gitops/helm/backstage/values/prod.yaml` | `backstage.goldenpathidp.io` |
 
 ### ArgoCD Ingress
 
@@ -71,9 +71,9 @@ Configured ArgoCD server ingress with `--insecure` flag for TLS termination at K
 
 | File | Change |
 |------|--------|
-| `gitops/helm/argocd/values/dev.yaml` | `argocd.dev.goldenpath.io` |
-| `gitops/helm/argocd/values/staging.yaml` | `argocd.staging.goldenpath.io` |
-| `gitops/helm/argocd/values/prod.yaml` | `argocd.goldenpath.io` |
+| `gitops/helm/argocd/values/dev.yaml` | `argocd.dev.goldenpathidp.io` |
+| `gitops/helm/argocd/values/staging.yaml` | `argocd.staging.goldenpathidp.io` |
+| `gitops/helm/argocd/values/prod.yaml` | `argocd.goldenpathidp.io` |
 
 ### Grafana Ingress
 
@@ -81,9 +81,9 @@ Configured Grafana ingress within kube-prometheus-stack with root_url setting:
 
 | File | Change |
 |------|--------|
-| `gitops/helm/kube-prometheus-stack/values/dev.yaml` | `grafana.dev.goldenpath.io` |
-| `gitops/helm/kube-prometheus-stack/values/staging.yaml` | `grafana.staging.goldenpath.io` |
-| `gitops/helm/kube-prometheus-stack/values/prod.yaml` | `grafana.goldenpath.io` |
+| `gitops/helm/kube-prometheus-stack/values/dev.yaml` | `grafana.dev.goldenpathidp.io` |
+| `gitops/helm/kube-prometheus-stack/values/staging.yaml` | `grafana.staging.goldenpathidp.io` |
+| `gitops/helm/kube-prometheus-stack/values/prod.yaml` | `grafana.goldenpathidp.io` |
 
 ### Documentation Updated
 
@@ -99,28 +99,28 @@ Configured Grafana ingress within kube-prometheus-stack with root_url setting:
 
 | Service | URL |
 |---------|-----|
-| Backstage | `https://backstage.dev.goldenpath.io` |
-| Keycloak | `https://keycloak.dev.goldenpath.io` |
-| ArgoCD | `https://argocd.dev.goldenpath.io` |
-| Grafana | `https://grafana.dev.goldenpath.io` |
+| Backstage | `https://backstage.dev.goldenpathidp.io` |
+| Keycloak | `https://keycloak.dev.goldenpathidp.io` |
+| ArgoCD | `https://argocd.dev.goldenpathidp.io` |
+| Grafana | `https://grafana.dev.goldenpathidp.io` |
 
 ### Staging Environment
 
 | Service | URL |
 |---------|-----|
-| Backstage | `https://backstage.staging.goldenpath.io` |
-| Keycloak | `https://keycloak.staging.goldenpath.io` |
-| ArgoCD | `https://argocd.staging.goldenpath.io` |
-| Grafana | `https://grafana.staging.goldenpath.io` |
+| Backstage | `https://backstage.staging.goldenpathidp.io` |
+| Keycloak | `https://keycloak.staging.goldenpathidp.io` |
+| ArgoCD | `https://argocd.staging.goldenpathidp.io` |
+| Grafana | `https://grafana.staging.goldenpathidp.io` |
 
 ### Production Environment
 
 | Service | URL |
 |---------|-----|
-| Backstage | `https://backstage.goldenpath.io` |
-| Keycloak | `https://keycloak.goldenpath.io` |
-| ArgoCD | `https://argocd.goldenpath.io` |
-| Grafana | `https://grafana.goldenpath.io` |
+| Backstage | `https://backstage.goldenpathidp.io` |
+| Keycloak | `https://keycloak.goldenpathidp.io` |
+| ArgoCD | `https://argocd.goldenpathidp.io` |
+| Grafana | `https://grafana.goldenpathidp.io` |
 
 ## DNS Requirements
 
@@ -142,7 +142,7 @@ kubectl get ingress -A
 kubectl get certificate -A
 
 # Test access (after DNS configured)
-curl -I https://backstage.dev.goldenpath.io
+curl -I https://backstage.dev.goldenpathidp.io
 ```
 
 ## Rollback

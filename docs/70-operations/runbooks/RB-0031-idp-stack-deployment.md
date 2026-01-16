@@ -138,6 +138,52 @@ kubectl get pods -n external-secrets
 kubectl get clustersecretstore aws-secretsmanager
 ```
 
+### 5. CoreDNS Running (Cluster DNS)
+
+CoreDNS provides internal DNS resolution for service discovery within the cluster. Without it, pods cannot resolve service names like `keycloak.keycloak.svc.cluster.local`.
+
+```bash
+# Check CoreDNS pods are running (should show 2/2 Running)
+kubectl get pods -n kube-system -l k8s-app=kube-dns
+
+# Check CoreDNS service exists
+kubectl get svc -n kube-system kube-dns
+```
+
+**Expected output:**
+
+- CoreDNS pods: 2 replicas running
+- Service: ClusterIP on port 53 (UDP/TCP)
+
+**Verification tests:**
+
+```bash
+# Test 1: Internal Kubernetes API resolution
+kubectl run dns-test --image=busybox:1.36 --rm -it --restart=Never -- \
+  nslookup kubernetes.default.svc.cluster.local
+# Expected: Address pointing to Kubernetes API ClusterIP
+
+# Test 2: Cross-namespace service discovery (after services deployed)
+kubectl run dns-test --image=busybox:1.36 --rm -it --restart=Never -- \
+  nslookup keycloak.keycloak.svc.cluster.local
+# Expected: Address of Keycloak service
+
+# Test 3: External DNS forwarding
+kubectl run dns-test --image=busybox:1.36 --rm -it --restart=Never -- \
+  nslookup github.com
+# Expected: External IP for github.com
+```
+
+**Note:** CoreDNS is an EKS-managed addon installed automatically during cluster creation. If CoreDNS is missing or unhealthy, check the EKS addon status:
+
+```bash
+aws eks describe-addon \
+  --cluster-name goldenpath-${ENV}-eks \
+  --addon-name coredns \
+  --region eu-west-2 \
+  --query 'addon.status'
+```
+
 ---
 
 ## Phase 1: ECR Repository and Image Preparation

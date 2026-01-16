@@ -65,7 +65,7 @@ catalog:
 # Backstage Base URL
 # -----------------------------------------------------------------------------
 backstage:
-  baseURL: "https://backstage.dev.goldenpath.io"
+  baseURL: "https://backstage.dev.goldenpathidp.io"
 
 # -----------------------------------------------------------------------------
 # Ingress Configuration - Kong
@@ -73,7 +73,7 @@ backstage:
 ingress:
   enabled: true
   ingressClassName: kong
-  hostname: backstage.dev.goldenpath.io
+  hostname: backstage.dev.goldenpathidp.io
   path: /
   pathType: Prefix
   tls: true
