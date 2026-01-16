@@ -72,17 +72,17 @@ grafana:
     enabled: true
     ingressClassName: kong
     hosts:
-      - grafana.dev.goldenpath.io
+      - grafana.dev.goldenpathidp.io
     tls:
       - secretName: grafana-dev-goldenpath-io-tls
         hosts:
-          - grafana.dev.goldenpath.io
+          - grafana.dev.goldenpathidp.io
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-staging
   # Grafana root URL for proper redirect handling
   grafana.ini:
     server:
-      root_url: https://grafana.dev.goldenpath.io
+      root_url: https://grafana.dev.goldenpathidp.io
   additionalDataSources:
     - name: Loki
       type: loki
@@ -92,11 +92,11 @@ grafana:
     dashboards:
       enabled: true
       label: grafana_dashboard
+      labelValue: "1"
       searchNamespace: ALL
-      # Force sidecar to see all namespaces
-      extraEnv:
-        - name: NAMESPACE
-          value: ALL
+    datasources:
+      enabled: true
+      searchNamespace: ALL
   resources:
     requests:
       cpu: 50m
