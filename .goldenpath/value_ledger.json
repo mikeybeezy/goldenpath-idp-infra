@@ -1,11 +1,6 @@
 {
-  "total_reclaimed_hours": 138.4,
+  "total_reclaimed_hours": 139.4,
   "history": [
-    {
-      "timestamp": "2026-01-12T06:11:23Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
     {
       "timestamp": "2026-01-12T06:11:23Z",
       "script": "standardize_metadata.py",
@@ -498,6 +493,11 @@
     },
     {
       "timestamp": "2026-01-16T23:42:19Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-16T23:51:51Z",
       "script": "validate_metadata.py",
       "reclaimed_hours": 1.0
     }
