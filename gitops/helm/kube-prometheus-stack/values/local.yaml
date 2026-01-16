@@ -46,6 +46,11 @@ grafana:
     enabled: false
   # Admin password for local
   adminPassword: admin
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      searchNamespace: ALL
   service:
     type: NodePort
     nodePort: 30300

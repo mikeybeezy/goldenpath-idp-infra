@@ -192,9 +192,16 @@ The platform provides a **Bounded Context** data layer that decouples persistent
 
 ---
 
+## 23. Out-of-the-Box Observability (Golden Signals & RED)
+The platform delivers "Zero-Config Observability," ensuring that every deployed service is immediately visible, measurable, and debuggable without manual dashboard creation.
+- **Golden Signals Standard**: Every application automatically receives a standardized dashboard visualizing the **RED** method (Rate, Errors, Duration) and Saturation (CPU/Memory) signals.
+- **Logs RED Integration**: Real-time application logs are correlated directly with metrics, allowing engineers to instantly jump from a "Spike in Errors" (Metric) to the "Stack Trace" (Log) in a single view.
+- **Auto-Discovery Engine**: The Grafana sidecar automatically detects and imports dashboard ConfigMaps from any namespace, enabling a decentralized, self-service observability model where dashboards live alongside application code.
+
 ## Technical Foundation
 - **Platform Core**: AWS EKS (Ubuntu/Bottlerocket)
 - **GitOps Engine**: Argo CD
 - **Governance**: Metadata-Schema V1.0
 - **Observability**: Kube-Prometheus-Stack (Gold Tier)
 - **Data Layer**: AWS RDS PostgreSQL (Bounded Context)
+

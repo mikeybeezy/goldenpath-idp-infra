@@ -49,6 +49,7 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Knowledge Graph**: A programmatic map of relationships between ADRs, docs, and code.
 - **Self-Healing Documentation**: Zero-drift documentation that updates itself based on source code changes.
 - **FinOps / Cost Visibility**: Pre-provisioning cost signals that make infrastructure spend visible in PRs.
+- **OOTB Golden Signals**: Instant RED metrics (Rate, Errors, Duration) and correlated logs for every application, with zero configuration required.
 
 ## Foundations (Internal)
 *The core engineering systems that power the Golden Path experience.*

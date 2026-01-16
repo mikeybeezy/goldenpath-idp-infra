@@ -88,6 +88,15 @@ grafana:
       type: loki
       access: proxy
       url: http://loki-gateway.monitoring.svc:3100
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      searchNamespace: ALL
+      # Force sidecar to see all namespaces
+      extraEnv:
+        - name: NAMESPACE
+          value: ALL
   resources:
     requests:
       cpu: 50m

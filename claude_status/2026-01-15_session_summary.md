@@ -515,3 +515,132 @@ kubectl port-forward -n monitoring svc/dev-kube-prometheus-stack-grafana 8080:80
 # Username: admin
 # Password: prom-operator
 ```
+
+### I. Dashboard Auto-Discovery (2026-01-16)
+
+**Problem**: Application dashboards (defined as ConfigMaps) were deployed but ignored by Grafana.
+
+**Resolution**:
+
+1.  **Enabled Grafana Sidecar**: Configured `sidecar.dashboards.enabled: true` in `dev.yaml` and `local.yaml`.
+2.  **Global Namespace Watch**: Set `sidecar.dashboards.searchNamespace: ALL` to allow decentralized dashboards in app namespaces.
+3.  **Label Selector**: Configured sidecar to watch for label `grafana_dashboard: "1"`.
+
+**Verification**:
+- ConfigMaps in `apps/*/dashboards/` are now automatically detected.
+- Dashboards for Wordpress, FastAPI, and Stateful apps appear in Grafana without manual import.
+
+### J. Out-of-the-Box Observability (2026-01-16)
+
+**Problem**: Observability capabilities (RED metrics, logs) were available but undocumented.
+
+**Resolution**:
+
+1.  **Changelog Created**: `CL-0137-ootb-observability-dashboards.md` documenting the "Zero-Config" capability.
+    - *Note*: Renamed from `CL-0135` to `CL-0137` to resolve conflict with remote changes.
+2.  **Capability Ledger Updated**: Added **Section 23** to `CAPABILITY_LEDGER.md` detailing Golden Signals & RED.
+3.  **Features List Updated**: Added "OOTB Golden Signals" to `FEATURES.md`.
+
+### K. Remote Synchronization & Ingress (2026-01-16)
+
+**Action**: Merged `origin/feature/tooling-apps-config` into local branch.
+
+**Updates Received**:
+- **Kong Ingress**: Grafana now exposed at `grafana.dev.goldenpath.io` (no port-forward needed).
+- **DNS Management**: New documentation on DNS strategies.
+- **Conflict Resolution**: Successfully merged local Sidecar config with remote Ingress config in `dev.yaml`.
+
+**Current Access URLs**:
+- **Grafana**: `https://grafana.dev.goldenpath.io`
+- **Backstage**: `https://backstage.dev.goldenpath.io`
+- **Keycloak**: `https://keycloak.dev.goldenpath.io`
+
+## 9. Dashboard Auto-Discovery Debugging (2026-01-16)
+
+### L. Grafana Dashboard Sidecar Configuration
+
+**Objective**: Enable automatic discovery of application dashboards (Wordpress, FastAPI, Stateful) from ConfigMaps.
+
+**Problem**: Application dashboards exist as ConfigMaps with label `grafana_dashboard: "1"` in namespaces `apps-wordpress-efs`, `apps-sample-stateless`, `apps-stateful`, but do not appear in Grafana UI.
+
+**Investigation Steps**:
+
+1. **Initial Configuration (Attempt 1)**:
+   - Added sidecar configuration to `gitops/helm/kube-prometheus-stack/values/dev.yaml`:
+     ```yaml
+     grafana:
+       sidecar:
+         dashboards:
+           enabled: true
+           label: grafana_dashboard
+           searchNamespace: ALL
+     ```
+   - Triggered ArgoCD sync
+   - Result: Deployment stuck due to ArgoCD pointing to wrong branch
+
+2. **Branch Correction**:
+   - Patched `dev-kube-prometheus-stack` application to use `feature/tooling-apps-config` branch
+   - Result: New pod created but stuck in `Init:0/1` state for 30+ minutes
+
+3. **Volume Attachment Deadlock Discovery**:
+   - Root Cause: PersistentVolume (`pvc-3fd53380-07c7-4506-933b-a011fcc10a82`) is `ReadWriteOnce` 
+   - Old pod holds volume, new pod requires volume to initialize
+   - Deployment strategy prevents graceful handoff
+   - Resolution: Manually deleted old pod `dev-kube-prometheus-stack-grafana-f67c5df7f-7w7xt`
+
+4. **Browser Verification (Attempt 1)**:
+   - New pod `...8876l` started successfully
+   - Sidecar logs showed only startup messages, no dashboard discovery activity
+   - Browser check confirmed only 26 infrastructure dashboards visible
+   - Missing: All application dashboards (Wordpress, FastAPI, Stateful)
+
+5. **Environment Variable Investigation**:
+   - Discovered `NAMESPACE` environment variable was NOT set on sidecar container
+   - `searchNamespace: ALL` in values.yaml did not propagate to pod spec
+   - Chart version issue: `kube-prometheus-stack` v45.7.1 may not support `searchNamespace` directly
+
+6. **Explicit Environment Variable (Attempt 2)**:
+   - Updated `gitops/helm/kube-prometheus-stack/values/dev.yaml`:
+     ```yaml
+     grafana:
+       sidecar:
+         dashboards:
+           enabled: true
+           label: grafana_dashboard
+           searchNamespace: ALL
+           extraEnv:
+             - name: NAMESPACE
+               value: ALL
+     ```
+   - Triggered ArgoCD sync
+   - Result: **Same volume deadlock** - new ReplicaSet created but pod stuck in Init
+
+7. **Current State (as of 02:27 UTC)**:
+   - **Running Pod**: `dev-kube-prometheus-stack-grafana-f67c5df7f-wwk4r` (old ReplicaSet, no `NAMESPACE` env var)
+   - **Stuck Pod**: `dev-kube-prometheus-stack-grafana-6d7d8fc764-659zz` (new ReplicaSet, in Init for 52+ minutes)
+   - **Volume**: Still attached to running pod, preventing new pod from starting
+   - **Dashboard Status**: Only infrastructure dashboards visible (26 total)
+
+**Verified Configuration**:
+- ✅ Application ConfigMaps exist with correct label (`grafana_dashboard: "1"`)
+- ✅ RBAC ClusterRole grants `get, watch, list` on ConfigMaps cluster-wide
+- ✅ Sidecar container running and healthy in current pod
+- ❌ `NAMESPACE: ALL` environment variable not present in running pod
+- ❌ Application dashboards not discovered by sidecar
+
+**Root Cause Hypothesis**:
+The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce` persistent volumes, causing a continuous deadlock where:
+1. ArgoCD detects configuration change
+2. Creates new ReplicaSet with updated config
+3. New pod cannot start (waiting for volume)
+4. Old pod keeps running (holds volume)
+5. Deployment never completes rollout
+
+**Potential Solutions**:
+1. **Delete PVC and redeploy** (loses Grafana settings/dashboards - HIGH RISK)
+2. **Change to `ReadWriteMany` volume** (requires storage class change)
+3. **Disable persistence temporarily** (lose dashboard customizations)
+4. **Use `Recreate` strategy instead of `RollingUpdate`** (causes downtime)
+5. **Manually scale down old ReplicaSet to 0** (force volume release)
+
+
