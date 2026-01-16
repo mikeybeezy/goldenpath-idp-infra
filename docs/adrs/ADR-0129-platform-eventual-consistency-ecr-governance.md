@@ -2,6 +2,7 @@
 id: ADR-0129
 title: 'ADR-0129: Eventual Consistency for ECR Registry Governance'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -26,14 +27,14 @@ version: 1.0
 breaking_change: false
 ---
 
-# ADR-0129: Eventual Consistency for ECR Registry Governance
+## ADR-0129: Eventual Consistency for ECR Registry Governance
 
 - **Status:** Accepted
 - **Date:** 2026-01-08
 - **Owners:** `platform-team`
 - **Domain:** Platform
 - **Decision type:** Governance | Architecture
-- **Related:** [ECR Product Strategy](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0092-ecr-registry-product-strategy.md)
+- **Related:** [ECR Product Strategy](ADR-0092-ecr-registry-product-strategy.md)
 
 ---
 

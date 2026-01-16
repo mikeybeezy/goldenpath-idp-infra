@@ -345,3 +345,31 @@ variable "app_secrets" {
   }))
   default = {}
 }
+
+################################################################################
+# Platform RDS (Shared PostgreSQL)
+################################################################################
+
+variable "rds_config" {
+  description = "Configuration for the platform RDS PostgreSQL instance."
+  type = object({
+    enabled               = bool
+    identifier            = optional(string, "goldenpath-platform-db")
+    instance_class        = optional(string, "db.t3.micro")
+    engine_version        = optional(string, "15.4")
+    allocated_storage     = optional(number, 20)
+    max_allocated_storage = optional(number, 100)
+    multi_az              = optional(bool, false)
+    deletion_protection   = optional(bool, false)
+    skip_final_snapshot   = optional(bool, true)
+    backup_retention_days = optional(number, 7)
+    # Application databases to create
+    application_databases = optional(map(object({
+      database_name = string
+      username      = string
+    })), {})
+  })
+  default = {
+    enabled = false
+  }
+}

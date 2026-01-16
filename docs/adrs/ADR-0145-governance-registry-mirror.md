@@ -2,6 +2,7 @@
 id: ADR-0145
 title: 'ADR-0145: Governance Registry Mirror Pattern'
 type: adr
+status: accepted
 domain: platform-governance
 owner: platform-team
 lifecycle: active
@@ -26,24 +27,29 @@ value_quantification:
 supported_until: '2028-01-12'
 ---
 
-# ADR-0145: Governance Registry Mirror Pattern
+## ADR-0145: Governance Registry Mirror Pattern
 
 ## Context
+
 High-velocity interaction between humans and machine agents creates a "Commit Tug-of-War" when automated scripts attempt to mutate active development branches. Specifically, scripts updating `PLATFORM_HEALTH.md`, documentation indices, and catalog syncs frequently cause `[rejected] fetch first` errors for human contributors and generate branch drift across open PRs.
 
 We require a mechanism that:
+
 - Preserves high-integrity audit trails.
 - Avoids branch mutation during active development.
 - Scales across multiple environments without state collision.
 - Remains reproducible from a specific source commit.
 
 ## Decision
+
 We will implement the **Governance Registry Mirror Pattern**. All machine-generated outputs (metadata reports, platform health reports, documentation indices, audit logs) will be written to a dedicated branch named: `governance-registry`.
 
 This branch is CI-owned, and acts as an **observation context (derived state)**, decoupled from human/agent intent branches (`development`, `main`).
 
 ## Source of Truth Contract
+
 To prevent ambiguity and future drift:
+
 1. **Canonical intent (source of truth)** lives in: `development` and `main` (code, configs, contracts, schemas, workflows).
 2. **Canonical observation (derived outputs)** lives in: `governance-registry` (health reports, indices, audit artifacts).
 3. **Registry content is derived-only**:
@@ -92,7 +98,9 @@ graph TD
 ```
 
 ## Architecture: Unified Registry Layout
+
 The `governance-registry` branch uses environment-specific nesting:
+
 - `environments/<env>/latest/...` (Always current view).
 - `environments/<env>/history/<date>-<sha>/...` (Append-only forensic audit trail).
 
@@ -101,10 +109,12 @@ Every report is bound to: `source_branch`, `source_sha`, `generation timestamp (
 ## Implementation Contract
 
 ### 1. Canonical Metadata Schema
+
 Every artifact written to the `governance-registry` branch MUST include the following YAML frontmatter:
 
 ```yaml
 ---
+
 type: governance-report
 env: <ENVIRONMENT_NAME>
 generated_at: <TIMESTAMP_UTC>
@@ -119,7 +129,8 @@ integrity:
 ---
 ```
 
-**Required Fields (Non-Negotiable):**
+### Required Fields (Non-Negotiable)
+
 - `env` - Environment name (development, main, test, staging, production)
 - `generated_at` - UTC timestamp in ISO 8601 format
 - `source.branch` - Source branch name
@@ -129,7 +140,9 @@ integrity:
 - `integrity.derived_only` - Must be `true`
 
 ### 2. CI Writer Identity
+
 The registry is written exclusively by:
+
 - **Identity**: GitHub Actions service account using `GITHUB_TOKEN`
 - **Permissions**: `contents: write`
 - **Branch Protection**:
@@ -139,6 +152,7 @@ The registry is written exclusively by:
   - Require linear history:  Enabled
 
 ### 3. Concurrency Control
+
 To prevent race conditions during high-velocity merges:
 
 ```yaml
@@ -150,7 +164,9 @@ concurrency:
 This ensures updates are queued and processed in chronological order per source branch.
 
 ### 4. Atomic Write Strategy
+
 Every registry update MUST perform the following in a single commit:
+
 1. Update `environments/<env>/latest/*`
 2. Create `environments/<env>/history/<timestamp>-<sha>/*`
 3. Regenerate `UNIFIED_DASHBOARD.md`
@@ -158,31 +174,37 @@ Every registry update MUST perform the following in a single commit:
 ## Operational Rules
 
 ### 1. Write Boundary (Integrity Control)
+
 Only the **CI identity** may push to `governance-registry`. Human contributors do not commit directly to the registry branch.
 
 ### 2. Visibility & UX
+
 - **README Mitigation**: Root `README.md` links to `governance-registry/UNIFIED_DASHBOARD.md` and `latest/` health reports.
 - **PR Delta Comments**: Every PR merge posts a comment containing registry links, `source_sha`, and a pass/fail summary with key deltas.
 
 ## Consequences
 
 ### Positive
+
 - **Frictionless Development**: Eliminates rejections caused by background mutation.
 - **Audit Integrity**: Derived outputs have a linear, append-only history independent of code churn.
 - **Clear separation of concerns**: Intent branches stay clean; observation stays authoritative.
 - **Reproducibility**: Every report can be regenerated from its source SHA.
 
 ### Negative
+
 - **Split visibility**: Mitigated via README pinning + PR comments.
 - **Repo growth**: Mitigated via future retention policy or periodic squashing.
 
 ## Alternatives Considered
+
 - **GitHub Action Summaries**: Rejected as ephemeral.
 - **Post-merge commits to dev**: Rejected as noisy and causes PR sync issues.
 - **External object store (S3)**: Deferred; may complement git if repo growth exceeds 500MB.
 
 ## Implementation Reference
+
 - **Runbook**: [RB-0028: Governance Registry Operations](/docs/70-operations/runbooks/RB-0028-governance-registry-operations.md)
 - **Workflow**: [governance-registry-writer.yml](/.github/workflows/governance-registry-writer.yml)
 - **Validator**: `validate_govreg.py`: Ensures the registry branch structure is sound.
-- **Architecture**: [How it Works - Governance Registry Mirror](/how-it-works/GOVERNANCE_REGISTRY_MIRROR.md)
+- **Architecture**: [How it Works - Governance Registry Mirror](/85-how-it-works/governance/GOVERNANCE_REGISTRY_MIRROR.md)

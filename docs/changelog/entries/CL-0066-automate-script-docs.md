@@ -35,8 +35,10 @@ breaking_change: false
 ## [1.0.0] - 2026-01-06
 
 ### Added
+
 - **Documentation**: Implemented `scripts/generate_script_index.py` to auto-generate the Platform Automation Scripts Index.
-- **Governance**: Added [ADR-0104](docs/adrs/ADR-0104-automated-script-docs.md) defining the strategy for automated script documentation.
+- **Governance**: Added [ADR-0104](../../adrs/ADR-0104-automated-script-docs.md) defining the strategy for automated script documentation.
 
 ### Changed
+
 - **Index**: `scripts/index.md` is now fully automated. It dynamically categorizes and describes all 25+ platform scripts by parsing their source code headers.

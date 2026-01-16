@@ -12,13 +12,14 @@ reliability:
   maturity: 1
 ---
 
-# Golden Path IDP Features
+## Golden Path IDP Features
 
 The Golden Path IDP provides a streamlined, self-service experience for developers to provision infrastructure, manage applications, and adhere to governance standards. This document provides a high-level overview of available features, while the [**Capability Ledger**](./CAPABILITY_LEDGER.md) provides a detailed technical breakdown of every platform ability.
 
 ---
 
 ## 🛡️ Platform Governance & Trust
+
 *Ensuring the ecosystem stays "Born Governed" without slowing down engineering velocity.*
 
 - **Metadata Sidecars**: Every resource carries its own identity, ownership, and risk profile.
@@ -32,6 +33,7 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Script Certification**: Verifiable trust for automation scripts through cryptographic proofs and a rigorous "Born Governed" lifecycle.
 
 ## 🚀 Delivery & Self-Service
+
 *Automating the path from local code to a production-ready, governed environment.*
 
 - **Repository Scaffolding**: One-click creation of governed GitHub repositories with pre-configured CI/CD.
@@ -40,16 +42,20 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Unified Secret Request Flow**: A streamlined, single-contract interface for managing the entire secret lifecycle across AWS and Kubernetes.
 - **GitOps Secret Projection**: Automated bridging of AWS Secrets Manager to Kubernetes namespaces via the External Secrets Operator.
 - **CI/CD Guardrails**: Automated branch policies and PR gates to protect the main development branch.
+- **Standalone Platform RDS**: Persistent multi-tenant PostgreSQL database as a bounded context, surviving cluster rebuilds with CI-enforced secret rotation and multi-layer deletion protection.
 
 ## Observability & Intelligence
+
 *Providing visibility into the state, cost, and architecture of the entire platform.*
 
 - **Platform Health Dashboard**: A real-time audit of governance coverage and infrastructure health.
 - **Knowledge Graph**: A programmatic map of relationships between ADRs, docs, and code.
 - **Self-Healing Documentation**: Zero-drift documentation that updates itself based on source code changes.
 - **FinOps / Cost Visibility**: Pre-provisioning cost signals that make infrastructure spend visible in PRs.
+- **OOTB Golden Signals**: Instant RED metrics (Rate, Errors, Duration) and correlated logs for every application, with zero configuration required.
 
 ## Foundations (Internal)
+
 *The core engineering systems that power the Golden Path experience.*
 
 - **Enum Consistency**: Unified vocabulary across all metadata and automation engines.

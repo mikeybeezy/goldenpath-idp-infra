@@ -22,7 +22,7 @@ risk_profile:
 
 """
 Purpose: Standardized ECR Repository Scaffolding.
-Relates-To: how-it-works/ECR_REQUEST_FLOW.md
+Relates-To: 85-how-it-works/self-service/ECR_REQUEST_FLOW.md
 """
 import sys
 import os
@@ -182,7 +182,7 @@ def main():
     parser.add_argument("--environment", help="Target environment (dev, prod)", default="dev")
     parser.add_argument("--requester", help="Requesting user (e.g. daniel-deans)")
     parser.add_argument("--domain", help="Domain (e.g. delivery)")
-    parser.add_argument("--catalog-path", default="docs/20-contracts/catalogs/ecr-catalog.yaml")
+    parser.add_argument("--catalog-path", default="docs/20-contracts/resource-catalogs/ecr-catalog.yaml")
     parser.add_argument("--skip-catalog", action="store_true", help="Skip catalog update")
     parser.add_argument("--dry-run", action="store_true", help="Print instead of writing")
 

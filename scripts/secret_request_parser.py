@@ -26,7 +26,7 @@ from __future__ import annotations
 SecretRequest parser/generator (Adapted Standard).
 
 Maps:
-  docs/catalogs/secrets/<service>/<env>/<secret-id>.yaml
+  docs/20-contracts/secret-requests/<service>/<env>/<secret-id>.yaml
 to:
   envs/<env>/secrets/generated/<service>/<secret-id>.auto.tfvars.json
 and:

@@ -2,6 +2,7 @@
 id: ADR-0144
 title: Architecture of the Intent-to-Projection Parser (The Golden Path Core)
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -14,7 +15,7 @@ schema_version: 1
 relates_to:
   - ADR-0142-declarative-platform-contracts.md
   - ADR-0143-secret-request-contract.md
-  - how-it-works/SECRET_REQUEST_FLOW.md
+  - 85-how-it-works/secrets-flow/SECRET_REQUEST_FLOW.md
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,28 +27,34 @@ value_quantification:
 supported_until: '2028-01-01'
 ---
 
-# ADR-0144: Architecture of the Intent-to-Projection Parser
+## ADR-0144: Architecture of the Intent-to-Projection Parser
 
 ## Status
+
 Accepted
 
 ## Context
+
 As the Golden Path IDP matures, we face a fundamental challenge: **How do we allow developers to request complex infrastructure without requiring them to become cloud engineers?**
 
 Authoring low-level Infrastructure-as-Code (Terraform/HCL) or Kubernetes manifests creates:
-1.  **Cognitive Overload**: Developers must understand ARNs, security policies, and resource dependencies.
-2.  **Governance Debt**: Rules (like "High-risk secrets must rotate") are manually enforced via PR comments, which is error-prone.
-3.  **Vendor / Tooling Coupling**: If we move from AWS to Azure, every developer's PR would need to change.
+
+1. **Cognitive Overload**: Developers must understand ARNs, security policies, and resource dependencies.
+2. **Governance Debt**: Rules (like "High-risk secrets must rotate") are manually enforced via PR comments, which is error-prone.
+3. **Vendor / Tooling Coupling**: If we move from AWS to Azure, every developer's PR would need to change.
 
 ## Decision
+
 We will centralize platform intelligence into a standalone **Intent-to-Projection Parser**. This component acts as the "Brain" of the Software Delivery Life Cycle (SDLC).
 
 The Parser is responsible for translating human-readable **Intent** (YAML) into machine-efficient **Implementation** (IaC/GitOps).
 
 ### The Engine: `secret_request_parser.py`
+
 The architectural core is the `secret_request_parser.py` script. It handles the validation of developer intent against the `SecretRequest` schema, enforces secondary governance policies (like mandatory rotation), and emits the project-specific implementations.
 
 ### Architecture Diagram
+
 ```mermaid
 
 graph TD

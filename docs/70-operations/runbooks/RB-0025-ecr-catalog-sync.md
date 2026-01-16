@@ -32,11 +32,11 @@ dependencies:
 breaking_change: false
 ---
 
-# ECR Catalog Sync (AWS Source of Truth)
+## ECR Catalog Sync (AWS Source of Truth)
 
 This runbook keeps Backstage aligned to the physical AWS ECR state by generating
-`backstage-helm/catalog/resources/ecr-registry.yaml` from AWS. The catalog file
-`docs/20-contracts/catalogs/ecr-catalog.yaml` is used only for optional metadata
+`backstage-helm/backstage-catalog/resources/ecr-registry.yaml` from AWS. The catalog file
+`docs/20-contracts/resource-catalogs/ecr-catalog.yaml` is used only for optional metadata
 enrichment (e.g., environment), not as the source of truth.
 
 Use this when:
@@ -95,7 +95,7 @@ Manual runs are still supported for debugging or recovery.
 3. Verify the generated Backstage entity.
 
    ```bash
-   rg -n "Master AWS ECR Registry" backstage-helm/catalog/resources/ecr-registry.yaml
+   rg -n "Master AWS ECR Registry" backstage-helm/backstage-catalog/resources/ecr-registry.yaml
    ```
 
 4. Commit the updated Backstage entity file when the output is correct.

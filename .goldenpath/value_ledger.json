@@ -1,146 +1,6 @@
 {
-  "total_reclaimed_hours": 107.4,
+  "total_reclaimed_hours": 135.4,
   "history": [
-    {
-      "timestamp": "2026-01-08T20:57:28Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-08T20:59:30Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-08T21:04:19Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-08T21:05:26Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-08T21:19:46Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-08T21:20:10Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-09T07:17:19Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-09T07:30:55Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-09T10:40:43Z",
-      "script": "validate_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-09T12:38:17Z",
-      "script": "validate_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-09T18:38:45Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-09T18:40:10Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-09T23:03:13Z",
-      "script": "sync_ecr_catalog.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-10T01:58:55Z",
-      "script": "validate_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-10T02:12:49Z",
-      "script": "validate_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-11T19:20:00Z",
-      "script": "validate_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-11T19:21:53Z",
-      "script": "validate_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-11T20:25:36Z",
-      "script": "validate_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-12T01:17:51Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-12T06:10:02Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-12T06:11:14Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-12T06:11:14Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-12T06:11:14Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-12T06:11:14Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-12T06:11:14Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-12T06:11:14Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-12T06:11:14Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-12T06:11:14Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
     {
       "timestamp": "2026-01-12T06:11:23Z",
       "script": "standardize_metadata.py",
@@ -497,8 +357,148 @@
       "reclaimed_hours": 1.0
     },
     {
-      "timestamp": "2026-01-14T22:57:37Z",
+      "timestamp": "2026-01-15T00:52:07Z",
       "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:07Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:07Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:07Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:07Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:07Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:07Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:52Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:52Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:52Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:52Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:52:52Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:53:10Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:53:10Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:53:10Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:53:10Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:53:10Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:53:10Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T00:53:10Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T01:35:23Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T01:35:23Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T01:35:23Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T01:35:23Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T01:35:23Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-15T01:35:23Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-16T07:43:33Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-16T08:04:27Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-16T08:25:22Z",
+      "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-16T08:53:45Z",
+      "script": "validate_metadata.py",
       "reclaimed_hours": 1.0
     }
   ]

@@ -18,6 +18,7 @@ properties:
     description: "Allowed top-level paths in the governance-registry branch"
     default:
       - environments
+      - backstage-catalog
       - UNIFIED_DASHBOARD.md
       - README.md
       - .git

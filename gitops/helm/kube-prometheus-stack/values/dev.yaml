@@ -1,6 +1,20 @@
+# Kube-Prometheus-Stack Helm Values - Dev Environment
+# Chart: prometheus-community/kube-prometheus-stack v45.7.1
 # Managed by scripts/standardize_metadata.py
+governance:
+  id: HELM_KUBE_PROMETHEUS_STACK_METADATA
+  owner: null
+  risk_profile: null
+  reliability: null
+
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned Versions
+# -----------------------------------------------------------------------------
 prometheus:
   prometheusSpec:
+    image:
+      repository: quay.io/prometheus/prometheus
+      tag: v2.47.2
     retention: 7d
     storageSpec:
       volumeClaimTemplate:
@@ -10,8 +24,22 @@ prometheus:
           resources:
             requests:
               storage: 20Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+
+# -----------------------------------------------------------------------------
+# Alertmanager
+# -----------------------------------------------------------------------------
 alertmanager:
   alertmanagerSpec:
+    image:
+      repository: quay.io/prometheus/alertmanager
+      tag: v0.26.0
     storage:
       volumeClaimTemplate:
         spec:
@@ -20,17 +48,104 @@ alertmanager:
           resources:
             requests:
               storage: 5Gi
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+
+# -----------------------------------------------------------------------------
+# Grafana
+# -----------------------------------------------------------------------------
 grafana:
+  image:
+    repository: grafana/grafana
+    tag: 10.2.3
+    pullPolicy: IfNotPresent
   persistence:
     enabled: true
     size: 10Gi
+  # Ingress Configuration - Kong
+  ingress:
+    enabled: true
+    ingressClassName: kong
+    hosts:
+      - grafana.dev.goldenpathidp.io
+    tls:
+      - secretName: grafana-dev-goldenpath-io-tls
+        hosts:
+          - grafana.dev.goldenpathidp.io
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-staging
+  # Grafana root URL for proper redirect handling
+  grafana.ini:
+    server:
+      root_url: https://grafana.dev.goldenpathidp.io
   additionalDataSources:
     - name: Loki
       type: loki
       access: proxy
       url: http://loki-gateway.monitoring.svc:3100
-governance:
-  id: HELM_KUBE_PROMETHEUS_STACK_METADATA
-  owner: null
-  risk_profile: null
-  reliability: null
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: ALL
+    datasources:
+      enabled: true
+      searchNamespace: ALL
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# -----------------------------------------------------------------------------
+# Prometheus Operator
+# -----------------------------------------------------------------------------
+prometheusOperator:
+  image:
+    repository: quay.io/prometheus-operator/prometheus-operator
+    tag: v0.68.0
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+# -----------------------------------------------------------------------------
+# Node Exporter
+# -----------------------------------------------------------------------------
+nodeExporter:
+  image:
+    repository: quay.io/prometheus/node-exporter
+    tag: v1.6.1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
+
+# -----------------------------------------------------------------------------
+# Kube State Metrics
+# -----------------------------------------------------------------------------
+kubeStateMetrics:
+  image:
+    repository: registry.k8s.io/kube-state-metrics/kube-state-metrics
+    tag: v2.10.1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi

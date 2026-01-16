@@ -41,9 +41,9 @@ Welcome to the core configuration and governance engine for the GoldenPath Inter
 
 ## Quick Links
 
-- [** START HERE (5-Min Onboarding)**](file:///Users/mikesablaze/goldenpath-idp-infra/docs/80-onboarding/00_START_HERE.md)
-- [** Platform Dashboards Index**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_DASHBOARDS.md)
-- [** Current Platform Health**](file:///Users/mikesablaze/goldenpath-idp-infra/PLATFORM_HEALTH.md)
+- [** START HERE (5-Min Onboarding)**](docs/80-onboarding/00_START_HERE.md)
+- [** Platform Dashboards Index**](PLATFORM_DASHBOARDS.md)
+- [** Current Platform Health**](PLATFORM_HEALTH.md)
 
 ---
 
@@ -222,9 +222,9 @@ Timing runs:
 
 To ensure platform stability, all changes must pass a multi-gate validation process. To pass these with **minimal friction**, follow the **Heal-First** workflow:
 
-1.  **Heal Locally**: Run `bin/governance heal .` to automatically align your files with platform standards.
-2.  **Verify**: Run `python3 -m pre_commit run --all-files` to catch linting errors.
-3.  **Push**: Push to your branch and let the CI Auto-Healer bot fix common index synchronization issues.
+1. **Heal Locally**: Run `bin/governance heal .` to automatically align your files with platform standards.
+2. **Verify**: Run `python3 -m pre_commit run --all-files` to catch linting errors.
+3. **Push**: Push to your branch and let the CI Auto-Healer bot fix common index synchronization issues.
 
 For a detailed guide, see [**RB-0027: Frictionless PR Gates**](docs/70-operations/runbooks/RB-0027-frictionless-pr-gates.md).
 

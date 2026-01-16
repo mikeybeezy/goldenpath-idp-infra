@@ -32,7 +32,7 @@ dependencies:
 breaking_change: false
 ---
 
-# Backstage Helm Catalog Visibility (Runbook)
+## Backstage Helm Catalog Visibility (Runbook)
 
 This runbook provides step-by-step procedures to diagnose and fix catalog visibility issues in Backstage deployed via Helm.
 
@@ -70,8 +70,9 @@ kubectl get configmap -n backstage backstage-config -o yaml | grep -A 5 "DEMO_CA
 ```
 
 Expected output should show:
-```
-DEMO_CATALOG_LOCATION: https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/catalog/all.yaml
+
+```text
+DEMO_CATALOG_LOCATION: https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/backstage-catalog/all.yaml
 ```
 
 **Problem**: If the URL is incorrect or points to PlatformersCommunity, continue to Step 5.
@@ -85,6 +86,7 @@ kubectl logs -n backstage deployment/backstage --tail=50 | grep -i "catalog\|loc
 ```
 
 Common errors to look for:
+
 - `NotAllowedError: Reading from 'https://raw.githubusercontent.com' is not allowed`
 - `Unable to read url, Error: URL parsing failed`
 - `401 Unauthorized` (GitHub token issues)
@@ -94,7 +96,7 @@ Common errors to look for:
 Why: Ensures the catalog file is publicly accessible from GitHub.
 
 ```sh
-curl -I "https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/catalog/all.yaml"
+curl -I "https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/backstage-catalog/all.yaml"
 ```
 
 Expected: `HTTP/2 200` response.
@@ -107,7 +109,7 @@ Why: Updates Helm deployment to point to the correct catalog.
 
 ```sh
 helm upgrade backstage ./backstage-helm/charts/backstage \
-  --set catalog.demoCatalogLocation='https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/catalog/all.yaml' \
+  --set catalog.demoCatalogLocation='https://raw.githubusercontent.com/YOUR_ORG/YOUR_REPO/BRANCH/backstage-helm/backstage-catalog/all.yaml' \
   --namespace backstage \
   --wait
 ```
@@ -177,14 +179,17 @@ If Step 8 shows "Connection refused":
 
 1. Stop any existing port-forward (Ctrl+C)
 2. Start fresh:
+
 ```sh
 kubectl port-forward svc/backstage -n backstage 7007:7007
 ```
-3. Open browser: <http://localhost:7007>
+
+1. Open browser: <http://localhost:7007>
 
 ## Verification
 
 Navigate to **Catalog** in the Backstage UI. You should see:
+
 - Components (13 in demo catalog)
 - APIs (9 in demo catalog)
 - Resources (12 with ECR entities)
@@ -193,11 +198,14 @@ Navigate to **Catalog** in the Backstage UI. You should see:
 ## Common Issues
 
 ### Issue: Helm values override not applied (catalog still points to development)
+
 **Symptoms**:
+
 - `helm get values backstage -n backstage` still shows `development` catalog URLs
 - Backstage UI keeps loading the demo catalog
 
 **Cause**:
+
 - Helm upgrade used the upstream chart instead of the local chart, or
 - The upgrade omitted one of the values files (`values-local.yaml` / `values-local.secrets.yaml`), or
 - Old values persisted because Helm reused previous values.
@@ -205,6 +213,7 @@ Navigate to **Catalog** in the Backstage UI. You should see:
 **Fix**:
 
 1) Upgrade using the local chart and both values files:
+
 ```sh
 helm upgrade --install backstage /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra/backstage-helm/charts/backstage \
   -n backstage --create-namespace --reset-values \
@@ -212,26 +221,31 @@ helm upgrade --install backstage /Users/mikesablaze/Documents/relaunch/goldenpat
   -f /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra/backstage-helm/values-local.secrets.yaml
 ```
 
-2) Confirm the rendered config:
+1) Confirm the rendered config:
+
 ```sh
 helm get values backstage -n backstage
 kubectl -n backstage get configmap backstage-app-config -o yaml | rg -n "catalog|DEMO_CATALOG"
 ```
 
-3) Restart Backstage to pick up the new ConfigMap:
+1) Restart Backstage to pick up the new ConfigMap:
+
 ```sh
 kubectl -n backstage rollout restart deployment/backstage
 ```
 
 ### Issue: "URL parsing failed" for "url:None"
+
 **Cause**: The `CUSTOM_CATALOG_LOCATION` is set to "None" (string instead of unset).
 **Fix**: Ensure Helm values use `customCatalogLocation: ""` or don't set it.
 
 ### Issue: Duplicate backend sections in values.yaml
+
 **Cause**: YAML only recognizes the first key occurrence.
 **Fix**: Merge all backend configuration into a single `backend:` block.
 
 ### Issue: GitHub 401 Unauthorized for private repos
+
 **Cause**: Backstage needs a GitHub token to read private repositories.
 **Fix**: Set `github.accessToken` in Helm values or via environment variable.
 

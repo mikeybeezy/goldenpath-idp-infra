@@ -31,13 +31,13 @@ version: '1.0'
 breaking_change: false
 ---
 
-# Relationship Extraction Script - Usage & Operations
+## Relationship Extraction Script - Usage & Operations
 
 ## Overview
 
 `scripts/extract-relationships.py` automatically populates the `relates_to` metadata field by scanning document content for references to other files, ADRs, PRs, and workflow files. It builds the Knowledge Graph connections between documents.
 
-**Script Location:** [`scripts/extract-relationships.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/extract-relationships.py)
+**Script Location:** [`scripts/extract-relationships.py`](scripts/extract-relationships.py)
 
 ## What It Does
 
@@ -79,7 +79,7 @@ For each file, extracts references using **13 detection patterns**:
 
 Converts file paths to document IDs:
 
-```
+```text
 docs/adrs/ADR-0026-platform-cd-deployment.md → ADR-0026
 docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md → 21_CI_ENVIRONMENT_CONTRACT
 PR #107 → PR-107
@@ -122,7 +122,7 @@ python3 scripts/extract-relationships.py --dry-run --verbose
 
 ### Output Example
 
-```
+```text
 Found 304 markdown files
 Indexed 304 document IDs
 Mode: LIVE
@@ -260,7 +260,7 @@ grep -r "relates_to: \[\]" docs/ | wc -l
 
 **Cause:** Referenced file doesn't exist or ID conversion failed
 
-**Check verbose mode:**
+### Check verbose mode
 
 ```bash
 python3 scripts/extract-relationships.py --dry-run --verbose
@@ -343,10 +343,10 @@ relates_to:
 
 ## Script Arguments
 
-| Argument | Description | Example |
+|Argument|Description|Example|
 |-------|-------|------|
-| `--dry-run` | Preview mode, no file changes | `python3 ... --dry-run` |
-| `--verbose` | Show all files including skipped | `python3 ... --verbose` |
+|`--dry-run`|Preview mode, no file changes|`python3 ... --dry-run`|
+|`--verbose`|Show all files including skipped|`python3 ... --verbose`|
 
 ## Advanced Usage
 
@@ -413,10 +413,10 @@ Add filter logic before adding to `relationships` set.
 
 ## Related Documentation
 
-- [ADR-0084: Enhanced Metadata Schema](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0084-platform-enhanced-metadata-schema.md)
-- [CL-0043: Complete Metadata Backfill](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/entries/CL-0043-complete-metadata-backfill.md)
-- [METADATA_STRATEGY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/90-doc-system/METADATA_STRATEGY.md)
-- [Metadata Backfill Script Runbook](file:///Users/mikesablaze/goldenpath-idp-infra/docs/70-operations/runbooks/METADATA_BACKFILL_SCRIPT.md)
+- [ADR-0084: Enhanced Metadata Schema](../../adrs/ADR-0084-platform-enhanced-metadata-schema.md)
+- [CL-0043: Complete Metadata Backfill](../../changelog/entries/CL-0043-complete-metadata-backfill.md)
+- [METADATA_STRATEGY.md](../../90-doc-system/METADATA_STRATEGY.md)
+- [Metadata Backfill Script Runbook](docs/70-operations/runbooks/METADATA_BACKFILL_SCRIPT.md)
 
 ## Support
 

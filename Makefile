@@ -82,7 +82,7 @@ endef
 #   make drain-nodegroup NODEGROUP=dev-default
 #   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 
-.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help
+.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help rds-init rds-plan rds-apply rds-status
 
 init:
 	$(TF_BIN) -chdir=$(ENV_DIR) init
@@ -386,8 +386,78 @@ set-cluster-name:
 	echo "cluster_name set to $$name in $$tfvars"; \
 	'
 
+################################################################################
+# Platform RDS - Standalone Bounded Context
+#
+# RDS is persistent infrastructure that survives cluster rebuilds.
+# IMPORTANT: There is NO rds-destroy target. RDS deletion requires console
+# intervention per ADR-0158. See runbook RB-0016 for break-glass procedure.
+#
+# Deployment order:
+#   1. make rds-apply ENV=dev           # Deploy RDS first
+#   2. make apply ENV=dev BUILD_ID=xx   # Then deploy EKS cluster
+#   3. make bootstrap ENV=dev           # Then bootstrap
+################################################################################
+
+RDS_ENV_DIR := envs/$(ENV)-rds
+
+rds-init:
+	@if [ ! -d "$(RDS_ENV_DIR)" ]; then \
+		echo "RDS environment directory not found: $(RDS_ENV_DIR)"; \
+		echo "Available: $$(ls -d envs/*-rds 2>/dev/null || echo 'none')"; \
+		exit 1; \
+	fi
+	$(TF_BIN) -chdir=$(RDS_ENV_DIR) init
+
+rds-plan:
+	@if [ ! -d "$(RDS_ENV_DIR)" ]; then \
+		echo "RDS environment directory not found: $(RDS_ENV_DIR)"; \
+		exit 1; \
+	fi
+	$(TF_BIN) -chdir=$(RDS_ENV_DIR) plan
+
+rds-apply:
+	@if [ ! -d "$(RDS_ENV_DIR)" ]; then \
+		echo "RDS environment directory not found: $(RDS_ENV_DIR)"; \
+		exit 1; \
+	fi
+	@echo "Applying Platform RDS for $(ENV)..."
+	@echo "NOTE: RDS has deletion_protection=true and prevent_destroy lifecycle."
+	@echo "      There is NO rds-destroy target. See RB-0016 for deletion procedure."
+	@mkdir -p logs/build-timings
+	@bash -c '\
+	log="logs/build-timings/rds-apply-$(ENV)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	echo "RDS apply output streaming; full log at $$log"; \
+	$(TF_BIN) -chdir=$(RDS_ENV_DIR) apply 2>&1 | tee "$$log"; \
+	exit $${PIPESTATUS[0]}; \
+	'
+
+rds-status:
+	@echo "Platform RDS Status for $(ENV)"
+	@echo "================================"
+	@if [ ! -d "$(RDS_ENV_DIR)" ]; then \
+		echo "RDS environment not configured: $(RDS_ENV_DIR)"; \
+		exit 1; \
+	fi
+	@$(TF_BIN) -chdir=$(RDS_ENV_DIR) output -json 2>/dev/null | jq -r '. | to_entries[] | "\(.key): \(.value.value)"' 2>/dev/null || echo "Run 'make rds-init ENV=$(ENV)' first"
+
+# Note: NO rds-destroy target exists by design.
+# RDS deletion requires manual console intervention.
+# See: docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md
+
+################################################################################
+
 help:
 	@echo "Targets:"
+	@echo ""
+	@echo "== Platform RDS (Persistent Data Layer) =="
+	@echo "  make rds-init ENV=dev          # Initialize RDS Terraform"
+	@echo "  make rds-plan ENV=dev          # Plan RDS changes"
+	@echo "  make rds-apply ENV=dev         # Apply RDS (deploy first!)"
+	@echo "  make rds-status ENV=dev        # Show RDS outputs"
+	@echo "  NOTE: No rds-destroy target. See RB-0030 for deletion."
+	@echo ""
+	@echo "== EKS Cluster =="
 	@echo "  make init ENV=dev"
 	@echo "  make plan ENV=dev"
 	@echo "  make apply ENV=dev"

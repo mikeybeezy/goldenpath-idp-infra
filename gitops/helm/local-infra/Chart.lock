@@ -1,0 +1,12 @@
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.12.10
+- name: minio
+  repository: https://charts.min.io/
+  version: 5.0.0
+- name: localstack
+  repository: https://localstack.github.io/helm-charts
+  version: 0.6.0
+digest: sha256:685972a90e4f248e869892fed86b494c23a26906271eb579f410f1f1b02d3582
+generated: "2026-01-15T19:11:08.718228Z"

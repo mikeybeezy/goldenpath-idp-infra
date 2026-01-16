@@ -1,0 +1,298 @@
+# Keycloak RED/Golden Signals Dashboard
+# Deploy to keycloak namespace for Grafana sidecar auto-discovery
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-golden-signals-dashboard
+  namespace: keycloak
+  labels:
+    grafana_dashboard: "1"
+    app: keycloak
+  annotations:
+    k8s-sidecar-target-directory: "/tmp/dashboards/tooling"
+    goldenpath.idp/id: TOOLING_DASHBOARDS_KEYCLOAK
+    goldenpath.idp/owner: platform-team
+data:
+  keycloak-golden-signals.json: |
+    {
+      "title": "Keycloak - Golden Signals",
+      "uid": "keycloak-golden-signals",
+      "tags": ["tooling", "keycloak", "golden-signals", "red-metrics", "auth"],
+      "timezone": "browser",
+      "schemaVersion": 30,
+      "refresh": "30s",
+      "editable": false,
+      "templating": {
+        "list": [
+          {
+            "name": "datasource",
+            "type": "datasource",
+            "query": "prometheus",
+            "current": { "text": "Prometheus", "value": "Prometheus" }
+          }
+        ]
+      },
+      "panels": [
+        {
+          "type": "row",
+          "title": "RED Metrics - Authentication Traffic",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+          "collapsed": false
+        },
+        {
+          "title": "Login Attempts (RPS)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(keycloak_logins_total{namespace=\"keycloak\"}[2m])) by (realm)",
+              "legendFormat": "{{realm}} - success"
+            },
+            {
+              "expr": "sum(rate(keycloak_failed_login_attempts_total{namespace=\"keycloak\"}[2m])) by (realm)",
+              "legendFormat": "{{realm}} - failed"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "title": "HTTP Request Rate",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(http_server_requests_seconds_count{namespace=\"keycloak\"}[2m])) by (method, uri)",
+              "legendFormat": "{{method}} {{uri}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "title": "Error Rate (%)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(http_server_requests_seconds_count{namespace=\"keycloak\", status=~\"5..\"}[2m])) / sum(rate(http_server_requests_seconds_count{namespace=\"keycloak\"}[2m])) * 100",
+              "legendFormat": "5xx Error Rate"
+            },
+            {
+              "expr": "sum(rate(keycloak_failed_login_attempts_total{namespace=\"keycloak\"}[2m])) / (sum(rate(keycloak_logins_total{namespace=\"keycloak\"}[2m])) + sum(rate(keycloak_failed_login_attempts_total{namespace=\"keycloak\"}[2m]))) * 100",
+              "legendFormat": "Login Failure Rate"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 5 },
+                  { "color": "red", "value": 20 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Duration - Response Times",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 },
+          "collapsed": false
+        },
+        {
+          "title": "HTTP Latency P50/P95/P99",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 10 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.50, sum(rate(http_server_requests_seconds_bucket{namespace=\"keycloak\"}[5m])) by (le))",
+              "legendFormat": "P50"
+            },
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{namespace=\"keycloak\"}[5m])) by (le))",
+              "legendFormat": "P95"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{namespace=\"keycloak\"}[5m])) by (le))",
+              "legendFormat": "P99"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "custom": { "drawStyle": "line" }
+            }
+          }
+        },
+        {
+          "title": "Active Sessions",
+          "type": "stat",
+          "gridPos": { "h": 8, "w": 6, "x": 12, "y": 10 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(keycloak_sessions{namespace=\"keycloak\"})",
+              "legendFormat": "Active Sessions"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Registered Users",
+          "type": "stat",
+          "gridPos": { "h": 8, "w": 6, "x": 18, "y": 10 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(keycloak_registrations_total{namespace=\"keycloak\"})",
+              "legendFormat": "Total Users"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "blue", "value": null }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Saturation - Resource Usage",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 18 },
+          "collapsed": false
+        },
+        {
+          "title": "CPU Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 19 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"keycloak\", container!=\"\", container!=\"POD\"}[2m])) by (pod)",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "title": "Memory Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 19 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(container_memory_usage_bytes{namespace=\"keycloak\", container!=\"\", container!=\"POD\"}) by (pod)",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "title": "JVM Heap Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 19 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(jvm_memory_used_bytes{namespace=\"keycloak\", area=\"heap\"}) by (pod)",
+              "legendFormat": "{{pod}} - used"
+            },
+            {
+              "expr": "sum(jvm_memory_max_bytes{namespace=\"keycloak\", area=\"heap\"}) by (pod)",
+              "legendFormat": "{{pod}} - max"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Logs (Loki)",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 27 },
+          "collapsed": false
+        },
+        {
+          "title": "Authentication Events & Errors",
+          "type": "logs",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 28 },
+          "datasource": { "type": "loki", "uid": "loki" },
+          "targets": [
+            {
+              "expr": "{namespace=\"keycloak\"} |~ \"(?i)(error|exception|failed|denied|unauthorized|LOGIN|LOGOUT)\"",
+              "legendFormat": ""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none",
+            "enableLogDetails": true
+          }
+        },
+        {
+          "title": "All Keycloak Logs",
+          "type": "logs",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 38 },
+          "datasource": { "type": "loki", "uid": "loki" },
+          "targets": [
+            {
+              "expr": "{namespace=\"keycloak\"}",
+              "legendFormat": ""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none",
+            "enableLogDetails": true
+          }
+        }
+      ]
+    }

@@ -1,11 +1,12 @@
 # Owner: platform
-# Relates-To: how-it-works/PR_GUARDRAILS.md
+# Relates-To: 85-how-it-works/governance/PR_GUARDRAILS.md
 name: Policy - PR Guardrails
 
 on:
   pull_request:
     branches:
       - main
+      - development
     types: [opened, edited, synchronize, reopened, ready_for_review, labeled, unlabeled]
 
 permissions:

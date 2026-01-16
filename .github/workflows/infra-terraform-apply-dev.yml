@@ -2,6 +2,13 @@
 name: Apply - Infra Terraform Apply (dev)
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - "envs/dev/**/*.tf"
+      - "envs/dev/**/*.tfvars"
+      - "modules/**/*.tf"
   workflow_dispatch:
     inputs:
       confirm_apply:
@@ -32,11 +39,12 @@ on:
 
 jobs:
   apply-dev:
-    if: ${{ inputs.confirm_apply == 'apply' }}
+    # Run on push (auto-apply) or manual dispatch with confirm_apply == 'apply'
+    if: ${{ github.event_name == 'push' || inputs.confirm_apply == 'apply' }}
     runs-on: ubuntu-latest
     environment: dev
     permissions:
-      contents: read
+      contents: write
       id-token: write
       actions: read
     steps:
@@ -46,28 +54,81 @@ jobs:
       - name: Fetch governance registry for build_id validation
         run: git fetch origin governance-registry:refs/remotes/origin/governance-registry
 
+      - name: Resolve lifecycle and build_id from tfvars (auto-apply)
+        if: ${{ github.event_name == 'push' }}
+        id: resolve
+        run: |
+          read_top_var() {
+            local key="$1"
+            awk -F'=' -v k="${key}" '{
+              line=$0
+              sub(/#.*/,"",line)
+              if (line ~ /^[[:space:]]*$/) next
+              split(line, parts, "=")
+              lhs=parts[1]; gsub(/[[:space:]]/,"",lhs)
+              if (lhs==k) {
+                val=parts[2]
+                sub(/#.*/,"",val)
+                gsub(/"/,"",val)
+                gsub(/[[:space:]]/,"",val)
+                print val
+                exit
+              }
+            }' envs/dev/terraform.tfvars
+          }
+          LIFECYCLE=$(read_top_var "cluster_lifecycle")
+          BUILD_ID=$(read_top_var "build_id")
+          if [[ -z "${LIFECYCLE}" ]]; then
+            LIFECYCLE="persistent"
+          fi
+          echo "RESOLVED_LIFECYCLE=${LIFECYCLE}" >> "${GITHUB_ENV}"
+          echo "RESOLVED_BUILD_ID=${BUILD_ID}" >> "${GITHUB_ENV}"
+          echo "Resolved from tfvars: lifecycle=${LIFECYCLE}, build_id=${BUILD_ID}"
+
+      - name: Set effective lifecycle and build_id
+        id: effective
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "lifecycle=${RESOLVED_LIFECYCLE}" >> "${GITHUB_OUTPUT}"
+            echo "build_id=${RESOLVED_BUILD_ID}" >> "${GITHUB_OUTPUT}"
+            # For push events, new_build is implicit if ephemeral
+            if [[ "${RESOLVED_LIFECYCLE}" == "ephemeral" ]]; then
+              echo "new_build=true" >> "${GITHUB_OUTPUT}"
+            else
+              echo "new_build=false" >> "${GITHUB_OUTPUT}"
+            fi
+          else
+            echo "lifecycle=${{ inputs.lifecycle }}" >> "${GITHUB_OUTPUT}"
+            echo "build_id=${{ inputs.build_id }}" >> "${GITHUB_OUTPUT}"
+            echo "new_build=${{ inputs.new_build }}" >> "${GITHUB_OUTPUT}"
+          fi
+
       - name: Validate lifecycle and build ID
         shell: bash
+        env:
+          LIFECYCLE: ${{ steps.effective.outputs.lifecycle }}
+          BUILD_ID: ${{ steps.effective.outputs.build_id }}
+          NEW_BUILD: ${{ steps.effective.outputs.new_build }}
         run: |
-          if [[ "${{ inputs.lifecycle }}" == "ephemeral" ]]; then
-            if [[ "${{ inputs.new_build }}" != "true" ]]; then
+          if [[ "${LIFECYCLE}" == "ephemeral" ]]; then
+            if [[ "${NEW_BUILD}" != "true" ]]; then
               echo "new_build must be true when lifecycle=ephemeral" >&2
               exit 1
             fi
-            if [[ -z "${{ inputs.build_id }}" ]]; then
+            if [[ -z "${BUILD_ID}" ]]; then
               echo "build_id is required when lifecycle=ephemeral" >&2
               exit 1
             fi
-            if ! [[ "${{ inputs.build_id }}" =~ ^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]; then
-              echo "Invalid build_id: '${{ inputs.build_id }}' (expected dd-mm-yy-NN)" >&2
+            if ! [[ "${BUILD_ID}" =~ ^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]; then
+              echo "Invalid build_id: '${BUILD_ID}' (expected dd-mm-yy-NN)" >&2
               exit 1
             fi
           else
-            if [[ "${{ inputs.new_build }}" == "true" ]]; then
+            if [[ "${NEW_BUILD}" == "true" ]]; then
               echo "new_build is only valid for lifecycle=ephemeral" >&2
               exit 1
             fi
-            if [[ -n "${{ inputs.build_id }}" ]]; then
+            if [[ -n "${BUILD_ID}" ]]; then
               echo "build_id is only valid for lifecycle=ephemeral" >&2
               exit 1
             fi
@@ -79,8 +140,8 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const sha = context.sha;
-            const lifecycle = "${{ inputs.lifecycle }}";
-            const buildId = "${{ inputs.build_id }}";
+            const lifecycle = "${{ steps.effective.outputs.lifecycle }}";
+            const buildId = "${{ steps.effective.outputs.build_id }}";
             const findManualPlan = async (targetSha) => {
               const manualRuns = await github.rest.actions.listWorkflowRuns({
                 owner,
@@ -153,9 +214,12 @@ jobs:
           role-to-assume: ${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}
 
       - name: Resolve state key
+        env:
+          LIFECYCLE: ${{ steps.effective.outputs.lifecycle }}
+          BUILD_ID: ${{ steps.effective.outputs.build_id }}
         run: |
-          if [[ "${{ inputs.lifecycle }}" == "ephemeral" ]]; then
-            STATE_KEY="envs/dev/builds/${{ inputs.build_id }}/terraform.tfstate"
+          if [[ "${LIFECYCLE}" == "ephemeral" ]]; then
+            STATE_KEY="envs/dev/builds/${BUILD_ID}/terraform.tfstate"
           else
             STATE_KEY="envs/dev/terraform.tfstate"
           fi
@@ -164,9 +228,9 @@ jobs:
 
       - name: CI summary (state selection)
         run: |
-          echo "Lifecycle=${{ inputs.lifecycle }}"
-          echo "BuildId=${{ inputs.build_id }}"
-          echo "NewBuild=${{ inputs.new_build }}"
+          echo "Lifecycle=${{ steps.effective.outputs.lifecycle }}"
+          echo "BuildId=${{ steps.effective.outputs.build_id }}"
+          echo "NewBuild=${{ steps.effective.outputs.new_build }}"
           echo "StateKey=${STATE_KEY}"
 
       - name: Terraform init (backend)
@@ -178,41 +242,128 @@ jobs:
             -backend-config="dynamodb_table=goldenpath-idp-dev-db-key" \
             -backend-config="encrypt=true"
 
-      - name: DEBUG - Manual EKS Access Setup
+      - name: Terraform apply (dev)
+        id: tf_apply
+        env:
+          LIFECYCLE: ${{ steps.effective.outputs.lifecycle }}
+          BUILD_ID: ${{ steps.effective.outputs.build_id }}
         run: |
-          # 1. Get Current Runner ARN
-          RUNNER_ARN=$(aws sts get-caller-identity --query Arn --output text)
-          echo "Runnner ARN: $RUNNER_ARN"
+          echo "TF_APPLY_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "${GITHUB_ENV}"
+          var_args=(-var "cluster_lifecycle=${LIFECYCLE}")
+          if [[ "${LIFECYCLE}" == "ephemeral" ]]; then
+            var_args+=(-var "build_id=${BUILD_ID}")
+          fi
+          terraform -chdir=envs/dev apply -auto-approve -input=false -no-color "${var_args[@]}" 2>&1 | tee tf_apply.log
+          TF_EXIT=${PIPESTATUS[0]}
+          echo "TF_APPLY_END=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "${GITHUB_ENV}"
+          # Extract resource counts from Apply complete line
+          if grep -q "Apply complete!" tf_apply.log; then
+            ADDED=$(grep "Apply complete!" tf_apply.log | sed -E 's/.*Resources: ([0-9]+) added.*/\1/')
+            CHANGED=$(grep "Apply complete!" tf_apply.log | sed -E 's/.*, ([0-9]+) changed.*/\1/')
+            DESTROYED=$(grep "Apply complete!" tf_apply.log | sed -E 's/.*, ([0-9]+) destroyed.*/\1/')
+          else
+            ADDED=0; CHANGED=0; DESTROYED=0
+          fi
+          echo "TF_RESOURCES_ADDED=${ADDED}" >> "${GITHUB_ENV}"
+          echo "TF_RESOURCES_CHANGED=${CHANGED}" >> "${GITHUB_ENV}"
+          echo "TF_RESOURCES_DESTROYED=${DESTROYED}" >> "${GITHUB_ENV}"
+          echo "TF_EXIT_CODE=${TF_EXIT}" >> "${GITHUB_ENV}"
+          exit ${TF_EXIT}
 
-          # 2. Create Access Entry (Ignore if exists)
-          echo "Creating Access Entry..."
+      - name: Setup EKS access for runner
+        if: ${{ steps.effective.outputs.lifecycle == 'ephemeral' }}
+        env:
+          BUILD_ID: ${{ steps.effective.outputs.build_id }}
+        run: |
+          CLUSTER_NAME="goldenpath-dev-eks-${BUILD_ID}"
+
+          # Get runner's IAM role ARN (convert STS assumed-role ARN to IAM role ARN)
+          STS_ARN=$(aws sts get-caller-identity --query Arn --output text)
+          echo "STS ARN: $STS_ARN"
+          # Convert: arn:aws:sts::ACCOUNT:assumed-role/ROLE/SESSION -> arn:aws:iam::ACCOUNT:role/ROLE
+          ACCOUNT_ID=$(echo "$STS_ARN" | cut -d: -f5)
+          ROLE_NAME=$(echo "$STS_ARN" | cut -d/ -f2)
+          RUNNER_ARN="arn:aws:iam::${ACCOUNT_ID}:role/${ROLE_NAME}"
+          echo "IAM Role ARN: $RUNNER_ARN"
+
+          # Create access entry for runner
+          echo "Creating EKS access entry..."
           aws eks create-access-entry \
-            --cluster-name goldenpath-dev-eks-${{ inputs.build_id }} \
+            --cluster-name "${CLUSTER_NAME}" \
             --principal-arn "$RUNNER_ARN" \
             --region eu-west-2 || true
 
-          # 3. Associate Policy (Ignore if exists)
-          echo "Associating Policy..."
+          # Associate admin policy
+          echo "Associating admin policy..."
           aws eks associate-access-policy \
-            --cluster-name goldenpath-dev-eks-${{ inputs.build_id }} \
+            --cluster-name "${CLUSTER_NAME}" \
             --principal-arn "$RUNNER_ARN" \
             --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
             --access-scope type=cluster \
             --region eu-west-2 || true
 
-          # 4. Update Kubeconfig & Verify
-          echo "Verifying Connectivity..."
-          aws eks update-kubeconfig --name goldenpath-dev-eks-${{ inputs.build_id }} --region eu-west-2 || true
-          kubectl get ns || true
-          kubectl get pods -A || true
+          # Update kubeconfig
+          echo "Updating kubeconfig..."
+          aws eks update-kubeconfig --name "${CLUSTER_NAME}" --region eu-west-2
 
-      - name: Terraform apply (dev)
+          # Verify connectivity
+          echo "Verifying cluster connectivity..."
+          kubectl get ns
+
+      - name: Run bootstrap
+        if: ${{ steps.effective.outputs.lifecycle == 'ephemeral' }}
+        env:
+          BUILD_ID: ${{ steps.effective.outputs.build_id }}
+          AWS_REGION: eu-west-2
         run: |
-          var_args=(-var "cluster_lifecycle=${{ inputs.lifecycle }}")
-          if [[ "${{ inputs.lifecycle }}" == "ephemeral" ]]; then
-            var_args+=(-var "build_id=${{ inputs.build_id }}")
+          echo "Running bootstrap for build ${BUILD_ID}..."
+          make bootstrap ENV=dev BUILD_ID=${BUILD_ID} ALLOW_REUSE_BUILD_ID=true
+
+      - name: Record build timing to governance-registry
+        if: always()
+        env:
+          BUILD_ID: ${{ steps.effective.outputs.build_id }}
+          LIFECYCLE: ${{ steps.effective.outputs.lifecycle }}
+        run: |
+          # Calculate duration
+          START_EPOCH=$(date -d "${TF_APPLY_START}" +%s 2>/dev/null || echo 0)
+          END_EPOCH=$(date -d "${TF_APPLY_END}" +%s 2>/dev/null || echo 0)
+          DURATION=$((END_EPOCH - START_EPOCH))
+
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Checkout governance-registry branch
+          git fetch origin governance-registry
+          git checkout governance-registry
+
+          # Ensure directory exists
+          mkdir -p environments/development/latest
+
+          CSV_FILE="environments/development/latest/build_timings.csv"
+
+          # Create CSV with header if it doesn't exist
+          if [[ ! -f "$CSV_FILE" ]]; then
+            echo "start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,resources_added,resources_changed,resources_destroyed,workflow_run_url" > "$CSV_FILE"
           fi
-          terraform -chdir=envs/dev apply -auto-approve -input=false -no-color "${var_args[@]}"
+
+          # Append terraform-apply record
+          echo "${TF_APPLY_START:-},${TF_APPLY_END:-},terraform-apply,dev,${BUILD_ID:-persistent},${DURATION},${TF_EXIT_CODE:-0},${TF_RESOURCES_ADDED:-0},${TF_RESOURCES_CHANGED:-0},${TF_RESOURCES_DESTROYED:-0},${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> "$CSV_FILE"
+
+          # Commit and push
+          git add "$CSV_FILE"
+          git commit -m "chore(registry): record terraform-apply for dev build ${BUILD_ID:-persistent}
+
+          Duration: ${DURATION}s
+          Resources: +${TF_RESOURCES_ADDED:-0} ~${TF_RESOURCES_CHANGED:-0} -${TF_RESOURCES_DESTROYED:-0}
+          Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || echo "No changes to commit"
+
+          git push origin governance-registry || echo "Warning: Could not push to governance-registry"
+
+          # Return to main branch
+          git checkout main || git checkout -
+
       - name: Runbook link
         if: always()
         run: |

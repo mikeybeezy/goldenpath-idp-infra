@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0117
+  title: 'CL-0117: Schema-Driven Script Certification'
+  description: "**Python Example:**\n```python\n\"\"\"\n---\nid: my_script\ntype:\
+    \ script\nowner: platform-team\nstatus: active\nmaturity: 3\ntest:\n  runner:\
+    \ pytest\n  command: \"pytest tests/unit/test_my.py\"\n  evidence: declared\n\
+    d..."
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0117-schema-driven-certification.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0117-schema-driven-certification.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0117-schema-driven-certification.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

@@ -24,7 +24,7 @@ risk_profile:
 PR Guardrails Validator
 
 Purpose: Enforce PR checklist requirements with conditional label bypasses.
-Relates-To: how-it-works/PR_GUARDRAILS.md
+Relates-To: 85-how-it-works/governance/PR_GUARDRAILS.md
 Value: Ensures consistent PR quality while allowing legitimate exceptions.
 
 Labels:

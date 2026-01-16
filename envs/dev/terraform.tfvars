@@ -4,7 +4,66 @@ vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
 cluster_lifecycle = "ephemeral"
 # NEED TO UPDATE persistent or ephemeral
-build_id = "14-01-26-08"
+build_id = "15-01-26-15"
+
+# -----------------------------------------------------------------------------
+# CRITICAL CONFIGURATION (Moved to Top)
+# -----------------------------------------------------------------------------
+
+# Secret Catalog
+# These secrets are created (empty) by Terraform. You must populate values in AWS Console.
+app_secrets = {
+  "goldenpath/dev/keycloak/admin" = {
+    description = "Keycloak initial admin credentials"
+    metadata = {
+      id    = "SEC-KEYCLOAK-ADMIN"
+      owner = "platform-team"
+      risk  = "low"
+    }
+    read_principals        = []
+    write_principals       = []
+    break_glass_principals = []
+  }
+
+  "goldenpath/dev/backstage/secrets" = {
+    description = "Backstage sensitive config (GitHub Token, OIDC)"
+    metadata = {
+      id    = "SEC-BACKSTAGE-MAIN"
+      owner = "platform-team"
+      risk  = "high"
+    }
+    read_principals        = []
+    write_principals       = []
+    break_glass_principals = []
+  }
+}
+
+# Platform RDS Configuration
+# Manage database size, engine, and application databases here.
+rds_config = {
+  enabled               = true # ENABLED for Dev
+  identifier            = "goldenpath-platform-db"
+  instance_class        = "db.t3.micro"
+  engine_version        = "15.15"
+  allocated_storage     = 20
+  max_allocated_storage = 50
+  multi_az              = false # Keep false for Dev/Cost
+  deletion_protection   = false
+  skip_final_snapshot   = true
+  backup_retention_days = 7
+
+  # Databases to create and secret names to generate
+  application_databases = {
+    "keycloak" = {
+      database_name = "keycloak"
+      username      = "keycloak_app"
+    }
+    "backstage" = {
+      database_name = "backstage_plugin_catalog" # Backstage uses many DBs, starting with catalog
+      username      = "backstage_app"
+    }
+  }
+}
 
 
 public_subnets = [
@@ -74,6 +133,11 @@ iam_config = {
   lb_controller_policy_arn                = "arn:aws:iam::593517239005:policy/goldenpath-load-balancer-controller-policy"
   lb_controller_service_account_namespace = "kube-system"
   lb_controller_service_account_name      = "aws-load-balancer-controller"
+  # External Secrets Operator IRSA
+  enable_eso_role               = true
+  eso_role_name                 = "goldenpath-idp-eso-role"
+  eso_service_account_namespace = "external-secrets"
+  eso_service_account_name      = "external-secrets"
 }
 
 
@@ -124,96 +188,4 @@ bootstrap_node_group = {
 # NOTE: ECR repositories are account-scoped and persist across ephemeral builds.
 # They should be managed separately, not recreated per cluster.
 # Uncomment only for initial account setup or when adding new repositories.
-ecr_repositories = {
-  # "test-app-dev" = {
-  #   metadata = {
-  #     id    = "REGISTRY_TEST_APP_DEV"
-  #     owner = "app-team-test"
-  #     risk  = "low"
-  #   }
-  # }
-
-  # "new-wp-reg-2" = {
-  #   metadata = {
-  #     id    = "REGISTRY_NEW_WP_REG_2"
-  #     owner = "michael-babs-2"
-  #     risk  = "low"
-  #   }
-  # }
-
-  # "new-app-16" = {
-  #   metadata = {
-  #     id    = "REGISTRY_NEW_APP_16"
-  #     owner = "michael-babs-16"
-  #     risk  = "low"
-  #   }
-  # }
-
-  # "new-app-15" = {
-  #   metadata = {
-  #     id    = "REGISTRY_NEW_APP_15"
-  #     owner = "michael-babs-15"
-  #     risk  = "low"
-  #   }
-  # }
-
-  # "new-app-14" = {
-  #   metadata = {
-  #     id    = "REGISTRY_NEW_APP_14"
-  #     owner = "michael-babs-14"
-  #     risk  = "low"
-  #   }
-  # }
-
-  # "new-app-13" = {
-  #   metadata = {
-  #     id    = "REGISTRY_NEW_APP_13"
-  #     owner = "michael-babs-13"
-  #     risk  = "low"
-  #   }
-  # }
-
-  # "new-app-10" = {
-  #   metadata = {
-  #     id    = "REGISTRY_NEW_APP_10"
-  #     owner = "michael-babs-10"
-  #     risk  = "low"
-  #   }
-  # }
-
-  # "my-reg-app-3" = {
-  #   metadata = {
-  #     id    = "REGISTRY_MY_REG_APP_3"
-  #     owner = "michael-babs-3"
-  #     risk  = "low"
-  #   }
-  # }
-
-  # "new-wp-reg2" = {
-  #   metadata = {
-  #     id    = "REGISTRY_NEW_WP_REG2"
-  #     owner = "platform-team"
-  #     risk  = "low"
-  #   }
-  # }
-}
-
-# Secret Catalog
-# NOTE: Secrets Manager is a platform service managed through Backstage SecretRequest workflow.
-# Secrets are environment-scoped, NOT cluster-scoped. They persist independently of EKS clusters.
-# DO NOT manage secrets through EKS terraform - use the SecretRequest workflow instead.
-# See: docs/adrs/ADR-0143-secret-request-contract.md
-app_secrets = {
-  # "goldenpath-idp-secret-store" = {
-  #   description = "Managed secret for payments in dev"
-  #   metadata = {
-  #     id    = "SEC-0007"
-  #     owner = "app-team"
-  #     risk  = "medium"
-  #   }
-  #   # Security policy principals
-  #   read_principals        = ["arn:aws:iam::593517239005:role/goldenpath-idp-eso-role"]
-  #   write_principals       = ["arn:aws:iam::593517239005:role/github-actions-secrets-writer"]
-  #   break_glass_principals = ["arn:aws:iam::593517239005:role/platform-admin"]
-  # }
-}
+ecr_repositories = {}

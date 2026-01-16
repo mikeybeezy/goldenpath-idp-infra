@@ -1,17 +1,31 @@
 # Managed by scripts/standardize_metadata.py
-appConfig:
-  catalog:
-    locations:
-      - type: url
-        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/ci-apply-dev/template.yaml
-        rules:
-          - allow:
-              - Template
-      - type: url
-        target: https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage/templates/app-template/template.yaml
-        rules:
-          - allow:
-              - Template
+# Production Backstage Values
+# Note: Catalog now served from governance-registry branch per ADR-0159
+
+catalog:
+  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-catalog/all.yaml"
+  customCatalogLocation: "None"
+
+# -----------------------------------------------------------------------------
+# Backstage Base URL
+# -----------------------------------------------------------------------------
+backstage:
+  baseURL: "https://backstage.goldenpathidp.io"
+
+# -----------------------------------------------------------------------------
+# Ingress Configuration - Kong
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: true
+  ingressClassName: kong
+  hostname: backstage.goldenpathidp.io
+  path: /
+  pathType: Prefix
+  tls: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # Production uses real Let's Encrypt certificates
+
 governance:
   id: HELM_BACKSTAGE_METADATA
   owner: null

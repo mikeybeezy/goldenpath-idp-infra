@@ -25,7 +25,7 @@ Achievement: Aggregates repository metadata into a human-readable dashboard (PLA
              highlighting orphaned resources, stale lifecycles, and risk distributions.
 Value: Provides the "Management Plane" for governance, shifting metadata from boilerplate
        into actionable operational intelligence for leadership.
-Relates-To: how-it-works/DOC_AUTO_HEALING.md
+Relates-To: 85-how-it-works/governance/DOC_AUTO_HEALING.md
 """
 import yaml
 import re
@@ -38,6 +38,30 @@ from lib.cost_logger import get_cost_summary
 from lib.metadata_config import MetadataConfig
 
 cfg = MetadataConfig()
+
+def relativize_links(content, base_dir):
+    root = Path('.').resolve()
+    link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+
+    def repl(match):
+        label = match.group(1)
+        href = match.group(2)
+        if href.startswith(('http://', 'https://', 'mailto:', '#', './', '../', '/')):
+            return match.group(0)
+        if '://' in href:
+            return match.group(0)
+        path_part, sep, frag = href.partition('#')
+        if not path_part:
+            return match.group(0)
+        target = root / path_part
+        if not target.exists():
+            return match.group(0)
+        rel_path = os.path.relpath(target, start=base_dir)
+        rel_path = rel_path.replace(os.sep, '/')
+        new_href = rel_path + (sep + frag if sep else '')
+        return f'[{label}]({new_href})'
+
+    return link_pattern.sub(repl, content)
 
 def parse_frontmatter(filepath):
     """Simple frontmatter parser."""
@@ -138,7 +162,7 @@ def get_script_stats():
         with open(path, 'r') as f:
             content = f.read()
             # Count [name.sh](...) links
-            matches = re.findall(r'\[.*?\.(\w+)\]\(file://.*?\)', content)
+            matches = re.findall(r'\[.*?\.(\w+)\]\([^)]+\)', content)
             stats['total'] = len(matches)
     return stats
 
@@ -170,16 +194,16 @@ def get_workflow_stats():
 def get_catalog_stats():
     catalog_counts = {}
 
-    # 1. Standard YAML Catalogs (legacy + contracts)
+    # 1. Standard YAML Catalogs (contracts)
     catalog_dirs = [
-        'docs/catalogs',
-        'docs/20-contracts/catalogs'
+        'docs/20-contracts/resource-catalogs',
+        'docs/20-contracts/secret-requests'
     ]
     for catalog_dir in catalog_dirs:
         if not os.path.exists(catalog_dir):
             continue
 
-        # Recursive scan for nested catalogs (e.g. docs/catalogs/secrets/**)
+        # Recursive scan for nested catalogs (e.g. docs/20-contracts/secret-requests/**)
         for root, _, files in os.walk(catalog_dir):
             for f in files:
                 if f.endswith('.yaml') and f != 'backstage-entities.yaml':
@@ -200,7 +224,7 @@ def get_catalog_stats():
                     except: pass
 
     # 2. Backstage Demo Catalog
-    backstage_dir = 'backstage-helm/catalog'
+    backstage_dir = 'backstage-helm/backstage-catalog'
     if os.path.exists(backstage_dir):
         for f in os.listdir(backstage_dir):
             if f.startswith('all-') and f.endswith('.yaml'):
@@ -454,11 +478,11 @@ def generate_report(target_dir='.'):
     lines.append(f"| :--- | :--- | :--- |")
 
     cert_rate = (script_cert_stats['certified'] / script_cert_stats['total'] * 100) if script_cert_stats['total'] > 0 else 0
-    lines.append(f"| **Architecture Decisions** | {adr_stats['total']} | [ADR Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/01_adr_index.md) |")
-    lines.append(f"| **Automation Scripts** | {script_stats['total']} | [Script Index](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/index.md) |")
-    lines.append(f"| **Certified Scripts (M3)** | {script_cert_stats['certified']}/{script_cert_stats['total']} ({cert_rate:.0f}%) | [Certification Matrix](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md) |")
-    lines.append(f"| **CI Workflows** | {workflow_stats['total']} | [Workflow Index](file:///Users/mikesablaze/goldenpath-idp-infra/ci-workflows/CI_WORKFLOWS.md) |")
-    lines.append(f"| **Change Logs** | {changelog_stats['total']} | [Changelog Index](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/README.md) |")
+    lines.append(f"| **Architecture Decisions** | {adr_stats['total']} | [ADR Index](docs/adrs/01_adr_index.md) |")
+    lines.append(f"| **Automation Scripts** | {script_stats['total']} | [Script Index](scripts/index.md) |")
+    lines.append(f"| **Certified Scripts (M3)** | {script_cert_stats['certified']}/{script_cert_stats['total']} ({cert_rate:.0f}%) | [Certification Matrix](docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md) |")
+    lines.append(f"| **CI Workflows** | {workflow_stats['total']} | [Workflow Index](ci-workflows/CI_WORKFLOWS.md) |")
+    lines.append(f"| **Change Logs** | {changelog_stats['total']} | [Changelog Index](docs/changelog/README.md) |")
     lines.append(f"| **Tracked Resources** | {stats['total_files']} | Repository Scan |")
 
     lines.append("")
@@ -490,7 +514,7 @@ def generate_report(target_dir='.'):
         if errors:
             lines.append(f"- **Errors**: `{len(errors)}` (see report)")
         md_path = inventory_report.get("md_path", inventory_report["path"])
-        lines.append(f"- **Report**: [`{md_path}`](file://{md_path})")
+        lines.append(f"- **Report**: [`{md_path}`]({md_path})")
     else:
         lines.append("- **Status**: No inventory report found under `reports/aws-inventory`.")
 
@@ -527,7 +551,7 @@ def generate_report(target_dir='.'):
     lines.append("> [!TIP]")
     lines.append(f"> Total realized value reclaimed through automation heartbeats: **{total_reclaimed:.1f} hours**.")
     lines.append("")
-    lines.append(f"- **ROI Ledger**: [.goldenpath/value_ledger.json](file://.goldenpath/value_ledger.json)")
+    lines.append(f"- **ROI Ledger**: [.goldenpath/value_ledger.json](.goldenpath/value_ledger.json)")
 
     lines.append("")
     lines.append("## Financial Governance (Cloud Cost)")
@@ -536,7 +560,7 @@ def generate_report(target_dir='.'):
     lines.append(f"> Current monthly infrastructure run rate: **${monthly_cost:,.2f} {currency}**.")
     lines.append("")
     lines.append(f"- **Estimated Annual**: `${monthly_cost * 12:,.2f} {currency}`")
-    lines.append(f"- **Cost Ledger**: [.goldenpath/cost_ledger.json](file://.goldenpath/cost_ledger.json)")
+    lines.append(f"- **Cost Ledger**: [.goldenpath/cost_ledger.json](.goldenpath/cost_ledger.json)")
     lines.append("- **Tooling**: Infracost (CI-integrated)")
 
     lines.append("")
@@ -559,6 +583,7 @@ def generate_report(target_dir='.'):
     with open('PLATFORM_HEALTH.md', 'w') as f:
         f.write(content + "\n\n<!-- AUTOMATED REPORT - DO NOT EDIT MANUALLY -->\n")
 
+    audit_content = relativize_links(content, Path('docs/10-governance/reports').resolve())
     with open('docs/10-governance/reports/HEALTH_AUDIT_LOG.md', 'w') as f:
         f.write(
             "\n".join([
@@ -591,7 +616,7 @@ def generate_report(target_dir='.'):
                 "",
                 "## Latest Snapshot",
                 "",
-                content,
+                audit_content,
             ])
         )
 

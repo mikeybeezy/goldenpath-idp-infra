@@ -39,7 +39,7 @@ from metadata_config import platform_yaml_dump
 ADR_DIR = "docs/adrs"
 CHANGELOG_DIR = "docs/changelog/entries"
 GOVERNANCE_DIR = "docs/10-governance"
-OUTPUT_DIR = "backstage-helm/catalog/docs"
+OUTPUT_DIR = "backstage-helm/backstage-catalog/docs"
 REPO_SLUG = "mikeybeezy/goldenpath-idp-infra"
 REPO_BRANCH = "main"
 BLOB_BASE = f"https://github.com/{REPO_SLUG}/blob/{REPO_BRANCH}"

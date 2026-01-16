@@ -2,6 +2,7 @@
 id: ADR-0124
 title: 'ADR-0124: Documentation & Visibility Suite'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -23,7 +24,7 @@ value_quantification:
 supported_until: '2028-01-01'
 ---
 
-# ADR-0124: Documentation & Visibility Suite
+## ADR-0124: Documentation & Visibility Suite
 
 ## Status
 
@@ -37,13 +38,13 @@ Maintaining a large documentation-as-code repository requires automated validati
 
 We officially adopt the following scripts as the core Documentation & Visibility Suite:
 
-1.  **`format_docs.py`**: Ensures consistent whitespace and layout across the markdown corpus.
-2.  **`check_doc_freshness.py`**: Identifies stale documents based on metadata and commit history.
-3.  **`check_doc_index_contract.py`**: Enforces the "Index Policy" (every directory must have an index).
-4.  **`extract_relationships.py`**: Populates the Knowledge Graph by parsing `relates_to` and `supersedes` metadata.
-5.  **`generate_governance_vocab.py`**: Generates the human-readable [GOVERNANCE_VOCABULARY.md](../../governance/GOVERNANCE_VOCABULARY.md).
-6.  **`sync_backstage_entities.py`**: Mirrors internal metadata to Backstage YAML entities.
-7.  **`generate_doc_system_map.py`**: Visualizes documentation hierarchies and logical clusters.
+1. **`format_docs.py`**: Ensures consistent whitespace and layout across the markdown corpus.
+2. **`check_doc_freshness.py`**: Identifies stale documents based on metadata and commit history.
+3. **`check_doc_index_contract.py`**: Enforces the "Index Policy" (every directory must have an index).
+4. **`extract_relationships.py`**: Populates the Knowledge Graph by parsing `relates_to` and `supersedes` metadata.
+5. **`generate_governance_vocab.py`**: Generates the human-readable [GOVERNANCE_VOCABULARY.md](../../governance/GOVERNANCE_VOCABULARY.md).
+6. **`sync_backstage_entities.py`**: Mirrors internal metadata to Backstage YAML entities.
+7. **`generate_doc_system_map.py`**: Visualizes documentation hierarchies and logical clusters.
 
 ## Consequences
 

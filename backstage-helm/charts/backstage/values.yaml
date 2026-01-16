@@ -33,6 +33,18 @@ service:
   type: ClusterIP
   port: 7007
 
+# -----------------------------------------------------------------------------
+# Ingress Configuration
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: false
+  ingressClassName: ""
+  hostname: backstage.local
+  path: /
+  pathType: Prefix
+  tls: false
+  annotations: {}
+
 resources:
   limits:
     cpu: 1000m
@@ -63,7 +75,9 @@ postgres:
   password: password
 
 catalog:
-  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage-helm/catalog/all.yaml"
+  # Points to governance-registry branch for stable, environment-agnostic catalog access
+  # Synced from development/main via governance-registry-writer.yml workflow
+  catalogLocation: "https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-catalog/all.yaml"
   customCatalogLocation: "None"
 
 backstage:

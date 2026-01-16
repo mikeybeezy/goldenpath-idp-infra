@@ -1,0 +1,85 @@
+# Backstage Helm Values - Local Environment (Kind)
+# Chart: backstage/backstage v1.12.0
+# Purpose: Local development without AWS dependencies
+governance:
+  id: HELM_BACKSTAGE_LOCAL_METADATA
+  owner: null
+  risk_profile: null
+  reliability: null
+
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned Version
+# -----------------------------------------------------------------------------
+backstage:
+  image:
+    registry: ghcr.io
+    repository: backstage/backstage
+    tag: 1.24.0
+    pullPolicy: IfNotPresent
+
+# -----------------------------------------------------------------------------
+# App Configuration
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# PostgreSQL (Shared Local-Infra)
+# -----------------------------------------------------------------------------
+postgresql:
+  enabled: false
+
+# App Configuration
+appConfig:
+  app:
+    baseUrl: http://backstage.localhost:7007
+    title: Goldenpath IDP (Local)
+
+  backend:
+    baseUrl: http://backstage.localhost:7007
+    cors:
+      origin: http://backstage.localhost:7007
+    database:
+      client: pg
+      connection:
+        host: "local-infra-postgresql.local-infra.svc.cluster.local"
+        port: 5432
+        user: "app"
+        password: "password"
+
+    # TechDocs using MinIO
+    techdocs:
+      builder: 'local'
+      generator:
+        runIn: 'local'
+      publisher:
+        type: 'awsS3'
+        awsS3:
+          bucketName: techdocs
+          endpoint: http://local-infra-minio.local-infra.svc.cluster.local:9000
+          s3ForcePathStyle: true
+          accessKeyId: minioadmin
+          secretAccessKey: minioadmin
+
+# -----------------------------------------------------------------------------
+# Ingress (Local)
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: true
+  className: kong
+  host: backstage.localhost
+  annotations: {}
+
+# -----------------------------------------------------------------------------
+# Environment Variables from Secrets
+# -----------------------------------------------------------------------------
+extraEnvVarsSecrets:
+  - backstage-secrets
+
+# -----------------------------------------------------------------------------
+# Resource Limits (reduced for local)
+# -----------------------------------------------------------------------------
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 512Mi

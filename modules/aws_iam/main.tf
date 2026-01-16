@@ -390,7 +390,7 @@ data "aws_iam_policy_document" "eso" {
       "secretsmanager:DescribeSecret",
       "secretsmanager:ListSecretVersionIds"
     ]
-    resources = ["arn:aws:secretsmanager:*:*:secret:goldenpath-*"]
+    resources = ["arn:aws:secretsmanager:*:*:secret:goldenpath*"]
   }
 }
 

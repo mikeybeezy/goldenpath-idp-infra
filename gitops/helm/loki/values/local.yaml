@@ -1,0 +1,60 @@
+# Loki Helm Values - Local Environment (Kind)
+# Chart: grafana/loki-stack v2.9.11
+# Purpose: Local development with minimal resources
+governance:
+  id: HELM_LOKI_LOCAL_METADATA
+  owner: null
+  risk_profile: null
+  reliability: null
+
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned Version
+# -----------------------------------------------------------------------------
+loki:
+  image:
+    repository: grafana/loki
+    tag: 2.9.4
+    pullPolicy: IfNotPresent
+
+  # SingleBinary mode for local
+  deploymentMode: SingleBinary
+  singleBinary:
+    replicas: 1
+  read:
+    replicas: 0
+  write:
+    replicas: 0
+  backend:
+    replicas: 0
+
+  # Local filesystem storage
+  storage:
+    type: filesystem
+
+  # Short retention for local
+  limits_config:
+    retention_period: 24h
+
+  # Reduced resources for local
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+# Gateway configuration
+gateway:
+  enabled: true
+  image:
+    repository: nginxinc/nginx-unprivileged
+    tag: 1.25-alpine
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 5m
+      memory: 16Mi
+    limits:
+      cpu: 50m
+      memory: 32Mi

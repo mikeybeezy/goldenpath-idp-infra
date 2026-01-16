@@ -1,0 +1,338 @@
+# ArgoCD RED/Golden Signals Dashboard
+# Deploy to argocd namespace for Grafana sidecar auto-discovery
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-golden-signals-dashboard
+  namespace: argocd
+  labels:
+    grafana_dashboard: "1"
+    app: argocd
+  annotations:
+    k8s-sidecar-target-directory: "/tmp/dashboards/tooling"
+    goldenpath.idp/id: TOOLING_DASHBOARDS_ARGOCD
+    goldenpath.idp/owner: platform-team
+data:
+  argocd-golden-signals.json: |
+    {
+      "title": "ArgoCD - Golden Signals",
+      "uid": "argocd-golden-signals",
+      "tags": ["tooling", "argocd", "golden-signals", "red-metrics", "gitops"],
+      "timezone": "browser",
+      "schemaVersion": 30,
+      "refresh": "30s",
+      "editable": false,
+      "templating": {
+        "list": [
+          {
+            "name": "datasource",
+            "type": "datasource",
+            "query": "prometheus",
+            "current": { "text": "Prometheus", "value": "Prometheus" }
+          }
+        ]
+      },
+      "panels": [
+        {
+          "type": "row",
+          "title": "GitOps Health Overview",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+          "collapsed": false
+        },
+        {
+          "title": "Applications Total",
+          "type": "stat",
+          "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "count(argocd_app_info{namespace=\"argocd\"})",
+              "legendFormat": "Total Apps"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [{ "color": "blue", "value": null }]
+              }
+            }
+          }
+        },
+        {
+          "title": "Healthy Apps",
+          "type": "stat",
+          "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "count(argocd_app_info{namespace=\"argocd\", health_status=\"Healthy\"})",
+              "legendFormat": "Healthy"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [{ "color": "green", "value": null }]
+              }
+            }
+          }
+        },
+        {
+          "title": "Degraded Apps",
+          "type": "stat",
+          "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "count(argocd_app_info{namespace=\"argocd\", health_status=\"Degraded\"}) or vector(0)",
+              "legendFormat": "Degraded"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "red", "value": 1 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Out of Sync Apps",
+          "type": "stat",
+          "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "count(argocd_app_info{namespace=\"argocd\", sync_status!=\"Synced\"}) or vector(0)",
+              "legendFormat": "Out of Sync"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "orange", "value": 1 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "RED Metrics - API Server",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+          "collapsed": false
+        },
+        {
+          "title": "API Request Rate (RPS)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 6 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(argocd_server_http_requests_total{namespace=\"argocd\"}[2m])) by (code)",
+              "legendFormat": "HTTP {{code}}"
+            },
+            {
+              "expr": "sum(rate(grpc_server_handled_total{namespace=\"argocd\", grpc_service=~\".*ArgoCD.*\"}[2m])) by (grpc_code)",
+              "legendFormat": "gRPC {{grpc_code}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "title": "Error Rate (%)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 6 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(argocd_server_http_requests_total{namespace=\"argocd\", code=~\"5..\"}[2m])) / sum(rate(argocd_server_http_requests_total{namespace=\"argocd\"}[2m])) * 100",
+              "legendFormat": "HTTP 5xx"
+            },
+            {
+              "expr": "sum(rate(grpc_server_handled_total{namespace=\"argocd\", grpc_code!=\"OK\"}[2m])) / sum(rate(grpc_server_handled_total{namespace=\"argocd\"}[2m])) * 100",
+              "legendFormat": "gRPC Errors"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1 },
+                  { "color": "red", "value": 5 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Request Duration P95",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 6 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(argocd_server_http_request_duration_seconds_bucket{namespace=\"argocd\"}[5m])) by (le))",
+              "legendFormat": "HTTP P95"
+            },
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(grpc_server_handling_seconds_bucket{namespace=\"argocd\"}[5m])) by (le))",
+              "legendFormat": "gRPC P95"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "custom": { "drawStyle": "line" }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Sync Operations",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 14 },
+          "collapsed": false
+        },
+        {
+          "title": "Sync Operations Rate",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 15 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(argocd_app_sync_total{namespace=\"argocd\"}[5m])) by (phase)",
+              "legendFormat": "{{phase}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "custom": { "drawStyle": "bars", "fillOpacity": 50 }
+            }
+          }
+        },
+        {
+          "title": "Git Operations Rate",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 15 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(argocd_git_request_total{namespace=\"argocd\"}[5m])) by (request_type)",
+              "legendFormat": "{{request_type}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Saturation - Resource Usage",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 23 },
+          "collapsed": false
+        },
+        {
+          "title": "CPU Usage by Component",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"argocd\", container!=\"\", container!=\"POD\"}[2m])) by (container)",
+              "legendFormat": "{{container}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "title": "Memory Usage by Component",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(container_memory_usage_bytes{namespace=\"argocd\", container!=\"\", container!=\"POD\"}) by (container)",
+              "legendFormat": "{{container}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Logs (Loki)",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 32 },
+          "collapsed": false
+        },
+        {
+          "title": "Sync Events & Errors",
+          "type": "logs",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 33 },
+          "datasource": { "type": "loki", "uid": "loki" },
+          "targets": [
+            {
+              "expr": "{namespace=\"argocd\"} |~ \"(?i)(error|failed|sync|reconcil|OutOfSync|Degraded)\"",
+              "legendFormat": ""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none",
+            "enableLogDetails": true
+          }
+        },
+        {
+          "title": "All ArgoCD Logs",
+          "type": "logs",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 43 },
+          "datasource": { "type": "loki", "uid": "loki" },
+          "targets": [
+            {
+              "expr": "{namespace=\"argocd\"}",
+              "legendFormat": ""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none",
+            "enableLogDetails": true
+          }
+        }
+      ]
+    }

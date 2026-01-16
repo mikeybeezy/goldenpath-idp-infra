@@ -42,7 +42,7 @@ jobs:
           commit-message: "docs(backstage): regenerate catalog docs"
           body: |
             Automated update of Backstage catalog doc entities to prevent drift
-            between `docs/` and `backstage-helm/catalog/docs/`.
+            between `docs/` and `backstage-helm/backstage-catalog/docs/`.
 
             - Sources: docs/adrs, docs/changelog/entries, docs/10-governance
             - Generator: scripts/generate_backstage_docs.py
@@ -55,6 +55,6 @@ jobs:
 
             Human review required per HITL policy and CODEOWNERS.
           add-paths: |
-            backstage-helm/catalog/docs/**
+            backstage-helm/backstage-catalog/docs/**
           labels: |
             docs

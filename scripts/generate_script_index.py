@@ -97,7 +97,8 @@ def generate_index_content():
             lines.append("| Script | Description |")
             lines.append("| :--- | :--- |")
 
-        link = f"[{script['name']}](file://{script['path']})"
+        rel_path = os.path.relpath(script['path'], start=os.path.dirname(OUTPUT_FILE))
+        link = f"[{script['name']}]({rel_path})"
         desc = script['description'] or "Utility script"
         lines.append(f"| {link} | {desc} |")
 

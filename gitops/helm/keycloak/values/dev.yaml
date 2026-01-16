@@ -1,6 +1,184 @@
+# Keycloak Helm Values - Dev Environment
+# Chart: bitnami/keycloak v22.1.6
 # Managed by scripts/standardize_metadata.py
+global:
+  security:
+    allowInsecureImages: true
+
 governance:
   id: HELM_KEYCLOAK_METADATA
   owner: null
   risk_profile: null
   reliability: null
+
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned Version
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned to 25.0.0
+image:
+  registry: 593517239005.dkr.ecr.eu-west-2.amazonaws.com
+  repository: keycloak
+  tag: latest
+  pullPolicy: Always  # Force pull to refresh cached image
+
+# -----------------------------------------------------------------------------
+# Authentication
+# -----------------------------------------------------------------------------
+auth:
+  adminUser: admin
+  # Password pulled from ExternalSecret -> keycloak-admin-secret
+  existingSecret: keycloak-admin-secret
+  passwordSecretKey: admin-password
+
+# -----------------------------------------------------------------------------
+# PostgreSQL (External RDS)
+# Bundled PostgreSQL is DISABLED - using shared platform RDS
+# Credentials synced via ExternalSecret from AWS Secrets Manager
+# -----------------------------------------------------------------------------
+postgresql:
+  enabled: false
+
+# External database configuration
+# Note: host hardcoded for compatibility with chart validation
+externalDatabase:
+  host: "goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com"
+  database: keycloak
+  existingSecret: keycloak-postgres-secret
+  existingSecretUserKey: username
+  existingSecretPasswordKey: password
+
+# -----------------------------------------------------------------------------
+# Keycloak Configuration
+# -----------------------------------------------------------------------------
+# Proxy mode: edge = TLS terminated at load balancer/ingress
+proxy: edge
+# Production mode: false for dev (enables dev features, relaxed security)
+production: false
+# Single replica for dev
+replicaCount: 1
+
+# Resource limits for dev
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+# -----------------------------------------------------------------------------
+# Service
+# -----------------------------------------------------------------------------
+service:
+  type: ClusterIP
+  ports:
+    http: 80
+    https: 443
+
+# -----------------------------------------------------------------------------
+# Ingress
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: true
+  ingressClassName: kong
+  hostname: keycloak.dev.goldenpathidp.io
+  path: /
+  pathType: Prefix
+  tls: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    # Use staging issuer for dev to avoid rate limits
+    # Switch to letsencrypt-prod for production
+# -----------------------------------------------------------------------------
+# Logging
+# -----------------------------------------------------------------------------
+logging:
+  output: default
+  level: INFO
+
+# -----------------------------------------------------------------------------
+# Health Probes
+# -----------------------------------------------------------------------------
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 120
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+# -----------------------------------------------------------------------------
+# Extra Environment Variables
+# -----------------------------------------------------------------------------
+extraEnvVars:
+  # Keycloak hostname configuration
+  - name: KC_HOSTNAME
+    value: keycloak.dev.goldenpathidp.io
+  - name: KC_HOSTNAME_STRICT
+    value: "false"
+  - name: KC_HOSTNAME_STRICT_HTTPS
+    value: "false"
+  # Enable health and metrics endpoints
+  - name: KC_HEALTH_ENABLED
+    value: "true"
+  - name: KC_METRICS_ENABLED
+    value: "true"
+
+# -----------------------------------------------------------------------------
+# Extra Manifests (External Secrets)
+# -----------------------------------------------------------------------------
+extraDeploy:
+  - |
+    apiVersion: external-secrets.io/v1beta1
+    kind: ExternalSecret
+    metadata:
+      name: keycloak-admin-secret
+    spec:
+      refreshInterval: 1m
+      secretStoreRef:
+        name: aws-secretsmanager
+        kind: ClusterSecretStore
+      target:
+        name: keycloak-admin-secret
+        creationPolicy: Owner
+      data:
+      - secretKey: admin-password
+        remoteRef:
+          key: goldenpath/dev/keycloak/admin
+          property: admin-password
+  - |
+    apiVersion: external-secrets.io/v1beta1
+    kind: ExternalSecret
+    metadata:
+      name: keycloak-postgres-secret
+    spec:
+      refreshInterval: 1m
+      secretStoreRef:
+        name: aws-secretsmanager
+        kind: ClusterSecretStore
+      target:
+        name: keycloak-postgres-secret
+        creationPolicy: Owner
+      data:
+      - secretKey: password
+        remoteRef:
+          key: goldenpath/dev/keycloak/postgres
+          property: password
+      - secretKey: username
+        remoteRef:
+          key: goldenpath/dev/keycloak/postgres
+          property: username
+      - secretKey: host
+        remoteRef:
+          key: goldenpath/dev/keycloak/postgres
+          property: host
+      - secretKey: port
+        remoteRef:
+          key: goldenpath/dev/keycloak/postgres
+          property: port
