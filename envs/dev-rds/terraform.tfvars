@@ -31,4 +31,9 @@ application_databases = {
     database_name = "backstage"
     username      = "backstage_user"
   }
+
+  test_inventory = {
+    database_name = "test_inventory"
+    username      = "test_inventory_user"
+  }
 }
