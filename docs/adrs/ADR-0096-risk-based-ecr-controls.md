@@ -2,6 +2,7 @@
 id: ADR-0096-risk-based-ecr-controls
 title: 'ADR-0096: Risk-Based ECR Security Controls'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -34,9 +35,10 @@ dependencies:
 breaking_change: false
 ---
 
-# ADR-0096: Risk-Based ECR Security Controls
+## ADR-0096: Risk-Based ECR Security Controls
 
 ## Status
+
 Accepted
 
 ## Context
@@ -49,19 +51,22 @@ Implement automated risk-based security controls using Terraform locals that aut
 
 ### Risk Levels
 
-**High Risk (Production/Sensitive):**
+### High Risk (Production/Sensitive)
+
 - KMS encryption (customer-managed keys)
 - Immutable tags (cannot overwrite)
 - 50 image retention
 - Use for: Production, customer-facing, PCI/HIPAA
 
-**Medium Risk (Staging/Internal):**
+### Medium Risk (Staging/Internal)
+
 - AES256 encryption (AWS-managed)
 - Mutable tags (can overwrite)
 - 30 image retention
 - Use for: Staging, internal tools, non-critical production
 
-**Low Risk (Development/Testing):**
+### Low Risk (Development/Testing)
+
 - AES256 encryption (AWS-managed)
 - Mutable tags (can overwrite)
 - 20 image retention
@@ -85,21 +90,25 @@ Developers just set `risk = "high"` and all controls apply automatically.
 
 ## Consequences
 
-**Pros:**
+### Pros
+
 - Automatic security controls (no manual configuration)
 - Consistent enforcement across all registries
 - Clear risk-based tiers
 - Developers understand what they get
 
-**Cons:**
+### Cons
+
 - Less flexibility (can't customize per-registry)
 - KMS requires key management for high-risk
 
-**Mitigations:**
+### Mitigations
+
 - Document risk levels clearly in runbooks
 - Show controls in PR template before creation
 - Allow exceptions via manual Terraform override if needed
 
 ## Related
+
 - [ADR-0092: ECR Registry Product Strategy](./ADR-0092-ecr-registry-product-strategy.md)
 - [ADR-0093: Automated Policy Enforcement](./ADR-0093-automated-policy-enforcement.md)

@@ -23,13 +23,13 @@ dependencies:
 breaking_change: false
 ---
 
-# Metadata Backfill Script - Usage & Operations
+## Metadata Backfill Script - Usage & Operations
 
 ## Overview
 
 `scripts/backfill-metadata.py` is an automated tool that adds YAML frontmatter metadata to all markdown files in the repository. It enables Knowledge Graph capabilities by ensuring 100% metadata coverage.
 
-**Script Location:** [`scripts/backfill-metadata.py`](file:///Users/mikesablaze/goldenpath-idp-infra/scripts/backfill-metadata.py)
+**Script Location:** [`scripts/backfill-metadata.py`](scripts/backfill-metadata.py)
 
 ## What It Does
 
@@ -97,7 +97,7 @@ python3 scripts/backfill-metadata.py --dry-run --verbose
 
 ### Output Example
 
-```
+```text
 Found 304 markdown files in repository
 Mode: LIVE
 ============================================================
@@ -157,7 +157,7 @@ This module provisions an EKS cluster...
 
 ### Category Detection
 
-```
+```text
 docs/00-foundations/file.md     → category: 00-foundations
 docs/20-contracts/file.md       → category: 20-contracts
 modules/aws_eks/README.md       → category: modules
@@ -166,7 +166,7 @@ apps/fast-api/README.md         → category: apps
 
 ### Version Extraction
 
-```
+```text
 Helm charts: Looks for "version: X.Y.Z" or "appVersion: X.Y.Z"
 ArgoCD refs: Looks for "argocd version: X.Y.Z" patterns
 Default: 1.0 for documentation
@@ -174,7 +174,7 @@ Default: 1.0 for documentation
 
 ### Dependency Extraction
 
-```
+```text
 Terraform modules: Extracts module "name" references
 Helm charts: Looks for chart dependency mentions
 Apps: Extracts image: references (limited to 3)
@@ -182,7 +182,7 @@ Apps: Extracts image: references (limited to 3)
 
 ### Type Detection
 
-```
+```text
 /adrs/ directory        → adr
 /changelog/entries/     → changelog
 /contracts/             → contract
@@ -224,7 +224,7 @@ title: "Your Title: With Colon"
 
 **Cause:** File in unexpected directory
 
-**Solution:**
+### Solution
 
 1. Move file to correct directory, OR
 2. Manually override category in frontmatter
@@ -312,10 +312,10 @@ Edit `get_risk_profile()` function to adjust defaults per type.
 
 ## Script Arguments
 
-| Argument | Description | Example |
+|Argument|Description|Example|
 |-------|-------|------|
-| `--dry-run` | Preview mode, no file changes | `python3 ... --dry-run` |
-| `--verbose` | Show skipped files | `python3 ... --verbose` |
+|`--dry-run`|Preview mode, no file changes|`python3 ... --dry-run`|
+|`--verbose`|Show skipped files|`python3 ... --verbose`|
 
 ## Best Practices
 
@@ -339,10 +339,10 @@ Edit `get_risk_profile()` function to adjust defaults per type.
 
 ## Related Documentation
 
-- [ADR-0084: Enhanced Metadata Schema](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0084-platform-enhanced-metadata-schema.md)
-- [CL-0043: Complete Metadata Backfill](file:///Users/mikesablaze/goldenpath-idp-infra/docs/changelog/entries/CL-0043-complete-metadata-backfill.md)
-- [METADATA_STRATEGY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/90-doc-system/METADATA_STRATEGY.md)
-- [Relationship Extraction Script Runbook](file:///Users/mikesablaze/goldenpath-idp-infra/docs/70-operations/runbooks/RELATIONSHIP_EXTRACTION_SCRIPT.md)
+- [ADR-0084: Enhanced Metadata Schema](../../adrs/ADR-0084-platform-enhanced-metadata-schema.md)
+- [CL-0043: Complete Metadata Backfill](../../changelog/entries/CL-0043-complete-metadata-backfill.md)
+- [METADATA_STRATEGY.md](../../90-doc-system/METADATA_STRATEGY.md)
+- [Relationship Extraction Script Runbook](docs/70-operations/runbooks/RELATIONSHIP_EXTRACTION_SCRIPT.md)
 
 ## Support
 

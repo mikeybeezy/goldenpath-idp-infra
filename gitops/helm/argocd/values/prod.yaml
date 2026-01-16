@@ -1,4 +1,21 @@
 # Managed by scripts/standardize_metadata.py
+# ArgoCD Helm Values - Production Environment
+# Chart: argo/argo-cd
+
+# -----------------------------------------------------------------------------
+# Server Ingress Configuration - Kong
+# -----------------------------------------------------------------------------
+server:
+  ingress:
+    enabled: true
+    ingressClassName: kong
+    hostname: argocd.goldenpathidp.io
+    tls: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+  extraArgs:
+    - --insecure
+
 configs:
   cm:
     resource.customizations: "cert-manager.io/Certificate:\n  health.lua: |\n    hs\

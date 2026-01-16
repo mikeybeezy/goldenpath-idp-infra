@@ -33,7 +33,7 @@ This guide explains the `validate_metadata.py` tool used in our CI/CD pipeline.
 
 Located at: `scripts/validate_metadata.py`
 
-It enforces the Schema defined in [METADATA_STRATEGY.md](file:///Users/mikesablaze/goldenpath-idp-infra/docs/10-governance/METADATA_STRATEGY.md) across all Markdown (`.md`) and Sidecar YAML (`metadata.yaml`) files.
+It enforces the Schema defined in [METADATA_STRATEGY.md](docs/10-governance/METADATA_STRATEGY.md) across all Markdown (`.md`) and Sidecar YAML (`metadata.yaml`) files.
 
 ## Authoring Flow (Recommended)
 
@@ -55,16 +55,16 @@ python3 scripts/validate_metadata.py gitops/helm
 
 ### CI Integration
 
-This script runs automatically on Pull Requests affecting any `.md` or `metadata.yaml` file via the [Quality - Metadata Validation](file:///Users/mikesablaze/goldenpath-idp-infra/.github/workflows/ci-metadata-validation.yml) workflow.
+This script runs automatically on Pull Requests affecting any `.md` or `metadata.yaml` file via the [Quality - Metadata Validation](../../.github/workflows/ci-metadata-validation.yml) workflow.
 
 ## Troubleshooting Errors
 
-| Error Message | Meaning | Fix |
-| :--- | :--- | :--- |
-| `Missing required field: 'owner'` | The YAML header/file is missing the owner key. | Add `owner: platform-team` |
-| `ID mismatch` | The ID in the header doesn't match the filename. | Rename file or update ID. |
-| `Invalid YAML` | Indentation or syntax error (check for multiple `---`). | Use `yaml.safe_load_all` compatible syntax. |
+|Error Message|Meaning|Fix|
+|:---|:---|:---|
+|`Missing required field: 'owner'`|The YAML header/file is missing the owner key.|Add `owner: platform-team`|
+|`ID mismatch`|The ID in the header doesn't match the filename.|Rename file or update ID.|
+|`Invalid YAML`|Indentation or syntax error (check for multiple `---`).|Use `yaml.safe_load_all` compatible syntax.|
 
 ## Evolution
 
-If we add new required fields, update the `REQUIRED_FIELDS` list in the python script and follow [ADR-0088](file:///Users/mikesablaze/goldenpath-idp-infra/docs/adrs/ADR-0088-automated-metadata-remediation.md) for bulk remediation.
+If we add new required fields, update the `REQUIRED_FIELDS` list in the python script and follow [ADR-0088](../adrs/ADR-0088-automated-metadata-remediation.md) for bulk remediation.

@@ -1,5 +1,22 @@
+# Loki Helm Values - Dev Environment
+# Chart: grafana/loki-stack v2.9.11
 # Managed by scripts/standardize_metadata.py
+governance:
+  id: HELM_LOKI_METADATA
+  owner: null
+  risk_profile: null
+  reliability: null
+
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned Version
+# -----------------------------------------------------------------------------
 loki:
+  image:
+    repository: grafana/loki
+    tag: 2.9.4
+    pullPolicy: IfNotPresent
+
+  # Deployment mode: SingleBinary for dev (simpler, lower resources)
   deploymentMode: SingleBinary
   singleBinary:
     replicas: 1
@@ -9,8 +26,35 @@ loki:
     replicas: 0
   backend:
     replicas: 0
-governance:
-  id: HELM_LOKI_METADATA
-  owner: null
-  risk_profile: null
-  reliability: null
+
+  # Storage configuration (local filesystem for dev)
+  storage:
+    type: filesystem
+
+  # Retention configuration
+  limits_config:
+    retention_period: 168h  # 7 days
+
+  # Resource limits for dev
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# Gateway configuration
+gateway:
+  enabled: true
+  image:
+    repository: nginxinc/nginx-unprivileged
+    tag: 1.25-alpine
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi

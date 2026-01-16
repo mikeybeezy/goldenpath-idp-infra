@@ -30,14 +30,14 @@ version: '1.0'
 breaking_change: false
 ---
 
-# ADR-0078: Governance-driven app repository scaffolder
+## ADR-0078: Governance-driven app repository scaffolder
 
 - **Status:** Proposed
 - **Date:** 2026-01-03
 - **Owners:** platform
 - **Domain:** Platform
 - **Decision type:** Governance | Delivery
-- **Related:** `backstage/templates/app-template/template.yaml`, `.github/workflows/repo-scaffold-app.yml`, `docs/20-contracts/42_APP_TEMPLATE_LIVING.md`, `docs/adrs/ADR-0062-platform-app-template-contract.md`
+- **Related:** `backstage-helm/backstage-catalog/templates/app-template/template.yaml`, `.github/workflows/repo-scaffold-app.yml`, `docs/20-contracts/42_APP_TEMPLATE_LIVING.md`, `docs/adrs/ADR-0062-platform-app-template-contract.md`
 
 ---
 

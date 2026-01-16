@@ -1,0 +1,29 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0134
+  title: 'ADR-0134: Metadata Inheritance, Active Governance, and Leak Protection'
+  description: 'id: ADR-0134-metadata-inheritance-active-governance-and-leak-protection
+
+    title: ''ADR-0134: Metadata Inheritance, Active Governance, and Leak Protection''
+
+    type: adr
+
+    owner: platform-team---'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0134-metadata-inheritance-active-governance-and-leak-protection.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0134-metadata-inheritance-active-governance-and-leak-protection.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0134-metadata-inheritance-active-governance-and-leak-protection.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: accepted
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

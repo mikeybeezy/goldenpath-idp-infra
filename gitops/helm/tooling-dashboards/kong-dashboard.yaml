@@ -1,0 +1,331 @@
+# Kong Ingress Controller RED/Golden Signals Dashboard
+# Deploy to kong-system namespace for Grafana sidecar auto-discovery
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kong-golden-signals-dashboard
+  namespace: kong-system
+  labels:
+    grafana_dashboard: "1"
+    app: kong
+  annotations:
+    k8s-sidecar-target-directory: "/tmp/dashboards/tooling"
+    goldenpath.idp/id: TOOLING_DASHBOARDS_KONG
+    goldenpath.idp/owner: platform-team
+data:
+  kong-golden-signals.json: |
+    {
+      "title": "Kong Ingress - Golden Signals",
+      "uid": "kong-golden-signals",
+      "tags": ["tooling", "kong", "golden-signals", "red-metrics", "ingress"],
+      "timezone": "browser",
+      "schemaVersion": 30,
+      "refresh": "30s",
+      "editable": false,
+      "templating": {
+        "list": [
+          {
+            "name": "datasource",
+            "type": "datasource",
+            "query": "prometheus",
+            "current": { "text": "Prometheus", "value": "Prometheus" }
+          }
+        ]
+      },
+      "panels": [
+        {
+          "type": "row",
+          "title": "RED Metrics - Traffic",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+          "collapsed": false
+        },
+        {
+          "title": "Total Request Rate (RPS)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(kong_http_requests_total{namespace=\"kong-system\"}[2m]))",
+              "legendFormat": "Total Requests"
+            },
+            {
+              "expr": "sum(rate(kong_http_requests_total{namespace=\"kong-system\"}[2m])) by (service)",
+              "legendFormat": "{{service}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "title": "Requests by Status Code",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(kong_http_requests_total{namespace=\"kong-system\"}[2m])) by (code)",
+              "legendFormat": "{{code}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "title": "Error Rate (%)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(kong_http_requests_total{namespace=\"kong-system\", code=~\"5..\"}[2m])) / sum(rate(kong_http_requests_total{namespace=\"kong-system\"}[2m])) * 100",
+              "legendFormat": "5xx Error Rate"
+            },
+            {
+              "expr": "sum(rate(kong_http_requests_total{namespace=\"kong-system\", code=~\"4..\"}[2m])) / sum(rate(kong_http_requests_total{namespace=\"kong-system\"}[2m])) * 100",
+              "legendFormat": "4xx Error Rate"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1 },
+                  { "color": "red", "value": 5 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Duration - Latency",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 },
+          "collapsed": false
+        },
+        {
+          "title": "Request Latency P50/P95/P99",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 10 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.50, sum(rate(kong_request_latency_ms_bucket{namespace=\"kong-system\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P50"
+            },
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(kong_request_latency_ms_bucket{namespace=\"kong-system\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P95"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(kong_request_latency_ms_bucket{namespace=\"kong-system\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P99"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "custom": { "drawStyle": "line" }
+            }
+          }
+        },
+        {
+          "title": "Upstream Latency P50/P95/P99",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 10 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.50, sum(rate(kong_upstream_latency_ms_bucket{namespace=\"kong-system\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P50"
+            },
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(kong_upstream_latency_ms_bucket{namespace=\"kong-system\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P95"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(kong_upstream_latency_ms_bucket{namespace=\"kong-system\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P99"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "custom": { "drawStyle": "line" }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Connections & Bandwidth",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 18 },
+          "collapsed": false
+        },
+        {
+          "title": "Active Connections",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 19 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(kong_nginx_connections_total{namespace=\"kong-system\", state=\"active\"})",
+              "legendFormat": "Active"
+            },
+            {
+              "expr": "sum(kong_nginx_connections_total{namespace=\"kong-system\", state=\"waiting\"})",
+              "legendFormat": "Waiting"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "title": "Bandwidth In/Out",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 19 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(kong_bandwidth_bytes{namespace=\"kong-system\", direction=\"ingress\"}[2m]))",
+              "legendFormat": "Ingress"
+            },
+            {
+              "expr": "sum(rate(kong_bandwidth_bytes{namespace=\"kong-system\", direction=\"egress\"}[2m]))",
+              "legendFormat": "Egress"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "Bps",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "title": "Upstream Health",
+          "type": "stat",
+          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 19 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(kong_upstream_target_health{namespace=\"kong-system\", state=\"healthy\"})",
+              "legendFormat": "Healthy Upstreams"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "green", "value": 1 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Saturation - Resource Usage",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 27 },
+          "collapsed": false
+        },
+        {
+          "title": "CPU Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 28 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"kong-system\", container!=\"\", container!=\"POD\"}[2m])) by (pod)",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "title": "Memory Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 28 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(container_memory_usage_bytes{namespace=\"kong-system\", container!=\"\", container!=\"POD\"}) by (pod)",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Logs (Loki)",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 36 },
+          "collapsed": false
+        },
+        {
+          "title": "Kong Errors & Warnings",
+          "type": "logs",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 37 },
+          "datasource": { "type": "loki", "uid": "loki" },
+          "targets": [
+            {
+              "expr": "{namespace=\"kong-system\"} |~ \"(?i)(error|warn|failed|timeout|refused|upstream)\"",
+              "legendFormat": ""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none",
+            "enableLogDetails": true
+          }
+        },
+        {
+          "title": "All Kong Logs",
+          "type": "logs",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 47 },
+          "datasource": { "type": "loki", "uid": "loki" },
+          "targets": [
+            {
+              "expr": "{namespace=\"kong-system\"}",
+              "legendFormat": ""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none",
+            "enableLogDetails": true
+          }
+        }
+      ]
+    }

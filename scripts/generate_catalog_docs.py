@@ -307,7 +307,7 @@ class CatalogGenerator:
 
 def main():
     parser = argparse.ArgumentParser(description="Generate platform catalog documentation")
-    parser.add_argument("--catalog", default="docs/20-contracts/catalogs/ecr-catalog.yaml",
+    parser.add_argument("--catalog", default="docs/20-contracts/resource-catalogs/ecr-catalog.yaml",
                        help="Path to YAML catalog")
     parser.add_argument("--output", default="docs/REGISTRY_CATALOG.md",
                        help="Output markdown file")

@@ -1,0 +1,21 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: backstage_db-credentials-sync
+  namespace: backstage_db
+  labels:
+    goldenpath.idp/id: RDS-0001
+    platform.idp/service: backstage_db
+    platform.idp/env: dev
+    platform.idp/type: rds-credentials
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: aws-secretsmanager
+    kind: ClusterSecretStore
+  target:
+    name: backstage_db-db-credentials
+    creationPolicy: Owner
+  dataFrom:
+    - extract:
+        key: goldenpath/dev/rds/backstage_db

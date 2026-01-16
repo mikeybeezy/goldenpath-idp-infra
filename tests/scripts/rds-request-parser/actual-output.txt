@@ -1,0 +1,25 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.0, pytest-8.3.2, pluggy-1.5.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/mikesablaze/Documents/relaunch/goldenpath-idp-infra
+plugins: Faker-28.0.0, anyio-4.4.0
+collecting ... collected 16 items
+
+tests/scripts/test_script_0034.py::TestParseRequest::test_parses_valid_request PASSED [  6%]
+tests/scripts/test_script_0034.py::TestParseRequest::test_missing_required_field_raises PASSED [ 12%]
+tests/scripts/test_script_0034.py::TestParseRequest::test_missing_spec_field_raises PASSED [ 18%]
+tests/scripts/test_script_0034.py::TestParseRequest::test_uses_defaults_for_optional_fields PASSED [ 25%]
+tests/scripts/test_script_0034.py::TestValidateEnums::test_valid_enums_pass PASSED [ 31%]
+tests/scripts/test_script_0034.py::TestValidateEnums::test_invalid_size_raises PASSED [ 37%]
+tests/scripts/test_script_0034.py::TestValidateEnums::test_invalid_environment_raises PASSED [ 43%]
+tests/scripts/test_script_0034.py::TestValidateEnums::test_invalid_domain_raises PASSED [ 50%]
+tests/scripts/test_script_0034.py::TestConditionalRules::test_dev_only_allows_small_size PASSED [ 56%]
+tests/scripts/test_script_0034.py::TestConditionalRules::test_prod_requires_backup_14_days PASSED [ 62%]
+tests/scripts/test_script_0034.py::TestConditionalRules::test_max_storage_must_exceed_storage PASSED [ 68%]
+tests/scripts/test_script_0034.py::TestGenerateTfvars::test_generates_correct_structure PASSED [ 75%]
+tests/scripts/test_script_0034.py::TestGenerateTfvars::test_size_to_instance_mapping PASSED [ 81%]
+tests/scripts/test_script_0034.py::TestGenerateExternalSecret::test_generates_correct_structure PASSED [ 87%]
+tests/scripts/test_script_0034.py::TestDeriveSecretKey::test_derives_correct_path PASSED [ 93%]
+tests/scripts/test_script_0034.py::TestIntegration::test_full_flow_with_real_enums PASSED [100%]
+
+============================== 16 passed in 0.12s ==============================

@@ -2,6 +2,7 @@
 id: ADR-0148-seamless-build-deployment-with-immutability
 title: 'ADR-0148: Seamless Build Deployment with Build ID Immutability'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -23,7 +24,7 @@ value_quantification:
 supported_until: '2028-01-01'
 ---
 
-# ADR-0148: Seamless Build Deployment with Build ID Immutability
+## ADR-0148: Seamless Build Deployment with Build ID Immutability
 
 **Status**: Accepted
 **Date**: 2026-01-13
@@ -43,11 +44,11 @@ The platform requires a deployment process that:
 
 A previous refactor (eks-single-build-refactor branch) attempted to consolidate everything into a single Terraform apply using a `kubernetes_addons` module. This approach:
 
--  Introduced circular dependency issues (module ↔ service accounts)
--  Mixed infrastructure and platform concerns in one apply
--  Created complex dependency chains prone to race conditions
--  Introduced valuable build_id immutability enforcement
--  Documented governance registry pattern
+- Introduced circular dependency issues (module ↔ service accounts)
+- Mixed infrastructure and platform concerns in one apply
+- Created complex dependency chains prone to race conditions
+- Introduced valuable build_id immutability enforcement
+- Documented governance registry pattern
 
 **Decision**: Keep the proven two-phase pattern from development branch, but add build_id immutability enforcement.
 
@@ -65,7 +66,7 @@ Implement **seamless two-phase deployment with build_id immutability** by:
 
 ### Two-Phase Deployment Flow
 
-```
+```text
 make deploy ENV=dev BUILD_ID=13-01-26-03
     ↓
 ┌─────────────────────────────────────────┐
@@ -85,6 +86,7 @@ make deploy ENV=dev BUILD_ID=13-01-26-03
 #### Phase 1: Infrastructure (Terraform)
 
 **Scope**: AWS resources only
+
 - VPC, Subnets, Security Groups
 - EKS Cluster
 - IAM Roles (cluster, nodes, IRSA)
@@ -102,6 +104,7 @@ make deploy ENV=dev BUILD_ID=13-01-26-03
 #### Phase 2: Platform Bootstrap (Shell Script)
 
 **Scope**: Kubernetes platform controllers and applications
+
 - Create namespaces (kubectl)
 - Deploy ArgoCD (Helm)
 - Deploy AWS Load Balancer Controller (Helm)
@@ -169,6 +172,7 @@ start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,
 ```
 
 **Recording happens**:
+
 - After Phase 1 completes (terraform-apply phase)
 - After Phase 2 completes (bootstrap phase)
 - After teardown (teardown phase)
@@ -196,6 +200,7 @@ start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,
 ### Operational Impact
 
 **Before**:
+
 ```bash
 # Manual two-phase with no protection
 terraform apply
@@ -207,6 +212,7 @@ bash bootstrap-v3.sh
 ```
 
 **After**:
+
 ```bash
 # Single command with protection
 make deploy ENV=dev BUILD_ID=13-01-26-03
@@ -223,6 +229,7 @@ make deploy ENV=dev BUILD_ID=13-01-26-03
 **Approach**: Put everything in one `terraform apply` with `kubernetes_addons` module.
 
 **Rejected because**:
+
 - Circular dependency issues (module ↔ service accounts)
 - Poor error messages for Helm/kubectl failures
 - All-or-nothing deployment (can't retry bootstrap without infra rebuild)
@@ -233,6 +240,7 @@ make deploy ENV=dev BUILD_ID=13-01-26-03
 **Approach**: Two separate Terraform configurations (infra/, platform/).
 
 **Rejected because**:
+
 - Adds complexity of managing two state files
 - Requires passing outputs between workspaces
 - Makes single-command UX harder to achieve
@@ -242,6 +250,7 @@ make deploy ENV=dev BUILD_ID=13-01-26-03
 **Approach**: Do everything with kubectl/helm, no Terraform.
 
 **Rejected because**:
+
 - Lose Terraform state management for AWS resources
 - Lose Terraform plan preview
 - Lose declarative infrastructure-as-code benefits
@@ -267,9 +276,11 @@ make deploy ENV=dev BUILD_ID=13-01-26-03
 - Add `_phase3-verify` target (internal: kubectl verification)
 
 #### Scripts
+
 - `scripts/record-build-timing.sh`: Record build to governance-registry CSV
 
 #### Documentation
+
 - `docs/adrs/ADR-0148-seamless-build-deployment-with-immutability.md` (this file)
 - `docs/changelog/entries/CL-0121-seamless-build-deployment.md`
 - `docs/85-how-it-works/ci-terraform/SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT.md` (detailed mechanics)
@@ -277,11 +288,13 @@ make deploy ENV=dev BUILD_ID=13-01-26-03
 ### Deployment Commands
 
 **Primary (User-facing)**:
+
 ```bash
 make deploy ENV=dev BUILD_ID=13-01-26-03
 ```
 
 **Internal (Phase separation, can be run independently for debugging)**:
+
 ```bash
 make _phase1-infrastructure ENV=dev BUILD_ID=13-01-26-03
 make _phase2-bootstrap ENV=dev BUILD_ID=13-01-26-03
@@ -289,6 +302,7 @@ make _phase3-verify ENV=dev
 ```
 
 **Override (Emergency only)**:
+
 ```bash
 make deploy ENV=dev BUILD_ID=13-01-26-03 ALLOW_REUSE_BUILD_ID=true
 ```
@@ -296,6 +310,7 @@ make deploy ENV=dev BUILD_ID=13-01-26-03 ALLOW_REUSE_BUILD_ID=true
 ### Verification
 
 After deployment:
+
 ```bash
 # Check governance registry
 git show origin/governance-registry:environments/development/latest/build_timings.csv | tail -1

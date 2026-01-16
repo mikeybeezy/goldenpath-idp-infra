@@ -16,12 +16,12 @@ spec:
   sources:
     - repoURL: https://charts.bitnami.com/bitnami
       chart: keycloak
-      targetRevision: 22.1.6
+      targetRevision: 25.2.0
       helm:
         valueFiles:
           - $values/gitops/helm/keycloak/values/dev.yaml
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
+      targetRevision: feature/tooling-apps-config
       ref: values
   syncPolicy:
     automated:

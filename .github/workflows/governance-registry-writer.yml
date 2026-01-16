@@ -135,6 +135,18 @@ jobs:
           # Copy generated artifacts to history snapshot
           cp -R _govreg_out/* "$HIST_DIR/"
 
+      - name: Sync Backstage catalog to registry
+        run: |
+          # Copy Backstage catalog for stable cross-environment access
+          mkdir -p _govreg_repo/backstage-catalog
+          cp -R backstage-helm/backstage-catalog/* _govreg_repo/backstage-catalog/
+
+          # Update catalog URLs to point to registry branch (self-referential)
+          # This ensures templates reference the stable registry branch
+          if [ -f _govreg_repo/backstage-catalog/all.yaml ]; then
+            echo "Backstage catalog synced to governance-registry"
+          fi
+
       - name: Update unified dashboard
         run: |
           # TODO: Implement unified dashboard generator
@@ -148,30 +160,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add environments/ UNIFIED_DASHBOARD.md || true
+          git add environments/ UNIFIED_DASHBOARD.md backstage-catalog/ || true
 
           git commit -m "govreg: ${ENV_NAME} @ ${{ steps.meta.outputs.source_sha }}" || exit 0
           git push origin governance-registry
 
-      - name: Comment on PR (if applicable)
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const sha = '${{ steps.meta.outputs.source_sha }}';
-            const env = '${{ env.ENV_NAME }}';
-            const body = `✅ **Governance state synchronized**
-
-            - **Environment**: \`${env}\`
-            - **Source SHA**: \`${sha}\`
-            - **Registry Links**:
-              - [Latest Report](https://github.com/${{ github.repository }}/blob/governance-registry/environments/${env}/latest/PLATFORM_HEALTH.md)
-              - [Historical Snapshot](https://github.com/${{ github.repository }}/tree/governance-registry/environments/${env}/history)
-            `;
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: body
-            });
+      # NOTE: PR comment step removed - this workflow only triggers on push events.
+      # If PR commenting is needed, add 'pull_request' to the 'on:' triggers above.

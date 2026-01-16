@@ -2,6 +2,7 @@
 id: ADR-0156-platform-ci-build-timing-capture
 title: 'ADR-0156: CI Build Timing Capture at Source'
 type: adr
+status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -29,7 +30,7 @@ value_quantification:
 supported_until: '2028-01-15'
 ---
 
-# ADR-0156: CI Build Timing Capture at Source
+## ADR-0156: CI Build Timing Capture at Source
 
 **Status**: Accepted
 **Date**: 2026-01-15
@@ -46,6 +47,7 @@ Build timing data for ephemeral cluster deployments was not being captured in th
 3. The governance-registry CSV showed gaps for all automated deployments
 
 **Why This Matters**:
+
 - Build timing data is essential for platform reliability metrics
 - Cost analysis requires accurate deployment duration tracking
 - Trend analysis for infrastructure provisioning becomes unreliable
@@ -59,6 +61,7 @@ We will capture build timing data directly at the source within GitHub Actions w
 #### Apply Workflow (`infra-terraform-apply-dev.yml`)
 
 1. **Capture start/end timestamps** around terraform apply:
+
 ```yaml
 - name: Terraform apply (dev)
   run: |
@@ -67,7 +70,8 @@ We will capture build timing data directly at the source within GitHub Actions w
     echo "TF_APPLY_END=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "${GITHUB_ENV}"
 ```
 
-2. **Extract resource counts** from terraform output:
+1. **Extract resource counts** from terraform output:
+
 ```bash
 if grep -q "Apply complete!" tf_apply.log; then
   ADDED=$(grep "Apply complete!" tf_apply.log | sed -E 's/.*Resources: ([0-9]+) added.*/\1/')
@@ -76,7 +80,8 @@ if grep -q "Apply complete!" tf_apply.log; then
 fi
 ```
 
-3. **Record to governance-registry** branch:
+1. **Record to governance-registry** branch:
+
 ```yaml
 - name: Record build timing to governance-registry
   if: always()
@@ -89,6 +94,7 @@ fi
 #### Teardown Workflow (`ci-teardown.yml`)
 
 Similar pattern for teardown timing:
+
 - Capture duration from teardown job outputs
 - Record phase as `teardown`
 - Include workflow run URL for traceability
@@ -104,10 +110,12 @@ The workflow_run_url field provides direct links to GitHub Actions runs for debu
 ## Scope
 
 **Applies to**:
+
 - `infra-terraform-apply-dev.yml` (and staging/prod equivalents)
 - `ci-teardown.yml`
 
 **Does not apply to**:
+
 - Local Makefile-based deployments (still use `record-build-timing.sh`)
 - Other governance-registry data (scripts_index, adr_index, aws-inventory)
 

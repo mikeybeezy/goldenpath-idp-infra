@@ -1,0 +1,13 @@
+
+By default, docker ps only lists the actively running containers and omits stopped and exited ones. You can access a 
+list that includes all the containers on your host, regardless of their status, by specifying the -a or --all flag with your command:
+
+To list all stopped Docker containers, you can use docker ps -a --filter "status=exited".
+
+If you want to list all non-running containers (both exited and created), you can combine filters:
+
+docker ps -a --filter "status=exited" --filter "status=created"
+
+
+How to list the most recently created Docker containers
+Try using docker ps -l when you need the details of a container you just created:

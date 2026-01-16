@@ -22,6 +22,10 @@ terraform {
       source  = "hashicorp/null"
       version = "~> 3.2"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.14.0"
+    }
   }
 }
 
@@ -410,6 +414,14 @@ resource "kubernetes_service_account_v1" "cluster_autoscaler" {
   ]
 }
 
+resource "kubernetes_namespace_v1" "external_secrets" {
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+
+  metadata {
+    name = var.iam_config.eso_service_account_namespace
+  }
+}
+
 resource "kubernetes_service_account_v1" "external_secrets" {
   count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
 
@@ -424,8 +436,20 @@ resource "kubernetes_service_account_v1" "external_secrets" {
   depends_on = [
     module.eks,
     module.iam,
-
+    kubernetes_namespace_v1.external_secrets
   ]
+}
+
+provider "kubectl" {
+  host                   = module.eks[0].cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
+  load_config_file       = false
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", local.cluster_name_effective, "--region", var.aws_region]
+    command     = "aws"
+  }
 }
 
 provider "helm" {
@@ -461,10 +485,11 @@ module "kubernetes_addons" {
 }
 
 # Trust store for workload secret synchronization via ESO
-resource "kubernetes_manifest" "cluster_secret_store" {
-  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
+resource "kubectl_manifest" "cluster_secret_store" {
+  # Fix: Only create this if we are applying K8s addons (like ESO Helm chart), otherwise CRDs are missing.
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role && var.apply_kubernetes_addons ? 1 : 0
 
-  manifest = {
+  yaml_body = yamlencode({
     apiVersion = "external-secrets.io/v1beta1"
     kind       = "ClusterSecretStore"
     metadata = {
@@ -486,7 +511,7 @@ resource "kubernetes_manifest" "cluster_secret_store" {
         }
       }
     }
-  }
+  })
 
   depends_on = [
     kubernetes_service_account_v1.external_secrets,
@@ -514,9 +539,86 @@ module "app_secrets" {
   description = each.value.description
   tags        = local.common_tags
 
-  read_principals        = each.value.read_principals
+  # Dynamically append the ESO role (if IAM is enabled) to ensure correct ordering and ARN logic
+  read_principals = var.iam_config.enabled ? distinct(concat(each.value.read_principals, [module.iam[0].eso_role_arn])) : each.value.read_principals
+
   write_principals       = each.value.write_principals
   break_glass_principals = each.value.break_glass_principals
 
   metadata = each.value.metadata
+}
+
+################################################################################
+# Platform RDS: Two Deployment Models (ADR-0160)
+################################################################################
+#
+# Option A: Standalone Bounded Context (ADR-0158)
+#   - Directory: envs/dev-rds/
+#   - Command: make rds-apply ENV=dev (separate from EKS)
+#   - Use case: RDS must survive cluster teardown, Backstage self-service
+#
+# Option B: Coupled with EKS (below)
+#   - Toggle: rds_config.enabled = true in terraform.tfvars
+#   - Command: make apply ENV=dev (single command)
+#   - Use case: Simple deployment, add RDS later via toggle
+#
+# See: docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md
+################################################################################
+
+module "platform_rds" {
+  source = "../../modules/aws_rds"
+  count  = var.rds_config.enabled ? 1 : 0
+
+  identifier = "${local.base_name_prefix}-${var.rds_config.identifier}"
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.subnets.private_subnet_ids
+
+  # Engine
+  engine_version       = var.rds_config.engine_version
+  engine_version_major = split(".", var.rds_config.engine_version)[0]
+  instance_class       = var.rds_config.instance_class
+
+  # Storage
+  allocated_storage     = var.rds_config.allocated_storage
+  max_allocated_storage = var.rds_config.max_allocated_storage
+
+  # High Availability
+  multi_az = var.rds_config.multi_az
+
+  # Backup & Lifecycle
+  backup_retention_period = var.rds_config.backup_retention_days
+  deletion_protection     = var.rds_config.deletion_protection
+  skip_final_snapshot     = var.rds_config.skip_final_snapshot
+
+  # Network - allow from VPC CIDR
+  allowed_cidr_blocks = [var.vpc_cidr]
+
+  # Secrets
+  create_master_secret = true
+  master_secret_name   = "goldenpath/${local.environment}/rds/master"
+
+  # Application databases with secrets
+  application_databases = {
+    for k, v in var.rds_config.application_databases : k => {
+      database_name = v.database_name
+      username      = v.username
+      secret_name   = "goldenpath/${local.environment}/${k}/postgres"
+    }
+  }
+
+  # Force SSL
+  db_parameters = [
+    {
+      name  = "rds.force_ssl"
+      value = "1"
+    },
+    {
+      name  = "log_min_duration_statement"
+      value = "1000"
+    }
+  ]
+
+  tags = local.common_tags
+
+  depends_on = [module.vpc, module.subnets]
 }

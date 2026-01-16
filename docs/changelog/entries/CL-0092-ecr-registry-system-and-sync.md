@@ -32,7 +32,7 @@ version: '1.0'
 breaking_change: false
 ---
 
-# CL-0092: ECR registry system boundary and sync updates
+## CL-0092: ECR registry system boundary and sync updates
 
 Date: 2026-01-09
 Owner: platform-team
@@ -54,15 +54,15 @@ Related: docs/adrs/ADR-0132-platform-container-registry-system.md
 
 ### Added
 
-- `backstage-helm/catalog/systems/container-registry-system.yaml`
-- `backstage-helm/catalog/domains/delivery-domain.yaml`
+- `backstage-helm/backstage-catalog/systems/container-registry-system.yaml`
+- `backstage-helm/backstage-catalog/domains/delivery-domain.yaml`
 - `docs/70-operations/runbooks/RB-0025-ecr-catalog-sync.md`
 
 ### Changed
 
 - ECR component/resource system mapped to `container-registry`
 - `scripts/sync_ecr_catalog.py` now accepts `--region` and uses AWS as source of truth
-- `backstage-helm/catalog/all-systems.yaml` and `all-domains.yaml` include new entries
+- `backstage-helm/backstage-catalog/all-systems.yaml` and `all-domains.yaml` include new entries
 
 ### Documented
 
