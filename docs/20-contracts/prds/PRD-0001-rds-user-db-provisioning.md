@@ -13,6 +13,7 @@ reliability:
 relates_to:
   - 10_PLATFORM_REQUIREMENTS
   - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0165
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
@@ -103,6 +104,22 @@ prod environments.
 - Where is the canonical audit record stored (logs vs. docs)?
 - Should the job run as part of CI or Argo sync wave?
 
+## Feedback Summary (2026-01-16)
+
+- Align provisioning with teardown conventions (BuildId, ClusterName, ManagedBy tags).
+- Decide on a resilience strategy if Kubernetes is unavailable (CI or Lambda fallback).
+- Prefer delegated admin over master credentials for auditability and least privilege.
+- Define where audit records live (CI logs + governance report).
+- Standardize naming conventions for databases and roles.
+
+## Next Steps
+
+1. Choose the admin credential model (delegated role vs. master for v1).
+2. Select the trigger path (CI post-apply vs. Argo sync wave) and approval gates.
+3. Define tagging and naming conventions for DBs/users to support teardown.
+4. Specify the audit record location and format.
+5. Draft the idempotent SQL contract and the minimal provisioning job spec.
+
 ## References
 
 - docs/20-contracts/10_PLATFORM_REQUIREMENTS.md
@@ -111,6 +128,7 @@ prod environments.
 ---
 
 ## Comments and Feedback
+When providing feedbackk, leave a comment and timestamp your comment
 
 ### Claude Opus 4.5 / 2026-01-16
 
