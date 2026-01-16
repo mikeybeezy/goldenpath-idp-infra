@@ -4,9 +4,9 @@ owner: database-team
 last_updated: "2026-01-16"
 managed_by: database-team
 databases:
-  test_inventory:
+  test_inventory2:
     metadata:
-      id: DATABASE_TEST_INVENTORY
+      id: DATABASE_TEST_INVENTORY2
       owner: app-team
       requested_by: daniel-deans
       domain: application
@@ -15,8 +15,8 @@ databases:
       status: pending
       created_date: "2026-01-16"
     configuration:
-      username: test_inventory_user
-      secret_path: goldenpath/dev/test_inventory/postgres
+      username: test_inventory2_user
+      secret_path: goldenpath/dev/test_inventory2/postgres
 # Example structure:
 # wordpress-db:
 # metadata:
