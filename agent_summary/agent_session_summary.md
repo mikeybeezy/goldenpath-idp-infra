@@ -1023,3 +1023,137 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 
 **Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
 **Timestamp**: 2026-01-16T17:15:00Z
+
+## 19. Teardown V3 Complete Fixes - RDS Logging, NAT Gateway Ordering, Name-Pattern Fallback (2026-01-16 18:30:00Z)
+
+**Objective**: Fix remaining teardown issues causing VPC deletion failures.
+
+**Problem Analysis**:
+
+1. **RDS deletion showing "0"**: RDS instances were being deleted but the log showed "0 deleted" with no status updates
+2. **VPC deletion failing with DependencyViolation**: NAT gateways were not being found/deleted, blocking VPC cleanup
+3. **Tag search not finding resources**: NAT gateway with `BuildId=15-01-26-15` tag was not being found by the cleanup script
+
+**Root Causes**:
+
+1. RDS function lacked deletion count tracking and status logging
+2. NAT gateway cleanup was happening AFTER ENI cleanup (wrong order - NAT gateways hold ENIs)
+3. NAT gateway state filter was too restrictive (excluded `deleting` state)
+4. No fallback search mechanism when tag search fails
+
+**Solutions Implemented**:
+
+### Fix 1: RDS Deletion Logging (goldenpath-idp-teardown-v3.sh)
+
+```bash
+# Added deletion count tracking
+local deleted_count=0
+local total_count=0
+for arn in ${rds_arns}; do
+  total_count=$((total_count + 1))
+done
+log_info "Found ${total_count} RDS instance(s) to delete."
+
+# Added status checking before deletion
+current_status="$(aws rds describe-db-instances \
+  --db-instance-identifier "${db_identifier}" \
+  --query 'DBInstances[0].DBInstanceStatus' --output text)"
+log_step "DELETE_RDS_INSTANCE" "Deleting RDS instance: ${db_identifier} (status: ${current_status})"
+
+# Added wait loop for RDS deletion before subnet group cleanup
+log_step "WAIT_RDS_INSTANCES" "Waiting for RDS instances to be deleted..."
+# ... polling loop with 15-minute timeout
+```
+
+### Fix 2: NAT Gateway Ordering (cleanup-orphans.sh v2.1.0)
+
+Moved NAT gateway cleanup BEFORE ENI cleanup:
+
+**Old order**: ENIs → IAM → NAT Gateways → EIPs → Subnets → VPC
+**New order**: NAT Gateways → Wait → ENIs → IAM → EIPs → Subnets → VPC
+
+### Fix 3: Name-Pattern Fallback Search (cleanup-orphans.sh v2.2.0)
+
+Added fallback search by Name tag when BuildId tag search fails:
+
+```bash
+# Strategy 1: Search by BuildId tag
+nat_gws=$(aws ec2 describe-nat-gateways \
+  --filter "Name=tag:BuildId,Values=${build_id}" \
+  --query "NatGateways[?State!='deleted'].NatGatewayId" --output text)
+
+# Strategy 2: Fallback to name pattern if no results
+if [[ -z "${nat_gws}" ]]; then
+  log_info "No NAT gateways found by tag, searching by name pattern *${build_id}*..."
+  nat_gws=$(aws ec2 describe-nat-gateways \
+    --query "NatGateways[?State!='deleted' && contains(Tags[?Key=='Name'].Value | [0], '${build_id}')].NatGatewayId" \
+    --output text)
+fi
+```
+
+Applied same fallback pattern to: NAT gateways, subnets, IGWs, VPCs.
+
+### Fix 4: Enhanced NAT Gateway Wait Loop
+
+```bash
+# Proper polling loop instead of fixed sleep
+nat_wait_timeout=90
+while true; do
+  all_deleted=true
+  for nat in ${nat_gws}; do
+    nat_state=$(aws ec2 describe-nat-gateways --nat-gateway-ids "${nat}" \
+      --query "NatGateways[0].State" --output text)
+    if [[ "${nat_state}" != "deleted" ]]; then
+      all_deleted=false
+      log_info "  NAT gateway ${nat}: ${nat_state}"
+    fi
+  done
+  if [[ "${all_deleted}" == "true" ]]; then break; fi
+  # ... timeout check and sleep
+done
+```
+
+### Fix 5: VPC Dependency Diagnostics
+
+When VPC deletion fails, now shows remaining dependencies:
+
+```bash
+if ! aws ec2 delete-vpc --vpc-id "${vpc}"; then
+  log_warn "VPC deletion failed, checking for remaining dependencies..."
+  # Shows: NAT gateways, subnets, ENIs, security groups, IGWs
+fi
+```
+
+**Files Modified**:
+
+| File | Version | Changes |
+|------|---------|---------|
+| `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh` | 3.1.0 | RDS deletion logging, count tracking, wait loop |
+| `bootstrap/60_tear_down_clean_up/cleanup-orphans.sh` | 2.2.0 | NAT gateway ordering, name-pattern fallback, VPC diagnostics |
+| `tests/scripts/teardown-v3/validate-teardown-v3.sh` | - | Updated version check regex for 2.x.x |
+
+**Commits**:
+
+| Commit | Message |
+|--------|---------|
+| `5d8d7714` | fix(teardown): improve RDS deletion logging and wait for VPC cleanup |
+| `637f5405` | fix(cleanup): reorder NAT gateway deletion before ENIs for VPC cleanup |
+| `52f8ae42` | fix(cleanup): add name-pattern fallback search and VPC diagnostics |
+
+**Validation**:
+
+- `bash -n` syntax check: Passed for both scripts
+- `validate-teardown-v3.sh`: **33 passed, 0 failed, 1 skipped**
+- Live teardown test: **PASSED** - VPC and all resources cleaned up successfully
+
+**Hotfix Branches**:
+
+- `hotfix/teardown-rds-logging-fix`
+- `hotfix/teardown-nat-gateway-ordering`
+- `hotfix/teardown-name-pattern-fallback`
+- `hotfix/teardown-v3-complete-fixes` (consolidated)
+
+---
+
+**Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
+**Timestamp**: 2026-01-16T18:30:00Z
