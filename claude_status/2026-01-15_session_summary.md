@@ -668,6 +668,42 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 - ✅ **Total Dashboards**: 29 (26 infrastructure + 3 application)
 - ✅ **Ingress**: `grafana.dev.goldenpathidp.io` configured
 
-**Key Learning**: The `extraEnv` field didn't work with this chart version. The correct approach is to use `searchNamespace: ALL` directly under `sidecar.dashboards`, which the chart translates to the `NAMESPACE` env var internally
+**Key Learning**: The `extraEnv` field didn't work with this chart version. The correct approach is to use `searchNamespace: ALL` directly under `sidecar.dashboards`, which the chart translates to the `NAMESPACE` env var internally.
 
+### M. Tooling Application Dashboards (2026-01-16)
 
+**Problem**: Tooling applications (Backstage, Keycloak, ArgoCD, Kong) lacked dedicated RED/Golden Signals dashboards. Only sample applications had dashboards.
+
+**Investigation**:
+
+- Checked for existing dashboard ConfigMaps in tooling namespaces
+- Found: Only `apps-sample-stateless`, `apps-stateful`, `apps-wordpress-efs` had dashboards
+- Missing: `backstage`, `keycloak`, `argocd`, `kong-system` namespaces
+
+**Resolution**:
+
+1. **Created 4 new dashboard ConfigMaps** following RED methodology:
+   - `gitops/helm/tooling-dashboards/backstage-dashboard.yaml` - Request rate, errors, latency, logs
+   - `gitops/helm/tooling-dashboards/keycloak-dashboard.yaml` - Auth metrics, sessions, JVM heap, logs
+   - `gitops/helm/tooling-dashboards/argocd-dashboard.yaml` - GitOps health, sync ops, gRPC metrics, logs
+   - `gitops/helm/tooling-dashboards/kong-dashboard.yaml` - Traffic, upstream latency, connections, logs
+
+2. **Deployment mechanism**: Created `kustomization.yaml` for easy deployment:
+
+   ```bash
+   kubectl apply -k gitops/helm/tooling-dashboards/
+   ```
+
+3. **Documentation updates**:
+   - `docs/changelog/entries/CL-0138-tooling-apps-dashboards.md` - New changelog entry
+   - `docs/50-observability/09_PLATFORM_DASHBOARD_CATALOG.md` - Added Section 4 (Tooling Dashboards)
+
+**Each dashboard includes**:
+
+- **Rate**: Request rate (RPS) by method/service
+- **Errors**: 4xx/5xx error rate percentages with thresholds
+- **Duration**: P50/P95/P99 latency percentiles
+- **Saturation**: CPU, memory, and app-specific metrics
+- **Logs**: Loki panels for error investigation + full application logs
+
+**Commit**: `f8e33b94` - feat: add RED/Golden Signals dashboards for tooling applications
