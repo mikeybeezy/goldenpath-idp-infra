@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ecr-test-app-dev
+  description: ECR Repository for test-app-dev
+  tags:
+    - env-dev
+    - risk-low
+  annotations:
+    goldenpath.io/risk: low
+    goldenpath.io/id: REGISTRY_TEST_APP_DEV
+spec:
+  type: container-repository
+  owner: app-team-test
+  dependencyOf:
+    - resource:goldenpath-ecr-registry

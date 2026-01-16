@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0138
+  title: 'ADR-0138: Automated Secret Scanning with Gitleaks and TruffleHog'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2026-01-10
+
+    - **Owners:** `platform-team`
+
+    - **Domain:** Security
+
+    - **Decision type:** Security | Operations'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0138-automated-secret-scanning-gitleaks-trufflehog.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0138-automated-secret-scanning-gitleaks-trufflehog.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0138-automated-secret-scanning-gitleaks-trufflehog.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: proposed
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

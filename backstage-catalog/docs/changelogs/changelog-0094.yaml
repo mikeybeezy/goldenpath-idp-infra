@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0094
+  title: 'CL-0094: Backstage docs PR workflow'
+  description: 'Date: 2026-01-09
+
+    Owner: platform-team
+
+    Scope: CI/CD, documentation automation
+
+    Related: docs/adrs/ADR-0133-human-in-the-loop-backstage-docs-prs.md'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0094-backstage-docs-pr-workflow.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0094-backstage-docs-pr-workflow.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0094-backstage-docs-pr-workflow.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: goldenpath-idp
+  description: A collection of GoldenPath IDP Organizational entities
+spec:
+  targets:
+    - ./groups/platform-team.yaml
+    - ./goldenpath-idp/org.yaml
+    - ./goldenpath-idp/infrastructure-group.yaml
+    - ./goldenpath-idp/backstage-group.yaml
+    - ./goldenpath-idp/boxoffice-group.yaml
+    - ./goldenpath-idp/team-a-group.yaml
+    - ./goldenpath-idp/team-b-group.yaml
+    - ./goldenpath-idp/team-c-group.yaml
+    - ./goldenpath-idp/team-d-group.yaml

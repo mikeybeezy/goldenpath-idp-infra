@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0008
+  title: 'CL-0008: CI managed LB cleanup workflow'
+  description: 'Date: 2025-12-31
+
+    Owner: platform
+
+    Scope: CI teardown recovery
+
+    Related: `.github/workflows/ci-managed-lb-cleanup.yml`, `docs/70-operations/runbooks/08_MANAGED_LB_CLEANUP.md`'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0008-ci-managed-lb-cleanup-workflow.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0008-ci-managed-lb-cleanup-workflow.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0008-ci-managed-lb-cleanup-workflow.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

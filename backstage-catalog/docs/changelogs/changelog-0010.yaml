@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0010
+  title: 'CL-0010: Dev ephemeral update workflow'
+  description: 'Date: 2025-12-31
+
+    Owner: platform
+
+    Scope: CI, dev, Terraform
+
+    Related: `.github/workflows/infra-terraform-update-dev.yml`, `ci-workflows/CI_WORKFLOWS.md`,
+    `docs/adrs/ADR-0060-platform-ephemeral-update-wo...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0010-ephemeral-update-workflow.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0010-ephemeral-update-workflow.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0010-ephemeral-update-workflow.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

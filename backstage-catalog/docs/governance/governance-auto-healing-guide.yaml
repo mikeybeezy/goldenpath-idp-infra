@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-auto-healing-guide
+  title: 'Governance: Documentation Auto-Healing Guide'
+  description: '**Status**: Active | **Owner**: Platform-Team | **Last Updated**:
+    2026-01-06'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/AUTO_HEALING_GUIDE.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/AUTO_HEALING_GUIDE.md
+  tags:
+    - gove
+    - governance
+    - documentation
+    - guide
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/AUTO_HEALING_GUIDE.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

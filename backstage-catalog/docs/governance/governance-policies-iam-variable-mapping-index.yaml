@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-policies-iam-variable-mapping-index
+  title: IAM Policy-to-Variable Mapping Index
+  description: This index provides the definitive mapping between raw JSON policy
+    fragments and the Terraform variables used to deploy them.
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/iam/VARIABLE_MAPPING_INDEX.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/policies/iam/VARIABLE_MAPPING_INDEX.md
+  tags:
+    - gove
+    - governance
+    - documentation
+    - policy
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/iam/VARIABLE_MAPPING_INDEX.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

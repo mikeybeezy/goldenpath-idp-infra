@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0052
+  title: 'CL-0052: ECR Registry Product-Based Strategy & Shared Responsibility Model'
+  description: 'Date: 2026-01-05
+
+    Owner: platform-team
+
+    Scope: All environments (dev/test/staging/prod)
+
+    Related: [ADR-0092](../adrs/ADR-0092-ecr-registry-product-strategy.md), [ADR-0091](../adrs/ADR-0091-trusted-delive...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0052-ecr-registry-product-strategy.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0052-ecr-registry-product-strategy.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0052-ecr-registry-product-strategy.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

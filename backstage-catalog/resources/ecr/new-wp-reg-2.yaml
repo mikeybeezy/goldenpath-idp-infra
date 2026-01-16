@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ecr-new-wp-reg-2
+  description: ECR Repository for new-wp-reg-2
+  tags:
+    - env-unknown
+    - risk-low
+  annotations:
+    goldenpath.io/risk: low
+    goldenpath.io/id: REGISTRY_NEW_WP_REG_2
+spec:
+  type: container-repository
+  owner: platform-team
+  dependencyOf:
+    - resource:goldenpath-ecr-registry

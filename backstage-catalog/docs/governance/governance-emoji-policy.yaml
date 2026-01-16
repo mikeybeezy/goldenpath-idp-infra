@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-emoji-policy
+  title: Emoji Usage Policy
+  description: Emojis may be used sparingly and intentionally to improve readability,
+    not to express tone or personality. The goal is to reduce cognitive load, not
+    decorate content.
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/EMOJI_POLICY.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/EMOJI_POLICY.md
+  tags:
+    - gove
+    - governance
+    - documentation
+    - policy
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/EMOJI_POLICY.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

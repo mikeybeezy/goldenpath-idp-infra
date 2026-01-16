@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-config-driven-metadata
+  title: Config-Driven Metadata Governance
+  description: "1. **Schema Discovery**: When a script runs, it identifies the \"\
+    Kind\" of a file (e.g., `adr`).\n2. **Schema Loading**: It loads the corresponding\
+    \ `adr.schema.yaml`.\n3. **Dynamic Enforcement**:\n   - **V..."
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/CONFIG_DRIVEN_METADATA.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/CONFIG_DRIVEN_METADATA.md
+  tags:
+    - gove
+    - governance
+    - documentation
+    - policy
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/CONFIG_DRIVEN_METADATA.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

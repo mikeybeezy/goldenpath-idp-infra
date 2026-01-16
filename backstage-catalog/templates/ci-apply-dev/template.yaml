@@ -1,0 +1,60 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: ci-apply-dev
+  title: CI Apply (dev)
+  description: Trigger the dev Terraform apply workflow with required inputs.
+spec:
+  owner: platform
+  type: workflow
+  parameters:
+    - title: Confirmation
+      required:
+        - confirm_apply
+      properties:
+        confirm_apply:
+          title: Confirm apply
+          type: string
+          enum:
+            - cancel
+            - apply
+          default: cancel
+          description: Type "apply" to run the workflow.
+    - title: Lifecycle
+      required:
+        - lifecycle
+        - new_build
+      properties:
+        lifecycle:
+          title: Lifecycle
+          type: string
+          enum:
+            - ephemeral
+            - persistent
+          default: ephemeral
+        build_id:
+          title: Build ID (dd-mm-yy-NN)
+          type: string
+          description: Required when lifecycle is ephemeral.
+        new_build:
+          title: New ephemeral build
+          type: boolean
+          default: false
+          description: Must be true when lifecycle is ephemeral.
+  steps:
+    - id: dispatch
+      name: Dispatch workflow
+      action: github:actions:dispatch
+      input:
+        repoUrl: github.com?owner=mikeybeezy&repo=goldenpath-idp-infra
+        workflowId: infra-terraform-apply-dev.yml
+        branchOrTagName: main
+        workflowInputs:
+          confirm_apply: ${{ parameters.confirm_apply }}
+          lifecycle: ${{ parameters.lifecycle }}
+          build_id: ${{ parameters.build_id }}
+          new_build: ${{ parameters.new_build }}
+  output:
+    links:
+      - title: View workflow runs
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/workflows/infra-terraform-apply-dev.yml

@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ecr-new-app-13
+  description: ECR Repository for new-app-13
+  tags:
+    - env-unknown
+    - risk-low
+  annotations:
+    goldenpath.io/risk: low
+    goldenpath.io/id: REGISTRY_NEW_APP_13
+spec:
+  type: container-repository
+  owner: platform-team
+  dependencyOf:
+    - resource:goldenpath-ecr-registry

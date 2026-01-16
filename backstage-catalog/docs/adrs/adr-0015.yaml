@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0015
+  title: 'ADR-0015: Use AWS OIDC for GitHub Actions authentication'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2025-12-26
+
+    - **Owners:** platform team
+
+    - **Domain:** Platform
+
+    - **Decision type:** Security
+
+    - **Related:** `.github/workflows/infra-terraform.yml`, [GitHub OIDC in A...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0015-platform-aws-oidc-for-github-actions.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0015-platform-aws-oidc-for-github-actions.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0015-platform-aws-oidc-for-github-actions.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

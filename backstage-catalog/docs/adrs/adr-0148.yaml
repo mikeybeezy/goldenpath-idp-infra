@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0148
+  title: 'ADR-0148: Seamless Build Deployment with Build ID Immutability'
+  description: '**Status**: Accepted
+
+    **Date**: 2026-01-13
+
+    **Supersedes**: [ADR-0153](./ADR-0153-build-id-immutability-enforcement.md) (from
+    eks-single-build-refactor branch, not merged)'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0148-seamless-build-deployment-with-immutability.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0148-seamless-build-deployment-with-immutability.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0148-seamless-build-deployment-with-immutability.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: accepted
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

@@ -1,0 +1,36 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-metadata-inheritance-strategy
+  title: Metadata Inheritance & Active Governance Strategy
+  description: '```text
+
+    idp-root/
+
+    ├── apps/
+
+    │   ├── metadata.yaml (v:1, owner:platform, domain:delivery)
+
+    │   └── my-app/
+
+    │       └── metadata.yaml (id:MY_APP) <── [Inherits owner/domain]
+
+    ```'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/METADATA_INHERITANCE_STRATEGY.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/METADATA_INHERITANCE_STRATEGY.md
+  tags:
+    - gove
+    - governance
+    - documentation
+    - policy
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/METADATA_INHERITANCE_STRATEGY.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation
