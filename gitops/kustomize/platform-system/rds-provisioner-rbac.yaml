@@ -1,0 +1,42 @@
+---
+# ServiceAccount for RDS provisioning jobs
+# This SA needs IRSA to access Secrets Manager
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: platform-provisioner
+  namespace: platform-system
+  annotations:
+    # IRSA annotation - replace with actual role ARN
+    eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/goldenpath-platform-provisioner
+  labels:
+    app: rds-provisioning
+    component: platform
+---
+# Role for provisioning jobs (minimal permissions)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: rds-provisioner
+  namespace: platform-system
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rds-provisioner
+  namespace: platform-system
+subjects:
+  - kind: ServiceAccount
+    name: platform-provisioner
+    namespace: platform-system
+roleRef:
+  kind: Role
+  name: rds-provisioner
+  apiGroup: rbac.authorization.k8s.io

@@ -59,9 +59,10 @@ Application teams use the **"Request Platform RDS Database"** template in the Ba
 |`username`|Database user|`inventory_user`|
 |`owner`|Owning team|`app-team`|
 |`requester`|Requesting user|`daniel-deans`|
-|`environment`|Target environment|`dev`, `staging`, `prod`|
-|`domain`|Business domain|`application`|
-|`risk`|Data classification|`low`, `medium`, `high`|
+|`environment`|Target environment|`dev`, `test`, `staging`, `prod`|
+|`domain`|Business domain|`catalog`|
+|`risk`|Data classification|`none`, `low`, `medium`, `high`, `access`|
+|`size`|Instance size tier|`small`, `medium`, `large`, `xlarge`|
 
 The template triggers `create-rds-database.yml` via `github:actions:dispatch`.
 
@@ -93,13 +94,15 @@ databases:
       id: DATABASE_INVENTORY_SERVICE
       owner: app-team
       requested_by: daniel-deans
-      domain: application
+      domain: catalog
       risk: medium
       environment: dev
       status: pending
       created_date: "2026-01-15"
     configuration:
       username: inventory_user
+      size_tier: small
+      instance_class: db.t3.micro
       secret_path: goldenpath/dev/inventory_service/postgres
 ```
 
@@ -135,6 +138,17 @@ The workflow creates a PR with comprehensive details:
 |Low|7 days|30 days|Basic monitoring|
 |Medium|14 days|30 days|Standard monitoring|
 |High|35 days|14 days|Audit logging, enhanced monitoring|
+
+### Size Tier Approval Gates
+
+RDS requests follow the `databases-rds` approval tier defined in
+`schemas/routing/service_class_approvals.yaml`. Size tiers add a stricter
+review rule:
+
+|Size Tier|Approval Requirement|
+|------------|----------------------|
+|small, medium|Standard databases-rds reviewers|
+|large, xlarge|Explicit platform-team approval (plus security/database-team)|
 
 ## 4. Execution: Terraform Apply
 

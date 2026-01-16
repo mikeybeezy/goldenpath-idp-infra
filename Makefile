@@ -82,7 +82,7 @@ endef
 #   make drain-nodegroup NODEGROUP=dev-default
 #   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 
-.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help rds-init rds-plan rds-apply rds-status
+.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help rds-init rds-plan rds-apply rds-status rds-provision rds-provision-dry-run rds-provision-auto rds-provision-auto-dry-run
 
 init:
 	$(TF_BIN) -chdir=$(ENV_DIR) init
@@ -187,6 +187,7 @@ deploy:
 	$(call require_build_id)
 	@echo "🚀 Starting seamless deployment for $(ENV) with BUILD_ID=$(BUILD_ID)"
 	@$(MAKE) _phase1-infrastructure ENV=$(ENV) BUILD_ID=$(BUILD_ID)
+	@$(MAKE) rds-provision-auto ENV=$(ENV) BUILD_ID=$(BUILD_ID)
 	@$(MAKE) _phase2-bootstrap ENV=$(ENV) BUILD_ID=$(BUILD_ID)
 	@$(MAKE) _phase3-verify ENV=$(ENV)
 	@echo "✅ Deployment complete! Cluster ready."
@@ -452,6 +453,161 @@ rds-status:
 # See: docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md
 
 ################################################################################
+# RDS User/Database Provisioning
+#
+# Provisions PostgreSQL roles and databases based on application_databases
+# in terraform.tfvars. Requires AWS credentials with Secrets Manager access.
+#
+# Related: PRD-0001-rds-user-db-provisioning, ADR-0165
+################################################################################
+
+rds-provision:
+	@if [ ! -d "$(RDS_ENV_DIR)" ]; then \
+		echo "RDS environment directory not found: $(RDS_ENV_DIR)"; \
+		exit 1; \
+	fi
+	@if [ "$(ENV)" != "dev" ] && [ "$(ALLOW_DB_PROVISION)" != "true" ]; then \
+		echo "ERROR: ALLOW_DB_PROVISION=true required for non-dev environments"; \
+		echo "Usage: ALLOW_DB_PROVISION=true make rds-provision ENV=$(ENV)"; \
+		exit 1; \
+	fi
+	@echo "Provisioning RDS users and databases for $(ENV)..."
+	python3 scripts/rds_provision.py \
+		--env $(ENV) \
+		--tfvars $(RDS_ENV_DIR)/terraform.tfvars \
+		--master-secret goldenpath/$(ENV)/rds/master \
+		--require-approval \
+		--audit-output governance/$(ENV)/rds_provision_audit.csv \
+		$(if $(BUILD_ID),--build-id $(BUILD_ID),) \
+		$(if $(RUN_ID),--run-id $(RUN_ID),)
+
+rds-provision-dry-run:
+	@if [ ! -d "$(RDS_ENV_DIR)" ]; then \
+		echo "RDS environment directory not found: $(RDS_ENV_DIR)"; \
+		exit 1; \
+	fi
+	@echo "[DRY-RUN] Provisioning RDS users and databases for $(ENV)..."
+	python3 scripts/rds_provision.py \
+		--env $(ENV) \
+		--tfvars $(RDS_ENV_DIR)/terraform.tfvars \
+		--master-secret goldenpath/$(ENV)/rds/master \
+		--dry-run
+
+rds-provision-auto:
+	@set -e; \
+	coupled_tfvars="$(ENV_DIR)/terraform.tfvars"; \
+	standalone_tfvars="$(RDS_ENV_DIR)/terraform.tfvars"; \
+	mode="$(RDS_MODE)"; \
+	coupled_enabled="false"; \
+	if [ -f "$$coupled_tfvars" ]; then \
+		coupled_enabled=$$(awk '\
+			BEGIN{in=0} \
+			/^[[:space:]]*rds_config[[:space:]]*=/ {in=1} \
+			in && /^[[:space:]]*enabled[[:space:]]*=/ { \
+				line=$$0; sub(/#.*/, "", line); split(line, a, "="); \
+				gsub(/[[:space:]]/, "", a[2]); print a[2]; exit \
+			} \
+			in && /^[[:space:]]*}/ {in=0} \
+		' "$$coupled_tfvars"); \
+	fi; \
+	if [ -z "$$mode" ] || [ "$$mode" = "auto" ]; then \
+		if [ "$$coupled_enabled" = "true" ]; then \
+			mode="coupled"; \
+		elif [ -f "$$standalone_tfvars" ]; then \
+			mode="standalone"; \
+		else \
+			echo "ERROR: Unable to detect RDS mode. Set RDS_MODE=coupled|standalone."; \
+			exit 1; \
+		fi; \
+	fi; \
+	if [ "$$mode" = "coupled" ]; then \
+		tfvars="$$coupled_tfvars"; \
+	elif [ "$$mode" = "standalone" ]; then \
+		tfvars="$$standalone_tfvars"; \
+	else \
+		echo "ERROR: Invalid RDS_MODE=$$mode. Use coupled|standalone|auto."; \
+		exit 1; \
+	fi; \
+	if [ ! -f "$$tfvars" ]; then \
+		echo "ERROR: tfvars not found: $$tfvars"; \
+		exit 1; \
+	fi; \
+	if [ "$(ENV)" != "dev" ] && [ "$(ALLOW_DB_PROVISION)" != "true" ]; then \
+		echo "ERROR: ALLOW_DB_PROVISION=true required for non-dev environments"; \
+		echo "Usage: ALLOW_DB_PROVISION=true make rds-provision-auto ENV=$(ENV)"; \
+		exit 1; \
+	fi; \
+	region=$$(awk -F'=' '/^[[:space:]]*aws_region[[:space:]]*=/{gsub(/"|[[:space:]]/,"",$$2);print $$2;exit}' "$$tfvars"); \
+	if [ -z "$$region" ]; then \
+		echo "ERROR: aws_region not found in $$tfvars"; \
+		exit 1; \
+	fi; \
+	echo "Provisioning RDS users and databases for $(ENV) (mode=$$mode)..."; \
+	echo "Using tfvars: $$tfvars"; \
+	python3 scripts/rds_provision.py \
+		--env $(ENV) \
+		--tfvars "$$tfvars" \
+		--master-secret goldenpath/$(ENV)/rds/master \
+		--region "$$region" \
+		--require-approval \
+		--audit-output governance/$(ENV)/rds_provision_audit.csv \
+		$(if $(BUILD_ID),--build-id $(BUILD_ID),) \
+		$(if $(RUN_ID),--run-id $(RUN_ID),)
+
+rds-provision-auto-dry-run:
+	@set -e; \
+	coupled_tfvars="$(ENV_DIR)/terraform.tfvars"; \
+	standalone_tfvars="$(RDS_ENV_DIR)/terraform.tfvars"; \
+	mode="$(RDS_MODE)"; \
+	coupled_enabled="false"; \
+	if [ -f "$$coupled_tfvars" ]; then \
+		coupled_enabled=$$(awk '\
+			BEGIN{in=0} \
+			/^[[:space:]]*rds_config[[:space:]]*=/ {in=1} \
+			in && /^[[:space:]]*enabled[[:space:]]*=/ { \
+				line=$$0; sub(/#.*/, "", line); split(line, a, "="); \
+				gsub(/[[:space:]]/, "", a[2]); print a[2]; exit \
+			} \
+			in && /^[[:space:]]*}/ {in=0} \
+		' "$$coupled_tfvars"); \
+	fi; \
+	if [ -z "$$mode" ] || [ "$$mode" = "auto" ]; then \
+		if [ "$$coupled_enabled" = "true" ]; then \
+			mode="coupled"; \
+		elif [ -f "$$standalone_tfvars" ]; then \
+			mode="standalone"; \
+		else \
+			echo "ERROR: Unable to detect RDS mode. Set RDS_MODE=coupled|standalone."; \
+			exit 1; \
+		fi; \
+	fi; \
+	if [ "$$mode" = "coupled" ]; then \
+		tfvars="$$coupled_tfvars"; \
+	elif [ "$$mode" = "standalone" ]; then \
+		tfvars="$$standalone_tfvars"; \
+	else \
+		echo "ERROR: Invalid RDS_MODE=$$mode. Use coupled|standalone|auto."; \
+		exit 1; \
+	fi; \
+	if [ ! -f "$$tfvars" ]; then \
+		echo "ERROR: tfvars not found: $$tfvars"; \
+		exit 1; \
+	fi; \
+	region=$$(awk -F'=' '/^[[:space:]]*aws_region[[:space:]]*=/{gsub(/"|[[:space:]]/,"",$$2);print $$2;exit}' "$$tfvars"); \
+	if [ -z "$$region" ]; then \
+		echo "ERROR: aws_region not found in $$tfvars"; \
+		exit 1; \
+	fi; \
+	echo "[DRY-RUN] Provisioning RDS users and databases for $(ENV) (mode=$$mode)..."; \
+	echo "Using tfvars: $$tfvars"; \
+	python3 scripts/rds_provision.py \
+		--env $(ENV) \
+		--tfvars "$$tfvars" \
+		--master-secret goldenpath/$(ENV)/rds/master \
+		--region "$$region" \
+		--dry-run
+
+################################################################################
 
 help:
 	@echo "Targets:"
@@ -461,7 +617,12 @@ help:
 	@echo "  make rds-plan ENV=dev          # Plan RDS changes"
 	@echo "  make rds-apply ENV=dev         # Apply RDS (deploy first!)"
 	@echo "  make rds-status ENV=dev        # Show RDS outputs"
+	@echo "  make rds-provision ENV=dev     # Provision DB users/databases"
+	@echo "  make rds-provision-dry-run ENV=dev  # Preview provisioning"
+	@echo "  make rds-provision-auto ENV=dev     # Provision with mode detection"
+	@echo "  make rds-provision-auto-dry-run ENV=dev  # Preview with mode detection"
 	@echo "  NOTE: No rds-destroy target. See RB-0030 for deletion."
+	@echo "  NOTE: Non-dev requires ALLOW_DB_PROVISION=true"
 	@echo ""
 	@echo "== EKS Cluster =="
 	@echo "  make init ENV=dev"

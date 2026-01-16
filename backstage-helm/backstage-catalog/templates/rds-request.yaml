@@ -28,6 +28,7 @@ spec:
         - domain
         - environment
         - risk
+        - size
       properties:
         database_name:
           title: Database Name
@@ -47,6 +48,7 @@ spec:
           type: string
           description: Team that owns this database.
           enum:
+            - unknown
             - platform-team
             - security-team
             - operations-team
@@ -66,12 +68,15 @@ spec:
           enum:
             - platform-core
             - delivery
+            - identity
+            - catalog
             - observability
             - governance
             - security
             - cost
-            - application
-          default: application
+            - governance-routing
+            - platform-governance
+          default: platform-core
         environment:
           title: Environment
           type: string
@@ -87,17 +92,36 @@ spec:
           type: string
           description: Data sensitivity level. Affects backup retention and access controls.
           enum:
+            - none
             - low
             - medium
             - high
+            - access
           default: medium
           ui:help: |
+            - None: Non-sensitive data with minimal controls
             - Low: Non-sensitive data, standard retention
             - Medium: Internal data, extended retention
             - High: PII/sensitive data, maximum retention, audit logging
+            - Access: Elevated access risk, strict review
 
     - title: Database Configuration
       properties:
+        size:
+          title: Instance Size Tier
+          type: string
+          description: Requested size tier for the Platform RDS instance.
+          enum:
+            - small
+            - medium
+            - large
+            - xlarge
+          default: small
+          ui:help: |
+            - small: db.t3.micro (dev/test)
+            - medium: db.t3.small (staging)
+            - large: db.t3.medium (prod light)
+            - xlarge: db.r6g.large (prod heavy)
         initial_schema:
           title: Initial Schema Setup
           type: string
@@ -126,6 +150,7 @@ spec:
           domain=${{ parameters.domain }}
           environment=${{ parameters.environment }}
           risk=${{ parameters.risk }}
+          size=${{ parameters.size }}
           initial_schema=${{ parameters.initial_schema }}
 
     - id: trigger-workflow
@@ -144,6 +169,7 @@ spec:
           domain: ${{ parameters.domain }}
           environment: ${{ parameters.environment }}
           risk: ${{ parameters.risk }}
+          size: ${{ parameters.size }}
           initial_schema: ${{ parameters.initial_schema }}
 
   output:
