@@ -842,3 +842,95 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 - Captured the append-only session log requirement for `agent_status/agent_session_summary.md`.
 - Linked the registry and session log expectations into `docs/10-governance/07_AI_AGENT_GOVERNANCE.md`.
 - Added ADR `docs/adrs/ADR-0163-agent-collaboration-governance.md` to formalize the collaboration model.
+
+## 17. Teardown V3 with Enhanced Reliability (2026-01-16 15:17:42Z)
+
+**Objective**: Fix CI teardown failures caused by `ResourceInUseException: Cluster has nodegroups attached` and add RDS cleanup support.
+
+**Problem Analysis**:
+
+- CI teardown was failing with: `ResourceInUseException: Cluster has nodegroups attached`
+- **Root Cause**: V2 script at line 671 checked both `cluster_exists` AND `kube_access` before deleting nodegroups
+- When Kubernetes API was unreachable (`kube_access="false"`), nodegroup deletion was skipped entirely
+- Orphan cleanup then tried to delete the cluster before nodegroups were removed, causing the exception
+- RDS instances (recently introduced to the platform) were not included in teardown
+
+**Solution - Teardown V3**:
+
+1. **Decoupled Nodegroup Deletion**: Nodegroups now deleted via AWS CLI regardless of Kubernetes API availability:
+
+   ```bash
+   # V2 (broken when k8s API down):
+   if [[ "${cluster_exists}" == "false" || "${kube_access}" == "false" ]]; then
+     echo "Skipping nodegroup deletion..."
+
+   # V3 (works regardless of k8s API):
+   if [[ "${cluster_exists}" == "false" ]]; then
+     log_info "Cluster does not exist; skipping nodegroup deletion."
+   else
+     delete_nodegroups_via_aws
+     wait_for_nodegroup_deletion
+   fi
+   ```
+
+2. **8-Stage Teardown Sequence**:
+
+   | Stage | Purpose                              |
+   |-------|--------------------------------------|
+   | 1     | Cluster Validation                   |
+   | 2     | Pre-Destroy Cleanup (K8s resources)  |
+   | 3     | Drain Nodegroups (if k8s accessible) |
+   | 4     | Delete Nodegroups (AWS CLI)          |
+   | 5     | Delete RDS Instances                 |
+   | 6     | Terraform Destroy                    |
+   | 7     | Orphan Cleanup                       |
+   | 8     | Teardown Complete                    |
+
+3. **Explicit Step Logging**: No more "UNKNOWN STEP" in CI logs:
+   - `[STEP: NAME]` - Major operation
+   - `[INFO]`, `[WARN]`, `[ERROR]` - Standard logging
+   - `[BREAK-GLASS]` - Emergency cleanup operations
+   - `[HEARTBEAT]` - Long-running operation progress
+   - `[WAIT]` - Waiting for condition with timeout
+
+4. **RDS Cleanup Support**: New Stage 5 handles RDS resources with environment variables:
+   - `DELETE_RDS_INSTANCES=true|false`
+   - `RDS_SKIP_FINAL_SNAPSHOT=true|false`
+   - `RDS_DELETE_AUTOMATED_BACKUPS=true|false`
+
+5. **LoadBalancer Cleanup Ordering**: Proper sequence ensures no dangling resources:
+   - Delete LoadBalancer services (k8s) → Remove service finalizers → Scale down LB controller → Delete LBs (AWS) → Delete target groups → Wait for ENI cleanup
+
+**Files Created/Modified**:
+
+| File                                                                 | Change                                       |
+|----------------------------------------------------------------------|----------------------------------------------|
+| `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh`      | New 8-stage teardown script                  |
+| `bootstrap/60_tear_down_clean_up/cleanup-orphans.sh`                 | Updated to v2.0.0 with nodegroup wait + RDS  |
+| `.github/workflows/ci-teardown.yml`                                  | Default changed to v3                        |
+| `Makefile`                                                           | Default changed to v3                        |
+| `docs/adrs/ADR-0164-teardown-v3-enhanced-reliability.md`             | New ADR (supersedes ADR-0048)                |
+| `docs/adrs/ADR-0048-platform-teardown-version-selector.md`           | Marked as superseded                         |
+| `docs/changelog/entries/CL-0139-teardown-v3-enhanced-reliability.md` | Changelog entry                              |
+| `tests/scripts/teardown-v3/validate-teardown-v3.sh`                  | Validation test script                       |
+| `tests/scripts/teardown-v3/test-record-20260116.md`                  | Test record                                  |
+
+**Validation**:
+
+- Validation tests: **33 passed, 0 failed, 1 skipped** (shellcheck not installed)
+- Syntax validation: `bash -n` passed for both scripts
+
+**Rollback**:
+
+```bash
+TEARDOWN_VERSION=v2 make teardown ...
+```
+
+**Commits**:
+
+| Commit       | Message                                                                |
+|--------------|------------------------------------------------------------------------|
+| `d7c0716d`   | feat(teardown): introduce v3 with enhanced reliability and RDS support |
+| `7bdb23b7`   | Cherry-pick to feature/teardown-v3-pr for development merge            |
+
+**PR**: [#240](https://github.com/mikeybeezy/goldenpath-idp-infra/pull/240)
