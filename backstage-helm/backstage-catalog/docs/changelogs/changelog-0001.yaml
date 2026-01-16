@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0001
+  title: 'CL-0001: Teardown kubectl timeout guard'
+  description: 'Date: 2025-12-31
+
+    Owner: platform
+
+    Scope: teardown
+
+    Related: docs/40-delivery/17_BUILD_RUN_FLAGS.md, bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0001-teardown-kubectl-timeout-guard.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0001-teardown-kubectl-timeout-guard.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0001-teardown-kubectl-timeout-guard.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

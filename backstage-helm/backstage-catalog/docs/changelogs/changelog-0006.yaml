@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0006
+  title: 'CL-0006: Loki single-binary default and monitoring namespace'
+  description: 'Date: 2025-12-31
+
+    Owner: platform
+
+    Scope: observability
+
+    Related: gitops/argocd/apps/*/loki.yaml, gitops/helm/loki/values/*.yaml'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0006-loki-single-binary-monitoring-namespace.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0006-loki-single-binary-monitoring-namespace.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0006-loki-single-binary-monitoring-namespace.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

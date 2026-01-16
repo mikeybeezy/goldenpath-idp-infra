@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ecr-staging-api
+  description: ECR Repository for staging-api
+  tags:
+    - env-staging
+    - risk-medium
+  annotations:
+    goldenpath.io/risk: medium
+    goldenpath.io/id: REGISTRY_STAGING_API
+spec:
+  type: container-repository
+  owner: app-team-api
+  dependencyOf:
+    - resource:goldenpath-ecr-registry

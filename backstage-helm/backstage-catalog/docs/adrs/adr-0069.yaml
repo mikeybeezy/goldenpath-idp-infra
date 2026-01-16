@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0069
+  title: 'ADR-0069: Observability baseline for golden signals in production'
+  description: '- **Status:** Superseded (by ADR-0049-platform-pragmatic-observability-baseline.md)
+
+    - **Date:** 2025-12-23
+
+    - **Owners:** platform team
+
+    - **Domain:** Platform
+
+    - **Decision type:** Operations
+
+    - **Relate...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0069-platform-observability-baseline-golden-signals.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0069-platform-observability-baseline-golden-signals.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0069-platform-observability-baseline-golden-signals.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: superseded
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

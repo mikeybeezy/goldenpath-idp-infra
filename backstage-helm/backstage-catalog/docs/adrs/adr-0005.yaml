@@ -1,0 +1,34 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0005
+  title: 'ADR-0005: Adopt Keycloak for platform SSO (humans) and keep IRSA for pod-to-AWS
+    auth'
+  description: '- **Status:** Accepted
+
+    - **Date:** 2025-12-26
+
+    - **Owners:** Platform (GoldenPath IDP)
+
+    - **Domain:** Application
+
+    - **Decision type:** Security / Identity / UX
+
+    - **Related docs:** docs/10-governance/01_...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0005-app-keycloak-as-identity-provider-for-human-sso.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0005-app-keycloak-as-identity-provider-for-human-sso.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0005-app-keycloak-as-identity-provider-for-human-sso.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-02-governance-model
+  title: Governance Model – Golden Path IDP (Deprecated)
+  description: 'Doc contract:'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/02_GOVERNANCE_MODEL.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/02_GOVERNANCE_MODEL.md
+  tags:
+    - gove
+    - governance
+    - documentation
+    - policy
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/02_GOVERNANCE_MODEL.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: deprecated
+  owner: platform-team
+  subcomponentOf: governance-documentation

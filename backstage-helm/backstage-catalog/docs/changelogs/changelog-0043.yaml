@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0043
+  title: 'CL-0043: Complete Metadata Backfill with Knowledge Graph'
+  description: '**Date:** 2026-01-04
+
+    **Owner:** Platform Team
+
+    **Scope:** Repository-wide documentation
+
+    **Related:** ADR-0084, ADR-0082 (Graph RAG), ADR-0083 (Metadata Strategy), CL-0042
+    (Batch 1)'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0043-complete-metadata-backfill.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0043-complete-metadata-backfill.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0043-complete-metadata-backfill.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

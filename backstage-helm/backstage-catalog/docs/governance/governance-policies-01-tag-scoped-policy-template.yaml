@@ -1,0 +1,29 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-policies-01-tag-scoped-policy-template
+  title: Tag-Scoped IAM Policy Template (Living)
+  description: 'This document defines the standard template for **tag-scoped** IAM
+    policies
+
+    used by automation that deletes or mutates infrastructure. Use it whenever a
+
+    role can perform destructive actions (cleanup, ...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md
+  tags:
+    - gove
+    - governance
+    - documentation
+    - policy
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/01_TAG_SCOPED_POLICY_TEMPLATE.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

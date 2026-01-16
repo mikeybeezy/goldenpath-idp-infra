@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: goldenpath-idp
+  description: GoldenPath IDP organization root
+spec:
+  type: organization
+  profile:
+    displayName: GoldenPath IDP
+    email: platform-team@example.com
+  children: [infrastructure]

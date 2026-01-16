@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0087
+  title: 'CL-0087: Teardown v2 kube access fallback'
+  description: 'Date: 2025-12-31
+
+    Owner: platform
+
+    Scope: teardown
+
+    Related: bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh, .github/workflows/ci-teardown.yml'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0087-teardown-v2-kube-access-fallback.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0087-teardown-v2-kube-access-fallback.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0087-teardown-v2-kube-access-fallback.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

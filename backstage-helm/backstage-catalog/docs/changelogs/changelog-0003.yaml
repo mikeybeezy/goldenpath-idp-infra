@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0003
+  title: 'CL-0003: Teardown v2 LoadBalancer finalizer guard'
+  description: 'Date: 2025-12-31
+
+    Owner: platform
+
+    Scope: teardown
+
+    Related: bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh, docs/70-operations/15_TEARDOWN_AND_CLEANUP.md'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0003-teardown-v2-lb-finalizer-guard.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0003-teardown-v2-lb-finalizer-guard.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0003-teardown-v2-lb-finalizer-guard.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

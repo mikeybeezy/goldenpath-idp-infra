@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0141
+  title: 'ADR-0141: Backstage ECR requests use GitHub Actions dispatch'
+  description: '- **Status:** Accepted
+
+    - **Date:** 2026-01-11
+
+    - **Owners:** `platform-team`
+
+    - **Domain:** Platform
+
+    - **Decision type:** Operations | Governance
+
+    - **Related:** ADR-0095, ADR-0128'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0141-backstage-ecr-dispatch-workflow.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0141-backstage-ecr-dispatch-workflow.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0141-backstage-ecr-dispatch-workflow.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

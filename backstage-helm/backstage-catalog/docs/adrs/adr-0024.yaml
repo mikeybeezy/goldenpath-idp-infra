@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0024
+  title: 'ADR-0024: Security floor for V1'
+  description: '- **Status:** Proposed
+
+    - **Date:** 2025-12-27
+
+    - **Owners:** Platform (GoldenPath IDP)
+
+    - **Domain:** Platform
+
+    - **Decision type:** Security | Governance
+
+    - **Related:** docs/10-governance/01_GOVERNANCE....'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0024-platform-security-floor-v1.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0024-platform-security-floor-v1.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0024-platform-security-floor-v1.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

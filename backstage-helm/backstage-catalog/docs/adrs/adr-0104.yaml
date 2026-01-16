@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0104
+  title: 'ADR-0104: Automated Script Documentation'
+  description: '1.  **Dynamic Discovery**: Scans `scripts/*.py` and `scripts/*.sh`
+    to find all tools.
+
+    2.  **Metadata Extraction**: Extracts the first line of the docstring (Python)
+    or header comment (Shell) as the de...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0104-automated-script-docs.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0104-automated-script-docs.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0104-automated-script-docs.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: superseded
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

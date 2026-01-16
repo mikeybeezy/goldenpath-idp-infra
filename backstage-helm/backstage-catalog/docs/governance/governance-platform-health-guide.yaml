@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-platform-health-guide
+  title: Platform Health Dashboard Guide
+  description: The `PLATFORM_HEALTH.md` file at the repository root is the "Single
+    Source of Truth" for the operational status, compliance, and governance reach
+    of the GoldenPath IDP.
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/PLATFORM_HEALTH_GUIDE.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/PLATFORM_HEALTH_GUIDE.md
+  tags:
+    - gove
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/PLATFORM_HEALTH_GUIDE.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

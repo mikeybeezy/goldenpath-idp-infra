@@ -1,0 +1,29 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0089
+  title: 'ADR-0089: Closed-Loop Metadata Injection'
+  description: '1. **Automated Injection**: `scripts/standardize-metadata.py` will
+    serve as the propagation engine.
+
+    2. **Standard Keys**: Metadata will be injected into a `governance` block in `values.yaml`
+    files.
+
+    3....'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0089-closed-loop-metadata-injection.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0089-closed-loop-metadata-injection.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0089-closed-loop-metadata-injection.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records
