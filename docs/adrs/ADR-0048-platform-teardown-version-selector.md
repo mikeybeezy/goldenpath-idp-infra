@@ -15,7 +15,8 @@ relates_to:
   - 15_TEARDOWN_AND_CLEANUP
   - ADR-0048
 supersedes: []
-superseded_by: []
+superseded_by:
+  - ADR-0164-teardown-v3-enhanced-reliability
 tags: []
 inheritance: {}
 value_quantification:
@@ -31,7 +32,7 @@ breaking_change: false
 
 Filename: `ADR-0048-platform-teardown-version-selector.md`
 
-- **Status:** Proposed
+- **Status:** Superseded by ADR-0164
 - **Date:** 2025-12-30
 - **Owners:** `platform`
 - **Domain:** Platform

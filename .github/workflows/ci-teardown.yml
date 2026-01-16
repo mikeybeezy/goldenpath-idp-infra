@@ -35,13 +35,14 @@ on:
           - ephemeral
           - persistent
       teardown_version:
-        description: "Teardown script version"
+        description: "Teardown script version (v3 recommended)"
         required: true
-        default: "v1"
+        default: "v3"
         type: choice
         options:
-          - v1
+          - v3
           - v2
+          - v1
       relax_pdb:
         description: "Relax PDB during teardown"
         required: true
