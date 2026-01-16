@@ -1001,12 +1001,35 @@ delete_rds_instances_for_build() {
     return 0
   fi
 
+  local deleted_count=0
+  local total_count=0
+  for arn in ${rds_arns}; do
+    total_count=$((total_count + 1))
+  done
+
+  log_info "Found ${total_count} RDS instance(s) to delete."
+
   for arn in ${rds_arns}; do
     local db_identifier=""
     db_identifier="${arn##*:db:}"
 
-    log_step "DELETE_RDS_INSTANCE" "Deleting RDS instance: ${db_identifier}"
+    # Get current status
+    local current_status=""
+    current_status="$(aws rds describe-db-instances \
+      --db-instance-identifier "${db_identifier}" \
+      --region "${region}" \
+      --query 'DBInstances[0].DBInstanceStatus' \
+      --output text 2>/dev/null || echo "unknown")"
+
+    log_step "DELETE_RDS_INSTANCE" "Deleting RDS instance: ${db_identifier} (status: ${current_status})"
     log_breakglass "RDS ARN: ${arn}"
+
+    # Skip if already deleting
+    if [[ "${current_status}" == "deleting" ]]; then
+      log_info "  Instance already deleting, skipping delete command."
+      deleted_count=$((deleted_count + 1))
+      continue
+    fi
 
     local delete_args="--db-instance-identifier ${db_identifier} --region ${region}"
 
@@ -1024,12 +1047,59 @@ delete_rds_instances_for_build() {
       log_info "  Deleting automated backups"
     fi
 
-    if aws rds delete-db-instance ${delete_args} 2>/dev/null; then
+    if aws rds delete-db-instance ${delete_args} 2>&1; then
       log_info "  Initiated deletion of RDS instance: ${db_identifier}"
+      deleted_count=$((deleted_count + 1))
     else
-      log_warn "  Failed to delete RDS instance: ${db_identifier} (may already be deleting)"
+      log_warn "  Failed to delete RDS instance: ${db_identifier} (may already be deleting or have protection)"
     fi
   done
+
+  log_info "Initiated deletion of ${deleted_count}/${total_count} RDS instances."
+
+  # Wait for RDS instances to be deleted before attempting subnet group deletion
+  if [[ "${deleted_count}" -gt 0 ]]; then
+    log_step "WAIT_RDS_INSTANCES" "Waiting for RDS instances to be deleted (required before subnet group cleanup)..."
+    local rds_wait_timeout="${RDS_DELETE_TIMEOUT:-900}"
+    local rds_wait_interval=30
+    local rds_start_epoch
+    rds_start_epoch="$(date -u +%s)"
+
+    while true; do
+      local remaining_instances=0
+      for arn in ${rds_arns}; do
+        local db_id="${arn##*:db:}"
+        local status=""
+        status="$(aws rds describe-db-instances \
+          --db-instance-identifier "${db_id}" \
+          --region "${region}" \
+          --query 'DBInstances[0].DBInstanceStatus' \
+          --output text 2>/dev/null || echo "deleted")"
+
+        if [[ "${status}" != "deleted" && -n "${status}" ]]; then
+          remaining_instances=$((remaining_instances + 1))
+          log_info "  ${db_id}: ${status}"
+        fi
+      done
+
+      if [[ "${remaining_instances}" -eq 0 ]]; then
+        log_info "All RDS instances deleted."
+        break
+      fi
+
+      local now_epoch
+      now_epoch="$(date -u +%s)"
+      local elapsed=$((now_epoch - rds_start_epoch))
+
+      if [[ "${elapsed}" -ge "${rds_wait_timeout}" ]]; then
+        log_warn "Timed out waiting for RDS deletion after ${elapsed}s. Continuing with subnet group cleanup..."
+        break
+      fi
+
+      log_info "[WAIT] RDS instances still deleting (${remaining_instances} remaining, ${elapsed}s/${rds_wait_timeout}s)..."
+      sleep "${rds_wait_interval}"
+    done
+  fi
 
   # Delete RDS subnet groups (search by build_id or cluster name pattern)
   log_step "DELETE_RDS_SUBNET_GROUPS" "Searching for RDS subnet groups..."
@@ -1051,11 +1121,39 @@ delete_rds_instances_for_build() {
       --output text 2>/dev/null || true)"
   fi
 
+  # Also search by cluster name directly
+  if [[ -z "${subnet_groups}" ]]; then
+    subnet_groups="$(aws rds describe-db-subnet-groups \
+      --region "${region}" \
+      --query "DBSubnetGroups[?contains(DBSubnetGroupName, '${cluster_name}')].DBSubnetGroupName" \
+      --output text 2>/dev/null || true)"
+  fi
+
+  local sg_deleted=0
+  local sg_total=0
+  for sg in ${subnet_groups}; do
+    sg_total=$((sg_total + 1))
+  done
+
+  if [[ "${sg_total}" -gt 0 ]]; then
+    log_info "Found ${sg_total} RDS subnet group(s) to delete."
+  else
+    log_info "No RDS subnet groups found."
+  fi
+
   for sg in ${subnet_groups}; do
     log_step "DELETE_RDS_SUBNET_GROUP" "Deleting RDS subnet group: ${sg}"
-    aws rds delete-db-subnet-group --db-subnet-group-name "${sg}" --region "${region}" 2>/dev/null || \
-      log_warn "  Failed to delete subnet group: ${sg} (may be in use)"
+    if aws rds delete-db-subnet-group --db-subnet-group-name "${sg}" --region "${region}" 2>&1; then
+      log_info "  Deleted subnet group: ${sg}"
+      sg_deleted=$((sg_deleted + 1))
+    else
+      log_warn "  Failed to delete subnet group: ${sg} (may still be in use by RDS instance)"
+    fi
   done
+
+  if [[ "${sg_total}" -gt 0 ]]; then
+    log_info "Deleted ${sg_deleted}/${sg_total} RDS subnet groups."
+  fi
 
   # Delete RDS parameter groups (search by build_id or cluster name pattern)
   log_step "DELETE_RDS_PARAM_GROUPS" "Searching for RDS parameter groups..."
@@ -1075,15 +1173,47 @@ delete_rds_instances_for_build() {
       --output text 2>/dev/null || true)"
   fi
 
+  # Also search by cluster name directly
+  if [[ -z "${param_groups}" ]]; then
+    param_groups="$(aws rds describe-db-parameter-groups \
+      --region "${region}" \
+      --query "DBParameterGroups[?contains(DBParameterGroupName, '${cluster_name}')].DBParameterGroupName" \
+      --output text 2>/dev/null || true)"
+  fi
+
+  local pg_deleted=0
+  local pg_total=0
+  for pg in ${param_groups}; do
+    # Skip default parameter groups
+    if [[ "${pg}" == default.* ]]; then
+      continue
+    fi
+    pg_total=$((pg_total + 1))
+  done
+
+  if [[ "${pg_total}" -gt 0 ]]; then
+    log_info "Found ${pg_total} RDS parameter group(s) to delete."
+  else
+    log_info "No custom RDS parameter groups found."
+  fi
+
   for pg in ${param_groups}; do
     # Skip default parameter groups
     if [[ "${pg}" == default.* ]]; then
       continue
     fi
     log_step "DELETE_RDS_PARAM_GROUP" "Deleting RDS parameter group: ${pg}"
-    aws rds delete-db-parameter-group --db-parameter-group-name "${pg}" --region "${region}" 2>/dev/null || \
-      log_warn "  Failed to delete parameter group: ${pg} (may be in use)"
+    if aws rds delete-db-parameter-group --db-parameter-group-name "${pg}" --region "${region}" 2>&1; then
+      log_info "  Deleted parameter group: ${pg}"
+      pg_deleted=$((pg_deleted + 1))
+    else
+      log_warn "  Failed to delete parameter group: ${pg} (may still be in use)"
+    fi
   done
+
+  if [[ "${pg_total}" -gt 0 ]]; then
+    log_info "Deleted ${pg_deleted}/${pg_total} RDS parameter groups."
+  fi
 }
 
 wait_for_rds_deletion() {
