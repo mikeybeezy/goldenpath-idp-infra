@@ -1,5 +1,5 @@
 
-By default, docker ps only lists the actively running containers and omits stopped and exited ones. You can access a 
+By default, docker ps only lists the actively running containers and omits stopped and exited ones. You can access a
 list that includes all the containers on your host, regardless of their status, by specifying the -a or --all flag with your command:
 
 To list all stopped Docker containers, you can use docker ps -a --filter "status=exited".

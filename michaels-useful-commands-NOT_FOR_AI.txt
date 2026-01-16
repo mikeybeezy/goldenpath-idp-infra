@@ -294,32 +294,32 @@ make env=dev deploy build_id=14-01-26-06
 
 for V1  we need to broaden the requirements to be tru ened to end product,  integrate this  into V1 requirements as the minimumrequirements
 adjust docs to reflect this and print to screen befor prinitng to s
-- Be able to connect a CI CD piplen from a poly repo 
-- level 1 security scanning and hardening 
+- Be able to connect a CI CD piplen from a poly repo
+- level 1 security scanning and hardening
 - deploy acrous dev staging and production
-- deploy a staless aplication 
+- deploy a staless aplication
 - deploy stateful application with a database
-- Provision S3, 
-- EBS provisioning vi PR and backstage 
-- EKS provisioning vi PR and backstage 
-- RDS provisioning vi PR and backstage 
-- ec2 provisioning vi PR and backstage 
-- ECR provisioning vi PR and backstage 
+- Provision S3,
+- EBS provisioning vi PR and backstage
+- EKS provisioning vi PR and backstage
+- RDS provisioning vi PR and backstage
+- ec2 provisioning vi PR and backstage
+- ECR provisioning vi PR and backstage
 - Image building Trackin and pushing vi PR and backstage ? Deves n
 - Github repositoru
 - ship arhagrgoo CD pipeline
-- Out of the Montitoring and observability 
+- Out of the Montitoring and observability
 - out of the box ingress controller with kong
 - Be able to buold images and push them to ECR
 - keycloak oidc user and group management
-- End to end automation 
-- self healing 
+- End to end automation
+- self healing
 - self governernace and policy enforcement
 - Traverse able and tracenility built into infrastructure components
 - Traverse able and tracenility built into documentation that capture interrlationships
-- 100§knowledge graph and metada coverage 
+- 100§knowledge graph and metada coverage
 - AI agent compatiable
 - Infrasctures control, health and performance perfomance dashboards
 
 
-Refine docs to reflect this 
+Refine docs to reflect this
