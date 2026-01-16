@@ -5,8 +5,13 @@ set -euo pipefail
 # ORPHAN CLEANUP - Clean up orphaned AWS resources by BuildId tag
 # =============================================================================
 #
-# Version: 2.0.0
+# Version: 2.1.0
 # Purpose: Clean up AWS resources left behind by failed builds
+#
+# Key changes in 2.1.0:
+#   - Moved NAT gateway cleanup BEFORE ENI cleanup (NAT gateways hold ENIs)
+#   - Added 45-second wait after NAT gateway deletion to allow ENI release
+#   - Skip wait if no NAT gateways found
 #
 # Usage:
 #   bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
@@ -287,6 +292,41 @@ else
 fi
 
 # =============================================================================
+# NAT GATEWAYS (must be deleted BEFORE ENIs - NAT gateways hold ENIs)
+# =============================================================================
+
+log_step "NAT_CLEANUP" "Finding NAT gateways with BuildId=${build_id}..."
+
+nat_gws=$(aws ec2 describe-nat-gateways \
+  --filter "Name=tag:BuildId,Values=${build_id}" "Name=state,Values=available,pending,failed" \
+  --region "${region}" \
+  --query "NatGateways[].NatGatewayId" --output text 2>/dev/null || true)
+
+nat_deleted=0
+for nat in ${nat_gws}; do
+  log_step "DELETE_NAT_GW" "Deleting NAT gateway: ${nat}"
+  run aws ec2 delete-nat-gateway --nat-gateway-id "${nat}" --region "${region}"
+  nat_deleted=$((nat_deleted + 1))
+done
+
+# Wait for NAT gateway deletion to complete (releases ENIs)
+if [[ "${nat_deleted}" -gt 0 ]]; then
+  log_step "WAIT_NAT_GW" "Waiting 45 seconds for NAT gateway deletion to release ENIs..."
+  sleep 45
+
+  # Verify NAT gateways are deleted or deleting
+  for nat in ${nat_gws}; do
+    nat_state=$(aws ec2 describe-nat-gateways \
+      --nat-gateway-ids "${nat}" \
+      --region "${region}" \
+      --query "NatGateways[0].State" --output text 2>/dev/null || echo "deleted")
+    log_info "  NAT gateway ${nat} state: ${nat_state}"
+  done
+else
+  log_info "No NAT gateways found, skipping wait."
+fi
+
+# =============================================================================
 # ELASTIC NETWORK INTERFACES (unattached only)
 # =============================================================================
 
@@ -355,22 +395,6 @@ for arn in ${iam_roles}; do
 
   log_info "  Deleting IAM role: ${role_name}"
   run aws iam delete-role --role-name "${role_name}"
-done
-
-# =============================================================================
-# NAT GATEWAYS
-# =============================================================================
-
-log_step "NAT_CLEANUP" "Finding NAT gateways with BuildId=${build_id}..."
-
-nat_gws=$(aws ec2 describe-nat-gateways \
-  --filter "Name=tag:BuildId,Values=${build_id}" \
-  --region "${region}" \
-  --query "NatGateways[].NatGatewayId" --output text 2>/dev/null || true)
-
-for nat in ${nat_gws}; do
-  log_step "DELETE_NAT_GW" "Deleting NAT gateway: ${nat}"
-  run aws ec2 delete-nat-gateway --nat-gateway-id "${nat}" --region "${region}"
 done
 
 # =============================================================================
