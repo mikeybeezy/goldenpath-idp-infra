@@ -10,6 +10,7 @@ risk_profile:
   production_impact: none
   security_risk: none
   coupling_risk: none
+lifecycle: active
 ---
 
 # Governance & Traceability Validation Record (2026-01-07)
