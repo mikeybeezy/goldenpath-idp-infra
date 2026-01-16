@@ -774,3 +774,14 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 - Updated Backstage test catalog locations to use governance-registry URLs for templates.
 - Repointed dev/staging/prod/local `catalogLocation` to `governance-registry/backstage-catalog/all.yaml`.
 - Deleted the legacy `/backstage` directory after updating references.
+
+## 13. Platform Requirements Draft (2026-01-16 09:25:59Z)
+
+**Objective**: Populate the platform requirements placeholder with V1-scoped golden paths, access model, and approval flow.
+
+**Actions**:
+
+- Filled `docs/00-foundations/10_PLATFORM_REQUIREMENTS.md` with V1 functional/non-functional requirements.
+- Added golden path provisioning list (apps, S3, RDS, ECR, EC2, EKS) with platform approvals.
+- Documented approval model, access matrix, and Backstage-to-PR flow.
+- Clarified ESO naming and V1 acceptance criteria.
