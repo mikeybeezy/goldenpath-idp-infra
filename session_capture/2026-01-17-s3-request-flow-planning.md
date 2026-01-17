@@ -172,3 +172,78 @@ spec:
 **Overall Assessment**: Solid planning document. Follows established patterns well. Main gaps are artifact ID reservations and a few pending architectural decisions. Ready to proceed once bucket scope and KMS strategy are decided.
 
 Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-17T19:45:00Z
+
+### Update - 2026-01-17T23:45:00Z
+
+**Decisions Finalized**
+
+All open decisions resolved and documented in ADR-0170:
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Bucket scope | **Per-environment** | Simpler IAM, cleaner teardown, env isolation |
+| KMS strategy | **Shared platform key (V1)** | Simplicity; per-domain keys in V2 |
+| Access logging | **Required staging/prod, optional dev** | Compliance without dev overhead |
+| Lifecycle rules | **Optional with retention rationale** | Buckets are long-lived; capture intent |
+| Tier system | **None - use purpose tags** | Purpose (logs/uploads/backups/data-lake) more meaningful |
+
+**Artifacts Created**
+
+- ADR: `docs/adrs/ADR-0170-s3-self-service-request-system.md`
+- Changelog: `docs/changelog/entries/CL-0146-s3-request-system.md`
+
+**Reserved IDs**
+
+| Type | ID | Purpose |
+|------|-----|---------|
+| Script | SCRIPT-0037 | `s3_request_parser.py` |
+| ADR | ADR-0170 | S3 self-service decision |
+| Changelog | CL-0146 | S3 request system |
+
+**Implementation Matrix**
+
+| Phase | Task | Artifact | Status |
+|-------|------|----------|--------|
+| 1 | Create JSON schema | `schemas/requests/s3.schema.yaml` | ⏳ Pending |
+| 1 | Create contract template | `docs/20-contracts/s3-requests/{env}/` | ⏳ Pending |
+| 1 | Create resource catalog | `docs/20-contracts/resource-catalogs/s3-catalog.yaml` | ⏳ Pending |
+| 2 | Implement parser | `scripts/s3_request_parser.py` (SCRIPT-0037) | ⏳ Pending |
+| 2 | Add parser tests | `tests/scripts/test_script_0037.py` | ⏳ Pending |
+| 3 | CI validation workflow | `.github/workflows/ci-s3-request-validation.yml` | ⏳ Pending |
+| 4 | Terraform S3 module | `modules/aws_s3/` (if needed) | ⏳ Pending |
+| 5 | Apply workflow | `.github/workflows/s3-request-apply.yml` | ⏳ Pending |
+| 5 | Approval guard | `.github/workflows/s3-approval-guard.yml` | ⏳ Pending |
+| 6 | Backstage template | `backstage-helm/backstage-catalog/templates/s3-request.yaml` | ⏳ Pending |
+| 7 | How-it-works doc | `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md` | ⏳ Pending |
+| 7 | Runbook | `docs/70-operations/runbooks/RB-0032-s3-request.md` | ⏳ Pending |
+
+**Guardrails Summary**
+
+| Guardrail | Environment | Enforcement |
+|-----------|-------------|-------------|
+| Public access blocked | All | Schema + CI guard |
+| SSE-S3 encryption | dev/test | Schema default |
+| SSE-KMS encryption | staging/prod | CI guard |
+| Versioning enabled | All | Schema default |
+| Access logging required | staging/prod | CI guard |
+| Cost alert threshold | All | Schema required field |
+| Naming convention | All | Schema regex |
+
+**Purpose Tags (replaces tier system)**
+
+| Purpose | Typical Settings |
+|---------|------------------|
+| `logs` | Lifecycle enabled, versioning off |
+| `uploads` | Versioning on, lifecycle optional |
+| `backups` | Cross-region replication (V2), glacier transition |
+| `data-lake` | Intelligent-tiering, no lifecycle |
+| `static-assets` | Requires public access exception path |
+
+**Next Steps**
+
+Ready to begin Phase 1 implementation:
+1. Create `schemas/requests/s3.schema.yaml`
+2. Create contract directory structure
+3. Create resource catalog
+
+Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-17T23:45:00Z
