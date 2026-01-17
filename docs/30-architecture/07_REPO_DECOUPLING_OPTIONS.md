@@ -26,6 +26,7 @@ dependencies:
   - chart:argo-cd
 breaking_change: false
 ---
+
 # Repo Decoupling Options
 
 This document captures options for separating infrastructure and platform tooling

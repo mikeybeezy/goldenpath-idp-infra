@@ -32,6 +32,7 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
+
 # CL-0078: Automated VQ Enforcement and Onboarding Protocols
 
 Date: 2026-01-07

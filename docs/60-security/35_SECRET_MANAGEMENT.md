@@ -21,6 +21,7 @@ tags:
 supported_until: 2028-01-10
 version: '1.0'
 ---
+
 # Secret Management Strategy
 
 This document outlines the strategy for managing sensitive information within the Golden Path platform, ensuring security, auditability, and consistent governance across all environments.

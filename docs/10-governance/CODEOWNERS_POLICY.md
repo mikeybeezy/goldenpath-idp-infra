@@ -18,6 +18,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # Policy: Code Ownership & Human-in-the-Loop (HITL)
 
 **Status**: Active | **Owner**: Platform-Team | **Last Updated**: 2026-01-06

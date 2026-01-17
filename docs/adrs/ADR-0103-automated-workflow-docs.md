@@ -34,6 +34,7 @@ version: '1.0'
 created_date: 2026-01-06
 breaking_change: false
 ---
+
 # ADR-0103: Automated CI Workflow Documentation
 
 ## Context

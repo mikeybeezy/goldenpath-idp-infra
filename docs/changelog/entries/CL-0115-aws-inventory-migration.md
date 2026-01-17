@@ -34,6 +34,7 @@ supported_until: '2028-01-01'
 date: 2026-01-12
 breaking_change: false
 ---
+
 # CL-0115: AWS Inventory Reports Migration to Governance Registry
 
 ## Summary

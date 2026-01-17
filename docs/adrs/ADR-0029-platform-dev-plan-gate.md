@@ -31,6 +31,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0029: Dev plan gate before dev apply
 
 Filename: `ADR-0029-platform-dev-plan-gate.md`

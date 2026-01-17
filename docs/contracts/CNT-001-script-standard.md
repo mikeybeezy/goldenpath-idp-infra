@@ -6,6 +6,7 @@ relates_to:
   - ADR-0146
 version: 1.0
 ---
+
 # Script Standard (Born Governed)
 
 ## Goal

@@ -41,6 +41,7 @@ supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false
 ---
+
 ## CL-0135: Kong Ingress for Tooling Apps
 
 **Type**: Feature

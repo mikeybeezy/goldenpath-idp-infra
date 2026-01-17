@@ -27,6 +27,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0085: Implementing Score in V1
 
 ## Context

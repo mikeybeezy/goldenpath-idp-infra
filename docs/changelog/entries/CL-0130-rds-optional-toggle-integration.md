@@ -3,21 +3,36 @@ id: CL-0130
 title: RDS Optional Toggle Integration
 type: changelog
 status: active
-date: 2026-01-15
-adr_ref: ADR-0160
-domain: platform-core
 owner: platform-team
+domain: platform-core
+applies_to: []
 lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
-tags:
-  - rds
-  - infrastructure
-  - self-service
 relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0160
   - CL-0130
+supersedes: []
+superseded_by: []
+tags:
+  - rds
+  - infrastructure
+  - self-service
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-15
+adr_ref: ADR-0160
 ---
+
 ## Summary
 
 Added optional RDS toggle to EKS environment configuration, providing a second deployment model alongside the existing standalone bounded context (ADR-0158).

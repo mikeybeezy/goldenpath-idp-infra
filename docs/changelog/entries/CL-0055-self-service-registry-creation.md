@@ -36,6 +36,7 @@ dependencies:
   - yq
 breaking_change: false
 ---
+
 # CL-0055: Self-Service ECR Registry Creation Workflow
 
 **Date:** 2026-01-05

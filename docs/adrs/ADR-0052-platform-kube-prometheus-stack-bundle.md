@@ -36,6 +36,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0052: Use kube-prometheus-stack as the V1 monitoring bundle
 
 - **Status:** Proposed

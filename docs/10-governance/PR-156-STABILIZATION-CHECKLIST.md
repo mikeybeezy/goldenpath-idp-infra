@@ -20,6 +20,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 ## PR #156: Stabilization & Compliance Checklist
 
 This checklist documents the validation steps required for **PR #156** to ensure the ECR registry pipeline is stable and all governance gates pass deterministically.

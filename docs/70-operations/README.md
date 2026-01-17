@@ -1,20 +1,11 @@
 ---
 id: 70_OPERATIONS_README
 title: Operations Documentation
-type: documentation
-domain: platform-core
-owner: platform-team
-lifecycle: active
-exempt: false
+type: policy
 risk_profile:
   production_impact: low
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-  maturity: 2
-schema_version: 1
 relates_to:
   - 01_LIFECYCLE_POLICY
   - 06_REBUILD_SEQUENCE
@@ -26,20 +17,19 @@ relates_to:
   - 40-delivery
   - 40_COST_VISIBILITY
   - 80-runbooks
-supersedes: []
-superseded_by: []
 tags:
   - operations
   - index
-inheritance: {}
 value_quantification:
   vq_class: LV/LQ
   impact_tier: low
   potential_savings_hours: 0.5
+category: compliance
 supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
+
 ## Operations Documentation
 
 This directory contains operational documentation for running and maintaining the Goldenpath IDP platform.

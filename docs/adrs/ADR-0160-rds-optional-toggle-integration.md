@@ -2,20 +2,15 @@
 id: ADR-0160
 title: RDS Optional Toggle Integration
 type: adr
-status: accepted
-date: 2026-01-15
-deciders:
-  - platform-team
-extends:
-  - ADR-0158
 domain: platform-core
 owner: platform-team
 lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
 schema_version: 1
-tags:
-  - rds
-  - infrastructure
-  - self-service
 relates_to:
   - 01_adr_index
   - ADR-0157-platform-multi-tenant-rds-architecture
@@ -27,7 +22,25 @@ relates_to:
   - RB-0030-rds-break-glass-deletion
   - RB-0031-idp-stack-deployment
   - RDS_DUAL_MODE_AUTOMATION
+supersedes: []
+superseded_by: []
+tags:
+  - rds
+  - infrastructure
+  - self-service
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-15
+deciders:
+  - platform-team
+extends:
+  - ADR-0158
 ---
+
 ## Status
 
 Accepted

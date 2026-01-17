@@ -26,6 +26,7 @@ supported_until: 2028-01-04
 version: 1.0
 breaking_change: false
 ---
+
 # ADR-XXXX: Concise decision title
 
 Filename: `ADR-XXXX-(platform|app)-short-title.md`

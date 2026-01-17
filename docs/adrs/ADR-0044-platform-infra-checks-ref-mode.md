@@ -31,6 +31,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0044: Configurable ref for infra checks dispatch
 
 Filename: `ADR-0044-platform-infra-checks-ref-mode.md`

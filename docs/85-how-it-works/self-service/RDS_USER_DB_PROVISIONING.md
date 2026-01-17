@@ -2,11 +2,6 @@
 id: RDS_USER_DB_PROVISIONING
 title: 'How It Works: RDS User and Database Provisioning'
 type: documentation
-domain: platform-core
-owner: platform-team
-lifecycle: active
-status: active
-schema_version: 1
 relates_to:
   - 30_PLATFORM_RDS_ARCHITECTURE
   - ADR-0158-platform-standalone-rds-bounded-context
@@ -24,6 +19,7 @@ tags:
   - how-it-works
   - federation
 ---
+
 # How It Works: RDS User and Database Provisioning
 
 This document explains how the platform automatically creates PostgreSQL users and databases, the architectural decisions behind it, and how it scales across clusters and VPCs.

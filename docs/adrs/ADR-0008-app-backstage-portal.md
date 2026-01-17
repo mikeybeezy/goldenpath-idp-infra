@@ -36,6 +36,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0008: Use Backstage as the developer portal and the V1 demo application for env promotion
 
 - **Status:** Accepted

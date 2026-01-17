@@ -24,6 +24,7 @@ dependencies:
   - scripts/validate_metadata.py
 breaking_change: false
 ---
+
 ## Metadata Validation Runbook
 
 ## Overview

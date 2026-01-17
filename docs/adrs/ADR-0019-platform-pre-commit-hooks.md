@@ -30,6 +30,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0019: Pre-commit hooks as local quality gates
 
 - **Status:** Proposed

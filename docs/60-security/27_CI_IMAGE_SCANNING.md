@@ -21,6 +21,7 @@ dependencies:
   - module:trivy
 breaking_change: false
 ---
+
 # CI Image Scanning (Living Document)
 
 This document describes the default image scanning approach in CI.

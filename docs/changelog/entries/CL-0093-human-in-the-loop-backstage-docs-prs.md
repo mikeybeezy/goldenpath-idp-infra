@@ -31,6 +31,7 @@ supported_until: 2028-01-09
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0093: Human-in-the-loop Backstage docs generation
 
 Date: 2026-01-09

@@ -30,6 +30,7 @@ value_quantification:
 supported_until: 2028-01-01
 version: '1.0'
 ---
+
 # CL-0083: Automation Confidence Matrix (Five-Star Certification)
 
 ## Summary

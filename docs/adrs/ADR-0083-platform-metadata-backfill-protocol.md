@@ -33,6 +33,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 ## ADR-0083: Metadata Backfill Campaign Protocol
 
 Date: 2026-01-03

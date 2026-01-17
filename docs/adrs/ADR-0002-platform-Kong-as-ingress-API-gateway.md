@@ -32,6 +32,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0002: Use Kong as the primary ingress/API gateway behind an internal NLB
 
 - **Status:** Accepted

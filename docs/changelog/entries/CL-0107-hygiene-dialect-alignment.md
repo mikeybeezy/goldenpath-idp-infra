@@ -30,6 +30,7 @@ value_quantification:
   potential_savings_hours: 0.5
 supported_until: '2028-01-01'
 ---
+
 # CL-0107: Hygiene Dialect Alignment and Script Idempotency
 
 ## Summary

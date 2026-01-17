@@ -2,7 +2,6 @@
 id: ADR-0142
 title: 'ADR-0142: Strategic Adoption of Declarative Platform Contracts'
 type: adr
-status: accepted
 domain: governance
 owner: platform-team
 lifecycle: active
@@ -25,6 +24,7 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
+
 ## ADR-0142: Strategic Adoption of Declarative Platform Contracts
 
 ## Status

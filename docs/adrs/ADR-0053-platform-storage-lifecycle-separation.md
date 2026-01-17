@@ -32,6 +32,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0053: Separate storage lifecycle from bootstrap and teardown
 
 - **Status:** Proposed

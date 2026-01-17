@@ -24,6 +24,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 ## Delivery Catalog
 
 > **Auto-generated from `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`**

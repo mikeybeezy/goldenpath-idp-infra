@@ -20,6 +20,7 @@ dependencies:
   - module:opentelemetry
 breaking_change: false
 ---
+
 # Delivery Insights (CI/CD Observability)
 
 ## Purpose

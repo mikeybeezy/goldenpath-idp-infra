@@ -51,6 +51,7 @@ consequences:
   - Eliminates 'Governance Debt' in a single operation.
   - Requires committing the `script_ids.yaml` registry to git to ensure ID stability.
 ---
+
 # ADR-0147: Automated Governance Backfill
 
 ## Context

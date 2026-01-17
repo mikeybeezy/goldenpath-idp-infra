@@ -34,6 +34,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0062: Documentation Generator Metadata Compliance
 
 Resolved the "metadata limbo" issue where auto-generated Markdown files lacked platform frontmatter, making them invisible to governance and validation tools.

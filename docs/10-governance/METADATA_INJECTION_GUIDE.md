@@ -19,6 +19,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # Metadata Injection Guide
 
 This guide documents the "Closed-Loop Governance" strategy, which propagates metadata from static sidecar files into live Kubernetes resources.

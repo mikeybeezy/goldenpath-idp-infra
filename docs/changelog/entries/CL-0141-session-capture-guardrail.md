@@ -45,6 +45,7 @@ supported_until: 2028-01-17
 date: 2026-01-17
 author: platform-team
 ---
+
 # Session Capture Append-Only Guardrail
 
 ## Summary

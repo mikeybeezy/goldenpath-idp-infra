@@ -3,10 +3,15 @@ id: CL-0137
 title: 'OOTB Observability: Logs RED & Golden Signals'
 type: changelog
 status: active
-date: 2026-01-16
-domain: platform-core
 owner: platform-team
+domain: platform-core
+applies_to: []
 lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
 relates_to:
   - ADR-0052-platform-kube-prometheus-stack-bundle
@@ -14,13 +19,23 @@ relates_to:
   - CL-0138-tooling-apps-dashboards
   - PLATFORM_DASHBOARDS
   - agent_session_summary
-description: Enabled automatic discovery of application dashboards, providing instant
-  Golden Signals and Logs RED metrics for all platform services.
+supersedes: []
+superseded_by: []
 tags:
   - grafana
   - dashboards
   - observability
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-16
+description: Enabled automatic discovery of application dashboards, providing instant
+  Golden Signals and Logs RED metrics for all platform services.
 ---
+
 ## Feature: Out-of-the-Box Observability (Golden Signals & RED)
 
 The platform now provides **Zero-Configuration Observability** for all applications. By enabling the Grafana dashboard sidecar and standardizing dashboard ConfigMaps, every service deployed via the Golden Path automatically gets a high-fidelity dashboard without manual setup.

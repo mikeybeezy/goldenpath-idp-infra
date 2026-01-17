@@ -30,6 +30,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0076: Lightweight CI cost visibility with Infracost
 
 Filename: `ADR-0076-platform-infracost-ci-visibility.md`

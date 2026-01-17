@@ -28,6 +28,7 @@ dependencies:
   - module:postgresql
 breaking_change: false
 ---
+
 ## RDS Manual Secret Rotation (Runbook)
 
 This runbook documents the manual process for rotating platform RDS database credentials.

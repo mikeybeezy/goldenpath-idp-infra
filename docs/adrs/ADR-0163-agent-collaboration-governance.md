@@ -2,19 +2,15 @@
 id: ADR-0163
 title: Agent Collaboration Governance and Living Registry
 type: adr
-status: accepted
-date: 2026-01-16
-deciders:
-  - platform-team
 domain: platform-core
 owner: platform-team
 lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
 schema_version: 1
-tags:
-  - agents
-  - governance
-  - collaboration
-  - security
 relates_to:
   - 01_adr_index
   - 07_AI_AGENT_GOVERNANCE
@@ -23,7 +19,24 @@ relates_to:
   - 26_AI_AGENT_PROTOCOLS
   - ADR-0163
   - agent_session_summary
+supersedes: []
+superseded_by: []
+tags:
+  - agents
+  - governance
+  - collaboration
+  - security
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-16
+deciders:
+  - platform-team
 ---
+
 ## Status
 
 Accepted

@@ -2,7 +2,6 @@
 id: ADR-0113-platform-queryable-intelligence-enums
 title: Platform Queryable Intelligence Enums
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -38,6 +37,7 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
+
 ## ADR-0113: Platform Queryable Intelligence Enums
 
 ## Context

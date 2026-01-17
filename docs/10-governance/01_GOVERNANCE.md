@@ -47,6 +47,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # Platform Governance Purpose
 
 Doc contract:

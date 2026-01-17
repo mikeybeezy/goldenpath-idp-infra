@@ -13,6 +13,7 @@ reliability:
 relates_to:
   - CL-0062-documentation-generator-metadata-compliance
 ---
+
 # Standardized Image Delivery Guide
 
 ## Overview

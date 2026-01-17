@@ -39,6 +39,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0006: Use AWS Secrets Manager/SSM as system of record for secrets and External Secrets to hydrate Kubernetes
 
 - **Status:** Accepted

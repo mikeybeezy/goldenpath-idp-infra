@@ -18,6 +18,7 @@ relates_to:
   - RB-0014-metadata-and-enum-alignment
   - RB-0016-extending-governance-vocabulary
 ---
+
 # Governance Vocabulary & Allowed Values
 
 This document is auto-generated from `schemas/metadata/enums.yaml`. These are the canonical values allowed in `metadata.yaml` sidecars.

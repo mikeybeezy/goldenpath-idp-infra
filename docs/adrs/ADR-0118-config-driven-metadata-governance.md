@@ -2,7 +2,6 @@
 id: ADR-0118-config-driven-metadata-governance
 title: Config-Driven Metadata Governance Architecture
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -34,6 +33,7 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
+
 ## ADR-0118: Config-Driven Metadata Governance Architecture
 
 ## Context

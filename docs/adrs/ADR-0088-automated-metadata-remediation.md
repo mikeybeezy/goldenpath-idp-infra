@@ -36,6 +36,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0088: Automated Metadata Remediation over Manual Compliance
 
 ## Status

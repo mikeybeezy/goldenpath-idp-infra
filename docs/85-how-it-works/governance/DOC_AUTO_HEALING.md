@@ -2,8 +2,8 @@
 id: DOC_AUTO_HEALING
 title: 'How It Works: Documentation Auto-Healing'
 type: documentation
-relates_to: []
 ---
+
 # How It Works: Documentation Auto-Healing
 
 This document explains how the platform ensures that documentation indices, relationship maps, and health dashboards never drift from the actual repository state.

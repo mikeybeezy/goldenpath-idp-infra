@@ -6,6 +6,7 @@ relates_to:
   - EC-0001-knative-integration
   - EC-0002-shared-parser-library
 ---
+
 This directory tracks proposed platform capabilities for Golden Path IDP evaluation. Each capability is assigned an EC-XXXX ID and follows a lightweight governance model.
 
 ## Purpose

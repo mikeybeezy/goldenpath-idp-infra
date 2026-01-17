@@ -10,13 +10,14 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: gold
   maturity: 1
-category: runbooks
 relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - DOCS_RUNBOOKS_README
   - GOVERNANCE_VOCABULARY
   - RB-0015-repo-health-and-hygiene
+category: runbooks
 ---
+
 ## RB-0015: Extending Governance Vocabulary
 
 ```text

@@ -2,7 +2,6 @@
 id: ADR-0098-standardized-pr-gates
 title: 'ADR-0098: Standardized PR Gates for ECR Pipeline'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -33,6 +32,7 @@ supported_until: 2028-12-31
 version: 1.0
 breaking_change: false
 ---
+
 ## ADR-0098: Standardized PR Gates for ECR Pipeline
 
 ## Context

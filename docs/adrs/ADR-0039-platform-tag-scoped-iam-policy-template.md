@@ -32,6 +32,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0039: Tag-Scoped IAM Policy Template for Destructive Automation
 
 - **Status:** Proposed

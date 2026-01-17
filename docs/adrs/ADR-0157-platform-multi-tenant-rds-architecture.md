@@ -38,6 +38,7 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
+
 ## ADR-0157: Multi-Tenant RDS for Platform Tooling Applications
 
 - **Status:** Superseded (by ADR-0158)

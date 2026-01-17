@@ -2,7 +2,6 @@
 id: ADR-0102
 title: Layer 2 Terraform Validation (Fast Feedback Loop)
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle:
@@ -33,6 +32,7 @@ value_quantification:
 supported_until: '2028-01-01'
 version: 1.0
 ---
+
 ## ADR-0102: Layer 2 Terraform Validation (Fast Feedback Loop)
 
 ## Context

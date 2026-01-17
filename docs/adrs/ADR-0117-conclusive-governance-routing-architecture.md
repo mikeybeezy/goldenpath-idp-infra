@@ -2,7 +2,6 @@
 id: ADR-0117-conclusive-governance-routing-architecture
 title: Conclusive Governance Routing & Compliance Engine
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -34,6 +33,7 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
+
 ## ADR-0117: Conclusive Governance Routing & Compliance Engine
 
 ## Context

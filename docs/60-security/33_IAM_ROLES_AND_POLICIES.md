@@ -22,6 +22,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # IAM Roles and Policies Index (Living)
 
 This is the single index of IAM roles and policies used by GoldenPath.

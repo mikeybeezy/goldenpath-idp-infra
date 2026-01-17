@@ -31,6 +31,7 @@ author: Michael Nouriel
 description: Comprehensive fixes to the Seamless Build Deployment workflow to resolve
   identity collisions, script portability issues, and resource constraint failures.
 ---
+
 # Seamless Build Stabilization
 
 This release stabilizes the `make deploy` workflow, enabling true zero-touch provisioning of the EKS platform.

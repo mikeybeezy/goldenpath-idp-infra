@@ -2,7 +2,6 @@
 id: ADR-0159-backstage-catalog-registry-sync
 title: 'ADR-0159: Backstage Catalog Sync to Governance Registry'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -38,6 +37,7 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
+
 ## ADR-0159: Backstage Catalog Sync to Governance Registry
 
 - **Status:** Accepted

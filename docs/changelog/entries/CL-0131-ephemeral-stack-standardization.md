@@ -3,22 +3,37 @@ id: CL-0131
 title: Ephemeral Stack Standardization
 type: changelog
 status: active
-date: 2026-01-15
-domain: platform-core
 owner: platform-team
+domain: platform-core
+applies_to: []
 lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
 relates_to:
   - 20_TOOLING_APPS_MATRIX
   - 38_EPHEMERAL_STACK_STRATEGY
   - ADR-0161
   - CL-0131
+supersedes: []
+superseded_by: []
 tags:
   - ephemeral
   - localstack
   - minio
   - postgres
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-15
 ---
+
 ## Changelog: Ephemeral Stack Standardization
 
 **Date**: 2026-01-15

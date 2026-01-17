@@ -31,6 +31,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0030: Pre-create IAM policies for IRSA controllers in V1
 
 - **Status:** Accepted

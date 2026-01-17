@@ -20,6 +20,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # Ingress Front Door Strategy
 
 See also: `docs/30-architecture/11_NETWORKING.md` for environment exposure and access model.

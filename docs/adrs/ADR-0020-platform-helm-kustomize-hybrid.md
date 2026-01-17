@@ -28,6 +28,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0020: Hybrid GitOps approach with Helm and Kustomize
 
 - **Status:** Proposed

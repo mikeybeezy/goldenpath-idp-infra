@@ -10,15 +10,16 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: gold
   maturity: 1
+relates_to:
+  - CL-0045-federated-governance-onboarding
 category: governance
 supported_until: 2028-12-31
 version: 1.0
 dependencies:
   - module:governance-engine
 breaking_change: false
-relates_to:
-  - CL-0045-federated-governance-onboarding
 ---
+
 # Federated Metadata Strategy
 
 ## Purpose

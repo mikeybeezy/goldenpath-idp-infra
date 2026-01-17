@@ -30,6 +30,7 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0087: Teardown v2 kube access fallback
 
 Date: 2025-12-31

@@ -7,6 +7,7 @@ relates_to:
   - ADR-0147
   - CNT-001
 ---
+
 # How It Works: Born Governed Lifecycle
 
 This guide details the **Schema-Driven Script Testing** architecture. It moves beyond simple "testing" to a model of **provenance and contract enforcement**.

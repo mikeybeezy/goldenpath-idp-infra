@@ -30,6 +30,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0060: Separate update workflow for existing ephemeral dev clusters
 
 Filename: `ADR-0060-platform-ephemeral-update-workflow.md`

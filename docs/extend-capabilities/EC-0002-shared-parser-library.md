@@ -1,20 +1,20 @@
 ---
 id: EC-0002-shared-parser-library
 title: Shared Parser Library for Contract-Driven Requests
+type: extension_capability
 status: proposed
-dependencies:
-  - 3+ parser scripts in production
-  - RDS and Secret parsers stable
 relates_to:
   - CONTRACT_DRIVEN_ARCHITECTURE
   - INDEX
-type: extension_capability
+dependencies:
+  - 3+ parser scripts in production
+  - RDS and Secret parsers stable
 priority: low
 vq_class: efficiency
 estimated_roi: Reduced duplication, faster new parser development
 effort_estimate: 2-3 weeks
-owner: platform-team
 ---
+
 ## Shared Parser Library for Contract-Driven Requests
 
 This document proposes extracting common functionality from parser scripts into a shared library to reduce duplication and accelerate new parser development.

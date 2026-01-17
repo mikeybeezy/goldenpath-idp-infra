@@ -24,6 +24,7 @@ dependencies:
   - module:aws_eks
 breaking_change: false
 ---
+
 # Build ID Strategy Decision
 
 ## Decision summary

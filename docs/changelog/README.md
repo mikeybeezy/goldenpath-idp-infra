@@ -37,6 +37,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # Changelog Guidance (Label-Gated)
 
 This changelog records material, user-visible changes to platform behavior and

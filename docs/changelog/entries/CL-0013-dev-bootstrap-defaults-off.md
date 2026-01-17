@@ -31,6 +31,7 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0013: Dev bootstrap defaults off
 
 Date: 2026-01-02

@@ -8,6 +8,7 @@ relates_to:
   - CL-0127
   - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 ---
+
 This guide explains the GitHub Actions workflow architecture for Terraform plan and apply operations.
 
 ## Overview

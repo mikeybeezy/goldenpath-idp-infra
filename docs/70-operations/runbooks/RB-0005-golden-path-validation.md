@@ -24,6 +24,7 @@ dependencies:
   - module:kubernetes
 breaking_change: false
 ---
+
 # Runbook: Golden Path Validation
 
 ## Purpose

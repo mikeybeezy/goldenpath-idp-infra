@@ -2,7 +2,6 @@
 id: ADR-0158-platform-standalone-rds-bounded-context
 title: 'ADR-0158: Standalone RDS as Bounded Context with Deletion Protection'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -59,6 +58,7 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: true
 ---
+
 ## ADR-0158: Standalone RDS as Bounded Context with Deletion Protection
 
 - **Status:** Accepted

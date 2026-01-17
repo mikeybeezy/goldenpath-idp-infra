@@ -32,6 +32,7 @@ date: 2026-01-15
 author: platform-team
 breaking_change: false
 ---
+
 ## Summary
 
 Refactored CI Terraform workflows to include automatic bootstrap after infrastructure apply, deprecated redundant workflows, and consolidated how-it-works documentation.

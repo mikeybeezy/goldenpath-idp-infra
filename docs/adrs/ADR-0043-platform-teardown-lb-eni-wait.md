@@ -31,6 +31,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0043: Teardown waits for LoadBalancer ENIs before subnet delete
 
 Filename: `ADR-0043-platform-teardown-lb-eni-wait.md`

@@ -9,6 +9,7 @@ relates_to:
   - ECR_REQUEST_FLOW
   - RDS_REQUEST_FLOW
 ---
+
 ## How It Works: Platform Catalog Systems
 
 This document explains the two catalog systems in the platform and how they work together.

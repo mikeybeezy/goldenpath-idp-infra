@@ -32,6 +32,7 @@ value_quantification:
   potential_savings_hours: 0.5
 supported_until: '2028-01-01'
 ---
+
 # CL-0112: Markdown Linting and CI Parity Fixes
 
 ## Summary

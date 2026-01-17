@@ -10,15 +10,16 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
-category: observability
-supported_until: 2028-01-01
-version: '1.0'
-breaking_change: false
 relates_to:
   - ADR-0066-platform-dashboards-as-code
   - CL-0020-golden-signals-dashboard
   - agent_session_summary
+category: observability
+supported_until: 2028-01-01
+version: '1.0'
+breaking_change: false
 ---
+
 ## Platform Dashboard Catalog
 
 **Status:** Living

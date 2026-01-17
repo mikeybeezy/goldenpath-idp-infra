@@ -19,6 +19,7 @@ relates_to:
 category: runbooks
 date: 2026-01-12
 ---
+
 # RB-0028: Governance Registry Branch Operations
 
 ## Purpose

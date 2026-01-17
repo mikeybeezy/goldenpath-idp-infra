@@ -37,6 +37,7 @@ date: 2026-01-15
 author: platform-team
 breaking_change: false
 ---
+
 ## Summary
 
 - Backstage catalog now synced to `governance-registry` branch for stable access

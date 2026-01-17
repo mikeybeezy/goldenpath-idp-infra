@@ -2,7 +2,6 @@
 id: ADR-0115-enhanced-enum-validation-engine
 title: Enhanced Enum Validation Engine
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -31,6 +30,7 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
+
 ## ADR-0115: Enhanced Enum Validation Engine
 
 ## Context

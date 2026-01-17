@@ -34,6 +34,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0040: Lifecycle-aware Terraform state keys for BuildId isolation
 
 Filename: `ADR-0040-platform-lifecycle-aware-state-keys.md`

@@ -30,6 +30,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0079: AI Agent Governance and Auditability
 
 Date: 2026-01-03

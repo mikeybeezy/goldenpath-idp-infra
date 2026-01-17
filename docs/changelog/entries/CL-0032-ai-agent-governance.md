@@ -31,6 +31,7 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # Changelog: AI agent governance and auditability
 
 Date: 2026-01-03

@@ -38,6 +38,7 @@ supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0164: Teardown V3 with Enhanced Reliability and RDS Support
 
 Filename: `ADR-0164-teardown-v3-enhanced-reliability.md`

@@ -39,6 +39,7 @@ author: platform-team
 impact: high
 breaking_change: false
 ---
+
 ## CL-0126: First Successful End-to-End EKS Deployment
 
 **Date**: 2026-01-14

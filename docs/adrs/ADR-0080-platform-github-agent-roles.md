@@ -27,6 +27,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0080: GitHub App Roles for AI/Automation Access
 
 Date: 2026-01-03

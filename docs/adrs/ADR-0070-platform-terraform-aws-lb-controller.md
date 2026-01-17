@@ -29,6 +29,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0070: Terraform Management of AWS Load Balancer Controller
 
 - **Status:** Proposed

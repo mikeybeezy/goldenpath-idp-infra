@@ -27,6 +27,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0064: Dev bootstrap defaults off for k8s resources and storage
 
 Filename: `ADR-0064-platform-dev-bootstrap-defaults.md`

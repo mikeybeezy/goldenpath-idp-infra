@@ -32,6 +32,7 @@ value_quantification:
   potential_savings_hours: 5.0
 supported_until: '2028-01-01'
 ---
+
 # CL-0113: Governance-Registry Implementation
 
 ## Summary

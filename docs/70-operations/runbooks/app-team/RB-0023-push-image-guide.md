@@ -22,6 +22,7 @@ dependencies:
   - aws-cli
 breaking_change: false
 ---
+
 # App Team Runbook: Push Image Guide
 
 **Audience:** Application Teams

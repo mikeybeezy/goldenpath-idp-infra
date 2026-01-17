@@ -32,6 +32,7 @@ supported_until: 2027-01-05
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0053: Daily Policy Enforcement Workflow
 
 **Date:** 2026-01-05

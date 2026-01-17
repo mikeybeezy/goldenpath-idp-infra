@@ -2,7 +2,6 @@
 id: ADR-0126
 title: 'ADR-0126: IDP Automation Confidence Matrix (Five-Star Approval)'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -30,6 +29,7 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
+
 ## ADR-0126: IDP Automation Confidence Matrix
 
 ## Status

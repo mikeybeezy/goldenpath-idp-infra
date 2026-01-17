@@ -33,6 +33,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0013: Argo CD app management approach for current scale
 
 - **Status:** Accepted

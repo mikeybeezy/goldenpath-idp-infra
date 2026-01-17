@@ -32,6 +32,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0003: Use AWS IAM for bootstrap access, IRSA for pod-to-AWS access, and SSM for node break-glass
 
 - **Status:** Accepted

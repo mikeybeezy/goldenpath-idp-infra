@@ -31,6 +31,7 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0008: CI managed LB cleanup workflow
 
 Date: 2025-12-31

@@ -1,11 +1,7 @@
 ---
 id: 45_DNS_MANAGEMENT
 title: Platform DNS Management
-type: reference
-domain: platform-core
-owner: platform-team
-lifecycle: active
-exempt: false
+type: policy
 risk_profile:
   production_impact: high
   security_risk: medium
@@ -14,29 +10,27 @@ reliability:
   rollback_strategy: dns-revert
   observability_tier: silver
   maturity: 2
-schema_version: 1
 relates_to:
   - 20_TOOLING_APPS_MATRIX
   - ADR-0162
   - CL-0136-tooling-apps-ingress-configuration
   - agent_session_summary
-supersedes: []
-superseded_by: []
 tags:
   - dns
   - kong
   - ingress
   - operations
   - living-doc
-inheritance: {}
 value_quantification:
   vq_class: HV/HQ
   impact_tier: high
   potential_savings_hours: 4.0
+category: compliance
 supported_until: 2028-01-16
 version: 1.0
 breaking_change: false
 ---
+
 ## Platform DNS Management
 
 This living document captures the DNS configuration strategy, naming conventions, and operational procedures for the GoldenPath IDP platform.

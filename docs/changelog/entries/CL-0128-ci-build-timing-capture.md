@@ -35,6 +35,7 @@ date: 2026-01-15
 author: platform-team
 breaking_change: false
 ---
+
 ## Summary
 
 - Added direct build timing capture to CI workflows

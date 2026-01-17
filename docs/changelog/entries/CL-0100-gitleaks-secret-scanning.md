@@ -31,6 +31,7 @@ supported_until: 2028-01-10
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0100: Gitleaks secret scanning
 
 Date: 2026-01-10

@@ -10,10 +10,11 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
-category: governance
 relates_to:
   - CL-0073-conclusive-governance-routing-architecture
+category: governance
 ---
+
 ## Decision Routing & Governance Strategy
 
 ## Purpose

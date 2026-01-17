@@ -29,6 +29,7 @@ supported_until: 2028-01-08
 version: 1.0
 breaking_change: false
 ---
+
 # ADR-0131: Outcome Metrics for Platform Health
 
 - **Status:** Proposed

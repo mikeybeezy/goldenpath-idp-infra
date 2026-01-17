@@ -131,7 +131,7 @@ jobs:
               sys.exit(0)
 
           message = "application_databases drift detected between coupled and standalone tfvars:"
-          print(f"⚠️ {message}" if warn_only else f"❌ {message}")
+          print(f"⚠️ {message}" if warn_only else f"🚫 {message}")
           for env_name, coupled, standalone in mismatches:
               print(f"- {env_name}:")
               print(f"  coupled:    {coupled}")

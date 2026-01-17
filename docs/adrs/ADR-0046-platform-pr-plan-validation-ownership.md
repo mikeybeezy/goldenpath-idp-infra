@@ -32,6 +32,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0046: PR plan owns validation (no auto infra checks dispatch)
 
 Filename: `ADR-0046-platform-pr-plan-validation-ownership.md`

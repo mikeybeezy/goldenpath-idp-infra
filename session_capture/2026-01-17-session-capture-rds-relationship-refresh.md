@@ -192,14 +192,14 @@ Pass 2: Computing backlinks...
 Pass 3: Updating documents...
 ============================================================
 ✅ Updated: 0
-⏭️  Skipped: 601
+  Skipped: 601
 📊 Total: 601
 ```
 
 Metadata validation:
 ```text
 ✅ Passed: 521
-❌ Failed: 0
+ Failed: 0
 ```
 
 Conclusion:
@@ -233,7 +233,7 @@ Pass 2: Computing backlinks...
 Pass 3: Updating documents...
 ============================================================
 ✅ Updated: 0
-⏭️  Skipped: 602
+  Skipped: 602
 📊 Total: 602
 ```
 

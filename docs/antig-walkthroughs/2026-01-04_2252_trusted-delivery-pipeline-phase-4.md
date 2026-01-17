@@ -10,11 +10,12 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
-version: '1.0'
-breaking_change: false
 relates_to:
   - ADR-0090-automated-platform-health-dashboard
+version: '1.0'
+breaking_change: false
 ---
+
 ## Walkthrough: Automated Platform Health Dashboard (Phase 2)
 
 This task successfully transition the Platform Health Dashboard from a transient CI artifact to a persistent, auditable, and fully governed component of the GoldenPath IDP.

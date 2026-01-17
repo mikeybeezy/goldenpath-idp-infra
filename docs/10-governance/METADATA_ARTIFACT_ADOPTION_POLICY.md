@@ -23,6 +23,7 @@ tags:
 category: governance
 supported_until: 2028-01-01
 ---
+
 # Metadata Adoption Policy for Configs and Reports
 
 Doc contract:

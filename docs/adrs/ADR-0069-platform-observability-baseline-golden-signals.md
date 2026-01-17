@@ -28,6 +28,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0069: Observability baseline for golden signals in production
 
 - **Status:** Superseded (by ADR-0049-platform-pragmatic-observability-baseline.md)

@@ -10,9 +10,6 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
-supported_until: 2028-01-01
-version: '1.0'
-breaking_change: false
 relates_to:
   - 01_GOVERNANCE
   - 01_PLATFORM_SERVICE_AGREEMENT
@@ -20,7 +17,11 @@ relates_to:
   - 37_V1_SCOPE_AND_TIMELINE
   - CL-0021-doc-taxonomy-refactor
   - agent_session_summary
+supported_until: 2028-01-01
+version: '1.0'
+breaking_change: false
 ---
+
 ## Platform Requirements
 
 This document defines the minimum functional and non-functional requirements for

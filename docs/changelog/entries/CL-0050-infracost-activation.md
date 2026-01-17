@@ -36,6 +36,7 @@ dependencies:
   - CL-0049-ci-optimization
 breaking_change: false
 ---
+
 ## CL-0050: Activated Infracost Cost Visibility
 
 **Date:** 2026-01-04

@@ -30,6 +30,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0055: Tempo as the standard tracing backend (V1.1)
 
 - **Status:** Proposed

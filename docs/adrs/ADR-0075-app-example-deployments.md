@@ -27,6 +27,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0075: App example deployments via Argo CD, Helm, and Kustomize
 
 Filename: `ADR-0075-platform-app-example-deployments.md`

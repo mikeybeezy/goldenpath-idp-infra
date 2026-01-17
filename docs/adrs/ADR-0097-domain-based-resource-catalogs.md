@@ -2,7 +2,6 @@
 id: ADR-0097-domain-based-resource-catalogs
 title: 'ADR-0097: Domain-Based Resource Catalogs'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -44,6 +43,7 @@ dependencies:
   - backstage
 breaking_change: true
 ---
+
 ## ADR-0097: Domain-Based Resource Catalogs
 
 ## Status

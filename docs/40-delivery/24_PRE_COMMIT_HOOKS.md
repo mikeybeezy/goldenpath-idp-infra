@@ -21,6 +21,7 @@ dependencies:
   - module:markdownlint
 breaking_change: false
 ---
+
 # Pre-commit Hooks (Living Document)
 
 This document describes how pre-commit hooks are configured and used in this repo.

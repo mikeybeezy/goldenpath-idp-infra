@@ -21,6 +21,7 @@ status: active
 category: platform
 supported_until: '2028-01-01'
 ---
+
 # AI Agent First-Boot Protocol
 
 **Mandatory Reading for all AI Agents.**

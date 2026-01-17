@@ -37,6 +37,7 @@ dependencies:
   - aws-ecr
 breaking_change: false
 ---
+
 # CL-0056: Risk-Based ECR Security Controls
 
 **Date:** 2026-01-05

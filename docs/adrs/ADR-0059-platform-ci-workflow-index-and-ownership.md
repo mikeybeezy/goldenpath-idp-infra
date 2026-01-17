@@ -28,6 +28,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0059: CI workflow index, ownership, and UI grouping
 
 Filename: `ADR-0059-platform-ci-workflow-index-and-ownership.md`

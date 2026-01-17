@@ -25,6 +25,7 @@ dependencies:
   - module:aws_iam
 breaking_change: false
 ---
+
 # Identity & Access Governance
 
 ## Purpose

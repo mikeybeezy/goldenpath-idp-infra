@@ -26,6 +26,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # Secrets Cataloging Policy (Backstage)
 
 Purpose: define when secrets infrastructure is first-class in Backstage and how

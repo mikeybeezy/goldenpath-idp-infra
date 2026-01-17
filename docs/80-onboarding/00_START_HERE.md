@@ -25,6 +25,7 @@ status: active
 category: onboarding
 supported_until: '2028-01-01'
 ---
+
 ## 🚀 START HERE (5-Minute Onboarding)
 
 Welcome to the **GoldenPath IDP Infra** repository. This guide is designed to get you (Human or Agent) fully operational in under 5 minutes.

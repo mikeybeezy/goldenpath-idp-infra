@@ -31,6 +31,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0102: Backstage docs link-out (no TechDocs build)
 
 Date: 2026-01-10

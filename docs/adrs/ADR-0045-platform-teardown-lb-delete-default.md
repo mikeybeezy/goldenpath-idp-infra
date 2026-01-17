@@ -32,6 +32,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0045: Default LB delete when ENIs persist during teardown
 
 Filename: `ADR-0045-platform-teardown-lb-delete-default.md`

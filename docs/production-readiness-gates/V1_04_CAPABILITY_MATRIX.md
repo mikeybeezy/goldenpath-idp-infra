@@ -21,6 +21,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # Capability Matrix – Golden Path IDP Infra
 
 Last updated: 2026-01-03

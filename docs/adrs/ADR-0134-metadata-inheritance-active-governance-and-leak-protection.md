@@ -2,7 +2,6 @@
 id: ADR-0134-metadata-inheritance-active-governance-and-leak-protection
 title: metadata
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -27,6 +26,7 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
+
 id: ADR-0134-metadata-inheritance-active-governance-and-leak-protection
 title: 'ADR-0134: Metadata Inheritance, Active Governance, and Leak Protection'
 type: adr

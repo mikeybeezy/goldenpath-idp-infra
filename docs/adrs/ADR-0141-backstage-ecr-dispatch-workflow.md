@@ -2,7 +2,6 @@
 id: ADR-0141
 title: 'ADR-0141: Backstage ECR requests use GitHub Actions dispatch'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -29,6 +28,7 @@ supported_until: 2028-01-11
 version: 1.0
 breaking_change: false
 ---
+
 ## ADR-0141: Backstage ECR requests use GitHub Actions dispatch
 
 - **Status:** Accepted

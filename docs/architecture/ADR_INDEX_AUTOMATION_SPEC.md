@@ -20,6 +20,7 @@ supported_until: 2028-01-06
 version: '1.0'
 breaking_change: false
 ---
+
 ## Technical Spec: ADR Index Automation System (Living Doc)
 
 ## Overview

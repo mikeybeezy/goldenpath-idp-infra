@@ -29,6 +29,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0004: Use Datree as Kubernetes policy-as-code gate in CI
 
 - **Status:** Accepted

@@ -33,6 +33,7 @@ dependencies:
   - CL-0051
 breaking_change: false
 ---
+
 # CL-0052: ECR Registry Product-Based Strategy & Shared Responsibility Model
 
 Date: 2026-01-05

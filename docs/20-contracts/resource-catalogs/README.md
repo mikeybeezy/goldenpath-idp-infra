@@ -22,6 +22,7 @@ supported_until: 2028-01-05
 version: '1.0'
 breaking_change: false
 ---
+
 ## Platform Resource Catalogs
 
 **Purpose:** Index of all domain-based resource catalogs

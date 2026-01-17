@@ -24,8 +24,8 @@ tags:
   - provisioning
   - automation
   - how-it-works
-status: active
 ---
+
 # How It Works: Dual-Mode RDS Automation (Coupled + Standalone)
 
 The platform supports two RDS modes that intentionally coexist:

@@ -2,12 +2,6 @@
 id: RB-0032
 title: RDS User and Database Provisioning
 type: runbook
-status: active
-owner: platform-team
-domain: platform-core
-lifecycle: active
-exempt: false
-schema_version: 1
 relates_to:
   - 30_PLATFORM_RDS_ARCHITECTURE
   - ADR-0165
@@ -27,7 +21,9 @@ tags:
   - provisioning
   - database
   - automation
+category: runbooks
 ---
+
 # RB-0032: RDS User and Database Provisioning
 
 ## Purpose

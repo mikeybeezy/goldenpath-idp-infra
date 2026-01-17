@@ -32,6 +32,7 @@ supported_until: 2028-01-09
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0097: Tooling config identity sidecars
 
 Date: 2026-01-09

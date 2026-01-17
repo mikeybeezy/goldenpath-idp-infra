@@ -33,6 +33,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # PR Gates and How to Unblock Them
 
 Doc contract:

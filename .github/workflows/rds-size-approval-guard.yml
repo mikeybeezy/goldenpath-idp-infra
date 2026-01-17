@@ -82,7 +82,7 @@ jobs:
 
           if not labels.intersection(approved_labels):
               message = "Large/xlarge RDS requests require approval."
-              print(f"⚠️ {message}" if warn_only else f"❌ {message}")
+              print(f"⚠️ {message}" if warn_only else f"🚫 {message}")
               print(f"Files: {', '.join(flagged)}")
               print("Add label: platform-approval (or rds-large-approved) to proceed.")
               if warn_only:

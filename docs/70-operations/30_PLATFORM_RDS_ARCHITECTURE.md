@@ -1,6 +1,7 @@
 ---
 id: 30_PLATFORM_RDS_ARCHITECTURE
 title: Platform RDS Architecture
+type: policy
 relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0165
@@ -15,7 +16,9 @@ relates_to:
   - RDS_USER_DB_PROVISIONING
   - SESSION_CAPTURE_2026_01_17_01
   - agent_session_summary
+category: compliance
 ---
+
 ## Platform RDS Architecture
 
 This living document describes the standalone RDS PostgreSQL bounded context for platform tooling applications.

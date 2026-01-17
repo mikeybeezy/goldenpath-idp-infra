@@ -33,6 +33,7 @@ value_quantification:
   potential_savings_hours: 1.0
 supported_until: '2028-01-01'
 ---
+
 # CL-0108: Governance Stability and Automated Remediation
 
 ## Summary

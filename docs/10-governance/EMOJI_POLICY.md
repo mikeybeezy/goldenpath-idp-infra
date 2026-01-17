@@ -6,6 +6,8 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - CL-0072-emoji-usage-policy-and-enforcement
 value_quantification:
   vq_class: LV/LQ
   impact_tier: low
@@ -14,9 +16,8 @@ category: governance
 supported_until: 2028-01-06
 version: 1.0
 breaking_change: false
-relates_to:
-  - CL-0072-emoji-usage-policy-and-enforcement
 ---
+
 # Emoji Usage Policy
 
 Emojis may be used sparingly and intentionally to improve readability, not to express tone or personality. The goal is to reduce cognitive load, not decorate content.

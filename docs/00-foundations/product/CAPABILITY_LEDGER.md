@@ -30,6 +30,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 ## IDP Capability Ledger
 
 The Golden Path IDP is built on the principle of **"Governance as a Service,"** where infrastructure management, security compliance, and developer experience are unified into a single, automated lifecycle.

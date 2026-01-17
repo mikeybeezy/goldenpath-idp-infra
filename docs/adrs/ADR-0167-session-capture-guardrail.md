@@ -2,19 +2,15 @@
 id: ADR-0167
 title: Session Capture Append-Only Guardrail
 type: adr
-status: accepted
-date: 2026-01-17
-deciders:
-  - platform-team
 domain: platform-core
 owner: platform-team
 lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
 schema_version: 1
-tags:
-  - governance
-  - documentation
-  - guardrail
-  - ci
 relates_to:
   - 01_adr_index
   - 04_PR_GUARDRAILS
@@ -26,7 +22,22 @@ relates_to:
   - session_summary_template
 supersedes: []
 superseded_by: []
+tags:
+  - governance
+  - documentation
+  - guardrail
+  - ci
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-17
+deciders:
+  - platform-team
 ---
+
 ## Status
 
 Accepted

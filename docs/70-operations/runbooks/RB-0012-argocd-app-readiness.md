@@ -29,6 +29,7 @@ dependencies:
   - chart:argo-cd
 breaking_change: false
 ---
+
 # Argo CD App Readiness Checklist
 
 Doc contract:

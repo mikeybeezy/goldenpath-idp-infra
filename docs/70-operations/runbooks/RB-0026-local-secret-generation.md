@@ -11,6 +11,7 @@ relates_to:
 category: runbooks
 version: '1.2'
 ---
+
 ## RB-0026: Local Secret Generation & Targeting
 
 This runbook explains how to execute the **Secret Request Parser** locally. This is useful for dry-running new secret requests, validating intent YAMLs, or surgically generating infrastructure variables without waiting for a full CI cycle.

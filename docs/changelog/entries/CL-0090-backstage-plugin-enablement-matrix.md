@@ -30,6 +30,7 @@ supported_until: 2028-01-08
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0090: Backstage plugin enablement matrix
 
 Date: 2026-01-08

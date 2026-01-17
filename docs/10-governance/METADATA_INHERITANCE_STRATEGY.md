@@ -14,6 +14,7 @@ relates_to:
   - CL-0076-metadata-inheritance-active-governance-and-leak-protection
   - CL-0076-metadata-inheritance-and-active-governance
 ---
+
 # Metadata Inheritance & Active Governance Strategy
 
 ## Overview

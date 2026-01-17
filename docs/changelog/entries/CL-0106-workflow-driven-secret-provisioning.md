@@ -27,6 +27,7 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
+
 # CL-0106: Workflow-Driven Secret Provisioning and Auto-Apply
 
 ## Summary

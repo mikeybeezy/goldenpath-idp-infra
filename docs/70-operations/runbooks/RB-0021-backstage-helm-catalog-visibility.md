@@ -31,6 +31,7 @@ dependencies:
   - curl
 breaking_change: false
 ---
+
 ## Backstage Helm Catalog Visibility (Runbook)
 
 This runbook provides step-by-step procedures to diagnose and fix catalog visibility issues in Backstage deployed via Helm.

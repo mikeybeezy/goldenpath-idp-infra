@@ -51,7 +51,7 @@ jobs:
               try:
                   base = git("merge-base", "HEAD", "origin/" + git("symbolic-ref", "--short", "refs/remotes/origin/HEAD").split("/")[-1])
               except subprocess.CalledProcessError:
-                  print("⚠️ Could not determine base branch. Skipping validation.")
+                  print(" Could not determine base branch. Skipping validation.")
                   sys.exit(0)
 
           changed = git("diff", "--name-only", f"{base}..HEAD").splitlines()
@@ -74,7 +74,7 @@ jobs:
               try:
                   before = git("show", f"{base}:{f}")
               except subprocess.CalledProcessError:
-                  print(f"ℹ️ {f} is new; append-only check skipped.")
+                  print(f"ℹ {f} is new; append-only check skipped.")
                   continue
 
               after = git("show", f"HEAD:{f}")
@@ -87,13 +87,13 @@ jobs:
               after_lines = after_body.splitlines()
 
               if after_lines[:len(before_lines)] != before_lines:
-                  print(f"❌ {f} is not append-only. Previous content was modified.")
+                  print(f"🚫 {f} is not append-only. Previous content was modified.")
                   sys.exit(1)
 
               appended = after_lines[len(before_lines):]
               if appended:
                   if not any(update_re.match(line) for line in appended):
-                      print(f"❌ {f} appended content must include a timestamped update header (e.g., '## Update - 2026-01-17T09:48:36Z').")
+                      print(f"🚫 {f} appended content must include a timestamped update header (e.g., '## Update - 2026-01-17T09:48:36Z').")
                       sys.exit(1)
 
           print("✅ Session capture files are append-only with timestamped updates.")

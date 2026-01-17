@@ -31,6 +31,7 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # Changelog: re-enable super-linter and require lint checks
 
 Date: 2026-01-03

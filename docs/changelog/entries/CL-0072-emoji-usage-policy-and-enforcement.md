@@ -33,6 +33,7 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
+
 ## CL-0072: Emoji Usage Policy & Automated Enforcement
 
 ## Summary

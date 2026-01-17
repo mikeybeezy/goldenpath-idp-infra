@@ -39,6 +39,7 @@ dependencies:
   - github-actions
 breaking_change: true
 ---
+
 ## CL-0057: Domain-Based Resource Catalogs
 
 **Date:** 2026-01-05

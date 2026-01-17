@@ -31,6 +31,7 @@ dependencies:
   - module:pre-commit
 breaking_change: false
 ---
+
 # ADR-0086: Federated Metadata Validation Strategy
 
 ## Context

@@ -38,6 +38,7 @@ supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false
 ---
+
 ## CL-0134: Backstage Catalog Synced to Governance Registry
 
 **Type**: Configuration

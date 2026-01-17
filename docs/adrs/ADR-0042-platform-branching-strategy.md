@@ -29,6 +29,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0042: Branching strategy (development → main)
 
 Filename: `ADR-0042-platform-branching-strategy.md`

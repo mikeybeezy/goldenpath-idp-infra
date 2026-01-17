@@ -36,6 +36,7 @@ value_quantification:
 supported_until: '2028-01-01'
 version: '1.0'
 ---
+
 # ADR-0139: Portable Secrets Manager Infrastructure Module
 
 - **Status:** Proposed

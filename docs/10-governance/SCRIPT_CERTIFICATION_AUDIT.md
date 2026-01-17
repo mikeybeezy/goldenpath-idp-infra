@@ -17,6 +17,7 @@ relates_to:
   - SCRIPT_CERTIFICATION_MATRIX
 date: 2026-01-12
 ---
+
 # Platform Scripts Certification Audit Matrix
 
 **Purpose:** Track certification progress of all platform automation scripts

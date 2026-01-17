@@ -7,6 +7,7 @@ relates_to:
   - RB-0015-repo-health-and-hygiene
   - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 ---
+
 This guide explains the CI teardown workflow for destroying ephemeral EKS clusters and cleaning up associated resources.
 
 ## Overview

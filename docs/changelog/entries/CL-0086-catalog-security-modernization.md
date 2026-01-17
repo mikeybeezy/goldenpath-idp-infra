@@ -31,6 +31,7 @@ supported_until: 2028-01-08
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0086: Catalog Security Hardening & Modernization
 
 ## Date

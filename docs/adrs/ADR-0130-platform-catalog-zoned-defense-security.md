@@ -2,7 +2,6 @@
 id: ADR-0130
 title: 'ADR-0130: Zoned Defense for Catalog Ingestion Security'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -28,6 +27,7 @@ supported_until: 2028-01-08
 version: 1.0
 breaking_change: true
 ---
+
 ## ADR-0130: Zoned Defense for Catalog Ingestion Security
 
 - **Status:** Accepted

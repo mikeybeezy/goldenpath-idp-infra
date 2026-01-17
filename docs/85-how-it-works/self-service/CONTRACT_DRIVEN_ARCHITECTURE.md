@@ -2,14 +2,13 @@
 id: CONTRACT_DRIVEN_ARCHITECTURE
 title: Contract-Driven Architecture for Self-Service Requests
 type: how-it-works
-owner: platform-team
-status: active
 relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - EC-0002-shared-parser-library
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
 ---
+
 ## Contract-Driven Architecture for Self-Service Requests
 
 This document explains the contract-driven self-service architecture used by Golden Path IDP, including the "thin template" pattern where parsers generate all artifacts.

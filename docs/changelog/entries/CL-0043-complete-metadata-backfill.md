@@ -38,6 +38,7 @@ supported_until: 2027-01-04
 version: 1.0
 breaking_change: false
 ---
+
 # CL-0043: Complete Metadata Backfill with Knowledge Graph
 
 **Date:** 2026-01-04

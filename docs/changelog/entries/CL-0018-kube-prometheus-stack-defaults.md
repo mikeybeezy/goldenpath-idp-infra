@@ -32,6 +32,7 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0018: Kube-prometheus-stack baseline and storage defaults
 
 Date: 2025-12-31

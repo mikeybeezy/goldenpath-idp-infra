@@ -8,6 +8,7 @@ relates_to:
   - CI_TERRAFORM_WORKFLOWS
   - CL-0121-seamless-build-deployment
 ---
+
 This guide explains the detailed mechanics of the seamless two-phase deployment system with build_id immutability enforcement.
 
 ## Overview

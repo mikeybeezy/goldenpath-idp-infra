@@ -35,6 +35,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0005: Adopt Keycloak for platform SSO (humans) and keep IRSA for pod-to-AWS auth
 
 - **Status:** Accepted

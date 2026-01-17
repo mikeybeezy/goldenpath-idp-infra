@@ -3,18 +3,15 @@ id: ADR-0166
 title: Dual-Mode RDS Automation with Enum-Aligned Requests
 type: adr
 status: proposed
-date: 2026-01-16
-deciders:
-  - platform-team
 domain: platform-core
 owner: platform-team
 lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
 schema_version: 1
-tags:
-  - rds
-  - provisioning
-  - automation
-  - governance
 relates_to:
   - 01_adr_index
   - 30_PLATFORM_RDS_ARCHITECTURE
@@ -31,7 +28,24 @@ relates_to:
   - SCRIPT-0035
   - SESSION_CAPTURE_2026_01_17_01
   - agent_session_summary
+supersedes: []
+superseded_by: []
+tags:
+  - rds
+  - provisioning
+  - automation
+  - governance
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-16
+deciders:
+  - platform-team
 ---
+
 ## Status
 
 Proposed

@@ -32,6 +32,7 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0022: PR guardrails template copy
 
 Date: 2026-01-02

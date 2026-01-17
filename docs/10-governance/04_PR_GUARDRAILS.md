@@ -25,6 +25,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # PR Guardrails (GoldenPath IDP)
 
 Doc contract:

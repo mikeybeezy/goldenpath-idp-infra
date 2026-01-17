@@ -18,6 +18,7 @@ supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
+
 # Container Registry Standard (Living Document)
 
 This document captures the current registry approach and implementation details.

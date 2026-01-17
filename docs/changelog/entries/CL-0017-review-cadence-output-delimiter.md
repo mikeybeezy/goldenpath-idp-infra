@@ -31,6 +31,7 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0017: Fix review cadence output delimiter
 
 Date: 2026-01-02

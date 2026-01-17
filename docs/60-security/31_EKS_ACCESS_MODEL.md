@@ -20,6 +20,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # EKS Access Model (Living)
 
 This document captures the current EKS access model, how it is operated in V1,

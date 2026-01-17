@@ -36,6 +36,7 @@ dependencies:
   - pyyaml
 breaking_change: false
 ---
+
 # CL-0054: Automated Registry Catalog Documentation
 
 **Date:** 2026-01-05

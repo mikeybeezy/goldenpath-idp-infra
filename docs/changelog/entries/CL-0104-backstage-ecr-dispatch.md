@@ -31,6 +31,7 @@ supported_until: 2028-01-11
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0104: Backstage ECR requests dispatch workflow
 
 Date: 2026-01-11

@@ -1627,7 +1627,7 @@ Reviewed artifacts from previous session by codex:
 
 ### Links
 
-- PR: https://github.com/mikeybeezy/goldenpath-idp-infra/pull/252
+- PR: [#252](https://github.com/mikeybeezy/goldenpath-idp-infra/pull/252)
 - Commit: d472e77e
 
 ---

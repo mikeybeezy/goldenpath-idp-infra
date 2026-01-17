@@ -3,9 +3,6 @@ id: PR_GUARDRAILS_INDEX
 title: PR Guardrails Index
 type: documentation
 domain: governance
-owner: platform-team
-status: active
-lifecycle: active
 risk_profile:
   production_impact: low
   security_risk: none
@@ -28,6 +25,7 @@ relates_to:
   - RDS_REQUEST_FLOW
   - SESSION_CAPTURE_2026_01_17_02
 ---
+
 # PR Guardrails Index
 
 This document provides a comprehensive catalog of all PR guardrail workflows, their triggers, enforcement scope, and current status.

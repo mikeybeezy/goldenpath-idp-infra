@@ -29,6 +29,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0057: CI Terraform force-unlock workflow (break-glass)
 
 Filename: `ADR-0057-platform-ci-terraform-force-unlock-workflow.md`

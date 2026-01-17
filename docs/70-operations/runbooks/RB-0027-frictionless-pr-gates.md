@@ -10,7 +10,6 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
-category: runbooks
 relates_to:
   - 00_START_HERE
   - 24_PR_GATES
@@ -18,7 +17,9 @@ relates_to:
   - DOCS_RUNBOOKS_README
   - GOLDENPATH_IDP_ROOT_README
   - PR_GUARDRAILS
+category: runbooks
 ---
+
 # RB-0027: Frictionless PR Gates (Heal-First Workflow)
 
 ## Context

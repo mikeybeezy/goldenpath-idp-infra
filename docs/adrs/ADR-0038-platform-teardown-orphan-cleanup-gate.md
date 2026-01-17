@@ -35,6 +35,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes
 
 - **Status:** Proposed

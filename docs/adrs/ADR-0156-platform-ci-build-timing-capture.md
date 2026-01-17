@@ -2,7 +2,6 @@
 id: ADR-0156-platform-ci-build-timing-capture
 title: 'ADR-0156: CI Build Timing Capture at Source'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -32,6 +31,7 @@ value_quantification:
   potential_savings_hours: 2.0
 supported_until: '2028-01-15'
 ---
+
 ## ADR-0156: CI Build Timing Capture at Source
 
 **Status**: Accepted

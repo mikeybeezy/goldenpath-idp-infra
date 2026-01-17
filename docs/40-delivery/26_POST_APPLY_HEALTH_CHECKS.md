@@ -21,6 +21,7 @@ dependencies:
   - module:kubernetes
 breaking_change: false
 ---
+
 # Post-Apply Health Checks (Living Document)
 
 This document describes the health-check gate that runs after Terraform apply.

@@ -32,6 +32,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0018: Container registry standard — ECR default, GHCR supported, Docker Hub discouraged
 
 - **Status:** Proposed

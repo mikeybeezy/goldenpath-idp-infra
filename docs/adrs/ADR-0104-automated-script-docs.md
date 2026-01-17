@@ -31,6 +31,7 @@ version: '1.0'
 created_date: 2026-01-06
 breaking_change: false
 ---
+
 # ADR-0104: Automated Script Documentation
 
 ## Context

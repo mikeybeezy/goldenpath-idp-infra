@@ -10,10 +10,11 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
-category: runbooks
 relates_to:
   - DOCS_RUNBOOKS_README
+category: runbooks
 ---
+
 # Runbook: Resolving Git Rebase Conflicts (Uncommitted Changes)
 
 ## Problem

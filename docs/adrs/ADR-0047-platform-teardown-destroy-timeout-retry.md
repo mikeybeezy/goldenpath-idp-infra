@@ -34,6 +34,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0047: Retry Terraform destroy after timeout with cluster-scoped LB cleanup
 
 Filename: `ADR-0047-platform-teardown-destroy-timeout-retry.md`

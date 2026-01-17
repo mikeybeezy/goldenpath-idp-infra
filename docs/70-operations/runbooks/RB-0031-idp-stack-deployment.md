@@ -28,6 +28,7 @@ supported_until: 2028-01-15
 version: '1.0'
 breaking_change: false
 ---
+
 ## IDP Stack Deployment Runbook (Keycloak + Backstage)
 
 This runbook provides the complete sequence to deploy and verify the IDP core stack (Keycloak and Backstage) on a new or existing EKS cluster.

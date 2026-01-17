@@ -1,6 +1,8 @@
 ---
 id: 25_LOCAL_DEVELOPMENT
 title: Local Development Environment
+type: policy
+category: compliance
 ---
 
 ## Local Development Environment

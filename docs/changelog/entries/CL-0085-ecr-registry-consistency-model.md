@@ -31,6 +31,7 @@ supported_until: 2028-01-08
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0085: ECR Registry Consistency Model
 
 ## Date

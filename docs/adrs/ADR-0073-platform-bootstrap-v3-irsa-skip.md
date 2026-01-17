@@ -27,6 +27,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0073: Bootstrap v3 skips Terraform IRSA apply in Stage 3B
 
 - **Status:** Proposed

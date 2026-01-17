@@ -21,6 +21,7 @@ dependencies:
   - module:terraform
 breaking_change: false
 ---
+
 # PR Terraform Plan (Living Document)
 
 This document describes the PR plan workflow and how it behaves.

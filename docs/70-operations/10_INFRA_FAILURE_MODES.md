@@ -19,6 +19,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # Infra Failure Modes and Recovery
 
 This document captures common infrastructure build failures, how we recover,

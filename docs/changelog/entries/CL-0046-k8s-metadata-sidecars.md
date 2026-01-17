@@ -30,6 +30,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # CL-0046: K8s Metadata Sidecar Integration
 
 ## Description

@@ -30,6 +30,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0022: Post-apply health checks for platform readiness
 
 - **Status:** Proposed

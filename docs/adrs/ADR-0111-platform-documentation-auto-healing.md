@@ -2,7 +2,6 @@
 id: ADR-0111-platform-documentation-auto-healing
 title: 'ADR-0111: Automated Documentation Auto-Healing'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -40,6 +39,7 @@ dependencies:
   - ADR-0104
 breaking_change: false
 ---
+
 ## ADR-0111: Automated Documentation Auto-Healing
 
 - **Status:** Accepted (Supersedes ADR-0103, ADR-0104)

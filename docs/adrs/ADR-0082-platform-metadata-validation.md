@@ -35,6 +35,7 @@ supported_until: 2027-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 ## ADR-0082: Platform Metadata Validation Strategy
 
 ## Context

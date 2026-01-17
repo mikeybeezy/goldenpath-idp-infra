@@ -23,6 +23,7 @@ dependencies:
   - chart:aws-load-balancer-controller
 breaking_change: false
 ---
+
 # LoadBalancer Service Stuck on Finalizer
 
 ## Purpose

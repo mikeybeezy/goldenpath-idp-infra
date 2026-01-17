@@ -19,6 +19,7 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # EKS Access Recovery (Runbook)
 
 This runbook provides the step-by-step procedure to restore access to an EKS

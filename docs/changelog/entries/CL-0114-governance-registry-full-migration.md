@@ -35,6 +35,7 @@ supported_until: '2028-01-01'
 date: 2026-01-12
 breaking_change: false
 ---
+
 # CL-0114: Governance Registry Full Migration
 
 ## Summary

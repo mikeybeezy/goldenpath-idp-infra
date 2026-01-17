@@ -2,7 +2,6 @@
 id: ADR-0145
 title: 'ADR-0145: Governance Registry Mirror Pattern'
 type: adr
-status: accepted
 domain: platform-governance
 owner: platform-team
 lifecycle: active
@@ -35,6 +34,7 @@ value_quantification:
   potential_savings_hours: 5.0
 supported_until: '2028-01-12'
 ---
+
 ## ADR-0145: Governance Registry Mirror Pattern
 
 ## Context

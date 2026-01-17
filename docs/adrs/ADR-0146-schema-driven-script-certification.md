@@ -67,6 +67,7 @@ compliance:
   - All scripts in `scripts/` MUST have a `script` type validation block.
   - 'High-risk scripts MUST declare `evidence: ci` and generate proof artifacts.'
 ---
+
 # ADR-0146: Schema-Driven Script Certification
 
 ## Context

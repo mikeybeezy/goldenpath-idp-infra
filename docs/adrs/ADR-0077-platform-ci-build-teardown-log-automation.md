@@ -28,6 +28,7 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0077: CI build/teardown log automation
 
 Filename: `ADR-0077-platform-ci-build-teardown-log-automation.md`

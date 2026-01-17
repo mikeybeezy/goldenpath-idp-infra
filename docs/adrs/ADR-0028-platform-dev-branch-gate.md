@@ -34,6 +34,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0028: Dev branch gate before main
 
 Filename: `ADR-0028-platform-dev-branch-gate.md`

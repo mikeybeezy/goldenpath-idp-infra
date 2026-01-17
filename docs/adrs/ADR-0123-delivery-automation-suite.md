@@ -2,7 +2,6 @@
 id: ADR-0123
 title: 'ADR-0123: Delivery Automation Suite (ECR & Logs)'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -26,6 +25,7 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
+
 ## ADR-0123: Delivery Automation Suite (ECR & Logs)
 
 ## Status

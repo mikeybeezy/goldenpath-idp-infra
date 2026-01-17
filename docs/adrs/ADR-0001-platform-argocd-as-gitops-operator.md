@@ -37,6 +37,7 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0001: Adopt Argo CD as GitOps controller for platform deployments
 
 - **Status:** Accepted

@@ -13,6 +13,7 @@ reliability:
 relates_to:
   - ADR-0143
 ---
+
 # Platform Contract Registry
 
 This registry tracks the maturity and implementation status of all Golden Path declarative interfaces.
