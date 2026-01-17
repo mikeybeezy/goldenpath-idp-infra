@@ -599,7 +599,7 @@ resource "null_resource" "rds_ephemeral_guard" {
 module "platform_rds" {
   source = "../../modules/aws_rds"
   # Only create when enabled AND in persistent mode (ephemeral blocked by guard above)
-  count  = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? 1 : 0
+  count = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? 1 : 0
 
   identifier = "${local.base_name_prefix}-${var.rds_config.identifier}"
   vpc_id     = module.vpc.vpc_id
