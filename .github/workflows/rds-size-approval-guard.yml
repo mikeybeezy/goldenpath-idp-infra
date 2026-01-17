@@ -11,6 +11,8 @@ on:
 jobs:
   enforce-size-approvals:
     runs-on: ubuntu-latest
+    env:
+      WARN_ONLY: "true"
     steps:
       - name: Checkout PR
         uses: actions/checkout@v4
@@ -29,6 +31,7 @@ jobs:
           import sys
 
           event_path = os.environ.get("GITHUB_EVENT_PATH")
+          warn_only = os.environ.get("WARN_ONLY", "false").lower() == "true"
           if not event_path:
               print("ERROR: GITHUB_EVENT_PATH is not set.")
               sys.exit(1)
@@ -76,9 +79,12 @@ jobs:
           approved_labels = {"platform-approval", "rds-large-approved"}
 
           if not labels.intersection(approved_labels):
-              print("❌ Large/xlarge RDS requests require approval.")
+              message = "Large/xlarge RDS requests require approval."
+              print(f"⚠️ {message}" if warn_only else f"❌ {message}")
               print(f"Files: {', '.join(flagged)}")
               print("Add label: platform-approval (or rds-large-approved) to proceed.")
+              if warn_only:
+                  sys.exit(0)
               sys.exit(1)
 
           print("✅ Large/xlarge requests approved via labels.")

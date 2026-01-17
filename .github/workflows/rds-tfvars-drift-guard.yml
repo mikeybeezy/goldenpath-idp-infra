@@ -11,6 +11,8 @@ on:
 jobs:
   check-tfvars-drift:
     runs-on: ubuntu-latest
+    env:
+      WARN_ONLY: "true"
     steps:
       - name: Checkout PR
         uses: actions/checkout@v4
@@ -26,6 +28,8 @@ jobs:
           import re
           import sys
           from pathlib import Path
+
+          warn_only = os.environ.get("WARN_ONLY", "false").lower() == "true"
 
           def extract_db_keys(content: str) -> set[str]:
               match = re.search(r"application_databases\s*=\s*\{([\s\S]*?)\n\}", content)
@@ -88,11 +92,14 @@ jobs:
               print("✅ No application_databases drift detected.")
               sys.exit(0)
 
-          print("❌ application_databases drift detected between coupled and standalone tfvars:")
+          message = "application_databases drift detected between coupled and standalone tfvars:"
+          print(f"⚠️ {message}" if warn_only else f"❌ {message}")
           for env_name, coupled, standalone in mismatches:
               print(f"- {env_name}:")
               print(f"  coupled:    {coupled}")
               print(f"  standalone: {standalone}")
           print("Align application_databases between envs/<env>/ and envs/<env>-rds/ to proceed.")
+          if warn_only:
+              sys.exit(0)
           sys.exit(1)
           PY

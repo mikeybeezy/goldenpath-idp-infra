@@ -93,6 +93,8 @@ make rds-provision-auto ENV=dev BUILD_ID=xx-xx-xx-xx
 make bootstrap ENV=dev BUILD_ID=xx-xx-xx-xx
 ```
 
+Note: Non-dev provisioning requires explicit approval (`ALLOW_DB_PROVISION=true`).
+
 #### Deploy Shortcut (Apply + Bootstrap)
 
 ```bash
@@ -121,6 +123,8 @@ make rds-provision-auto ENV=dev RDS_MODE=standalone BUILD_ID=xx-xx-xx-xx
 # 4. Then bootstrap
 make bootstrap ENV=dev BUILD_ID=xx-xx-xx-xx
 ```
+
+Note: Non-dev provisioning requires explicit approval (`ALLOW_DB_PROVISION=true`).
 
 ### Full Deployment Order
 

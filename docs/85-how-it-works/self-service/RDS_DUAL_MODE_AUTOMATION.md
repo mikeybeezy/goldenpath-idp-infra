@@ -116,6 +116,8 @@ To avoid future rework, Backstage templates and workflows should:
 - Service class approvals for `databases-rds` are defined in
   `schemas/routing/service_class_approvals.yaml`.
 - Non-dev provisioning requires explicit approval gates (`ALLOW_DB_PROVISION=true`).
+- During rollout, guardrails run warn-only; switch to blocking after non-dev cutover.
+- Request files are workflow-generated; avoid manual edits.
 - Size tiers above `medium` should require platform review.
 
 ## References
