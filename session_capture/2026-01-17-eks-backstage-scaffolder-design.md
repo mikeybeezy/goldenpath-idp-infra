@@ -1390,6 +1390,45 @@ Signed: Codex (2026-01-17T18:49:40Z)
 
 Signed: Codex (2026-01-17T19:07:05Z)
 
+### Update - 2026-01-17T22:05:28Z
+
+**What changed**
+- Added `test` to EKS environment enums for request validation.
+
+**Artifacts touched**
+- `schemas/metadata/enums.yaml`
+
+**Validation**
+- Not run (enum update only).
+
+Signed: Codex (2026-01-17T22:05:28Z)
+
+### Update - 2026-01-17T22:06:23Z
+
+**What changed**
+- Re-enabled `test` in the Backstage EKS environment dropdown.
+
+**Artifacts touched**
+- `backstage-helm/backstage-catalog/templates/eks-request.yaml`
+
+**Validation**
+- Not run (template update only).
+
+Signed: Codex (2026-01-17T22:06:23Z)
+
+### Update - 2026-01-17T22:07:06Z
+
+**What changed**
+- Added `id-token: write` permission to the EKS apply workflow for OIDC role assumption.
+
+**Artifacts touched**
+- `.github/workflows/eks-request-apply.yml`
+
+**Validation**
+- Not run (workflow permission update only).
+
+Signed: Codex (2026-01-17T22:07:06Z)
+
 ### Update - 2026-01-17T18:45:00Z - Persistent Mode Makefile Targets Implemented
 
 **What changed**

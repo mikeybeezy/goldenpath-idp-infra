@@ -137,6 +137,7 @@ environments:
 
 eks_environments:
   - dev
+  - test
   - staging
   - prod
 

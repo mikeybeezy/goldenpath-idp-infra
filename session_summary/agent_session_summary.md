@@ -1889,6 +1889,66 @@ Goal: finalize EKS request system artifacts, add bootstrap-only workflow, and ca
 
 Signed: Codex (2026-01-17T19:07:05Z)
 
+## 2026-01-17T22:05Z — EKS enums: add test environment — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: allow `test` in EKS request environments.
+
+### In-Session Log (append as you go)
+- 22:05Z — Added `test` to `eks_environments` so Backstage + parser stay aligned.
+
+### Artifacts touched (required)
+- `schemas/metadata/enums.yaml`
+- `session_capture/2026-01-17-eks-backstage-scaffolder-design.md`
+
+### Session Report (end-of-session wrap-up)
+- Summary: EKS request enums now include `test`.
+- Decisions: `test` is supported for EKS request validation.
+- Validation: not run.
+
+Signed: Codex (2026-01-17T22:05:28Z)
+
+## 2026-01-17T22:06Z — EKS template: re-enable test env — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: keep Backstage EKS environment choices aligned with enums.
+
+### In-Session Log (append as you go)
+- 22:06Z — Restored `test` in Backstage EKS environment dropdown.
+
+### Artifacts touched (required)
+- `backstage-helm/backstage-catalog/templates/eks-request.yaml`
+- `session_capture/2026-01-17-eks-backstage-scaffolder-design.md`
+
+### Session Report (end-of-session wrap-up)
+- Summary: Backstage EKS template now exposes `test` again.
+- Decisions: `test` is supported for EKS requests.
+- Validation: not run.
+
+Signed: Codex (2026-01-17T22:06:23Z)
+
+## 2026-01-17T22:07Z — EKS apply workflow OIDC permission — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: allow EKS apply workflow to assume AWS role via OIDC.
+
+### In-Session Log (append as you go)
+- 22:07Z — Added `id-token: write` to the EKS apply workflow permissions.
+
+### Artifacts touched (required)
+- `.github/workflows/eks-request-apply.yml`
+- `session_capture/2026-01-17-eks-backstage-scaffolder-design.md`
+
+### Session Report (end-of-session wrap-up)
+- Summary: EKS apply workflow can now assume AWS roles via OIDC.
+- Decisions: OIDC is required for apply; permissions updated accordingly.
+- Validation: not run.
+
+Signed: Codex (2026-01-17T22:07:06Z)
+
 ## 2026-01-17T20:30Z — Extend Capabilities: Kong plugin + AI Copilot — env=na build_id=na
 
 Owner: platform-team
