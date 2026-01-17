@@ -11,7 +11,7 @@ reliability:
   observability_tier: silver
 relates_to:
   - 01_adr_index
-  - ADR-0111
+  - ADR-0111-platform-documentation-auto-healing
 category: governance
 supported_until: 2028-01-01
 version: '1.0'

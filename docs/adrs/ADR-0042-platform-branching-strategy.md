@@ -12,9 +12,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 23_NEW_JOINERS
   - 38_BRANCHING_STRATEGY
-  - ADR-0042
+  - ADR-0042-platform-branching-strategy
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +29,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0042: Branching strategy (development → main)
 
 Filename: `ADR-0042-platform-branching-strategy.md`

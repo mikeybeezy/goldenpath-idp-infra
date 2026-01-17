@@ -17,9 +17,10 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - ADR-0003
-  - MODULE_VPC
+  - 14_MODULES_OVERVIEW
+  - ADR-0003-platform-AWS-IAM-bootstrap-IRSA-SSM-
   - MODULE_AWS_NIC
+  - MODULE_VPC
 supersedes: []
 superseded_by: []
 tags: []
@@ -36,7 +37,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Security Group Module
 
 ## Purpose

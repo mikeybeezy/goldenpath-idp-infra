@@ -20,6 +20,7 @@ relates_to:
   - 26_AI_AGENT_PROTOCOLS
   - ADR-0122
   - AGENT_FIRST_BOOT
+  - CL-0078
   - VQ_PRINCIPLES
 supersedes: []
 superseded_by: []

@@ -19,7 +19,8 @@ schema_version: 1
 relates_to:
   - 00_START_HERE
   - 18_BACKSTAGE_MVP
-  - RB-0027-frictionless-pr-gates
+  - BUG_FIXES_SUMMARY
+  - RB-0027
 supersedes: []
 superseded_by: []
 tags: []

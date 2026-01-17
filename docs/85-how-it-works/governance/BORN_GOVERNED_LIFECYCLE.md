@@ -3,11 +3,10 @@ id: BORN_GOVERNED_LIFECYCLE
 title: Born Governed Lifecycle
 type: guide
 relates_to:
-  - CNT-001
   - ADR-0146
   - ADR-0147
+  - CNT-001
 ---
-
 # How It Works: Born Governed Lifecycle
 
 This guide details the **Schema-Driven Script Testing** architecture. It moves beyond simple "testing" to a model of **provenance and contract enforcement**.

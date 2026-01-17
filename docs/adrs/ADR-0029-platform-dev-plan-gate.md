@@ -13,10 +13,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 21_CI_ENVIRONMENT_CONTRACT
-  - ADR-0028
   - ADR-0028-platform-dev-branch-gate
-  - ADR-0029
+  - ADR-0029-platform-dev-plan-gate
+  - RB-0010-dev-branch-apply
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +31,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0029: Dev plan gate before dev apply
 
 Filename: `ADR-0029-platform-dev-plan-gate.md`

@@ -17,9 +17,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0114
-  - CL-0069
-  - CL-0070
+  - ADR-0114-automated-enum-consistency-validation
+  - CL-0069-platform-queryable-intelligence-enums
+  - CL-0070-automated-enum-consistency-validation
+  - CL-0071-enhanced-enum-validation-engine
 supersedes: []
 superseded_by: []
 tags: []

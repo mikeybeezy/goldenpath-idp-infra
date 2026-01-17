@@ -13,14 +13,13 @@ reliability:
 relates_to:
   - 01_GOVERNANCE
   - 18_BACKSTAGE_MVP
-  - ADR-0008
+  - ADR-0008-app-backstage-portal
 status: deprecated
 category: governance
 supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # Backstage Governance (Deprecated)
 
 Doc contract:

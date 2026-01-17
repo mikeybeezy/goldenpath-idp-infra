@@ -17,9 +17,11 @@ reliability:
 schema_version: 1
 relates_to:
   - 06_IDENTITY_AND_ACCESS
-  - ADR-0005
+  - 70_OPERATIONS_README
   - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
-  - ADR-0006
+  - ADR-0006-platform-secrets-strategy
+  - CL-0131
+  - CL-0136-tooling-apps-ingress-configuration
 supersedes: []
 superseded_by: []
 tags:

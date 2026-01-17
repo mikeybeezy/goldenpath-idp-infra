@@ -11,10 +11,9 @@ reliability:
   observability_tier: gold
   maturity: 1
 relates_to:
-  - ADR-0084
   - ADR-0084-platform-enhanced-metadata-schema
-  - CL-0043
   - CL-0043-complete-metadata-backfill
+  - DOCS_RUNBOOKS_README
   - METADATA_STRATEGY
 category: runbooks
 supported_until: 2028-01-01

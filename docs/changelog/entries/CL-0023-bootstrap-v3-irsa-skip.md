@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0073
-  - CL-0023
+  - ADR-0073-platform-bootstrap-v3-irsa-skip
+  - CL-0023-bootstrap-v3-irsa-skip
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0023: Bootstrap v3 skips IRSA apply
 
 Date: 2026-01-02

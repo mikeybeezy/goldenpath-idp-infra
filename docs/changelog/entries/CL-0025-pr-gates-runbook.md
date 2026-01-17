@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0025
+  - CL-0025-pr-gates-runbook
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +30,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0025: PR gates runbook
 
 Date: 2026-01-03

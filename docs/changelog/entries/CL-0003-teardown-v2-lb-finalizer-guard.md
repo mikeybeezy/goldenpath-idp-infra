@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0003
+  - CL-0003-teardown-v2-lb-finalizer-guard
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +30,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0003: Teardown v2 LoadBalancer finalizer guard
 
 Date: 2025-12-31

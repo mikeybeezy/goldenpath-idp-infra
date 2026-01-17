@@ -12,14 +12,13 @@ reliability:
   maturity: 1
 relates_to:
   - 33_IAM_ROLES_AND_POLICIES
-  - ADR-0035
   - ADR-0035-platform-iam-audit-cadence
+  - DOCS_RUNBOOKS_README
 category: runbooks
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # IAM Audit (Runbook)
 
 This runbook captures how to audit IAM usage for CI roles and reduce unused

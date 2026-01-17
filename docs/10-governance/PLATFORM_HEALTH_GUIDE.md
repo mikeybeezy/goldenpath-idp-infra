@@ -11,15 +11,14 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - PLATFORM_HEALTH
-  - ADR-0090
+  - ADR-0090-automated-platform-health-dashboard
   - METADATA_INJECTION_GUIDE
+  - PLATFORM_HEALTH
 category: governance
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## Platform Health Dashboard Guide
 
 The `PLATFORM_HEALTH.md` file at the repository root is the "Single Source of Truth" for the operational status, compliance, and governance reach of the GoldenPath IDP.

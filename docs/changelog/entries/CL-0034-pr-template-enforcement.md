@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0034
+  - CL-0034-pr-template-enforcement
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +30,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # Changelog: PR template enforcement and CI iteration
 
 Date: 2026-01-03

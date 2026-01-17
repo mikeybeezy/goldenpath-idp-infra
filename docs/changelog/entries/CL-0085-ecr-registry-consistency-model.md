@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0129
-  - CL-0085
+  - CL-0085-ecr-registry-consistency-model
 supersedes: []
 superseded_by: []
 tags: []

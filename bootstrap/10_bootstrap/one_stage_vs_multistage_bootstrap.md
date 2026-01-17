@@ -15,9 +15,10 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - GOLDENPATH_IDP_BOOTSTRAP
-  - ADR-0013
   - 18_BACKSTAGE_MVP
+  - ADR-0013-platform-argo-app-management-approach
+  - BOOTSTRAP_10_BOOTSTRAP_README
+  - GOLDENPATH_IDP_BOOTSTRAP
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +31,6 @@ version: 1.0
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # One-Stage vs Multi-Stage Bootstrap
 
 This document explains when to use a single-run bootstrap versus a staged

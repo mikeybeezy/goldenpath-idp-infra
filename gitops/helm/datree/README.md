@@ -17,8 +17,8 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - ADR-0004
-  - ADR-0033
+  - ADR-0004-platform-datree-policy-as-code-in-ci
+  - ADR-0033-platform-ci-orchestrated-modes
 supersedes: []
 superseded_by: []
 tags: []
@@ -36,7 +36,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Datree Admission Webhook
 
 Datree enforces Kubernetes policies at admission time to catch any manifests that slip past CI. The Helm chart installs Datree’s validating webhook into the `datree-system` namespace.

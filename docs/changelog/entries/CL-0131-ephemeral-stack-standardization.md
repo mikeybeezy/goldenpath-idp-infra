@@ -12,7 +12,7 @@ relates_to:
   - 20_TOOLING_APPS_MATRIX
   - 38_EPHEMERAL_STACK_STRATEGY
   - ADR-0161
-  - ADR-0161-ephemeral-infrastructure-stack
+  - CL-0131
 tags:
   - ephemeral
   - localstack

@@ -16,8 +16,9 @@ version: 1.0
 dependencies:
   - module:governance-engine
 breaking_change: false
+relates_to:
+  - CL-0045-federated-governance-onboarding
 ---
-
 # Federated Metadata Strategy
 
 ## Purpose

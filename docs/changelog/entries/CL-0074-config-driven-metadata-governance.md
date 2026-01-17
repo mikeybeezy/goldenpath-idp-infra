@@ -17,8 +17,8 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0118
-  - CL-0074
+  - ADR-0118-config-driven-metadata-governance
+  - CL-0074-config-driven-metadata-governance
   - CONFIG_DRIVEN_METADATA
 supersedes: []
 superseded_by: []

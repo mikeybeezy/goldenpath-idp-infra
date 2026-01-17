@@ -14,15 +14,18 @@ relates_to:
   - 04_PR_GUARDRAILS
   - 09_AGENT_COLLABORATION_MATRIX
   - 26_AI_AGENT_PROTOCOLS
-  - AI_CHANGELOG
-  - ADR-0163
+  - ADR-0079-platform-ai-agent-governance
   - ADR-0133
+  - ADR-0163
+  - AI_CHANGELOG
+  - CL-0141
+  - SESSION_CAPTURE_2026_01_17_02
+  - agent_session_summary
 category: governance
 supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # AI Agent Governance
 
 Doc contract:
@@ -52,6 +55,9 @@ must be captured there and reviewed via PR.
 Each agent session must append to the immutable session log at
 `session_summary/agent_session_summary.md`. This file is append-only and captures
 what changed in each session for audit and traceability.
+
+For context-bounded efforts, create a session capture using
+`session_capture/session_capture_template.md` and keep it append-only.
 
 ## 1) Scope and authority
 

@@ -12,7 +12,6 @@ reliability:
   observability_tier: bronze
 relates_to:
   - ADR-0143
-  - ADR-0143-secret-request-contract
 ---
 # Platform Contract Registry
 

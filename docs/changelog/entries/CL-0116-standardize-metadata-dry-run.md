@@ -19,6 +19,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0126
+  - CL-0116
   - CL-0117
   - SCRIPT_CERTIFICATION_AUDIT
   - standardize_metadata.py

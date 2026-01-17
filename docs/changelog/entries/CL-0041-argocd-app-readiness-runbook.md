@@ -19,7 +19,7 @@ schema_version: 1
 relates_to:
   - 00_DOC_INDEX
   - 11_ARGOCD_APP_READINESS
-  - CL-0041
+  - CL-0041-argocd-app-readiness-runbook
   - DOCS_70-OPERATIONS_RUNBOOKS_README
   - DOCS_RUNBOOKS_README
 supersedes: []

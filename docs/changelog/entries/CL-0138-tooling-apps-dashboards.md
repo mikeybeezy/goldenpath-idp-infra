@@ -22,12 +22,10 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0162
-  - ADR-0162-kong-ingress-dns-strategy
-  - CL-0136
   - CL-0136-tooling-apps-ingress-configuration
   - CL-0137
-  - CL-0137-ootb-observability-dashboards
-  - CL-0138
+  - CL-0138-tooling-apps-dashboards
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:

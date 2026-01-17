@@ -7,15 +7,14 @@ risk_profile:
   security_risk: low
   coupling_risk: low
 relates_to:
+  - ADR-0002-platform-Kong-as-ingress-API-gateway
   - HELM_KONG
-  - ADR-0002
 version: 1.0
 dependencies:
   - provider:kong
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Kong Configuration Module
 
 Helm installs the Kong ingress controller (`gitops/helm/kong/`). This Terraform module manages Kong’s configuration—services, routes, plugins, consumers—so API contracts stay in code.

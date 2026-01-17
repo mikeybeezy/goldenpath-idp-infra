@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0079
-  - CL-0032
+  - ADR-0079-platform-ai-agent-governance
+  - CL-0032-ai-agent-governance
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # Changelog: AI agent governance and auditability
 
 Date: 2026-01-03

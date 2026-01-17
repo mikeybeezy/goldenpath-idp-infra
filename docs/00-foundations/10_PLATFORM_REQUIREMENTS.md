@@ -18,6 +18,8 @@ relates_to:
   - 01_PLATFORM_SERVICE_AGREEMENT
   - 28_SECURITY_FLOOR_V1
   - 37_V1_SCOPE_AND_TIMELINE
+  - CL-0021-doc-taxonomy-refactor
+  - agent_session_summary
 ---
 ## Platform Requirements
 

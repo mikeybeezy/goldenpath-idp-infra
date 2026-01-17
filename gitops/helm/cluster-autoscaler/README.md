@@ -17,8 +17,8 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
+  - ADR-0031-platform-bootstrap-irsa-service-accounts
   - MODULE_AWS_IAM
-  - ADR-0031
 supersedes: []
 superseded_by: []
 tags: []
@@ -36,7 +36,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Cluster Autoscaler Helm Deployment
 
 Cluster Autoscaler adjusts the EKS node group size based on pending pods.

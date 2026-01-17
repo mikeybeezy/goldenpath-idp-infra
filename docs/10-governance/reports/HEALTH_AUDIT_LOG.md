@@ -12,6 +12,7 @@ reliability:
   maturity: 1
 relates_to:
   - 01_adr_index
+  - CAPABILITY_LEDGER
   - CI_WORKFLOWS
   - DOCS_CHANGELOG_README
   - SCRIPT_CERTIFICATION_MATRIX

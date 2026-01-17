@@ -11,15 +11,21 @@ reliability:
   observability_tier: gold
   maturity: 1
 relates_to:
-  - ADR-0027
-  - ADR-0092
+  - ADR-0027-platform-design-philosophy
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0121-value-quantification-framework
   - ADR-0129
   - ADR-0145
-  - ADR-0158
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - FEATURES
   - HEALTH_AUDIT_LOG
   - PLATFORM_HEALTH
-  - PLATFORM_HEALTH.md
   - PLATFORM_SYSTEM_MAP
+  - RB-0015-repo-health-and-hygiene
+  - RB-0028
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0030-rds-break-glass-deletion
+  - SESSION_CAPTURE_2026_01_17_01
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

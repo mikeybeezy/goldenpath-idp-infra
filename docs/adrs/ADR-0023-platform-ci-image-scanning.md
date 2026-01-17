@@ -13,7 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0023
+  - 01_adr_index
+  - 27_CI_IMAGE_SCANNING
+  - ADR-0023-platform-ci-image-scanning
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +29,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0023: CI image scanning standard
 
 - **Status:** Proposed

@@ -10,8 +10,11 @@ risk_profile:
   production_impact: none
   security_risk: none
   coupling_risk: low
+relates_to:
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0165
+  - ADR-0166
 ---
-
 # RDS Session Feedback - Agent Review
 
 **Reviewer:** Claude Opus 4.5 (claude-opus-4-5-20251101)

@@ -12,122 +12,121 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0001
-  - ADR-0002
-  - ADR-0003
-  - ADR-0004
-  - ADR-0005
-  - ADR-0006
-  - ADR-0007
-  - ADR-0008
-  - ADR-0009
-  - ADR-0010
-  - ADR-0011
+  - 01_GOVERNANCE
+  - ADR-0001-platform-argocd-as-gitops-operator
+  - ADR-0002-platform-Kong-as-ingress-API-gateway
+  - ADR-0003-platform-AWS-IAM-bootstrap-IRSA-SSM-
+  - ADR-0004-platform-datree-policy-as-code-in-ci
+  - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
+  - ADR-0006-platform-secrets-strategy
+  - ADR-0007-platform-environment-model
+  - ADR-0008-app-backstage-portal
+  - ADR-0009-app-delivery-insights
+  - ADR-0010-platform-terraform-lockfile-stability
   - ADR-0011-platform-ci-environment-contract
-  - ADR-0012
-  - ADR-0013
-  - ADR-0014
-  - ADR-0015
-  - ADR-0016
-  - ADR-0017
-  - ADR-0018
-  - ADR-0019
-  - ADR-0020
-  - ADR-0021
-  - ADR-0022
-  - ADR-0023
-  - ADR-0024
-  - ADR-0025
-  - ADR-0026
-  - ADR-0027
-  - ADR-0028
-  - ADR-0029
-  - ADR-0030
-  - ADR-0031
-  - ADR-0032
-  - ADR-0033
-  - ADR-0034
-  - ADR-0035
-  - ADR-0036
-  - ADR-0037
-  - ADR-0038
-  - ADR-0039
-  - ADR-0040
-  - ADR-0041
-  - ADR-0042
-  - ADR-0043
-  - ADR-0044
-  - ADR-0045
-  - ADR-0046
-  - ADR-0047
-  - ADR-0048
-  - ADR-0049
-  - ADR-0050
-  - ADR-0051
-  - ADR-0052
-  - ADR-0053
-  - ADR-0054
-  - ADR-0055
-  - ADR-0056
-  - ADR-0057
-  - ADR-0058
-  - ADR-0059
-  - ADR-0060
-  - ADR-0061
-  - ADR-0062
-  - ADR-0063
-  - ADR-0064
-  - ADR-0065
-  - ADR-0066
-  - ADR-0067
-  - ADR-0068
-  - ADR-0069
-  - ADR-0070
-  - ADR-0071
-  - ADR-0072
-  - ADR-0073
-  - ADR-0074
-  - ADR-0075
-  - ADR-0076
-  - ADR-0077
-  - ADR-0078
-  - ADR-0079
-  - ADR-0080
-  - ADR-0081
-  - ADR-0082
-  - ADR-0083
-  - ADR-0084
-  - ADR-0085
-  - ADR-0086
-  - ADR-0087
-  - ADR-0088
-  - ADR-0089
-  - ADR-0090
-  - ADR-0092
-  - ADR-0093
-  - ADR-0094
-  - ADR-0095
-  - ADR-0096
-  - ADR-0097
-  - ADR-0098
-  - ADR-0099
-  - ADR-0100
-  - ADR-0101
+  - ADR-0012-platform-repo-decoupling-options
+  - ADR-0013-platform-argo-app-management-approach
+  - ADR-0014-platform-ci-local-preflight-checks
+  - ADR-0015-platform-aws-oidc-for-github-actions
+  - ADR-0016-platform-ci-environment-separation
+  - ADR-0017-platform-policy-as-code
+  - ADR-0018-platform-container-registry-standard
+  - ADR-0019-platform-pre-commit-hooks
+  - ADR-0020-platform-helm-kustomize-hybrid
+  - ADR-0021-platform-pr-terraform-plan
+  - ADR-0022-platform-post-apply-health-checks
+  - ADR-0023-platform-ci-image-scanning
+  - ADR-0024-platform-security-floor-v1
+  - ADR-0025-platform-boundaries-contract
+  - ADR-0026-platform-cd-deployment-contract
+  - ADR-0027-platform-design-philosophy
+  - ADR-0028-platform-dev-branch-gate
+  - ADR-0029-platform-dev-plan-gate
+  - ADR-0030-platform-precreated-iam-policies
+  - ADR-0031-platform-bootstrap-irsa-service-accounts
+  - ADR-0032-platform-eks-access-model
+  - ADR-0033-platform-ci-orchestrated-modes
+  - ADR-0034-platform-ci-environment-contract
+  - ADR-0035-platform-iam-audit-cadence
+  - ADR-0036-platform-orphan-cleanup-workflow
+  - ADR-0037-platform-resource-tagging-policy
+  - ADR-0038-platform-teardown-orphan-cleanup-gate
+  - ADR-0039-platform-tag-scoped-iam-policy-template
+  - ADR-0040-platform-lifecycle-aware-state-keys
+  - ADR-0041-platform-orphan-cleanup-deletion-order
+  - ADR-0042-platform-branching-strategy
+  - ADR-0043-platform-teardown-lb-eni-wait
+  - ADR-0044-platform-infra-checks-ref-mode
+  - ADR-0045-platform-teardown-lb-delete-default
+  - ADR-0046-platform-pr-plan-validation-ownership
+  - ADR-0047-platform-teardown-destroy-timeout-retry
+  - ADR-0048-platform-teardown-version-selector
+  - ADR-0049-platform-pragmatic-observability-baseline
+  - ADR-0050-platform-changelog-label-gate
+  - ADR-0051-platform-reliability-metrics-contract-minimums
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0053-platform-storage-lifecycle-separation
+  - ADR-0054-platform-observability-exporters-otel-split
+  - ADR-0055-platform-tempo-tracing-backend
+  - ADR-0056-platform-loki-deployment-mode
+  - ADR-0057-platform-ci-terraform-force-unlock-workflow
+  - ADR-0058-platform-grafana-config-workflow
+  - ADR-0059-platform-ci-workflow-index-and-ownership
+  - ADR-0060-platform-ephemeral-update-workflow
+  - ADR-0061-platform-observability-provisioning-boundary
+  - ADR-0062-platform-app-template-contract
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - ADR-0064-platform-dev-bootstrap-defaults
+  - ADR-0065-platform-branch-policy-guard
+  - ADR-0066-platform-dashboards-as-code
+  - ADR-0067-platform-labeler-base-ref
+  - ADR-0068-platform-review-cadence-output
+  - ADR-0069-platform-observability-baseline-golden-signals
+  - ADR-0070-platform-terraform-aws-lb-controller
+  - ADR-0071-doc-taxonomy-refactor
+  - ADR-0072-platform-pr-checklist-template
+  - ADR-0073-platform-bootstrap-v3-irsa-skip
+  - ADR-0074-platform-ops-workflow-branch-guard
+  - ADR-0075-app-example-deployments
+  - ADR-0076-platform-infracost-ci-visibility
+  - ADR-0077-platform-ci-build-teardown-log-automation
+  - ADR-0078-platform-governed-repo-scaffolder
+  - ADR-0079-platform-ai-agent-governance
+  - ADR-0080-platform-github-agent-roles
+  - ADR-0081-platform-repo-wide-linting
+  - ADR-0082-platform-metadata-validation
+  - ADR-0083-platform-metadata-backfill-protocol
+  - ADR-0084-platform-enhanced-metadata-schema
+  - ADR-0085-score-implementation
+  - ADR-0086-federated-metadata-validation
+  - ADR-0087-k8s-metadata-sidecars
+  - ADR-0088-automated-metadata-remediation
+  - ADR-0089-closed-loop-metadata-injection
+  - ADR-0090-automated-platform-health-dashboard
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0094-automated-catalog-docs
+  - ADR-0095-self-service-registry-creation
+  - ADR-0096-risk-based-ecr-controls
+  - ADR-0097-domain-based-resource-catalogs
+  - ADR-0098-standardized-pr-gates
+  - ADR-0099-standardized-iam-policy-management
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - ADR-0101-pr-metadata-auto-heal
   - ADR-0102
-  - ADR-0103
-  - ADR-0104
-  - ADR-0110
-  - ADR-0111
-  - ADR-0112
-  - ADR-0113
-  - ADR-0114
-  - ADR-0115
-  - ADR-0116
-  - ADR-0117
-  - ADR-0118
-  - ADR-0119
-  - ADR-0120
-  - ADR-0121
+  - ADR-0103-automated-workflow-docs
+  - ADR-0104-automated-script-docs
+  - ADR-0110-idp-knowledge-graph-architecture
+  - ADR-0111-platform-documentation-auto-healing
+  - ADR-0112-automated-adr-index-generation
+  - ADR-0113-platform-queryable-intelligence-enums
+  - ADR-0114-automated-enum-consistency-validation
+  - ADR-0115-enhanced-enum-validation-engine
+  - ADR-0116-emoji-usage-policy-and-enforcement
+  - ADR-0117-conclusive-governance-routing-architecture
+  - ADR-0118-config-driven-metadata-governance
+  - ADR-0119-grand-metadata-healing-and-contextual-alignment
+  - ADR-0120-metadata-inheritance-and-active-governance
   - ADR-0121-value-quantification-framework
   - ADR-0122
   - ADR-0123
@@ -141,7 +140,7 @@ relates_to:
   - ADR-0131
   - ADR-0132
   - ADR-0133
-  - ADR-0134
+  - ADR-0134-metadata-inheritance-active-governance-and-leak-protection
   - ADR-0135
   - ADR-0136
   - ADR-0137
@@ -155,21 +154,27 @@ relates_to:
   - ADR-0145
   - ADR-0146
   - ADR-0147
-  - ADR-0148
+  - ADR-0148-seamless-build-deployment-with-immutability
   - ADR-0153
   - ADR-0154
-  - ADR-0155
-  - ADR-0156
-  - ADR-0157
-  - ADR-0158
-  - ADR-0159
+  - ADR-0155-ci-governance-registry-fetch
+  - ADR-0156-platform-ci-build-timing-capture
+  - ADR-0157-platform-multi-tenant-rds-architecture
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0159-backstage-catalog-registry-sync
   - ADR-0160
   - ADR-0161
   - ADR-0162
   - ADR-0163
-  - ADR-0164
+  - ADR-0164-teardown-v3-enhanced-reliability
   - ADR-0165
   - ADR-0166
+  - ADR_INDEX_AUTOMATION_SPEC
+  - AUTO_HEALING_GUIDE
+  - CL-0068-adr-index-automation
+  - HEALTH_AUDIT_LOG
+  - PLATFORM_DASHBOARDS
+  - PLATFORM_HEALTH
 supersedes: []
 superseded_by: []
 tags: []

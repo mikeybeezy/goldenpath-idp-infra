@@ -16,9 +16,16 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0098
-  - ADR-0101
-  - CL-0063
+  - 01_GOVERNANCE
+  - 01_adr_index
+  - 04_PR_GUARDRAILS
+  - 08_GITHUB_AGENT_ROLES
+  - 24_PR_GATES
+  - ADR-0098-standardized-pr-gates
+  - ADR-0101-pr-metadata-auto-heal
+  - ADR-0111-platform-documentation-auto-healing
+  - CL-0063-pr-metadata-auto-heal
+  - METADATA_MAINTENANCE_GUIDE
 supersedes: []
 superseded_by: []
 tags: []

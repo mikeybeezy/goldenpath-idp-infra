@@ -13,7 +13,11 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0022
+  - 01_adr_index
+  - 26_POST_APPLY_HEALTH_CHECKS
+  - ADR-0022-platform-post-apply-health-checks
+  - ROADMAP
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +30,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0022: Post-apply health checks for platform readiness
 
 - **Status:** Proposed

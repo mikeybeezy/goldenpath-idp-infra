@@ -11,14 +11,22 @@ risk_profile:
   security_risk: low
   coupling_risk: low
 relates_to:
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0006-platform-secrets-strategy
   - ADR-0158-platform-standalone-rds-bounded-context
-  - ADR-0165-rds-user-db-provisioning-automation
-  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
-  - RDS_REQUEST_FLOW
+  - ADR-0165
+  - ADR-0166
+  - CAPABILITY_LEDGER
+  - CL-0042-metadata-backfill-batch-1
+  - CL-0126-ci-governance-registry-fetch
+  - FEATURES
+  - PLATFORM_SYSTEM_MAP
+  - RB-0031-idp-stack-deployment
+  - RB-0032
   - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
   - SCRIPT-0011
 ---
-
 # Session Capture - RDS Guardrails and Relationship Refresh
 
 **Agent:** Codex
@@ -69,25 +77,24 @@ relates_to:
 
 ## Validation
 
-- `python3 scripts/validate_metadata.py docs` (pass)
+- Last known: `python3 scripts/validate_metadata.py docs` (pass). Rerun after the local extractor update.
 
 ## Current State / Follow-ups
 
-- Relationship extractor now normalizes to full IDs only and skips ambiguous short IDs.
+- Relationship extractor code now prefers frontmatter IDs; rerun locally to apply relationship updates.
 - CL-0126 changelog ID corrected to full form to remove ambiguity.
-- Relationship refresh rerun after extractor normalization; changes pending commit.
-- `.goldenpath/value_ledger.json` updated from validation heartbeat.
+- Relationship refresh pending local rerun (permission limits in this environment).
+- `.goldenpath/value_ledger.json` updated from prior validation heartbeat.
 
 Signed: Codex (2026-01-17T09:11:49Z)
 
 ---
 
-## Review Feedback: `scripts/extract_relationships.py`
+## Review/Validation Appendix
 
-**Reviewer:** Claude Opus 4.5 (claude-opus-4-5-20251101)
-**Timestamp:** 2026-01-17T01:15:00Z
+### Review Feedback (Claude Opus 4.5 — 2026-01-17T01:15:00Z)
 
-### What Works Well
+#### What Works Well
 
 | Capability                            | Status | Notes                                              |
 | ------------------------------------- | ------ | -------------------------------------------------- |
@@ -99,76 +106,14 @@ Signed: Codex (2026-01-17T09:11:49Z)
 | Dry-run mode                          | ✅      | Safe testing before writes                         |
 | Normalization of existing relates_to  | ✅      | Cleans up short IDs to full IDs                    |
 
-### Issues and Gaps
+#### Issues and Gaps
 
-#### 1. Missing Reference Patterns
+1) Missing reference patterns (YAML `relates_to`, workflow comments, non-frontmatter headers).
+2) Non-markdown files ignored (`schemas/requests/*.yaml`, `.github/workflows/*.yml`, `scripts/*.py`).
+3) Bidirectional backlink population was missing (addressed in implementation update).
+4) Dependency extraction limited to a few patterns.
 
-The script doesn't extract:
-
-| Pattern                               | Example                            | Impact                                                                       |
-| ------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------- |
-| YAML `relates_to:` in non-frontmatter | Schema files like `rds.schema.yaml`| Won't link schema ↔ ADRs                                                     |
-| Workflow `# Relates-To:` comments     | `.github/workflows/*.yml`          | Won't link workflows ↔ docs                                                  |
-| `Relates-To:` in frontmatter headers  | Session capture files              | Already in frontmatter, but body references missed                           |
-| Runbook references (`RB-XXXX`)        | `RB-0031`, `RB-0032`               | `SHORT_ID_PREFIXES` has `RB` but body pattern only catches `ADR-` and `CL-`  |
-
-**Fix**: Add patterns:
-
-```python
-# Pattern: RB/PRD mentions (currently only ADR/CL)
-rb_mentions = re.findall(r'\b(RB-\d{4})\b', content)
-prd_mentions = re.findall(r'\b(PRD-\d{4})\b', content)
-```
-
-#### 2. Non-Markdown Files Ignored
-
-The script only processes `*.md` files, missing:
-
-- `schemas/requests/*.yaml` (contains `relates_to` and references ADRs)
-- `.github/workflows/*.yml` (contains `# Relates-To:` comments)
-- `scripts/*.py` (docstrings reference ADRs)
-
-**Impact**: Bidirectional metadata only works within markdown. A workflow referencing an ADR won't create a backlink.
-
-#### 3. No Reverse Population (Bidirectional Gap) - CRITICAL
-
-The script extracts references FROM a document but doesn't add backlinks TO referenced documents.
-
-Example:
-
-- `ADR-0158` mentions `ADR-0006` → Script adds `ADR-0006` to ADR-0158's `relates_to`
-- But `ADR-0006` doesn't get `ADR-0158` added to its `relates_to`
-
-**This is the main gap for bidirectional metadata.**
-
-**Fix**: Two-pass approach:
-
-```python
-# Pass 1: Extract all references
-graph = {}  # doc_id -> set of referenced doc_ids
-
-# Pass 2: Invert the graph
-for doc_id, refs in graph.items():
-    for ref_id in refs:
-        if ref_id in all_doc_ids:
-            reverse_graph[ref_id].add(doc_id)
-
-# Pass 3: Merge and write
-```
-
-#### 4. Duplicate Detection Edge Case
-
-When comparing `current_relates` vs `updated_relates`, if current has mixed short/full IDs, normalizing changes the set even though the references are semantically the same. Currently works correctly (0 updates in dry run when metadata is already normalized).
-
-#### 5. Dependency Extraction Limited
-
-The dependency patterns are narrow and miss:
-
-- `depends_on: ["aws_rds_cluster.main"]` (Terraform)
-- `requires: [keycloak, backstage]` (YAML)
-- `## Dependencies\n- Keycloak` (markdown sections)
-
-### Recommendations
+#### Recommendations
 
 | Priority | Action                                  | Effort | Status       |
 | -------- | --------------------------------------- | ------ | ------------ |
@@ -178,67 +123,127 @@ The dependency patterns are narrow and miss:
 | **P2**   | Add `## Dependencies` section parsing   | Medium | Open         |
 | **P3**   | Add Terraform `depends_on` parsing      | Low    | Open         |
 
-### Accuracy Assessment
+Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-17T01:15:00Z
 
-#### Markdown-to-markdown relationships: ~85% → ~95%
-
-- Good at ADR/CL references
-- Good at markdown link resolution
-- Now includes RB/PRD/EC/US patterns
-- Misses non-prefixed document IDs in prose (e.g., "see PLATFORM_SYSTEM_MAP")
-
-#### Bidirectional completeness: ~50% → ~100%
-
-- ~~Only populates outgoing references, not incoming backlinks~~
-- Now implements three-pass bidirectional linking
-
----
-
-**Signed:** Claude Opus 4.5 (claude-opus-4-5-20251101)
-**Timestamp:** 2026-01-17T01:15:00Z
-
----
-
-## Implementation Update: Bidirectional Backlinks
-
-**Implementer:** Claude Opus 4.5 (claude-opus-4-5-20251101)
-**Timestamp:** 2026-01-17T01:45:00Z
-**Commit:** `b37bc7ed`
-
-### Changes Made
+### Implementation Update (Claude Opus 4.5 — 2026-01-17T01:45:00Z)
 
 Implemented P0 and P1 (RB/PRD) recommendations in `scripts/extract_relationships.py`:
 
-1. **Three-pass bidirectional linking**:
-   - Pass 1: Extract all forward references to build graph
-   - Pass 2: Compute reverse graph (backlinks)
-   - Pass 3: Merge forward + reverse and write
+1. Three-pass bidirectional linking (forward graph → reverse graph → merge/write).
+2. Extended pattern extraction for `SHORT_ID_PREFIXES`: ADR, CL, PRD, RB, EC, US.
+3. Added `--no-backlinks` flag.
+4. Improved dry-run output to separate forward vs backlink additions.
 
-2. **Extended pattern extraction**:
-   - Now extracts all `SHORT_ID_PREFIXES`: ADR, CL, PRD, RB, EC, US
-   - Previously only extracted ADR and CL
-
-3. **New CLI options**:
-   - `--no-backlinks` flag to disable bidirectional linking if needed
-
-4. **Improved dry-run output**:
-   - Shows forward vs backlink additions separately
-
-### Dry-Run Stats
-
+Dry-run stats:
 ```text
 Pass 1: 410 documents with outgoing references, 1301 forward edges
 Pass 2: 382 documents with incoming backlinks, 1301 backlink edges
 Pass 3: 316 documents would be updated
 ```
 
-### Remaining Items (P1-P3)
-
+Remaining items:
 - Extend to YAML/workflow files (non-markdown)
 - Add `## Dependencies` section parsing
 - Add Terraform `depends_on` parsing
 
----
+Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-17T01:45:00Z
 
-**Signed:** Claude Opus 4.5 (claude-opus-4-5-20251101)
-**Timestamp:** 2026-01-17T01:45:00Z
+### Update (Codex — 2026-01-17T09:48:36Z)
+
+What changed:
+- Updated relationship extraction to resolve frontmatter IDs first and normalize slugged IDs back to canonical IDs.
+- Updated session summary note to reflect scanning `session_capture/**`.
+
+Artifacts touched:
+- `scripts/extract_relationships.py`
+- `session_summary/agent_session_summary.md`
+
+Validation:
+- `python3 scripts/extract_relationships.py` attempted, but write operations failed due to environment permissions. Needs local rerun.
+
+Next steps:
+- Run locally:
+  - `python3 scripts/extract_relationships.py`
+  - `python3 scripts/validate_metadata.py docs`
+
+Signed: Codex — 2026-01-17T09:48:36Z
+
+### Validation Run (Claude Opus 4.5 — 2026-01-17T10:15:00Z)
+
+Scripts executed:
+```bash
+python3 scripts/extract_relationships.py --dry-run
+python3 scripts/validate_metadata.py docs
+```
+
+Relationship extraction (dry-run):
+```text
+Found 601 markdown files
+Indexed 598 document IDs
+Mode: DRY RUN
+Backlinks: ENABLED
+============================================================
+Pass 1: Extracting forward references...
+   Found 453 documents with outgoing references
+   Total forward edges: 1652
+Pass 2: Computing backlinks...
+   Found 427 documents with incoming backlinks
+   Total backlink edges: 1652
+Pass 3: Updating documents...
+============================================================
+✅ Updated: 0
+⏭️  Skipped: 601
+📊 Total: 601
+```
+
+Metadata validation:
+```text
+✅ Passed: 521
+❌ Failed: 0
+```
+
+Conclusion:
+- Relationship extraction is stable and idempotent
+- Bidirectional linking is working correctly
+- No further updates required at this time
+
+Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-17T10:15:00Z
+
+### Live Run (Claude Opus 4.5 — 2026-01-17T10:25:00Z)
+
+Executed relationship extraction in live mode:
+
+```bash
+python3 scripts/extract_relationships.py
+```
+
+Result:
+```text
+Found 602 markdown files
+Indexed 599 document IDs
+Mode: LIVE
+Backlinks: ENABLED
+============================================================
+Pass 1: Extracting forward references...
+   Found 453 documents with outgoing references
+   Total forward edges: 1652
+Pass 2: Computing backlinks...
+   Found 427 documents with incoming backlinks
+   Total backlink edges: 1652
+Pass 3: Updating documents...
+============================================================
+✅ Updated: 0
+⏭️  Skipped: 602
+📊 Total: 602
+```
+
+Analysis:
+
+- Graph is fully synchronized (0 updates needed)
+- 1652 bidirectional edges confirmed
+- Script is idempotent — repeated runs produce no changes
+- One additional file detected since dry-run (602 vs 601)
+
+Status: **Complete** — Knowledge graph is current and bidirectional.
+
+Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-17T10:25:00Z

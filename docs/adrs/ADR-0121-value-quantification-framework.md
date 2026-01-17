@@ -16,8 +16,13 @@ reliability:
   observability_tier: gold
 schema_version: 1
 relates_to:
-  - ADR-0121
+  - 01_adr_index
+  - ADR-0121-value-quantification-framework
+  - ADR-0122
   - CAPABILITY_LEDGER
+  - CL-0077-value-quantification-framework
+  - CL-0082-value-heartbeat-roi-telemetry
+  - CL-0120
   - VQ_TAGGING_GUIDE
 supersedes: []
 superseded_by: []

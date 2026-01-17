@@ -11,9 +11,8 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0113
   - ADR-0113-platform-queryable-intelligence-enums
-  - ADR-0115
+  - ADR-0115-enhanced-enum-validation-engine
 ---
 ## Walkthrough: Implementing "Queryable Intelligence" (Enums & Validation)
 

@@ -16,12 +16,20 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0082
-  - ADR-0083
-  - ADR-0084
-  - CL-0042
-  - CL-0043
+  - 01_adr_index
+  - 02_adr_template
+  - ADR-0082-platform-metadata-validation
+  - ADR-0083-platform-metadata-backfill-protocol
+  - ADR-0084-platform-enhanced-metadata-schema
+  - ADR-0088-automated-metadata-remediation
+  - ADR-0113-platform-queryable-intelligence-enums
+  - CL-0042-metadata-backfill-batch-1
+  - CL-0043-complete-metadata-backfill
   - METADATA_STRATEGY
+  - METADATA_VALIDATION_GUIDE
+  - RB-0018-metadata-backfill-script
+  - RB-0019-relationship-extraction-script
+  - SCRIPT_CERTIFICATION_AUDIT
 supersedes: []
 superseded_by: []
 tags: []
@@ -34,7 +42,6 @@ supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
-
 # ADR-0084: Enhanced Metadata Schema for Knowledge Graph
 
 **Date:** 2026-01-04

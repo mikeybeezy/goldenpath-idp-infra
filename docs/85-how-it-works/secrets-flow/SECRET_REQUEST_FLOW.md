@@ -5,9 +5,7 @@ type: documentation
 relates_to:
   - ADR-0135
   - ADR-0143
-  - RB-0026-local-secret-generation
-  - docs/adrs/ADR-0135-platform-secrets-manager-eso-foundation.md
-  - docs/adrs/ADR-0143-secret-request-contract.md
+  - RB-0026
 ---
 ## How It Works: Platform Secret Lifecycle
 

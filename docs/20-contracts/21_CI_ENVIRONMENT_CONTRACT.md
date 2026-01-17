@@ -10,17 +10,31 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 relates_to:
+  - 02_PLATFORM_BOUNDARIES
+  - 04_PR_GUARDRAILS
+  - 26_AI_AGENT_PROTOCOLS
+  - 32_TERRAFORM_STATE_AND_LOCKING
   - 33_IAM_ROLES_AND_POLICIES
-  - ADR-0030
+  - 36_STATE_KEY_STRATEGY
+  - 39_GOLDEN_PATH_VALIDATION
+  - ADR-0017-platform-policy-as-code
+  - ADR-0028-platform-dev-branch-gate
+  - ADR-0029-platform-dev-plan-gate
   - ADR-0030-platform-precreated-iam-policies
-  - ADR-0033
   - ADR-0033-platform-ci-orchestrated-modes
-  - ADR-0034
+  - ADR-0034-platform-ci-environment-contract
+  - ADR-0040-platform-lifecycle-aware-state-keys
+  - ADR-0044-platform-infra-checks-ref-mode
+  - ADR-0046-platform-pr-plan-validation-ownership
+  - ADR-0051-platform-reliability-metrics-contract-minimums
+  - ADR-0060-platform-ephemeral-update-workflow
+  - CI_TERRAFORM_WORKFLOWS
+  - RB-0019-relationship-extraction-script
+  - RELATIONSHIP_EXTRACTION_GUIDE
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # CI Environment Contract
 
 Doc contract:
@@ -95,6 +109,12 @@ reviewers are configured, apply waits for approval; otherwise it runs immediatel
 Apply also accepts a successful **PR Terraform Plan** for the same commit SHA.
 If apply runs on a merge commit, the guard will also accept the PR plan tied to
 the merged PR head SHA (manual `infra-terraform.yml` remains optional).
+
+### Documentation guardrails (`session-capture-guard.yml`)
+
+| Variable | Source | Purpose |
+| --- | --- | --- |
+| (none) | n/a | Enforces append-only updates in `session_capture/**` with timestamped update headers. |
 
 ### Infra Terraform Apply (test) (`infra-terraform-apply-test.yml`)
 

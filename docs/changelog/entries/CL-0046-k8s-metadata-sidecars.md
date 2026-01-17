@@ -17,7 +17,7 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - CL-0046
+  - CL-0046-k8s-metadata-sidecars
 supersedes: []
 superseded_by: []
 tags: []

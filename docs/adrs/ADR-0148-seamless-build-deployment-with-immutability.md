@@ -13,14 +13,20 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0007
+  - 01_adr_index
   - ADR-0007-platform-environment-model
-  - ADR-0063
   - ADR-0063-platform-terraform-helm-bootstrap
-  - ADR-0148
+  - ADR-0148-seamless-build-deployment-with-immutability
   - ADR-0153
-  - CL-0121
+  - ADR-0154
+  - ADR-0155-ci-governance-registry-fetch
+  - ADR-0156-platform-ci-build-timing-capture
+  - BRIDGE_ANALYSIS
+  - BUG_FIXES_SUMMARY
   - CL-0121-seamless-build-deployment
+  - CL-0125
+  - CL-0126-ci-governance-registry-fetch
+  - EC-0001-knative-integration
   - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 supersedes: []
 superseded_by: []

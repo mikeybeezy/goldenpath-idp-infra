@@ -11,20 +11,22 @@ reliability:
   observability_tier: gold
   maturity: 1
 relates_to:
+  - 01_GOVERNANCE
+  - 02_GOVERNANCE_MODEL
   - 41_STORAGE_AND_PERSISTENCE
-  - ADR-0049
-  - ADR-0052
-  - ADR-0054
-  - ADR-0055
-  - ADR-0056
+  - ADR-0049-platform-pragmatic-observability-baseline
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0054-platform-observability-exporters-otel-split
+  - ADR-0055-platform-tempo-tracing-backend
   - ADR-0056-platform-loki-deployment-mode
-  - ADR-0061
+  - ADR-0058-platform-grafana-config-workflow
+  - ADR-0061-platform-observability-provisioning-boundary
+  - ADR-0069-platform-observability-baseline-golden-signals
 category: observability
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Observability Tooling Decisions
 
 Doc contract:

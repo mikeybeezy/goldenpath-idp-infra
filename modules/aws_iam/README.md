@@ -17,9 +17,10 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - 09_ARCHITECTURE
   - 06_IDENTITY_AND_ACCESS
-  - ADR-0031
+  - 09_ARCHITECTURE
+  - 14_MODULES_OVERVIEW
+  - ADR-0031-platform-bootstrap-irsa-service-accounts
 supersedes: []
 superseded_by: []
 tags: []
@@ -36,7 +37,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # EKS IAM Module
 
 ## Purpose

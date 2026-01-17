@@ -17,9 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0067
   - ADR-0067-platform-labeler-base-ref
-  - CL-0016
+  - CL-0016-labeler-base-ref-checkout
+  - RB-0019-relationship-extraction-script
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +32,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0016: Labeler uses base ref checkout
 
 Date: 2026-01-02

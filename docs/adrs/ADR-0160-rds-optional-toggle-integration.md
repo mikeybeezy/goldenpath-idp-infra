@@ -17,8 +17,16 @@ tags:
   - infrastructure
   - self-service
 relates_to:
-  - ADR-0157
-  - ADR-0158
+  - 01_adr_index
+  - ADR-0157-platform-multi-tenant-rds-architecture
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0160
+  - ADR-0166
+  - CL-0130
+  - CL-0133-idp-stack-deployment-runbook
+  - RB-0030-rds-break-glass-deletion
+  - RB-0031-idp-stack-deployment
+  - RDS_DUAL_MODE_AUTOMATION
 ---
 ## Status
 

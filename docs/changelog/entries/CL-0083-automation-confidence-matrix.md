@@ -16,8 +16,8 @@ schema_version: 1
 relates_to:
   - ADR-0126
   - AUTOMATION_VERIFICATION_LOG.txt
-  - CL-0083
-  - CONFIDENCE_MATRIX.md
+  - CL-0083-automation-confidence-matrix
+  - CONFIDENCE_MATRIX
   - platform_health.py
 supersedes: []
 superseded_by: []

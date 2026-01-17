@@ -13,15 +13,19 @@ reliability:
 relates_to:
   - 10_PLATFORM_REQUIREMENTS
   - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0165
-  - RDS_DUAL_MODE_AUTOMATION
-  - RDS_USER_DB_PROVISIONING
+  - CL-0140
+  - DOCS_PRDS_README
   - RB-0032
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
+  - RDS_USER_DB_PROVISIONING
+  - agent_session_summary
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # PRD-0001: Automated RDS User and Database Provisioning
 
 Status: draft

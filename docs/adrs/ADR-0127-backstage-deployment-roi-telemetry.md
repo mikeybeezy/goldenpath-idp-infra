@@ -11,7 +11,10 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0127
+  - RB-0021-backstage-helm-catalog-visibility
 supersedes: []
 superseded_by: []
 tags: []
@@ -24,7 +27,6 @@ supported_until: 2028-01-08
 version: 1.0
 breaking_change: false
 ---
-
 ## ADR-0127: Backstage Helm Deployment with ROI Telemetry
 
 ## Status

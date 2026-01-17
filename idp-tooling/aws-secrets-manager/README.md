@@ -7,15 +7,14 @@ risk_profile:
   security_risk: high
   coupling_risk: low
 relates_to:
+  - ADR-0006-platform-secrets-strategy
   - HELM_EXTERNAL_SECRETS
-  - ADR-0006
 version: 1.0
 dependencies:
   - provider:aws
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # AWS Secrets Manager Module
 
 This module provisions and manages secrets in AWS Secrets Manager—the system of record for sensitive config. Applications never read from Secrets Manager directly; External Secrets Operator (installed via Helm) syncs the values into Kubernetes namespaces.

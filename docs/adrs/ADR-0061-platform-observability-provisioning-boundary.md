@@ -14,10 +14,10 @@ reliability:
 schema_version: 1
 relates_to:
   - 01_GOVERNANCE
+  - 01_adr_index
   - 05_OBSERVABILITY_DECISIONS
-  - ADR-0052
   - ADR-0052-platform-kube-prometheus-stack-bundle
-  - ADR-0061
+  - ADR-0061-platform-observability-provisioning-boundary
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +30,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform external)
 
 - **Status:** Proposed

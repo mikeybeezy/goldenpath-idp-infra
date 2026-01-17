@@ -22,13 +22,10 @@ reliability:
 schema_version: 1
 relates_to:
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0038
   - ADR-0038-platform-teardown-orphan-cleanup-gate
-  - ADR-0048
   - ADR-0048-platform-teardown-version-selector
-  - ADR-0164
   - ADR-0164-teardown-v3-enhanced-reliability
-  - CL-0139
+  - CL-0139-teardown-v3-enhanced-reliability
 supersedes:
   - ADR-0048-platform-teardown-version-selector
 superseded_by: []

@@ -11,7 +11,8 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0009
+  - 01_GOVERNANCE
+  - ADR-0009-app-delivery-insights
 category: delivery
 supported_until: 2028-01-01
 version: 1.0
@@ -19,7 +20,6 @@ dependencies:
   - module:opentelemetry
 breaking_change: false
 ---
-
 # Delivery Insights (CI/CD Observability)
 
 ## Purpose

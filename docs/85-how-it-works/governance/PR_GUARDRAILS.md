@@ -3,10 +3,8 @@ id: PR_GUARDRAILS
 title: 'How It Works: PR Guardrails'
 type: documentation
 relates_to:
-  - .github/workflows/pr-guardrails.yml
-  - RB-0027-frictionless-pr-gates
-  - scripts/pr_guardrails.py
-  - scripts/validate_enums.py
+  - PR_GUARDRAILS_INDEX
+  - RB-0027
 ---
 # How It Works: PR Guardrails
 

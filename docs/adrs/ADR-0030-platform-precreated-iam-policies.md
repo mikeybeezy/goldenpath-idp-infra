@@ -13,8 +13,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0015
-  - ADR-0030
+  - 01_adr_index
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - ADR-0015-platform-aws-oidc-for-github-actions
+  - ADR-0030-platform-precreated-iam-policies
+  - RB-0019-relationship-extraction-script
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +31,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0030: Pre-create IAM policies for IRSA controllers in V1
 
 - **Status:** Accepted

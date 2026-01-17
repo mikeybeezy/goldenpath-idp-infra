@@ -11,11 +11,11 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 relates_to:
-  - METADATA_MAINTENANCE_GUIDE
-  - METADATA_INJECTION_GUIDE
-  - FEDERATED_METADATA_STRATEGY
-  - ADR-0087
+  - ADR-0087-k8s-metadata-sidecars
   - ADR-0136
+  - FEDERATED_METADATA_STRATEGY
+  - METADATA_INJECTION_GUIDE
+  - METADATA_MAINTENANCE_GUIDE
 tags:
   - metadata
   - sidecar
@@ -23,7 +23,6 @@ tags:
 category: governance
 supported_until: 2028-01-01
 ---
-
 # Metadata Adoption Policy for Configs and Reports
 
 Doc contract:

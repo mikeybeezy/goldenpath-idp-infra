@@ -16,8 +16,11 @@ relates_to:
   - 00_DESIGN_PHILOSOPHY
   - 00_DOC_INDEX
   - 01_GOVERNANCE
+  - 01_adr_index
   - 02_PLATFORM_BOUNDARIES
-  - ADR-0027
+  - ADR-0027-platform-design-philosophy
+  - CAPABILITY_LEDGER
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +33,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0027: Platform design philosophy and reference implementation
 
 Filename: `ADR-0027-platform-design-philosophy.md`

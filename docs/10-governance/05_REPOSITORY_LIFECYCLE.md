@@ -13,13 +13,12 @@ reliability:
 relates_to:
   - 01_GOVERNANCE
   - 10_REPO_DECOMMISSIONING
-  - ADR-0078
+  - ADR-0078-platform-governed-repo-scaffolder
 category: governance
 supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # Repository Lifecycle Governance
 
 Doc contract:

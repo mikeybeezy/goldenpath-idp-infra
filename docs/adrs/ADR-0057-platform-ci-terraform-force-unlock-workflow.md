@@ -12,9 +12,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 07_TF_STATE_FORCE_UNLOCK
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0057
+  - ADR-0057-platform-ci-terraform-force-unlock-workflow
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +29,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0057: CI Terraform force-unlock workflow (break-glass)
 
 Filename: `ADR-0057-platform-ci-terraform-force-unlock-workflow.md`

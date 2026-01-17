@@ -13,9 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0011
-  - ADR-0034
+  - 01_adr_index
+  - ADR-0011-platform-ci-environment-contract
   - ADR-0034-platform-ci-environment-contract
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -28,7 +29,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0011: CI Environment Contract (Superseded)
 
 - **Status:** Superseded

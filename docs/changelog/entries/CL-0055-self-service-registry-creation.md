@@ -17,11 +17,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0092
   - ADR-0092-ecr-registry-product-strategy
-  - ADR-0095
   - ADR-0095-self-service-registry-creation
-  - CL-0055
+  - CL-0055-self-service-registry-creation
+  - RB-0024-request-registry
 supersedes: []
 superseded_by: []
 tags: []

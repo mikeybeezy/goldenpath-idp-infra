@@ -13,22 +13,21 @@ reliability:
 relates_to:
   - 00_DOC_INDEX
   - 30_DOCUMENTATION_FRESHNESS
-  - ADR-0001
-  - ADR-0008
-  - ADR-0024
-  - ADR-0025
-  - ADR-0026
-  - ADR-0034
-  - ADR-0037
-  - ADR-0043
-  - ADR-0052
-  - ADR-0056
-  - ADR-0062
+  - ADR-0001-platform-argocd-as-gitops-operator
+  - ADR-0008-app-backstage-portal
+  - ADR-0024-platform-security-floor-v1
+  - ADR-0025-platform-boundaries-contract
+  - ADR-0026-platform-cd-deployment-contract
+  - ADR-0034-platform-ci-environment-contract
+  - ADR-0037-platform-resource-tagging-policy
+  - ADR-0043-platform-teardown-lb-eni-wait
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0056-platform-loki-deployment-mode
+  - ADR-0062-platform-app-template-contract
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Documentation Tightening Plan (V1)
 
 Doc contract:

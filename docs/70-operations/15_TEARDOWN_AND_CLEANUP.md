@@ -13,16 +13,27 @@ reliability:
 relates_to:
   - 04_LB_FINALIZER_STUCK
   - 06_LB_ENI_ORPHANS
+  - 06_REBUILD_SEQUENCE
   - 09_CI_TEARDOWN_RECOVERY_V2
   - 10_INFRA_FAILURE_MODES
   - 16_INFRA_Build_ID_Strategy_Decision
-  - ADR-0043
+  - 70_OPERATIONS_README
+  - ADR-0038-platform-teardown-orphan-cleanup-gate
+  - ADR-0041-platform-orphan-cleanup-deletion-order
+  - ADR-0043-platform-teardown-lb-eni-wait
+  - ADR-0045-platform-teardown-lb-delete-default
+  - ADR-0047-platform-teardown-destroy-timeout-retry
+  - ADR-0048-platform-teardown-version-selector
+  - ADR-0053-platform-storage-lifecycle-separation
+  - ADR-0057-platform-ci-terraform-force-unlock-workflow
+  - ADR-0164-teardown-v3-enhanced-reliability
+  - BOOTSTRAP_10_BOOTSTRAP_README
+  - RB-0006-lb-eni-orphans
 category: compliance
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Teardown and Cleanup Commands
 
 Doc contract:

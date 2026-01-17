@@ -11,14 +11,13 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
-  - ADR-0018
   - 27_CI_IMAGE_SCANNING
+  - ADR-0018-platform-container-registry-standard
 category: security
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
-
 # Container Registry Standard (Living Document)
 
 This document captures the current registry approach and implementation details.

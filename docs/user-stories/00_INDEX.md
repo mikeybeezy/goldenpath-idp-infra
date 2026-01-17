@@ -11,15 +11,16 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0078
-  - CL-0031
-  - US-0001-governance-driven-repo-scaffolder
+  - ADR-0078-platform-governed-repo-scaffolder
+  - CL-0031-governed-repo-scaffolder
+  - DOCS_PRDS_README
+  - DOCS_USER-STORIES_README
   - US-0000-template
+  - US-0001-governance-driven-repo-scaffolder
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
-
 # User Story Index
 
 | ID | Title | Status | Date | Related |

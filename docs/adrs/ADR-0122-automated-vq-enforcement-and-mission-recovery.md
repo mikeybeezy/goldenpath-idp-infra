@@ -13,9 +13,11 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0121
+  - 01_adr_index
   - ADR-0121-value-quantification-framework
+  - ADR-0122
   - AGENT_FIRST_BOOT
+  - CL-0078
   - VQ_PRINCIPLES
 supersedes: []
 superseded_by: []

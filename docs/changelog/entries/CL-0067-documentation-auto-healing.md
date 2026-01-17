@@ -17,9 +17,8 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0111
   - ADR-0111-platform-documentation-auto-healing
-  - CL-0067
+  - CL-0067-documentation-auto-healing
 supersedes: []
 superseded_by: []
 tags: []

@@ -3,21 +3,20 @@ id: RDS_REQUEST_FLOW
 title: 'How It Works: RDS Database Request Flow'
 type: documentation
 relates_to:
-  - .github/workflows/create-rds-database.yml
   - 30_PLATFORM_RDS_ARCHITECTURE
-  - ADR-0158
   - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0159-backstage-catalog-registry-sync
   - ADR-0166
-  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
+  - CATALOG_SYSTEMS
+  - CONTRACT_DRIVEN_ARCHITECTURE
   - PRD-0001-rds-user-db-provisioning
+  - PR_GUARDRAILS_INDEX
   - RB-0029-rds-manual-secret-rotation
   - RB-0030-rds-break-glass-deletion
   - RB-0032
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_USER_DB_PROVISIONING
-  - backstage-helm/backstage-catalog/templates/rds-request.yaml
-  - docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md
-  - docs/adrs/ADR-0158-platform-standalone-rds-bounded-context.md
+  - SESSION_CAPTURE_2026_01_17_01
 ---
 ## How It Works: RDS Database Request Flow
 

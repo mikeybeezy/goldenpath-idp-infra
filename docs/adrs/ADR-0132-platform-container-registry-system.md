@@ -12,9 +12,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - ADR-0128
   - ADR-0129
-  - CL-0092
+  - ADR-0132
+  - CL-0092-ecr-registry-system-and-sync
+  - CL-0095-ecr-backstage-sync-automation
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +30,6 @@ supported_until: 2028-01-09
 version: 1.0
 breaking_change: false
 ---
-
 ## ADR-0132: Model ECR Registry as a Dedicated Backstage System
 
 - **Status:** Accepted

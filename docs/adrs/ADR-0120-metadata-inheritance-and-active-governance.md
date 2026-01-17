@@ -13,7 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0120
+  - 01_adr_index
+  - ADR-0120-metadata-inheritance-and-active-governance
+  - CL-0076-metadata-inheritance-and-active-governance
+  - PLATFORM_URGENT_FIX
 supersedes: []
 superseded_by: []
 tags: []

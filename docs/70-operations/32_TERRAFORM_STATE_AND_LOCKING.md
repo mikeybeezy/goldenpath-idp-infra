@@ -14,13 +14,15 @@ relates_to:
   - 07_TF_STATE_FORCE_UNLOCK
   - 21_CI_ENVIRONMENT_CONTRACT
   - 33_IAM_ROLES_AND_POLICIES
+  - 34_PLATFORM_SUCCESS_CHECKLIST
   - 36_STATE_KEY_STRATEGY
+  - 70_OPERATIONS_README
+  - ADR-0040-platform-lifecycle-aware-state-keys
 category: compliance
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Terraform State and Locking (Living)
 
 Doc contract:

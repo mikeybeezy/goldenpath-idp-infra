@@ -18,11 +18,11 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0159
   - ADR-0159-backstage-catalog-registry-sync
   - CL-0129
-  - CL-0129-backstage-catalog-registry-sync
-  - CL-0134
+  - CL-0134-backstage-catalog-governance-registry-sync
+  - CL-0135-kong-ingress-for-tooling-apps
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:

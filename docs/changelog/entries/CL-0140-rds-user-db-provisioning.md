@@ -17,11 +17,12 @@ risk_profile:
 schema_version: 1
 relates_to:
   - ADR-0165
-  - ADR-0165-rds-user-db-provisioning-automation
+  - CL-0140
   - PRD-0001-rds-user-db-provisioning
+  - RB-0030-rds-break-glass-deletion
   - RB-0032
-  - RB-0032-rds-user-provision
   - SCRIPT-0035
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:

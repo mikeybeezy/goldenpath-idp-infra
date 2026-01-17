@@ -12,8 +12,8 @@ reliability:
   maturity: 1
 relates_to:
   - 01_adr_index
-  - ADR-0001
-  - ADR-0112
+  - ADR-0001-platform-argocd-as-gitops-operator
+  - ADR-0112-automated-adr-index-generation
   - CODEOWNERS_POLICY
 category: architecture
 supported_until: 2028-01-06

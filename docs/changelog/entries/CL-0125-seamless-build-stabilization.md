@@ -14,9 +14,9 @@ risk_profile:
   coupling_risk: none
 schema_version: 1
 relates_to:
-  - ADR-0148
+  - ADR-0148-seamless-build-deployment-with-immutability
   - ADR-0153
-  - ADR-0153-cluster-provisioning-identity
+  - CL-0125
 supersedes: []
 superseded_by: []
 tags: []

@@ -12,13 +12,14 @@ reliability:
   maturity: 1
 relates_to:
   - 03_GOVERNANCE_BACKSTAGE
+  - 04_REPO_STRUCTURE
   - 12_GITOPS_AND_CICD
-  - ADR-0008
+  - ADR-0008-app-backstage-portal
+  - GOLDENPATH_IDP_ROOT_README
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Backstage MVP (First App Through CI/CD)
 
 Doc contract:

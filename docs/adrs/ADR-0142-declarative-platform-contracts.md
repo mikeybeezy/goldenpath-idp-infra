@@ -11,7 +11,10 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0142
+  - ADR-0144
 supersedes: []
 superseded_by: []
 tags: []
@@ -22,7 +25,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 ## ADR-0142: Strategic Adoption of Declarative Platform Contracts
 
 ## Status

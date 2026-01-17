@@ -4,10 +4,8 @@ title: Script Standard (Born Governed)
 type: contract
 relates_to:
   - ADR-0146
-  - schema:automation/script.schema.yaml
 version: 1.0
 ---
-
 # Script Standard (Born Governed)
 
 ## Goal

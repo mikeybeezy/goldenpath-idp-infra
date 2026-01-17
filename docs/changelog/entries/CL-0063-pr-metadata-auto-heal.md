@@ -17,8 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0101
-  - CL-0063
+  - 04_PR_GUARDRAILS
+  - ADR-0101-pr-metadata-auto-heal
+  - CL-0063-pr-metadata-auto-heal
 supersedes: []
 superseded_by: []
 tags: []

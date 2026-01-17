@@ -11,13 +11,13 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0092
   - ADR-0092-ecr-registry-product-strategy
-  - ADR-0097
   - ADR-0097-domain-based-resource-catalogs
-  - ADR-0158
+  - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0165
   - ADR-0166
+  - CL-0057-domain-based-catalogs
+  - agent_session_summary
 supported_until: 2028-01-05
 version: '1.0'
 breaking_change: false

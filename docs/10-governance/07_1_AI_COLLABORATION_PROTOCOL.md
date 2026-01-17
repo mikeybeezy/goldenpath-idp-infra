@@ -3,8 +3,9 @@ id: 07_1_AI_COLLABORATION_PROTOCOL
 title: AI Collaboration Protocol
 type: documentation
 category: governance
+relates_to:
+  - agent_session_summary
 ---
-
 # AI Collaboration Protocol (ACP)
 
 ## Purpose

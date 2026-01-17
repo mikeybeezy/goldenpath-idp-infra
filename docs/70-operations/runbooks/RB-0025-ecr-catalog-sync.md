@@ -13,9 +13,10 @@ reliability:
   maturity: 1
 relates_to:
   - ADR-0128
-  - ADR-0128-automated-ecr-catalog-sync
   - ADR-0129
-  - ADR-0129-platform-eventual-consistency-ecr-governance
+  - CL-0092-ecr-registry-system-and-sync
+  - CL-0095-ecr-backstage-sync-automation
+  - DOCS_RUNBOOKS_README
 tags:
   - ecr
   - catalog

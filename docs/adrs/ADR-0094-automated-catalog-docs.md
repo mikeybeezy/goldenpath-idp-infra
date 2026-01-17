@@ -13,10 +13,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0092
+  - 01_adr_index
   - ADR-0092-ecr-registry-product-strategy
-  - ADR-0094
+  - ADR-0094-automated-catalog-docs
+  - ADR-0097-domain-based-resource-catalogs
+  - CL-0054-automated-catalog-docs
+  - CL-0057-domain-based-catalogs
   - REGISTRY_CATALOG
+  - SCRIPT_CERTIFICATION_AUDIT
 supersedes: []
 superseded_by: []
 tags: []

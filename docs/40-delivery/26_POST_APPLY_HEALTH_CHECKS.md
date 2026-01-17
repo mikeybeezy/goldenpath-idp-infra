@@ -11,7 +11,7 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0022
+  - ADR-0022-platform-post-apply-health-checks
 category: delivery
 supported_until: 2028-01-01
 version: 1.0
@@ -21,7 +21,6 @@ dependencies:
   - module:kubernetes
 breaking_change: false
 ---
-
 # Post-Apply Health Checks (Living Document)
 
 This document describes the health-check gate that runs after Terraform apply.

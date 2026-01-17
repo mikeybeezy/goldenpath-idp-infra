@@ -11,10 +11,12 @@ reliability:
   observability_tier: gold
   maturity: 1
 relates_to:
-  - ADR-0005
-  - ADR-0032
-  - KEYCLOAK_CONFIG_README
   - 08_GITHUB_AGENT_ROLES
+  - 12_GITOPS_AND_CICD
+  - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
+  - ADR-0032-platform-eks-access-model
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - KEYCLOAK_CONFIG_README
 category: security
 supported_until: 2028-01-01
 version: 1.0
@@ -23,7 +25,6 @@ dependencies:
   - module:aws_iam
 breaking_change: false
 ---
-
 # Identity & Access Governance
 
 ## Purpose

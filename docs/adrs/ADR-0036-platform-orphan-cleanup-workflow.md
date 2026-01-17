@@ -13,10 +13,13 @@ reliability:
 schema_version: 1
 relates_to:
   - 01_GOVERNANCE
+  - 01_adr_index
   - 20_CI_ENVIRONMENT_SEPARATION
-  - ADR-0036
-  - ADR-0038
+  - ADR-0036-platform-orphan-cleanup-workflow
   - ADR-0038-platform-teardown-orphan-cleanup-gate
+  - RB-0017-orphan-cleanup
+  - TEARDOWN_README
+  - audit-20260103
 supersedes: []
 superseded_by: ADR-0038
 tags: []
@@ -29,7 +32,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown
 
 - **Status:** Superseded

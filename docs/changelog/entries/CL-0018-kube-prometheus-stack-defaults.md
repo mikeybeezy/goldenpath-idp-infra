@@ -17,9 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0052
-  - ADR-0053
-  - CL-0018
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0053-platform-storage-lifecycle-separation
+  - CL-0018-kube-prometheus-stack-defaults
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +32,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0018: Kube-prometheus-stack baseline and storage defaults
 
 Date: 2025-12-31

@@ -12,8 +12,15 @@ reliability:
   maturity: 1
 relates_to:
   - 30_PLATFORM_RDS_ARCHITECTURE
-  - ADR-0158
   - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0160
+  - CAPABILITY_LEDGER
+  - CL-0140
+  - DOCS_RUNBOOKS_README
+  - EC-0001-knative-integration
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0032
+  - RDS_REQUEST_FLOW
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0

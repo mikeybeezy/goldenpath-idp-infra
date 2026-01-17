@@ -12,10 +12,14 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - 04_PR_GUARDRAILS
   - 21_CI_ENVIRONMENT_CONTRACT
   - 36_STATE_KEY_STRATEGY
-  - ADR-0044
-  - ADR-0046
+  - ADR-0044-platform-infra-checks-ref-mode
+  - ADR-0046-platform-pr-plan-validation-ownership
+  - READINESS_CHECKLIST
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -28,7 +32,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0046: PR plan owns validation (no auto infra checks dispatch)
 
 Filename: `ADR-0046-platform-pr-plan-validation-ownership.md`

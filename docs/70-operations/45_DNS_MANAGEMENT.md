@@ -18,7 +18,8 @@ schema_version: 1
 relates_to:
   - 20_TOOLING_APPS_MATRIX
   - ADR-0162
-  - ADR-0162-kong-ingress-dns-strategy
+  - CL-0136-tooling-apps-ingress-configuration
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:

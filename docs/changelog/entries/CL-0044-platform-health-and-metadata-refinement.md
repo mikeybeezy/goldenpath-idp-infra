@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0044
+  - CL-0044-platform-health-and-metadata-refinement
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +30,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0044: Platform Health Check and Metadata Refinement
 
 ## Changes

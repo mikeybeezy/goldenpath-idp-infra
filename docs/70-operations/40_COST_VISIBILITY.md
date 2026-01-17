@@ -12,13 +12,13 @@ reliability:
   maturity: 1
 relates_to:
   - 06_COST_GOVERNANCE
-  - ADR-0076
+  - 70_OPERATIONS_README
+  - ADR-0076-platform-infracost-ci-visibility
 category: compliance
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Cost Visibility (CI + Infracost)
 
 Doc contract:

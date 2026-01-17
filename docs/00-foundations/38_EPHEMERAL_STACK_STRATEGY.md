@@ -3,7 +3,7 @@ id: 38_EPHEMERAL_STACK_STRATEGY
 title: 'Ephemeral Stack Strategy: "The Simulation"'
 relates_to:
   - ADR-0161
-  - ADR-0161-ephemeral-infrastructure-stack
+  - CL-0131
 ---
 ## Ephemeral Stack Strategy: "The Simulation"
 

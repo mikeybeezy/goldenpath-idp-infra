@@ -11,9 +11,9 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0084
-  - ADR-0088
+  - ADR-0084-platform-enhanced-metadata-schema
   - ADR-0088-automated-metadata-remediation
+  - METADATA_BACKFILL_RUNBOOK
   - METADATA_BACKFILL_SCRIPT
   - METADATA_STRATEGY
   - RELATIONSHIP_EXTRACTION_SCRIPT

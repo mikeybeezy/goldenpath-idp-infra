@@ -11,8 +11,9 @@ reliability:
   observability_tier: bronze
   maturity: 1
 category: runbooks
+relates_to:
+  - DOCS_RUNBOOKS_README
 ---
-
 # Runbook: Resolving Git Rebase Conflicts (Uncommitted Changes)
 
 ## Problem

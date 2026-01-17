@@ -14,7 +14,16 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0008
+  - 01_adr_index
+  - 03_GOVERNANCE_BACKSTAGE
+  - 18_BACKSTAGE_MVP
+  - 44_DOC_TIGHTENING_PLAN
+  - ADR-0008-app-backstage-portal
+  - ADR-0009-app-delivery-insights
+  - ADR-0018-platform-container-registry-standard
+  - HELM_BACKSTAGE
+  - IDP_TOOLING_BACKSTAGE_CONFIG
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +36,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0008: Use Backstage as the developer portal and the V1 demo application for env promotion
 
 - **Status:** Accepted

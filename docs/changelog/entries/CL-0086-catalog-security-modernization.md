@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0130
-  - CL-0086
+  - CL-0086-catalog-security-modernization
 supersedes: []
 superseded_by: []
 tags: []

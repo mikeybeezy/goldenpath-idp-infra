@@ -11,8 +11,9 @@ value_quantification:
   vq_class: 🔵 HV/HQ
   impact_tier: high
   potential_savings_hours: 40.0
+relates_to:
+  - CL-0126-eks-end-to-end-milestone
 ---
-
 # Walkthrough: First Successful End-to-End EKS Deployment
 
 **Build ID**: `14-01-26-06`

@@ -1,5 +1,5 @@
 ---
-id: CL-0126
+id: CL-0126-ci-governance-registry-fetch
 title: CI Governance Registry Fetch for Build ID Validation
 type: changelog
 status: released
@@ -19,10 +19,11 @@ risk_profile:
   coupling_risk: low
 schema_version: 1
 relates_to:
-  - ADR-0148
   - ADR-0148-seamless-build-deployment-with-immutability
-  - ADR-0155
   - ADR-0155-ci-governance-registry-fetch
+  - CL-0126-ci-governance-registry-fetch
+  - CL-0126-eks-end-to-end-milestone
+  - SESSION_CAPTURE_2026_01_17_01
 supersedes: []
 superseded_by: []
 tags:

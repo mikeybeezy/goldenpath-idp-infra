@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0089
+  - CL-0089-build-log-metrics
   - DOCS_BUILD-RUN-LOGS_README
 supersedes: []
 superseded_by: []
@@ -31,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0089: Add Build Log Metrics and Roadmap Update
 
 Date: 2026-01-03

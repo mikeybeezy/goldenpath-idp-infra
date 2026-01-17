@@ -17,12 +17,16 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0001
-  - ADR-0040
-  - ADR-0082
-  - ADR-0083
-  - CL-0042
+  - ADR-0001-platform-argocd-as-gitops-operator
+  - ADR-0040-platform-lifecycle-aware-state-keys
+  - ADR-0082-platform-metadata-validation
+  - ADR-0083-platform-metadata-backfill-protocol
+  - ADR-0084-platform-enhanced-metadata-schema
+  - CL-0042-metadata-backfill-batch-1
+  - CL-0043-complete-metadata-backfill
   - METADATA_STRATEGY
+  - RB-0019-relationship-extraction-script
+  - SESSION_CAPTURE_2026_01_17_01
 supersedes: []
 superseded_by: []
 tags: []
@@ -35,7 +39,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0042: Metadata Backfill Batch 1
 
 Date: 2026-01-03

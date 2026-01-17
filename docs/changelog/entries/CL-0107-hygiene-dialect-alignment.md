@@ -14,7 +14,9 @@ risk_profile:
   coupling_risk: none
 schema_version: 1
 relates_to:
-  - ADR-0014
+  - ADR-0014-platform-ci-local-preflight-checks
+  - CL-0107
+  - CL-0108
 supersedes: []
 superseded_by: []
 tags:

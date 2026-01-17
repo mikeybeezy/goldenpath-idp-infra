@@ -11,13 +11,14 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 01_GOVERNANCE
   - 15_TEARDOWN_AND_CLEANUP
+  - 70_OPERATIONS_README
 category: compliance
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Infra Failure Modes and Recovery
 
 This document captures common infrastructure build failures, how we recover,

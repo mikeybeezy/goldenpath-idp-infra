@@ -13,10 +13,13 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 05_OBSERVABILITY_DECISIONS
-  - ADR-0049
-  - ADR-0069
+  - ADR-0049-platform-pragmatic-observability-baseline
+  - ADR-0054-platform-observability-exporters-otel-split
+  - ADR-0055-platform-tempo-tracing-backend
   - ADR-0069-platform-observability-baseline-golden-signals
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +32,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0049: Pragmatic observability baseline for V1 (RED + Golden Signals)
 
 - **Status:** Proposed

@@ -13,7 +13,13 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0014
+  - 01_adr_index
+  - ADR-0014-platform-ci-local-preflight-checks
+  - ADR-0138
+  - CL-0107
+  - CL-0108
+  - CL-0109
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +32,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0014: Local preflight checks before PRs
 
 - **Status:** Proposed

@@ -14,10 +14,11 @@ risk_profile:
   coupling_risk: none
 schema_version: 1
 relates_to:
-  - ADR-0148
   - ADR-0148-seamless-build-deployment-with-immutability
   - ADR-0153
-  - CL-0121
+  - BRIDGE_ANALYSIS
+  - BUG_FIXES_SUMMARY
+  - CL-0121-seamless-build-deployment
   - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 supersedes: []
 superseded_by: []

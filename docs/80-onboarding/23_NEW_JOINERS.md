@@ -9,12 +9,16 @@ lifecycle: active
 exempt: false
 schema_version: 1
 relates_to:
+  - 00_START_HERE
   - 02_PLATFORM_BOUNDARIES
   - 13_COLLABORATION_GUIDE
   - 24_PR_GATES
   - 25_DAY_ONE_CHECKLIST
   - 26_AI_AGENT_PROTOCOLS
   - 38_BRANCHING_STRATEGY
+  - ADR-0042-platform-branching-strategy
+  - CL-0078
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags: []
@@ -25,7 +29,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # New Joiners Guide
 
 Doc contract:

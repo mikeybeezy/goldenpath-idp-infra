@@ -16,7 +16,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0117
+  - 01_adr_index
+  - ADR-0117-conclusive-governance-routing-architecture
+  - CL-0073-conclusive-governance-routing-architecture
   - DECISION_ROUTING_STRATEGY
   - agent-routing.yaml
 supersedes: []

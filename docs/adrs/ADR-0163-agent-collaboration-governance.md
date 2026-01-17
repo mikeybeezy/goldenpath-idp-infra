@@ -16,12 +16,14 @@ tags:
   - collaboration
   - security
 relates_to:
+  - 01_adr_index
   - 07_AI_AGENT_GOVERNANCE
   - 08_GITHUB_AGENT_ROLES
-  - 26_AI_AGENT_PROTOCOLS
   - 09_AGENT_COLLABORATION_MATRIX
+  - 26_AI_AGENT_PROTOCOLS
+  - ADR-0163
+  - agent_session_summary
 ---
-
 ## Status
 
 Accepted

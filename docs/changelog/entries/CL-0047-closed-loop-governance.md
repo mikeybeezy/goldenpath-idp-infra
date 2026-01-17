@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0089
-  - CL-0047
+  - ADR-0089-closed-loop-metadata-injection
+  - CL-0047-closed-loop-governance
   - METADATA_INJECTION_GUIDE
 supersedes: []
 superseded_by: []

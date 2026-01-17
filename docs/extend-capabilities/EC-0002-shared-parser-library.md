@@ -7,9 +7,7 @@ dependencies:
   - RDS and Secret parsers stable
 relates_to:
   - CONTRACT_DRIVEN_ARCHITECTURE
-  - docs/85-how-it-works/self-service/CONTRACT_DRIVEN_ARCHITECTURE.md
-  - scripts/rds_request_parser.py
-  - scripts/secret_request_parser.py
+  - INDEX
 type: extension_capability
 priority: low
 vq_class: efficiency

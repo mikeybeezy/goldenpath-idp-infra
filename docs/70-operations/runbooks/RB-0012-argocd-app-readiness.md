@@ -11,12 +11,17 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
+  - 00_DOC_INDEX
   - 05_GOLDEN_PATH_VALIDATION
   - 10_INFRA_FAILURE_MODES
   - 29_CD_DEPLOYMENT_CONTRACT
+  - ADR-0001-platform-argocd-as-gitops-operator
+  - ADR-0013-platform-argo-app-management-approach
+  - ADR-0158-platform-standalone-rds-bounded-context
   - BOOTSTRAP_README
-  - ADR-0001
-  - ADR-0013
+  - DOCS_RUNBOOKS_README
+  - RB-0013-leak-protection-management
+  - RB-0031-idp-stack-deployment
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
@@ -24,7 +29,6 @@ dependencies:
   - chart:argo-cd
 breaking_change: false
 ---
-
 # Argo CD App Readiness Checklist
 
 Doc contract:

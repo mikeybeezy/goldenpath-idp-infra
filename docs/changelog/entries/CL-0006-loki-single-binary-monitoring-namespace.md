@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0006
+  - CL-0006-loki-single-binary-monitoring-namespace
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +30,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0006: Loki single-binary default and monitoring namespace
 
 Date: 2025-12-31

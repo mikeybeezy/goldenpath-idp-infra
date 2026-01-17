@@ -12,9 +12,7 @@ reliability:
   maturity: 1
 relates_to:
   - ADR-0127
-  - ADR-0127-backstage-deployment-roi-telemetry
   - ADR-0128
-  - ADR-0128-automated-ecr-catalog-sync
 tags:
   - backstage
   - helm

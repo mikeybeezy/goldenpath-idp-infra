@@ -17,8 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0090
-  - CL-0048
+  - ADR-0090-automated-platform-health-dashboard
+  - CL-0048-automated-platform-health
+  - CL-0049-ci-optimization
   - PLATFORM_HEALTH_GUIDE
 supersedes: []
 superseded_by: []

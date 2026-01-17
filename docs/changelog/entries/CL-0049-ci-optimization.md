@@ -17,9 +17,10 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0035
-  - CL-0048
-  - CL-0049
+  - CL-0035-super-linter-reenabled
+  - CL-0048-automated-platform-health
+  - CL-0049-ci-optimization
+  - CL-0050-infracost-activation
   - METADATA_VALIDATION_GUIDE
   - PLATFORM_HEALTH
 supersedes: []

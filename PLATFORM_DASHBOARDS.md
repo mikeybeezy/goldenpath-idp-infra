@@ -17,7 +17,9 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
+  - 00_START_HERE
   - 01_adr_index
+  - 2026-01-07_1510_platform-governance-finalization
   - GOVERNANCE_VOCABULARY
   - REGISTRY_CATALOG
   - VQ_TAGGING_GUIDE

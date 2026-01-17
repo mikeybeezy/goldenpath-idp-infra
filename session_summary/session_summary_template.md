@@ -17,6 +17,7 @@ reliability:
   maturity: 1
 relates_to:
   - ADR-0162
+  - RB-0031-idp-stack-deployment
 ---
 # Session Summary Template (append-only)
 
@@ -69,7 +70,7 @@ Objective: <short statement>
 - Artifacts: <report path, dashboard link>
 
 ### Feedback Pointer (optional)
-- Feedback file: <session_capture/YYYY-MM-DD-<topic>.md>
+- Feedback file: `session_capture/YYYY-MM-DD-<topic>.md` (use `session_capture/session_capture_template.md`)
 - Status: <open|closed>
 
 ### Feedback Addressed (optional)

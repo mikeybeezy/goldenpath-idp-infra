@@ -45,7 +45,7 @@ SHORT_ID_PREFIXES = ("ADR", "CL", "PRD", "RB", "EC", "US")
 
 
 def extract_doc_id_from_path(file_path):
-    """Convert file path to document ID, matching standardize-metadata.py logic"""
+    """Convert file path to document ID when no frontmatter is present."""
     basename = os.path.basename(file_path)
     filename_base = os.path.splitext(basename)[0]
 
@@ -156,7 +156,7 @@ def write_metadata(file_path, metadata, content):
 def build_short_id_map(all_doc_ids):
     """Map short IDs (e.g., ADR-0001) to full document IDs."""
     short_map = defaultdict(list)
-    pattern = re.compile(rf"^({'|'.join(SHORT_ID_PREFIXES)})-\d{{4}}-")
+    pattern = re.compile(rf"^({'|'.join(SHORT_ID_PREFIXES)})-\d{{4}}")
     for doc_id in all_doc_ids:
         match = pattern.match(doc_id)
         if match:
@@ -166,7 +166,7 @@ def build_short_id_map(all_doc_ids):
     return short_map
 
 
-def normalize_reference(ref, all_doc_ids, short_id_map):
+def normalize_reference(ref, all_doc_ids, short_id_map, file_id_map):
     """Resolve a reference into canonical doc IDs (no path refs)."""
     resolved = set()
     if not ref:
@@ -176,6 +176,13 @@ def normalize_reference(ref, all_doc_ids, short_id_map):
         resolved.add(ref)
         return resolved
 
+    slug_match = re.match(rf"^({'|'.join(SHORT_ID_PREFIXES)})-\d{{4}}-", ref)
+    if slug_match:
+        short = "-".join(ref.split("-", 2)[:2])
+        if short in short_id_map and len(short_id_map[short]) == 1:
+            resolved.update(short_id_map[short])
+            return resolved
+
     if ref in short_id_map:
         if len(short_id_map[ref]) == 1:
             resolved.update(short_id_map[ref])
@@ -183,9 +190,16 @@ def normalize_reference(ref, all_doc_ids, short_id_map):
 
     if "/" in ref or ref.endswith(".md"):
         try:
-            doc_id = extract_doc_id_from_path(ref)
-            if doc_id in all_doc_ids:
+            ref_path = os.path.normpath(ref)
+            if ref_path.startswith("./"):
+                ref_path = ref_path[2:]
+            doc_id = file_id_map.get(ref_path)
+            if doc_id:
                 resolved.add(doc_id)
+                return resolved
+            fallback_id = extract_doc_id_from_path(ref_path)
+            if fallback_id in all_doc_ids:
+                resolved.add(fallback_id)
         except Exception:
             pass
         return resolved
@@ -193,27 +207,40 @@ def normalize_reference(ref, all_doc_ids, short_id_map):
     return resolved
 
 
-def normalize_relates(relates, all_doc_ids, short_id_map):
+def normalize_relates(relates, all_doc_ids, short_id_map, file_id_map):
     """Normalize existing relates_to entries to IDs only."""
     normalized = set()
     short_pattern = re.compile(rf"^({'|'.join(SHORT_ID_PREFIXES)})-\d{{4}}$")
+    slug_pattern = re.compile(rf"^({'|'.join(SHORT_ID_PREFIXES)})-\d{{4}}-")
     for ref in relates:
         if not isinstance(ref, str):
             continue
+        if slug_pattern.match(ref):
+            short = "-".join(ref.split("-", 2)[:2])
+            if short in short_id_map and len(short_id_map[short]) == 1:
+                normalized.update(short_id_map[short])
+                continue
         if ref in short_id_map:
             if len(short_id_map[ref]) == 1:
                 normalized.update(short_id_map[ref])
             continue
         if short_pattern.match(ref):
+            if ref in short_id_map and len(short_id_map[ref]) == 1:
+                normalized.update(short_id_map[ref])
+            else:
+                normalized.add(ref)
             continue
         if "/" in ref or ref.endswith(".md"):
-            normalized.update(normalize_reference(ref, all_doc_ids, short_id_map))
+            normalized.update(normalize_reference(ref, all_doc_ids, short_id_map, file_id_map))
             continue
-        normalized.add(ref)
+        if ref in all_doc_ids:
+            normalized.add(ref)
+        else:
+            normalized.add(ref)
     return normalized
 
 
-def extract_file_references(file_path, all_doc_ids, short_id_map):
+def extract_file_references(file_path, all_doc_ids, short_id_map, file_id_map):
     """Extract forward references from a file. Returns (doc_id, related_ids, deps) or None."""
     metadata, rest_of_file = read_metadata(file_path)
 
@@ -233,7 +260,7 @@ def extract_file_references(file_path, all_doc_ids, short_id_map):
     # Convert relative paths/doc mentions to IDs
     related_ids = set()
     for rel in found_rels:
-        related_ids.update(normalize_reference(rel, all_doc_ids, short_id_map))
+        related_ids.update(normalize_reference(rel, all_doc_ids, short_id_map, file_id_map))
 
     # Skip self-reference
     if current_id in related_ids:
@@ -242,7 +269,7 @@ def extract_file_references(file_path, all_doc_ids, short_id_map):
     return (current_id, related_ids, found_deps, metadata, rest_of_file)
 
 
-def process_file_with_backlinks(file_path, all_doc_ids, short_id_map, reverse_graph,
+def process_file_with_backlinks(file_path, all_doc_ids, short_id_map, file_id_map, reverse_graph,
                                  dry_run=False, verbose=False):
     """Process a single file with both forward refs and backlinks from reverse_graph."""
     metadata, rest_of_file = read_metadata(file_path)
@@ -263,7 +290,7 @@ def process_file_with_backlinks(file_path, all_doc_ids, short_id_map, reverse_gr
     # Convert relative paths/doc mentions to IDs (forward refs)
     forward_ids = set()
     for rel in found_rels:
-        forward_ids.update(normalize_reference(rel, all_doc_ids, short_id_map))
+        forward_ids.update(normalize_reference(rel, all_doc_ids, short_id_map, file_id_map))
 
     # Skip self-reference
     if current_id in forward_ids:
@@ -285,7 +312,7 @@ def process_file_with_backlinks(file_path, all_doc_ids, short_id_map, reverse_gr
     current_relates = metadata.get('relates_to', [])
     if not isinstance(current_relates, list):
         current_relates = []
-    normalized_relates = normalize_relates(current_relates, all_doc_ids, short_id_map)
+    normalized_relates = normalize_relates(current_relates, all_doc_ids, short_id_map, file_id_map)
     updated_relates = sorted(list(set(normalized_relates | all_related_ids)))
 
     # Check for changes
@@ -337,11 +364,18 @@ def main():
     # Remove duplicates
     all_md_files = sorted(set(all_md_files))
 
-    # Build index of all doc IDs and map files to IDs
+    # Build index of all doc IDs and map files to IDs (prefer frontmatter IDs)
     all_doc_ids = set()
     id_to_file = {}
+    file_id_map = {}
     for f in all_md_files:
-        doc_id = extract_doc_id_from_path(f)
+        metadata, _ = read_metadata(f)
+        doc_id = None
+        if metadata and metadata.get('id'):
+            doc_id = str(metadata.get('id')).strip()
+        if not doc_id:
+            doc_id = extract_doc_id_from_path(f)
+        file_id_map[os.path.normpath(f)] = doc_id
         all_doc_ids.add(doc_id)
         id_to_file[doc_id] = f
     short_id_map = build_short_id_map(all_doc_ids)
@@ -357,7 +391,7 @@ def main():
     forward_graph = {}  # doc_id -> set of referenced doc_ids
 
     for filepath in all_md_files:
-        result = extract_file_references(filepath, all_doc_ids, short_id_map)
+        result = extract_file_references(filepath, all_doc_ids, short_id_map, file_id_map)
         if result:
             doc_id, related_ids, _, _, _ = result
             # Only include references to docs that actually exist
@@ -394,7 +428,7 @@ def main():
     skipped_count = 0
 
     for filepath in all_md_files:
-        if process_file_with_backlinks(filepath, all_doc_ids, short_id_map, reverse_graph,
+        if process_file_with_backlinks(filepath, all_doc_ids, short_id_map, file_id_map, reverse_graph,
                                        dry_run=args.dry_run, verbose=args.verbose):
             updated_count += 1
         else:

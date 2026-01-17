@@ -24,10 +24,10 @@ relates_to:
   - 20_TOOLING_APPS_MATRIX
   - 45_DNS_MANAGEMENT
   - ADR-0162
-  - ADR-0162-kong-ingress-dns-strategy
-  - CL-0135
   - CL-0135-kong-ingress-for-tooling-apps
-  - CL-0136
+  - CL-0136-tooling-apps-ingress-configuration
+  - CL-0138-tooling-apps-dashboards
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:

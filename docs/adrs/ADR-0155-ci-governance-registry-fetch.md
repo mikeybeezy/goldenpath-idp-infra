@@ -13,10 +13,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0148
+  - 01_adr_index
   - ADR-0148-seamless-build-deployment-with-immutability
-  - ADR-0149
-  - ADR-0155
+  - ADR-0155-ci-governance-registry-fetch
+  - CI_TERRAFORM_WORKFLOWS
+  - CL-0126-ci-governance-registry-fetch
+  - CL-0127
 supersedes: []
 superseded_by: []
 tags:

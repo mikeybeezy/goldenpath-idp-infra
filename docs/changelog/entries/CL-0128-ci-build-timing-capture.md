@@ -16,10 +16,9 @@ risk_profile:
   coupling_risk: low
 schema_version: 1
 relates_to:
-  - ADR-0077
   - ADR-0077-platform-ci-build-teardown-log-automation
-  - ADR-0156
   - ADR-0156-platform-ci-build-timing-capture
+  - CL-0128
 supersedes: []
 superseded_by: []
 tags:

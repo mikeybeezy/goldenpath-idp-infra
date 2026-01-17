@@ -17,7 +17,15 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - 85-how-it-works/secrets-flow/SECRET_REQUEST_FLOW.md
+  - 01_adr_index
+  - ADR-0143
+  - ADR-0144
+  - CL-0105
+  - CL-0132
+  - CONTRACT_REGISTRY
+  - RB-0026
+  - SCRIPT_CERTIFICATION_AUDIT
+  - SECRET_REQUEST_FLOW
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +37,6 @@ value_quantification:
 supported_until: '2028-01-01'
 version: '1.0'
 ---
-
 ## ADR-0143: Secret Request Contract (V1)
 
 ## Status

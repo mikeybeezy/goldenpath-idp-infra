@@ -19,11 +19,12 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0133
+  - ADR-0162
   - CL-0133-idp-stack-deployment-runbook
-  - CL-0134
   - CL-0134-backstage-catalog-governance-registry-sync
-  - CL-0135
+  - CL-0135-kong-ingress-for-tooling-apps
+  - CL-0136-tooling-apps-ingress-configuration
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:

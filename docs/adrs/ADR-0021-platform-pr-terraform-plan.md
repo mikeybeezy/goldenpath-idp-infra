@@ -13,7 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0021
+  - 01_adr_index
+  - 25_PR_TERRAFORM_PLAN
+  - ADR-0021-platform-pr-terraform-plan
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +29,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0021: PR Terraform plan with automated comments
 
 - **Status:** Proposed

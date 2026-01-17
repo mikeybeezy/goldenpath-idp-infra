@@ -13,11 +13,13 @@ reliability:
 relates_to:
   - 00_DOC_INDEX
   - 30_DOCUMENTATION_FRESHNESS
+  - CAPABILITY_LEDGER
+  - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## Platform System Map (Living)
 
 Doc contract:

@@ -3,13 +3,11 @@ id: CATALOG_SYSTEMS
 title: 'How It Works: Platform Catalog Systems'
 type: documentation
 relates_to:
-  - ADR-0097
   - ADR-0097-domain-based-resource-catalogs
-  - ADR-0159
   - ADR-0159-backstage-catalog-registry-sync
+  - DOCS_20-CONTRACTS_RESOURCE-CATALOGS_README
   - ECR_REQUEST_FLOW
   - RDS_REQUEST_FLOW
-  - docs/20-contracts/resource-catalogs/README.md
 ---
 ## How It Works: Platform Catalog Systems
 

@@ -14,9 +14,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0007
-  - ADR-0008
-  - ADR-0018
+  - 01_adr_index
+  - 22_CONTAINER_REGISTRY_STANDARD
+  - ADR-0007-platform-environment-model
+  - ADR-0008-app-backstage-portal
+  - ADR-0018-platform-container-registry-standard
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +32,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0018: Container registry standard — ECR default, GHCR supported, Docker Hub discouraged
 
 - **Status:** Proposed

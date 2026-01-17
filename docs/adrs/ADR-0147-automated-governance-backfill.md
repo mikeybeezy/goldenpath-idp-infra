@@ -13,8 +13,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - ADR-0146
   - ADR-0146 (Born Governed)
+  - ADR-0147
+  - BORN_GOVERNED_LIFECYCLE
+  - CL-0118
+  - CL-0119
+  - CL-0120
   - CNT-001 (Script Standard)
 supersedes: []
 superseded_by: []

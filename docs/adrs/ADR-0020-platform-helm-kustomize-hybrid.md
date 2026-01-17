@@ -13,7 +13,9 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0020
+  - 01_adr_index
+  - ADR-0020-platform-helm-kustomize-hybrid
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +28,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0020: Hybrid GitOps approach with Helm and Kustomize
 
 - **Status:** Proposed

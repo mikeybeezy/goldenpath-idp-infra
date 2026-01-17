@@ -19,9 +19,9 @@ relates_to:
   - 12_GITOPS_AND_CICD
   - 15_TEARDOWN_AND_CLEANUP
   - 17_BUILD_RUN_FLAGS
-  - ADR-0001
-  - ADR-0002
-  - ADR-0013
+  - ADR-0001-platform-argocd-as-gitops-operator
+  - ADR-0002-platform-Kong-as-ingress-API-gateway
+  - ADR-0013-platform-argo-app-management-approach
   - one_stage_vs_multistage_bootstrap
 supersedes: []
 superseded_by: []
@@ -40,7 +40,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Bootstrap Entrypoint
 
 This directory is the single entrypoint that answers: how does a blank cluster

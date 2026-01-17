@@ -17,11 +17,8 @@ reliability:
   observability_tier: gold
 schema_version: 1
 relates_to:
-  - ADR-0091
-  - ADR-0092
   - ADR-0092-ecr-registry-product-strategy
-  - CL-0051
-  - CL-0052
+  - CL-0052-ecr-registry-product-strategy
 supersedes: []
 superseded_by: []
 tags: []

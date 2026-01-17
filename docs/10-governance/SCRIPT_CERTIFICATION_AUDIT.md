@@ -3,13 +3,13 @@ id: SCRIPT_CERTIFICATION_AUDIT
 title: Platform Scripts Certification Audit Matrix
 type: governance
 relates_to:
-  - ADR-0084
-  - ADR-0088
-  - ADR-0094
-  - ADR-0097
-  - ADR-0100
+  - ADR-0084-platform-enhanced-metadata-schema
+  - ADR-0088-automated-metadata-remediation
+  - ADR-0094-automated-catalog-docs
+  - ADR-0097-domain-based-resource-catalogs
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
   - ADR-0102
-  - ADR-0103
+  - ADR-0103-automated-workflow-docs
   - ADR-0126
   - ADR-0143
   - ADR-0145

@@ -14,9 +14,9 @@ risk_profile:
   coupling_risk: none
 schema_version: 1
 relates_to:
-  - ADR-0120
   - ADR-0120-metadata-inheritance-and-active-governance
-  - CL-0076
+  - CL-0076-metadata-inheritance-active-governance-and-leak-protection
+  - CL-0076-metadata-inheritance-and-active-governance
   - METADATA_INHERITANCE_STRATEGY
 supersedes: []
 superseded_by: []

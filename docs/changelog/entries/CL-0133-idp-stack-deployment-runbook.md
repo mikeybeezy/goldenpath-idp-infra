@@ -19,12 +19,12 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0159
   - ADR-0159-backstage-catalog-registry-sync
   - ADR-0160
-  - ADR-0160-rds-optional-toggle-integration
-  - CL-0133
+  - CL-0133-idp-stack-deployment-runbook
+  - CL-0135-kong-ingress-for-tooling-apps
   - RB-0031-idp-stack-deployment
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:

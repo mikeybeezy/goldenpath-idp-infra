@@ -14,8 +14,9 @@ tags:
   - infrastructure
   - self-service
 relates_to:
-  - ADR-0158
+  - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0160
+  - CL-0130
 ---
 ## Summary
 

@@ -17,13 +17,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0092
   - ADR-0092-ecr-registry-product-strategy
-  - ADR-0093
   - ADR-0093-automated-policy-enforcement
-  - ADR-0096
   - ADR-0096-risk-based-ecr-controls
-  - CL-0056
+  - CL-0056-risk-based-ecr-controls
+  - CL-0058-testing-framework
 supersedes: []
 superseded_by: []
 tags: []

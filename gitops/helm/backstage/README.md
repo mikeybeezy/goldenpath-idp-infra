@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 18_BACKSTAGE_MVP
-  - ADR-0008
+  - ADR-0008-app-backstage-portal
 supersedes: []
 superseded_by: []
 tags: []
@@ -35,7 +35,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Backstage Helm Deployment
 
 Backstage is the developer portal (service catalog, docs, scaffolding) for the IDP.

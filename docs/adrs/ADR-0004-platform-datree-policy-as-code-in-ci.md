@@ -13,7 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0004
+  - 01_adr_index
+  - ADR-0004-platform-datree-policy-as-code-in-ci
+  - HELM_DATREE
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +29,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0004: Use Datree as Kubernetes policy-as-code gate in CI
 
 - **Status:** Accepted

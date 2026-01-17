@@ -15,7 +15,8 @@ risk_profile:
 schema_version: 1
 relates_to:
   - ADR-0144
-  - CL-0106
+  - CL-0106-workflow-driven-secret-provisioning
+  - RB-0026
 supersedes: []
 superseded_by: []
 tags: []

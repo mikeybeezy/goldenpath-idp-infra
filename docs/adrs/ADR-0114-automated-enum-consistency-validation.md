@@ -12,8 +12,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0113
-  - ADR-0114
+  - 01_adr_index
+  - ADR-0113-platform-queryable-intelligence-enums
+  - ADR-0114-automated-enum-consistency-validation
+  - ADR-0115-enhanced-enum-validation-engine
+  - CL-0070-automated-enum-consistency-validation
   - FEDERATED_METADATA_STRATEGY
 supersedes: []
 superseded_by: []

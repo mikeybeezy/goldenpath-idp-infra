@@ -12,7 +12,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0065
+  - 01_adr_index
+  - ADR-0065-platform-branch-policy-guard
+  - CL-0015-branch-policy-guard-restore
+  - PR_GUARDRAILS_INDEX
 supersedes: []
 superseded_by: []
 tags: []
@@ -25,7 +28,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0065: Restore branch policy guard for main
 
 - **Status:** Proposed

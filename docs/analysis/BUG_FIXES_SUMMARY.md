@@ -3,10 +3,8 @@ id: BUG_FIXES_SUMMARY
 title: 'Bug Fixes Summary: Seamless Build Deployment'
 type: documentation
 relates_to:
-  - ADR-0148
   - ADR-0148-seamless-build-deployment-with-immutability
   - BRIDGE_ANALYSIS
-  - CL-0121
   - CL-0121-seamless-build-deployment
   - GOLDENPATH_IDP_ROOT_README
 ---

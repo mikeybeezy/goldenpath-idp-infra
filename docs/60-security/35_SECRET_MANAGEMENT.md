@@ -12,6 +12,7 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 35_TOOLING_SECRETS_LIFECYCLE
   - ADR-0138
   - ADR-0139
 tags:
@@ -20,7 +21,6 @@ tags:
 supported_until: 2028-01-10
 version: '1.0'
 ---
-
 # Secret Management Strategy
 
 This document outlines the strategy for managing sensitive information within the Golden Path platform, ensuring security, auditability, and consistent governance across all environments.

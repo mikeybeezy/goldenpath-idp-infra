@@ -34,27 +34,24 @@ relates_to:
   - 45_DNS_MANAGEMENT
   - ADR-0162
   - ADR-0163
-  - ADR-0163-agent-collaboration-governance
   - ADR-0165
-  - ADR-0165-rds-user-db-provisioning-automation
   - ADR-0166
-  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
   - AGENT_FIRST_BOOT
+  - CATALOG_INDEX
   - CL-0132
-  - CL-0133
-  - CL-0134
-  - CL-0135
-  - CL-0136
+  - CL-0133-idp-stack-deployment-runbook
+  - CL-0134-backstage-catalog-governance-registry-sync
+  - CL-0135-kong-ingress-for-tooling-apps
+  - CL-0136-tooling-apps-ingress-configuration
   - CL-0137
-  - CL-0138
   - CL-0138-tooling-apps-dashboards
   - CL-0140
-  - CL-0140-rds-user-db-provisioning
   - DOCS_20-CONTRACTS_RESOURCE-CATALOGS_README
+  - PLATFORM_SYSTEM_MAP
   - PR-156-STABILIZATION-CHECKLIST
   - PRD-0001-rds-user-db-provisioning
   - RB-0031-idp-stack-deployment
-  - RB-0032-rds-user-provision
+  - RB-0032
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_USER_DB_PROVISIONING
 supersedes: []
@@ -1637,3 +1634,176 @@ Reviewed artifacts from previous session by codex:
 
 **Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
 **Timestamp**: 2026-01-17T00:15:00Z
+
+---
+
+## 2026-01-17T08:50Z — Governance: doc map + relationships refresh — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Refresh system map and relationship metadata; validate docs.
+
+### In-Session Log (append as you go)
+- 08:48Z — Ran: `python3 scripts/generate_doc_system_map.py`
+- 08:49Z — Ran: `python3 scripts/extract_relationships.py` (bulk relates_to refresh)
+- 08:50Z — Result: `python3 scripts/validate_metadata.py docs` — pass (521/521)
+- 08:50Z — Change: metadata heartbeat updated — file: `.goldenpath/value_ledger.json`
+
+### Artifacts touched (required)
+- `docs/90-doc-system/PLATFORM_SYSTEM_MAP.md`
+- `docs/`
+- `session_summary/agent_session_summary.md`
+- `.goldenpath/value_ledger.json`
+
+### Outputs produced (optional)
+- System map refreshed
+- Relationship metadata refreshed
+
+### Session Report (end-of-session wrap-up)
+- Summary: regenerated system map and refreshed relates_to links across docs; metadata validation passed.
+- Decisions: include `session_summary/**` and `session_capture/**` in relationship extraction to capture implicit links.
+- Risks/Follow-ups: commit value ledger update alongside relationship refresh.
+- Validation: `python3 scripts/validate_metadata.py docs` (pass)
+
+Signed: Codex (2026-01-17T08:50:28Z)
+
+---
+
+## 2026-01-17T11:15Z — Governance: Session capture guardrail + PR guardrails index — env=na build_id=na
+
+Owner: platform-team
+Agent: claude-opus-4-5
+Goal: Fix session capture guardrail workflow bugs, create comprehensive PR guardrails index, update workflow categorization.
+
+### In-Session Log (append as you go)
+
+- 10:30Z — Started: Review session capture guardrail workflow — status: running
+- 10:35Z — Found 6 issues: regex escape bug, quote mismatch, missing workflow_dispatch, templates not excluded, frontmatter false positives, no local test mode
+- 10:40Z — Fixed P0/P1 issues in `.github/workflows/session-capture-guard.yml`
+- 10:45Z — Appended review notes and implementation updates to session capture file
+- 11:00Z — Created comprehensive PR guardrails index at `docs/10-governance/PR_GUARDRAILS_INDEX.md`
+- 11:05Z — Updated `scripts/generate_workflow_index.py` CATEGORY_MAP to categorize guardrail workflows
+- 11:10Z — Regenerated `ci-workflows/CI_WORKFLOWS.md` — all guardrails now in correct category
+- 11:15Z — Ran `python3 scripts/extract_relationships.py` — 15 files updated, 1671 bidirectional edges
+
+### Checkpoints
+
+- [x] Review session-capture-guard.yml for bugs
+- [x] Fix regex escape bug (`\\u2014` → literal `—`)
+- [x] Fix quote mismatch in f-string
+- [x] Add `workflow_dispatch` trigger
+- [x] Add template file exclusion (`!session_capture/*_template.md`)
+- [x] Add frontmatter-aware append-only check
+- [x] Update session capture documentation with review notes
+- [x] Create PR guardrails index document
+- [x] Update workflow index generator for guardrail categorization
+- [x] Regenerate workflow index
+- [x] Run relationship extraction to update bidirectional links
+
+### Issues Fixed in session-capture-guard.yml
+
+| Priority | Issue | Fix |
+| -------- | ----- | --- |
+| **P0** | Regex `\\u2014` looking for literal string | Changed to literal `—` em-dash: `(?:-\|—)` |
+| **P0** | Escaped quotes in f-string caused syntax error | Used standard quotes in print statement |
+| **P1** | No manual testing capability | Added `workflow_dispatch` trigger |
+| **P1** | Editing templates triggered guard | Added path exclusion `!session_capture/*_template.md` |
+| **P1** | Frontmatter updates blocked as modifications | Added `split_frontmatter()` function - body only checked |
+
+### Outputs produced
+
+- Workflow: `.github/workflows/session-capture-guard.yml` (fixed)
+- Docs: `docs/10-governance/PR_GUARDRAILS_INDEX.md` (new comprehensive catalog)
+- Script: `scripts/generate_workflow_index.py` (updated CATEGORY_MAP)
+- Index: `ci-workflows/CI_WORKFLOWS.md` (regenerated)
+- Session: `session_capture/2026-01-17-session-capture-guardrail.md` (updated with review notes)
+
+### PR Guardrails Index Contents
+
+| Category | Count | Status |
+| -------- | ----- | ------ |
+| Core PR Gates | 4 | Active |
+| Resource Guards | 3 | Warn-Only (Rollout) |
+| Session Guards | 1 | Active |
+| Scheduled Enforcement | 1 | Active |
+
+**Workflows documented:**
+
+- `pr-guardrails.yml` — Checklist + template + traceability (Blocking)
+- `branch-policy.yml` — development → main only (Blocking)
+- `adr-policy.yml` — ADR entry if labeled (Blocking when labeled)
+- `changelog-policy.yml` — CL entry if labeled (Blocking when labeled)
+- `ci-rds-request-validation.yml` — RDS schema validation (Blocking)
+- `session-capture-guard.yml` — Append-only session files (Blocking)
+- `rds-size-approval-guard.yml` — Size tier approvals (Warn-Only)
+- `rds-tfvars-drift-guard.yml` — Coupled/standalone sync (Warn-Only)
+- `policy-enforcement.yml` — Daily compliance check (Reporting)
+
+### Links
+
+- PR Guardrails Index: `docs/10-governance/PR_GUARDRAILS_INDEX.md`
+- Session Capture Guardrail: `.github/workflows/session-capture-guard.yml`
+- Workflow Index: `ci-workflows/CI_WORKFLOWS.md`
+- Session Capture: `session_capture/2026-01-17-session-capture-guardrail.md`
+
+### Session Report (end-of-session wrap-up)
+
+- Summary:
+  - Fixed 5 bugs in session capture guardrail workflow (2 P0, 3 P1)
+  - Created comprehensive PR guardrails index documenting all 9 guardrail workflows
+  - Updated workflow index generator to properly categorize `*guard*` and `*guardrail*` workflows
+  - Regenerated CI workflow index with correct categories
+  - Ran relationship extraction — 15 files updated, 1671 bidirectional edges
+- Decisions:
+  - Frontmatter updates are allowed (only body content checked for append-only)
+  - Template files excluded from guardrail validation
+  - Guardrails categorized under "Guardrails / Policy (PR)" in workflow index
+- Risks/Follow-ups:
+  - P2 items remain open: session_summary path parity, local test script
+  - Guardrail index should be kept in sync as new guards are added
+- Validation: Workflow syntax verified via file read; relationship extraction completed successfully
+
+---
+
+**Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
+**Timestamp**: 2026-01-17T11:15:00Z
+
+---
+
+## 2026-01-17T10:37Z — Governance: session capture guardrail — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: standardize session capture docs and enforce append-only updates via CI.
+
+### In-Session Log (append as you go)
+- 10:10Z — Added session capture template and append-only rules.
+- 10:18Z — Added CI guardrail workflow for session capture updates.
+- 10:26Z — Locked governance and changelog (ADR-0167, CL-0141); updated CI contract.
+
+### Artifacts touched (required)
+- `.github/workflows/session-capture-guard.yml`
+- `session_capture/session_capture_template.md`
+- `session_capture/2026-01-17-session-capture-guardrail.md`
+- `session_summary/session_summary_template.md`
+- `docs/10-governance/07_AI_AGENT_GOVERNANCE.md`
+- `docs/80-onboarding/25_DAY_ONE_CHECKLIST.md`
+- `docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md`
+- `docs/adrs/ADR-0167-session-capture-guardrail.md`
+- `docs/changelog/entries/CL-0141-session-capture-guardrail.md`
+- `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`
+
+### Feedback Pointer (optional)
+- Feedback file: `session_capture/2026-01-17-session-capture-guardrail.md`
+- Status: open
+
+### Next actions
+- [ ] Decide whether to enforce append-only guardrails for `session_summary/agent_session_summary.md`.
+
+### Session Report (end-of-session wrap-up)
+- Summary: added session capture template, CI guardrail, and governance/changelog entries for traceability.
+- Decisions: session captures are append-only and validated via CI on PRs.
+- Risks/Follow-ups: validation not run locally; CI will enforce on PR.
+- Validation: not run (CI guardrail pending).
+
+Signed: Codex (2026-01-17T10:37:48Z)

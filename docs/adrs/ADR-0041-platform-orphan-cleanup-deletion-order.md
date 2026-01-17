@@ -12,10 +12,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0038
   - ADR-0038-platform-teardown-orphan-cleanup-gate
-  - ADR-0041
+  - ADR-0041-platform-orphan-cleanup-deletion-order
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -28,7 +29,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0041: Deterministic orphan cleanup deletion order
 
 Filename: `ADR-0041-platform-orphan-cleanup-deletion-order.md`

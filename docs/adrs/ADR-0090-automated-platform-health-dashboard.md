@@ -13,7 +13,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0090
+  - 01_adr_index
+  - 2026-01-04_2252_trusted-delivery-pipeline-phase-4
+  - ADR-0090-automated-platform-health-dashboard
+  - ADR-0131
+  - CL-0048-automated-platform-health
+  - PLATFORM_HEALTH_GUIDE
 supersedes: []
 superseded_by: []
 tags: []

@@ -17,8 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0101
   - ADR-0140
+  - CL-0101
+  - METADATA_STRATEGY
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-10
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0101: Doc scaffold + metadata auto-fix
 
 Date: 2026-01-10

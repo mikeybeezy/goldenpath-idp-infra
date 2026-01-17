@@ -11,6 +11,7 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - DOCS_RUNBOOKS_README
   - RUNBOOK_REQUEST_ECR_REGISTRY
 status: draft
 category: runbooks
@@ -21,7 +22,6 @@ dependencies:
   - aws-cli
 breaking_change: false
 ---
-
 # App Team Runbook: Push Image Guide
 
 **Audience:** Application Teams

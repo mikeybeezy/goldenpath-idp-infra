@@ -12,7 +12,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0064
+  - 01_adr_index
+  - ADR-0064-platform-dev-bootstrap-defaults
+  - CL-0013-dev-bootstrap-defaults-off
 supersedes: []
 superseded_by: []
 tags: []
@@ -25,7 +27,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0064: Dev bootstrap defaults off for k8s resources and storage
 
 Filename: `ADR-0064-platform-dev-bootstrap-defaults.md`

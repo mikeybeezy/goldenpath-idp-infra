@@ -11,9 +11,10 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0082
-  - ADR-0083
+  - ADR-0082-platform-metadata-validation
+  - ADR-0083-platform-metadata-backfill-protocol
   - ADR-XXXX
+  - CL-0040-metadata-backfill-runbook
   - CL-XXXX
   - METADATA_STRATEGY
   - METADATA_VALIDATION_GUIDE
@@ -21,7 +22,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 ## Metadata Backfill Runbook
 
 Doc contract:

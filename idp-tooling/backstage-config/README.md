@@ -7,15 +7,14 @@ risk_profile:
   security_risk: medium
   coupling_risk: low
 relates_to:
+  - ADR-0008-app-backstage-portal
   - HELM_BACKSTAGE
-  - ADR-0008
 version: 1.0
 dependencies:
   - provider:backstage
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Backstage Configuration Module
 
 Helm installs Backstage (`gitops/helm/backstage`). This Terraform module stores Backstage catalog entities, locations, groups, and plugin settings so the portal’s structure is managed as code.

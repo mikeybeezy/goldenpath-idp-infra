@@ -7,10 +7,10 @@ dependencies:
   - ArgoCD (existing)
   - Istio or Contour (new dependency)
 relates_to:
-  - ADR-0148
-  - ADR-0149
-  - CL-0122
-  - ROADMAP.md
+  - ADR-0148-seamless-build-deployment-with-immutability
+  - INDEX
+  - RB-0030-rds-break-glass-deletion
+  - ROADMAP
 type: extension_capability
 priority: medium
 vq_class: efficiency

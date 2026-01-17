@@ -2,18 +2,19 @@
 id: 30_PLATFORM_RDS_ARCHITECTURE
 title: Platform RDS Architecture
 relates_to:
-  - ADR-0158
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0165
-  - ADR-0165-rds-user-db-provisioning-automation
   - ADR-0166
-  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
   - PRD-0001-rds-user-db-provisioning
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0030-rds-break-glass-deletion
   - RB-0031-idp-stack-deployment
   - RB-0032
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
   - RDS_USER_DB_PROVISIONING
+  - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
 ---
 ## Platform RDS Architecture
 

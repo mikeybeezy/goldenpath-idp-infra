@@ -12,9 +12,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0048
-  - ADR-0164
+  - ADR-0048-platform-teardown-version-selector
+  - ADR-0164-teardown-v3-enhanced-reliability
+  - CL-0139-teardown-v3-enhanced-reliability
+  - audit-20260103
 supersedes: []
 superseded_by:
   - ADR-0164-teardown-v3-enhanced-reliability

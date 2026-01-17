@@ -16,9 +16,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0118
+  - 01_adr_index
+  - ADR-0118-config-driven-metadata-governance
+  - ADR-0119-grand-metadata-healing-and-contextual-alignment
+  - CL-0074-config-driven-metadata-governance
   - CONFIG_DRIVEN_METADATA
-  - schemas/metadata
 supersedes: []
 superseded_by: []
 tags: []

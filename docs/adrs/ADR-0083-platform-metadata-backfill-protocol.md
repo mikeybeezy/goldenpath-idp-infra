@@ -13,8 +13,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0082
-  - ADR-0083
+  - 01_adr_index
+  - ADR-0082-platform-metadata-validation
+  - ADR-0083-platform-metadata-backfill-protocol
+  - ADR-0084-platform-enhanced-metadata-schema
+  - CL-0040-metadata-backfill-runbook
+  - CL-0042-metadata-backfill-batch-1
+  - CL-0043-complete-metadata-backfill
+  - METADATA_BACKFILL_RUNBOOK
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +33,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 ## ADR-0083: Metadata Backfill Campaign Protocol
 
 Date: 2026-01-03

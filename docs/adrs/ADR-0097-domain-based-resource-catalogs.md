@@ -16,13 +16,19 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0092
+  - 01_adr_index
   - ADR-0092-ecr-registry-product-strategy
-  - ADR-0094
   - ADR-0094-automated-catalog-docs
-  - ADR-0097
-  - CL-0057
+  - ADR-0097-domain-based-resource-catalogs
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - ADR-0110-idp-knowledge-graph-architecture
+  - CATALOG_INDEX
+  - CATALOG_SYSTEMS
+  - CL-0057-domain-based-catalogs
+  - CL-0062-documentation-generator-metadata-compliance
   - DOCS_20-CONTRACTS_RESOURCE-CATALOGS_README
+  - REGISTRY_CATALOG
+  - SCRIPT_CERTIFICATION_AUDIT
 supersedes: []
 superseded_by: []
 tags: []

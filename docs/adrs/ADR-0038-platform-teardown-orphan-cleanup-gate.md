@@ -13,13 +13,16 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0036
   - ADR-0036-platform-orphan-cleanup-workflow
-  - ADR-0037
   - ADR-0037-platform-resource-tagging-policy
-  - ADR-0038
+  - ADR-0038-platform-teardown-orphan-cleanup-gate
+  - ADR-0041-platform-orphan-cleanup-deletion-order
+  - ADR-0164-teardown-v3-enhanced-reliability
+  - CL-0139-teardown-v3-enhanced-reliability
   - ORPHAN_CLEANUP
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +35,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes
 
 - **Status:** Proposed

@@ -9,16 +9,14 @@ status: active
 schema_version: 1
 relates_to:
   - 30_PLATFORM_RDS_ARCHITECTURE
-  - ADR-0158
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0165
-  - ADR-0165-rds-user-db-provisioning-automation
   - PRD-0001-rds-user-db-provisioning
   - RB-0032
-  - RB-0032-rds-user-provision
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
   - SCRIPT-0035
+  - agent_session_summary
 tags:
   - rds
   - provisioning

@@ -18,9 +18,10 @@ reliability:
 schema_version: 1
 relates_to:
   - 09_ARCHITECTURE
-  - MODULE_VPC
+  - 14_MODULES_OVERVIEW
+  - ADR-0032-platform-eks-access-model
   - MODULE_AWS_IAM
-  - ADR-0032
+  - MODULE_VPC
 supersedes: []
 superseded_by: []
 tags: []
@@ -39,7 +40,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # EKS Cluster Module
 
 ## Purpose

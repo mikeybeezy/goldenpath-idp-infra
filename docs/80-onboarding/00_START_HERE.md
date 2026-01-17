@@ -9,11 +9,14 @@ lifecycle: active
 exempt: false
 schema_version: 1
 relates_to:
+  - 2026-01-07_1510_platform-governance-finalization
   - 23_NEW_JOINERS
   - 24_PR_GATES
+  - GOLDENPATH_IDP_ROOT_README
   - GOVERNANCE_VOCABULARY
   - PLATFORM_DASHBOARDS
-  - RB-0027-frictionless-pr-gates
+  - RB-0027
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags: []

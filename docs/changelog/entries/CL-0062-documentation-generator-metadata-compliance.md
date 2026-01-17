@@ -17,10 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0097
-  - ADR-0100
+  - ADR-0097-domain-based-resource-catalogs
   - ADR-0100-standardized-ecr-lifecycle-and-documentation
-  - CL-0062
+  - CL-0062-documentation-generator-metadata-compliance
   - REGISTRY_CATALOG
   - standardized-image-delivery
 supersedes: []

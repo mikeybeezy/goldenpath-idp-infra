@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0131
-  - CL-0091
+  - CL-0091-platform-health-outcome-metrics
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +31,6 @@ supported_until: 2028-01-08
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0091: Platform health outcome metrics proposal
 
 Date: 2026-01-08

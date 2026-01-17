@@ -13,7 +13,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0031
+  - 01_adr_index
+  - ADR-0031-platform-bootstrap-irsa-service-accounts
+  - ADR-0135
+  - HELM_CLUSTER_AUTOSCALER
+  - MODULES_AWS_IAM_README
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +31,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0031: Create IRSA service accounts during bootstrap
 
 - **Status:** Accepted

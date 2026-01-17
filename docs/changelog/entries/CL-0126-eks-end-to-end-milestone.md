@@ -17,7 +17,8 @@ relates_to:
   - 2026-01-14_2213_eks-end-to-end-milestone
   - 37_V1_SCOPE_AND_TIMELINE
   - ADR-0XXX-seamless-deployment
-  - CL-0126
+  - CL-0126-ci-governance-registry-fetch
+  - CL-0126-eks-end-to-end-milestone
   - V1_04_CAPABILITY_MATRIX
   - V1_SCOPE_AND_TIMELINE
 supersedes: []

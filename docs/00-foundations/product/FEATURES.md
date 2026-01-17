@@ -12,6 +12,7 @@ reliability:
   maturity: 1
 relates_to:
   - CAPABILITY_LEDGER
+  - SESSION_CAPTURE_2026_01_17_01
 ---
 ## Golden Path IDP Features
 

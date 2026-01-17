@@ -11,13 +11,12 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0092
   - ADR-0092-ecr-registry-product-strategy
-  - ADR-0096
   - ADR-0096-risk-based-ecr-controls
-  - ADR-0100
-  - CL-0055
-  - CL-0061
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - CL-0055-self-service-registry-creation
+  - CL-0061-ecr-workflow-optimizations
+  - DOCS_RUNBOOKS_README
 category: runbooks
 supported_until: 2028-01-05
 version: '1.0'

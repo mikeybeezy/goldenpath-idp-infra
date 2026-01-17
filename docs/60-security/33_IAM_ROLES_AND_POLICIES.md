@@ -11,15 +11,17 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 01_GOVERNANCE
   - 21_CI_ENVIRONMENT_CONTRACT
   - 31_EKS_ACCESS_MODEL
   - 32_TERRAFORM_STATE_AND_LOCKING
+  - 34_PLATFORM_SUCCESS_CHECKLIST
+  - RB-0003-iam-audit
 category: security
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # IAM Roles and Policies Index (Living)
 
 This is the single index of IAM roles and policies used by GoldenPath.

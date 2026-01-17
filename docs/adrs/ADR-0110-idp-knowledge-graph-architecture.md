@@ -12,8 +12,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0097
-  - ADR-0110
+  - 01_adr_index
+  - 2026-01-06_1020_idp-knowledge-graph-node-architecture
+  - ADR-0097-domain-based-resource-catalogs
+  - ADR-0110-idp-knowledge-graph-architecture
+  - ADR-0112-automated-adr-index-generation
 supersedes: []
 superseded_by: []
 tags: []

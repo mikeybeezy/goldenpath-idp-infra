@@ -13,7 +13,7 @@ reliability:
 version: '1.0'
 breaking_change: false
 relates_to:
-  - ADR-0090
+  - ADR-0090-automated-platform-health-dashboard
 ---
 ## Walkthrough: Automated Platform Health Dashboard (Phase 2)
 

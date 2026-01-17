@@ -12,9 +12,13 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0043
-  - ADR-0045
+  - 44_DOC_TIGHTENING_PLAN
+  - ADR-0043-platform-teardown-lb-eni-wait
+  - ADR-0045-platform-teardown-lb-delete-default
+  - ADR-0164-teardown-v3-enhanced-reliability
+  - audit-20260103
 supersedes: []
 superseded_by: ADR-0045
 tags: []
@@ -27,7 +31,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0043: Teardown waits for LoadBalancer ENIs before subnet delete
 
 Filename: `ADR-0043-platform-teardown-lb-eni-wait.md`

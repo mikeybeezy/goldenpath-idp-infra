@@ -13,6 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - ADR-0124
+  - CL-0080
+  - CL-0120
   - GOVERNANCE_VOCABULARY
 supersedes: []
 superseded_by: []

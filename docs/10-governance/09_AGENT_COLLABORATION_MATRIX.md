@@ -15,12 +15,12 @@ relates_to:
   - 08_GITHUB_AGENT_ROLES
   - 26_AI_AGENT_PROTOCOLS
   - ADR-0163
+  - agent_session_summary
 category: governance
 supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false
 ---
-
 # Agent Collaboration Registry & Responsibility Matrix
 
 ## Doc contract

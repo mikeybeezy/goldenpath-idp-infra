@@ -12,10 +12,14 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - ADR-0145
-  - ADR-0145-governance-registry-mirror
-  - ADR-0158
-  - ADR-0159
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0159-backstage-catalog-registry-sync
+  - CATALOG_SYSTEMS
+  - CL-0129
+  - CL-0133-idp-stack-deployment-runbook
+  - CL-0134-backstage-catalog-governance-registry-sync
   - ECR_REQUEST_FLOW
   - RDS_REQUEST_FLOW
 supersedes: []

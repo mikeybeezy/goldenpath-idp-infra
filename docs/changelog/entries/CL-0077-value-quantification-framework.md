@@ -17,9 +17,8 @@ reliability:
   observability_tier: gold
 schema_version: 1
 relates_to:
-  - ADR-0121
   - ADR-0121-value-quantification-framework
-  - CL-0077
+  - CL-0077-value-quantification-framework
   - VQ_TAGGING_GUIDE
 supersedes: []
 superseded_by: []

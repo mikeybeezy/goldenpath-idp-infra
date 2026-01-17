@@ -13,8 +13,11 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0008
-  - ADR-0009
+  - 01_adr_index
+  - 19_DELIVERY_INSIGHTS
+  - ADR-0008-app-backstage-portal
+  - ADR-0009-app-delivery-insights
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +30,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0009: CI/CD observability via OpenTelemetry (“Delivery Insights”)
 
 - **Status:** Accepted

@@ -18,9 +18,8 @@ reliability:
 schema_version: 1
 relates_to:
   - 42_APP_TEMPLATE_LIVING
-  - ADR-0062
   - ADR-0062-platform-app-template-contract
-  - CL-0011
+  - CL-0011-app-template-contract
 supersedes: []
 superseded_by: []
 tags: []
@@ -33,7 +32,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0011: App template contract and reference bundle
 
 Date: 2025-12-31

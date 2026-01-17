@@ -11,14 +11,17 @@ schema_version: 1
 relates_to:
   - 30_PLATFORM_RDS_ARCHITECTURE
   - ADR-0165
-  - ADR-0165-rds-user-db-provisioning-automation
+  - CL-0140
   - PRD-0001-rds-user-db-provisioning
   - RB-0029-rds-manual-secret-rotation
   - RB-0030-rds-break-glass-deletion
+  - RB-0031-idp-stack-deployment
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
   - RDS_USER_DB_PROVISIONING
   - SCRIPT-0035
+  - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
 tags:
   - rds
   - provisioning

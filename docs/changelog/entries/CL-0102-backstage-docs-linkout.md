@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0133
-  - CL-0102
+  - CL-0102-backstage-docs-linkout
 supersedes: []
 superseded_by: []
 tags: []

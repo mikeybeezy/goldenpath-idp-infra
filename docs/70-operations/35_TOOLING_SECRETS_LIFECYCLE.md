@@ -3,10 +3,9 @@ id: 35_TOOLING_SECRETS_LIFECYCLE
 title: Tooling Secrets Lifecycle
 relates_to:
   - 35_SECRET_MANAGEMENT
-  - ADR-0006
   - ADR-0006-platform-secrets-strategy
-  - ADR-0157
   - ADR-0157-platform-multi-tenant-rds-architecture
+  - RB-0029-rds-manual-secret-rotation
 ---
 ## Tooling Secrets Lifecycle
 

@@ -14,9 +14,19 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0003
-  - ADR-0006
-  - ADR-0007
+  - 01_adr_index
+  - 20_TOOLING_APPS_MATRIX
+  - 35_TOOLING_SECRETS_LIFECYCLE
+  - ADR-0003-platform-AWS-IAM-bootstrap-IRSA-SSM-
+  - ADR-0006-platform-secrets-strategy
+  - ADR-0007-platform-environment-model
+  - ADR-0135
+  - ADR-0157-platform-multi-tenant-rds-architecture
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - HELM_EXTERNAL_SECRETS
+  - IDP_TOOLING_AWS_SECRETS_MANAGER
+  - SESSION_CAPTURE_2026_01_17_01
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +39,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0006: Use AWS Secrets Manager/SSM as system of record for secrets and External Secrets to hydrate Kubernetes
 
 - **Status:** Accepted

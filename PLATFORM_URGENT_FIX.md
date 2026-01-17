@@ -17,7 +17,7 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - ADR-0120
+  - ADR-0120-metadata-inheritance-and-active-governance
 supersedes: []
 superseded_by: []
 tags: []

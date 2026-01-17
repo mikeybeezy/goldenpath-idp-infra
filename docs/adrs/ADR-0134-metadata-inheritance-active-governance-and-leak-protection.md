@@ -13,7 +13,9 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0134
+  - 01_adr_index
+  - ADR-0134-metadata-inheritance-active-governance-and-leak-protection
+  - CL-0076-metadata-inheritance-active-governance-and-leak-protection
   - GOVERNANCE_VOCABULARY
 supersedes: []
 superseded_by: []
