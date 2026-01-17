@@ -769,6 +769,16 @@ if __name__ == '__main__':
 - [ ] ArgoCD GitOps deployment
 - [ ] Prometheus metrics + alerts
 
+## Additional Recommendations
+
+- **CRD scope boundaries**: start with narrow CRDs (App, Ingress, Secrets) and keep infra-heavy resources (RDS, EKS) behind existing Terraform gates until reconciliation is proven.
+- **Admission control**: add a validating webhook (OPA/Gatekeeper or Kyverno) to block unsafe CRD specs (public ingress, weak encryption, missing ownership).
+- **Finalizers for teardown**: ensure CR deletions trigger cleanup (revoking IAM, deleting ExternalSecrets, draining Ingress rules) before CR removal.
+- **Drift repair policy**: decide which fields are authoritative in-cluster vs Git, and document which drift is auto-corrected vs flagged.
+- **Observability contract**: emit controller metrics (reconcile duration, error rate), and include `reason` in Kubernetes Events for auditability.
+- **Bootstrap safety**: add a canary namespace and feature flags to roll out controllers gradually.
+- **Naming conventions**: use CamelCase for CRD kinds and snake_case for controller Python modules to align with repo standards.
+
 ## References
 
 - [Metacontroller Documentation](https://metacontroller.github.io/metacontroller/)
