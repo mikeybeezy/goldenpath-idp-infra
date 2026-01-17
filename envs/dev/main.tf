@@ -572,12 +572,15 @@ module "app_secrets" {
 ################################################################################
 
 # Fail-fast guard: Block coupled RDS in ephemeral builds
+# This check validates that RDS is not enabled when cluster_lifecycle is ephemeral
+# The precondition must reference config values to satisfy Terraform's validation
 resource "null_resource" "rds_ephemeral_guard" {
   count = var.rds_config.enabled && var.cluster_lifecycle == "ephemeral" ? 1 : 0
 
   lifecycle {
     precondition {
-      condition     = false
+      # This condition is always false when count > 0, but references config values
+      condition     = !(var.rds_config.enabled && var.cluster_lifecycle == "ephemeral")
       error_message = <<-EOT
         ERROR: Coupled RDS is not allowed in ephemeral EKS builds.
 
