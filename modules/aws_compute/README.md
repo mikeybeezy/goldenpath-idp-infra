@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 09_ARCHITECTURE
+  - 14_MODULES_OVERVIEW
   - MODULE_AWS_NIC
 supersedes: []
 superseded_by: []
@@ -35,7 +36,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # EC2 Compute Module
 
 ## Purpose

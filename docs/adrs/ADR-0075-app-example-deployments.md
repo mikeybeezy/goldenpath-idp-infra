@@ -12,8 +12,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0075
-  - CL-0027
+  - 01_adr_index
+  - ADR-0075-app-example-deployments
+  - CL-0027-app-example-deployments
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +27,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0075: App example deployments via Argo CD, Helm, and Kustomize
 
 Filename: `ADR-0075-platform-app-example-deployments.md`

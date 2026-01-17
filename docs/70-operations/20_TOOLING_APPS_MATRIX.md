@@ -16,9 +16,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0005
-  - ADR-0006
   - 06_IDENTITY_AND_ACCESS
+  - 70_OPERATIONS_README
+  - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
+  - ADR-0006-platform-secrets-strategy
+  - CL-0131
+  - CL-0136-tooling-apps-ingress-configuration
 supersedes: []
 superseded_by: []
 tags:
@@ -35,7 +38,6 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
-
 ## Platform Tooling Apps Configuration Matrix
 
 This living document captures the configuration requirements, dependencies, and operational status of all platform tooling applications deployed via Argo CD.

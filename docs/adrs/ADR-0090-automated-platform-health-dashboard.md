@@ -12,7 +12,13 @@ reliability:
   observability_tier: bronze
   maturity: 2
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - 2026-01-04_2252_trusted-delivery-pipeline-phase-4
+  - ADR-0090-automated-platform-health-dashboard
+  - ADR-0131
+  - CL-0048-automated-platform-health
+  - PLATFORM_HEALTH_GUIDE
 supersedes: []
 superseded_by: []
 tags: []
@@ -25,7 +31,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0090: Automated Platform Health Dashboard
 
 ## Status

@@ -11,10 +11,11 @@ reliability:
   observability_tier: gold
   maturity: 1
 relates_to:
-  - TEARDOWN_README
   - 07_TF_STATE_FORCE_UNLOCK
   - 08_MANAGED_LB_CLEANUP
   - CI_WORKFLOWS
+  - DOCS_RUNBOOKS_README
+  - TEARDOWN_README
 category: runbooks
 supported_until: 2028-01-01
 version: 2.0
@@ -23,7 +24,6 @@ dependencies:
   - module:kubernetes
 breaking_change: false
 ---
-
 # CI Teardown Recovery (v2)
 
 Use this when teardown hangs or state locks block cleanup. This sequence

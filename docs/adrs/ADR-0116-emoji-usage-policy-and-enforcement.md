@@ -16,6 +16,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - ADR-0116-emoji-usage-policy-and-enforcement
+  - CL-0072-emoji-usage-policy-and-enforcement
   - EMOJI_POLICY
   - Quality - Metadata Validation
 supersedes: []
@@ -31,7 +34,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 ## ADR-0116: Emoji Usage Policy & Automated Enforcement
 
 ## Context

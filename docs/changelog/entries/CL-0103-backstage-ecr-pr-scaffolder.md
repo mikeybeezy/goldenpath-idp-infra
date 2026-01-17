@@ -17,9 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0103
-  - ADR-0095
+  - ADR-0095-self-service-registry-creation
   - ADR-0128
+  - CL-0103
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +32,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0103: Backstage ECR scaffolder creates PRs directly
 
 Date: 2026-01-10

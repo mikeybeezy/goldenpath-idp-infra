@@ -17,7 +17,10 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0001
+  - 40_CHANGELOG_GOVERNANCE
+  - CL-0001-teardown-kubectl-timeout-guard
+  - Changelog-template
+  - DOCS_CHANGELOG_README
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +33,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0001: Teardown kubectl timeout guard
 
 Date: 2025-12-31

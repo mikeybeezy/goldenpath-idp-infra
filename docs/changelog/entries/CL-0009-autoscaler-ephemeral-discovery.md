@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0009
+  - CL-0009-autoscaler-ephemeral-discovery
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +30,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0009: Autoscaler discovery for ephemeral clusters
 
 Date: 2025-12-31

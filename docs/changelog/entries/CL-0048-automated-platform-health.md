@@ -17,7 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0090
+  - ADR-0090-automated-platform-health-dashboard
+  - CL-0048-automated-platform-health
+  - CL-0049-ci-optimization
   - PLATFORM_HEALTH_GUIDE
 supersedes: []
 superseded_by: []
@@ -31,7 +33,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0048: Automated Platform Health Auditing
 
 ## Summary

@@ -9,8 +9,12 @@ lifecycle: active
 exempt: false
 schema_version: 1
 relates_to:
+  - 23_NEW_JOINERS
+  - 26_AI_AGENT_PROTOCOLS
   - 38_BRANCHING_STRATEGY
+  - CL-0078
   - SHARED_RESPONSIBILITY
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags: []
@@ -21,7 +25,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Collaboration Guide
 
 ## Branch Strategy

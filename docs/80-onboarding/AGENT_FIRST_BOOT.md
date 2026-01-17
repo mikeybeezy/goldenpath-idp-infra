@@ -8,7 +8,11 @@ owner: platform-team
 lifecycle: active
 exempt: false
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0122
+  - CL-0078
+  - ROADMAP
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags: []
@@ -17,7 +21,6 @@ status: active
 category: platform
 supported_until: '2028-01-01'
 ---
-
 # AI Agent First-Boot Protocol
 
 **Mandatory Reading for all AI Agents.**

@@ -16,8 +16,13 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0110
-  - ADR-0111
+  - 01_adr_index
+  - ADR-0110-idp-knowledge-graph-architecture
+  - ADR-0111-platform-documentation-auto-healing
+  - ADR-0112-automated-adr-index-generation
+  - ADR-0133
+  - ADR_INDEX_AUTOMATION_SPEC
+  - CL-0068-adr-index-automation
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +36,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 ## ADR-0112: Automated ADR Index Generation
 
 ## Context

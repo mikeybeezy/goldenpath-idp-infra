@@ -12,8 +12,16 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - ADR-0145
-  - ADR-0158
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0159-backstage-catalog-registry-sync
+  - CATALOG_SYSTEMS
+  - CL-0129
+  - CL-0133-idp-stack-deployment-runbook
+  - CL-0134-backstage-catalog-governance-registry-sync
+  - ECR_REQUEST_FLOW
+  - RDS_REQUEST_FLOW
 supersedes: []
 superseded_by: []
 tags:
@@ -30,7 +38,6 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
-
 ## ADR-0159: Backstage Catalog Sync to Governance Registry
 
 - **Status:** Accepted

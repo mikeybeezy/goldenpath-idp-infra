@@ -17,9 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0093
-  - ADR-0092
-  - CL-0053
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0093-automated-policy-enforcement
+  - CL-0053-daily-policy-enforcement-workflow
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +32,6 @@ supported_until: 2027-01-05
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0053: Daily Policy Enforcement Workflow
 
 **Date:** 2026-01-05

@@ -13,8 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 07_REPO_DECOUPLING_OPTIONS
-  - ADR-0012
+  - ADR-0012-platform-repo-decoupling-options
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +29,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0012: Repo decoupling options for infra and platform tooling
 
 - **Status:** Accepted

@@ -13,7 +13,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - ADR-0146
   - ADR-0146 (Born Governed)
+  - ADR-0147
+  - BORN_GOVERNED_LIFECYCLE
+  - CL-0118
+  - CL-0119
+  - CL-0120
   - CNT-001 (Script Standard)
 supersedes: []
 superseded_by: []
@@ -44,7 +51,6 @@ consequences:
   - Eliminates 'Governance Debt' in a single operation.
   - Requires committing the `script_ids.yaml` registry to git to ensure ID stability.
 ---
-
 # ADR-0147: Automated Governance Backfill
 
 ## Context

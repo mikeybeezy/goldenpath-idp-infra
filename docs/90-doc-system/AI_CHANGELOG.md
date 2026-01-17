@@ -13,11 +13,11 @@ reliability:
 relates_to:
   - 07_AI_AGENT_GOVERNANCE
   - 26_AI_AGENT_PROTOCOLS
+  - ADR-0079-platform-ai-agent-governance
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # AI Change Log (Living)
 
 Doc contract:

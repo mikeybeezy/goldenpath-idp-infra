@@ -16,6 +16,9 @@ schema_version: 1
 relates_to:
   - ADR-0155-ci-governance-registry-fetch
   - CI_TERRAFORM_WORKFLOWS
+  - CL-0127
+  - DOCS_85-HOW-IT-WORKS_README
+  - HOW_IT_WORKS_INDEX
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +32,6 @@ date: 2026-01-15
 author: platform-team
 breaking_change: false
 ---
-
 ## Summary
 
 Refactored CI Terraform workflows to include automatic bootstrap after infrastructure apply, deprecated redundant workflows, and consolidated how-it-works documentation.

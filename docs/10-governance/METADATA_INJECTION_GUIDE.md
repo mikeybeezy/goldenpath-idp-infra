@@ -11,15 +11,14 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - METADATA_VALIDATION_GUIDE
+  - ADR-0089-closed-loop-metadata-injection
   - METADATA_MAINTENANCE_GUIDE
-  - ADR-0089
+  - METADATA_VALIDATION_GUIDE
 category: governance
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Metadata Injection Guide
 
 This guide documents the "Closed-Loop Governance" strategy, which propagates metadata from static sidecar files into live Kubernetes resources.

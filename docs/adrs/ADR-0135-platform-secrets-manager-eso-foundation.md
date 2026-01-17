@@ -12,10 +12,16 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0006
-  - ADR-0015
-  - ADR-0031
-  - 85-how-it-works/secrets-flow/SECRET_REQUEST_FLOW.md
+  - 01_adr_index
+  - ADR-0006-platform-secrets-strategy
+  - ADR-0015-platform-aws-oidc-for-github-actions
+  - ADR-0031-platform-bootstrap-irsa-service-accounts
+  - ADR-0135
+  - ADR-0138
+  - ADR-0139
+  - CL-0096
+  - CL-0132
+  - SECRET_REQUEST_FLOW
 supersedes: []
 superseded_by: []
 tags: []
@@ -28,7 +34,6 @@ supported_until: 2028-01-09
 version: 1.0
 breaking_change: false
 ---
-
 # ADR-0135: Secrets Manager + External Secrets Operator foundation
 
 - **Status:** Proposed

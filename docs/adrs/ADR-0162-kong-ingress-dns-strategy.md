@@ -16,11 +16,16 @@ tags:
   - dns
   - tooling
 relates_to:
-  - ADR-0005
-  - CL-0135
-  - CL-0136
+  - 01_adr_index
+  - 45_DNS_MANAGEMENT
+  - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
+  - ADR-0162
+  - CL-0135-kong-ingress-for-tooling-apps
+  - CL-0136-tooling-apps-ingress-configuration
+  - CL-0138-tooling-apps-dashboards
+  - agent_session_summary
+  - session_summary_template
 ---
-
 ## Status
 
 Accepted

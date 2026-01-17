@@ -11,7 +11,11 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 04_REPO_STRUCTURE
+  - 12_GITOPS_AND_CICD
   - 16_INFRA_Build_ID_Strategy_Decision
+  - ADR-0051-platform-reliability-metrics-contract-minimums
+  - BOOTSTRAP_10_BOOTSTRAP_README
   - BOOTSTRAP_README
   - TEARDOWN_README
 category: delivery
@@ -22,7 +26,6 @@ dependencies:
   - module:kubernetes
 breaking_change: false
 ---
-
 # Build/Bootstrap/Teardown Flags (One‑Pager)
 
 This page lists the runtime flags we use to drive automation. It is grouped by

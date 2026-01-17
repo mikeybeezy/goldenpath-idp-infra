@@ -13,9 +13,17 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0011
+  - 01_adr_index
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - 44_DOC_TIGHTENING_PLAN
   - ADR-0011-platform-ci-environment-contract
-  - ADR-0034
+  - ADR-0034-platform-ci-environment-contract
+  - ADR-0102
+  - CL-0043-complete-metadata-backfill
+  - RB-0019-relationship-extraction-script
+  - RELATIONSHIP_EXTRACTION_GUIDE
+  - ROADMAP
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -28,7 +36,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0034: CI Environment Contract
 
 - **Status:** Accepted

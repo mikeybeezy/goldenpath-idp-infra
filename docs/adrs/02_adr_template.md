@@ -12,8 +12,8 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0084
   - 01_GOVERNANCE
+  - ADR-0084-platform-enhanced-metadata-schema
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +26,6 @@ supported_until: 2028-01-04
 version: 1.0
 breaking_change: false
 ---
-
 # ADR-XXXX: Concise decision title
 
 Filename: `ADR-XXXX-(platform|app)-short-title.md`

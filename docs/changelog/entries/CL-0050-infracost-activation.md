@@ -17,7 +17,10 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0076
+  - ADR-0076-platform-infracost-ci-visibility
+  - CL-0030-infracost-ci-visibility
+  - CL-0049-ci-optimization
+  - CL-0050-infracost-activation
   - IDP_PRODUCT_FEATURES
 supersedes: []
 superseded_by: []
@@ -33,7 +36,6 @@ dependencies:
   - CL-0049-ci-optimization
 breaking_change: false
 ---
-
 ## CL-0050: Activated Infracost Cost Visibility
 
 **Date:** 2026-01-04

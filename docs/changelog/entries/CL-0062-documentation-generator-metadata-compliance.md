@@ -17,7 +17,11 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0100
+  - ADR-0097-domain-based-resource-catalogs
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - CL-0062-documentation-generator-metadata-compliance
+  - REGISTRY_CATALOG
+  - standardized-image-delivery
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +34,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0062: Documentation Generator Metadata Compliance
 
 Resolved the "metadata limbo" issue where auto-generated Markdown files lacked platform frontmatter, making them invisible to governance and validation tools.

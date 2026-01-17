@@ -17,7 +17,8 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0117
+  - ADR-0117-conclusive-governance-routing-architecture
+  - CL-0073-conclusive-governance-routing-architecture
   - DECISION_ROUTING_STRATEGY
 supersedes: []
 superseded_by: []
@@ -32,7 +33,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 ## CL-0073: Conclusive Governance Routing & Compliance Engine
 
 ## Summary

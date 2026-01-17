@@ -10,8 +10,10 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - CL-0076-metadata-inheritance-active-governance-and-leak-protection
+  - CL-0076-metadata-inheritance-and-active-governance
 ---
-
 # Metadata Inheritance & Active Governance Strategy
 
 ## Overview

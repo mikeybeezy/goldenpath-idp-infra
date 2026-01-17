@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 08_MANAGED_LB_CLEANUP
-  - CL-0008
+  - CL-0008-ci-managed-lb-cleanup-workflow
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0008: CI managed LB cleanup workflow
 
 Date: 2025-12-31

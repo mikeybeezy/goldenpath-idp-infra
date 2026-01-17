@@ -13,13 +13,13 @@ relates_to:
   - 41_BUILD_RUN_LOG
   - BR-TEMPLATE
   - BR_TEMPLATE
+  - CL-0089-build-log-metrics
   - TD-TEMPLATE
   - TD_TEMPLATE
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Build Run Logs
 
 This directory holds per-run records for builds/bootstraps and teardowns.

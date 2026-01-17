@@ -10,7 +10,11 @@ exempt: false
 reliability:
   observability_tier: bronze
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0113-platform-queryable-intelligence-enums
+  - ADR-0118-config-driven-metadata-governance
+  - ADR-0119-grand-metadata-healing-and-contextual-alignment
 supersedes: []
 superseded_by: []
 tags: []
@@ -21,7 +25,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 ## ADR-0119: Grand Metadata Healing & Contextual Alignment
 
 ## Status

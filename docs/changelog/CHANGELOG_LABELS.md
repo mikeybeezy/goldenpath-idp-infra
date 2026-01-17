@@ -17,6 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 40_CHANGELOG_GOVERNANCE
   - Changelog-template
 supersedes: []
 superseded_by: []
@@ -30,7 +31,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Changelog Labels (Living)
 
 Doc contract:

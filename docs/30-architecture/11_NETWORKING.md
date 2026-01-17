@@ -12,13 +12,13 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 relates_to:
+  - 01_GOVERNANCE
   - 08_INGRESS_STRATEGY
 category: architecture
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Networking Decisions
 
 This document captures the networking decisions for the platform and the

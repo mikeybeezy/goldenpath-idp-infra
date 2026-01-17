@@ -18,8 +18,10 @@ reliability:
   maturity: 3
 schema_version: 1
 relates_to:
-  - SCRIPT_CERTIFICATION_AUDIT
   - ADR-0126
+  - CL-0116
+  - CL-0117
+  - SCRIPT_CERTIFICATION_AUDIT
   - standardize_metadata.py
 supersedes: []
 superseded_by: []
@@ -33,7 +35,6 @@ supported_until: '2028-01-01'
 date: 2026-01-12
 breaking_change: false
 ---
-
 # CL-0116: Standardize Metadata Dry-Run Implementation
 
 ## Summary

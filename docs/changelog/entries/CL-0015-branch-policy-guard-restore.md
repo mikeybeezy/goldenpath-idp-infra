@@ -17,9 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0065
   - ADR-0065-platform-branch-policy-guard
-  - CL-0015
+  - CL-0015-branch-policy-guard-restore
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0015: Restore branch policy guard for main
 
 Date: 2026-01-02

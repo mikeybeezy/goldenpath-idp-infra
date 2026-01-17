@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 10_SECRET_SCANNING_POLICY
+  - CL-0100
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +31,6 @@ supported_until: 2028-01-10
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0100: Gitleaks secret scanning
 
 Date: 2026-01-10

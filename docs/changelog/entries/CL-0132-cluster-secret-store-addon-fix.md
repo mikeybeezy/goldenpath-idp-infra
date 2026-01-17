@@ -11,12 +11,13 @@ schema_version: 1
 relates_to:
   - ADR-0135
   - ADR-0143
+  - CL-0132
+  - agent_session_summary
 tags:
   - secrets
   - eso
   - addons
 ---
-
 ## CL-0132: ClusterSecretStore Addon Deployment Fix
 
 **Type**: Bug Fix

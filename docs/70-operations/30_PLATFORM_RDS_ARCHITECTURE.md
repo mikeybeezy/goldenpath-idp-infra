@@ -1,8 +1,21 @@
 ---
 id: 30_PLATFORM_RDS_ARCHITECTURE
 title: Platform RDS Architecture
+relates_to:
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0165
+  - ADR-0166
+  - PRD-0001-rds-user-db-provisioning
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0030-rds-break-glass-deletion
+  - RB-0031-idp-stack-deployment
+  - RB-0032
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
+  - RDS_USER_DB_PROVISIONING
+  - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
 ---
-
 ## Platform RDS Architecture
 
 This living document describes the standalone RDS PostgreSQL bounded context for platform tooling applications.
@@ -93,6 +106,8 @@ make rds-provision-auto ENV=dev BUILD_ID=xx-xx-xx-xx
 make bootstrap ENV=dev BUILD_ID=xx-xx-xx-xx
 ```
 
+Note: Non-dev provisioning requires explicit approval (`ALLOW_DB_PROVISION=true`).
+
 #### Deploy Shortcut (Apply + Bootstrap)
 
 ```bash
@@ -121,6 +136,8 @@ make rds-provision-auto ENV=dev RDS_MODE=standalone BUILD_ID=xx-xx-xx-xx
 # 4. Then bootstrap
 make bootstrap ENV=dev BUILD_ID=xx-xx-xx-xx
 ```
+
+Note: Non-dev provisioning requires explicit approval (`ALLOW_DB_PROVISION=true`).
 
 ### Full Deployment Order
 

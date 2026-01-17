@@ -1,8 +1,12 @@
 ---
 id: 35_TOOLING_SECRETS_LIFECYCLE
 title: Tooling Secrets Lifecycle
+relates_to:
+  - 35_SECRET_MANAGEMENT
+  - ADR-0006-platform-secrets-strategy
+  - ADR-0157-platform-multi-tenant-rds-architecture
+  - RB-0029-rds-manual-secret-rotation
 ---
-
 ## Tooling Secrets Lifecycle
 
 This document describes how secrets are managed for platform tooling applications, including when they are generated, how they are stored, and the sync mechanism to Kubernetes.

@@ -7,16 +7,15 @@ risk_profile:
   security_risk: high
   coupling_risk: medium
 relates_to:
-  - HELM_KEYCLOAK
-  - ADR-0005
   - 06_IDENTITY_AND_ACCESS
+  - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
+  - HELM_KEYCLOAK
 version: 1.0
 dependencies:
   - provider:keycloak
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Keycloak Configuration Module
 
 This module uses the Keycloak Terraform provider to manage *what lives inside* Keycloak after the Helm chart deploys it. Think of the split as:

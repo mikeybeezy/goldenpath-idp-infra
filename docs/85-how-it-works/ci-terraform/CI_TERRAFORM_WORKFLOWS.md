@@ -3,11 +3,11 @@ id: CI_TERRAFORM_WORKFLOWS
 title: 'How It Works: CI Terraform Workflows'
 type: documentation
 relates_to:
-  - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
   - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0155-ci-governance-registry-fetch
+  - CL-0127
+  - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 ---
-
 This guide explains the GitHub Actions workflow architecture for Terraform plan and apply operations.
 
 ## Overview

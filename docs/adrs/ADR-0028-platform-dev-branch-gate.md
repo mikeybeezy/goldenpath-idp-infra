@@ -14,9 +14,14 @@ reliability:
 schema_version: 1
 relates_to:
   - 01_GOVERNANCE
+  - 01_adr_index
   - 21_CI_ENVIRONMENT_CONTRACT
   - 29_CD_DEPLOYMENT_CONTRACT
-  - ADR-0028
+  - ADR-0028-platform-dev-branch-gate
+  - ADR-0029-platform-dev-plan-gate
+  - RB-0010-dev-branch-apply
+  - ROADMAP
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +34,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0028: Dev branch gate before main
 
 Filename: `ADR-0028-platform-dev-branch-gate.md`

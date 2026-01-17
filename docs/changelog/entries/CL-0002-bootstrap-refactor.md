@@ -17,8 +17,12 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0063
-  - CL-0002
+  - 04_PR_GUARDRAILS
+  - 40_CHANGELOG_GOVERNANCE
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - CL-0002-bootstrap-refactor
+  - DOCS_CHANGELOG_README
+  - READINESS_CHECKLIST
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +35,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0002: Refactor Bootstrap to Terraform
 
 Date: 2026-01-01

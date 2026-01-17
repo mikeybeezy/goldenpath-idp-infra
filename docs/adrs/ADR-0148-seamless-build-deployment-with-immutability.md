@@ -12,7 +12,22 @@ reliability:
   observability_tier: bronze
   maturity: 2
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0007-platform-environment-model
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - ADR-0148-seamless-build-deployment-with-immutability
+  - ADR-0153
+  - ADR-0154
+  - ADR-0155-ci-governance-registry-fetch
+  - ADR-0156-platform-ci-build-timing-capture
+  - BRIDGE_ANALYSIS
+  - BUG_FIXES_SUMMARY
+  - CL-0121-seamless-build-deployment
+  - CL-0125
+  - CL-0126-ci-governance-registry-fetch
+  - EC-0001-knative-integration
+  - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 supersedes: []
 superseded_by: []
 tags: []
@@ -23,7 +38,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 ## ADR-0148: Seamless Build Deployment with Build ID Immutability
 
 **Status**: Accepted

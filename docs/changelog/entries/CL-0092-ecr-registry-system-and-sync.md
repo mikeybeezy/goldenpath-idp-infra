@@ -18,7 +18,8 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0132
-  - CL-0092
+  - CL-0092-ecr-registry-system-and-sync
+  - RB-0025-ecr-catalog-sync
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-09
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0092: ECR registry system boundary and sync updates
 
 Date: 2026-01-09

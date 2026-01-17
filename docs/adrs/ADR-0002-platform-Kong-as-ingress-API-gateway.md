@@ -13,7 +13,13 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0002
+  - 01_adr_index
+  - ADR-0002-platform-Kong-as-ingress-API-gateway
+  - BOOTSTRAP_10_BOOTSTRAP_README
+  - HELM_KONG
+  - IDP_TOOLING_KONG_CONFIG
+  - audit-20260103
+  - goldenpath-idp-bootstrap
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +32,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0002: Use Kong as the primary ingress/API gateway behind an internal NLB
 
 - **Status:** Accepted

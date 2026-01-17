@@ -12,8 +12,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 09_PLATFORM_DASHBOARD_CATALOG
-  - ADR-0066
+  - ADR-0066-platform-dashboards-as-code
+  - ADR-0082-platform-metadata-validation
+  - CL-0020-golden-signals-dashboard
+  - METADATA_STRATEGY
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +30,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0066: Platform Dashboards as Code
 
 Filename: `ADR-0066-platform-dashboards-as-code.md`

@@ -34,7 +34,10 @@ OUTPUT_FILE = "ci-workflows/CI_WORKFLOWS.md"
 
 # Taxonomy mapping: matches workflow usage to categories
 CATEGORY_MAP = {
-    "Guardrails / Policy (PR)": ["guardrails", "policy", "lint", "check", "validation", "freshness", "pre-commit"],
+    "Guardrails / Policy (PR)": [
+        "guardrails", "policy", "lint", "check", "validation", "freshness", "pre-commit",
+        "guard", "approval guard", "drift guard", "capture guardrail"
+    ],
     "Terraform Plan": ["plan", "checks"],
     "Terraform Apply": ["apply", "update"],
     "Bootstrap / Tooling": ["bootstrap", "backstage", "scaffold", "registry"],

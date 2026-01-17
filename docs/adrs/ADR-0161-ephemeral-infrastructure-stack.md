@@ -16,11 +16,14 @@ tags:
   - minio
   - postgres
   - simulation
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - 38_EPHEMERAL_STACK_STRATEGY
+  - ADR-0161
+  - CL-0131
 supersedes: []
 superseded_by: []
 ---
-
 ## ADR-0161: Standard Ephemeral Infrastructure Stack
 
 **Status**: Accepted

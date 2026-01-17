@@ -12,7 +12,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0071
+  - 01_adr_index
+  - ADR-0071-doc-taxonomy-refactor
+  - ADR-0103-automated-workflow-docs
+  - CL-0021-doc-taxonomy-refactor
 supersedes: []
 superseded_by: []
 tags: []
@@ -25,7 +28,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0071: Standardized Documentation Taxonomy
 
 ## Status

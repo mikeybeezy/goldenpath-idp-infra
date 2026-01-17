@@ -11,43 +11,45 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
-  - RB-0001
-  - RB-0002
-  - RB-0003
-  - RB-0004
-  - RB-0005
-  - RB-0006
-  - RB-0007
-  - RB-0008
-  - RB-0009
-  - RB-0010
-  - RB-0011
-  - RB-0012
-  - RB-0013
-  - RB-0014
-  - RB-0015
-  - RB-0016
-  - RB-0017
-  - RB-0018
-  - RB-0019
-  - RB-0020
-  - RB-0021
-  - RB-0022
-  - RB-0023
-  - RB-0024
-  - RB-0025
+  - CL-0041-argocd-app-readiness-runbook
+  - RB-0001-eks-access-recovery
+  - RB-0002-grafana-access
+  - RB-0003-iam-audit
+  - RB-0004-lb-finalizer-stuck
+  - RB-0005-golden-path-validation
+  - RB-0006-lb-eni-orphans
+  - RB-0007-tf-state-force-unlock
+  - RB-0008-managed-lb-cleanup
+  - RB-0009-ci-teardown-recovery-v2
+  - RB-0010-dev-branch-apply
+  - RB-0011-repo-decommissioning
+  - RB-0012-argocd-app-readiness
+  - RB-0013-leak-protection-management
+  - RB-0014-metadata-and-enum-alignment
+  - RB-0015-repo-health-and-hygiene
+  - RB-0016-extending-governance-vocabulary
+  - RB-0017-orphan-cleanup
+  - RB-0018-metadata-backfill-script
+  - RB-0019-relationship-extraction-script
+  - RB-0020-git-troubleshooting
+  - RB-0021-backstage-helm-catalog-visibility
+  - RB-0021-fix-cve-guide
+  - RB-0022-backstage-techdocs-setup
+  - RB-0022-pull-image-guide
+  - RB-0023-push-image-guide
+  - RB-0024-request-registry
+  - RB-0025-ecr-catalog-sync
   - RB-0026
   - RB-0027
   - RB-0028
-  - RB-0029
-  - RB-0030
-  - RB-0031
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0030-rds-break-glass-deletion
+  - RB-0031-idp-stack-deployment
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
-
 ## Runbooks
 
 ## Index

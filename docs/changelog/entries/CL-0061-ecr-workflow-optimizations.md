@@ -17,7 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0100
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - CL-0061-ecr-workflow-optimizations
+  - RB-0024-request-registry
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +32,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0061: ECR Workflow and Documentation Optimizations
 
 Implemented a comprehensive series of optimizations to the ECR registry creation lifecycle and the platform documentation engine.

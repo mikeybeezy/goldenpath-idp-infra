@@ -11,16 +11,16 @@ reliability:
   observability_tier: gold
   maturity: 1
 relates_to:
-  - TEARDOWN_README
   - 10_REPO_DECOMMISSIONING
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0036
+  - ADR-0036-platform-orphan-cleanup-workflow
+  - DOCS_RUNBOOKS_README
+  - TEARDOWN_README
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
-
 # Orphan Cleanup
 
 ## Purpose

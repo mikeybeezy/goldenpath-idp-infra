@@ -17,8 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0102
-  - docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md
+  - CL-0064-terraform-lint-workflow
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## [1.0.0] - 2026-01-06
 
 ### Added

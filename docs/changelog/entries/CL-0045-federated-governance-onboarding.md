@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0086
-  - CL-0045
+  - ADR-0086-federated-metadata-validation
+  - CL-0045-federated-governance-onboarding
   - FEDERATED_METADATA_STRATEGY
 supersedes: []
 superseded_by: []
@@ -34,7 +34,6 @@ dependencies:
   - module:docs
 breaking_change: false
 ---
-
 # CL-0045: Federated Governance Strategy and Runbook
 
 ## Changes

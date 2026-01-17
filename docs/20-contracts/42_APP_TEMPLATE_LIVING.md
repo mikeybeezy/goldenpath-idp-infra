@@ -11,13 +11,16 @@ reliability:
   observability_tier: silver
 relates_to:
   - 02_PLATFORM_BOUNDARIES
-  - ADR-0062
+  - ADR-0062-platform-app-template-contract
+  - ADR-0078-platform-governed-repo-scaffolder
+  - APPS_FAST-API-APP-TEMPLATE_README
+  - CL-0011-app-template-contract
+  - CL-0031-governed-repo-scaffolder
   - FAST-API-APP-TEMPLATE
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # App Template Living Doc
 
 Doc contract:

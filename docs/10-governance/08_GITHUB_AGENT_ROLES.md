@@ -14,12 +14,12 @@ relates_to:
   - 04_PR_GUARDRAILS
   - 07_AI_AGENT_GOVERNANCE
   - 26_AI_AGENT_PROTOCOLS
+  - ADR-0101-pr-metadata-auto-heal
 category: governance
 supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # GitHub Agent Roles (Apps and Service Accounts)
 
 Doc contract:

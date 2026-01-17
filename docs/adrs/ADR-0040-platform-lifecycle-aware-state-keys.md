@@ -13,10 +13,15 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - 16_INFRA_Build_ID_Strategy_Decision
   - 21_CI_ENVIRONMENT_CONTRACT
   - 32_TERRAFORM_STATE_AND_LOCKING
   - 36_STATE_KEY_STRATEGY
-  - ADR-0040
+  - ADR-0040-platform-lifecycle-aware-state-keys
+  - CL-0042-metadata-backfill-batch-1
+  - READINESS_CHECKLIST
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +34,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0040: Lifecycle-aware Terraform state keys for BuildId isolation
 
 Filename: `ADR-0040-platform-lifecycle-aware-state-keys.md`

@@ -17,7 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0005
+  - CL-0005-teardown-finalizer-default-on
+  - METADATA_STRATEGY
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0005: Teardown finalizer removal default-on
 
 Date: 2025-12-31

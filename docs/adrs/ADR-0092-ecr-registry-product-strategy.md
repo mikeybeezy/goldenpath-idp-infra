@@ -12,7 +12,29 @@ reliability:
   observability_tier: bronze
   maturity: 2
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0094-automated-catalog-docs
+  - ADR-0095-self-service-registry-creation
+  - ADR-0096-risk-based-ecr-controls
+  - ADR-0097-domain-based-resource-catalogs
+  - ADR-0098-standardized-pr-gates
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - ADR-0128
+  - ADR-0129
+  - CAPABILITY_LEDGER
+  - CATALOG_INDEX
+  - CL-0052-ecr-registry-product-strategy
+  - CL-0053-daily-policy-enforcement-workflow
+  - CL-0054-automated-catalog-docs
+  - CL-0055-self-service-registry-creation
+  - CL-0056-risk-based-ecr-controls
+  - CL-0057-domain-based-catalogs
+  - RB-0024-request-registry
+  - REGISTRY_CATALOG
+  - SCRIPTS_POLICIES
 supersedes: []
 superseded_by: []
 tags: []
@@ -25,7 +47,6 @@ supported_until: '2028-01-01'
 version: '1.0'
 breaking_change: false
 ---
-
 ## ADR-0092: ECR Registry Product-Based Strategy & Shared Responsibility Model
 
 ## Status

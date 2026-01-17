@@ -13,7 +13,7 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - ADR-0110
+  - ADR-0110-idp-knowledge-graph-architecture
 supersedes: []
 superseded_by: []
 tags: []
@@ -28,7 +28,6 @@ supported_until: '2028-01-01'
 version: '1.0'
 breaking_change: false
 ---
-
 ## IDP Knowledge Graph Node Architecture
 
 Implement a structured, graph-based entity model that transforms disconnected YAML sidecars into a unified Knowledge Graph. This architecture enables automated impact analysis, compliance auditing, and autonomous agent reasoning.

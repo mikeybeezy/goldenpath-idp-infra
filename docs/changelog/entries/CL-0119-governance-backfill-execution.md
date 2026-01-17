@@ -18,8 +18,9 @@ reliability:
   maturity: 3
 schema_version: 1
 relates_to:
-  - CL-0118
   - ADR-0147
+  - CL-0118
+  - CL-0119
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +33,6 @@ supported_until: '2028-01-01'
 date: 2026-01-12
 breaking_change: false
 ---
-
 # CL-0119: The Great Governance Backfill (Execution)
 
 ## Summary

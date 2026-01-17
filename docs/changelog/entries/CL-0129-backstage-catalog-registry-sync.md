@@ -16,8 +16,10 @@ risk_profile:
   coupling_risk: low
 schema_version: 1
 relates_to:
+  - ADR-0145
   - ADR-0159-backstage-catalog-registry-sync
-  - ADR-0145-governance-registry-mirror
+  - CL-0129
+  - CL-0134-backstage-catalog-governance-registry-sync
 supersedes: []
 superseded_by: []
 tags:
@@ -35,7 +37,6 @@ date: 2026-01-15
 author: platform-team
 breaking_change: false
 ---
-
 ## Summary
 
 - Backstage catalog now synced to `governance-registry` branch for stable access

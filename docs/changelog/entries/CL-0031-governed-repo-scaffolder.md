@@ -17,10 +17,11 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 00_INDEX
   - 42_APP_TEMPLATE_LIVING
-  - ADR-0078
   - ADR-0078-platform-governed-repo-scaffolder
-  - CL-0031
+  - CL-0031-governed-repo-scaffolder
+  - US-0001-governance-driven-repo-scaffolder
 supersedes: []
 superseded_by: []
 tags: []
@@ -33,7 +34,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0031: Governance-driven app repo scaffolder
 
 Date: 2026-01-03

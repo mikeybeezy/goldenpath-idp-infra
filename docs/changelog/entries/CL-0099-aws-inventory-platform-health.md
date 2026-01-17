@@ -17,6 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - CL-0099
   - PLATFORM_HEALTH
 supersedes: []
 superseded_by: []
@@ -30,7 +31,6 @@ supported_until: 2028-01-09
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0099: AWS inventory in platform health
 
 Date: 2026-01-09

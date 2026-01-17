@@ -11,8 +11,13 @@ reliability:
   observability_tier: bronze
   maturity: 1
 category: runbooks
+relates_to:
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - DOCS_RUNBOOKS_README
+  - RB-0012-argocd-app-readiness
+  - RB-0014-metadata-and-enum-alignment
+  - RB-0015-repo-health-and-hygiene
 ---
-
 # RB-0012: Leak Protection Management
 
 ```text

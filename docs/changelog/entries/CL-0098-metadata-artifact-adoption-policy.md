@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0137
+  - CL-0098
   - METADATA_ARTIFACT_ADOPTION_POLICY
 supersedes: []
 superseded_by: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-09
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0098: Metadata placement policy for configs and reports
 
 Date: 2026-01-09

@@ -12,12 +12,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 05_OBSERVABILITY_DECISIONS
-  - ADR-0049
   - ADR-0049-platform-pragmatic-observability-baseline
-  - ADR-0054
   - ADR-0054-platform-observability-exporters-otel-split
-  - ADR-0055
+  - ADR-0055-platform-tempo-tracing-backend
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +30,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0055: Tempo as the standard tracing backend (V1.1)
 
 - **Status:** Proposed

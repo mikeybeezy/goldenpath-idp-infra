@@ -12,7 +12,16 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0092
+  - 01_adr_index
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0128
+  - ADR-0129
+  - ADR-0132
+  - ADR-0141
+  - CL-0095-ecr-backstage-sync-automation
+  - CL-0103
+  - RB-0021-backstage-helm-catalog-visibility
+  - RB-0025-ecr-catalog-sync
 supersedes: []
 superseded_by: []
 tags: []
@@ -25,7 +34,6 @@ supported_until: 2028-01-08
 version: 1.0
 breaking_change: false
 ---
-
 ## ADR-0128: Automated IDP Catalog Mapping for AWS ECR
 
 ## Status

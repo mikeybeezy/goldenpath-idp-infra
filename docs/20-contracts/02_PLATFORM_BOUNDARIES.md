@@ -12,15 +12,17 @@ reliability:
 relates_to:
   - 01_GOVERNANCE
   - 21_CI_ENVIRONMENT_CONTRACT
+  - 23_NEW_JOINERS
   - 29_CD_DEPLOYMENT_CONTRACT
   - 35_RESOURCE_TAGGING
   - 40_CHANGELOG_GOVERNANCE
   - 42_APP_TEMPLATE_LIVING
+  - ADR-0027-platform-design-philosophy
+  - ADR-0051-platform-reliability-metrics-contract-minimums
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Platform Boundaries & Contract
 
 Doc contract:

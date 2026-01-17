@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0104
-  - scripts/index.md
+  - ADR-0104-automated-script-docs
+  - CL-0066-automate-script-docs
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +31,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## [1.0.0] - 2026-01-06
 
 ### Added

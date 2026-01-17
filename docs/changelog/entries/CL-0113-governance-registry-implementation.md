@@ -17,6 +17,8 @@ risk_profile:
 schema_version: 1
 relates_to:
   - ADR-0145
+  - CL-0113
+  - CL-0114
 supersedes: []
 superseded_by: []
 tags:
@@ -30,7 +32,6 @@ value_quantification:
   potential_savings_hours: 5.0
 supported_until: '2028-01-01'
 ---
-
 # CL-0113: Governance-Registry Implementation
 
 ## Summary

@@ -11,7 +11,11 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: silver
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0089-closed-loop-metadata-injection
+  - CL-0047-closed-loop-governance
+  - METADATA_INJECTION_GUIDE
 supersedes: []
 superseded_by: []
 tags: []
@@ -24,7 +28,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0089: Closed-Loop Metadata Injection
 
 ## Status

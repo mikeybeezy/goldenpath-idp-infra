@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0074
-  - CL-0029
+  - ADR-0074-platform-ops-workflow-branch-guard
+  - CL-0029-ops-workflow-branch-guard
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0029: Ops workflow branch guard
 
 Date: 2026-01-03

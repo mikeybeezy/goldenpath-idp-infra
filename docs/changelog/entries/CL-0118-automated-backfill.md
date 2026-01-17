@@ -18,8 +18,10 @@ reliability:
   maturity: 3
 schema_version: 1
 relates_to:
-  - ADR-0147
   - ADR-0146
+  - ADR-0147
+  - CL-0118
+  - CL-0119
   - GUIDE-002
 supersedes: []
 superseded_by: []
@@ -33,7 +35,6 @@ supported_until: '2028-01-01'
 date: 2026-01-12
 breaking_change: false
 ---
-
 # CL-0118: Automated Governance Backfill & V1 Acceptance Rules
 
 ## Summary

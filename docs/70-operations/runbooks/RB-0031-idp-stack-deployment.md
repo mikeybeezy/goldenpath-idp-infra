@@ -11,15 +11,23 @@ reliability:
   observability_tier: silver
   maturity: 2
 relates_to:
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0160
+  - CL-0133-idp-stack-deployment-runbook
+  - DOCS_RUNBOOKS_README
   - RB-0001-eks-access-recovery
   - RB-0012-argocd-app-readiness
-  - ADR-0160-rds-optional-toggle-integration
+  - RB-0032
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_USER_DB_PROVISIONING
+  - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
+  - session_summary_template
 category: runbooks
 supported_until: 2028-01-15
 version: '1.0'
 breaking_change: false
 ---
-
 ## IDP Stack Deployment Runbook (Keycloak + Backstage)
 
 This runbook provides the complete sequence to deploy and verify the IDP core stack (Keycloak and Backstage) on a new or existing EKS cluster.
@@ -333,6 +341,18 @@ docker inspect 593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak:latest \
 ---
 
 ## Phase 2: RDS User Provisioning
+
+### Automation Note
+
+On merge to `development`, the `rds-database-apply.yml` workflow can run the
+Terraform apply and provisioning job automatically. Use the manual steps below
+for recovery, break-glass, or when automation is disabled.
+
+### Toggles and Options
+
+- `ALLOW_DB_PROVISION=true`: Required for non-dev environments (staging/prod).
+- `RDS_MODE=coupled|standalone`: Force provisioning mode if auto-detection is ambiguous.
+- `BUILD_ID` / `RUN_ID`: Include for traceability in audit logs.
 
 ### Why This Matters (GitHub Token)
 

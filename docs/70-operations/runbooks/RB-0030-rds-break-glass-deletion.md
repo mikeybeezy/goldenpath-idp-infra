@@ -11,8 +11,16 @@ reliability:
   observability_tier: gold
   maturity: 1
 relates_to:
-  - ADR-0158-platform-standalone-rds-bounded-context
   - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0160
+  - CAPABILITY_LEDGER
+  - CL-0140
+  - DOCS_RUNBOOKS_README
+  - EC-0001-knative-integration
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0032
+  - RDS_REQUEST_FLOW
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
@@ -21,7 +29,6 @@ dependencies:
   - module:terraform
 breaking_change: false
 ---
-
 ## RDS Break-Glass Deletion Procedure (Runbook)
 
 This runbook documents the intentionally difficult process for deleting platform RDS instances.

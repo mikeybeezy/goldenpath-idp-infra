@@ -17,8 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0056
-  - CL-0057
+  - CL-0056-risk-based-ecr-controls
+  - CL-0057-domain-based-catalogs
+  - CL-0058-testing-framework
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-05
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0058: Feature Testing Framework
 
 **Date:** 2026-01-05

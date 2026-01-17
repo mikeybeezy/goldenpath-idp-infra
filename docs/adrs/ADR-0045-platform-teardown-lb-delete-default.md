@@ -13,10 +13,13 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0043
   - ADR-0043-platform-teardown-lb-eni-wait
-  - ADR-0045
+  - ADR-0045-platform-teardown-lb-delete-default
+  - ADR-0047-platform-teardown-destroy-timeout-retry
+  - ADR-0164-teardown-v3-enhanced-reliability
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +32,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0045: Default LB delete when ENIs persist during teardown
 
 Filename: `ADR-0045-platform-teardown-lb-delete-default.md`

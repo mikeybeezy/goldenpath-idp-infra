@@ -16,13 +16,25 @@ tags:
   - automation
   - governance
 relates_to:
-  - PRD-0001-rds-user-db-provisioning
-  - 30_PLATFORM_RDS_ARCHITECTURE
+  - 01_adr_index
   - 10_PLATFORM_REQUIREMENTS
-  - SCRIPT-0035
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0165
+  - ADR-0166
+  - CATALOG_INDEX
+  - CL-0140
+  - PRD-0001-rds-user-db-provisioning
+  - PR_GUARDRAILS_INDEX
   - RB-0032
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
+  - RDS_SESSION_FEEDBACK
+  - RDS_USER_DB_PROVISIONING
+  - SCRIPT-0035
+  - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
 ---
-
 ## Status
 
 Accepted (Implemented 2026-01-16)

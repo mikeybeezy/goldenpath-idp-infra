@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 24_PR_GATES
-  - CL-0014
+  - CL-0014-pr-gates-onboarding
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0014: PR gate onboarding guide
 
 Date: 2026-01-02

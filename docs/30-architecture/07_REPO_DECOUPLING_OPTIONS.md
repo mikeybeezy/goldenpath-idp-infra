@@ -12,8 +12,10 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 relates_to:
+  - 01_GOVERNANCE
   - 09_ARCHITECTURE
-  - ADR-0012
+  - ADR-0012-platform-repo-decoupling-options
+  - ADR-0013-platform-argo-app-management-approach
 category: architecture
 supported_until: 2028-01-01
 version: 1.0
@@ -24,7 +26,6 @@ dependencies:
   - chart:argo-cd
 breaking_change: false
 ---
-
 # Repo Decoupling Options
 
 This document captures options for separating infrastructure and platform tooling

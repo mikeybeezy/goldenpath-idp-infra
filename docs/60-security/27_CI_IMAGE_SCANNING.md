@@ -11,8 +11,8 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
-  - ADR-0023
   - 22_CONTAINER_REGISTRY_STANDARD
+  - ADR-0023-platform-ci-image-scanning
   - CI_WORKFLOWS
 category: security
 supported_until: 2028-01-01
@@ -21,7 +21,6 @@ dependencies:
   - module:trivy
 breaking_change: false
 ---
-
 # CI Image Scanning (Living Document)
 
 This document describes the default image scanning approach in CI.

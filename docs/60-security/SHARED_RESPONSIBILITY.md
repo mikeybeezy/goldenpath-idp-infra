@@ -13,8 +13,9 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 category: security
+relates_to:
+  - 13_COLLABORATION_GUIDE
 ---
-
 # Shared Responsibility Model
 
 (Content continues...)

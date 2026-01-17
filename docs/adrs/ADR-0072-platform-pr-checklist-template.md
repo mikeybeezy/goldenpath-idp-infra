@@ -12,8 +12,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 24_PR_GATES
-  - ADR-0072
+  - ADR-0072-platform-pr-checklist-template
+  - CL-0022-pr-guardrails-template-copy
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +28,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0072: PR checklist template in PR gates guide
 
 - **Status:** Proposed

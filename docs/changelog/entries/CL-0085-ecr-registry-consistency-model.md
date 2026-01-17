@@ -17,7 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0085
+  - ADR-0129
+  - CL-0085-ecr-registry-consistency-model
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +31,6 @@ supported_until: 2028-01-08
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0085: ECR Registry Consistency Model
 
 ## Date

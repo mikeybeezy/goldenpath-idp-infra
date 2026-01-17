@@ -3,13 +3,22 @@ id: RDS_DUAL_MODE_AUTOMATION
 title: 'How It Works: Dual-Mode RDS Automation (Coupled + Standalone)'
 type: documentation
 relates_to:
+  - 30_PLATFORM_RDS_ARCHITECTURE
   - ADR-0158-platform-standalone-rds-bounded-context
-  - ADR-0160-rds-optional-toggle-integration
-  - ADR-0165-rds-user-db-provisioning-automation
-  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
+  - ADR-0160
+  - ADR-0165
+  - ADR-0166
+  - CONTRACT_DRIVEN_ARCHITECTURE
+  - PR_GUARDRAILS_INDEX
+  - RB-0031-idp-stack-deployment
+  - RB-0032
+  - RDS_REQUEST_FLOW
   - RDS_REQUEST_V1
+  - RDS_USER_DB_PROVISIONING
   - SCRIPT-0034
   - SCRIPT-0035
+  - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
 tags:
   - rds
   - provisioning
@@ -17,7 +26,6 @@ tags:
   - how-it-works
 status: active
 ---
-
 # How It Works: Dual-Mode RDS Automation (Coupled + Standalone)
 
 The platform supports two RDS modes that intentionally coexist:
@@ -116,6 +124,8 @@ To avoid future rework, Backstage templates and workflows should:
 - Service class approvals for `databases-rds` are defined in
   `schemas/routing/service_class_approvals.yaml`.
 - Non-dev provisioning requires explicit approval gates (`ALLOW_DB_PROVISION=true`).
+- During rollout, guardrails run warn-only; switch to blocking after non-dev cutover.
+- Request files are workflow-generated; avoid manual edits.
 - Size tiers above `medium` should require platform review.
 
 ## References

@@ -17,9 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0068
   - ADR-0068-platform-review-cadence-output
-  - CL-0017
+  - CL-0017-review-cadence-output-delimiter
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0017: Fix review cadence output delimiter
 
 Date: 2026-01-02

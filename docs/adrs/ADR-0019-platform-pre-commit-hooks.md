@@ -13,7 +13,11 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0019
+  - 01_adr_index
+  - 24_PRE_COMMIT_HOOKS
+  - ADR-0019-platform-pre-commit-hooks
+  - ADR-0138
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +30,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0019: Pre-commit hooks as local quality gates
 
 - **Status:** Proposed

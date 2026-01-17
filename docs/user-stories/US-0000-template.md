@@ -10,12 +10,13 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 relates_to:
+  - 00_INDEX
+  - DOCS_USER-STORIES_README
   - USER_STORIES_INDEX
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
-
 # US-0000: Short user story title
 
 Date: YYYY-MM-DD

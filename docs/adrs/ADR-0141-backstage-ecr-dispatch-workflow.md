@@ -12,8 +12,11 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0095
+  - 01_adr_index
+  - ADR-0095-self-service-registry-creation
   - ADR-0128
+  - ADR-0141
+  - CL-0104
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +29,6 @@ supported_until: 2028-01-11
 version: 1.0
 breaking_change: false
 ---
-
 ## ADR-0141: Backstage ECR requests use GitHub Actions dispatch
 
 - **Status:** Accepted

@@ -13,8 +13,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0148
-  - ADR-0150
+  - 01_adr_index
+  - ADR-0148-seamless-build-deployment-with-immutability
+  - ADR-0153
+  - ADR-0154
+  - CL-0121-seamless-build-deployment
+  - CL-0125
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +35,6 @@ deciders:
 consents:
   - Architecture Review Board
 ---
-
 ## Cluster Provisioning Identity and Script Resilience
 
 ## Context

@@ -12,7 +12,11 @@ reliability:
   observability_tier: bronze
   maturity: 2
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0134-metadata-inheritance-active-governance-and-leak-protection
+  - CL-0076-metadata-inheritance-active-governance-and-leak-protection
+  - GOVERNANCE_VOCABULARY
 supersedes: []
 superseded_by: []
 tags: []
@@ -23,7 +27,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 id: ADR-0134-metadata-inheritance-active-governance-and-leak-protection
 title: 'ADR-0134: Metadata Inheritance, Active Governance, and Leak Protection'
 type: adr

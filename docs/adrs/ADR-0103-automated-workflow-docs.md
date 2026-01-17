@@ -13,8 +13,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0071
-  - ci-workflows/CI_WORKFLOWS.md
+  - 01_adr_index
+  - ADR-0071-doc-taxonomy-refactor
+  - ADR-0103-automated-workflow-docs
+  - ADR-0104-automated-script-docs
+  - ADR-0111-platform-documentation-auto-healing
+  - CI_WORKFLOWS
+  - CL-0065-automate-workflow-docs
+  - SCRIPT_CERTIFICATION_AUDIT
 supersedes: []
 superseded_by: ADR-0111
 tags: []
@@ -28,7 +34,6 @@ version: '1.0'
 created_date: 2026-01-06
 breaking_change: false
 ---
-
 # ADR-0103: Automated CI Workflow Documentation
 
 ## Context

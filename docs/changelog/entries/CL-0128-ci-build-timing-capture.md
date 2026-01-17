@@ -16,8 +16,9 @@ risk_profile:
   coupling_risk: low
 schema_version: 1
 relates_to:
-  - ADR-0156-platform-ci-build-timing-capture
   - ADR-0077-platform-ci-build-teardown-log-automation
+  - ADR-0156-platform-ci-build-timing-capture
+  - CL-0128
 supersedes: []
 superseded_by: []
 tags:
@@ -34,7 +35,6 @@ date: 2026-01-15
 author: platform-team
 breaking_change: false
 ---
-
 ## Summary
 
 - Added direct build timing capture to CI workflows

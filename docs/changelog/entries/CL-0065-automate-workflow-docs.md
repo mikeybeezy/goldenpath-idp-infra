@@ -17,8 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0103
-  - ci-workflows/CI_WORKFLOWS.md
+  - ADR-0103-automated-workflow-docs
+  - CI_WORKFLOWS
+  - CL-0065-automate-workflow-docs
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## [1.0.0] - 2026-01-06
 
 ### Added

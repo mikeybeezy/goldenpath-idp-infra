@@ -22,9 +22,8 @@ relates_to:
   - 01_PLATFORM_SERVICE_AGREEMENT
   - 10_PLATFORM_REQUIREMENTS
   - 10_SERVICE_CATALOG
-  - ADR-0071
   - ADR-0071-doc-taxonomy-refactor
-  - CL-0021
+  - CL-0021-doc-taxonomy-refactor
 supersedes: []
 superseded_by: []
 tags: []
@@ -37,7 +36,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0021: Documentation Taxonomy Refactor
 
 Date: 2026-01-02

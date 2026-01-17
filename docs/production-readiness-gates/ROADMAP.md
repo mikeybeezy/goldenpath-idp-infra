@@ -11,16 +11,23 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0022
-  - ADR-0028
-  - ADR-0034
-  - ADR-0035
-  - ADR-0037
+  - 26_AI_AGENT_PROTOCOLS
+  - 37_V1_SCOPE_AND_TIMELINE
+  - ADR-0022-platform-post-apply-health-checks
+  - ADR-0028-platform-dev-branch-gate
+  - ADR-0034-platform-ci-environment-contract
+  - ADR-0035-platform-iam-audit-cadence
+  - ADR-0037-platform-resource-tagging-policy
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - ADR-0136
+  - ADR-0146
+  - AGENT_FIRST_BOOT
+  - CL-0097
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## 🏥 Platform Health Command Center
 
 **Generated**: `2026-01-07 08:29:32` | **V1 Readiness**: `95.5%` | **Mean Confidence**: `⭐ (1.1/5.0)`

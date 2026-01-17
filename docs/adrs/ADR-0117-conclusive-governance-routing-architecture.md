@@ -16,6 +16,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - ADR-0117-conclusive-governance-routing-architecture
+  - CL-0073-conclusive-governance-routing-architecture
   - DECISION_ROUTING_STRATEGY
   - agent-routing.yaml
 supersedes: []
@@ -31,7 +34,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 ## ADR-0117: Conclusive Governance Routing & Compliance Engine
 
 ## Context

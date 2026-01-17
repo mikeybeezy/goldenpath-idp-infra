@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0082
-  - CL-0037
+  - ADR-0082-platform-metadata-validation
+  - CL-0037-metadata-schema
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0037: Platform Metadata Fabric (Knowledge Graph)
 
 Date: 2026-01-03

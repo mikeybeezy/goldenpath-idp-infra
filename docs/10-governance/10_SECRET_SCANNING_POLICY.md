@@ -24,7 +24,6 @@ supported_until: 2028-01-10
 version: '1.0'
 breaking_change: false
 ---
-
 # Secret Scanning Policy (Gitleaks)
 
 Doc contract:

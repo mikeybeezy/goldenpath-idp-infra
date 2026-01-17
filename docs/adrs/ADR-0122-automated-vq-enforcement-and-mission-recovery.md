@@ -13,9 +13,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0121
-  - VQ_PRINCIPLES
+  - 01_adr_index
+  - ADR-0121-value-quantification-framework
+  - ADR-0122
   - AGENT_FIRST_BOOT
+  - CL-0078
+  - VQ_PRINCIPLES
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +29,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 ## ADR-0122: Automated VQ Enforcement and Mission Recovery
 
 ## Status

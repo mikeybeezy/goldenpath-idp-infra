@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0090
+  - CL-0090-backstage-plugin-enablement-matrix
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +30,6 @@ supported_until: 2028-01-08
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0090: Backstage plugin enablement matrix
 
 Date: 2026-01-08

@@ -11,8 +11,9 @@ reliability:
   observability_tier: bronze
   maturity: 1
 category: governance
+relates_to:
+  - CL-0074-config-driven-metadata-governance
 ---
-
 ## Config-Driven Metadata Governance
 
 ## Overview

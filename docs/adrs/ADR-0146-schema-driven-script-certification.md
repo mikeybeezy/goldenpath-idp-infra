@@ -13,8 +13,18 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - ADR-0126
   - ADR-0126 (Confidence Matrix)
+  - ADR-0146
+  - ADR-0147
+  - BORN_GOVERNED_LIFECYCLE
+  - CL-0117
   - CL-0117 (Implementation)
+  - CL-0118
+  - CL-0120
+  - CNT-001
+  - ROADMAP
 supersedes: []
 superseded_by: []
 tags: []
@@ -57,7 +67,6 @@ compliance:
   - All scripts in `scripts/` MUST have a `script` type validation block.
   - 'High-risk scripts MUST declare `evidence: ci` and generate proof artifacts.'
 ---
-
 # ADR-0146: Schema-Driven Script Certification
 
 ## Context

@@ -18,8 +18,8 @@ reliability:
 schema_version: 1
 relates_to:
   - 24_PR_GATES
-  - ADR-0072
-  - CL-0022
+  - ADR-0072-platform-pr-checklist-template
+  - CL-0022-pr-guardrails-template-copy
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +32,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0022: PR guardrails template copy
 
 Date: 2026-01-02

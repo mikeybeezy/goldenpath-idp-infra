@@ -11,15 +11,16 @@ reliability:
   observability_tier: gold
   maturity: 1
 relates_to:
-  - TEARDOWN_README
-  - ORPHAN_CLEANUP
+  - 00_DOC_INDEX
   - 01_LIFECYCLE_POLICY
+  - DOCS_RUNBOOKS_README
+  - ORPHAN_CLEANUP
+  - TEARDOWN_README
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
-
 # Repo Decommissioning Runbook
 
 Purpose: safely archive or delete a repo and its associated resources with an

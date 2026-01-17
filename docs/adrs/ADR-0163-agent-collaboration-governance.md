@@ -16,12 +16,14 @@ tags:
   - collaboration
   - security
 relates_to:
+  - 01_adr_index
   - 07_AI_AGENT_GOVERNANCE
   - 08_GITHUB_AGENT_ROLES
-  - 26_AI_AGENT_PROTOCOLS
   - 09_AGENT_COLLABORATION_MATRIX
+  - 26_AI_AGENT_PROTOCOLS
+  - ADR-0163
+  - agent_session_summary
 ---
-
 ## Status
 
 Accepted
@@ -52,7 +54,7 @@ The living registry is the source of truth:
 environment access levels (local/CI/cluster/cloud) per agent.
 
 Each agent session must append to the immutable session log at
-`agent_status/agent_session_summary.md`.
+`session_summary/agent_session_summary.md`.
 
 ## Scope
 

@@ -17,9 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0060
   - ADR-0060-platform-ephemeral-update-workflow
-  - CL-0010
+  - CL-0010-ephemeral-update-workflow
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +31,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0010: Dev ephemeral update workflow
 
 Date: 2025-12-31

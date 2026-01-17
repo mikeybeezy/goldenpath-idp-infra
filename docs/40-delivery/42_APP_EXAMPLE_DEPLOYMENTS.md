@@ -14,11 +14,11 @@ relates_to:
   - 12_GITOPS_AND_CICD
   - 29_CD_DEPLOYMENT_CONTRACT
   - 42_APP_TEMPLATE_LIVING
+  - CL-0027-app-example-deployments
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # App Example Deployments (Argo CD + Helm + Kustomize)
 
 Doc contract:

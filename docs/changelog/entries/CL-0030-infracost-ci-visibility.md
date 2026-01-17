@@ -17,8 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0076
-  - CL-0030
+  - ADR-0076-platform-infracost-ci-visibility
+  - CL-0030-infracost-ci-visibility
+  - CL-0050-infracost-activation
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +32,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0030: Lightweight CI cost visibility (Infracost)
 
 Date: 2026-01-03

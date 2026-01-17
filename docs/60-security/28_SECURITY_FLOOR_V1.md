@@ -12,15 +12,16 @@ reliability:
   maturity: 1
 relates_to:
   - 01_GOVERNANCE
+  - 02_GOVERNANCE_MODEL
+  - 10_PLATFORM_REQUIREMENTS
   - 24_PRE_COMMIT_HOOKS
   - 27_CI_IMAGE_SCANNING
-  - ADR-0024
+  - ADR-0024-platform-security-floor-v1
 category: security
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Security Floor V1 (Living Document)
 
 Doc contract:

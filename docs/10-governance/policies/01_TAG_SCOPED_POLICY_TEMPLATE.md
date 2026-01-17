@@ -17,7 +17,9 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
+  - 01_GOVERNANCE
   - 35_RESOURCE_TAGGING
+  - ADR-0039-platform-tag-scoped-iam-policy-template
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +33,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Tag-Scoped IAM Policy Template (Living)
 
 This document defines the standard template for **tag-scoped** IAM policies

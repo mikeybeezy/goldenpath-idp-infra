@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 09_ARCHITECTURE
-  - ADR-0070
+  - ADR-0070-platform-terraform-aws-lb-controller
 supersedes: []
 superseded_by: []
 tags: []
@@ -35,7 +35,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # cert-manager Helm Deployment
 
 cert-manager provisions and renews TLS certificates for ingress controllers and workloads.

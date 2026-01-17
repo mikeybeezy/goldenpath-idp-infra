@@ -17,7 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0099
+  - ADR-0099-standardized-iam-policy-management
+  - CL-0060-iam-policy-centralization
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +31,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0060: IAM Policy Centralization
 
 ## Summary

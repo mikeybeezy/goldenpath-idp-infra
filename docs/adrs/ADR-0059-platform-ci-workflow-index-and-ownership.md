@@ -12,8 +12,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0059
+  - 01_adr_index
+  - ADR-0059-platform-ci-workflow-index-and-ownership
   - CI_WORKFLOWS
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +28,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0059: CI workflow index, ownership, and UI grouping
 
 Filename: `ADR-0059-platform-ci-workflow-index-and-ownership.md`

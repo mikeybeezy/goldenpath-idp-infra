@@ -16,14 +16,22 @@ tags:
   - automation
   - governance
 relates_to:
+  - 01_adr_index
+  - 30_PLATFORM_RDS_ARCHITECTURE
   - ADR-0158-platform-standalone-rds-bounded-context
-  - ADR-0160-rds-optional-toggle-integration
-  - ADR-0165-rds-user-db-provisioning-automation
+  - ADR-0160
+  - ADR-0165
+  - ADR-0166
+  - CATALOG_INDEX
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
   - RDS_REQUEST_V1
+  - RDS_SESSION_FEEDBACK
   - SCRIPT-0034
   - SCRIPT-0035
+  - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
 ---
-
 ## Status
 
 Proposed

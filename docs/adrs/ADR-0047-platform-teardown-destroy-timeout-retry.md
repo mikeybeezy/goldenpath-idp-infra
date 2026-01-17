@@ -13,10 +13,15 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0045
   - ADR-0045-platform-teardown-lb-delete-default
-  - ADR-0047
+  - ADR-0047-platform-teardown-destroy-timeout-retry
+  - ADR-0164-teardown-v3-enhanced-reliability
+  - RB-0006-lb-eni-orphans
+  - RB-0019-relationship-extraction-script
+  - RELATIONSHIP_EXTRACTION_GUIDE
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +34,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0047: Retry Terraform destroy after timeout with cluster-scoped LB cleanup
 
 Filename: `ADR-0047-platform-teardown-destroy-timeout-retry.md`

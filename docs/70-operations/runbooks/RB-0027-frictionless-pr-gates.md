@@ -11,8 +11,14 @@ reliability:
   observability_tier: bronze
   maturity: 1
 category: runbooks
+relates_to:
+  - 00_START_HERE
+  - 24_PR_GATES
+  - CL-0112
+  - DOCS_RUNBOOKS_README
+  - GOLDENPATH_IDP_ROOT_README
+  - PR_GUARDRAILS
 ---
-
 # RB-0027: Frictionless PR Gates (Heal-First Workflow)
 
 ## Context

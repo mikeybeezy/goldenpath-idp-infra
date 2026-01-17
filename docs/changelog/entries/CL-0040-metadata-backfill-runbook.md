@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0083
-  - CL-0040
+  - ADR-0083-platform-metadata-backfill-protocol
+  - CL-0040-metadata-backfill-runbook
   - METADATA_BACKFILL_RUNBOOK
 supersedes: []
 superseded_by: []
@@ -32,7 +32,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0040: Metadata backfill runbook and protocol
 
 Date: 2026-01-03
