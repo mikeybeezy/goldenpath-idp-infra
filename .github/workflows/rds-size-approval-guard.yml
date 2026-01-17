@@ -1,11 +1,13 @@
-# Owner: platform
-# Relates-To: docs/85-how-it-works/self-service/RDS_REQUEST_FLOW.md
+# Owner: platform-team
+# Relates-To: RDS_REQUEST_FLOW, ADR-0165, PR_GUARDRAILS_INDEX
 name: RDS Size Approval Guard
 
 on:
   pull_request:
     paths:
       - "docs/20-contracts/resource-catalogs/rds-catalog.yaml"
+      - "docs/20-contracts/rds-requests/**/*.yaml"
+      - "docs/20-contracts/rds-requests/**/*.yml"
   workflow_dispatch:
 
 jobs:

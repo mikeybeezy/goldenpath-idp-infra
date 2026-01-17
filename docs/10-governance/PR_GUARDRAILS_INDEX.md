@@ -130,12 +130,13 @@ These guardrails enforce resource-specific governance and are currently in warn-
 | -------- | ----- |
 | File | `.github/workflows/rds-size-approval-guard.yml` |
 | Owner | platform-team |
-| Trigger | `pull_request` modifying `docs/20-contracts/resource-catalogs/rds-catalog.yaml` |
+| Trigger | `pull_request` modifying `docs/20-contracts/resource-catalogs/rds-catalog.yaml` or `docs/20-contracts/rds-requests/**/*.yaml` |
 | Enforcement | **Warn-Only** (rollout) |
 
 **What it checks:**
 
 - `size: large` or `size: xlarge` requires platform-team or security-team approval
+- Applies to both catalog entries and individual RDS request files
 - Non-dev environments require explicit approval for larger sizes
 
 **Related:** [RDS_REQUEST_FLOW](../85-how-it-works/self-service/RDS_REQUEST_FLOW.md), [ADR-0165](../adrs/ADR-0165-rds-user-db-provisioning-automation.md)
