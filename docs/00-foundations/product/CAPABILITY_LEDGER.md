@@ -85,6 +85,7 @@ The IDP ensures that every new service is compliant from Day 0 by embedding gove
 The platform programmatically maps relationships between thousands of resources, transforming static docs into a dynamic graph.
 
 - **Relationship Discovery**: The **`extract_relationships.py`** engine automatically identifies ADR dependencies, changelog links, and cross-component mentions.
+- **Relationship Registry Sync**: The `scripts/extract_relationships.py` engine updates `relates_to` metadata to keep bidirectional links current and the knowledge graph accurate.
 - **Impact Analysis**: Programmatic tracking allows engineers to see exactly which components or environments are engagement affected by a change before it is merged.
 
 ## 9. Self-Healing Documentation
@@ -93,6 +94,7 @@ The IDP's documentation is no longer a static artifact; it is a live representat
 
 - **Automated Indexes**: Workflows (`CI_WORKFLOWS.md`) and Scripts (`scripts/index.md`) are auto-generated from source code, ensuring zero documentation drift.
 - **Source-Driven Truth**: Documentation accurately reflects the current state of governance, infrastructure, and delivery pipelines without manual intervention.
+- **System Map Generation**: The `scripts/generate_doc_system_map.py` engine maintains `docs/90-doc-system/PLATFORM_SYSTEM_MAP.md`, summarizing doc domains, counts, and validators.
 - **Categorized & Visualized**: Automated tools parse, categorize, and even visualize complex systems (like ASCII workflow trees), making the platform easier to navigate and understand.
 
 ## 10. Single-Submission Repository Scaffolding
