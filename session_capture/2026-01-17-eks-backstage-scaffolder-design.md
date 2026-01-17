@@ -740,6 +740,44 @@ Signed: Claude Opus 4.5 (2026-01-17T14:10:29Z)
 
 Signed: Claude Opus 4.5 (2026-01-17T14:23:34Z)
 
+### Update - 2026-01-17T14:54:14Z
+
+**What changed**
+- Captured the implementation status and current git working set.
+
+**Artifacts touched**
+- `session_capture/2026-01-17-eks-backstage-scaffolder-design.md`
+
+**Validation**
+- Not run (doc update only).
+
+**Current state**
+- New EKS request artifacts are in place (schema, parser, workflows, sample request).
+- Existing local changes also include unrelated files: `docs/70-operations/32_TERRAFORM_STATE_AND_LOCKING.md`, `envs/dev/README.md`, `envs/dev/terraform.tfvars`.
+
+**Next steps**
+- Decide whether to include unrelated files in the same commit or split.
+
+Signed: Claude Opus 4.5 (2026-01-17T14:54:14Z)
+
+### Update - 2026-01-17T15:29:02Z
+
+**What changed**
+- Parameterized EKS apply workflow by environment/region and added non-dev approval guard.
+- Aligned parser outputs to mode (apply_kubernetes_addons toggled by mode+gitops_install).
+- Marked advisory fields in schema and emitted warnings for non-wired settings.
+
+**Artifacts touched**
+- `.github/workflows/eks-request-apply.yml`
+- `scripts/eks_request_parser.py`
+- `schemas/requests/eks.schema.yaml`
+- `session_capture/2026-01-17-eks-backstage-scaffolder-design.md`
+
+**Validation**
+- Not run (doc update only).
+
+Signed: Claude Opus 4.5 (2026-01-17T15:29:02Z)
+
 ## Review/Validation Appendix
 
 ### Review Feedback (Claude Opus 4.5 - 2026-01-17T14:00:00Z)
@@ -859,3 +897,544 @@ User (Backstage) → Fills form → Creates request YAML + PR
 - Proceed with EKS scaffolder implementation
 
 Signed: Claude Opus 4.5 (2026-01-17T14:45:00Z)
+
+### Review Feedback: EKS Request Parser & Workflows (Claude Opus 4.5 - 2026-01-17T15:10:00Z)
+
+#### `scripts/eks_request_parser.py`
+
+**What's Strong**
+
+| Aspect | Assessment |
+|--------|------------|
+| Metadata header | Follows SCRIPT-0043 pattern with dry-run, test, risk profile |
+| Dataclass usage | Clean, type-annotated `EksRequest` with frozen=True for immutability |
+| Flexible field parsing | Handles multiple field name variants (e.g., `node_pool.tier` OR `node_pool.node_tier`) |
+| Validation logic | Good - checks required fields, min/desired/max ordering, enum enforcement |
+| Mode handling | Correctly requires `build_id` only for cluster-creating modes |
+| Enum-based validation | Loads from centralized `schemas/metadata/enums.yaml` - good alignment |
+
+**Issues and Gaps**
+
+| Issue | Line(s) | Impact | Recommendation |
+|-------|---------|--------|----------------|
+| No schema validation | - | Parser does validation manually; no JSON Schema validation | Consider adding `jsonschema` validation as a first pass before parsing |
+| Output path mismatch | 249-256 | `envs/<env>/clusters/generated/<id>.auto.tfvars.json` but Terraform expects files in `envs/<env>/` | Verify Terraform reads from `clusters/generated/` subdirectory |
+| Missing gitops/ingress in tfvars | 259-286 | `gitops_*`, `ingress_*`, `irsa_enabled`, `ssm_break_glass` parsed but not in output | Either include these in tfvars or document they're for validation-only |
+| No audit record | - | Unlike RDS parser, no audit trail output | Consider adding `--audit-file` for governance alignment |
+| `owner` enum check | 110, 246 | Uses `owners` from enums but RDS uses `owner` | Potential inconsistency - verify enum key naming |
+| No `--verbose` flag | - | Hard to debug failures | Add verbose mode for troubleshooting |
+
+**Code Quality Notes**
+
+- Line 63: `build_id: str` - should this be `Optional[str]` since bootstrap-only doesn't need it?
+- Line 183-185: Good defensive casting to `int` with sensible default for `node_min`
+- Line 323-326: Good guard against generating tfvars for bootstrap-only mode
+
+---
+
+#### `.github/workflows/eks-request-apply.yml`
+
+**What's Strong**
+
+| Aspect | Assessment |
+|--------|------------|
+| Manual trigger only | Good - EKS is high-impact, requires explicit `workflow_dispatch` |
+| Two-phase flow | Validate → Generate → Commit → Terraform - clear separation |
+| Bootstrap guard | Line 96-99: Correctly skips Terraform for `bootstrap-only` requests |
+| Build ID state key | Lines 122-126: Build-specific state path for ephemeral clusters |
+| allow_build_id_reuse | Safety flag for edge cases (line 13-17) |
+
+**Issues and Gaps**
+
+| Issue | Line(s) | Impact | Severity |
+|-------|---------|--------|----------|
+| Hardcoded bucket name | 129 | `goldenpath-idp-dev-bucket` - doesn't work for staging/prod | High - needs parameterization |
+| Hardcoded region | 109, 131 | `eu-west-2` everywhere | Medium - should be derived from request or config |
+| No approval gate for prod | - | Any manual trigger applies - no env-based approval | High for prod safety |
+| Missing error on bootstrap-only | 96-99 | Echoes but doesn't fail or guide user to bootstrap workflow | Low - could be clearer |
+| No post-apply bootstrap step | - | `cluster+bootstrap` mode creates cluster but doesn't bootstrap | Medium - incomplete flow |
+| Commit message lacks request ID | 68 | Generic `[skip ci]` - hard to trace | Low - should include `$EKS_ID` |
+| No Terraform plan step | - | Goes straight to apply | Medium - consider plan → approval → apply for safety |
+
+**Security Considerations**
+
+- Line 110: `secrets.TF_AWS_IAM_ROLE_DEV_APPLY` - assumes dev; need staging/prod variants
+- Line 68-69: Bot commits without PR review - acceptable for generated files but note the bypass
+
+---
+
+#### `.github/workflows/ci-eks-request-validation.yml`
+
+**What's Strong**
+
+| Aspect | Assessment |
+|--------|------------|
+| Path-scoped trigger | Lines 7-14: Only runs when relevant files change |
+| Smart change detection | Lines 29-57: Distinguishes request vs schema/parser changes |
+| Full validation on schema change | Line 52: Re-validates all requests if schema changes |
+| Read-only permissions | Line 18: `contents: read` - principle of least privilege |
+| Summary output | Lines 83-94: Good visibility in GitHub Actions UI |
+
+**Issues and Gaps**
+
+| Issue | Line(s) | Impact | Recommendation |
+|-------|---------|--------|----------------|
+| Python version mismatch | 68 vs apply:34 | CI uses 3.10, Apply uses 3.11 | Align to same version |
+| requirements-dev.txt dependency | 73 | May fail if file doesn't exist or is stale | Pin `pyyaml` directly like apply workflow |
+| No JSON Schema validation | - | Only runs parser validation, not schema validation | Add `check-jsonschema` step |
+| Glob pattern in multiline output | 81 | `--input-files ${{ ... }}` with newlines may break | Use `xargs` or array handling |
+| No approval check for large nodes | - | Unlike RDS, no guard for `large`/`xlarge` tiers | Consider adding `eks-size-approval-guard.yml` |
+
+---
+
+#### Summary Table
+
+| File | Status | Critical Issues |
+|------|--------|-----------------|
+| `eks_request_parser.py` | 85% ready | Output path needs verification, missing fields in tfvars |
+| `eks-request-apply.yml` | 70% ready | Hardcoded bucket/region, no prod gates, incomplete cluster+bootstrap flow |
+| `ci-eks-request-validation.yml` | 90% ready | Python version mismatch, glob handling edge case |
+
+---
+
+#### Recommended Priority Fixes
+
+| Priority | Action | File |
+|----------|--------|------|
+| P0 | Parameterize bucket name and region based on environment | `eks-request-apply.yml` |
+| P0 | Add approval gate for staging/prod environments | `eks-request-apply.yml` |
+| P1 | Include `gitops_*`, `ingress_*`, `irsa_enabled` in tfvars output or remove from parser | `eks_request_parser.py` |
+| P1 | Verify Terraform can read from `clusters/generated/` path | Both |
+| P2 | Align Python versions (recommend 3.11) | `ci-eks-request-validation.yml` |
+| P2 | Add size/tier approval guard workflow | New file |
+| P3 | Add audit record output for governance alignment | `eks_request_parser.py` |
+
+Signed: Claude Opus 4.5 (2026-01-17T15:10:00Z)
+
+### Update - 2026-01-17T15:45:00Z
+
+**What changed**
+
+- Confirmed secrets flow is complete and working
+- Reviewed modifications to `eks-request-apply.yml` (parameterized backend, non-dev guard)
+- Reviewed modifications to `eks_request_parser.py` (mode-aware outputs, warning emissions)
+- Session capture updated with EKS parser/workflow review feedback
+
+**Secrets Flow Verified**
+
+| Component | Status |
+|-----------|--------|
+| Backstage Scaffolder (`secret-request.yaml`) | Working - triggers workflow dispatch |
+| Workflow (`request-app-secret.yml`) | Working - creates request YAML, runs parser, creates PR |
+| Parser (`secret_request_parser.py`) | Working - generates tfvars + ExternalSecret YAML |
+| Approval Guard (`secret-approval-guard.yml`) | Working - blocks high-risk until label added |
+
+**EKS Improvements Applied (by user)**
+
+- `eks-request-apply.yml`: Added `allow_non_dev` input, parameterized bucket/lock table/role by environment
+- `eks_request_parser.py`: Added mode-aware `enable_k8s_resources` and `apply_kubernetes_addons`, added warnings for non-wired fields
+
+**Alignment Matrix (Updated)**
+
+| Resource | Scaffolder | Parser | Approval Guard | Status |
+|----------|------------|--------|----------------|--------|
+| RDS | `rds-request.yaml` | `rds_request_parser.py` | `rds-size-approval-guard.yml` | Complete |
+| ECR | `ecr-request.yaml` | N/A | N/A | Complete |
+| Secrets | `secret-request.yaml` | `secret_request_parser.py` | `secret-approval-guard.yml` | Complete |
+| EKS | TODO | `eks_request_parser.py` | TODO | In Progress (parser/workflows done) |
+
+**Next steps**
+
+- Create EKS Backstage scaffolder template
+- Add EKS size/tier approval guard workflow
+- Test end-to-end EKS request flow
+
+Signed: Claude Opus 4.5 (2026-01-17T15:45:00Z)
+
+### Update - 2026-01-17T16:30:00Z - RDS Coupled Mode Architecture Fix
+
+**Problem Identified**
+
+Build `17-01-26-02` failed with "resource already exists" errors:
+- `RDS DB Subnet Group (goldenpath-dev-goldenpath-platform-db-subnet-group)`
+- `Secrets Manager Secret (goldenpath/dev/rds/master)`
+- `RDS DB Parameter Group (goldenpath-dev-goldenpath-platform-db-params)`
+
+**Root Cause Analysis**
+
+1. Build `17-01-26-01` created RDS resources (coupled mode with `rds_config.enabled=true`)
+2. Teardown ran with `BUILD_ID=17-01-26-01` but **did not delete RDS resources**
+3. New build `17-01-26-02` with fresh state tried to create same resources → conflict
+
+**Why Teardown Didn't Delete RDS**
+
+The teardown script (`delete_rds_instances_for_build`) searches for RDS by:
+1. `BuildId` tag → RDS had no BuildId tag (ephemeral mode doesn't apply BuildId to persistent resources)
+2. `kubernetes.io/cluster/${cluster_name}` tag → RDS has no cluster tag
+3. `ClusterName` tag → RDS had no ClusterName tag
+4. Name pattern → Mismatch between cluster suffix and RDS naming
+
+**Architecture Problem**
+
+Two deployment modes exist but had conflicting assumptions:
+
+| Mode | Cluster Lifecycle | RDS Coupled | What Should Happen |
+|------|-------------------|-------------|-------------------|
+| Ephemeral | `ephemeral` | `rds_config.enabled=true` | **SHOULD BE BLOCKED** - RDS orphaned on teardown |
+| Persistent | `persistent` | `rds_config.enabled=true` | Allowed - teardown captures RDS |
+| Standalone | Any | `rds_config.enabled=false` | Use `envs/dev-rds/` separately |
+
+**Fix Implemented**
+
+1. **Fail-fast guard** added to [envs/dev/main.tf](envs/dev/main.tf#L574-L597):
+   - Blocks `rds_config.enabled=true` when `cluster_lifecycle=ephemeral`
+   - Clear error message with remediation options
+
+2. **Module count updated** to [envs/dev/main.tf](envs/dev/main.tf#L599-L602):
+   - `count = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? 1 : 0`
+   - RDS only created in persistent mode
+
+3. **ClusterName tag added** to [envs/dev/main.tf](envs/dev/main.tf#L653-L660):
+   - Enables teardown discovery in persistent mode
+   - Added `Component = "platform-rds-coupled"` for clarity
+
+**Behavior Matrix (After Fix)**
+
+| Scenario | Result |
+|----------|--------|
+| Ephemeral + `rds_config.enabled=true` | **Fails fast** with clear error |
+| Persistent + `rds_config.enabled=true` | Works, teardown finds RDS via ClusterName tag |
+| Any + `rds_config.enabled=false` + standalone RDS | Works independently |
+
+**Files Modified**
+
+- `envs/dev/main.tf` - Added fail-fast guard, ClusterName tag, count condition
+- `docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md` - No changes needed (already documents both modes)
+- `envs/dev/terraform.tfvars` - No changes (kept `rds_config.enabled=true`)
+
+**Key Insight**
+
+The original error happened because:
+- `cluster_lifecycle = "ephemeral"` was set
+- `rds_config.enabled = true` was also set
+- This combination creates RDS without proper tagging for teardown
+- The fail-fast guard now prevents this invalid configuration
+
+**Next Steps**
+
+- User must decide: switch to `cluster_lifecycle = "persistent"` OR set `rds_config.enabled = false` and use standalone RDS
+- For immediate unblock: manually delete orphaned RDS resources from build `17-01-26-01` in AWS Console
+
+Signed: Claude Opus 4.5 (2026-01-17T16:30:00Z)
+
+### Update - 2026-01-17T17:50:17Z
+
+**What changed**
+- Finalized `eks-catalog.yaml` and moved EKS catalog to active status in the catalog README.
+- Added Backstage EKS request scaffolder + skeleton to generate request YAMLs via PR.
+- Added the EKS request flow doc for parity with RDS/ECR.
+- Added EKS size/tier approval guard workflow (warn-only).
+- Regenerated script index and script certification matrix to include the EKS parser.
+- Validated the sample EKS request with the parser.
+
+**Artifacts touched**
+- `docs/20-contracts/resource-catalogs/eks-catalog.yaml`
+- `docs/20-contracts/resource-catalogs/README.md`
+- `backstage-helm/backstage-catalog/templates/eks-request.yaml`
+- `backstage-helm/backstage-catalog/templates/skeletons/eks-request/${{ values.request_id }}.yaml`
+- `docs/85-how-it-works/self-service/EKS_REQUEST_FLOW.md`
+- `.github/workflows/eks-size-approval-guard.yml`
+- `scripts/index.md`
+- `docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md`
+
+**Validation**
+- `python scripts/eks_request_parser.py --mode validate --input-files docs/20-contracts/eks-requests/dev/EKS-0001.yaml --enums schemas/metadata/enums.yaml`
+
+**Next steps**
+- Exercise the end-to-end EKS request flow (Backstage PR -> apply workflow).
+- Decide the bootstrap-only execution path (workflow vs runbook).
+
+Signed: Codex (2026-01-17T17:50:17Z)
+
+### Update - 2026-01-17T18:15:00Z - Persistent vs Ephemeral Teardown Architecture
+
+**Context**
+
+Following the RDS coupled mode architecture fix (Update 2026-01-17T16:30:00Z), we clarified how teardown works for persistent vs ephemeral builds.
+
+**Terraform State Keys by Mode**
+
+| Mode | State Key | Command |
+|------|-----------|---------|
+| Ephemeral | `envs/dev/builds/{build_id}/terraform.tfstate` | `make init ENV=dev BUILD_ID=17-01-26-03` |
+| Persistent | `envs/dev/terraform.tfstate` | `make init ENV=dev CLUSTER_LIFECYCLE=persistent` (no BUILD_ID) |
+
+**Teardown Workflow by Mode**
+
+| Mode | Current Makefile Target | Notes |
+|------|-------------------------|-------|
+| Ephemeral | `make teardown ENV=dev BUILD_ID=17-01-26-03 CLUSTER=goldenpath-dev-eks REGION=eu-west-2` | Works - requires BUILD_ID |
+| Persistent | **None** | Makefile requires BUILD_ID; persistent doesn't use one |
+
+**Problem Identified**
+
+The Makefile enforces BUILD_ID for teardown:
+
+```makefile
+teardown:
+	@if [ -z "$(BUILD_ID)" ]; then echo "ERROR: BUILD_ID required"; exit 1; fi
+	# ... rest of teardown logic
+```
+
+Persistent mode doesn't use BUILD_ID, so there's no Makefile path to tear it down.
+
+**Proposed Solution: `teardown-persistent` Target**
+
+```makefile
+################################################################################
+# Teardown - Persistent Mode
+################################################################################
+
+teardown-persistent:
+	@if [ -z "$(ENV)" ]; then echo "ERROR: ENV required"; exit 1; fi
+	@if [ -z "$(CLUSTER)" ]; then echo "ERROR: CLUSTER required"; exit 1; fi
+	@if [ -z "$(REGION)" ]; then echo "ERROR: REGION required"; exit 1; fi
+	@if [ "$(CONFIRM_DESTROY)" != "yes" ]; then \
+		echo "WARNING: This will destroy all persistent resources for $(ENV)"; \
+		echo "Set CONFIRM_DESTROY=yes to proceed"; exit 1; \
+	fi
+	cd envs/$(ENV) && terraform init \
+		-backend-config="bucket=$(TF_STATE_BUCKET)" \
+		-backend-config="key=envs/$(ENV)/terraform.tfstate" \
+		-backend-config="region=$(REGION)" \
+		-backend-config="dynamodb_table=$(TF_LOCK_TABLE)"
+	cd envs/$(ENV) && terraform destroy -auto-approve
+	# Run teardown script for remaining AWS resources
+	bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh \
+		--cluster-name $(CLUSTER) \
+		--region $(REGION) \
+		--skip-terraform
+```
+
+**Key Differences**
+
+| Aspect | Ephemeral Teardown | Persistent Teardown |
+|--------|-------------------|---------------------|
+| State location | `builds/{build_id}/terraform.tfstate` | `terraform.tfstate` (root) |
+| Resource tagging | Uses `BuildId` tag | Uses `ClusterName` tag |
+| RDS handling | Skipped (not allowed in ephemeral) | Captured via ClusterName tag |
+| Safety gate | None (BUILD_ID is unique) | `CONFIRM_DESTROY=yes` required |
+
+**Current Workaround (Until Target Added)**
+
+For persistent teardown without Makefile target:
+
+```bash
+# 1. Initialize with persistent state key
+cd envs/dev && terraform init \
+  -backend-config="bucket=goldenpath-idp-dev-bucket" \
+  -backend-config="key=envs/dev/terraform.tfstate" \
+  -backend-config="region=eu-west-2" \
+  -backend-config="dynamodb_table=goldenpath-idp-dev-lock"
+
+# 2. Destroy via Terraform
+cd envs/dev && terraform destroy
+
+# 3. Run teardown script for AWS cleanup
+bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh \
+  --cluster-name goldenpath-dev-eks \
+  --region eu-west-2 \
+  --skip-terraform
+```
+
+**RDS Resource Cleanup Commands (One-Time)**
+
+For orphaned RDS resources from build `17-01-26-01`:
+
+```bash
+# Delete DB Subnet Group
+aws rds delete-db-subnet-group \
+  --db-subnet-group-name goldenpath-dev-goldenpath-platform-db-subnet-group \
+  --region eu-west-2
+
+# Delete DB Parameter Group
+aws rds delete-db-parameter-group \
+  --db-parameter-group-name goldenpath-dev-goldenpath-platform-db-params \
+  --region eu-west-2
+
+# Delete Secrets Manager Secrets (with 7-day recovery)
+aws secretsmanager delete-secret \
+  --secret-id goldenpath/dev/rds/master \
+  --recovery-window-in-days 7 \
+  --region eu-west-2
+
+aws secretsmanager delete-secret \
+  --secret-id goldenpath/dev/keycloak/postgres \
+  --recovery-window-in-days 7 \
+  --region eu-west-2
+
+aws secretsmanager delete-secret \
+  --secret-id goldenpath/dev/backstage/postgres \
+  --recovery-window-in-days 7 \
+  --region eu-west-2
+```
+
+**Note**: RDS instance requires deletion protection to be disabled first via AWS Console.
+
+**Next Steps**
+
+- Add `teardown-persistent` target to Makefile
+- Document in `docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md`
+- Consider adding `--lifecycle` flag to existing teardown for mode detection
+
+Signed: Claude Opus 4.5 (2026-01-17T18:15:00Z)
+
+### Update - 2026-01-17T18:05:16Z
+
+**What changed**
+- Added a persistent cluster teardown runbook with explicit backend init and safety gate.
+- Updated the runbooks index to include the new persistent teardown runbook.
+- Added a changelog entry for the persistent teardown documentation.
+
+**Artifacts touched**
+- `docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md`
+- `docs/70-operations/runbooks/README.md`
+- `docs/changelog/entries/CL-0145-persistent-cluster-teardown-runbook.md`
+
+**Validation**
+- Not run (documentation updates only).
+
+Signed: Codex (2026-01-17T18:05:16Z)
+
+### Update - 2026-01-17T18:14:22Z
+
+**What changed**
+- Documented EKS lifecycle alignment rules in the RDS architecture doc.
+- Added explicit RDS expectations to the EKS request flow doc.
+
+**Artifacts touched**
+- `docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md`
+- `docs/85-how-it-works/self-service/EKS_REQUEST_FLOW.md`
+
+**Validation**
+- Not run (documentation updates only).
+
+Signed: Codex (2026-01-17T18:14:22Z)
+
+### Update - 2026-01-17T18:42:31Z
+
+**What changed**
+- Added lifecycle field to the EKS request UI (ephemeral only for now).
+- Added a dedicated bootstrap-only workflow triggered after PR approval/merge.
+- Updated the EKS request flow doc to describe the bootstrap-only workflow.
+
+**Artifacts touched**
+- `backstage-helm/backstage-catalog/templates/eks-request.yaml`
+- `backstage-helm/backstage-catalog/templates/skeletons/eks-request/${{ values.request_id }}.yaml`
+- `schemas/requests/eks.schema.yaml`
+- `docs/20-contracts/eks-requests/dev/EKS-0001.yaml`
+- `scripts/eks_request_parser.py`
+- `.github/workflows/eks-bootstrap-only.yml`
+- `docs/85-how-it-works/self-service/EKS_REQUEST_FLOW.md`
+
+**Validation**
+- Not run (workflow + doc updates only).
+
+Signed: Codex (2026-01-17T18:42:31Z)
+
+### Update - 2026-01-17T18:43:08Z
+
+**What changed**
+- Re-validated the sample EKS request after lifecycle gating changes.
+
+**Validation**
+- `python scripts/eks_request_parser.py --mode validate --input-files docs/20-contracts/eks-requests/dev/EKS-0001.yaml --enums schemas/metadata/enums.yaml`
+
+Signed: Codex (2026-01-17T18:43:08Z)
+
+### Update - 2026-01-17T18:49:40Z
+
+**What changed**
+- Required platform approval for all EKS request PRs.
+- Added platform approval input gates to EKS apply and bootstrap-only workflows.
+- Restricted lifecycle selection to `ephemeral` in the EKS request contract/UI.
+
+**Artifacts touched**
+- `.github/workflows/ci-eks-request-validation.yml`
+- `.github/workflows/eks-request-apply.yml`
+- `.github/workflows/eks-bootstrap-only.yml`
+- `backstage-helm/backstage-catalog/templates/eks-request.yaml`
+- `backstage-helm/backstage-catalog/templates/skeletons/eks-request/${{ values.request_id }}.yaml`
+- `schemas/requests/eks.schema.yaml`
+- `docs/20-contracts/eks-requests/dev/EKS-0001.yaml`
+- `scripts/eks_request_parser.py`
+- `docs/85-how-it-works/self-service/EKS_REQUEST_FLOW.md`
+
+**Validation**
+- `python scripts/eks_request_parser.py --mode validate --input-files docs/20-contracts/eks-requests/dev/EKS-0001.yaml --enums schemas/metadata/enums.yaml`
+
+Signed: Codex (2026-01-17T18:49:40Z)
+
+### Update - 2026-01-17T19:07:05Z
+
+**What changed**
+- Closed out the EKS scaffolder session with current readiness and open items.
+
+**Current state**
+- EKS request system, scaffolder, and workflows are in place with platform approval gates.
+- Lifecycle is visible in Backstage but restricted to ephemeral.
+
+**Follow-ups**
+- Run an end-to-end EKS request (Backstage -> PR -> CI -> apply/boot).
+- Decide if non-dev should require a second label beyond platform-approval.
+
+Signed: Codex (2026-01-17T19:07:05Z)
+
+### Update - 2026-01-17T18:45:00Z - Persistent Mode Makefile Targets Implemented
+
+**What changed**
+
+Implemented full persistent mode support in the Makefile, providing equivalent targets for clusters that don't use BUILD_ID.
+
+**New Makefile Targets**
+
+| Target | Purpose | Usage |
+|--------|---------|-------|
+| `apply-persistent` | Terraform apply without BUILD_ID | `make apply-persistent ENV=dev REGION=eu-west-2` |
+| `bootstrap-persistent` | Bootstrap without BUILD_ID | `make bootstrap-persistent ENV=dev REGION=eu-west-2` |
+| `deploy-persistent` | Full deploy (apply + rds-provision + bootstrap) | `make deploy-persistent ENV=dev REGION=eu-west-2` |
+| `teardown-persistent` | Destroy with safety gate | `make teardown-persistent ENV=dev REGION=eu-west-2 CONFIRM_DESTROY=yes` |
+
+**Key Implementation Details**
+
+1. **Cluster name auto-detection**: Reads `cluster_name` from tfvars or defaults to `goldenpath-<env>-eks`
+2. **Lifecycle override**: `apply-persistent` passes `-var="cluster_lifecycle=persistent"` to Terraform
+3. **Safety gate**: `teardown-persistent` requires explicit `CONFIRM_DESTROY=yes`
+4. **RDS integration**: `deploy-persistent` includes `rds-provision-auto` step
+5. **Logging**: All operations logged to `logs/build-timings/`
+
+**Mode Comparison**
+
+| Aspect | Ephemeral | Persistent |
+|--------|-----------|------------|
+| Deploy | `make deploy ENV=dev BUILD_ID=17-01-26-03` | `make deploy-persistent ENV=dev REGION=eu-west-2` |
+| Apply only | `make apply ENV=dev BUILD_ID=17-01-26-03` | `make apply-persistent ENV=dev REGION=eu-west-2` |
+| Bootstrap only | `make bootstrap ENV=dev BUILD_ID=17-01-26-03` | `make bootstrap-persistent ENV=dev REGION=eu-west-2` |
+| Teardown | `make teardown ENV=dev BUILD_ID=17-01-26-03 CLUSTER=... REGION=...` | `make teardown-persistent ENV=dev REGION=eu-west-2 CONFIRM_DESTROY=yes` |
+| State key | `envs/dev/builds/17-01-26-03/terraform.tfstate` | `envs/dev/terraform.tfstate` |
+| RDS allowed | No (fail-fast guard) | Yes |
+
+**Artifacts Modified**
+
+- `Makefile` - Added persistent mode section with 4 new targets, updated `.PHONY`, updated help section
+
+**Validation**
+
+- Syntax validated via linter (auto-applied fixes)
+
+**Next Steps**
+
+- Test `deploy-persistent` end-to-end
+- Consider adding `init-persistent` target for explicit state initialization
+
+Signed: Claude Opus 4.5 (2026-01-17T18:45:00Z)

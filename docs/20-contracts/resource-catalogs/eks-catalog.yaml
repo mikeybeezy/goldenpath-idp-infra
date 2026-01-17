@@ -1,24 +1,49 @@
 version: "1.0"
 domain: platform-core
 owner: platform-team
-last_updated: "2026-01-05"
+last_updated: "2026-01-17"
 managed_by: platform-team
 
 clusters:
+  goldenpath-dev-eks:
+    metadata:
+      id: EKS_GOLDENPATH_DEV
+      owner: platform-team
+      requested_by: platform-team
+      domain: platform-core
+      risk: low
+      environment: dev
+      status: active
+      created_date: "2026-01-17"
+    aws:
+      cluster_name: goldenpath-dev-eks
+      region: eu-west-2
+      version: "1.29"
+    configuration:
+      mode: cluster+bootstrap
+      node_tier: small
+      node_min: 6
+      node_desired: 6
+      node_max: 8
+      capacity_type: on_demand
+      build_id: "17-01-26-01"
 # Example structure:
 # goldenpath-prod:
-# metadata:
-# id: EKS_GOLDENPATH_PROD
-# owner: platform-team
-# risk: high
-# environment: prod
-# created_date: "2026-01-05"
-# status: active
-# aws:
-# cluster_name: goldenpath-prod
-# region: eu-west-2
-# version: "1.28"
-# configuration:
-# node_groups: 3
-# min_nodes: 3
-# max_nodes: 10
+#   metadata:
+#     id: EKS_GOLDENPATH_PROD
+#     owner: platform-team
+#     requested_by: platform-team
+#     domain: platform-core
+#     risk: high
+#     environment: prod
+#     created_date: "2026-01-05"
+#     status: active
+#   aws:
+#     cluster_name: goldenpath-prod
+#     region: eu-west-2
+#     version: "1.28"
+#   configuration:
+#     mode: cluster+bootstrap
+#     node_tier: medium
+#     node_min: 3
+#     node_max: 10

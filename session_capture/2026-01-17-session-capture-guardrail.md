@@ -198,6 +198,78 @@ Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-17T10:45:00Z
 **Validation**
 - Not run (CI will validate on PR).
 
+### Review Feedback (Codex — 2026-01-17T15:01:12Z)
+
+#### What Works Well
+
+| Capability | Status | Notes |
+| --- | --- | --- |
+| Secret approval guard | ✅ | Clear high-risk gating based on PR label |
+| Secret request scaffolder | ✅ | Creates governed request file + PR with metadata |
+| Skeleton contract | ✅ | Matches SecretRequest shape (risk/rotation/lifecycle/access) |
+
+#### Issues and Gaps
+
+| Issue | Impact | Recommendation |
+| --- | --- | --- |
+| **Filename/id mismatch** (`secret-request.yaml` + skeleton) | **P0**: PR workflows derive `ID` from filename, but parser outputs by YAML `id` (SEC-XXXX). File name is `${{ values.secret_name }}` so plan/apply will look for the wrong tfvars file. | Generate a `SEC-XXXX` id in the template and use it for both file name and YAML `id`. |
+| **Non-unique ID generation** (Date.now last 4 digits) | **P1**: ID collisions and non-deterministic IDs. | Replace with a deterministic ID generator or require an explicit `SEC-XXXX` input. |
+| **Guard uses regex only** (`tier: high`) | **P2**: False positives/negatives if formatting changes. | Parse YAML and check `spec.risk.tier` directly. |
+| **WARN_ONLY not configurable** | **P2**: Cannot toggle behavior in `workflow_dispatch`. | Add workflow input for warn-only mode. |
+| **Hardcoded enum lists** in Backstage template | **P3**: Drift from `schemas/metadata/enums.yaml`. | Add a sync check or update template from enums as a follow-up. |
+
+#### Recommendations
+
+| Priority | Action | Effort | Status |
+| --- | --- | --- | --- |
+| P0 | Align SecretRequest filename and YAML `id` to `SEC-XXXX` | Medium | Open |
+| P1 | Replace Date.now id generation with deterministic ID | Medium | Open |
+| P2 | Parse YAML in secret-approval-guard | Low | Open |
+| P2 | Add warn-only input to guard workflow | Low | Open |
+| P3 | Add enum sync check for Backstage template | Medium | Open |
+
+Signed: Codex (2026-01-17T15:01:12Z)
+
+### Update - 2026-01-17T15:03:17Z
+
+**What changed**
+- Aligned SecretRequest filename with SEC-XXXX ids and removed non-deterministic id generation.
+- Added request_id input to Backstage secret scaffolder and wired it through PR metadata.
+- Updated secret-approval-guard to parse YAML risk tier and added warn-only input.
+
+**Artifacts touched**
+- `backstage-helm/backstage-catalog/templates/secret-request.yaml`
+- `backstage-helm/backstage-catalog/templates/skeletons/secret-request/${{ values.request_id }}.yaml`
+- `.github/workflows/secret-approval-guard.yml`
+- `session_capture/2026-01-17-session-capture-guardrail.md`
+
+**Validation**
+- Not run (doc update only).
+
+**Next steps**
+- Consider adding enum sync validation between Backstage template and `schemas/metadata/enums.yaml`.
+
+Signed: Codex (2026-01-17T15:03:17Z)
+
+### Update - 2026-01-17T15:15:20Z
+
+**What changed**
+- Switched Backstage secret request to dispatch `request-app-secret.yml` so the system generates IDs.
+- Added CI immutability check for SecretRequest IDs and filename/id alignment.
+
+**Artifacts touched**
+- `backstage-helm/backstage-catalog/templates/secret-request.yaml`
+- `.github/workflows/secret-request-pr.yml`
+- `session_capture/2026-01-17-session-capture-guardrail.md`
+
+**Validation**
+- Not run (doc update only).
+
+**Next steps**
+- Consider enforcing uniqueness across all secret request IDs (repo-wide).
+
+Signed: Codex (2026-01-17T15:15:20Z)
+
 Signed: Codex (2026-01-17T10:21:49Z)
 
 ### Update - 2026-01-17T11:00:00Z

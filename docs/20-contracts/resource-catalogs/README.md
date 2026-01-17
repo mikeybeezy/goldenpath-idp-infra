@@ -47,6 +47,14 @@ breaking_change: false
 **Resources:** RDS databases
 **Self-Service:** [Create RDS Database Workflow](../../.github/workflows/create-rds-database.yml)
 
+### Clusters - EKS
+
+**File:** [eks-catalog.yaml](./eks-catalog.yaml)
+**Domain:** `platform-core`
+**Owner:** platform-team
+**Resources:** EKS clusters
+**Self-Service:** EKS request flow (PR + manual apply workflow)
+
 ---
 
 ## Placeholder Catalogs (Schema Defined, Awaiting Implementation)
@@ -73,14 +81,6 @@ breaking_change: false
 **Domain:** `storage-efs`
 **Owner:** platform-team
 **Resources:** EFS file systems
-**Status:** Placeholder - needs Terraform module & workflow
-
-### Clusters - EKS
-
-**File:** [eks-catalog.yaml](./eks-catalog.yaml) (PLACEHOLDER)
-**Domain:** `kubernetes-clusters`
-**Owner:** platform-team
-**Resources:** EKS clusters
 **Status:** Placeholder - needs Terraform module & workflow
 
 ### Secrets Manager

@@ -1,0 +1,256 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: eks-request
+  title: Request EKS Cluster
+  description: |
+    Request an EKS cluster or bootstrap run via governed request files.
+    Creates a PR with an EKS request YAML for platform review and apply.
+  tags:
+    - aws
+    - eks
+    - infrastructure
+    - gitops
+spec:
+  owner: platform-team
+  type: infrastructure
+
+  parameters:
+    - title: Request Details
+      required:
+        - request_id
+        - environment
+        - region
+        - owner
+        - requester
+        - cluster_lifecycle
+        - mode
+        - cluster_name
+        - kubernetes_version
+      properties:
+        request_id:
+          title: Request ID
+          type: string
+          description: Unique EKS request identifier (e.g., EKS-0001).
+          pattern: "^EKS-[0-9]{4}$"
+          ui:autofocus: true
+        environment:
+          title: Environment
+          type: string
+          enum: [dev, test, staging, prod]
+          default: dev
+        region:
+          title: AWS Region
+          type: string
+          enum: [eu-west-2]
+          default: eu-west-2
+        owner:
+          title: Owner Team
+          type: string
+          enum:
+            - platform-team
+            - security-team
+            - operations-team
+            - sre-team
+            - app-team
+            - database-team
+          default: platform-team
+        requester:
+          title: Requester
+          type: string
+          description: Your username or service account.
+          pattern: "^[a-z0-9-]+$"
+        cluster_lifecycle:
+          title: Cluster Lifecycle
+          type: string
+          enum: [ephemeral]
+          default: ephemeral
+          description: |
+            Lifecycle controls state behavior. Persistent is platform-only for now.
+        mode:
+          title: Mode
+          type: string
+          enum: [cluster-only, bootstrap-only, cluster+bootstrap]
+          default: cluster+bootstrap
+          ui:help: "If mode includes cluster creation, build_id is required."
+        build_id:
+          title: Build ID
+          type: string
+          description: Required when mode includes cluster creation.
+          pattern: "^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+          ui:help: "Format: dd-mm-yy-NN (e.g., 17-01-26-01)."
+        cluster_name:
+          title: Cluster Name
+          type: string
+          pattern: "^[a-z0-9-]{3,40}$"
+          description: Name for the EKS cluster.
+        kubernetes_version:
+          title: Kubernetes Version
+          type: string
+          enum: ["1.28", "1.29", "1.30"]
+          default: "1.29"
+        description:
+          title: Description
+          type: string
+          description: Optional summary for the request.
+          default: ""
+
+    - title: Node Pool Configuration
+      required:
+        - node_tier
+        - node_desired
+        - node_max
+        - capacity_type
+      properties:
+        node_tier:
+          title: Node Tier
+          type: string
+          enum: [small, medium, large, xlarge]
+          default: small
+        node_min:
+          title: Min Nodes
+          type: integer
+          default: 3
+        node_desired:
+          title: Desired Nodes
+          type: integer
+          default: 3
+        node_max:
+          title: Max Nodes
+          type: integer
+          default: 5
+        capacity_type:
+          title: Capacity Type
+          type: string
+          enum: [ON_DEMAND, SPOT]
+          default: ON_DEMAND
+        autoscaler_enabled:
+          title: Enable Autoscaler
+          type: boolean
+          default: true
+
+    - title: Platform Integrations (Optional)
+      properties:
+        gitops_controller:
+          title: GitOps Controller
+          type: string
+          enum: [argocd]
+          default: argocd
+        gitops_install:
+          title: Install GitOps Controller
+          type: boolean
+          default: true
+        bootstrap_profile:
+          title: Bootstrap Profile
+          type: string
+          enum: [core-tooling, tooling-plus-sample-apps]
+          default: core-tooling
+        ingress_provider:
+          title: Ingress Provider
+          type: string
+          enum: [kong]
+          default: kong
+        aws_lb_type:
+          title: AWS Load Balancer Type
+          type: string
+          enum: [nlb, alb]
+          default: nlb
+        ingress_internal:
+          title: Internal Ingress
+          type: boolean
+          default: true
+        private_endpoint_only:
+          title: Private Endpoint Only
+          type: boolean
+          default: true
+        irsa_enabled:
+          title: Enable IRSA
+          type: boolean
+          default: false
+        ssm_break_glass:
+          title: Allow SSM Break Glass
+          type: boolean
+          default: true
+        ssh_break_glass:
+          title: Allow SSH Break Glass
+          type: boolean
+          default: false
+        ssh_key_name:
+          title: SSH Key Name
+          type: string
+          default: ""
+        ssh_source_sg_ids:
+          title: SSH Source Security Group IDs
+          type: array
+          items:
+            type: string
+          default: []
+
+  steps:
+    - id: write-request
+      name: Write EKS request file
+      action: fetch:template
+      input:
+        url: ./skeletons/eks-request
+        targetPath: docs/20-contracts/eks-requests/${{ parameters.environment }}
+        values:
+          request_id: ${{ parameters.request_id }}
+          environment: ${{ parameters.environment }}
+          region: ${{ parameters.region }}
+          owner: ${{ parameters.owner }}
+          requester: ${{ parameters.requester }}
+          cluster_lifecycle: ${{ parameters.cluster_lifecycle }}
+          mode: ${{ parameters.mode }}
+          build_id: ${{ parameters.build_id }}
+          cluster_name: ${{ parameters.cluster_name }}
+          kubernetes_version: ${{ parameters.kubernetes_version }}
+          description: ${{ parameters.description }}
+          node_tier: ${{ parameters.node_tier }}
+          node_min: ${{ parameters.node_min }}
+          node_desired: ${{ parameters.node_desired }}
+          node_max: ${{ parameters.node_max }}
+          capacity_type: ${{ parameters.capacity_type }}
+          autoscaler_enabled: ${{ parameters.autoscaler_enabled }}
+          gitops_controller: ${{ parameters.gitops_controller }}
+          gitops_install: ${{ parameters.gitops_install }}
+          bootstrap_profile: ${{ parameters.bootstrap_profile }}
+          ingress_provider: ${{ parameters.ingress_provider }}
+          aws_lb_type: ${{ parameters.aws_lb_type }}
+          ingress_internal: ${{ parameters.ingress_internal }}
+          private_endpoint_only: ${{ parameters.private_endpoint_only }}
+          irsa_enabled: ${{ parameters.irsa_enabled }}
+          ssm_break_glass: ${{ parameters.ssm_break_glass }}
+          ssh_break_glass: ${{ parameters.ssh_break_glass }}
+          ssh_key_name: ${{ parameters.ssh_key_name }}
+          ssh_source_sg_ids: ${{ parameters.ssh_source_sg_ids }}
+
+    - id: create-pr
+      name: Create Pull Request
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?owner=mikeybeezy&repo=goldenpath-idp-infra
+        branchName: eks/request-${{ parameters.request_id }}
+        title: "feat(eks): request ${{ parameters.request_id }} (${{ parameters.mode }})"
+        description: |
+          ## EKS Request
+
+          - **ID**: ${{ parameters.request_id }}
+          - **Environment**: ${{ parameters.environment }}
+          - **Mode**: ${{ parameters.mode }}
+          - **Build ID**: ${{ parameters.build_id }}
+          - **Cluster Name**: ${{ parameters.cluster_name }}
+          - **Node Tier**: ${{ parameters.node_tier }}
+          - **Requested By**: ${{ parameters.requester }}
+
+          ### Notes
+          - `build_id` is required when mode includes cluster creation.
+          - Apply uses the EKS request workflows (manual trigger).
+
+  output:
+    links:
+      - title: PR List
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls
+      - title: EKS Requests (dev)
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/tree/main/docs/20-contracts/eks-requests/dev
+      - title: EKS Request Flow
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/tree/main/docs/85-how-it-works/self-service/EKS_REQUEST_FLOW.md

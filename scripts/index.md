@@ -75,6 +75,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [backfill_metadata.py](backfill_metadata.py) | --- |
 | [check_script_traceability.py](check_script_traceability.py) | --- |
 | [deploy-backstage.sh](deploy-backstage.sh) | --- |
+| [eks_request_parser.py](eks_request_parser.py) | --- |
 | [enforce_emoji_policy.py](enforce_emoji_policy.py) | --- |
 | [fix_yaml_syntax.py](fix_yaml_syntax.py) | --- |
 | [generate_adr_index.py](generate_adr_index.py) | --- |

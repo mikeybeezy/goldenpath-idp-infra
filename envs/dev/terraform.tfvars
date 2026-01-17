@@ -4,7 +4,7 @@ vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
 cluster_lifecycle = "ephemeral"
 # NEED TO UPDATE persistent or ephemeral
-build_id = "15-01-26-15"
+build_id = "17-01-26-01"
 
 # -----------------------------------------------------------------------------
 # CRITICAL CONFIGURATION (Moved to Top)

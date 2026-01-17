@@ -1,6 +1,6 @@
 apiVersion: goldenpath.io/v1
 kind: SecretRequest
-id: SEC-${{ Date.now().toString().slice(-4) }}
+id: ${{ values.request_id }}
 description: "${{ values.description }}"
 owner: ${{ values.owner }}
 metadata:

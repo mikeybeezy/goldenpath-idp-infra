@@ -71,6 +71,30 @@ terraform -chdir=envs/dev plan \
   -var='cluster_lifecycle=persistent'
 ```
 
+## Backend init examples (S3 + DynamoDB)
+
+Ephemeral build (state per Build ID):
+
+```bash
+terraform -chdir=envs/dev init \
+  -reconfigure \
+  -backend-config="bucket=goldenpath-idp-dev-bucket" \
+  -backend-config="key=envs/dev/builds/<build_id>/terraform.tfstate" \
+  -backend-config="region=eu-west-2" \
+  -backend-config="dynamodb_table=goldenpath-idp-dev-locks"
+```
+
+Persistent build (shared state):
+
+```bash
+terraform -chdir=envs/dev init \
+  -reconfigure \
+  -backend-config="bucket=goldenpath-idp-dev-bucket" \
+  -backend-config="key=envs/dev/terraform.tfstate" \
+  -backend-config="region=eu-west-2" \
+  -backend-config="dynamodb_table=goldenpath-idp-dev-locks"
+```
+
 ## SSH break-glass example
 
 ```bash

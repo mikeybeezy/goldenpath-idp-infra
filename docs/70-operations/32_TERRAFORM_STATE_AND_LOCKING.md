@@ -52,6 +52,11 @@ Terraform uses a remote backend to:
   - **Persistent:** `envs/dev/terraform.tfstate`
   - **Ephemeral (per BuildId):** `envs/dev/builds/<build_id>/terraform.tfstate`
 
+**Platform-only warning:** Do not improvise state key paths. If an ephemeral
+build writes to `envs/dev/<build_id>/terraform.tfstate` (missing `builds/`),
+you create a parallel state lineage that cleanup tooling will miss. If this
+happens, migrate the state to the canonical key with `terraform init -migrate-state`.
+
 ## How it connects
 
 ```

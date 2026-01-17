@@ -1807,3 +1807,164 @@ Goal: standardize session capture docs and enforce append-only updates via CI.
 - Validation: not run (CI guardrail pending).
 
 Signed: Codex (2026-01-17T10:37:48Z)
+
+## 2026-01-17T15:15Z — Secrets: system-generated IDs + immutability guard — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: move SecretRequest IDs to system-generated flow and enforce immutability in CI.
+
+### In-Session Log (append as you go)
+- 15:10Z — Backstage secret request now dispatches `request-app-secret.yml` so the workflow generates IDs.
+- 15:12Z — Added CI check to enforce SecretRequest id/filename alignment and immutability.
+- 15:15Z — Captured changes in session capture.
+
+### Artifacts touched (required)
+- `backstage-helm/backstage-catalog/templates/secret-request.yaml`
+- `.github/workflows/secret-request-pr.yml`
+- `session_capture/2026-01-17-session-capture-guardrail.md`
+
+### Feedback Pointer (optional)
+- Feedback file: `session_capture/2026-01-17-session-capture-guardrail.md`
+- Status: open
+
+### Next actions
+- [ ] Decide if repo-wide uniqueness enforcement is required for SecretRequest IDs.
+
+### Session Report (end-of-session wrap-up)
+- Summary: Backstage now triggers a workflow that generates SecretRequest IDs; CI blocks id changes and filename/id drift.
+- Decisions: IDs are system-generated; Backstage no longer asks for request_id.
+- Risks/Follow-ups: Unique ID enforcement across the repo is not yet implemented.
+- Validation: not run.
+
+Signed: Codex (2026-01-17T15:15:20Z)
+
+## 2026-01-17T19:07Z — EKS request system close-out + bootstrap workflow — env=dev build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: finalize EKS request system artifacts, add bootstrap-only workflow, and capture persistent teardown guidance.
+
+### In-Session Log (append as you go)
+- 17:50Z — Finalized EKS catalog and added EKS request scaffolder + skeleton.
+- 18:05Z — Added persistent teardown runbook and changelog.
+- 18:14Z — Documented RDS expectations for EKS lifecycle.
+- 18:42Z — Added bootstrap-only workflow and lifecycle gating (ephemeral-only).
+- 18:49Z — Required platform approval for all EKS request PRs.
+
+### Artifacts touched (required)
+- `docs/20-contracts/resource-catalogs/eks-catalog.yaml`
+- `docs/20-contracts/resource-catalogs/README.md`
+- `backstage-helm/backstage-catalog/templates/eks-request.yaml`
+- `backstage-helm/backstage-catalog/templates/skeletons/eks-request/${{ values.request_id }}.yaml`
+- `docs/85-how-it-works/self-service/EKS_REQUEST_FLOW.md`
+- `.github/workflows/eks-size-approval-guard.yml`
+- `.github/workflows/eks-bootstrap-only.yml`
+- `.github/workflows/eks-request-apply.yml`
+- `.github/workflows/ci-eks-request-validation.yml`
+- `schemas/requests/eks.schema.yaml`
+- `scripts/eks_request_parser.py`
+- `docs/20-contracts/eks-requests/dev/EKS-0001.yaml`
+- `docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md`
+- `docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md`
+- `docs/70-operations/runbooks/README.md`
+- `docs/changelog/entries/CL-0145-persistent-cluster-teardown-runbook.md`
+- `scripts/index.md`
+- `docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md`
+- `session_capture/2026-01-17-eks-backstage-scaffolder-design.md`
+
+### Feedback Pointer (optional)
+- Feedback file: `session_capture/2026-01-17-eks-backstage-scaffolder-design.md`
+- Status: closed
+
+### Next actions
+- [ ] Run an end-to-end EKS request (Backstage -> PR -> CI -> apply/boot).
+- [ ] Decide if non-dev EKS requests need an additional approval label beyond platform-approval.
+
+### Session Report (end-of-session wrap-up)
+- Summary: EKS request system is now fully documented and wired with a scaffolder, catalog, approval guardrails, and a bootstrap-only workflow; persistent teardown guidance is formalized.
+- Decisions: EKS lifecycle is visible but restricted to ephemeral; all EKS request PRs require platform approval; bootstrap-only runs via a dedicated workflow after approval.
+- Risks/Follow-ups: Workflows have not been exercised end-to-end in CI/Backstage yet.
+- Validation: `python scripts/eks_request_parser.py --mode validate --input-files docs/20-contracts/eks-requests/dev/EKS-0001.yaml --enums schemas/metadata/enums.yaml`.
+
+Signed: Codex (2026-01-17T19:07:05Z)
+
+## 2026-01-17T20:30Z — Extend Capabilities: Kong plugin + AI Copilot — env=na build_id=na
+
+Owner: platform-team
+Agent: claude-opus-4-5
+Goal: Create Extension Capability documents for Kong Backstage plugin and AI Copilot plugin.
+
+### In-Session Log (append as you go)
+- 20:00Z — Started: Create EC-0003 for Kong Self-Service Backstage Plugin — status: completed
+- 20:15Z — Created EC-0003-kong-backstage-plugin.md with full implementation plan
+- 20:20Z — Updated INDEX.md to include EC-0003 in relates_to and capabilities table
+- 20:25Z — Started: Create EC-0004 for Backstage AI Copilot Plugin — status: completed
+- 20:30Z — Created EC-0004-backstage-copilot-plugin.md with RAG architecture
+
+### Checkpoints
+- [x] Create EC-0003 Kong Self-Service Backstage Plugin
+- [x] Update INDEX.md with EC-0003
+- [x] Create EC-0004 Backstage AI Copilot Plugin
+- [x] Update INDEX.md with EC-0004
+- [x] Update Total ECs count in INDEX.md
+
+### Outputs produced
+
+**EC-0003: Kong Self-Service Backstage Plugin**
+- File: `docs/extend-capabilities/EC-0003-kong-backstage-plugin.md`
+- Priority: medium
+- Estimated ROI: $8,000/year
+- Effort: 4 weeks
+- Key Features:
+  - Contract-driven Kong requests (KONG-XXXX.yaml)
+  - Backstage scaffolder template
+  - CI validation + apply workflows
+  - Supported plugins: rate-limiting, cors, key-auth, request-transformer, jwt
+
+**EC-0004: Backstage AI Copilot Plugin**
+- File: `docs/extend-capabilities/EC-0004-backstage-copilot-plugin.md`
+- Priority: medium
+- Estimated ROI: $15,000/year
+- Effort: 2-6 weeks (depending on approach)
+- Key Features:
+  - RAG over runbooks (35+), ADRs (150+), Makefile targets (50+)
+  - LangChain/Anthropic Claude integration
+  - Deployment options: Slack Bot (1-2 days) or Backstage Plugin (2-4 weeks)
+  - Copilot mode (suggests commands) vs Autopilot mode (executes)
+  - Key principle: "AI assists, human approves, pipeline executes"
+
+### Extension Capabilities Summary
+
+| ID | Title | Priority | ROI | Effort |
+|----|-------|----------|-----|--------|
+| EC-0001 | Knative Integration | medium | $13K/year | 9 weeks |
+| EC-0002 | Shared Parser Library | low | Reduced duplication | - |
+| EC-0003 | Kong Self-Service Plugin | medium | $8K/year | 4 weeks |
+| EC-0004 | Backstage AI Copilot | medium | $15K/year | 2-6 weeks |
+
+### Links
+- EC Index: `docs/extend-capabilities/INDEX.md`
+- EC-0003: `docs/extend-capabilities/EC-0003-kong-backstage-plugin.md`
+- EC-0004: `docs/extend-capabilities/EC-0004-backstage-copilot-plugin.md`
+
+### Session Report (end-of-session wrap-up)
+- Summary:
+  - Created EC-0003 for Kong self-service via Backstage with contract-driven approach
+  - Created EC-0004 for AI Copilot using RAG over platform documentation
+  - Updated INDEX.md with both new ECs and corrected total count
+  - Both ECs follow established patterns (EKS, RDS, Secret requests)
+- Decisions:
+  - Kong plugin follows contract-driven pattern with KONG-XXXX.yaml requests
+  - Copilot starts with Slack Bot (fastest), migrates to Backstage Plugin if adoption high
+  - Copilot mode preferred over Autopilot for compliance safety
+- Risks/Follow-ups:
+  - ECs require platform team review before implementation
+  - Kong plugin needs Konga alternatives evaluated (Konga not maintained since 2021)
+  - Copilot needs LLM provider decision (Claude recommended)
+- Validation: INDEX.md updated with 4 proposed ECs
+
+---
+
+**Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
+**Timestamp**: 2026-01-17T20:30:00Z

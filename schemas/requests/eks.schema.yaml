@@ -1,0 +1,216 @@
+################################################################################
+# EKS Request Schema - The Contract
+#
+# Defines the request contract for EKS cluster provisioning.
+# Backstage templates and CI workflows should be thin consumers of this schema.
+################################################################################
+
+id: EKS_REQUEST_V1
+version: "1.0"
+type: request
+domain: platform
+owner: platform-team
+status: proposed
+
+metadata:
+  description: "Contract for requesting EKS clusters and bootstrap runs"
+  backstage_template: "backstage-helm/backstage-catalog/templates/eks-request.yaml"
+  parser_module: "scripts/eks_request_parser.py"
+  parser_status: "active"
+  terraform_root: "envs/{environment}/"
+  workflow: ".github/workflows/eks-request-apply.yml"
+
+################################################################################
+# Property Definitions
+################################################################################
+
+properties:
+  id:
+    type: string
+    pattern: "^EKS-[0-9]{4}$"
+    description: "Unique request ID (e.g., EKS-0001)"
+
+  environment:
+    type: string
+    enum_from: eks_environments
+    description: "Target environment"
+
+  cluster_lifecycle:
+    type: string
+    enum:
+      - ephemeral
+    description: "Lifecycle for the cluster (ephemeral only for now)"
+
+  region:
+    type: string
+    enum:
+      - "eu-west-2"
+    description: "AWS region"
+
+  owner:
+    type: string
+    enum_from: owners
+    description: "Owning team"
+
+  requester:
+    type: string
+    description: "Requester name or service account"
+
+  mode:
+    type: string
+    enum_from: eks_modes
+    description: "cluster-only | bootstrap-only | cluster+bootstrap"
+
+  build_id:
+    type: string
+    pattern: "^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    description: "Required when mode includes cluster creation"
+
+  cluster_name:
+    type: string
+    pattern: "^[a-z0-9-]{3,40}$"
+    description: "Cluster name"
+
+  kubernetes_version:
+    type: string
+    enum_from: kubernetes_versions
+    description: "EKS Kubernetes version"
+
+  node_tier:
+    type: string
+    enum_from: eks_node_tiers
+    description: "Node sizing tier (maps to instance type)"
+
+  instance_type:
+    type: string
+    description: "Explicit instance type (optional override)"
+
+  node_min:
+    type: integer
+    minimum: 1
+    description: "Minimum node count"
+
+  node_desired:
+    type: integer
+    minimum: 1
+    description: "Desired node count"
+
+  node_max:
+    type: integer
+    minimum: 1
+    description: "Maximum node count"
+
+  capacity_type:
+    type: string
+    enum_from: eks_capacity_types
+    description: "ON_DEMAND or SPOT"
+
+  autoscaler_enabled:
+    type: boolean
+    default: true
+    description: "Enable cluster autoscaler"
+
+  gitops_controller:
+    type: string
+    enum_from: eks_gitops_controllers
+    description: "GitOps controller"
+
+  gitops_install:
+    type: boolean
+    default: true
+    description: "Install GitOps controller"
+
+  bootstrap_profile:
+    type: string
+    enum_from: eks_bootstrap_profiles
+    description: "Bootstrap profile selection (advisory; not wired to automation yet)"
+
+  ingress_provider:
+    type: string
+    enum_from: eks_ingress_providers
+    description: "Ingress provider (advisory; not wired to automation yet)"
+
+  aws_lb_type:
+    type: string
+    enum_from: eks_aws_lb_types
+    description: "AWS load balancer type (advisory; not wired to automation yet)"
+
+  ingress_internal:
+    type: boolean
+    default: true
+    description: "Internal load balancer (advisory; not wired to automation yet)"
+
+  access_ssm_break_glass:
+    type: boolean
+    default: true
+    description: "Allow SSM access for break-glass (advisory; not wired to automation yet)"
+
+  access_ssh_break_glass:
+    type: boolean
+    default: false
+    description: "Allow SSH break-glass"
+
+  ssh_key_name:
+    type: string
+    description: "EC2 key pair name for SSH access"
+
+  ssh_source_security_group_ids:
+    type: array
+    items:
+      type: string
+    description: "Security group IDs allowed to SSH"
+
+  irsa_enabled:
+    type: boolean
+    default: false
+    description: "Enable IRSA (advisory; not wired to automation yet)"
+
+################################################################################
+# Required Fields
+################################################################################
+
+required:
+  - id
+  - environment
+  - region
+  - owner
+  - requester
+  - mode
+  - cluster_name
+  - kubernetes_version
+  - node_desired
+  - node_max
+
+################################################################################
+# Conditional Rules
+################################################################################
+
+conditional_rules:
+  - name: build_id_required_for_cluster
+    description: "build_id required for cluster creation"
+    when:
+      mode:
+        enum:
+          - cluster-only
+          - cluster+bootstrap
+    then:
+      build_id:
+        required: true
+
+  - name: node_min_default
+    description: "node_min defaults to node_desired when omitted"
+    when:
+      node_min:
+        defined: false
+    then:
+      node_min:
+        default: node_desired
+
+  - name: node_bounds
+    description: "node_min <= node_desired <= node_max"
+    when:
+      node_max:
+        defined: true
+    then:
+      node_max:
+        greater_than_field: node_desired
