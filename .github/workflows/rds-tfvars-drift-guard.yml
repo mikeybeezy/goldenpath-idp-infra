@@ -1,5 +1,5 @@
-# Owner: platform
-# Relates-To: docs/85-how-it-works/self-service/RDS_DUAL_MODE_AUTOMATION.md
+# Owner: platform-team
+# Relates-To: RDS_DUAL_MODE_AUTOMATION, ADR-0158, PR_GUARDRAILS_INDEX
 name: RDS tfvars Drift Guard
 
 on:
@@ -23,7 +23,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
+          python3 - <<'PY'
           import os
           import re
           import sys
@@ -31,13 +31,51 @@ jobs:
 
           warn_only = os.environ.get("WARN_ONLY", "false").lower() == "true"
 
-          def extract_db_keys(content: str) -> set[str]:
-              match = re.search(r"application_databases\s*=\s*\{([\s\S]*?)\n\}", content)
+          def extract_hcl_block(content: str, block_name: str) -> str:
+              """Extract a full HCL block using brace counting."""
+              pattern = rf"{block_name}\s*=\s*\{{"
+              match = re.search(pattern, content)
               if not match:
+                  return ""
+
+              start = match.end() - 1  # Position of opening brace
+              depth = 0
+              end = start
+
+              for i, char in enumerate(content[start:], start):
+                  if char == '{':
+                      depth += 1
+                  elif char == '}':
+                      depth -= 1
+                      if depth == 0:
+                          end = i + 1
+                          break
+
+              return content[start:end]
+
+          def extract_db_keys(content: str) -> set[str]:
+              """Extract top-level keys from application_databases block."""
+              block = extract_hcl_block(content, "application_databases")
+              if not block:
                   return set()
-              block = match.group(1)
-              keys = re.findall(r"^\s*([A-Za-z0-9_-]+)\s*=\s*\{", block, re.MULTILINE)
-              return set(keys)
+              # Match top-level keys: "keyname = {" at depth 1
+              # We need to track brace depth and only capture keys at depth 1
+              keys = set()
+              depth = 0
+              for line in block.splitlines():
+                  # Count braces to track depth
+                  open_count = line.count('{')
+                  close_count = line.count('}')
+
+                  # At depth 1, look for key definitions
+                  if depth == 1:
+                      key_match = re.match(r"^\s*([A-Za-z0-9_-]+)\s*=\s*\{", line)
+                      if key_match:
+                          keys.add(key_match.group(1))
+
+                  depth += open_count - close_count
+
+              return keys
 
           def coupled_enabled(content: str) -> bool:
               in_block = False
