@@ -50,7 +50,7 @@ must be captured there and reviewed via PR.
 ## Session logging
 
 Each agent session must append to the immutable session log at
-`agent_status/agent_session_summary.md`. This file is append-only and captures
+`session_summary/agent_session_summary.md`. This file is append-only and captures
 what changed in each session for audit and traceability.
 
 ## 1) Scope and authority

@@ -52,7 +52,7 @@ The living registry is the source of truth:
 environment access levels (local/CI/cluster/cloud) per agent.
 
 Each agent session must append to the immutable session log at
-`agent_status/agent_session_summary.md`.
+`session_summary/agent_session_summary.md`.
 
 ## Scope
 

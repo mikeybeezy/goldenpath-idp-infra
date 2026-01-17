@@ -26,6 +26,7 @@ reliability:
 - Keep the in-session log to short, timestamped bullets.
 - Update the in-session log every 30-60 minutes or after decisions/blockers.
 - End each entry with a short session report.
+- If responding to review feedback, include a "Feedback Addressed" section with links.
 
 ## Entry template
 
@@ -61,6 +62,14 @@ Objective: <short statement>
 - Scripts: <scripts/foo.py>
 - Docs/ADRs: <ADR-XXXX>
 - Artifacts: <report path, dashboard link>
+
+### Feedback Pointer (optional)
+- Feedback file: <session_capture/YYYY-MM-DD-<topic>.md>
+- Status: <open|closed>
+
+### Feedback Addressed (optional)
+- Feedback: <path or URL>
+- Response: <short summary of what was changed>
 
 ### Next actions
 - [ ] <next action 1>
@@ -111,6 +120,10 @@ Objective: fix Backstage/Keycloak blockers and restore platform health
 ### Outputs produced (optional)
 - PRs: #123
 - Docs/ADRs: ADR-0162
+
+### Feedback Addressed (optional)
+- Feedback: docs/feedback/bootstrap-review.md
+- Response: fixed ingress guard + added validation check
 
 ### Next actions
 - [ ] Add bootstrap smoke test for Kong ingress

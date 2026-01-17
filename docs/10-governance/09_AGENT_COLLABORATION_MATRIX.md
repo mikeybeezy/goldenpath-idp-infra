@@ -36,7 +36,7 @@ breaking_change: false
 - Add/update an agent here before enabling it in local or CI contexts.
 - Permission changes require a PR and security review.
 - Retire agents by changing status to `retired` and removing credentials.
-- Each session appends a summary to `agent_status/agent_session_summary.md`.
+- Each session appends a summary to `session_summary/agent_session_summary.md`.
 - After implementation, add a changelog entry for the operational change.
 
 ## Environment access levels
