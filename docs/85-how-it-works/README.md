@@ -31,6 +31,9 @@ This directory contains high-level, technical explanations of the platform's cor
 ## Self-Service
 
 - [ECR Request Flow](self-service/ECR_REQUEST_FLOW.md): The self-service lifecycle of container registry provisioning
+- [RDS Request Flow](self-service/RDS_REQUEST_FLOW.md): How RDS database requests flow from Backstage to Terraform
+- [RDS Dual-Mode Automation](self-service/RDS_DUAL_MODE_AUTOMATION.md): Coupled vs standalone RDS automation mechanics
+- [RDS User and DB Provisioning](self-service/RDS_USER_DB_PROVISIONING.md): Automated RDS role and database creation
 
 ## Secrets
 

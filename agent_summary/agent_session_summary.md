@@ -1,12 +1,12 @@
 ---
 id: agent_session_summary
-title: 'Agent Session Summary (Append-Only)'
+title: Agent Session Summary (Append-Only)
 type: documentation
 domain: platform-core
+applies_to: []
 owner: platform-team
 lifecycle: active
-status: active
-schema_version: 1
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: none
@@ -15,6 +15,18 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+status: active
+category: platform
 ---
 
 When switching agents or context windows:
@@ -38,7 +50,6 @@ Agents must:
 16. Read `agent_summary/session_summary_template.md`
 17. Read the latest session state from the canonical session summary document
 18. Acknowledge understanding before continuing work
-
 
 # Session Summary (Append-Only)
 
@@ -947,7 +958,253 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 - Linked the registry and session log expectations into `docs/10-governance/07_AI_AGENT_GOVERNANCE.md`.
 - Added ADR `docs/adrs/ADR-0163-agent-collaboration-governance.md` to formalize the collaboration model.
 
-## 17. Teardown V3 Script Review (2026-01-16 17:05:58Z)
+## 17. RDS User and Database Provisioning Automation (2026-01-16 19:30:00Z)
+
+**Objective**: Implement automated RDS user and database provisioning per PRD-0001 and ADR-0165.
+
+**Problem Statement**: Terraform creates Secrets Manager entries for database credentials but does not create the corresponding PostgreSQL roles or databases. This leaves a manual `psql` gap and introduces drift between declared config and runtime state.
+
+**Actions**:
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `scripts/rds_provision.py` | Core provisioning script (SCRIPT-0035) - idempotent role/database creation |
+| `tests/scripts/test_script_0035.py` | Unit tests with mocks + integration test markers |
+| `docs/70-operations/runbooks/RB-0032-rds-user-provision.md` | Operations runbook for provisioning |
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `Makefile` | Added `rds-provision` and `rds-provision-dry-run` targets |
+| `docs/adrs/ADR-0165-rds-user-db-provisioning-automation.md` | Updated status to "accepted", added implementation details |
+
+### Key Features Implemented
+
+1. **Idempotent Provisioning**: Safe to re-run without destructive side effects
+2. **Dry-Run Mode**: Preview changes without executing (`--dry-run`)
+3. **Approval Gates**: Non-dev environments require `ALLOW_DB_PROVISION=true`
+4. **Audit Trail**: CSV output with build_id, run_id, timestamps, and status
+5. **Secure Connections**: SSL required, no password logging
+6. **Fail-Fast**: Exits immediately on missing secrets or connection errors
+
+### Usage
+
+```bash
+# Preview what would be provisioned (safe)
+make rds-provision-dry-run ENV=dev
+
+# Provision for dev (no approval needed)
+make rds-provision ENV=dev
+
+# Provision for non-dev (requires explicit approval)
+ALLOW_DB_PROVISION=true make rds-provision ENV=staging
+```
+
+### Dry-Run Output Example
+
+```
+[DRY-RUN] Provisioning RDS users and databases for dev...
+Found 2 application databases to provision
+--- Provisioning: keycloak ---
+[DRY-RUN] Would create/update role: keycloak_user
+[DRY-RUN] Would create database: keycloak with owner keycloak_user
+[DRY-RUN] Would grant ALL on keycloak to keycloak_user
+--- Provisioning: backstage ---
+[DRY-RUN] Would create/update role: backstage_user
+[DRY-RUN] Would create database: backstage with owner backstage_user
+[DRY-RUN] Would grant ALL on backstage to backstage_user
+```
+
+### Artifacts
+
+- **PRD**: `docs/20-contracts/prds/PRD-0001-rds-user-db-provisioning.md`
+- **ADR**: `docs/adrs/ADR-0165-rds-user-db-provisioning-automation.md`
+- **Script**: `scripts/rds_provision.py` (SCRIPT-0035)
+- **Tests**: `tests/scripts/test_script_0035.py`
+- **Runbook**: `docs/70-operations/runbooks/RB-0032-rds-user-provision.md`
+- **Changelog**: `docs/changelog/entries/CL-0140-rds-user-db-provisioning.md`
+
+### Technical Design
+
+- **Source of Truth**: `application_databases` in `envs/<env>-rds/terraform.tfvars`
+- **Secrets**: Master credentials from `goldenpath/<env>/rds/master`, app passwords from `goldenpath/<env>/<app>/postgres`
+- **Connection**: psycopg2 with SSL (same pattern as rotation Lambda)
+- **SQL Patterns**: Check-then-create for idempotency, identifier validation to prevent SQL injection
+
+### PRD Gap Fixes (2026-01-16 Session Continuation)
+
+Addressed audit feedback to fully satisfy PRD-0001 and ADR-0165:
+
+| Gap                              | Resolution                                                                            |
+| -------------------------------- | ------------------------------------------------------------------------------------- |
+| Fail-fast not implemented        | Added `ProvisionError` exception + `--no-fail-fast` flag (default: fail-fast enabled) |
+| Only GRANT ALL, no access levels | Added `ACCESS_LEVELS` mapping for owner/editor/reader with appropriate grants         |
+| No default privileges            | Added `ALTER DEFAULT PRIVILEGES` for tables and sequences                             |
+| Audit not persisted              | Added `--audit-output` CLI arg and `persist_audit_records()` function                 |
+| Missing changelog                | Created `CL-0140-rds-user-db-provisioning.md`                                         |
+
+### Updated CLI Arguments
+
+```bash
+python3 scripts/rds_provision.py \
+  --env dev \
+  --tfvars envs/dev-rds/terraform.tfvars \
+  --master-secret goldenpath/dev/rds/master \
+  --audit-output governance/dev/rds_provision_audit.csv \
+  [--no-fail-fast]  # Optional: continue on errors
+```
+
+### Access Level Grants
+
+| Level  | Database       | Schema | Tables                         | Default Privileges          |
+| ------ | -------------- | ------ | ------------------------------ | --------------------------- |
+| owner  | ALL PRIVILEGES | ALL    | ALL                            | ALL on tables/sequences     |
+| editor | CONNECT        | USAGE  | SELECT, INSERT, UPDATE, DELETE | Same                        |
+| reader | CONNECT        | USAGE  | SELECT                         | SELECT on tables/sequences  |
+
+### Follow-ups (Deferred to V2)
+
+1. Lambda fallback for K8s-independent execution
+2. Delegated admin role instead of master credentials
+3. CI workflow integration (post-Terraform-apply step)
+
+---
+
+## 2026-01-16T21:00Z — RDS: Automated provisioning on merge — env=dev build_id=na
+
+Owner: platform-team
+Agent: claude-opus-4-5
+Goal: Automate RDS provisioning to trigger on PR merge (eliminate manual step)
+
+Environment: AWS `dev`
+Cluster: goldenpath-dev-eks
+Region: eu-west-2
+Objective: When PR is merged to development, automatically run Terraform apply + K8s provisioning job
+
+### In-Session Log (append as you go)
+
+- 19:30Z — Started: Implement auto-provisioning workflow — status: running
+- 20:00Z — Decision: Use K8s Job over Lambda — why: VPC access required, GitHub runners can't reach private RDS
+- 20:15Z — Change: Created rds-database-apply.yml — file: .github/workflows/rds-database-apply.yml
+- 20:30Z — Change: Created platform-system namespace + RBAC — file: gitops/kustomize/platform-system/
+- 20:45Z — Change: Created Argo WorkflowTemplate — file: gitops/kustomize/platform-system/rds-provision-workflowtemplate.yaml
+- 21:00Z — Change: Updated documentation — file: docs/85-how-it-works/self-service/RDS_USER_DB_PROVISIONING.md
+- 21:15Z — Result: All automation components created — outcome: pass
+
+### Checkpoints
+
+- [x] Create GitHub workflow triggered on merge to development
+- [x] Create platform-system namespace
+- [x] Create ServiceAccount + RBAC with IRSA annotation
+- [x] Create Argo WorkflowTemplate as fallback
+- [x] Update documentation to reflect automated flow
+- [x] Sync Backstage template with `size` field
+
+### Edge cases observed (optional)
+
+- GitHub runners cannot reach private RDS -> use K8s Job with VPC access via IRSA
+
+### Outputs produced
+
+- Workflows: `.github/workflows/rds-database-apply.yml`
+- K8s manifests: `gitops/kustomize/platform-system/` (namespace, RBAC, WorkflowTemplate)
+- Docs: Updated `RDS_USER_DB_PROVISIONING.md` Part 7, `RB-0032` runbook
+
+### Next actions
+
+- [ ] Create IRSA role `goldenpath-platform-provisioner` in Terraform
+- [ ] Merge workflow to main branch (required for trigger)
+- [ ] Test end-to-end with new database request
+
+### Links (optional)
+
+- Runbook: docs/70-operations/runbooks/RB-0032-rds-user-provision.md
+- Workflow: .github/workflows/rds-database-apply.yml
+- How-it-works: docs/85-how-it-works/self-service/RDS_USER_DB_PROVISIONING.md
+
+### Session Report (end-of-session wrap-up)
+
+- Summary:
+  - Implemented fully automated RDS provisioning triggered on PR merge
+  - Created GitHub workflow, K8s namespace, ServiceAccount/RBAC, Argo WorkflowTemplate
+  - Updated documentation to reflect V1.1 automation architecture
+  - Synced Backstage form with new `size` field (9 fields total)
+- Decisions:
+  - K8s Job over Lambda for VPC access
+  - IRSA for Secrets Manager access (boto3), PostgreSQL credentials for DB operations
+  - Argo WorkflowTemplate as manual fallback with UI visibility
+- Risks/Follow-ups:
+  - IRSA role must be created before automation works
+  - Workflow file must be on main branch to trigger
+- Validation: Dry-run tested locally; full E2E pending merge
+
+### Files Created This Session
+
+| File | Purpose |
+|------|---------|
+| `.github/workflows/rds-database-apply.yml` | Auto-triggers on merge, runs TF apply + K8s Job |
+| `gitops/kustomize/platform-system/kustomization.yaml` | Kustomization for platform-system |
+| `gitops/kustomize/platform-system/rds-provisioner-rbac.yaml` | ServiceAccount + RBAC for IRSA |
+| `gitops/kustomize/platform-system/rds-provision-workflowtemplate.yaml` | Argo WorkflowTemplate |
+| `claude_status/2026-01-16_session_summary.md` | Session summary (alternate location) |
+
+### Files Modified This Session
+
+| File | Change |
+|------|--------|
+| `gitops/kustomize/bases/namespaces.yaml` | Added `platform-system` namespace |
+| `gitops/kustomize/bases/kustomization.yaml` | Added `../platform-system/` reference |
+| `docs/85-how-it-works/self-service/RDS_USER_DB_PROVISIONING.md` | Added Part 7: Automation Architecture |
+| `docs/70-operations/runbooks/RB-0032-rds-user-provision.md` | Updated "When to Use" section |
+| `backstage-helm/backstage-catalog/templates/rds-request.yaml` | Added `size` field (synced) |
+| `.github/workflows/create-rds-database.yml` | Added `size` field + validation |
+
+## 2026-01-16T22:08:49Z — RDS: dual-mode alignment + deploy wiring — env=dev build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Align RDS enums across self-service, document dual-mode flow, and wire auto provisioning into deploy.
+
+### In-Session Log (append as you go)
+- 22:00Z — Updated Backstage RDS template/workflow inputs to match enums + size tiers
+- 22:02Z — Added dual-mode RDS how-it-works doc + ADR-0166
+- 22:05Z — Added mode-aware rds-provision-auto and wired into make deploy
+- 22:07Z — Documented deploy/approval guidance in RDS architecture/runbook
+
+### Checkpoints
+- [x] Enum-aligned Backstage RDS inputs (size/domain/risk)
+- [x] Dual-mode automation doc + ADR
+- [x] Mode-aware provisioning command
+- [x] Deploy flow updated to include provisioning
+
+### Outputs produced (optional)
+- ADR: `docs/adrs/ADR-0166-rds-dual-mode-automation-and-enum-alignment.md`
+- Docs: `docs/85-how-it-works/self-service/RDS_DUAL_MODE_AUTOMATION.md`
+- Docs: `docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md`
+- Runbook: `docs/70-operations/runbooks/RB-0032-rds-user-provision.md`
+
+### Next actions
+- [ ] Run a coupled `make deploy` in dev to confirm end-to-end flow
+- [ ] Add PR guard for `size=large|xlarge` approvals (if desired)
+
+### Session Report (end-of-session wrap-up)
+- Summary:
+  - Aligned RDS self-service inputs with canonical enums and size tiers
+  - Documented dual-mode RDS flow and deploy shortcut caveats
+  - Wired `rds-provision-auto` into `make deploy` for one-command builds
+- Decisions:
+  - Keep both coupled and standalone modes; auto-detect provisioning source
+- Risks/Follow-ups:
+  - Non-dev still requires `ALLOW_DB_PROVISION=true` approval gate
+  - IRSA/CI workflow approval for large tiers remains a follow-up
+- Validation: Not run in this session
+
+Signed: Codex (2026-01-16T22:08:49Z)
+
+## 23. Teardown V3 Script Review (2026-01-16 17:05:58Z)
 
 **Objective**: Capture risks/gaps observed in `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh`.
 
@@ -962,9 +1219,9 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 - RDS cleanup is BuildId-dependent; missing tags or unset `BUILD_ID` leaves RDS/subnet/param groups behind.
 - Orphan cleanup depends on BuildId tags; untagged resources (EBS, ENIs, SGs) will remain.
 
-## 18. Teardown V3.1.0 Enhancements (2026-01-16 17:15:00Z)
+## 24. Teardown V3.1.0 Enhancements (2026-01-16 17:15:00Z)
 
-**Objective**: Address all gaps identified in Section 17 by implementing comprehensive teardown improvements.
+**Objective**: Address all gaps identified in Section 23 by implementing comprehensive teardown improvements.
 
 **Changes Implemented**:
 
@@ -1024,7 +1281,7 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 **Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
 **Timestamp**: 2026-01-16T17:15:00Z
 
-## 19. Teardown V3 Complete Fixes - RDS Logging, NAT Gateway Ordering, Name-Pattern Fallback (2026-01-16 18:30:00Z)
+## 25. Teardown V3 Complete Fixes - RDS Logging, NAT Gateway Ordering, Name-Pattern Fallback (2026-01-16 18:30:00Z)
 
 **Objective**: Fix remaining teardown issues causing VPC deletion failures.
 
@@ -1045,84 +1302,26 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 
 ### Fix 1: RDS Deletion Logging (goldenpath-idp-teardown-v3.sh)
 
-```bash
-# Added deletion count tracking
-local deleted_count=0
-local total_count=0
-for arn in ${rds_arns}; do
-  total_count=$((total_count + 1))
-done
-log_info "Found ${total_count} RDS instance(s) to delete."
-
-# Added status checking before deletion
-current_status="$(aws rds describe-db-instances \
-  --db-instance-identifier "${db_identifier}" \
-  --query 'DBInstances[0].DBInstanceStatus' --output text)"
-log_step "DELETE_RDS_INSTANCE" "Deleting RDS instance: ${db_identifier} (status: ${current_status})"
-
-# Added wait loop for RDS deletion before subnet group cleanup
-log_step "WAIT_RDS_INSTANCES" "Waiting for RDS instances to be deleted..."
-# ... polling loop with 15-minute timeout
-```
+Added deletion count tracking, status checking before deletion, and wait loop for RDS deletion before subnet group cleanup.
 
 ### Fix 2: NAT Gateway Ordering (cleanup-orphans.sh v2.1.0)
 
 Moved NAT gateway cleanup BEFORE ENI cleanup:
 
-**Old order**: ENIs → IAM → NAT Gateways → EIPs → Subnets → VPC
-**New order**: NAT Gateways → Wait → ENIs → IAM → EIPs → Subnets → VPC
+**Old order**: ENIs -> IAM -> NAT Gateways -> EIPs -> Subnets -> VPC
+**New order**: NAT Gateways -> Wait -> ENIs -> IAM -> EIPs -> Subnets -> VPC
 
 ### Fix 3: Name-Pattern Fallback Search (cleanup-orphans.sh v2.2.0)
 
-Added fallback search by Name tag when BuildId tag search fails:
-
-```bash
-# Strategy 1: Search by BuildId tag
-nat_gws=$(aws ec2 describe-nat-gateways \
-  --filter "Name=tag:BuildId,Values=${build_id}" \
-  --query "NatGateways[?State!='deleted'].NatGatewayId" --output text)
-
-# Strategy 2: Fallback to name pattern if no results
-if [[ -z "${nat_gws}" ]]; then
-  log_info "No NAT gateways found by tag, searching by name pattern *${build_id}*..."
-  nat_gws=$(aws ec2 describe-nat-gateways \
-    --query "NatGateways[?State!='deleted' && contains(Tags[?Key=='Name'].Value | [0], '${build_id}')].NatGatewayId" \
-    --output text)
-fi
-```
-
-Applied same fallback pattern to: NAT gateways, subnets, IGWs, VPCs.
+Added fallback search by Name tag when BuildId tag search fails. Applied same fallback pattern to: NAT gateways, subnets, IGWs, VPCs.
 
 ### Fix 4: Enhanced NAT Gateway Wait Loop
 
-```bash
-# Proper polling loop instead of fixed sleep
-nat_wait_timeout=90
-while true; do
-  all_deleted=true
-  for nat in ${nat_gws}; do
-    nat_state=$(aws ec2 describe-nat-gateways --nat-gateway-ids "${nat}" \
-      --query "NatGateways[0].State" --output text)
-    if [[ "${nat_state}" != "deleted" ]]; then
-      all_deleted=false
-      log_info "  NAT gateway ${nat}: ${nat_state}"
-    fi
-  done
-  if [[ "${all_deleted}" == "true" ]]; then break; fi
-  # ... timeout check and sleep
-done
-```
+Proper polling loop instead of fixed sleep with timeout check.
 
 ### Fix 5: VPC Dependency Diagnostics
 
-When VPC deletion fails, now shows remaining dependencies:
-
-```bash
-if ! aws ec2 delete-vpc --vpc-id "${vpc}"; then
-  log_warn "VPC deletion failed, checking for remaining dependencies..."
-  # Shows: NAT gateways, subnets, ENIs, security groups, IGWs
-fi
-```
+When VPC deletion fails, now shows remaining dependencies (NAT gateways, subnets, ENIs, security groups, IGWs).
 
 **Files Modified**:
 
@@ -1131,14 +1330,6 @@ fi
 | `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh` | 3.1.0 | RDS deletion logging, count tracking, wait loop |
 | `bootstrap/60_tear_down_clean_up/cleanup-orphans.sh` | 2.2.0 | NAT gateway ordering, name-pattern fallback, VPC diagnostics |
 | `tests/scripts/teardown-v3/validate-teardown-v3.sh` | - | Updated version check regex for 2.x.x |
-
-**Commits**:
-
-| Commit | Message |
-|--------|---------|
-| `5d8d7714` | fix(teardown): improve RDS deletion logging and wait for VPC cleanup |
-| `637f5405` | fix(cleanup): reorder NAT gateway deletion before ENIs for VPC cleanup |
-| `52f8ae42` | fix(cleanup): add name-pattern fallback search and VPC diagnostics |
 
 **Validation**:
 

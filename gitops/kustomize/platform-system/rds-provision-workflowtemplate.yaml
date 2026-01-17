@@ -1,0 +1,195 @@
+# Argo WorkflowTemplate for RDS User/Database Provisioning
+# Relates-To: ADR-0165, PRD-0001, RB-0032
+# Owner: platform-team
+#
+# This WorkflowTemplate can be triggered:
+# 1. By GitHub Actions workflow after Terraform apply (preferred)
+# 2. Manually via Argo UI for troubleshooting
+# 3. Via argo submit for ad-hoc provisioning
+#
+# Usage:
+#   argo submit --from workflowtemplate/rds-provision \
+#     -p environment=dev \
+#     -p build_id=manual \
+#     -p run_id=local
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: rds-provision
+  namespace: platform-system
+  labels:
+    app: rds-provisioning
+    component: platform-automation
+  annotations:
+    workflows.argoproj.io/description: |
+      Provisions PostgreSQL roles and databases on Platform RDS instances.
+      Reads application_databases from terraform.tfvars and creates corresponding
+      database users with credentials from AWS Secrets Manager.
+spec:
+  entrypoint: provision
+  serviceAccountName: platform-provisioner
+
+  # Clean up completed workflows after 1 hour
+  ttlStrategy:
+    secondsAfterCompletion: 3600
+    secondsAfterSuccess: 3600
+    secondsAfterFailure: 86400  # Keep failed for 24h for debugging
+
+  # Retry on transient failures
+  retryStrategy:
+    limit: 2
+    retryPolicy: "OnError"
+    backoff:
+      duration: "30s"
+      factor: 2
+      maxDuration: "5m"
+
+  arguments:
+    parameters:
+      - name: environment
+        description: Target environment (dev, staging, prod)
+        default: dev
+        enum:
+          - dev
+          - staging
+          - prod
+      - name: build_id
+        description: Build ID for audit trail
+        default: manual
+      - name: run_id
+        description: CI run ID for audit trail
+        default: local
+      - name: dry_run
+        description: Preview changes without executing (true/false)
+        default: "false"
+        enum:
+          - "true"
+          - "false"
+      - name: git_ref
+        description: Git reference to checkout
+        default: development
+
+  templates:
+    - name: provision
+      dag:
+        tasks:
+          - name: clone-repo
+            template: git-clone
+            arguments:
+              parameters:
+                - name: git_ref
+                  value: "{{workflow.parameters.git_ref}}"
+
+          - name: run-provisioning
+            template: provision-databases
+            dependencies: [clone-repo]
+            arguments:
+              parameters:
+                - name: environment
+                  value: "{{workflow.parameters.environment}}"
+                - name: build_id
+                  value: "{{workflow.parameters.build_id}}"
+                - name: run_id
+                  value: "{{workflow.parameters.run_id}}"
+                - name: dry_run
+                  value: "{{workflow.parameters.dry_run}}"
+              artifacts:
+                - name: workspace
+                  from: "{{tasks.clone-repo.outputs.artifacts.workspace}}"
+
+    - name: git-clone
+      inputs:
+        parameters:
+          - name: git_ref
+      outputs:
+        artifacts:
+          - name: workspace
+            path: /workspace
+      container:
+        image: alpine/git:latest
+        command: [sh, -c]
+        args:
+          - |
+            git clone --depth=1 --branch={{inputs.parameters.git_ref}} \
+              https://github.com/mikeybeezy/goldenpath-idp-infra.git /workspace
+            echo "Cloned repository at ref: {{inputs.parameters.git_ref}}"
+            ls -la /workspace/scripts/
+        volumeMounts:
+          - name: workspace
+            mountPath: /workspace
+
+    - name: provision-databases
+      inputs:
+        parameters:
+          - name: environment
+          - name: build_id
+          - name: run_id
+          - name: dry_run
+        artifacts:
+          - name: workspace
+            path: /workspace
+      outputs:
+        artifacts:
+          - name: audit-log
+            path: /tmp/audit.csv
+            archive:
+              none: {}
+      container:
+        image: python:3.11-slim
+        command: [bash, -c]
+        args:
+          - |
+            set -e
+            echo "=== RDS Provisioning Job ==="
+            echo "Environment: {{inputs.parameters.environment}}"
+            echo "Build ID: {{inputs.parameters.build_id}}"
+            echo "Run ID: {{inputs.parameters.run_id}}"
+            echo "Dry Run: {{inputs.parameters.dry_run}}"
+            echo ""
+
+            # Install dependencies
+            pip install --quiet boto3 psycopg2-binary pyyaml
+
+            # Build command
+            ENV="{{inputs.parameters.environment}}"
+            DRY_RUN_FLAG=""
+            if [ "{{inputs.parameters.dry_run}}" == "true" ]; then
+              DRY_RUN_FLAG="--dry-run"
+              echo "[DRY-RUN MODE] No changes will be made"
+            fi
+
+            # Run provisioning script
+            python3 /workspace/scripts/rds_provision.py \
+              --env "$ENV" \
+              --tfvars "/workspace/envs/${ENV}-rds/terraform.tfvars" \
+              --master-secret "goldenpath/${ENV}/rds/master" \
+              --build-id "{{inputs.parameters.build_id}}" \
+              --run-id "{{inputs.parameters.run_id}}" \
+              --audit-output /tmp/audit.csv \
+              $DRY_RUN_FLAG
+
+            echo ""
+            echo "=== Audit Log ==="
+            cat /tmp/audit.csv
+            echo ""
+            echo "=== Provisioning Complete ==="
+        env:
+          - name: AWS_REGION
+            value: eu-west-2
+          - name: PYTHONUNBUFFERED
+            value: "1"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+          - name: workspace
+            mountPath: /workspace
+
+  volumes:
+    - name: workspace
+      emptyDir: {}

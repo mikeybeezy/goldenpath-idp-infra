@@ -13,6 +13,15 @@ This living document describes the standalone RDS PostgreSQL bounded context for
 
 Platform tooling applications (Keycloak, Backstage) share a single RDS PostgreSQL instance with logical database separation. RDS is deployed as a **standalone bounded context** with its own Terraform root, separate from EKS cluster state.
 
+### Deployment Modes (Coexist)
+
+The platform supports **both** modes:
+
+| Mode | Terraform root | Trigger | Use case |
+| --- | --- | --- | --- |
+| Coupled RDS | `envs/<env>/` | EKS apply/build | Standard platform builds |
+| Standalone RDS | `envs/<env>-rds/` | Backstage request + approval | Team-requested persistence |
+
 ### Key Principles
 
 - **Persistent**: RDS survives cluster rebuilds
@@ -71,6 +80,32 @@ RDS must be deployed **before** the EKS cluster because:
 
 ### Makefile Commands
 
+#### Coupled RDS (Standard EKS Build)
+
+```bash
+# 1. Deploy EKS + coupled RDS
+make apply ENV=dev BUILD_ID=xx-xx-xx-xx
+
+# 2. Provision database roles + users (mode detection)
+make rds-provision-auto ENV=dev BUILD_ID=xx-xx-xx-xx
+
+# 3. Bootstrap platform
+make bootstrap ENV=dev BUILD_ID=xx-xx-xx-xx
+```
+
+#### Deploy Shortcut (Apply + Bootstrap)
+
+```bash
+# Single-command deploy (apply + bootstrap + verify)
+make deploy ENV=dev BUILD_ID=xx-xx-xx-xx
+```
+
+Note: `make deploy` does not yet insert `rds-provision-auto`. Until that is
+wired into `deploy`, use the explicit three-step sequence above when RDS is
+required for platform apps.
+
+#### Standalone RDS (Persistent Layer)
+
 ```bash
 # 1. Deploy RDS first (separate Terraform root)
 make rds-init ENV=dev
@@ -80,8 +115,11 @@ make rds-apply ENV=dev
 # 2. Then deploy EKS cluster
 make apply ENV=dev BUILD_ID=xx-xx-xx-xx
 
-# 3. Then bootstrap
-make bootstrap ENV=dev
+# 3. Then provision DB roles/users (mode detection)
+make rds-provision-auto ENV=dev RDS_MODE=standalone BUILD_ID=xx-xx-xx-xx
+
+# 4. Then bootstrap
+make bootstrap ENV=dev BUILD_ID=xx-xx-xx-xx
 ```
 
 ### Full Deployment Order

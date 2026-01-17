@@ -539,6 +539,10 @@ module "app_secrets" {
   description = each.value.description
   tags        = local.common_tags
 
+  # Explicitly set create_policy to avoid "count depends on computed values" error
+  # when read_principals contains module.iam[0].eso_role_arn (computed at apply time)
+  create_policy = length(each.value.read_principals) > 0 || length(each.value.write_principals) > 0 || length(each.value.break_glass_principals) > 0 || var.iam_config.enabled
+
   # Dynamically append the ESO role (if IAM is enabled) to ensure correct ordering and ARN logic
   read_principals = var.iam_config.enabled ? distinct(concat(each.value.read_principals, [module.iam[0].eso_role_arn])) : each.value.read_principals
 
