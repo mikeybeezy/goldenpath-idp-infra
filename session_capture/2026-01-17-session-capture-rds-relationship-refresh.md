@@ -1,5 +1,5 @@
 ---
-id: SESSION_CAPTURE_2026_01_17
+id: SESSION_CAPTURE_2026_01_17_01
 title: Session Capture - RDS Guardrails and Relationship Refresh
 type: documentation
 owner: platform-team
@@ -10,6 +10,13 @@ risk_profile:
   production_impact: low
   security_risk: low
   coupling_risk: low
+relates_to:
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0165-rds-user-db-provisioning-automation
+  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
+  - RDS_REQUEST_FLOW
+  - RDS_DUAL_MODE_AUTOMATION
+  - SCRIPT-0011
 ---
 
 # Session Capture - RDS Guardrails and Relationship Refresh
@@ -17,6 +24,7 @@ risk_profile:
 **Agent:** Codex
 **Date:** 2026-01-17
 **Timestamp:** 2026-01-17T09:11:49Z
+**Branch:** feature/rds-guardrails-followup
 
 ## Scope
 
@@ -35,6 +43,8 @@ risk_profile:
 
 ## Artifacts Touched (links)
 
+### Modified
+
 - `.github/workflows/ci-rds-request-validation.yml`
 - `.github/workflows/rds-size-approval-guard.yml`
 - `.github/workflows/rds-tfvars-drift-guard.yml`
@@ -48,11 +58,14 @@ risk_profile:
 - `session_summary/session_summary_template.md`
 - `session_capture/2026-01-17-rds-session-feedback.md`
 - `scripts/extract_relationships.py`
-- `scripts/generate_doc_system_map.py`
 - `docs/90-doc-system/PLATFORM_SYSTEM_MAP.md`
 - `docs/00-foundations/product/CAPABILITY_LEDGER.md`
 - `docs/00-foundations/product/FEATURES.md`
 - `docs/changelog/entries/CL-0126-ci-governance-registry-fetch.md`
+
+### Referenced / Executed
+
+- `scripts/generate_doc_system_map.py`
 
 ## Validation
 
@@ -60,6 +73,8 @@ risk_profile:
 
 ## Current State / Follow-ups
 
+- Relationship extractor now normalizes to full IDs only and skips ambiguous short IDs.
+- CL-0126 changelog ID corrected to full form to remove ambiguity.
 - Relationship refresh rerun after extractor normalization; changes pending commit.
 - `.goldenpath/value_ledger.json` updated from validation heartbeat.
 
