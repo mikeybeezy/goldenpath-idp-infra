@@ -19,6 +19,9 @@ relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0160-rds-optional-toggle-integration
   - ADR-0165-rds-user-db-provisioning-automation
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
   - RDS_REQUEST_V1
   - SCRIPT-0034
   - SCRIPT-0035

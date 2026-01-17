@@ -7,6 +7,11 @@ relates_to:
   - ADR-0160-rds-optional-toggle-integration
   - ADR-0165-rds-user-db-provisioning-automation
   - ADR-0166-rds-dual-mode-automation-and-enum-alignment
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - RDS_REQUEST_FLOW
+  - RDS_USER_DB_PROVISIONING
+  - RB-0031-idp-stack-deployment
+  - RB-0032
   - RDS_REQUEST_V1
   - SCRIPT-0034
   - SCRIPT-0035

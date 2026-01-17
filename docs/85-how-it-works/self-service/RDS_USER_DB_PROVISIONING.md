@@ -11,6 +11,8 @@ relates_to:
   - PRD-0001-rds-user-db-provisioning
   - ADR-0165-rds-user-db-provisioning-automation
   - ADR-0158-platform-standalone-rds-bounded-context
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - RDS_DUAL_MODE_AUTOMATION
   - SCRIPT-0035
   - RB-0032
   - RDS_REQUEST_FLOW

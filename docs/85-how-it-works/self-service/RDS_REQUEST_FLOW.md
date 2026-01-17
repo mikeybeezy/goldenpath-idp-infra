@@ -4,6 +4,11 @@ title: 'How It Works: RDS Database Request Flow'
 type: documentation
 relates_to:
   - docs/adrs/ADR-0158-platform-standalone-rds-bounded-context.md
+  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
+  - PRD-0001-rds-user-db-provisioning
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_USER_DB_PROVISIONING
+  - RB-0032
   - .github/workflows/create-rds-database.yml
   - backstage-helm/backstage-catalog/templates/rds-request.yaml
   - docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md

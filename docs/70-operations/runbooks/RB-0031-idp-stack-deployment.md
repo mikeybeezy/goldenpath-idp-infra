@@ -14,6 +14,10 @@ relates_to:
   - RB-0001-eks-access-recovery
   - RB-0012-argocd-app-readiness
   - ADR-0160-rds-optional-toggle-integration
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_USER_DB_PROVISIONING
+  - RB-0032
 category: runbooks
 supported_until: 2028-01-15
 version: '1.0'

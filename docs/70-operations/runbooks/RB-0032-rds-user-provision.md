@@ -11,6 +11,10 @@ schema_version: 1
 relates_to:
   - PRD-0001-rds-user-db-provisioning
   - ADR-0165-rds-user-db-provisioning-automation
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
+  - RDS_USER_DB_PROVISIONING
   - SCRIPT-0035
 tags:
   - rds

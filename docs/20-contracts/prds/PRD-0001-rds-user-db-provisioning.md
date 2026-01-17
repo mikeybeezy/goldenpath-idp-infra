@@ -14,6 +14,9 @@ relates_to:
   - 10_PLATFORM_REQUIREMENTS
   - 30_PLATFORM_RDS_ARCHITECTURE
   - ADR-0165
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_USER_DB_PROVISIONING
+  - RB-0032
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

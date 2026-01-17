@@ -16,6 +16,13 @@ relates_to:
   - ADR-0007
   - ADR-0053
   - ADR-0157
+  - ADR-0165-rds-user-db-provisioning-automation
+  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - PRD-0001-rds-user-db-provisioning
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
+  - RDS_USER_DB_PROVISIONING
 supersedes:
   - ADR-0157
 superseded_by: []
