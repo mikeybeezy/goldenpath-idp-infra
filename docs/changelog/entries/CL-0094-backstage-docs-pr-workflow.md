@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0133
-  - CL-0094
+  - CL-0094-backstage-docs-pr-workflow
 supersedes: []
 superseded_by: []
 tags: []

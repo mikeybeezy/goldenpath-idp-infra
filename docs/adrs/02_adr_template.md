@@ -12,8 +12,8 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0084
   - 01_GOVERNANCE
+  - ADR-0084-platform-enhanced-metadata-schema
 supersedes: []
 superseded_by: []
 tags: []

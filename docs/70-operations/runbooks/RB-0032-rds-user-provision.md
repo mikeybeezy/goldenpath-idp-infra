@@ -2,21 +2,26 @@
 id: RB-0032
 title: RDS User and Database Provisioning
 type: runbook
-status: active
-owner: platform-team
-domain: platform-core
-lifecycle: active
-exempt: false
-schema_version: 1
 relates_to:
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0165
+  - CL-0140
   - PRD-0001-rds-user-db-provisioning
-  - ADR-0165-rds-user-db-provisioning-automation
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0030-rds-break-glass-deletion
+  - RB-0031-idp-stack-deployment
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
+  - RDS_USER_DB_PROVISIONING
   - SCRIPT-0035
+  - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
 tags:
   - rds
   - provisioning
   - database
   - automation
+category: runbooks
 ---
 
 # RB-0032: RDS User and Database Provisioning
@@ -45,6 +50,14 @@ automated (CI) and manual provisioning scenarios.
 2. **Troubleshooting**: Use dry-run to verify configuration
 3. **Ad-hoc**: When you need to provision outside the normal PR flow
 4. **Non-dev environments**: Where additional approval is required
+
+## Toggles and Options
+
+- `ALLOW_DB_PROVISION=true`: Required for non-dev environments (staging/prod).
+- `RDS_MODE=coupled|standalone`: Force mode if auto-detection is ambiguous.
+- `BUILD_ID` / `RUN_ID`: Include for traceability in audit logs.
+- Dry-run: `make rds-provision-auto-dry-run ENV=<env>` or `python3 scripts/rds_provision.py --dry-run`.
+- Guardrails (CI): `rds-size-approval-guard` and `rds-tfvars-drift-guard` run warn-only by default (`WARN_ONLY=true`). Flip to blocking by setting `WARN_ONLY=false` in those workflows.
 
 ## Platform Engineer Testing
 

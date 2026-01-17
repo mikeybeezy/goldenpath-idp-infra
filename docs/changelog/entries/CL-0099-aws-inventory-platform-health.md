@@ -17,6 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - CL-0099
   - PLATFORM_HEALTH
 supersedes: []
 superseded_by: []

@@ -12,8 +12,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0075
-  - CL-0027
+  - 01_adr_index
+  - ADR-0075-app-example-deployments
+  - CL-0027-app-example-deployments
 supersedes: []
 superseded_by: []
 tags: []

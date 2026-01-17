@@ -14,7 +14,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0003
+  - 01_adr_index
+  - ADR-0003-platform-AWS-IAM-bootstrap-IRSA-SSM-
+  - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
+  - ADR-0006-platform-secrets-strategy
+  - MODULES_AWS_SG_README
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

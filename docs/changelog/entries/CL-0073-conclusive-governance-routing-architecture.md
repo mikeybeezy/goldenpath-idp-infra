@@ -17,7 +17,8 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0117
+  - ADR-0117-conclusive-governance-routing-architecture
+  - CL-0073-conclusive-governance-routing-architecture
   - DECISION_ROUTING_STRATEGY
 supersedes: []
 superseded_by: []

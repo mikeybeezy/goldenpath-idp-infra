@@ -12,7 +12,8 @@ reliability:
   maturity: 1
 relates_to:
   - 16_INFRA_Build_ID_Strategy_Decision
-  - ADR-0021
+  - 36_STATE_KEY_STRATEGY
+  - ADR-0021-platform-pr-terraform-plan
 category: delivery
 supported_until: 2028-01-01
 version: 1.0

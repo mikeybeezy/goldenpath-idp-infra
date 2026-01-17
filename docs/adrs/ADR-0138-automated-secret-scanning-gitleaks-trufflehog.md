@@ -18,9 +18,13 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0014
-  - ADR-0019
+  - 01_adr_index
+  - 11_SECRETS_CATALOG_POLICY
+  - 35_SECRET_MANAGEMENT
+  - ADR-0014-platform-ci-local-preflight-checks
+  - ADR-0019-platform-pre-commit-hooks
   - ADR-0135
+  - ADR-0138
 supersedes: []
 superseded_by: []
 tags: []

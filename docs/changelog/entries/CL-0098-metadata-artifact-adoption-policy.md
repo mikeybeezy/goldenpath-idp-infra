@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0137
+  - CL-0098
   - METADATA_ARTIFACT_ADOPTION_POLICY
 supersedes: []
 superseded_by: []

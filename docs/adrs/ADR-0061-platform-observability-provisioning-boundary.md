@@ -14,10 +14,10 @@ reliability:
 schema_version: 1
 relates_to:
   - 01_GOVERNANCE
+  - 01_adr_index
   - 05_OBSERVABILITY_DECISIONS
-  - ADR-0052
   - ADR-0052-platform-kube-prometheus-stack-bundle
-  - ADR-0061
+  - ADR-0061-platform-observability-provisioning-boundary
 supersedes: []
 superseded_by: []
 tags: []

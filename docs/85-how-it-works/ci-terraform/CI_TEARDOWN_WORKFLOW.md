@@ -4,8 +4,8 @@ title: 'How It Works: CI Teardown Workflow'
 type: documentation
 relates_to:
   - CI_TERRAFORM_WORKFLOWS
+  - RB-0015-repo-health-and-hygiene
   - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
-  - RB-0015-teardown-and-cleanup
 ---
 
 This guide explains the CI teardown workflow for destroying ephemeral EKS clusters and cleaning up associated resources.

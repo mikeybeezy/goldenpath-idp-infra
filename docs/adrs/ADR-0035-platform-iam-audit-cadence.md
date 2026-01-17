@@ -13,7 +13,11 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0035
+  - 01_adr_index
+  - ADR-0035-platform-iam-audit-cadence
+  - RB-0003-iam-audit
+  - ROADMAP
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

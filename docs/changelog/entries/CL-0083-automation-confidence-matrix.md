@@ -15,9 +15,10 @@ risk_profile:
 schema_version: 1
 relates_to:
   - ADR-0126
-  - platform_health.py
-  - CONFIDENCE_MATRIX.md
   - AUTOMATION_VERIFICATION_LOG.txt
+  - CL-0083-automation-confidence-matrix
+  - CONFIDENCE_MATRIX
+  - platform_health.py
 supersedes: []
 superseded_by: []
 tags: []

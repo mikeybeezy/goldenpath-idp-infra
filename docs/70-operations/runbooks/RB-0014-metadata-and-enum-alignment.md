@@ -10,6 +10,12 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - DOCS_RUNBOOKS_README
+  - GOVERNANCE_VOCABULARY
+  - RB-0013-leak-protection-management
+  - RB-0015-repo-health-and-hygiene
 category: runbooks
 ---
 

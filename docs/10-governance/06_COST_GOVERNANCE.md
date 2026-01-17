@@ -14,7 +14,7 @@ relates_to:
   - 01_GOVERNANCE
   - 35_RESOURCE_TAGGING
   - 40_COST_VISIBILITY
-  - ADR-0076
+  - ADR-0076-platform-infracost-ci-visibility
 category: governance
 supported_until: 2027-01-03
 version: '1.0'

@@ -10,9 +10,11 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: gold
 relates_to:
+  - 02_GOVERNANCE_MODEL
   - 12_GITOPS_AND_CICD
   - 39_GOLDEN_PATH_VALIDATION
-  - ADR-0026
+  - ADR-0026-platform-cd-deployment-contract
+  - ADR-0028-platform-dev-branch-gate
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

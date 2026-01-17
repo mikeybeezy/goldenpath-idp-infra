@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0081
-  - CL-0036
+  - ADR-0081-platform-repo-wide-linting
+  - CL-0036-repo-wide-linting
 supersedes: []
 superseded_by: []
 tags: []

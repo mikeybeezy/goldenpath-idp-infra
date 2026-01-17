@@ -2,7 +2,6 @@
 id: ADR-0116-emoji-usage-policy-and-enforcement
 title: Emoji Usage Policy & Automated Enforcement
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -16,6 +15,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - ADR-0116-emoji-usage-policy-and-enforcement
+  - CL-0072-emoji-usage-policy-and-enforcement
   - EMOJI_POLICY
   - Quality - Metadata Validation
 supersedes: []

@@ -17,9 +17,13 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0097
-  - ADR-0092
-  - ADR-0094
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0094-automated-catalog-docs
+  - ADR-0097-domain-based-resource-catalogs
+  - CATALOG_INDEX
+  - CL-0057-domain-based-catalogs
+  - CL-0058-testing-framework
+  - DOCS_20-CONTRACTS_RESOURCE-CATALOGS_README
 supersedes: []
 superseded_by: []
 tags: []

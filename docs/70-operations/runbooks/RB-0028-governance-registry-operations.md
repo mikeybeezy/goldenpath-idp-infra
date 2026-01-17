@@ -13,6 +13,9 @@ reliability:
   maturity: 1
 relates_to:
   - ADR-0145
+  - CAPABILITY_LEDGER
+  - CL-0114
+  - DOCS_RUNBOOKS_README
 category: runbooks
 date: 2026-01-12
 ---

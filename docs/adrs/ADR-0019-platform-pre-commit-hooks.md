@@ -13,7 +13,11 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0019
+  - 01_adr_index
+  - 24_PRE_COMMIT_HOOKS
+  - ADR-0019-platform-pre-commit-hooks
+  - ADR-0138
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

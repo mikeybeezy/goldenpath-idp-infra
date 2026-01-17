@@ -10,6 +10,8 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - CL-0062-documentation-generator-metadata-compliance
 ---
 
 # Standardized Image Delivery Guide

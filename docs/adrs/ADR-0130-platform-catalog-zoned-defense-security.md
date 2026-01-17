@@ -2,7 +2,6 @@
 id: ADR-0130
 title: 'ADR-0130: Zoned Defense for Catalog Ingestion Security'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,7 +11,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - ADR-0129
+  - ADR-0130
+  - CL-0086-catalog-security-modernization
 supersedes: []
 superseded_by: []
 tags: []

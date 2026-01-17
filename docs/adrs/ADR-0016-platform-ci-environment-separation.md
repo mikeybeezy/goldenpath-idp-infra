@@ -14,7 +14,10 @@ reliability:
 schema_version: 1
 relates_to:
   - 01_GOVERNANCE
-  - ADR-0016
+  - 01_adr_index
+  - 20_CI_ENVIRONMENT_SEPARATION
+  - ADR-0016-platform-ci-environment-separation
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

@@ -13,7 +13,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0024
+  - 01_adr_index
+  - 28_SECURITY_FLOOR_V1
+  - 44_DOC_TIGHTENING_PLAN
+  - ADR-0024-platform-security-floor-v1
+  - SECURITY_POSTURE
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

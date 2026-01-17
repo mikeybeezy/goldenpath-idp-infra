@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0038
+  - CL-0038-build-id-branches-main-exception
 supersedes: []
 superseded_by: []
 tags: []

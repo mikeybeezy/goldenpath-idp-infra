@@ -12,10 +12,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 05_OBSERVABILITY_DECISIONS
-  - ADR-0049
   - ADR-0049-platform-pragmatic-observability-baseline
-  - ADR-0069
+  - ADR-0069-platform-observability-baseline-golden-signals
 supersedes: []
 superseded_by: ADR-0049
 tags: []

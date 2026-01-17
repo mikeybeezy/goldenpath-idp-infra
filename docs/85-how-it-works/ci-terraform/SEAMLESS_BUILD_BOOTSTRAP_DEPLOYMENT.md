@@ -3,9 +3,10 @@ id: SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 title: 'How It Works: Seamless Build and Bootstrap Deployment'
 type: documentation
 relates_to:
-  - CI_TERRAFORM_WORKFLOWS
   - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0148-seamless-build-deployment-with-immutability
+  - CI_TERRAFORM_WORKFLOWS
+  - CL-0121-seamless-build-deployment
 ---
 
 This guide explains the detailed mechanics of the seamless two-phase deployment system with build_id immutability enforcement.

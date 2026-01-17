@@ -13,7 +13,18 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0001
+  - 01_adr_index
+  - 12_GITOPS_AND_CICD
+  - 44_DOC_TIGHTENING_PLAN
+  - ADR-0001-platform-argocd-as-gitops-operator
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - ADR_INDEX_AUTOMATION_SPEC
+  - BOOTSTRAP_10_BOOTSTRAP_README
+  - CL-0042-metadata-backfill-batch-1
+  - HELM_ARGOCD
+  - RB-0012-argocd-app-readiness
+  - audit-20260103
+  - goldenpath-idp-bootstrap
 supersedes: []
 superseded_by: []
 tags: []

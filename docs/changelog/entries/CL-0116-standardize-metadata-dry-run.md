@@ -18,8 +18,10 @@ reliability:
   maturity: 3
 schema_version: 1
 relates_to:
-  - SCRIPT_CERTIFICATION_AUDIT
   - ADR-0126
+  - CL-0116
+  - CL-0117
+  - SCRIPT_CERTIFICATION_AUDIT
   - standardize_metadata.py
 supersedes: []
 superseded_by: []

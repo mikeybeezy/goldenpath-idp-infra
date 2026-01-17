@@ -18,8 +18,9 @@ reliability:
   maturity: 3
 schema_version: 1
 relates_to:
-  - CL-0118
   - ADR-0147
+  - CL-0118
+  - CL-0119
 supersedes: []
 superseded_by: []
 tags: []

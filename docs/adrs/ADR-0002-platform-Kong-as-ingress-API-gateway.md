@@ -13,7 +13,13 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0002
+  - 01_adr_index
+  - ADR-0002-platform-Kong-as-ingress-API-gateway
+  - BOOTSTRAP_10_BOOTSTRAP_README
+  - HELM_KONG
+  - IDP_TOOLING_KONG_CONFIG
+  - audit-20260103
+  - goldenpath-idp-bootstrap
 supersedes: []
 superseded_by: []
 tags: []

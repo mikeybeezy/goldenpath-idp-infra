@@ -17,8 +17,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0115
-  - CL-0070
+  - ADR-0115-enhanced-enum-validation-engine
+  - CL-0070-automated-enum-consistency-validation
+  - CL-0071-enhanced-enum-validation-engine
 supersedes: []
 superseded_by: []
 tags: []

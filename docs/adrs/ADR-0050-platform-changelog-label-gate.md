@@ -12,9 +12,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 40_CHANGELOG_GOVERNANCE
-  - ADR-0050
+  - ADR-0050-platform-changelog-label-gate
   - DOCS_CHANGELOG_README
+  - METADATA_STRATEGY
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

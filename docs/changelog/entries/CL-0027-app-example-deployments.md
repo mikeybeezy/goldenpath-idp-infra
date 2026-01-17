@@ -18,8 +18,8 @@ reliability:
 schema_version: 1
 relates_to:
   - 42_APP_EXAMPLE_DEPLOYMENTS
-  - ADR-0075
-  - CL-0027
+  - ADR-0075-app-example-deployments
+  - CL-0027-app-example-deployments
 supersedes: []
 superseded_by: []
 tags: []

@@ -18,9 +18,11 @@ reliability:
   maturity: 3
 schema_version: 1
 relates_to:
-  - SCRIPT_SCHEMA_V1
-  - CL-0116
   - ADR-0126
+  - ADR-0146
+  - CL-0116
+  - CL-0117
+  - SCRIPT_SCHEMA_V1
 supersedes: []
 superseded_by: []
 tags: []

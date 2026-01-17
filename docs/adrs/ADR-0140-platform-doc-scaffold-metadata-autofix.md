@@ -2,7 +2,6 @@
 id: ADR-0140
 title: 'ADR-0140: Doc scaffolding and metadata auto-fix'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,9 +11,12 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - ADR-0088-automated-metadata-remediation
+  - ADR-0140
+  - CL-0101
   - METADATA_STRATEGY
   - METADATA_VALIDATION_GUIDE
-  - ADR-0088
 supersedes: []
 superseded_by: []
 tags: []

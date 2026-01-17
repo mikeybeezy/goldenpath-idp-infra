@@ -12,9 +12,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 23_NEW_JOINERS
   - 38_BRANCHING_STRATEGY
-  - ADR-0042
+  - ADR-0042-platform-branching-strategy
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

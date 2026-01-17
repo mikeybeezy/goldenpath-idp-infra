@@ -10,10 +10,19 @@ exempt: false
 schema_version: 1
 relates_to:
   - 00_DOC_INDEX
+  - 00_START_HERE
   - 04_PR_GUARDRAILS
+  - 23_NEW_JOINERS
+  - 26_AI_AGENT_PROTOCOLS
   - 30_DOCUMENTATION_FRESHNESS
+  - ADR-0072-platform-pr-checklist-template
+  - ADR-0101-pr-metadata-auto-heal
+  - CL-0014-pr-gates-onboarding
+  - CL-0022-pr-guardrails-template-copy
+  - CONTRIBUTING
   - DOCS_CHANGELOG_README
-  - ADR-0101
+  - RB-0027
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags: []

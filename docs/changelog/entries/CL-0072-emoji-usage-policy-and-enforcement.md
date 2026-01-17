@@ -17,7 +17,8 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0116
+  - ADR-0116-emoji-usage-policy-and-enforcement
+  - CL-0072-emoji-usage-policy-and-enforcement
   - EMOJI_POLICY
 supersedes: []
 superseded_by: []

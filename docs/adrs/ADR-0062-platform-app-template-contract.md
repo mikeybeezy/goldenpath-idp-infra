@@ -13,7 +13,12 @@ reliability:
 schema_version: 1
 relates_to:
   - 01_GOVERNANCE
-  - ADR-0062
+  - 01_adr_index
+  - 42_APP_TEMPLATE_LIVING
+  - 44_DOC_TIGHTENING_PLAN
+  - ADR-0062-platform-app-template-contract
+  - ADR-0078-platform-governed-repo-scaffolder
+  - CL-0011-app-template-contract
 supersedes: []
 superseded_by: []
 tags: []

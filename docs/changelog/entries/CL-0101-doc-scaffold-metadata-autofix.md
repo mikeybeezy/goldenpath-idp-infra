@@ -17,8 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0101
   - ADR-0140
+  - CL-0101
+  - METADATA_STRATEGY
 supersedes: []
 superseded_by: []
 tags: []

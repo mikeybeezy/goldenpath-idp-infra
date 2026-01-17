@@ -16,7 +16,10 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: gold
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0121-value-quantification-framework
+  - CL-0077-value-quantification-framework
+  - VQ_TAGGING_GUIDE
 supersedes: []
 superseded_by: []
 tags: []

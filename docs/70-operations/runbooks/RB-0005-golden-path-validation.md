@@ -11,10 +11,11 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
-  - BOOTSTRAP_README
-  - TEARDOWN_README
   - 39_GOLDEN_PATH_VALIDATION
+  - BOOTSTRAP_README
   - CI_WORKFLOWS
+  - DOCS_RUNBOOKS_README
+  - TEARDOWN_README
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0

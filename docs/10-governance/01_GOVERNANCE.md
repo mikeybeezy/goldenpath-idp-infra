@@ -14,12 +14,15 @@ relates_to:
   - 00_DOC_INDEX
   - 01_TAG_SCOPED_POLICY_TEMPLATE
   - 01_adr_index
+  - 02_GOVERNANCE_MODEL
   - 02_PLATFORM_BOUNDARIES
+  - 03_GOVERNANCE_BACKSTAGE
   - 05_OBSERVABILITY_DECISIONS
   - 06_COST_GOVERNANCE
   - 07_REPO_DECOUPLING_OPTIONS
   - 08_INGRESS_STRATEGY
   - 10_INFRA_FAILURE_MODES
+  - 10_PLATFORM_REQUIREMENTS
   - 11_NETWORKING
   - 12_GITOPS_AND_CICD
   - 19_DELIVERY_INSIGHTS
@@ -27,13 +30,18 @@ relates_to:
   - 35_RESOURCE_TAGGING
   - 40_CHANGELOG_GOVERNANCE
   - 41_STORAGE_AND_PERSISTENCE
-  - ADR-0037
+  - ADR-0016-platform-ci-environment-separation
+  - ADR-0027-platform-design-philosophy
+  - ADR-0028-platform-dev-branch-gate
+  - ADR-0036-platform-orphan-cleanup-workflow
   - ADR-0037-platform-resource-tagging-policy
-  - ADR-0039
   - ADR-0039-platform-tag-scoped-iam-policy-template
-  - ADR-0052
   - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0061-platform-observability-provisioning-boundary
+  - ADR-0062-platform-app-template-contract
+  - ADR-0101-pr-metadata-auto-heal
   - DOCS_ADRS_README
+  - agent_session_summary
 category: governance
 supported_until: 2027-01-03
 version: '1.0'

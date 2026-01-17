@@ -16,6 +16,7 @@ risk_profile:
 schema_version: 1
 relates_to:
   - ADR-0129
+  - CL-0111
 supersedes: []
 superseded_by: []
 tags:

@@ -12,9 +12,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0090
-  - ADR-0113
-  - CL-0091
+  - 01_adr_index
+  - ADR-0090-automated-platform-health-dashboard
+  - ADR-0113-platform-queryable-intelligence-enums
+  - ADR-0131
+  - CL-0091-platform-health-outcome-metrics
 supersedes: []
 superseded_by: []
 tags: []

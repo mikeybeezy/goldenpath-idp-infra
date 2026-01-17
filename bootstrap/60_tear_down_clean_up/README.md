@@ -15,11 +15,11 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - BOOTSTRAP_README
-  - GOLDENPATH_IDP_BOOTSTRAP
-  - ADR-0036
   - 15_TEARDOWN_AND_CLEANUP
   - 17_BUILD_RUN_FLAGS
+  - ADR-0036-platform-orphan-cleanup-workflow
+  - BOOTSTRAP_README
+  - GOLDENPATH_IDP_BOOTSTRAP
 supersedes: []
 superseded_by: []
 tags: []
@@ -35,7 +35,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Tear Down and Cleanup Scripts
 
 This folder contains cleanup helpers for AWS resources. Run them when Terraform

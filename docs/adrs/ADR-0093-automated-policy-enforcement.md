@@ -12,7 +12,18 @@ reliability:
   observability_tier: bronze
   maturity: 2
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0095-self-service-registry-creation
+  - ADR-0096-risk-based-ecr-controls
+  - ADR-0098-standardized-pr-gates
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - CL-0053-daily-policy-enforcement-workflow
+  - CL-0056-risk-based-ecr-controls
+  - CL-0120
+  - SCRIPTS_POLICIES
 supersedes: []
 superseded_by: []
 tags: []

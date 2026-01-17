@@ -17,7 +17,15 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - 85-how-it-works/secrets-flow/SECRET_REQUEST_FLOW.md
+  - 01_adr_index
+  - ADR-0143
+  - ADR-0144
+  - CL-0105
+  - CL-0132
+  - CONTRACT_REGISTRY
+  - RB-0026
+  - SCRIPT_CERTIFICATION_AUDIT
+  - SECRET_REQUEST_FLOW
 supersedes: []
 superseded_by: []
 tags: []

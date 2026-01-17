@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0007
+  - CL-0007-ci-force-unlock-workflow
 supersedes: []
 superseded_by: []
 tags: []

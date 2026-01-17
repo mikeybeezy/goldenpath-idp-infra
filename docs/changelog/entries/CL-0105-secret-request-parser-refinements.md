@@ -17,8 +17,10 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0143
   - ADR-0139
+  - ADR-0143
+  - ADR-0144
+  - CL-0105
 supersedes: []
 superseded_by: []
 tags: []

@@ -2,24 +2,39 @@
 id: ADR-0163
 title: Agent Collaboration Governance and Living Registry
 type: adr
-status: accepted
-date: 2026-01-16
-deciders:
-  - platform-team
 domain: platform-core
 owner: platform-team
 lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
 schema_version: 1
+relates_to:
+  - 01_adr_index
+  - 07_AI_AGENT_GOVERNANCE
+  - 08_GITHUB_AGENT_ROLES
+  - 09_AGENT_COLLABORATION_MATRIX
+  - 26_AI_AGENT_PROTOCOLS
+  - ADR-0163
+  - agent_session_summary
+supersedes: []
+superseded_by: []
 tags:
   - agents
   - governance
   - collaboration
   - security
-relates_to:
-  - 07_AI_AGENT_GOVERNANCE
-  - 08_GITHUB_AGENT_ROLES
-  - 26_AI_AGENT_PROTOCOLS
-  - 09_AGENT_COLLABORATION_MATRIX
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-16
+deciders:
+  - platform-team
 ---
 
 ## Status
@@ -52,7 +67,7 @@ The living registry is the source of truth:
 environment access levels (local/CI/cluster/cloud) per agent.
 
 Each agent session must append to the immutable session log at
-`agent_status/agent_session_summary.md`.
+`session_summary/agent_session_summary.md`.
 
 ## Scope
 

@@ -3,9 +3,9 @@ id: BORN_GOVERNED_LIFECYCLE
 title: Born Governed Lifecycle
 type: guide
 relates_to:
-  - CNT-001
   - ADR-0146
   - ADR-0147
+  - CNT-001
 ---
 
 # How It Works: Born Governed Lifecycle

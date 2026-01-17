@@ -12,6 +12,9 @@ reliability:
   maturity: 1
 relates_to:
   - 33_IAM_ROLES_AND_POLICIES
+  - 34_PLATFORM_SUCCESS_CHECKLIST
+  - RB-0001-eks-access-recovery
+  - RB-0002-grafana-access
 category: security
 supported_until: 2028-01-01
 version: '1.0'

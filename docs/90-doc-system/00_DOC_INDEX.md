@@ -11,7 +11,15 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 00_DESIGN_PHILOSOPHY
+  - 01_GOVERNANCE
   - 30_DOCUMENTATION_FRESHNESS
+  - 34_PLATFORM_SUCCESS_CHECKLIST
+  - ADR-0027-platform-design-philosophy
+  - CL-0021-doc-taxonomy-refactor
+  - CL-0041-argocd-app-readiness-runbook
+  - RB-0011-repo-decommissioning
+  - RB-0012-argocd-app-readiness
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

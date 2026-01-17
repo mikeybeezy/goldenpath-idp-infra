@@ -16,6 +16,7 @@ schema_version: 1
 relates_to:
   - CL-0108
   - CL-0109
+  - CL-0110
 supersedes: []
 superseded_by: []
 tags:

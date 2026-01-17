@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0104
   - ADR-0141
+  - CL-0104
 supersedes: []
 superseded_by: []
 tags: []

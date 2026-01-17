@@ -2,7 +2,6 @@
 id: ADR-0096-risk-based-ecr-controls
 title: 'ADR-0096: Risk-Based ECR Security Controls'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -16,9 +15,13 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0092
-  - ADR-0093
-  - CL-0056
+  - 01_adr_index
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0096-risk-based-ecr-controls
+  - CL-0056-risk-based-ecr-controls
+  - RB-0021-fix-cve-guide
+  - RB-0024-request-registry
 supersedes: []
 superseded_by: []
 tags: []

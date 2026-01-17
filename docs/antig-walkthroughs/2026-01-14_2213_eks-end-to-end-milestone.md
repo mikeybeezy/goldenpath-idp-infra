@@ -2,6 +2,8 @@
 id: 2026-01-14_2213_eks-end-to-end-milestone
 title: 'Walkthrough: First Successful End-to-End EKS Deployment'
 type: documentation
+relates_to:
+  - CL-0126-eks-end-to-end-milestone
 tags:
   - eks
   - deployment

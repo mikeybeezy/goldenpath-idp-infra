@@ -11,7 +11,10 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 00_DESIGN_PHILOSOPHY
   - 00_DOC_INDEX
+  - 24_PR_GATES
+  - 34_PLATFORM_SUCCESS_CHECKLIST
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

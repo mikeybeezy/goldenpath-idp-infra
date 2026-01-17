@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0034
+  - CL-0034-pr-template-enforcement
 supersedes: []
 superseded_by: []
 tags: []

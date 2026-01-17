@@ -8,7 +8,11 @@ owner: platform-team
 lifecycle: active
 exempt: false
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0122
+  - CL-0078
+  - ROADMAP
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags: []

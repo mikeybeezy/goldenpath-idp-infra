@@ -13,7 +13,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - 85-how-it-works/self-service/ECR_REQUEST_FLOW.md
+  - 01_adr_index
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0095-self-service-registry-creation
+  - ADR-0141
+  - CL-0055-self-service-registry-creation
+  - CL-0103
+  - ECR_REQUEST_FLOW
 supersedes: []
 superseded_by: []
 tags: []

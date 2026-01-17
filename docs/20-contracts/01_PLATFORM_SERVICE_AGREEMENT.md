@@ -10,7 +10,9 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: gold
 relates_to:
+  - 10_PLATFORM_REQUIREMENTS
   - 10_SERVICE_CATALOG
+  - CL-0021-doc-taxonomy-refactor
   - SHARED_RESPONSIBILITY
 category: delivery
 supported_until: 2028-01-01

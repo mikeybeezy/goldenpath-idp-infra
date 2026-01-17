@@ -11,14 +11,15 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 00_DESIGN_PHILOSOPHY
   - 00_DOC_INDEX
   - 30_DOCUMENTATION_FRESHNESS
   - 31_EKS_ACCESS_MODEL
   - 32_TERRAFORM_STATE_AND_LOCKING
   - 33_IAM_ROLES_AND_POLICIES
-  - IDP_PRODUCT_FEATURES
-  - 00_DESIGN_PHILOSOPHY
   - 37_V1_SCOPE_AND_TIMELINE
+  - ADR-0051-platform-reliability-metrics-contract-minimums
+  - IDP_PRODUCT_FEATURES
   - READINESS_CHECKLIST
   - V1_04_CAPABILITY_MATRIX
 supported_until: 2028-01-01

@@ -11,8 +11,10 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0007
   - 35_RESOURCE_TAGGING
+  - 70_OPERATIONS_README
+  - ADR-0007-platform-environment-model
+  - CL-0021-doc-taxonomy-refactor
 category: compliance
 supported_until: 2028-01-01
 version: 1.0

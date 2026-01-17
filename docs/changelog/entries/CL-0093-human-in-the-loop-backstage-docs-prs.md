@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0133
-  - CL-0093
+  - CL-0093-human-in-the-loop-backstage-docs-prs
 supersedes: []
 superseded_by: []
 tags: []

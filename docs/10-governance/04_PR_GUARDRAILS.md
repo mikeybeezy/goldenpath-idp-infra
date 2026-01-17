@@ -12,17 +12,14 @@ reliability:
   maturity: 1
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
+  - 24_PR_GATES
   - 27_REFACTORING_VALIDATION_GUIDE
-  - ADR-0044
   - ADR-0044-platform-infra-checks-ref-mode
-  - ADR-0046
   - ADR-0046-platform-pr-plan-validation-ownership
-  - ADR-0063
   - ADR-0063-platform-terraform-helm-bootstrap
-  - ADR-0101
-  - CL-0002
+  - ADR-0101-pr-metadata-auto-heal
   - CL-0002-bootstrap-refactor
-  - CL-0063
+  - CL-0063-pr-metadata-auto-heal
 category: governance
 supported_until: 2027-01-03
 version: '1.0'

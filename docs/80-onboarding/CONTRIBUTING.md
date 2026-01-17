@@ -8,7 +8,8 @@ owner: platform-team
 lifecycle: active
 exempt: false
 schema_version: 1
-relates_to: []
+relates_to:
+  - 24_PR_GATES
 supersedes: []
 superseded_by: []
 tags: []

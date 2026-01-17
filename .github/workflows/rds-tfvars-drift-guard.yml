@@ -1,0 +1,143 @@
+# Owner: platform-team
+# Relates-To: RDS_DUAL_MODE_AUTOMATION, ADR-0158, PR_GUARDRAILS_INDEX
+name: RDS tfvars Drift Guard
+
+on:
+  pull_request:
+    paths:
+      - "envs/*/terraform.tfvars"
+  workflow_dispatch:
+
+jobs:
+  check-tfvars-drift:
+    runs-on: ubuntu-latest
+    env:
+      WARN_ONLY: "true"
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect application_databases drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
+          from pathlib import Path
+
+          warn_only = os.environ.get("WARN_ONLY", "false").lower() == "true"
+
+          def extract_hcl_block(content: str, block_name: str) -> str:
+              """Extract a full HCL block using brace counting."""
+              pattern = rf"{block_name}\s*=\s*\{{"
+              match = re.search(pattern, content)
+              if not match:
+                  return ""
+
+              start = match.end() - 1  # Position of opening brace
+              depth = 0
+              end = start
+
+              for i, char in enumerate(content[start:], start):
+                  if char == '{':
+                      depth += 1
+                  elif char == '}':
+                      depth -= 1
+                      if depth == 0:
+                          end = i + 1
+                          break
+
+              return content[start:end]
+
+          def extract_db_keys(content: str) -> set[str]:
+              """Extract top-level keys from application_databases block."""
+              block = extract_hcl_block(content, "application_databases")
+              if not block:
+                  return set()
+              # Match top-level keys: "keyname = {" at depth 1
+              # We need to track brace depth and only capture keys at depth 1
+              keys = set()
+              depth = 0
+              for line in block.splitlines():
+                  # Count braces to track depth
+                  open_count = line.count('{')
+                  close_count = line.count('}')
+
+                  # At depth 1, look for key definitions (handles both quoted and unquoted keys)
+                  if depth == 1:
+                      key_match = re.match(r'^\s*"?([A-Za-z0-9_-]+)"?\s*=\s*\{', line)
+                      if key_match:
+                          keys.add(key_match.group(1))
+
+                  depth += open_count - close_count
+
+              return keys
+
+          def coupled_enabled(content: str) -> bool:
+              in_block = False
+              for line in content.splitlines():
+                  line = line.split("#", 1)[0]
+                  if re.match(r"^\s*rds_config\s*=", line):
+                      in_block = True
+                  elif in_block and re.match(r"^\s*}", line):
+                      in_block = False
+                  elif in_block:
+                      match = re.match(r"^\s*enabled\s*=\s*(true|false)\s*$", line)
+                      if match:
+                          return match.group(1) == "true"
+              return False
+
+          envs_dir = Path("envs")
+          if not envs_dir.exists():
+              print("No envs directory found.")
+              sys.exit(0)
+
+          mismatches = []
+
+          for env_path in envs_dir.iterdir():
+              if not env_path.is_dir():
+                  continue
+              if env_path.name.endswith("-rds"):
+                  continue
+              env_name = env_path.name
+              coupled_tfvars = env_path / "terraform.tfvars"
+              standalone_tfvars = envs_dir / f"{env_name}-rds" / "terraform.tfvars"
+
+              if not coupled_tfvars.exists() or not standalone_tfvars.exists():
+                  continue
+
+              coupled_content = coupled_tfvars.read_text()
+              standalone_content = standalone_tfvars.read_text()
+              if not coupled_enabled(coupled_content):
+                  continue
+
+              coupled = extract_db_keys(coupled_content)
+              standalone = extract_db_keys(standalone_content)
+
+              if not coupled or not standalone:
+                  continue
+
+              if coupled != standalone:
+                  mismatches.append(
+                      (env_name, sorted(coupled), sorted(standalone))
+                  )
+
+          if not mismatches:
+              print("✅ No application_databases drift detected.")
+              sys.exit(0)
+
+          message = "application_databases drift detected between coupled and standalone tfvars:"
+          print(f"⚠️ {message}" if warn_only else f"🚫 {message}")
+          for env_name, coupled, standalone in mismatches:
+              print(f"- {env_name}:")
+              print(f"  coupled:    {coupled}")
+              print(f"  standalone: {standalone}")
+          print("Align application_databases between envs/<env>/ and envs/<env>-rds/ to proceed.")
+          if warn_only:
+              sys.exit(0)
+          sys.exit(1)
+          PY

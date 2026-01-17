@@ -12,9 +12,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 21_CI_ENVIRONMENT_CONTRACT
-  - ADR-0060
+  - ADR-0060-platform-ephemeral-update-workflow
   - CI_WORKFLOWS
+  - CL-0010-ephemeral-update-workflow
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

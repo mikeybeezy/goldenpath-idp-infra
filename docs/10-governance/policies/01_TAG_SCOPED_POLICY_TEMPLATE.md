@@ -17,7 +17,9 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
+  - 01_GOVERNANCE
   - 35_RESOURCE_TAGGING
+  - ADR-0039-platform-tag-scoped-iam-policy-template
 supersedes: []
 superseded_by: []
 tags: []

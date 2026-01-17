@@ -11,6 +11,7 @@ reliability:
   observability_tier: bronze
 relates_to:
   - BR-TEMPLATE
+  - DOCS_BUILD-RUN-LOGS_README
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

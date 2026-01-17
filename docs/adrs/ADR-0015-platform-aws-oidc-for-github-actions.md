@@ -13,7 +13,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0015
+  - 01_adr_index
+  - ADR-0015-platform-aws-oidc-for-github-actions
+  - ADR-0030-platform-precreated-iam-policies
+  - ADR-0032-platform-eks-access-model
+  - ADR-0135
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

@@ -13,7 +13,8 @@ risk_profile:
   security_risk: none
   coupling_risk: none
 schema_version: 1
-relates_to: []
+relates_to:
+  - CL-0075-grand-metadata-healing-and-contextual-alignment
 supersedes: []
 superseded_by: []
 tags: []

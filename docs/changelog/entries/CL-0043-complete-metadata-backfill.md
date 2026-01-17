@@ -17,13 +17,15 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0034
-  - ADR-0082
-  - ADR-0083
-  - ADR-0084
-  - CL-0042
-  - CL-0043
+  - ADR-0034-platform-ci-environment-contract
+  - ADR-0082-platform-metadata-validation
+  - ADR-0083-platform-metadata-backfill-protocol
+  - ADR-0084-platform-enhanced-metadata-schema
+  - CL-0042-metadata-backfill-batch-1
+  - CL-0043-complete-metadata-backfill
   - METADATA_STRATEGY
+  - RB-0018-metadata-backfill-script
+  - RB-0019-relationship-extraction-script
 supersedes: []
 superseded_by: []
 tags: []

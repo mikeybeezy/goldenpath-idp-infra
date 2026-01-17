@@ -2,6 +2,8 @@
 id: 07_1_AI_COLLABORATION_PROTOCOL
 title: AI Collaboration Protocol
 type: documentation
+relates_to:
+  - agent_session_summary
 category: governance
 ---
 

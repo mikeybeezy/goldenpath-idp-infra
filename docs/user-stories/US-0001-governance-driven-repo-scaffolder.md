@@ -11,9 +11,9 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0078
+  - 00_INDEX
   - ADR-0078-platform-governed-repo-scaffolder
-  - CL-0031
+  - CL-0031-governed-repo-scaffolder
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

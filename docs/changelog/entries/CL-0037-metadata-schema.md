@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0082
-  - CL-0037
+  - ADR-0082-platform-metadata-validation
+  - CL-0037-metadata-schema
 supersedes: []
 superseded_by: []
 tags: []

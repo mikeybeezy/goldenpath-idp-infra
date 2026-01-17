@@ -17,7 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0100
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - CL-0061-ecr-workflow-optimizations
+  - RB-0024-request-registry
 supersedes: []
 superseded_by: []
 tags: []

@@ -12,19 +12,20 @@ reliability:
   maturity: 1
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
-  - ADR-0026
-  - ADR-0030
-  - ADR-0032
-  - ADR-0033
+  - ADR-0026-platform-cd-deployment-contract
+  - ADR-0030-platform-precreated-iam-policies
+  - ADR-0032-platform-eks-access-model
   - ADR-0033-platform-ci-orchestrated-modes
-  - ADR-0034
-  - ADR-0047
-  - ADR-0056
-  - ADR-0067
-  - ADR-0084
-  - CL-0016
-  - CL-0042
-  - CL-0043
+  - ADR-0034-platform-ci-environment-contract
+  - ADR-0047-platform-teardown-destroy-timeout-retry
+  - ADR-0056-platform-loki-deployment-mode
+  - ADR-0067-platform-labeler-base-ref
+  - ADR-0084-platform-enhanced-metadata-schema
+  - CL-0016-labeler-base-ref-checkout
+  - CL-0042-metadata-backfill-batch-1
+  - CL-0043-complete-metadata-backfill
+  - DOCS_RUNBOOKS_README
+  - METADATA_STRATEGY
 category: runbooks
 supported_until: 2028-01-01
 version: '1.0'

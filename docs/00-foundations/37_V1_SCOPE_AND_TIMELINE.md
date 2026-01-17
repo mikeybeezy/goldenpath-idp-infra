@@ -11,11 +11,13 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - 34_PLATFORM_SUCCESS_CHECKLIST
-  - ROADMAP
-  - IDP_PRODUCT_FEATURES
   - 00_DESIGN_PHILOSOPHY
+  - 10_PLATFORM_REQUIREMENTS
+  - 34_PLATFORM_SUCCESS_CHECKLIST
+  - CL-0126-eks-end-to-end-milestone
+  - IDP_PRODUCT_FEATURES
   - READINESS_CHECKLIST
+  - ROADMAP
   - V1_04_CAPABILITY_MATRIX
 supported_until: 2028-01-01
 version: '1.0'

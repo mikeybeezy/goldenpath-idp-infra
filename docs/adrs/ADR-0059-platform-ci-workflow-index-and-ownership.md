@@ -12,8 +12,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0059
+  - 01_adr_index
+  - ADR-0059-platform-ci-workflow-index-and-ownership
   - CI_WORKFLOWS
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

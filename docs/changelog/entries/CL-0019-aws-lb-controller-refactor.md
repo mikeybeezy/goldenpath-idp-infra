@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0070
-  - CL-0019
+  - ADR-0070-platform-terraform-aws-lb-controller
+  - CL-0019-aws-lb-controller-refactor
 supersedes: []
 superseded_by: []
 tags: []

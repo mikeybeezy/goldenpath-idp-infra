@@ -3,10 +3,20 @@ id: RDS_REQUEST_FLOW
 title: 'How It Works: RDS Database Request Flow'
 type: documentation
 relates_to:
-  - docs/adrs/ADR-0158-platform-standalone-rds-bounded-context.md
-  - .github/workflows/create-rds-database.yml
-  - backstage-helm/backstage-catalog/templates/rds-request.yaml
-  - docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0159-backstage-catalog-registry-sync
+  - ADR-0166
+  - CATALOG_SYSTEMS
+  - CONTRACT_DRIVEN_ARCHITECTURE
+  - PRD-0001-rds-user-db-provisioning
+  - PR_GUARDRAILS_INDEX
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0030-rds-break-glass-deletion
+  - RB-0032
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_USER_DB_PROVISIONING
+  - SESSION_CAPTURE_2026_01_17_01
 ---
 
 ## How It Works: RDS Database Request Flow
@@ -120,6 +130,14 @@ application_databases = {
   }
 }
 ```
+
+### 2.4 Contract-Driven Parser (Deferred)
+
+The schema and parser are intentionally deferred while the workflow performs
+explicit updates to the catalog and tfvars. This keeps the flow deterministic
+while enums, validation rules, and outputs stabilize. Once schema enforcement
+is wired into CI and the generated artifacts are canonical, the parser becomes
+the single source of truth.
 
 ## 3. Review: Pull Request
 

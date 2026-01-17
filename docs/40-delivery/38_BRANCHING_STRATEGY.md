@@ -11,8 +11,10 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 13_COLLABORATION_GUIDE
   - 21_CI_ENVIRONMENT_CONTRACT
   - 37_V1_SCOPE_AND_TIMELINE
+  - ADR-0042-platform-branching-strategy
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

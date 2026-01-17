@@ -11,8 +11,13 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
-  - ADR-0097
-  - ADR-0100
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0094-automated-catalog-docs
+  - ADR-0097-domain-based-resource-catalogs
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - CL-0054-automated-catalog-docs
+  - CL-0062-documentation-generator-metadata-compliance
+  - PLATFORM_DASHBOARDS
   - generate_catalog_docs.py
 category: catalog
 supported_until: 2028-01-01

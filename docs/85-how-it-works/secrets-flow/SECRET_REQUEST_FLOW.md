@@ -3,8 +3,9 @@ id: SECRET_REQUEST_FLOW
 title: 'How It Works: Secret Request Flow'
 type: documentation
 relates_to:
-  - docs/adrs/ADR-0143-secret-request-contract.md
-  - docs/adrs/ADR-0135-platform-secrets-manager-eso-foundation.md
+  - ADR-0135
+  - ADR-0143
+  - RB-0026
 ---
 
 ## How It Works: Platform Secret Lifecycle

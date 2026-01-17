@@ -12,9 +12,14 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 15_TEARDOWN_AND_CLEANUP
   - 41_STORAGE_AND_PERSISTENCE
-  - ADR-0053
+  - ADR-0053-platform-storage-lifecycle-separation
+  - ADR-0157-platform-multi-tenant-rds-architecture
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - CL-0018-kube-prometheus-stack-defaults
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

@@ -12,6 +12,10 @@ relates_to:
   - 00_DOC_INDEX
   - 23_NEW_JOINERS
   - 24_PR_GATES
+  - CL-0078
+  - CL-0141
+  - SESSION_CAPTURE_2026_01_17_02
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags: []
@@ -56,6 +60,8 @@ documents, and artifacts you need before you start making changes.
 - docs/40-delivery/12_GITOPS_AND_CICD.md
 - docs/70-operations/32_TERRAFORM_STATE_AND_LOCKING.md
 - docs/90-doc-system/00_DOC_INDEX.md
+- session_summary/session_summary_template.md
+- session_capture/session_capture_template.md
 
 ## Operational touchpoints
 

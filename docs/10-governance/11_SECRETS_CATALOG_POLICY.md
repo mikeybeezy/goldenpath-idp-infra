@@ -16,6 +16,7 @@ relates_to:
   - 35_RESOURCE_TAGGING
   - ADR-0138
   - ADR-0139
+  - METADATA_STRATEGY
 tags:
   - governance
   - security

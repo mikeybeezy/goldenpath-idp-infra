@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0026
+  - CL-0026-day-one-onboarding-checklist
 supersedes: []
 superseded_by: []
 tags: []

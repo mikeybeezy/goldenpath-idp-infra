@@ -12,6 +12,8 @@ reliability:
   maturity: 1
 relates_to:
   - 17_BUILD_RUN_FLAGS
+  - 26_AI_AGENT_PROTOCOLS
+  - DOCS_BUILD-RUN-LOGS_README
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

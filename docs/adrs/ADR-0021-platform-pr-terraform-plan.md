@@ -13,7 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0021
+  - 01_adr_index
+  - 25_PR_TERRAFORM_PLAN
+  - ADR-0021-platform-pr-terraform-plan
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

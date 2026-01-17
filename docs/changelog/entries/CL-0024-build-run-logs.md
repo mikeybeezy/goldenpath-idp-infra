@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0024
+  - CL-0024-build-run-logs
 supersedes: []
 superseded_by: []
 tags: []

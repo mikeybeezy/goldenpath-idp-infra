@@ -11,9 +11,10 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0098
-  - CL-0059
   - 24_PR_GATES
+  - ADR-0098-standardized-pr-gates
+  - CL-0059-pr-156-stabilization
+  - agent_session_summary
 category: governance
 supported_until: 2028-01-01
 version: '1.0'

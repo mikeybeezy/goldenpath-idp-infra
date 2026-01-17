@@ -12,9 +12,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 07_TF_STATE_FORCE_UNLOCK
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0057
+  - ADR-0057-platform-ci-terraform-force-unlock-workflow
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

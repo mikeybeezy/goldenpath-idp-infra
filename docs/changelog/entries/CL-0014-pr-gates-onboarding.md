@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 24_PR_GATES
-  - CL-0014
+  - CL-0014-pr-gates-onboarding
 supersedes: []
 superseded_by: []
 tags: []

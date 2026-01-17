@@ -17,7 +17,7 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - ADR-0002
+  - ADR-0002-platform-Kong-as-ingress-API-gateway
   - HELM_CERT_MANAGER
 supersedes: []
 superseded_by: []
@@ -36,7 +36,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Kong Helm Deployment
 
 Kong acts as the platform's ingress/API gateway, handling routing, auth, and policies for north-south traffic.

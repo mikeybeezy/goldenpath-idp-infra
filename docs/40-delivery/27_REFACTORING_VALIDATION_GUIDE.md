@@ -11,6 +11,7 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 04_PR_GUARDRAILS
   - 21_CI_ENVIRONMENT_CONTRACT
 supported_until: 2028-01-01
 version: '1.0'

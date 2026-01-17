@@ -12,9 +12,13 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - 04_PR_GUARDRAILS
   - 21_CI_ENVIRONMENT_CONTRACT
-  - ADR-0044
-  - ADR-0046
+  - ADR-0044-platform-infra-checks-ref-mode
+  - ADR-0046-platform-pr-plan-validation-ownership
+  - READINESS_CHECKLIST
+  - audit-20260103
 supersedes: []
 superseded_by: ADR-0046
 tags: []

@@ -12,7 +12,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0071
+  - 01_adr_index
+  - ADR-0071-doc-taxonomy-refactor
+  - ADR-0103-automated-workflow-docs
+  - CL-0021-doc-taxonomy-refactor
 supersedes: []
 superseded_by: []
 tags: []

@@ -12,13 +12,15 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 02_PLATFORM_BOUNDARIES
   - 17_BUILD_RUN_FLAGS
   - 21_CI_ENVIRONMENT_CONTRACT
   - 34_PLATFORM_SUCCESS_CHECKLIST
   - 35_RESOURCE_TAGGING
   - 40_CHANGELOG_GOVERNANCE
-  - ADR-0051
+  - ADR-0051-platform-reliability-metrics-contract-minimums
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

@@ -1,8 +1,8 @@
 version: "1.0"
 domain: platform-core
-owner: database-team
+owner: platform-team
 last_updated: "2026-01-16"
-managed_by: database-team
+managed_by: platform-team
 databases:
   test_inventory2:
     metadata:

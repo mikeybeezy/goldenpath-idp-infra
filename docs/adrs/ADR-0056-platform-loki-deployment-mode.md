@@ -12,8 +12,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 05_OBSERVABILITY_DECISIONS
-  - ADR-0056
+  - 44_DOC_TIGHTENING_PLAN
+  - ADR-0056-platform-loki-deployment-mode
+  - RB-0019-relationship-extraction-script
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

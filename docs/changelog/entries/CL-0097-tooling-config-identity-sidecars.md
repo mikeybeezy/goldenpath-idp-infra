@@ -18,6 +18,8 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0136
+  - CL-0097
+  - ROADMAP
 supersedes: []
 superseded_by: []
 tags: []

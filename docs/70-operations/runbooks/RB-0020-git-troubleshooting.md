@@ -10,6 +10,8 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - DOCS_RUNBOOKS_README
 category: runbooks
 ---
 

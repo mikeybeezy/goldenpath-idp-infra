@@ -1,15 +1,17 @@
 ---
 id: EC-0001-knative-integration
 title: Knative Integration for Serverless Workloads
+type: extension_capability
 status: proposed
+relates_to:
+  - ADR-0148-seamless-build-deployment-with-immutability
+  - INDEX
+  - RB-0030-rds-break-glass-deletion
+  - ROADMAP
 dependencies:
   - EKS cluster (ADR-0148)
   - ArgoCD (existing)
   - Istio or Contour (new dependency)
-relates_to:
-  - ADR-0148
-  - ROADMAP.md
-type: extension_capability
 priority: medium
 vq_class: efficiency
 estimated_roi: $13,000/year

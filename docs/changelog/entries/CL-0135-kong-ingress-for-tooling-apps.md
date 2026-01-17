@@ -19,8 +19,12 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - ADR-0162
   - CL-0133-idp-stack-deployment-runbook
   - CL-0134-backstage-catalog-governance-registry-sync
+  - CL-0135-kong-ingress-for-tooling-apps
+  - CL-0136-tooling-apps-ingress-configuration
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:
@@ -30,7 +34,7 @@ tags:
   - dns
 inheritance: {}
 value_quantification:
-  vq_class: "\u26AB LV/LQ"
+  vq_class: ⚫ LV/LQ
   impact_tier: medium
   potential_savings_hours: 2.0
 supported_until: 2028-01-16

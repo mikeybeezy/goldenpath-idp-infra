@@ -2,7 +2,6 @@
 id: ADR-0100-standardized-ecr-lifecycle-and-documentation
 title: Standardized ECR Lifecycle and Documentation
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -13,9 +12,17 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0092
-  - ADR-0093
-  - ADR-0097
+  - 01_adr_index
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0097-domain-based-resource-catalogs
+  - ADR-0100-standardized-ecr-lifecycle-and-documentation
+  - CL-0061-ecr-workflow-optimizations
+  - CL-0062-documentation-generator-metadata-compliance
+  - RB-0024-request-registry
+  - REGISTRY_CATALOG
+  - ROADMAP
+  - SCRIPT_CERTIFICATION_AUDIT
 supersedes: []
 superseded_by: []
 tags: []

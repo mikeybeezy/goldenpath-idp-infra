@@ -20,7 +20,8 @@ relates_to:
   - ADR-0128
   - ADR-0129
   - ADR-0132
-  - CL-0095
+  - CL-0095-ecr-backstage-sync-automation
+  - RB-0025-ecr-catalog-sync
 supersedes: []
 superseded_by: []
 tags: []

@@ -10,6 +10,8 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - ADR-0101-pr-metadata-auto-heal
 category: governance
 supported_until: 2028-01-01
 version: '1.0'

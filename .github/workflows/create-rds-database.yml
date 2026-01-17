@@ -99,14 +99,14 @@ jobs:
       - name: Validate inputs
         run: |
           # Validate database name format
-          if ! echo "${{ inputs.database_name }}" | grep -qE '^[a-z][a-z0-9_]*$'; then
-            echo "Database name must be lowercase with underscores only, starting with a letter"
+          if ! echo "${{ inputs.database_name }}" | grep -qE '^[a-z][a-z0-9_]{2,62}$'; then
+            echo "Database name must be 3-63 chars, lowercase with underscores only, starting with a letter"
             exit 1
           fi
 
           # Validate username format
-          if ! echo "${{ inputs.username }}" | grep -qE '^[a-z][a-z0-9_]*$'; then
-            echo "Username must be lowercase with underscores only, starting with a letter"
+          if ! echo "${{ inputs.username }}" | grep -qE '^[a-z][a-z0-9_]{2,30}$'; then
+            echo "Username must be 3-31 chars, lowercase with underscores only, starting with a letter"
             exit 1
           fi
 
@@ -156,7 +156,7 @@ jobs:
             cat > "$FILE" <<EOF
           version: "1.0"
           domain: "platform-core"
-          owner: "database-team"
+          owner: "platform-team"
           last_updated: "$(date -u +%Y-%m-%d)"
           managed_by: "platform-team"
           rds_instance: "goldenpath-platform-db-${ENV}"
@@ -167,6 +167,8 @@ jobs:
           # Add/update the database entry
           yq -i \
             ".databases.\"$NAME\".metadata.id = \"$ID\" |
+             .owner = \"platform-team\" |
+             .managed_by = \"platform-team\" |
              .databases.\"$NAME\".metadata.owner = \"$OWNER\" |
              .databases.\"$NAME\".metadata.requested_by = \"$USER\" |
              .databases.\"$NAME\".metadata.domain = \"$DOMAIN\" |

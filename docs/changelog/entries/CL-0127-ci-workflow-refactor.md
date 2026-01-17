@@ -16,6 +16,9 @@ schema_version: 1
 relates_to:
   - ADR-0155-ci-governance-registry-fetch
   - CI_TERRAFORM_WORKFLOWS
+  - CL-0127
+  - DOCS_85-HOW-IT-WORKS_README
+  - HOW_IT_WORKS_INDEX
 supersedes: []
 superseded_by: []
 tags: []

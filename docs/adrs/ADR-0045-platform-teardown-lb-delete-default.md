@@ -13,10 +13,13 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0043
   - ADR-0043-platform-teardown-lb-eni-wait
-  - ADR-0045
+  - ADR-0045-platform-teardown-lb-delete-default
+  - ADR-0047-platform-teardown-destroy-timeout-retry
+  - ADR-0164-teardown-v3-enhanced-reliability
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

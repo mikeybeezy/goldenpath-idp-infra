@@ -12,9 +12,14 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0006
-  - ADR-0007
-  - ADR-0053
+  - 01_adr_index
+  - 35_TOOLING_SECRETS_LIFECYCLE
+  - ADR-0006-platform-secrets-strategy
+  - ADR-0007-platform-environment-model
+  - ADR-0053-platform-storage-lifecycle-separation
+  - ADR-0157-platform-multi-tenant-rds-architecture
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0160
 supersedes: []
 superseded_by:
   - ADR-0158

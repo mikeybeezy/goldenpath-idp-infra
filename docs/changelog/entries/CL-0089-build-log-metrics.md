@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0089
+  - CL-0089-build-log-metrics
   - DOCS_BUILD-RUN-LOGS_README
 supersedes: []
 superseded_by: []

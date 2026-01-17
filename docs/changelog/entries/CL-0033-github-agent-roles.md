@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0080
-  - CL-0033
+  - ADR-0080-platform-github-agent-roles
+  - CL-0033-github-agent-roles
 supersedes: []
 superseded_by: []
 tags: []

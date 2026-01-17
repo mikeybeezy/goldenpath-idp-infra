@@ -12,6 +12,7 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 35_TOOLING_SECRETS_LIFECYCLE
   - ADR-0138
   - ADR-0139
 tags:

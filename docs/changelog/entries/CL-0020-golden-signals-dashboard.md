@@ -18,9 +18,8 @@ reliability:
 schema_version: 1
 relates_to:
   - 09_PLATFORM_DASHBOARD_CATALOG
-  - ADR-0066
   - ADR-0066-platform-dashboards-as-code
-  - CL-0020
+  - CL-0020-golden-signals-dashboard
 supersedes: []
 superseded_by: []
 tags: []

@@ -18,8 +18,9 @@ reliability:
 schema_version: 1
 relates_to:
   - 09_ARCHITECTURE
-  - MODULE_VPC
+  - 14_MODULES_OVERVIEW
   - MODULE_AWS_SUBNET
+  - MODULE_VPC
 supersedes: []
 superseded_by: []
 tags: []
@@ -36,7 +37,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Route Table Module
 
 ## Purpose

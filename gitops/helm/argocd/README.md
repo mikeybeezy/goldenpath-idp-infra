@@ -17,7 +17,7 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - ADR-0001
+  - ADR-0001-platform-argocd-as-gitops-operator
   - BOOTSTRAP_README
 supersedes: []
 superseded_by: []
@@ -35,7 +35,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Argo CD Deployment
 
 Argo CD is the GitOps controller responsible for syncing all other Helm/Kustomize manifests. Managing it like any other Helm app keeps its installation declarative.

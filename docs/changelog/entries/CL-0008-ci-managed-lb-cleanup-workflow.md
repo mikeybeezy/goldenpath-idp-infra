@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 08_MANAGED_LB_CLEANUP
-  - CL-0008
+  - CL-0008-ci-managed-lb-cleanup-workflow
 supersedes: []
 superseded_by: []
 tags: []

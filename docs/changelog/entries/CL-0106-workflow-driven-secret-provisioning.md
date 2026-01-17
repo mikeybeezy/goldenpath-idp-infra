@@ -13,7 +13,10 @@ risk_profile:
   security_risk: none
   coupling_risk: none
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0144
+  - CL-0106-workflow-driven-secret-provisioning
+  - RB-0026
 supersedes: []
 superseded_by: []
 tags: []

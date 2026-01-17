@@ -11,7 +11,7 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0019
+  - ADR-0019-platform-pre-commit-hooks
 category: delivery
 supported_until: 2028-01-01
 version: 1.0

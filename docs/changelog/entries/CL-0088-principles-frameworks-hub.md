@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0088
+  - CL-0088-principles-frameworks-hub
 supersedes: []
 superseded_by: []
 tags: []

@@ -12,7 +12,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0073
+  - 01_adr_index
+  - ADR-0073-platform-bootstrap-v3-irsa-skip
+  - CL-0023-bootstrap-v3-irsa-skip
 supersedes: []
 superseded_by: []
 tags: []

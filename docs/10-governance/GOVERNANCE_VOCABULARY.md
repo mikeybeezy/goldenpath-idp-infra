@@ -10,6 +10,13 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - 00_START_HERE
+  - ADR-0124
+  - ADR-0134-metadata-inheritance-active-governance-and-leak-protection
+  - PLATFORM_DASHBOARDS
+  - RB-0014-metadata-and-enum-alignment
+  - RB-0016-extending-governance-vocabulary
 ---
 
 # Governance Vocabulary & Allowed Values

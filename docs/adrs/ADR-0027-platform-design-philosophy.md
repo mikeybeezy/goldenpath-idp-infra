@@ -16,8 +16,11 @@ relates_to:
   - 00_DESIGN_PHILOSOPHY
   - 00_DOC_INDEX
   - 01_GOVERNANCE
+  - 01_adr_index
   - 02_PLATFORM_BOUNDARIES
-  - ADR-0027
+  - ADR-0027-platform-design-philosophy
+  - CAPABILITY_LEDGER
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

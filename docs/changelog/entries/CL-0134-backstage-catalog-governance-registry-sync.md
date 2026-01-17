@@ -19,7 +19,10 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0159-backstage-catalog-registry-sync
-  - CL-0129-backstage-catalog-registry-sync
+  - CL-0129
+  - CL-0134-backstage-catalog-governance-registry-sync
+  - CL-0135-kong-ingress-for-tooling-apps
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:
@@ -28,7 +31,7 @@ tags:
   - governance-registry
 inheritance: {}
 value_quantification:
-  vq_class: "\u26AB LV/LQ"
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 1.0
 supported_until: 2028-01-16

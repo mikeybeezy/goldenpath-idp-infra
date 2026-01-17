@@ -14,9 +14,10 @@ risk_profile:
   coupling_risk: none
 schema_version: 1
 relates_to:
-  - ADR-0121
-  - vq_logger.py
+  - ADR-0121-value-quantification-framework
+  - CL-0082-value-heartbeat-roi-telemetry
   - value_ledger.json
+  - vq_logger.py
 supersedes: []
 superseded_by: []
 tags: []

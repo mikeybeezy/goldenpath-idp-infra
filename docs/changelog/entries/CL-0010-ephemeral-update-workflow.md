@@ -17,9 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0060
   - ADR-0060-platform-ephemeral-update-workflow
-  - CL-0010
+  - CL-0010-ephemeral-update-workflow
 supersedes: []
 superseded_by: []
 tags: []

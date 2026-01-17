@@ -18,8 +18,10 @@ reliability:
   maturity: 3
 schema_version: 1
 relates_to:
-  - ADR-0147
   - ADR-0146
+  - ADR-0147
+  - CL-0118
+  - CL-0119
   - GUIDE-002
 supersedes: []
 superseded_by: []

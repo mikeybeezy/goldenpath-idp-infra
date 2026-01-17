@@ -16,7 +16,44 @@ reliability:
   observability_tier: bronze
   maturity: 1
 schema_version: 1
-relates_to: []
+relates_to:
+  - 00_DESIGN_PHILOSOPHY
+  - 00_START_HERE
+  - 01_GOVERNANCE
+  - 07_1_AI_COLLABORATION_PROTOCOL
+  - 07_AI_AGENT_GOVERNANCE
+  - 09_AGENT_COLLABORATION_MATRIX
+  - 09_PLATFORM_DASHBOARD_CATALOG
+  - 10_PLATFORM_REQUIREMENTS
+  - 13_COLLABORATION_GUIDE
+  - 23_NEW_JOINERS
+  - 24_PR_GATES
+  - 25_DAY_ONE_CHECKLIST
+  - 26_AI_AGENT_PROTOCOLS
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - 45_DNS_MANAGEMENT
+  - ADR-0162
+  - ADR-0163
+  - ADR-0165
+  - ADR-0166
+  - AGENT_FIRST_BOOT
+  - CATALOG_INDEX
+  - CL-0132
+  - CL-0133-idp-stack-deployment-runbook
+  - CL-0134-backstage-catalog-governance-registry-sync
+  - CL-0135-kong-ingress-for-tooling-apps
+  - CL-0136-tooling-apps-ingress-configuration
+  - CL-0137
+  - CL-0138-tooling-apps-dashboards
+  - CL-0140
+  - DOCS_20-CONTRACTS_RESOURCE-CATALOGS_README
+  - PLATFORM_SYSTEM_MAP
+  - PR-156-STABILIZATION-CHECKLIST
+  - PRD-0001-rds-user-db-provisioning
+  - RB-0031-idp-stack-deployment
+  - RB-0032
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_USER_DB_PROVISIONING
 supersedes: []
 superseded_by: []
 tags: []
@@ -28,7 +65,6 @@ value_quantification:
 status: active
 category: platform
 ---
-
 When switching agents or context windows:
 
 Agents must:
@@ -47,7 +83,7 @@ Agents must:
 13. Read `docs/80-onboarding/AGENT_FIRST_BOOT.md`
 14. Read `docs/10-governance/01_GOVERNANCE.md`
 15. Read `docs/10-governance/09_AGENT_COLLABORATION_MATRIX.md`
-16. Read `agent_summary/session_summary_template.md`
+16. Read `session_summary/session_summary_template.md`
 17. Read the latest session state from the canonical session summary document
 18. Acknowledge understanding before continuing work
 
@@ -76,7 +112,7 @@ Goal: Initialize session summary log.
 - link to PRs/runbooks/ADRs
 
 # Format to follow
-- Copy the entry template from `agent_summary/session_summary_template.md`.
+- Copy the entry template from `session_summary/session_summary_template.md`.
 - Paste it at the end during (or at the end of) the session.
 - Fill it out and commit.
 
@@ -517,7 +553,7 @@ global:
 
 ### Session Summary
 
-- **Session Summary**: `agent_summary/agent_session_summary.md` (this file)
+- **Session Summary**: `session_summary/agent_session_summary.md` (this file)
 
 ## 6. Lessons Learned
 
@@ -954,7 +990,7 @@ The Helm chart's deployment update strategy is incompatible with `ReadWriteOnce`
 
 - Added `docs/10-governance/09_AGENT_COLLABORATION_MATRIX.md` as the living registry for agent roles, models, and responsibilities.
 - Documented environment access levels (local/CI/cluster/cloud) and per-agent access columns.
-- Captured the append-only session log requirement for `agent_summary/agent_session_summary.md`.
+- Captured the append-only session log requirement for `session_summary/agent_session_summary.md`.
 - Linked the registry and session log expectations into `docs/10-governance/07_AI_AGENT_GOVERNANCE.md`.
 - Added ADR `docs/adrs/ADR-0163-agent-collaboration-governance.md` to formalize the collaboration model.
 
@@ -1204,6 +1240,133 @@ Goal: Align RDS enums across self-service, document dual-mode flow, and wire aut
 
 Signed: Codex (2026-01-16T22:08:49Z)
 
+## 2026-01-17T07:15:26Z — RDS: guardrails + schema fixes — env=dev build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Add guardrails for RDS size approvals + tfvars drift, and fix schema path.
+
+### In-Session Log (append as you go)
+- 07:10Z — Fixed RDS request schema parser path mismatch
+- 07:12Z — Promoted RDS catalog from placeholder to active in contracts index
+- 07:13Z — Added size-tier approval guard workflow
+- 07:14Z — Added tfvars drift guard workflow for coupled vs standalone
+
+### Checkpoints
+- [x] Schema parser path corrected
+- [x] RDS catalog index updated
+- [x] Size-tier approval guard added
+- [x] tfvars drift guard added
+
+### Outputs produced (optional)
+- Workflow: `.github/workflows/rds-size-approval-guard.yml`
+- Workflow: `.github/workflows/rds-tfvars-drift-guard.yml`
+- Docs: `docs/20-contracts/resource-catalogs/README.md`
+- Schema: `schemas/requests/rds.schema.yaml`
+
+### Links (optional)
+- Enums: `schemas/metadata/enums.yaml`
+- Approval tiers: `schemas/routing/service_class_approvals.yaml`
+- RDS request schema: `schemas/requests/rds.schema.yaml`
+
+### Session Report (end-of-session wrap-up)
+- Summary:
+  - Added CI guardrails for large RDS size approvals and tfvars drift detection
+  - Fixed RDS request schema parser path and updated catalog index
+- Decisions:
+  - Use PR label `platform-approval` or `rds-large-approved` for large/xlarge requests
+- Risks/Follow-ups:
+  - Adjust guard behavior to warn-only if needed for early rollout
+- Validation: Not run in this session
+
+Signed: Codex (2026-01-17T07:15:26Z)
+
+## 2026-01-17T07:24:58Z — RDS: guardrail fixes + schema alignment — env=dev build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Address review feedback on guardrails and align schema/template constraints.
+
+### In-Session Log (append as you go)
+- 07:20Z — Added workflow headers + workflow_dispatch for guardrails
+- 07:21Z — Fixed size-tier regex and tfvars drift regex escaping
+- 07:22Z — Guard now skips when coupled mode disabled or one side empty
+- 07:23Z — Aligned Backstage patterns + workflow validation with schema length rules
+- 07:24Z — Added ADR references to resource catalog README
+
+### Checkpoints
+- [x] Guardrail workflows fixed and testable
+- [x] Schema/template/workflow constraints aligned
+- [x] Catalog README references updated
+
+### Outputs produced (optional)
+- Workflow: `.github/workflows/rds-size-approval-guard.yml`
+- Workflow: `.github/workflows/rds-tfvars-drift-guard.yml`
+- Template: `backstage-helm/backstage-catalog/templates/rds-request.yaml`
+- Workflow: `.github/workflows/create-rds-database.yml`
+- Schema: `schemas/requests/rds.schema.yaml`
+- Docs: `docs/20-contracts/resource-catalogs/README.md`
+
+### Feedback Addressed (optional)
+- Feedback: `session_capture/2026-01-17-rds-session-feedback.md`
+- Response: fixed guard workflows, aligned patterns, corrected schema references
+
+### Links (optional)
+- Enums: `schemas/metadata/enums.yaml`
+- RDS schema: `schemas/requests/rds.schema.yaml`
+- RDS request template: `backstage-helm/backstage-catalog/templates/rds-request.yaml`
+- RDS workflow: `.github/workflows/create-rds-database.yml`
+
+### Session Report (end-of-session wrap-up)
+- Summary:
+  - Fixed guardrail workflows and regex logic per review feedback
+  - Aligned request patterns between schema, Backstage, and workflow validation
+  - Added ADR references to the resource catalog index
+- Decisions:
+  - Guardrails require labels for large/xlarge size tiers
+- Risks/Follow-ups:
+  - Schema validation still not enforced in CI
+  - Contract-driven outputs remain aspirational
+- Validation: Not run in this session
+
+Signed: Codex (2026-01-17T07:24:58Z)
+
+## 2026-01-17T07:33:44Z — RDS: schema reality + guard path — env=dev build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Align RDS request schema and guardrails to current workflow.
+
+### In-Session Log (append as you go)
+- 07:31Z — Updated RDS schema flow/generates to reflect current workflow
+- 07:32Z — Added workflow reference in RDS request schema
+- 07:32Z — Narrowed size-approval guard to rds-catalog only
+- 07:33Z — Clarified risk description to match enum values
+
+### Checkpoints
+- [x] Schema flow matches current implementation
+- [x] Guard path aligned to actual artifacts
+
+### Outputs produced (optional)
+- Schema: `schemas/requests/rds.schema.yaml`
+- Workflow: `.github/workflows/rds-size-approval-guard.yml`
+
+### Links (optional)
+- RDS workflow: `.github/workflows/create-rds-database.yml`
+- RDS catalog: `docs/20-contracts/resource-catalogs/rds-catalog.yaml`
+
+### Session Report (end-of-session wrap-up)
+- Summary:
+  - Updated RDS schema to reflect real workflow outputs
+  - Aligned size guard to rds-catalog updates
+- Decisions:
+  - Treat contract-driven outputs as planned, not enforced
+- Risks/Follow-ups:
+  - Contract-driven parser integration remains future work
+- Validation: Not run in this session
+
+Signed: Codex (2026-01-17T07:33:44Z)
+
 ## 23. Teardown V3 Script Review (2026-01-16 17:05:58Z)
 
 **Objective**: Capture risks/gaps observed in `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh`.
@@ -1348,3 +1511,299 @@ When VPC deletion fails, now shows remaining dependencies (NAT gateways, subnets
 
 **Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
 **Timestamp**: 2026-01-16T18:30:00Z
+
+## 2026-01-17T00:15:00Z — Terraform count fix + PR merge — env=dev build_id=na
+
+Owner: platform-team
+Agent: claude-opus-4-5
+Goal: Fix Terraform "count depends on computed values" error blocking PR #252, merge development to main
+
+Environment: AWS `dev`
+Region: eu-west-2
+Objective: Resolve terraform-plan CI failure and complete development-to-main merge
+
+### In-Session Log (append as you go)
+
+- 00:00Z — Started: Diagnosed Terraform error in PR #252 — status: running
+- 00:05Z — Root cause: `module.iam[0].eso_role_arn` is computed at apply time, causing `count` to fail during plan
+- 00:08Z — Fix: Added `create_policy` variable to `aws_secrets_manager` module
+- 00:10Z — Change: Updated `modules/aws_secrets_manager/variables.tf` — added `create_policy` bool variable
+- 00:11Z — Change: Updated `modules/aws_secrets_manager/main.tf` — added `local.should_create_policy` logic
+- 00:12Z — Change: Updated `envs/dev/main.tf` — set `create_policy` based on known values at plan time
+- 00:13Z — Commit: `d472e77e` — fix: resolve Terraform count dependency on computed IAM role ARN
+- 00:14Z — Result: All 21 PR checks passing — outcome: pass
+- 00:15Z — PR #252 ready for merge (development to main)
+
+### Checkpoints
+
+- [x] Diagnose Terraform count error root cause
+- [x] Add `create_policy` variable to aws_secrets_manager module
+- [x] Update module main.tf with local.should_create_policy
+- [x] Update envs/dev/main.tf to set create_policy explicitly
+- [x] Run pre-commit checks (all passed)
+- [x] Push to development branch
+- [x] Verify all 21 CI checks pass on PR #252
+
+### Problem Analysis
+
+**Error:**
+```
+Error: Invalid count argument
+on ../../modules/aws_secrets_manager/main.tf line 25
+The "count" value depends on resource attributes that cannot be determined until apply
+```
+
+**Root Cause:**
+The `app_secrets` module in `envs/dev/main.tf` passes `module.iam[0].eso_role_arn` to `read_principals`. This ARN is computed at apply time (depends on IAM role creation). The module's `count` for policy resources depended on `length(var.read_principals) > 0`, which Terraform cannot evaluate during plan.
+
+**Solution:**
+Added explicit `create_policy` boolean variable that can be set based on values known at plan time (e.g., `var.iam_config.enabled`), avoiding the computed value dependency.
+
+### Files Modified This Session
+
+| File | Change |
+|------|--------|
+| `modules/aws_secrets_manager/variables.tf` | Added `create_policy` variable (bool, default null) |
+| `modules/aws_secrets_manager/main.tf` | Added `local.should_create_policy` that uses explicit flag when set |
+| `envs/dev/main.tf:544` | Set `create_policy` based on principal lengths + `var.iam_config.enabled` |
+
+### Code Changes
+
+**modules/aws_secrets_manager/variables.tf:**
+```hcl
+variable "create_policy" {
+  description = "Whether to create a resource policy for the secret. Set explicitly when principals contain computed values."
+  type        = bool
+  default     = null
+}
+```
+
+**modules/aws_secrets_manager/main.tf:**
+```hcl
+locals {
+  should_create_policy = var.create_policy != null ? var.create_policy : (
+    length(var.read_principals) > 0 ||
+    length(var.write_principals) > 0 ||
+    length(var.break_glass_principals) > 0
+  )
+}
+```
+
+**envs/dev/main.tf:**
+```hcl
+create_policy = length(each.value.read_principals) > 0 ||
+                length(each.value.write_principals) > 0 ||
+                length(each.value.break_glass_principals) > 0 ||
+                var.iam_config.enabled
+```
+
+### Artifact Review (2026-01-17T07:15:26Z Session)
+
+Reviewed artifacts from previous session by codex:
+
+**Issues Found:**
+
+1. **rds-size-approval-guard.yml**: Missing metadata header, hardcoded paths to non-existent directory, regex won't match tfvars format
+2. **rds-tfvars-drift-guard.yml**: Double-escaped regex in heredoc (`\\s` should be `\s`), redundant path triggers
+3. **rds.schema.yaml**: Comprehensive but inconsistent risk enum values vs Backstage template, no validation implementation
+4. **resource-catalogs/README.md**: Owner mismatch (database-team vs platform-team), missing ADR references
+
+**Assessment:** Artifacts are directionally correct but have integration bugs and weren't E2E tested.
+
+### Session Report (end-of-session wrap-up)
+
+- Summary:
+  - Fixed Terraform "count depends on computed values" error in aws_secrets_manager module
+  - Added explicit `create_policy` variable to avoid computed value dependency at plan time
+  - All 21 CI checks passing on PR #252 (development to main)
+  - Reviewed previous session artifacts and documented issues
+- Decisions:
+  - Use explicit boolean flags for conditional resource creation when principals contain computed values
+  - Pattern can be reused for other modules with similar issues
+- Risks/Follow-ups:
+  - Previous session's guardrail workflows have bugs that need fixing before they're production-ready
+  - PR #252 ready for merge
+- Validation: terraform-plan CI check passed, pre-commit hooks passed
+
+### Links
+
+- PR: [#252](https://github.com/mikeybeezy/goldenpath-idp-infra/pull/252)
+- Commit: d472e77e
+
+---
+
+**Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
+**Timestamp**: 2026-01-17T00:15:00Z
+
+---
+
+## 2026-01-17T08:50Z — Governance: doc map + relationships refresh — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Refresh system map and relationship metadata; validate docs.
+
+### In-Session Log (append as you go)
+- 08:48Z — Ran: `python3 scripts/generate_doc_system_map.py`
+- 08:49Z — Ran: `python3 scripts/extract_relationships.py` (bulk relates_to refresh)
+- 08:50Z — Result: `python3 scripts/validate_metadata.py docs` — pass (521/521)
+- 08:50Z — Change: metadata heartbeat updated — file: `.goldenpath/value_ledger.json`
+
+### Artifacts touched (required)
+- `docs/90-doc-system/PLATFORM_SYSTEM_MAP.md`
+- `docs/`
+- `session_summary/agent_session_summary.md`
+- `.goldenpath/value_ledger.json`
+
+### Outputs produced (optional)
+- System map refreshed
+- Relationship metadata refreshed
+
+### Session Report (end-of-session wrap-up)
+- Summary: regenerated system map and refreshed relates_to links across docs; metadata validation passed.
+- Decisions: include `session_summary/**` and `session_capture/**` in relationship extraction to capture implicit links.
+- Risks/Follow-ups: commit value ledger update alongside relationship refresh.
+- Validation: `python3 scripts/validate_metadata.py docs` (pass)
+
+Signed: Codex (2026-01-17T08:50:28Z)
+
+---
+
+## 2026-01-17T11:15Z — Governance: Session capture guardrail + PR guardrails index — env=na build_id=na
+
+Owner: platform-team
+Agent: claude-opus-4-5
+Goal: Fix session capture guardrail workflow bugs, create comprehensive PR guardrails index, update workflow categorization.
+
+### In-Session Log (append as you go)
+
+- 10:30Z — Started: Review session capture guardrail workflow — status: running
+- 10:35Z — Found 6 issues: regex escape bug, quote mismatch, missing workflow_dispatch, templates not excluded, frontmatter false positives, no local test mode
+- 10:40Z — Fixed P0/P1 issues in `.github/workflows/session-capture-guard.yml`
+- 10:45Z — Appended review notes and implementation updates to session capture file
+- 11:00Z — Created comprehensive PR guardrails index at `docs/10-governance/PR_GUARDRAILS_INDEX.md`
+- 11:05Z — Updated `scripts/generate_workflow_index.py` CATEGORY_MAP to categorize guardrail workflows
+- 11:10Z — Regenerated `ci-workflows/CI_WORKFLOWS.md` — all guardrails now in correct category
+- 11:15Z — Ran `python3 scripts/extract_relationships.py` — 15 files updated, 1671 bidirectional edges
+
+### Checkpoints
+
+- [x] Review session-capture-guard.yml for bugs
+- [x] Fix regex escape bug (`\\u2014` → literal `—`)
+- [x] Fix quote mismatch in f-string
+- [x] Add `workflow_dispatch` trigger
+- [x] Add template file exclusion (`!session_capture/*_template.md`)
+- [x] Add frontmatter-aware append-only check
+- [x] Update session capture documentation with review notes
+- [x] Create PR guardrails index document
+- [x] Update workflow index generator for guardrail categorization
+- [x] Regenerate workflow index
+- [x] Run relationship extraction to update bidirectional links
+
+### Issues Fixed in session-capture-guard.yml
+
+| Priority | Issue | Fix |
+| -------- | ----- | --- |
+| **P0** | Regex `\\u2014` looking for literal string | Changed to literal `—` em-dash: `(?:-\|—)` |
+| **P0** | Escaped quotes in f-string caused syntax error | Used standard quotes in print statement |
+| **P1** | No manual testing capability | Added `workflow_dispatch` trigger |
+| **P1** | Editing templates triggered guard | Added path exclusion `!session_capture/*_template.md` |
+| **P1** | Frontmatter updates blocked as modifications | Added `split_frontmatter()` function - body only checked |
+
+### Outputs produced
+
+- Workflow: `.github/workflows/session-capture-guard.yml` (fixed)
+- Docs: `docs/10-governance/PR_GUARDRAILS_INDEX.md` (new comprehensive catalog)
+- Script: `scripts/generate_workflow_index.py` (updated CATEGORY_MAP)
+- Index: `ci-workflows/CI_WORKFLOWS.md` (regenerated)
+- Session: `session_capture/2026-01-17-session-capture-guardrail.md` (updated with review notes)
+
+### PR Guardrails Index Contents
+
+| Category | Count | Status |
+| -------- | ----- | ------ |
+| Core PR Gates | 4 | Active |
+| Resource Guards | 3 | Warn-Only (Rollout) |
+| Session Guards | 1 | Active |
+| Scheduled Enforcement | 1 | Active |
+
+**Workflows documented:**
+
+- `pr-guardrails.yml` — Checklist + template + traceability (Blocking)
+- `branch-policy.yml` — development → main only (Blocking)
+- `adr-policy.yml` — ADR entry if labeled (Blocking when labeled)
+- `changelog-policy.yml` — CL entry if labeled (Blocking when labeled)
+- `ci-rds-request-validation.yml` — RDS schema validation (Blocking)
+- `session-capture-guard.yml` — Append-only session files (Blocking)
+- `rds-size-approval-guard.yml` — Size tier approvals (Warn-Only)
+- `rds-tfvars-drift-guard.yml` — Coupled/standalone sync (Warn-Only)
+- `policy-enforcement.yml` — Daily compliance check (Reporting)
+
+### Links
+
+- PR Guardrails Index: `docs/10-governance/PR_GUARDRAILS_INDEX.md`
+- Session Capture Guardrail: `.github/workflows/session-capture-guard.yml`
+- Workflow Index: `ci-workflows/CI_WORKFLOWS.md`
+- Session Capture: `session_capture/2026-01-17-session-capture-guardrail.md`
+
+### Session Report (end-of-session wrap-up)
+
+- Summary:
+  - Fixed 5 bugs in session capture guardrail workflow (2 P0, 3 P1)
+  - Created comprehensive PR guardrails index documenting all 9 guardrail workflows
+  - Updated workflow index generator to properly categorize `*guard*` and `*guardrail*` workflows
+  - Regenerated CI workflow index with correct categories
+  - Ran relationship extraction — 15 files updated, 1671 bidirectional edges
+- Decisions:
+  - Frontmatter updates are allowed (only body content checked for append-only)
+  - Template files excluded from guardrail validation
+  - Guardrails categorized under "Guardrails / Policy (PR)" in workflow index
+- Risks/Follow-ups:
+  - P2 items remain open: session_summary path parity, local test script
+  - Guardrail index should be kept in sync as new guards are added
+- Validation: Workflow syntax verified via file read; relationship extraction completed successfully
+
+---
+
+**Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
+**Timestamp**: 2026-01-17T11:15:00Z
+
+---
+
+## 2026-01-17T10:37Z — Governance: session capture guardrail — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: standardize session capture docs and enforce append-only updates via CI.
+
+### In-Session Log (append as you go)
+- 10:10Z — Added session capture template and append-only rules.
+- 10:18Z — Added CI guardrail workflow for session capture updates.
+- 10:26Z — Locked governance and changelog (ADR-0167, CL-0141); updated CI contract.
+
+### Artifacts touched (required)
+- `.github/workflows/session-capture-guard.yml`
+- `session_capture/session_capture_template.md`
+- `session_capture/2026-01-17-session-capture-guardrail.md`
+- `session_summary/session_summary_template.md`
+- `docs/10-governance/07_AI_AGENT_GOVERNANCE.md`
+- `docs/80-onboarding/25_DAY_ONE_CHECKLIST.md`
+- `docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md`
+- `docs/adrs/ADR-0167-session-capture-guardrail.md`
+- `docs/changelog/entries/CL-0141-session-capture-guardrail.md`
+- `docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md`
+
+### Feedback Pointer (optional)
+- Feedback file: `session_capture/2026-01-17-session-capture-guardrail.md`
+- Status: open
+
+### Next actions
+- [ ] Decide whether to enforce append-only guardrails for `session_summary/agent_session_summary.md`.
+
+### Session Report (end-of-session wrap-up)
+- Summary: added session capture template, CI guardrail, and governance/changelog entries for traceability.
+- Decisions: session captures are append-only and validated via CI on PRs.
+- Risks/Follow-ups: validation not run locally; CI will enforce on PR.
+- Validation: not run (CI guardrail pending).
+
+Signed: Codex (2026-01-17T10:37:48Z)

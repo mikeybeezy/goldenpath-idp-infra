@@ -14,7 +14,16 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0007
+  - 01_LIFECYCLE_POLICY
+  - 01_adr_index
+  - ADR-0006-platform-secrets-strategy
+  - ADR-0007-platform-environment-model
+  - ADR-0018-platform-container-registry-standard
+  - ADR-0139
+  - ADR-0148-seamless-build-deployment-with-immutability
+  - ADR-0157-platform-multi-tenant-rds-architecture
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

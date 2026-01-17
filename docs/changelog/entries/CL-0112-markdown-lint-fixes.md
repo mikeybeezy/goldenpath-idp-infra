@@ -16,6 +16,7 @@ risk_profile:
   coupling_risk: none
 schema_version: 1
 relates_to:
+  - CL-0112
   - RB-0027
 supersedes: []
 superseded_by: []

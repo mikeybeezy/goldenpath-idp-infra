@@ -1,6 +1,8 @@
 ---
 id: 05_MANUAL_PREREQUISITES
 title: Manual Prerequisites & One-Time Setup
+type: policy
+category: compliance
 ---
 
 ## Manual Prerequisites & One-Time Setup

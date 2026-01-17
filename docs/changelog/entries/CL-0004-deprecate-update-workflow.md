@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0004
+  - CL-0004-deprecate-update-workflow
 supersedes: []
 superseded_by: []
 tags: []

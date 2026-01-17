@@ -13,7 +13,13 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0033
+  - 01_adr_index
+  - 21_CI_ENVIRONMENT_CONTRACT
+  - ADR-0033-platform-ci-orchestrated-modes
+  - HELM_DATREE
+  - RB-0019-relationship-extraction-script
+  - RELATIONSHIP_EXTRACTION_GUIDE
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0006
+  - CL-0006-loki-single-binary-monitoring-namespace
 supersedes: []
 superseded_by: []
 tags: []

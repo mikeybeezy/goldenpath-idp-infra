@@ -2,23 +2,41 @@
 id: ADR-0162
 title: Kong Ingress DNS Strategy for Platform Tooling
 type: adr
-status: accepted
-date: 2026-01-16
-deciders:
-  - platform-team
 domain: platform-core
 owner: platform-team
 lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
 schema_version: 1
+relates_to:
+  - 01_adr_index
+  - 45_DNS_MANAGEMENT
+  - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
+  - ADR-0162
+  - CL-0135-kong-ingress-for-tooling-apps
+  - CL-0136-tooling-apps-ingress-configuration
+  - CL-0138-tooling-apps-dashboards
+  - agent_session_summary
+  - session_summary_template
+supersedes: []
+superseded_by: []
 tags:
   - kong
   - ingress
   - dns
   - tooling
-relates_to:
-  - ADR-0005
-  - CL-0135
-  - CL-0136
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-16
+deciders:
+  - platform-team
 ---
 
 ## Status

@@ -2,7 +2,6 @@
 id: ADR-0111-platform-documentation-auto-healing
 title: 'ADR-0111: Automated Documentation Auto-Healing'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,7 +11,17 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0101
+  - 01_adr_index
+  - ADR-0101-pr-metadata-auto-heal
+  - ADR-0103-automated-workflow-docs
+  - ADR-0104-automated-script-docs
+  - ADR-0111-platform-documentation-auto-healing
+  - ADR-0112-automated-adr-index-generation
+  - ADR-0133
+  - ADR-0136
+  - AUTO_HEALING_GUIDE
+  - CL-0067-documentation-auto-healing
+  - CODEOWNERS_POLICY
 supersedes:
   - ADR-0103
   - ADR-0104

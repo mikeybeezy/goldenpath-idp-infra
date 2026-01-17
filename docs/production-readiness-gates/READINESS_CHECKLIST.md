@@ -11,16 +11,16 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - 01_GOVERNANCE
-  - 37_V1_SCOPE_AND_TIMELINE
-  - ADR-0040
-  - ADR-0044
-  - ADR-0046
-  - ADR-0063
-  - CL-0002
-  - IDP_PRODUCT_FEATURES
   - 00_DESIGN_PHILOSOPHY
+  - 01_GOVERNANCE
   - 34_PLATFORM_SUCCESS_CHECKLIST
+  - 37_V1_SCOPE_AND_TIMELINE
+  - ADR-0040-platform-lifecycle-aware-state-keys
+  - ADR-0044-platform-infra-checks-ref-mode
+  - ADR-0046-platform-pr-plan-validation-ownership
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - CL-0002-bootstrap-refactor
+  - IDP_PRODUCT_FEATURES
   - V1_04_CAPABILITY_MATRIX
 supported_until: 2028-01-01
 version: '1.0'

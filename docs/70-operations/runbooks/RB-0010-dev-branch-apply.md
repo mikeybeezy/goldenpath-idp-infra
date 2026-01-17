@@ -11,9 +11,10 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
+  - ADR-0028-platform-dev-branch-gate
+  - ADR-0029-platform-dev-plan-gate
   - CI_WORKFLOWS
-  - ADR-0028
-  - ADR-0029
+  - DOCS_RUNBOOKS_README
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0

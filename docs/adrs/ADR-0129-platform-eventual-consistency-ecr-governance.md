@@ -2,7 +2,6 @@
 id: ADR-0129
 title: 'ADR-0129: Eventual Consistency for ECR Registry Governance'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,8 +11,17 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0092
+  - 01_adr_index
+  - ADR-0092-ecr-registry-product-strategy
   - ADR-0128
+  - ADR-0129
+  - ADR-0130
+  - ADR-0132
+  - CAPABILITY_LEDGER
+  - CL-0085-ecr-registry-consistency-model
+  - CL-0095-ecr-backstage-sync-automation
+  - CL-0111
+  - RB-0025-ecr-catalog-sync
 supersedes: []
 superseded_by: []
 tags: []

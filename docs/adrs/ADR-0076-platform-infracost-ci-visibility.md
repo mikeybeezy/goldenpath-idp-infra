@@ -12,8 +12,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0076
-  - CL-0030
+  - 01_adr_index
+  - 06_COST_GOVERNANCE
+  - 40_COST_VISIBILITY
+  - ADR-0076-platform-infracost-ci-visibility
+  - CL-0030-infracost-ci-visibility
+  - CL-0050-infracost-activation
 supersedes: []
 superseded_by: []
 tags: []

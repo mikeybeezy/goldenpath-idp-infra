@@ -2,7 +2,6 @@
 id: ADR-0141
 title: 'ADR-0141: Backstage ECR requests use GitHub Actions dispatch'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,8 +11,11 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0095
+  - 01_adr_index
+  - ADR-0095-self-service-registry-creation
   - ADR-0128
+  - ADR-0141
+  - CL-0104
 supersedes: []
 superseded_by: []
 tags: []

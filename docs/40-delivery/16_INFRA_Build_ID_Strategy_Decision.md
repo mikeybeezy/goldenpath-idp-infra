@@ -11,8 +11,10 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 12_GITOPS_AND_CICD
+  - 15_TEARDOWN_AND_CLEANUP
   - 17_BUILD_RUN_FLAGS
-  - ADR-0040
+  - ADR-0040-platform-lifecycle-aware-state-keys
   - ORPHAN_CLEANUP
 category: delivery
 supported_until: 2028-01-01

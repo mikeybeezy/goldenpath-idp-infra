@@ -13,6 +13,7 @@ reliability:
 relates_to:
   - 32_TERRAFORM_STATE_AND_LOCKING
   - CI_WORKFLOWS
+  - DOCS_RUNBOOKS_README
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0

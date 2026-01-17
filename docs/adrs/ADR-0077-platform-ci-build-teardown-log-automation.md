@@ -12,7 +12,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0077
+  - 01_adr_index
+  - ADR-0077-platform-ci-build-teardown-log-automation
+  - ADR-0156-platform-ci-build-timing-capture
+  - CL-0128
 supersedes: []
 superseded_by: []
 tags: []

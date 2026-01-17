@@ -13,7 +13,9 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0010
+  - 01_adr_index
+  - ADR-0010-platform-terraform-lockfile-stability
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

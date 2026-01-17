@@ -20,6 +20,7 @@ schema_version: 1
 relates_to:
   - ADR-0145
   - CL-0114
+  - CL-0115
   - aws_inventory.py
 supersedes: []
 superseded_by: []

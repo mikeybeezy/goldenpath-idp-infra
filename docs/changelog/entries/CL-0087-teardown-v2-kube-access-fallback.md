@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0087
+  - CL-0087-teardown-v2-kube-access-fallback
 supersedes: []
 superseded_by: []
 tags: []

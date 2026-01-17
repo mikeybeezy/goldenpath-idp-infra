@@ -10,6 +10,10 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - ADR-0121-value-quantification-framework
+  - CL-0077-value-quantification-framework
+  - PLATFORM_DASHBOARDS
 ---
 
 ## VQ Tagging Guide: Scripts & Workflows

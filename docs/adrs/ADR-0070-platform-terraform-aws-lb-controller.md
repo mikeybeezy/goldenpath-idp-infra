@@ -12,9 +12,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0063
+  - 01_adr_index
   - ADR-0063-platform-terraform-helm-bootstrap
-  - ADR-0070
+  - ADR-0070-platform-terraform-aws-lb-controller
+  - CL-0019-aws-lb-controller-refactor
+  - HELM_CERT_MANAGER
 supersedes: []
 superseded_by: []
 tags: []

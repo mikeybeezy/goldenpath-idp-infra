@@ -11,7 +11,9 @@ reliability:
   observability_tier: gold
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
-  - ADR-0016
+  - ADR-0016-platform-ci-environment-separation
+  - ADR-0017-platform-policy-as-code
+  - ADR-0036-platform-orphan-cleanup-workflow
   - CI_WORKFLOWS
 supported_until: 2028-01-01
 version: '1.0'

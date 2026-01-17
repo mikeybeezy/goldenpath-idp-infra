@@ -6,6 +6,8 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - CL-0072-emoji-usage-policy-and-enforcement
 value_quantification:
   vq_class: LV/LQ
   impact_tier: low

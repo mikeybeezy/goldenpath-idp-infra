@@ -13,9 +13,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 20_CI_ENVIRONMENT_SEPARATION
   - 21_CI_ENVIRONMENT_CONTRACT
-  - ADR-0017
+  - ADR-0017-platform-policy-as-code
+  - PR_GUARDRAILS_INDEX
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

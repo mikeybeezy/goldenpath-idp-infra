@@ -11,6 +11,9 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - DOCS_PRDS_README
+  - DOCS_USER-STORIES_README
+  - PRD-0000-template
   - PRD-0001-rds-user-db-provisioning
 supported_until: 2028-01-01
 version: '1.0'

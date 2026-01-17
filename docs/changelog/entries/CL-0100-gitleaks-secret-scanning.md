@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 10_SECRET_SCANNING_POLICY
+  - CL-0100
 supersedes: []
 superseded_by: []
 tags: []

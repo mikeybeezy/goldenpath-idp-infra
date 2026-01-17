@@ -17,9 +17,14 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0001
-  - CL-0002
+  - 24_PR_GATES
+  - 40_CHANGELOG_GOVERNANCE
+  - ADR-0050-platform-changelog-label-gate
+  - CL-0001-teardown-kubectl-timeout-guard
+  - CL-0002-bootstrap-refactor
   - Changelog-template
+  - HEALTH_AUDIT_LOG
+  - PLATFORM_HEALTH
 supersedes: []
 superseded_by: []
 tags: []

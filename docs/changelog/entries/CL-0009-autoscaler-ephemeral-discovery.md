@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0009
+  - CL-0009-autoscaler-ephemeral-discovery
 supersedes: []
 superseded_by: []
 tags: []

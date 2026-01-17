@@ -16,9 +16,14 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0082
-  - ADR-0084
+  - 01_adr_index
+  - ADR-0082-platform-metadata-validation
+  - ADR-0084-platform-enhanced-metadata-schema
+  - ADR-0088-automated-metadata-remediation
+  - ADR-0140
   - METADATA_MAINTENANCE_GUIDE
+  - METADATA_VALIDATION_GUIDE
+  - SCRIPT_CERTIFICATION_AUDIT
 supersedes: []
 superseded_by: []
 tags: []

@@ -17,9 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0103
-  - ADR-0095
+  - ADR-0095-self-service-registry-creation
   - ADR-0128
+  - CL-0103
 supersedes: []
 superseded_by: []
 tags: []

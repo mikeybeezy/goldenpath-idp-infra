@@ -13,7 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0004
+  - 01_adr_index
+  - ADR-0004-platform-datree-policy-as-code-in-ci
+  - HELM_DATREE
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

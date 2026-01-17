@@ -12,10 +12,18 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_GOVERNANCE
+  - 01_adr_index
   - 05_OBSERVABILITY_DECISIONS
   - 06_IDENTITY_AND_ACCESS
   - 41_STORAGE_AND_PERSISTENCE
-  - ADR-0052
+  - 44_DOC_TIGHTENING_PLAN
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0054-platform-observability-exporters-otel-split
+  - ADR-0061-platform-observability-provisioning-boundary
+  - CL-0018-kube-prometheus-stack-defaults
+  - CL-0137
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

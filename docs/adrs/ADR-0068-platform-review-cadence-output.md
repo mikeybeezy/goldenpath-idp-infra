@@ -12,7 +12,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0068
+  - 01_adr_index
+  - ADR-0068-platform-review-cadence-output
+  - CL-0017-review-cadence-output-delimiter
 supersedes: []
 superseded_by: []
 tags: []

@@ -3,8 +3,11 @@ id: RB-0026
 title: Local Secret Generation & Targeting
 type: runbook
 relates_to:
-  - 85-how-it-works/secrets-flow/SECRET_REQUEST_FLOW.md
-  - ADR-0144-intent-to-projection-parser.md
+  - ADR-0143
+  - ADR-0144
+  - CL-0106-workflow-driven-secret-provisioning
+  - DOCS_RUNBOOKS_README
+  - SECRET_REQUEST_FLOW
 category: runbooks
 version: '1.2'
 ---

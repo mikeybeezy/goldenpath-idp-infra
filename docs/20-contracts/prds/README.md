@@ -12,6 +12,8 @@ reliability:
   maturity: 1
 relates_to:
   - 00_INDEX
+  - PRD-0000-template
+  - PRD-0001-rds-user-db-provisioning
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

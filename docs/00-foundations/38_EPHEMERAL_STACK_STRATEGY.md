@@ -1,6 +1,10 @@
 ---
 id: 38_EPHEMERAL_STACK_STRATEGY
 title: 'Ephemeral Stack Strategy: "The Simulation"'
+type: documentation
+relates_to:
+  - ADR-0161
+  - CL-0131
 ---
 
 ## Ephemeral Stack Strategy: "The Simulation"

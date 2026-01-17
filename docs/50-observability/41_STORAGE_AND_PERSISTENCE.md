@@ -12,9 +12,9 @@ reliability:
   maturity: 1
 relates_to:
   - 01_GOVERNANCE
-  - ADR-0052
+  - 05_OBSERVABILITY_DECISIONS
   - ADR-0052-platform-kube-prometheus-stack-bundle
-  - ADR-0053
+  - ADR-0053-platform-storage-lifecycle-separation
 category: observability
 supported_until: 2028-01-01
 version: '1.0'

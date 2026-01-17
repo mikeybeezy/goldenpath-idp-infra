@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0135
+  - CL-0096
 supersedes: []
 superseded_by: []
 tags: []

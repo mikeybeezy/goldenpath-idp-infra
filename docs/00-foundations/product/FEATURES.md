@@ -10,6 +10,9 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - CAPABILITY_LEDGER
+  - SESSION_CAPTURE_2026_01_17_01
 ---
 
 ## Golden Path IDP Features
@@ -50,7 +53,9 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 
 - **Platform Health Dashboard**: A real-time audit of governance coverage and infrastructure health.
 - **Knowledge Graph**: A programmatic map of relationships between ADRs, docs, and code.
+- **Relationship Graph Sync**: Automated relationship extraction keeps the knowledge graph current across ADRs, docs, and code.
 - **Self-Healing Documentation**: Zero-drift documentation that updates itself based on source code changes.
+- **System Map Inventory**: Auto-generated platform map (`PLATFORM_SYSTEM_MAP.md`) that lists doc domains, counts, and validators.
 - **FinOps / Cost Visibility**: Pre-provisioning cost signals that make infrastructure spend visible in PRs.
 - **OOTB Golden Signals**: Instant RED metrics (Rate, Errors, Duration) and correlated logs for every application, with zero configuration required.
 

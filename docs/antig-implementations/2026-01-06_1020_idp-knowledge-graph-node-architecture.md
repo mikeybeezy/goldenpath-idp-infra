@@ -13,7 +13,7 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - ADR-0110
+  - ADR-0110-idp-knowledge-graph-architecture
 supersedes: []
 superseded_by: []
 tags: []

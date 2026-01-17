@@ -17,7 +17,10 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0001
+  - 40_CHANGELOG_GOVERNANCE
+  - CL-0001-teardown-kubectl-timeout-guard
+  - Changelog-template
+  - DOCS_CHANGELOG_README
 supersedes: []
 superseded_by: []
 tags: []

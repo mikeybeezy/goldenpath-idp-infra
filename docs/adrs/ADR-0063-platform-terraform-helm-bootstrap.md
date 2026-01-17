@@ -13,9 +13,15 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0001
+  - 01_adr_index
+  - 04_PR_GUARDRAILS
   - ADR-0001-platform-argocd-as-gitops-operator
-  - ADR-0063
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - ADR-0070-platform-terraform-aws-lb-controller
+  - ADR-0148-seamless-build-deployment-with-immutability
+  - CL-0002-bootstrap-refactor
+  - READINESS_CHECKLIST
+  - ROADMAP
 supersedes: []
 superseded_by: []
 tags: []

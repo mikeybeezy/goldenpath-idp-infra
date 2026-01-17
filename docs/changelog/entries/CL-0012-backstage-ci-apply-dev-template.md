@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0012
+  - CL-0012-backstage-ci-apply-dev-template
 supersedes: []
 superseded_by: []
 tags: []

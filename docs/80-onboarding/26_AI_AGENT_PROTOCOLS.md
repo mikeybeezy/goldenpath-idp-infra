@@ -14,12 +14,19 @@ relates_to:
   - 07_AI_AGENT_GOVERNANCE
   - 13_COLLABORATION_GUIDE
   - 21_CI_ENVIRONMENT_CONTRACT
+  - 23_NEW_JOINERS
   - 24_PR_GATES
   - 41_BUILD_RUN_LOG
   - ADR-####
+  - ADR-0079-platform-ai-agent-governance
   - AI_CHANGELOG
   - CL-####
+  - CL-0078
+  - CL-0141
+  - PR_GUARDRAILS_INDEX
   - ROADMAP
+  - SESSION_CAPTURE_2026_01_17_02
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags: []
@@ -130,6 +137,12 @@ Read and align on priorities before proposing work:
 1. `docs/production-readiness-gates/ROADMAP.md`
 2. `docs/80-onboarding/13_COLLABORATION_GUIDE.md`
 3. `docs/00-foundations/product/VQ_PRINCIPLES.md` (**Mandatory: Internalize VQ strategy before proposing moves**)
+
+## 6a) Session logging and capture
+
+- Append to `session_summary/agent_session_summary.md` using `session_summary/session_summary_template.md`.
+- For context-bounded work, create a session capture using `session_capture/session_capture_template.md`.
+- Session captures are append-only and must include validation evidence for any claims.
 
 ## 7) Standard interfaces
 

@@ -3,9 +3,9 @@ id: ECR_REQUEST_FLOW
 title: 'How It Works: ECR Request Flow'
 type: documentation
 relates_to:
-  - docs/adrs/ADR-0095-self-service-registry-creation.md
-  - scripts/scaffold_ecr.py
-  - .github/workflows/create-ecr-registry.yml
+  - ADR-0095-self-service-registry-creation
+  - ADR-0159-backstage-catalog-registry-sync
+  - CATALOG_SYSTEMS
 ---
 
 ## How It Works: ECR Request Flow

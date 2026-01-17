@@ -13,7 +13,9 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0020
+  - 01_adr_index
+  - ADR-0020-platform-helm-kustomize-hybrid
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

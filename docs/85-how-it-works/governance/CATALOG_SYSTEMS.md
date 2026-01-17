@@ -5,7 +5,9 @@ type: documentation
 relates_to:
   - ADR-0097-domain-based-resource-catalogs
   - ADR-0159-backstage-catalog-registry-sync
-  - docs/20-contracts/resource-catalogs/README.md
+  - DOCS_20-CONTRACTS_RESOURCE-CATALOGS_README
+  - ECR_REQUEST_FLOW
+  - RDS_REQUEST_FLOW
 ---
 
 ## How It Works: Platform Catalog Systems

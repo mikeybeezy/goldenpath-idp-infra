@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0131
-  - CL-0091
+  - CL-0091-platform-health-outcome-metrics
 supersedes: []
 superseded_by: []
 tags: []

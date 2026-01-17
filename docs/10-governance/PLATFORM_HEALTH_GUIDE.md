@@ -11,9 +11,9 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - PLATFORM_HEALTH
-  - ADR-0090
+  - ADR-0090-automated-platform-health-dashboard
   - METADATA_INJECTION_GUIDE
+  - PLATFORM_HEALTH
 category: governance
 supported_until: 2028-01-01
 version: '1.0'

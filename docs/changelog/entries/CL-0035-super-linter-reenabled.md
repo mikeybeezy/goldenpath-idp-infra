@@ -17,7 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0035
+  - CL-0035-super-linter-reenabled
+  - CL-0049-ci-optimization
 supersedes: []
 superseded_by: []
 tags: []

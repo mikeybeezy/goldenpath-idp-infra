@@ -18,8 +18,13 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0007
+  - 01_adr_index
+  - 11_SECRETS_CATALOG_POLICY
+  - 35_SECRET_MANAGEMENT
+  - ADR-0007-platform-environment-model
   - ADR-0135
+  - ADR-0139
+  - CL-0105
 supersedes: []
 superseded_by: []
 tags: []

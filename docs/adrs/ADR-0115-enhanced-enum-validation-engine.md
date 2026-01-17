@@ -2,7 +2,6 @@
 id: ADR-0115-enhanced-enum-validation-engine
 title: Enhanced Enum Validation Engine
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,7 +11,11 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0114
+  - 01_adr_index
+  - 2026-01-06_2145_queryable-intelligence-validation
+  - ADR-0114-automated-enum-consistency-validation
+  - ADR-0115-enhanced-enum-validation-engine
+  - CL-0071-enhanced-enum-validation-engine
   - IDP_PRODUCT_FEATURES
 supersedes: []
 superseded_by: []

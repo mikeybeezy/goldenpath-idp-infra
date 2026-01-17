@@ -12,8 +12,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 05_OBSERVABILITY_DECISIONS
-  - ADR-0058
+  - ADR-0058-platform-grafana-config-workflow
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

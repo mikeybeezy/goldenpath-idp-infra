@@ -14,8 +14,15 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0003
-  - ADR-0005
+  - 01_adr_index
+  - 06_IDENTITY_AND_ACCESS
+  - 20_TOOLING_APPS_MATRIX
+  - ADR-0003-platform-AWS-IAM-bootstrap-IRSA-SSM-
+  - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
+  - ADR-0162
+  - HELM_KEYCLOAK
+  - IDP_TOOLING_KEYCLOAK_CONFIG
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

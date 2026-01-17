@@ -10,6 +10,13 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - 01_GOVERNANCE
+  - 01_PLATFORM_SERVICE_AGREEMENT
+  - 28_SECURITY_FLOOR_V1
+  - 37_V1_SCOPE_AND_TIMELINE
+  - CL-0021-doc-taxonomy-refactor
+  - agent_session_summary
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

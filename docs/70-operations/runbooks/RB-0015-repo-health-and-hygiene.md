@@ -10,6 +10,15 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: gold
   maturity: 1
+relates_to:
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - CAPABILITY_LEDGER
+  - CI_TEARDOWN_WORKFLOW
+  - DOCS_RUNBOOKS_README
+  - PLATFORM_HEALTH
+  - RB-0013-leak-protection-management
+  - RB-0014-metadata-and-enum-alignment
+  - RB-0016-extending-governance-vocabulary
 category: runbooks
 ---
 

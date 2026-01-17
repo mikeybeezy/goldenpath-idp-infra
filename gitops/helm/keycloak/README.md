@@ -18,7 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 06_IDENTITY_AND_ACCESS
-  - ADR-0005
+  - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
 supersedes: []
 superseded_by: []
 tags: []
@@ -36,7 +36,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Keycloak Helm Deployment
 
 Keycloak provides OIDC identity for Backstage, Kong, and platform workloads.

@@ -15,11 +15,13 @@ relates_to:
   - 01_GOVERNANCE
   - 02_PLATFORM_BOUNDARIES
   - 30_DOCUMENTATION_FRESHNESS
-  - 43_OPERATING_PRINCIPLES
-  - IDP_PRODUCT_FEATURES
   - 34_PLATFORM_SUCCESS_CHECKLIST
   - 37_V1_SCOPE_AND_TIMELINE
+  - 43_OPERATING_PRINCIPLES
   - 90_DOC_SYSTEM
+  - ADR-0027-platform-design-philosophy
+  - IDP_PRODUCT_FEATURES
+  - agent_session_summary
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

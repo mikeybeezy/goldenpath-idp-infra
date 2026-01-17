@@ -15,8 +15,10 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - ADR-0162
+  - RB-0031-idp-stack-deployment
 ---
-
 # Session Summary Template (append-only)
 
 ## Usage rules
@@ -26,6 +28,8 @@ reliability:
 - Keep the in-session log to short, timestamped bullets.
 - Update the in-session log every 30-60 minutes or after decisions/blockers.
 - End each entry with a short session report.
+- If responding to review feedback, include a "Feedback Addressed" section with links.
+- Artifacts touched must use canonical repo-relative file paths in backticks.
 
 ## Entry template
 
@@ -56,11 +60,22 @@ Objective: <short statement>
 ### Edge cases observed (optional)
 - <symptom> -> <cause (if known)> -> <mitigation>
 
+### Artifacts touched (required)
+- `<path/to/file>` (canonical repo-relative path)
+
 ### Outputs produced (optional)
 - PRs: <#123, #124>
 - Scripts: <scripts/foo.py>
 - Docs/ADRs: <ADR-XXXX>
 - Artifacts: <report path, dashboard link>
+
+### Feedback Pointer (optional)
+- Feedback file: `session_capture/YYYY-MM-DD-<topic>.md` (use `session_capture/session_capture_template.md`)
+- Status: <open|closed>
+
+### Feedback Addressed (optional)
+- Feedback: <path or URL>
+- Response: <short summary of what was changed>
 
 ### Next actions
 - [ ] <next action 1>
@@ -111,6 +126,13 @@ Objective: fix Backstage/Keycloak blockers and restore platform health
 ### Outputs produced (optional)
 - PRs: #123
 - Docs/ADRs: ADR-0162
+
+### Artifacts touched (required)
+- `gitops/helm/backstage/values/dev.yaml`
+
+### Feedback Addressed (optional)
+- Feedback: docs/feedback/bootstrap-review.md
+- Response: fixed ingress guard + added validation check
 
 ### Next actions
 - [ ] Add bootstrap smoke test for Kong ingress

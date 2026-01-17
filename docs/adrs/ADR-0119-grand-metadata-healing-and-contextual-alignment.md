@@ -2,7 +2,6 @@
 id: ADR-0119-grand-metadata-healing-and-contextual-alignment
 title: 'ADR-0119: Grand Metadata Healing & Contextual Alignment'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -10,7 +9,11 @@ exempt: false
 reliability:
   observability_tier: bronze
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0113-platform-queryable-intelligence-enums
+  - ADR-0118-config-driven-metadata-governance
+  - ADR-0119-grand-metadata-healing-and-contextual-alignment
 supersedes: []
 superseded_by: []
 tags: []

@@ -13,10 +13,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 00_INDEX
+  - 01_adr_index
+  - 05_REPOSITORY_LIFECYCLE
   - 42_APP_TEMPLATE_LIVING
-  - ADR-0062
   - ADR-0062-platform-app-template-contract
-  - ADR-0078
+  - ADR-0078-platform-governed-repo-scaffolder
+  - CL-0031-governed-repo-scaffolder
+  - US-0001-governance-driven-repo-scaffolder
 supersedes: []
 superseded_by: []
 tags: []

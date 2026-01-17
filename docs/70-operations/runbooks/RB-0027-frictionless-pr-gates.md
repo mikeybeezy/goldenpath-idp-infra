@@ -10,6 +10,13 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - 00_START_HERE
+  - 24_PR_GATES
+  - CL-0112
+  - DOCS_RUNBOOKS_README
+  - GOLDENPATH_IDP_ROOT_README
+  - PR_GUARDRAILS
 category: runbooks
 ---
 

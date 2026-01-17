@@ -17,9 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0052
-  - ADR-0053
-  - CL-0018
+  - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0053-platform-storage-lifecycle-separation
+  - CL-0018-kube-prometheus-stack-defaults
 supersedes: []
 superseded_by: []
 tags: []

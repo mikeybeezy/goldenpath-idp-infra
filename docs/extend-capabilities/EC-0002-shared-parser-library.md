@@ -1,20 +1,18 @@
 ---
 id: EC-0002-shared-parser-library
 title: Shared Parser Library for Contract-Driven Requests
+type: extension_capability
 status: proposed
+relates_to:
+  - CONTRACT_DRIVEN_ARCHITECTURE
+  - INDEX
 dependencies:
   - 3+ parser scripts in production
   - RDS and Secret parsers stable
-relates_to:
-  - scripts/rds_request_parser.py
-  - scripts/secret_request_parser.py
-  - docs/85-how-it-works/self-service/CONTRACT_DRIVEN_ARCHITECTURE.md
-type: extension_capability
 priority: low
 vq_class: efficiency
 estimated_roi: Reduced duplication, faster new parser development
 effort_estimate: 2-3 weeks
-owner: platform-team
 ---
 
 ## Shared Parser Library for Contract-Driven Requests

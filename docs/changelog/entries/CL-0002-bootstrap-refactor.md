@@ -17,8 +17,12 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0063
-  - CL-0002
+  - 04_PR_GUARDRAILS
+  - 40_CHANGELOG_GOVERNANCE
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - CL-0002-bootstrap-refactor
+  - DOCS_CHANGELOG_README
+  - READINESS_CHECKLIST
 supersedes: []
 superseded_by: []
 tags: []

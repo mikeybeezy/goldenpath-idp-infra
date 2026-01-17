@@ -12,8 +12,14 @@ reliability:
   maturity: 1
 relates_to:
   - 01_GOVERNANCE
-  - ADR-0037
+  - 01_TAG_SCOPED_POLICY_TEMPLATE
+  - 02_PLATFORM_BOUNDARIES
+  - 06_COST_GOVERNANCE
+  - 11_SECRETS_CATALOG_POLICY
   - ADR-0037-platform-resource-tagging-policy
+  - ADR-0039-platform-tag-scoped-iam-policy-template
+  - ADR-0051-platform-reliability-metrics-contract-minimums
+  - METADATA_STRATEGY
 category: governance
 supported_until: 2027-01-03
 version: '1.0'

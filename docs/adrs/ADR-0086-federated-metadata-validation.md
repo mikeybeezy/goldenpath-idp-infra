@@ -13,7 +13,9 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0086
+  - 01_adr_index
+  - ADR-0086-federated-metadata-validation
+  - CL-0045-federated-governance-onboarding
 supersedes: []
 superseded_by: []
 tags: []

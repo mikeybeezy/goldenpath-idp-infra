@@ -12,7 +12,9 @@ risk_profile:
   security_risk: none
   coupling_risk: low
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0093-automated-policy-enforcement
 supersedes: []
 superseded_by: []
 tags: []

@@ -18,10 +18,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0121-value-quantification-framework
+  - ADR-0124
   - ADR-0146
   - ADR-0147
-  - ADR-0121
-  - ADR-0124
+  - CL-0120
 supersedes: []
 superseded_by: []
 tags: []

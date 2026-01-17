@@ -11,8 +11,8 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
-  - ADR-0127-backstage-deployment-roi-telemetry
-  - ADR-0128-automated-ecr-catalog-sync
+  - ADR-0127
+  - ADR-0128
 tags:
   - backstage
   - helm

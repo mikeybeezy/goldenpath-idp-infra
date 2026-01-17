@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0003
+  - CL-0003-teardown-v2-lb-finalizer-guard
 supersedes: []
 superseded_by: []
 tags: []

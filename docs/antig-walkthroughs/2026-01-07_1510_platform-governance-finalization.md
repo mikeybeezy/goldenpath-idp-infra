@@ -2,6 +2,9 @@
 id: 2026-01-07_1510_platform-governance-finalization
 title: Governance Finalization Walkthrough
 type: walkthrough
+relates_to:
+  - 00_START_HERE
+  - PLATFORM_DASHBOARDS
 category: education
 ---
 

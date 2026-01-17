@@ -12,6 +12,8 @@ reliability:
   maturity: 1
 relates_to:
   - 31_EKS_ACCESS_MODEL
+  - DOCS_RUNBOOKS_README
+  - RB-0031-idp-stack-deployment
 category: runbooks
 supported_until: 2028-01-01
 version: '1.0'

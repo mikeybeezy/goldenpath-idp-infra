@@ -17,8 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0076
-  - CL-0030
+  - ADR-0076-platform-infracost-ci-visibility
+  - CL-0030-infracost-ci-visibility
+  - CL-0050-infracost-activation
 supersedes: []
 superseded_by: []
 tags: []

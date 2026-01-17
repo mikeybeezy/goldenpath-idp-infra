@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0028
+  - CL-0028-dev-branch-apply-workflow
 supersedes: []
 superseded_by: []
 tags: []

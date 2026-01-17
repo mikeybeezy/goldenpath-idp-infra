@@ -13,8 +13,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 07_REPO_DECOUPLING_OPTIONS
-  - ADR-0013
+  - ADR-0013-platform-argo-app-management-approach
+  - BOOTSTRAP_10_BOOTSTRAP_README
+  - RB-0012-argocd-app-readiness
+  - audit-20260103
+  - goldenpath-idp-bootstrap
+  - one_stage_vs_multistage_bootstrap
 supersedes: []
 superseded_by: []
 tags: []

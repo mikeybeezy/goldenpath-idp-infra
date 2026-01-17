@@ -12,7 +12,7 @@ reliability:
   maturity: 1
 relates_to:
   - 06_IDENTITY_AND_ACCESS
-  - ADR-0024
+  - ADR-0024-platform-security-floor-v1
 category: security
 supported_until: 2028-01-01
 version: 1.0

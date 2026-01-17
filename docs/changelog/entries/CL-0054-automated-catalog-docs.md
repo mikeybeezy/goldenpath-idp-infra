@@ -17,9 +17,10 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0094
-  - ADR-0092
-  - CL-0054
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0094-automated-catalog-docs
+  - CL-0054-automated-catalog-docs
+  - REGISTRY_CATALOG
 supersedes: []
 superseded_by: []
 tags: []

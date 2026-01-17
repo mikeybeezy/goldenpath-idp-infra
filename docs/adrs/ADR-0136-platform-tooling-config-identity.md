@@ -12,8 +12,15 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0082
-  - ADR-0111
+  - 01_adr_index
+  - ADR-0082-platform-metadata-validation
+  - ADR-0111-platform-documentation-auto-healing
+  - ADR-0136
+  - ADR-0137
+  - ADR-0145
+  - CL-0097
+  - METADATA_ARTIFACT_ADOPTION_POLICY
+  - ROADMAP
 supersedes: []
 superseded_by: []
 tags: []

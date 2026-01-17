@@ -15,12 +15,12 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
-  - ADR-0001
-  - ADR-0002
-  - ADR-0013
-  - ARGOCD_HELM_README
   - 18_BACKSTAGE_MVP
+  - ADR-0001-platform-argocd-as-gitops-operator
+  - ADR-0002-platform-Kong-as-ingress-API-gateway
+  - ADR-0013-platform-argo-app-management-approach
+  - ARGOCD_HELM_README
+  - ONE_STAGE_VS_MULTISTAGE_BOOTSTRAP
 supersedes: []
 superseded_by: []
 tags: []
@@ -33,7 +33,6 @@ version: '1.0'
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Helm Bootstrap Runner (Non-Production)
 
 This document explains what `bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh` does and when to run it.

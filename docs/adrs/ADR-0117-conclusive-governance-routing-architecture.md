@@ -2,7 +2,6 @@
 id: ADR-0117-conclusive-governance-routing-architecture
 title: Conclusive Governance Routing & Compliance Engine
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -16,6 +15,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - ADR-0117-conclusive-governance-routing-architecture
+  - CL-0073-conclusive-governance-routing-architecture
   - DECISION_ROUTING_STRATEGY
   - agent-routing.yaml
 supersedes: []

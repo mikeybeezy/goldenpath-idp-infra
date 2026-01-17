@@ -17,10 +17,11 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 00_INDEX
   - 42_APP_TEMPLATE_LIVING
-  - ADR-0078
   - ADR-0078-platform-governed-repo-scaffolder
-  - CL-0031
+  - CL-0031-governed-repo-scaffolder
+  - US-0001-governance-driven-repo-scaffolder
 supersedes: []
 superseded_by: []
 tags: []

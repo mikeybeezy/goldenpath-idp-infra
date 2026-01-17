@@ -18,7 +18,8 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0132
-  - CL-0092
+  - CL-0092-ecr-registry-system-and-sync
+  - RB-0025-ecr-catalog-sync
 supersedes: []
 superseded_by: []
 tags: []

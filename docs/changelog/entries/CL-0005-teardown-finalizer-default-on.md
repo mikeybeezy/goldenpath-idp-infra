@@ -17,7 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0005
+  - CL-0005-teardown-finalizer-default-on
+  - METADATA_STRATEGY
 supersedes: []
 superseded_by: []
 tags: []

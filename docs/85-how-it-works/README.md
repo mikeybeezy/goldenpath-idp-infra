@@ -2,6 +2,8 @@
 id: HOW_IT_WORKS_INDEX
 title: How It Works Index
 type: documentation
+relates_to:
+  - CL-0127
 ---
 
 This directory contains high-level, technical explanations of the platform's core mechanics. It focuses on the "Intent-based" model of the Golden Path, explaining the relationship between developer manifests and final infrastructure.

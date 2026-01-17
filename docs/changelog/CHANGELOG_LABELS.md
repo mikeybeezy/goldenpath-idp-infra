@@ -17,6 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 40_CHANGELOG_GOVERNANCE
   - Changelog-template
 supersedes: []
 superseded_by: []

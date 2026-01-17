@@ -10,6 +10,7 @@ reliability:
   rollback_strategy: not-applicable
   observability_tier: bronze
 relates_to:
+  - DOCS_BUILD-RUN-LOGS_README
   - TD-TEMPLATE
 supported_until: 2028-01-01
 version: '1.0'

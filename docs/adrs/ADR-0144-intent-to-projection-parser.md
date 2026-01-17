@@ -2,7 +2,6 @@
 id: ADR-0144
 title: Architecture of the Intent-to-Projection Parser (The Golden Path Core)
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -13,9 +12,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0142-declarative-platform-contracts.md
-  - ADR-0143-secret-request-contract.md
-  - 85-how-it-works/secrets-flow/SECRET_REQUEST_FLOW.md
+  - 01_adr_index
+  - ADR-0142
+  - ADR-0143
+  - ADR-0144
+  - CL-0105
+  - CL-0106-workflow-driven-secret-provisioning
+  - RB-0026
+  - SECRET_REQUEST_FLOW
 supersedes: []
 superseded_by: []
 tags: []

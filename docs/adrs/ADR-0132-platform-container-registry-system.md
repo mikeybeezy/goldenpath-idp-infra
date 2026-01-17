@@ -2,7 +2,6 @@
 id: ADR-0132
 title: 'ADR-0132: Model ECR Registry as a Dedicated Backstage System'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,9 +11,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - ADR-0128
   - ADR-0129
-  - CL-0092
+  - ADR-0132
+  - CL-0092-ecr-registry-system-and-sync
+  - CL-0095-ecr-backstage-sync-automation
 supersedes: []
 superseded_by: []
 tags: []

@@ -12,8 +12,11 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0087
+  - 01_adr_index
+  - ADR-0087-k8s-metadata-sidecars
   - ADR-0136
+  - ADR-0137
+  - CL-0098
   - METADATA_ARTIFACT_ADOPTION_POLICY
 supersedes: []
 superseded_by: []

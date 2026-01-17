@@ -2,7 +2,6 @@
 id: ADR-0120-metadata-inheritance-and-active-governance
 title: metadata
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,7 +11,11 @@ reliability:
   observability_tier: bronze
   maturity: 2
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0120-metadata-inheritance-and-active-governance
+  - CL-0076-metadata-inheritance-and-active-governance
+  - PLATFORM_URGENT_FIX
 supersedes: []
 superseded_by: []
 tags: []

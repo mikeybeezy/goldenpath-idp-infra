@@ -13,7 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0023
+  - 01_adr_index
+  - 27_CI_IMAGE_SCANNING
+  - ADR-0023-platform-ci-image-scanning
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

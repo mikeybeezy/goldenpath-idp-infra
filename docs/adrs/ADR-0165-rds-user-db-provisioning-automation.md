@@ -2,25 +2,50 @@
 id: ADR-0165
 title: Automated RDS User and Database Provisioning
 type: adr
-status: accepted
-date: 2026-01-16
-deciders:
-  - platform-team
 domain: platform-core
 owner: platform-team
 lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
 schema_version: 1
+relates_to:
+  - 01_adr_index
+  - 10_PLATFORM_REQUIREMENTS
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0165
+  - ADR-0166
+  - CATALOG_INDEX
+  - CL-0140
+  - PRD-0001-rds-user-db-provisioning
+  - PR_GUARDRAILS_INDEX
+  - RB-0032
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
+  - RDS_SESSION_FEEDBACK
+  - RDS_USER_DB_PROVISIONING
+  - SCRIPT-0035
+  - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
+supersedes: []
+superseded_by: []
 tags:
   - rds
   - provisioning
   - automation
   - governance
-relates_to:
-  - PRD-0001-rds-user-db-provisioning
-  - 30_PLATFORM_RDS_ARCHITECTURE
-  - 10_PLATFORM_REQUIREMENTS
-  - SCRIPT-0035
-  - RB-0032
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+date: 2026-01-16
+deciders:
+  - platform-team
 ---
 
 ## Status

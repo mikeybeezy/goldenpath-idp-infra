@@ -2,7 +2,6 @@
 id: ADR-0098-standardized-pr-gates
 title: 'ADR-0098: Standardized PR Gates for ECR Pipeline'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -13,8 +12,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0092
-  - ADR-0093
+  - 01_adr_index
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0098-standardized-pr-gates
+  - ADR-0101-pr-metadata-auto-heal
+  - CL-0059-pr-156-stabilization
+  - PR-156-STABILIZATION-CHECKLIST
+  - PR_GUARDRAILS_INDEX
 supersedes: []
 superseded_by: []
 tags: []

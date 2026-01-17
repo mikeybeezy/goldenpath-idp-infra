@@ -2,7 +2,6 @@
 id: ADR-0158-platform-standalone-rds-bounded-context
 title: 'ADR-0158: Standalone RDS as Bounded Context with Deletion Protection'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,10 +11,35 @@ reliability:
   observability_tier: gold
 schema_version: 1
 relates_to:
-  - ADR-0006
-  - ADR-0007
-  - ADR-0053
-  - ADR-0157
+  - 01_adr_index
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0006-platform-secrets-strategy
+  - ADR-0007-platform-environment-model
+  - ADR-0053-platform-storage-lifecycle-separation
+  - ADR-0157-platform-multi-tenant-rds-architecture
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0159-backstage-catalog-registry-sync
+  - ADR-0160
+  - ADR-0165
+  - ADR-0166
+  - CAPABILITY_LEDGER
+  - CATALOG_INDEX
+  - CL-0130
+  - CONTRACT_DRIVEN_ARCHITECTURE
+  - PRD-0001-rds-user-db-provisioning
+  - PR_GUARDRAILS_INDEX
+  - RB-0012-argocd-app-readiness
+  - RB-0013-leak-protection-management
+  - RB-0014-metadata-and-enum-alignment
+  - RB-0015-repo-health-and-hygiene
+  - RB-0016-extending-governance-vocabulary
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0030-rds-break-glass-deletion
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
+  - RDS_SESSION_FEEDBACK
+  - RDS_USER_DB_PROVISIONING
+  - SESSION_CAPTURE_2026_01_17_01
 supersedes:
   - ADR-0157
 superseded_by: []

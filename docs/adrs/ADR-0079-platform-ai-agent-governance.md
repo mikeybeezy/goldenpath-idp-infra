@@ -12,10 +12,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - 07_AI_AGENT_GOVERNANCE
   - 26_AI_AGENT_PROTOCOLS
-  - ADR-0079
+  - ADR-0079-platform-ai-agent-governance
   - AI_CHANGELOG
+  - CL-0032-ai-agent-governance
 supersedes: []
 superseded_by: []
 tags: []

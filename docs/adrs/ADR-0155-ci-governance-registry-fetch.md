@@ -2,7 +2,6 @@
 id: ADR-0155-ci-governance-registry-fetch
 title: 'ADR-0155: CI Governance Registry Fetch for Build ID Validation'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -13,8 +12,12 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0148
-  - ADR-0149
+  - 01_adr_index
+  - ADR-0148-seamless-build-deployment-with-immutability
+  - ADR-0155-ci-governance-registry-fetch
+  - CI_TERRAFORM_WORKFLOWS
+  - CL-0126-ci-governance-registry-fetch
+  - CL-0127
 supersedes: []
 superseded_by: []
 tags:

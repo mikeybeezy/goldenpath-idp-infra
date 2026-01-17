@@ -13,7 +13,10 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0025
+  - 01_adr_index
+  - 44_DOC_TIGHTENING_PLAN
+  - ADR-0025-platform-boundaries-contract
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

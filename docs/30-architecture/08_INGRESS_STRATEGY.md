@@ -12,7 +12,9 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
 relates_to:
+  - 01_GOVERNANCE
   - 11_NETWORKING
+  - BOOTSTRAP_10_BOOTSTRAP_README
 category: architecture
 supported_until: 2028-01-01
 version: '1.0'

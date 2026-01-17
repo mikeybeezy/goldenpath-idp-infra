@@ -11,9 +11,21 @@ reliability:
   observability_tier: gold
   maturity: 1
 relates_to:
-  - ADR-0027
-  - ADR-0092
-  - PLATFORM_HEALTH.md
+  - ADR-0027-platform-design-philosophy
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0121-value-quantification-framework
+  - ADR-0129
+  - ADR-0145
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - FEATURES
+  - HEALTH_AUDIT_LOG
+  - PLATFORM_HEALTH
+  - PLATFORM_SYSTEM_MAP
+  - RB-0015-repo-health-and-hygiene
+  - RB-0028
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0030-rds-break-glass-deletion
+  - SESSION_CAPTURE_2026_01_17_01
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
@@ -85,6 +97,7 @@ The IDP ensures that every new service is compliant from Day 0 by embedding gove
 The platform programmatically maps relationships between thousands of resources, transforming static docs into a dynamic graph.
 
 - **Relationship Discovery**: The **`extract_relationships.py`** engine automatically identifies ADR dependencies, changelog links, and cross-component mentions.
+- **Relationship Registry Sync**: The `scripts/extract_relationships.py` engine updates `relates_to` metadata to keep bidirectional links current and the knowledge graph accurate.
 - **Impact Analysis**: Programmatic tracking allows engineers to see exactly which components or environments are engagement affected by a change before it is merged.
 
 ## 9. Self-Healing Documentation
@@ -93,6 +106,7 @@ The IDP's documentation is no longer a static artifact; it is a live representat
 
 - **Automated Indexes**: Workflows (`CI_WORKFLOWS.md`) and Scripts (`scripts/index.md`) are auto-generated from source code, ensuring zero documentation drift.
 - **Source-Driven Truth**: Documentation accurately reflects the current state of governance, infrastructure, and delivery pipelines without manual intervention.
+- **System Map Generation**: The `scripts/generate_doc_system_map.py` engine maintains `docs/90-doc-system/PLATFORM_SYSTEM_MAP.md`, summarizing doc domains, counts, and validators.
 - **Categorized & Visualized**: Automated tools parse, categorize, and even visualize complex systems (like ASCII workflow trees), making the platform easier to navigate and understand.
 
 ## 10. Single-Submission Repository Scaffolding

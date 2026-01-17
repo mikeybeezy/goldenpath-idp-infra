@@ -13,7 +13,8 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0085
+  - 01_adr_index
+  - ADR-0085-score-implementation
 supersedes: []
 superseded_by: []
 tags: []

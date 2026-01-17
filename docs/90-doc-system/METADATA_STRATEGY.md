@@ -11,9 +11,17 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0050
-  - ADR-0066
-  - CL-0005
+  - 11_SECRETS_CATALOG_POLICY
+  - 35_RESOURCE_TAGGING
+  - ADR-0050-platform-changelog-label-gate
+  - ADR-0066-platform-dashboards-as-code
+  - ADR-0140
+  - CL-0005-teardown-finalizer-default-on
+  - CL-0101
+  - METADATA_BACKFILL_RUNBOOK
+  - METADATA_VALIDATION_GUIDE
+  - RB-0018-metadata-backfill-script
+  - RB-0019-relationship-extraction-script
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

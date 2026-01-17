@@ -2,7 +2,6 @@
 id: ADR-0133
 title: 'ADR-0133: Human-in-the-Loop PRs for Backstage Docs Generation'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,9 +11,15 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0111
-  - ADR-0112
-  - CL-0093
+  - 01_adr_index
+  - 07_AI_AGENT_GOVERNANCE
+  - 09_GOVERNANCE_TESTING
+  - ADR-0111-platform-documentation-auto-healing
+  - ADR-0112-automated-adr-index-generation
+  - ADR-0133
+  - CL-0093-human-in-the-loop-backstage-docs-prs
+  - CL-0094-backstage-docs-pr-workflow
+  - CL-0102-backstage-docs-linkout
 supersedes: []
 superseded_by: []
 tags: []

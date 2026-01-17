@@ -13,8 +13,8 @@ reliability:
 relates_to:
   - 04_LB_FINALIZER_STUCK
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0047
   - ADR-0047-platform-teardown-destroy-timeout-retry
+  - DOCS_RUNBOOKS_README
 category: runbooks
 supported_until: 2028-01-01
 version: '1.0'

@@ -17,8 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0064
-  - CL-0013
+  - ADR-0064-platform-dev-bootstrap-defaults
+  - CL-0013-dev-bootstrap-defaults-off
 supersedes: []
 superseded_by: []
 tags: []

@@ -11,9 +11,13 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 01_GOVERNANCE
+  - 02_PLATFORM_BOUNDARIES
+  - ADR-0050-platform-changelog-label-gate
+  - ADR-0051-platform-reliability-metrics-contract-minimums
   - CHANGELOG_LABELS
-  - CL-0001
-  - CL-0002
+  - CL-0001-teardown-kubectl-timeout-guard
+  - CL-0002-bootstrap-refactor
   - Changelog-template
   - DOCS_CHANGELOG_README
 supported_until: 2028-01-01

@@ -17,7 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0112
+  - 01_adr_index
+  - ADR-0112-automated-adr-index-generation
+  - CL-0068-adr-index-automation
 supersedes: []
 superseded_by: []
 tags: []

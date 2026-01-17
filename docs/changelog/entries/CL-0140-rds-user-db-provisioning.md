@@ -16,10 +16,13 @@ risk_profile:
   coupling_risk: low
 schema_version: 1
 relates_to:
+  - ADR-0165
+  - CL-0140
   - PRD-0001-rds-user-db-provisioning
-  - ADR-0165-rds-user-db-provisioning-automation
-  - SCRIPT-0035
+  - RB-0030-rds-break-glass-deletion
   - RB-0032
+  - SCRIPT-0035
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:

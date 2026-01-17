@@ -17,7 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0084
+  - CL-0084-backstage-ecr-instrumentation
 supersedes: []
 superseded_by: []
 tags: []

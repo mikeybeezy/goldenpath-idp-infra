@@ -15,7 +15,11 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: silver
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0087-k8s-metadata-sidecars
+  - ADR-0137
+  - METADATA_ARTIFACT_ADOPTION_POLICY
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,6 +31,9 @@ value_quantification:
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
+dependencies:
+  - module:vpc
+  - service:eks
 ---
 
 # ADR-0087: Integration of Governance Metadata with Kubernetes Resources

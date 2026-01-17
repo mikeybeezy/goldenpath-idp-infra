@@ -12,8 +12,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0074
-  - CL-0029
+  - 01_adr_index
+  - ADR-0074-platform-ops-workflow-branch-guard
+  - CL-0029-ops-workflow-branch-guard
 supersedes: []
 superseded_by: []
 tags: []

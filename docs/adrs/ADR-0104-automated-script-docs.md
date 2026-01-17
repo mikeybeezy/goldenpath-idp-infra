@@ -13,8 +13,11 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0103
-  - scripts/index.md
+  - 01_adr_index
+  - ADR-0103-automated-workflow-docs
+  - ADR-0104-automated-script-docs
+  - ADR-0111-platform-documentation-auto-healing
+  - CL-0066-automate-script-docs
 supersedes: []
 superseded_by: ADR-0111
 tags: []

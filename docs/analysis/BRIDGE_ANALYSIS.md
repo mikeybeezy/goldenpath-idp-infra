@@ -2,6 +2,10 @@
 id: BRIDGE_ANALYSIS
 title: 'Bridge Analysis: Infrastructure to Bootstrap'
 type: documentation
+relates_to:
+  - ADR-0148-seamless-build-deployment-with-immutability
+  - BUG_FIXES_SUMMARY
+  - CL-0121-seamless-build-deployment
 ---
 
 # Bridge Analysis: Infrastructure to Bootstrap

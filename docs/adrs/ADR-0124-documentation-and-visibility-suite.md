@@ -2,7 +2,6 @@
 id: ADR-0124
 title: 'ADR-0124: Documentation & Visibility Suite'
 type: adr
-status: accepted
 domain: platform-core
 owner: platform-team
 lifecycle: active
@@ -12,7 +11,12 @@ reliability:
   observability_tier: bronze
   maturity: 2
 schema_version: 1
-relates_to: []
+relates_to:
+  - 01_adr_index
+  - ADR-0124
+  - CL-0080
+  - CL-0120
+  - GOVERNANCE_VOCABULARY
 supersedes: []
 superseded_by: []
 tags: []

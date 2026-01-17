@@ -2,7 +2,6 @@
 id: ADR-0145
 title: 'ADR-0145: Governance Registry Mirror Pattern'
 type: adr
-status: accepted
 domain: platform-governance
 owner: platform-team
 lifecycle: active
@@ -13,9 +12,18 @@ reliability:
   maturity: 3
 schema_version: 1
 relates_to:
-  - RB-0028
+  - 01_adr_index
+  - ADR-0026-platform-cd-deployment-contract
   - ADR-0136
-  - ADR-0026
+  - ADR-0145
+  - ADR-0159-backstage-catalog-registry-sync
+  - CAPABILITY_LEDGER
+  - CL-0113
+  - CL-0114
+  - CL-0115
+  - CL-0129
+  - RB-0028
+  - SCRIPT_CERTIFICATION_AUDIT
 supersedes: []
 superseded_by: []
 tags: []

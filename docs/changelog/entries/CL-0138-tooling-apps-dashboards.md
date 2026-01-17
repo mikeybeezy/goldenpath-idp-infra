@@ -21,9 +21,11 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - ADR-0162
   - CL-0136-tooling-apps-ingress-configuration
-  - CL-0137-ootb-observability-dashboards
-  - ADR-0162-kong-ingress-dns-strategy
+  - CL-0137
+  - CL-0138-tooling-apps-dashboards
+  - agent_session_summary
 supersedes: []
 superseded_by: []
 tags:
@@ -35,7 +37,7 @@ tags:
   - loki
 inheritance: {}
 value_quantification:
-  vq_class: "\u26AB LV/LQ"
+  vq_class: ⚫ LV/LQ
   impact_tier: high
   potential_savings_hours: 8.0
 supported_until: 2028-01-16

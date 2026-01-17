@@ -21,10 +21,11 @@ reliability:
   observability_tier: gold
 schema_version: 1
 relates_to:
-  - ADR-0164-teardown-v3-enhanced-reliability
-  - ADR-0048-platform-teardown-version-selector
-  - ADR-0038-platform-teardown-orphan-cleanup-gate
   - 15_TEARDOWN_AND_CLEANUP
+  - ADR-0038-platform-teardown-orphan-cleanup-gate
+  - ADR-0048-platform-teardown-version-selector
+  - ADR-0164-teardown-v3-enhanced-reliability
+  - CL-0139-teardown-v3-enhanced-reliability
 supersedes:
   - ADR-0048-platform-teardown-version-selector
 superseded_by: []
@@ -36,7 +37,7 @@ tags:
   - break-glass
 inheritance: {}
 value_quantification:
-  vq_class: "\u26AB LV/LQ"
+  vq_class: ⚫ LV/LQ
   impact_tier: high
   potential_savings_hours: 4.0
 supported_until: 2028-01-16

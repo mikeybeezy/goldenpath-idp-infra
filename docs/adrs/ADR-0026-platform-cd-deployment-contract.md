@@ -13,7 +13,14 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0026
+  - 01_adr_index
+  - 29_CD_DEPLOYMENT_CONTRACT
+  - 44_DOC_TIGHTENING_PLAN
+  - ADR-0026-platform-cd-deployment-contract
+  - ADR-0145
+  - RB-0019-relationship-extraction-script
+  - RELATIONSHIP_EXTRACTION_GUIDE
+  - audit-20260103
 supersedes: []
 superseded_by: []
 tags: []

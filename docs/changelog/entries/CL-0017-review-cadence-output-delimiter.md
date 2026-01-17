@@ -17,9 +17,8 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0068
   - ADR-0068-platform-review-cadence-output
-  - CL-0017
+  - CL-0017-review-cadence-output-delimiter
 supersedes: []
 superseded_by: []
 tags: []

@@ -11,11 +11,15 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 01_GOVERNANCE
+  - 04_REPO_STRUCTURE
   - 06_IDENTITY_AND_ACCESS
+  - 08_SOURCE_OF_TRUTH
   - 16_INFRA_Build_ID_Strategy_Decision
   - 17_BUILD_RUN_FLAGS
-  - ADR-0001
+  - ADR-0001-platform-argocd-as-gitops-operator
   - BOOTSTRAP_10_BOOTSTRAP_README
+  - RELATIONSHIP_EXTRACTION_GUIDE
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

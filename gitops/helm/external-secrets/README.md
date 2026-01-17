@@ -17,8 +17,8 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
-  - ADR-0006
   - 06_IDENTITY_AND_ACCESS
+  - ADR-0006-platform-secrets-strategy
 supersedes: []
 superseded_by: []
 tags: []
@@ -36,7 +36,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # External Secrets Helm Deployment
 
 External Secrets Operator syncs data from AWS Secrets Manager (and future Vault integration) into Kubernetes secrets.
