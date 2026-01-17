@@ -66,9 +66,7 @@ The schema (`schemas/requests/rds.schema.yaml`) describes a contract-driven arch
 
 The guard watches `docs/20-contracts/rds-requests/**` but this directory doesn't exist (git status shows `?? docs/20-contracts/rds-requests/`). The current flow creates entries in `rds-catalog.yaml`, not individual request files.
 
-**Recommendation:** Either:
-- Change path to just `docs/20-contracts/resource-catalogs/rds-catalog.yaml`
-- Or create the `rds-requests/` directory and update workflow to write there
+**Status:** Resolved. The guard now watches `docs/20-contracts/resource-catalogs/rds-catalog.yaml`.
 
 ### 4. E2E Validation (Deferred - Post-Merge)
 
@@ -92,7 +90,7 @@ Schema says `dev_max_size` limits dev to `small`, but workflow validation only e
 - Schema: `owner: platform-team`
 - Backstage: `owner: platform-team`
 
-**Recommendation:** Standardize to `platform-team` everywhere.
+**Status:** Resolved. Workflow seeds `owner: platform-team` and enforces `.owner`/`.managed_by` as `platform-team` on updates.
 
 ---
 
