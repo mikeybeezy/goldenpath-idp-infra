@@ -229,7 +229,7 @@ def main():
     all_md_files = []
     for pattern in ['docs/**/*.md', 'ci-workflows/**/*.md', 'apps/**/*.md', 'bootstrap/**/*.md',
                     'modules/**/*.md', 'gitops/**/*.md', 'idp-tooling/**/*.md', 'envs/**/*.md',
-                    'compliance/**/*.md', '*.md']:
+                    'compliance/**/*.md', 'session_summary/**/*.md', '*.md']:
         all_md_files.extend(glob.glob(pattern, recursive=True))
 
     # Remove duplicates

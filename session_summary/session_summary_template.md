@@ -27,6 +27,7 @@ reliability:
 - Update the in-session log every 30-60 minutes or after decisions/blockers.
 - End each entry with a short session report.
 - If responding to review feedback, include a "Feedback Addressed" section with links.
+- Artifacts touched must use canonical repo-relative file paths in backticks.
 
 ## Entry template
 
@@ -56,6 +57,9 @@ Objective: <short statement>
 
 ### Edge cases observed (optional)
 - <symptom> -> <cause (if known)> -> <mitigation>
+
+### Artifacts touched (required)
+- `<path/to/file>` (canonical repo-relative path)
 
 ### Outputs produced (optional)
 - PRs: <#123, #124>
@@ -120,6 +124,9 @@ Objective: fix Backstage/Keycloak blockers and restore platform health
 ### Outputs produced (optional)
 - PRs: #123
 - Docs/ADRs: ADR-0162
+
+### Artifacts touched (required)
+- `gitops/helm/backstage/values/dev.yaml`
 
 ### Feedback Addressed (optional)
 - Feedback: docs/feedback/bootstrap-review.md
