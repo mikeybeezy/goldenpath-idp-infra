@@ -559,19 +559,50 @@ module "app_secrets" {
 # Option A: Standalone Bounded Context (ADR-0158)
 #   - Directory: envs/dev-rds/
 #   - Command: make rds-apply ENV=dev (separate from EKS)
-#   - Use case: RDS must survive cluster teardown, Backstage self-service
+#   - Use case: Team-requested persistence, Backstage self-service
 #
-# Option B: Coupled with EKS (below)
+# Option B: Coupled with EKS (below) - PERSISTENT MODE ONLY
 #   - Toggle: rds_config.enabled = true in terraform.tfvars
+#   - Requires: cluster_lifecycle = "persistent"
 #   - Command: make apply ENV=dev (single command)
-#   - Use case: Simple deployment, add RDS later via toggle
+#   - Use case: Simple deployment with full teardown support
 #
+# IMPORTANT: Coupled RDS is BLOCKED in ephemeral mode to prevent orphaned resources.
 # See: docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md
 ################################################################################
 
+# Fail-fast guard: Block coupled RDS in ephemeral builds
+# This check validates that RDS is not enabled when cluster_lifecycle is ephemeral
+# The precondition must reference config values to satisfy Terraform's validation
+resource "null_resource" "rds_ephemeral_guard" {
+  count = var.rds_config.enabled && var.cluster_lifecycle == "ephemeral" ? 1 : 0
+
+  lifecycle {
+    precondition {
+      # This condition is always false when count > 0, but references config values
+      condition     = !(var.rds_config.enabled && var.cluster_lifecycle == "ephemeral")
+      error_message = <<-EOT
+        ERROR: Coupled RDS is not allowed in ephemeral EKS builds.
+
+        When cluster_lifecycle = "ephemeral", RDS cannot be coupled because:
+        - Ephemeral teardown does not capture RDS resources
+        - This creates orphaned databases and state conflicts
+
+        Options:
+        1. Use persistent mode: Set cluster_lifecycle = "persistent" in terraform.tfvars
+        2. Use standalone RDS: Set rds_config.enabled = false and run:
+           make rds-apply ENV=${var.environment}
+
+        See: docs/70-operations/30_PLATFORM_RDS_ARCHITECTURE.md
+      EOT
+    }
+  }
+}
+
 module "platform_rds" {
   source = "../../modules/aws_rds"
-  count  = var.rds_config.enabled ? 1 : 0
+  # Only create when enabled AND in persistent mode (ephemeral blocked by guard above)
+  count = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? 1 : 0
 
   identifier = "${local.base_name_prefix}-${var.rds_config.identifier}"
   vpc_id     = module.vpc.vpc_id
@@ -622,7 +653,14 @@ module "platform_rds" {
     }
   ]
 
-  tags = local.common_tags
+  # Tags include ClusterName for teardown discovery in persistent mode
+  tags = merge(
+    local.common_tags,
+    {
+      ClusterName = local.cluster_name_effective
+      Component   = "platform-rds-coupled"
+    }
+  )
 
   depends_on = [module.vpc, module.subnets]
 }

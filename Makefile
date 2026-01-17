@@ -82,7 +82,7 @@ endef
 #   make drain-nodegroup NODEGROUP=dev-default
 #   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 
-.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help rds-init rds-plan rds-apply rds-status rds-provision rds-provision-dry-run rds-provision-auto rds-provision-auto-dry-run
+.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help rds-init rds-plan rds-apply rds-status rds-provision rds-provision-dry-run rds-provision-auto rds-provision-auto-dry-run apply-persistent bootstrap-persistent deploy-persistent teardown-persistent
 
 init:
 	$(TF_BIN) -chdir=$(ENV_DIR) init
@@ -608,6 +608,95 @@ rds-provision-auto-dry-run:
 		--dry-run
 
 ################################################################################
+# Persistent Mode Targets
+#
+# For clusters with cluster_lifecycle=persistent, BUILD_ID is not used.
+# These targets provide equivalent functionality without requiring BUILD_ID.
+#
+# State key: envs/<env>/terraform.tfstate (root level, not builds/<id>/)
+# RDS: Allowed in persistent mode (fail-fast guard blocks ephemeral+RDS)
+# Teardown: Uses ClusterName tag instead of BuildId tag
+################################################################################
+
+# Persistent cluster name - derived from tfvars or explicitly set
+PERSISTENT_CLUSTER ?= $(shell awk -F'=' '/^[[:space:]]*cluster_name[[:space:]]*=/{gsub(/"/,"",$$2);gsub(/[[:space:]]/,"",$$2);print $$2;exit}' $(ENV_DIR)/terraform.tfvars 2>/dev/null)
+PERSISTENT_CLUSTER_EFFECTIVE ?= $(if $(PERSISTENT_CLUSTER),$(PERSISTENT_CLUSTER),goldenpath-$(ENV)-eks)
+
+apply-persistent:
+	@echo "Applying persistent infrastructure for $(ENV)..."
+	@echo "Cluster: $(PERSISTENT_CLUSTER_EFFECTIVE)"
+	@echo "State key: envs/$(ENV)/terraform.tfstate"
+	@mkdir -p logs/build-timings
+	@bash -c '\
+	log="logs/build-timings/apply-persistent-$(ENV)-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	echo "Terraform apply output streaming; full log at $$log"; \
+	$(TF_BIN) -chdir=$(ENV_DIR) apply \
+		-var="cluster_lifecycle=persistent" \
+		-var="enable_k8s_resources=true" \
+		-var="apply_kubernetes_addons=false" \
+		2>&1 | tee "$$log"; \
+	exit $${PIPESTATUS[0]}; \
+	'
+
+bootstrap-persistent:
+	@echo "Bootstrapping persistent cluster $(PERSISTENT_CLUSTER_EFFECTIVE)..."
+	@mkdir -p logs/build-timings
+	@bash -c '\
+	log="logs/build-timings/bootstrap-persistent-$(ENV)-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	echo "Bootstrap output streaming; full log at $$log"; \
+	SKIP_ARGO_SYNC_WAIT=$(SKIP_ARGO_SYNC_WAIT) \
+	NODE_INSTANCE_TYPE=$(NODE_INSTANCE_TYPE) \
+	ENV_NAME=$(ENV_NAME) \
+	SKIP_CERT_MANAGER_VALIDATION=$(SKIP_CERT_MANAGER_VALIDATION) \
+	COMPACT_OUTPUT=$(COMPACT_OUTPUT) \
+	SCALE_DOWN_AFTER_BOOTSTRAP=$(SCALE_DOWN_AFTER_BOOTSTRAP) \
+	TF_DIR=$(TF_DIR) \
+	bash $(BOOTSTRAP_SCRIPT) $(PERSISTENT_CLUSTER_EFFECTIVE) $(REGION) $(KONG_NAMESPACE) 2>&1 | tee "$$log"; \
+	exit $${PIPESTATUS[0]}; \
+	'
+
+deploy-persistent:
+	@echo "Starting persistent deployment for $(ENV)"
+	@echo "Cluster: $(PERSISTENT_CLUSTER_EFFECTIVE)"
+	@$(MAKE) apply-persistent ENV=$(ENV) REGION=$(REGION)
+	@$(MAKE) rds-provision-auto ENV=$(ENV) RDS_MODE=auto
+	@$(MAKE) bootstrap-persistent ENV=$(ENV) REGION=$(REGION)
+	@$(MAKE) _phase3-verify ENV=$(ENV)
+	@echo "Persistent deployment complete!"
+
+teardown-persistent:
+	@if [ -z "$(ENV)" ]; then echo "ERROR: ENV required"; exit 1; fi
+	@if [ -z "$(REGION)" ]; then echo "ERROR: REGION required"; exit 1; fi
+	@if [ "$(CONFIRM_DESTROY)" != "yes" ]; then \
+		echo ""; \
+		echo "WARNING: This will destroy ALL persistent resources for $(ENV)"; \
+		echo "         including EKS cluster, RDS (if coupled), and all related AWS resources."; \
+		echo ""; \
+		echo "Cluster: $(PERSISTENT_CLUSTER_EFFECTIVE)"; \
+		echo "Region:  $(REGION)"; \
+		echo "State:   envs/$(ENV)/terraform.tfstate"; \
+		echo ""; \
+		echo "To proceed, run:"; \
+		echo "  make teardown-persistent ENV=$(ENV) REGION=$(REGION) CONFIRM_DESTROY=yes"; \
+		echo ""; \
+		exit 1; \
+	fi
+	@echo "Tearing down persistent cluster $(PERSISTENT_CLUSTER_EFFECTIVE)..."
+	@mkdir -p logs/build-timings
+	@bash -c '\
+	log="logs/build-timings/teardown-persistent-$(ENV)-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	echo "Teardown output streaming; full log at $$log"; \
+	script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh"; \
+	TEARDOWN_CONFIRM=true \
+	TF_DIR=$(TF_DIR) \
+	TF_AUTO_APPROVE=true \
+	REMOVE_K8S_SA_FROM_STATE=true \
+	CLEANUP_ORPHANS=$(CLEANUP_ORPHANS) \
+	bash "$$script" $(PERSISTENT_CLUSTER_EFFECTIVE) $(REGION) 2>&1 | tee "$$log"; \
+	exit $${PIPESTATUS[0]}; \
+	'
+
+################################################################################
 
 help:
 	@echo "Targets:"
@@ -624,7 +713,15 @@ help:
 	@echo "  NOTE: No rds-destroy target. See RB-0030 for deletion."
 	@echo "  NOTE: Non-dev requires ALLOW_DB_PROVISION=true"
 	@echo ""
-	@echo "== EKS Cluster =="
+	@echo "== Persistent Mode (no BUILD_ID) =="
+	@echo "  make apply-persistent ENV=dev REGION=eu-west-2"
+	@echo "  make bootstrap-persistent ENV=dev REGION=eu-west-2"
+	@echo "  make deploy-persistent ENV=dev REGION=eu-west-2  # apply + rds-provision + bootstrap"
+	@echo "  make teardown-persistent ENV=dev REGION=eu-west-2 CONFIRM_DESTROY=yes"
+	@echo "  NOTE: Persistent mode uses root state key (envs/<env>/terraform.tfstate)"
+	@echo "  NOTE: RDS allowed in persistent mode, blocked in ephemeral"
+	@echo ""
+	@echo "== EKS Cluster (Ephemeral - requires BUILD_ID) =="
 	@echo "  make init ENV=dev"
 	@echo "  make plan ENV=dev"
 	@echo "  make apply ENV=dev"

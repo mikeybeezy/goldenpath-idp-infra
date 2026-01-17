@@ -94,6 +94,19 @@ RDS must be deployed **before** the EKS cluster because:
 2. ExternalSecrets need secrets to exist in AWS before syncing
 3. Apps need database connectivity on first boot
 
+### EKS Lifecycle Alignment (Non-Tribal Rules)
+
+Coupled RDS and EKS lifecycle must be aligned to avoid orphaned resources.
+
+| EKS Lifecycle | Coupled RDS (`rds_config.enabled=true`) | Outcome |
+| --- | --- | --- |
+| Ephemeral | Not allowed | Guard blocks create (use standalone RDS instead) |
+| Persistent | Allowed | RDS is created and tracked by cluster tags |
+
+If a team needs RDS while running ephemeral clusters, use the **standalone RDS**
+request flow (separate Terraform root) so the database lifecycle is decoupled
+from cluster rebuilds.
+
 ### Makefile Commands
 
 #### Coupled RDS (Standard EKS Build)

@@ -1,4 +1,5 @@
 # Owner: platform
+# Relates-To: CL-0142, ADR-0028-platform-dev-branch-gate
 name: Apply - Infra Terraform Apply (dev)
 
 on:
@@ -38,9 +39,48 @@ on:
         type: boolean
 
 jobs:
+  # Gate: Check if EKS-related files changed (requires manual apply)
+  scope-check:
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    outputs:
+      eks_changed: ${{ steps.check.outputs.eks_changed }}
+      changed_files: ${{ steps.check.outputs.changed_files }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check for EKS-related changes
+        id: check
+        run: |
+          # Get files changed in this push
+          CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          # Check if any EKS-critical files changed
+          if echo "$CHANGED" | grep -qE "modules/aws_eks/|envs/dev/main\.tf"; then
+            echo "eks_changed=true" >> $GITHUB_OUTPUT
+            echo "::warning::EKS-related files changed - manual apply required"
+          else
+            echo "eks_changed=false" >> $GITHUB_OUTPUT
+            echo "::notice::No EKS changes detected - auto-apply will proceed"
+          fi
+
   apply-dev:
-    # Run on push (auto-apply) or manual dispatch with confirm_apply == 'apply'
-    if: ${{ github.event_name == 'push' || inputs.confirm_apply == 'apply' }}
+    needs: [scope-check]
+    # Run if:
+    # 1. Manual dispatch with confirm_apply == 'apply', OR
+    # 2. Push event AND no EKS files changed (safe auto-apply)
+    # Skip if: Push event AND EKS files changed (requires manual trigger)
+    if: |
+      always() && (
+        (github.event_name == 'workflow_dispatch' && inputs.confirm_apply == 'apply') ||
+        (github.event_name == 'push' && needs.scope-check.outputs.eks_changed == 'false')
+      )
     runs-on: ubuntu-latest
     environment: dev
     permissions:
