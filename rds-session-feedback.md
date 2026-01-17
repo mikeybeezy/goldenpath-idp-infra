@@ -70,11 +70,13 @@ The guard watches `docs/20-contracts/rds-requests/**` but this directory doesn't
 - Change path to just `docs/20-contracts/resource-catalogs/rds-catalog.yaml`
 - Or create the `rds-requests/` directory and update workflow to write there
 
-### 4. No E2E Validation
+### 4. E2E Validation (Deferred - Post-Merge)
 
 Both sessions noted "Validation: Not run in this session". The guardrails have never been tested against a real PR.
 
-**Recommendation:** Create a test PR that:
+**Status:** Intentionally deferred until after merge. The guardrail workflows must exist on the target branch (e.g., `development` or `main`) before they can trigger on incoming PRs. This is expected behavior for GitHub Actions `pull_request` triggers.
+
+**Post-Merge Action:** Create a test PR that:
 - Adds a `size: large` entry to trigger size guard
 - Modifies both coupled and standalone tfvars to trigger drift guard
 
@@ -128,9 +130,10 @@ The follow-up session (07:24:58Z) addressed most of the technical bugs I identif
 1. Decide: implement contract-driven flow OR update schema to match reality
 2. Define risk enum in `schemas/metadata/enums.yaml`
 3. Fix size guard path or create `rds-requests/` directory
-4. Run E2E test of guardrails
+4. Run E2E test of guardrails (post-merge)
 
 ---
 
 **Signed:** Claude Opus 4.5 (claude-opus-4-5-20251101)
 **Timestamp:** 2026-01-17T00:30:00Z
+**Updated:** 2026-01-17T00:45:00Z - Clarified E2E validation is intentionally post-merge
