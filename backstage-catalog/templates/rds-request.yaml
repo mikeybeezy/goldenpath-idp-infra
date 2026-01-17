@@ -35,14 +35,14 @@ spec:
           type: string
           description: Name for the database (e.g., myapp). Will be created on the shared Platform RDS instance.
           ui:autofocus: true
-          pattern: '^[a-z][a-z0-9_]*$'
-          ui:help: "Lowercase letters, numbers, and underscores only. Must start with a letter."
+          pattern: '^[a-z][a-z0-9_]{2,62}$'
+          ui:help: "3-63 chars, lowercase letters/numbers/underscores only. Must start with a letter."
         username:
           title: Database Username
           type: string
           description: Username for database access (e.g., myapp_user). Will have full access to this database only.
-          pattern: '^[a-z][a-z0-9_]*$'
-          ui:help: "Lowercase letters, numbers, and underscores only. Must start with a letter."
+          pattern: '^[a-z][a-z0-9_]{2,30}$'
+          ui:help: "3-31 chars, lowercase letters/numbers/underscores only. Must start with a letter."
         owner:
           title: Owner Team
           type: string
