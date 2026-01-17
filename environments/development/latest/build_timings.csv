@@ -39,3 +39,4 @@ start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,
 2026-01-01T04:01:57Z,2026-01-01T04:13:37Z,teardown,dev,31-12-25-04,700,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-31-12-25-04-31-12-25-04-20260101T040157Z.log
 2026-01-17T12:40:17Z,2026-01-17T12:44:53Z,teardown,dev,15-01-26-15,276,0,0,0,0,https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/21094419271
 2026-01-17T17:13:03Z,2026-01-17T17:15:08Z,teardown,dev,17-01-26-01 ,125,0,0,0,0,https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/21097953296
+2026-01-17T17:16:47Z,2026-01-17T17:16:47Z,teardown,dev,17-01-26-012,0,1,0,0,0,https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/21098026103
