@@ -246,12 +246,12 @@ CI Workflows (GitHub Actions)
 
 ### RDS Size Approval Guard
 - **File**: `rds-size-approval-guard.yml`
-- **Owner**: platform
+- **Owner**: platform-team
 - **Triggers**:
 
 ### RDS tfvars Drift Guard
 - **File**: `rds-tfvars-drift-guard.yml`
-- **Owner**: platform
+- **Owner**: platform-team
 - **Triggers**:
 
 ### Session Capture Guardrail
