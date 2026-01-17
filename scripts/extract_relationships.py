@@ -21,9 +21,10 @@ risk_profile:
 """
 
 """
-Purpose: Automated Relationship & Dependency Extractor
-Achievement: Scans content for ADR/CL mentions, Markdown links, and dependency prefixes
-             to programmatically wire together the Platform Knowledge Graph.
+Purpose: Automated Relationship & Dependency Extractor (Bidirectional)
+Achievement: Scans content for ADR/CL/RB/PRD/EC/US mentions, Markdown links, and dependency
+             prefixes to programmatically wire together the Platform Knowledge Graph.
+             Implements bidirectional linking: if A references B, both A and B get updated.
 Value: Surfaces "Hidden Dependencies" and impact areas, allowing the Platform Team
        to perform high-confidence risk assessment before infrastructure changes.
 """
@@ -38,6 +39,9 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from metadata_config import platform_yaml_dump
 from collections import defaultdict
+
+# Prefixes for short ID patterns (ADR-0001, CL-0042, RB-0031, etc.)
+SHORT_ID_PREFIXES = ("ADR", "CL", "PRD", "RB", "EC", "US")
 
 
 def extract_doc_id_from_path(file_path):
@@ -67,11 +71,10 @@ def extract_metadata_fields(content, current_file):
     inline_refs = re.findall(r'`(docs/[^`]+\.md)`', content)
     relationships.update(inline_refs)
 
-    # Pattern 2: ADR/CL mentions (e.g. ADR-0026, CL-0042)
-    adr_mentions = re.findall(r'\b(ADR-\d{4})\b', content)
-    relationships.update(adr_mentions)
-    cl_mentions = re.findall(r'\b(CL-\d{4})\b', content)
-    relationships.update(cl_mentions)
+    # Pattern 2: ADR/CL/RB/PRD/EC/US mentions (e.g. ADR-0026, CL-0042, RB-0031)
+    for prefix in SHORT_ID_PREFIXES:
+        mentions = re.findall(rf'\b({prefix}-\d{{4}})\b', content)
+        relationships.update(mentions)
 
     # Pattern 3: Markdown links to local files
     md_links = re.findall(r'\]\(([^)]+\.md)\)', content)
@@ -150,14 +153,78 @@ def write_metadata(file_path, metadata, content):
         return False
 
 
-def process_file(file_path, all_doc_ids, dry_run=False, verbose=False):
-    """Process a single file to extract and update relationships and dependencies"""
+def build_short_id_map(all_doc_ids):
+    """Map short IDs (e.g., ADR-0001) to full document IDs."""
+    short_map = defaultdict(list)
+    pattern = re.compile(rf"^({'|'.join(SHORT_ID_PREFIXES)})-\d{{4}}-")
+    for doc_id in all_doc_ids:
+        match = pattern.match(doc_id)
+        if match:
+            short = doc_id.split("-", 2)[:2]
+            short_id = "-".join(short)
+            short_map[short_id].append(doc_id)
+    return short_map
+
+
+def normalize_reference(ref, all_doc_ids, short_id_map):
+    """Resolve a reference into canonical doc IDs (no path refs)."""
+    resolved = set()
+    if not ref:
+        return resolved
+
+    if ref in all_doc_ids:
+        resolved.add(ref)
+        return resolved
+
+    if ref in short_id_map:
+        if len(short_id_map[ref]) == 1:
+            resolved.update(short_id_map[ref])
+        return resolved
+
+    if "/" in ref or ref.endswith(".md"):
+        try:
+            doc_id = extract_doc_id_from_path(ref)
+            if doc_id in all_doc_ids:
+                resolved.add(doc_id)
+        except Exception:
+            pass
+        return resolved
+
+    return resolved
+
+
+def normalize_relates(relates, all_doc_ids, short_id_map):
+    """Normalize existing relates_to entries to IDs only."""
+    normalized = set()
+    short_pattern = re.compile(rf"^({'|'.join(SHORT_ID_PREFIXES)})-\d{{4}}$")
+    for ref in relates:
+        if not isinstance(ref, str):
+            continue
+        if ref in short_id_map:
+            if len(short_id_map[ref]) == 1:
+                normalized.update(short_id_map[ref])
+            continue
+        if short_pattern.match(ref):
+            continue
+        if "/" in ref or ref.endswith(".md"):
+            normalized.update(normalize_reference(ref, all_doc_ids, short_id_map))
+            continue
+        normalized.add(ref)
+    return normalized
+
+
+def extract_file_references(file_path, all_doc_ids, short_id_map):
+    """Extract forward references from a file. Returns (doc_id, related_ids, deps) or None."""
     metadata, rest_of_file = read_metadata(file_path)
 
     if metadata is None:
-        return False
+        return None
 
-    # Extract relationships and dependencies
+    current_id = metadata.get('id')
+    if not current_id:
+        return None
+
+    # Extract relationships and dependencies from content
     with open(file_path, 'r', encoding='utf-8') as f:
         full_content = f.read()
 
@@ -166,35 +233,60 @@ def process_file(file_path, all_doc_ids, dry_run=False, verbose=False):
     # Convert relative paths/doc mentions to IDs
     related_ids = set()
     for rel in found_rels:
-        # If it's already an ID (e.g. ADR-0001), use it
-        if rel in all_doc_ids:
-            related_ids.add(rel)
-        elif rel.startswith('ADR-') or rel.startswith('CL-'):
-             # Loose match for ADR-XXXX or CL-XXXX
-             related_ids.add(rel)
-        else:
-            # Try to convert path to ID
-            try:
-                doc_id = extract_doc_id_from_path(rel)
-                if doc_id in all_doc_ids:
-                    related_ids.add(doc_id)
-            except:
-                continue
+        related_ids.update(normalize_reference(rel, all_doc_ids, short_id_map))
 
     # Skip self-reference
-    current_id = metadata.get('id')
     if current_id in related_ids:
         related_ids.remove(current_id)
 
+    return (current_id, related_ids, found_deps, metadata, rest_of_file)
+
+
+def process_file_with_backlinks(file_path, all_doc_ids, short_id_map, reverse_graph,
+                                 dry_run=False, verbose=False):
+    """Process a single file with both forward refs and backlinks from reverse_graph."""
+    metadata, rest_of_file = read_metadata(file_path)
+
+    if metadata is None:
+        return False
+
+    current_id = metadata.get('id')
+    if not current_id:
+        return False
+
+    # Extract forward relationships and dependencies
+    with open(file_path, 'r', encoding='utf-8') as f:
+        full_content = f.read()
+
+    found_rels, found_deps = extract_metadata_fields(full_content, file_path)
+
+    # Convert relative paths/doc mentions to IDs (forward refs)
+    forward_ids = set()
+    for rel in found_rels:
+        forward_ids.update(normalize_reference(rel, all_doc_ids, short_id_map))
+
+    # Skip self-reference
+    if current_id in forward_ids:
+        forward_ids.remove(current_id)
+
+    # Get backlinks (docs that reference this doc)
+    backlink_ids = reverse_graph.get(current_id, set())
+
+    # Combine forward + backward relationships
+    all_related_ids = forward_ids | backlink_ids
+
     # Merge Dependencies
     current_deps = metadata.get('dependencies', [])
-    if not isinstance(current_deps, list): current_deps = []
+    if not isinstance(current_deps, list):
+        current_deps = []
     updated_deps = sorted(list(set(current_deps + found_deps)))
 
-    # Merge Relationships
+    # Merge Relationships (normalize existing + add new)
     current_relates = metadata.get('relates_to', [])
-    if not isinstance(current_relates, list): current_relates = []
-    updated_relates = sorted(list(set(current_relates + list(related_ids))))
+    if not isinstance(current_relates, list):
+        current_relates = []
+    normalized_relates = normalize_relates(current_relates, all_doc_ids, short_id_map)
+    updated_relates = sorted(list(set(normalized_relates | all_related_ids)))
 
     # Check for changes
     changed = False
@@ -210,7 +302,16 @@ def process_file(file_path, all_doc_ids, dry_run=False, verbose=False):
         return False
 
     if dry_run:
-        print(f"🔍 Would update {file_path}")
+        added_forward = forward_ids - normalized_relates
+        added_backlinks = backlink_ids - normalized_relates
+        if added_forward or added_backlinks:
+            print(f"🔍 Would update {file_path}")
+            if added_forward:
+                print(f"   + forward: {sorted(added_forward)}")
+            if added_backlinks:
+                print(f"   + backlinks: {sorted(added_backlinks)}")
+        else:
+            print(f"🔍 Would update {file_path} (normalization only)")
         return True
 
     if write_metadata(file_path, metadata, rest_of_file):
@@ -220,37 +321,81 @@ def process_file(file_path, all_doc_ids, dry_run=False, verbose=False):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Extract and populate document relationships')
+    parser = argparse.ArgumentParser(description='Extract and populate document relationships (bidirectional)')
     parser.add_argument('--dry-run', action='store_true', help='Show what would be done without making changes')
     parser.add_argument('--verbose', action='store_true', help='Show all files including skipped ones')
+    parser.add_argument('--no-backlinks', action='store_true', help='Skip bidirectional backlink population')
     args = parser.parse_args()
 
     # Find all markdown files
     all_md_files = []
     for pattern in ['docs/**/*.md', 'ci-workflows/**/*.md', 'apps/**/*.md', 'bootstrap/**/*.md',
                     'modules/**/*.md', 'gitops/**/*.md', 'idp-tooling/**/*.md', 'envs/**/*.md',
-                    'compliance/**/*.md', 'session_summary/**/*.md', '*.md']:
+                    'compliance/**/*.md', 'session_summary/**/*.md', 'session_capture/**/*.md', '*.md']:
         all_md_files.extend(glob.glob(pattern, recursive=True))
 
     # Remove duplicates
     all_md_files = sorted(set(all_md_files))
 
-    # Build index of all doc IDs
+    # Build index of all doc IDs and map files to IDs
     all_doc_ids = set()
+    id_to_file = {}
     for f in all_md_files:
         doc_id = extract_doc_id_from_path(f)
         all_doc_ids.add(doc_id)
+        id_to_file[doc_id] = f
+    short_id_map = build_short_id_map(all_doc_ids)
 
     print(f"Found {len(all_md_files)} markdown files")
     print(f"Indexed {len(all_doc_ids)} document IDs")
     print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")
+    print(f"Backlinks: {'DISABLED' if args.no_backlinks else 'ENABLED'}")
+    print("=" * 60)
+
+    # PASS 1: Extract all forward references to build the graph
+    print("Pass 1: Extracting forward references...")
+    forward_graph = {}  # doc_id -> set of referenced doc_ids
+
+    for filepath in all_md_files:
+        result = extract_file_references(filepath, all_doc_ids, short_id_map)
+        if result:
+            doc_id, related_ids, _, _, _ = result
+            # Only include references to docs that actually exist
+            valid_refs = {ref for ref in related_ids if ref in all_doc_ids}
+            if valid_refs:
+                forward_graph[doc_id] = valid_refs
+
+    print(f"   Found {len(forward_graph)} documents with outgoing references")
+    total_edges = sum(len(refs) for refs in forward_graph.values())
+    print(f"   Total forward edges: {total_edges}")
+
+    # PASS 2: Build reverse graph (backlinks)
+    reverse_graph = defaultdict(set)  # doc_id -> set of docs that reference it
+
+    if not args.no_backlinks:
+        print("Pass 2: Computing backlinks...")
+        for source_id, target_ids in forward_graph.items():
+            for target_id in target_ids:
+                if target_id in all_doc_ids:
+                    reverse_graph[target_id].add(source_id)
+
+        docs_with_backlinks = sum(1 for refs in reverse_graph.values() if refs)
+        total_backlinks = sum(len(refs) for refs in reverse_graph.values())
+        print(f"   Found {docs_with_backlinks} documents with incoming backlinks")
+        print(f"   Total backlink edges: {total_backlinks}")
+    else:
+        print("Pass 2: Skipped (--no-backlinks)")
+
+    # PASS 3: Update files with combined forward + reverse relationships
+    print("Pass 3: Updating documents...")
     print("=" * 60)
 
     updated_count = 0
     skipped_count = 0
 
     for filepath in all_md_files:
-        if process_file(filepath, all_doc_ids, dry_run=args.dry_run, verbose=args.verbose):
+        if process_file_with_backlinks(filepath, all_doc_ids, short_id_map, reverse_graph,
+                                       dry_run=args.dry_run, verbose=args.verbose):
             updated_count += 1
         else:
             skipped_count += 1
@@ -263,11 +408,11 @@ def main():
     if args.dry_run:
         print("\n🔍 This was a dry run. Run without --dry-run to apply changes.")
     else:
-        print("\n✅ Relationship extraction complete!")
+        print("\n✅ Bidirectional relationship extraction complete!")
         print("   Next steps:")
         print("   1. Review changes: git diff")
         print("   2. Validate: python3 scripts/validate_metadata.py docs")
-        print("   3. Commit: git add . && git commit -m 'docs: add document relationships'")
+        print("   3. Commit: git add . && git commit -m 'docs: add bidirectional document relationships'")
 
 
 if __name__ == '__main__':
