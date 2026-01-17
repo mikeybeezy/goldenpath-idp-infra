@@ -73,6 +73,12 @@ variable "read_principals" {
   default     = []
 }
 
+variable "create_policy" {
+  description = "Whether to create a resource policy for the secret. Set explicitly when principals contain computed values."
+  type        = bool
+  default     = null
+}
+
 variable "write_principals" {
   description = "List of ARNs allowed to write/update the secret"
   type        = list(string)

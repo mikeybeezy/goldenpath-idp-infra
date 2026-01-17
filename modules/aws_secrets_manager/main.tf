@@ -15,14 +15,20 @@ resource "aws_secretsmanager_secret" "this" {
   recovery_window_in_days = var.recovery_window_in_days
 }
 
+locals {
+  # Use explicit create_policy if set, otherwise fall back to checking principal lengths
+  # This avoids the "count depends on computed values" error when principals contain resource references
+  should_create_policy = var.create_policy != null ? var.create_policy : (length(var.read_principals) > 0 || length(var.write_principals) > 0 || length(var.break_glass_principals) > 0)
+}
+
 resource "aws_secretsmanager_secret_policy" "this" {
-  count      = length(var.read_principals) > 0 || length(var.write_principals) > 0 || length(var.break_glass_principals) > 0 ? 1 : 0
+  count      = local.should_create_policy ? 1 : 0
   secret_arn = aws_secretsmanager_secret.this.arn
   policy     = data.aws_iam_policy_document.this[0].json
 }
 
 data "aws_iam_policy_document" "this" {
-  count = length(var.read_principals) > 0 || length(var.write_principals) > 0 || length(var.break_glass_principals) > 0 ? 1 : 0
+  count = local.should_create_policy ? 1 : 0
 
   dynamic "statement" {
     for_each = length(var.read_principals) > 0 ? [1] : []
