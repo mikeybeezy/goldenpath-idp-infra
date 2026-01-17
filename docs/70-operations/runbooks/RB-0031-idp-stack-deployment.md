@@ -334,6 +334,18 @@ docker inspect 593517239005.dkr.ecr.eu-west-2.amazonaws.com/keycloak:latest \
 
 ## Phase 2: RDS User Provisioning
 
+### Automation Note
+
+On merge to `development`, the `rds-database-apply.yml` workflow can run the
+Terraform apply and provisioning job automatically. Use the manual steps below
+for recovery, break-glass, or when automation is disabled.
+
+### Toggles and Options
+
+- `ALLOW_DB_PROVISION=true`: Required for non-dev environments (staging/prod).
+- `RDS_MODE=coupled|standalone`: Force provisioning mode if auto-detection is ambiguous.
+- `BUILD_ID` / `RUN_ID`: Include for traceability in audit logs.
+
 ### Why This Matters (GitHub Token)
 
 Terraform creates AWS Secrets Manager secrets with credentials, but does NOT create the actual PostgreSQL users. This is a known gap that requires manual intervention.

@@ -46,6 +46,14 @@ automated (CI) and manual provisioning scenarios.
 3. **Ad-hoc**: When you need to provision outside the normal PR flow
 4. **Non-dev environments**: Where additional approval is required
 
+## Toggles and Options
+
+- `ALLOW_DB_PROVISION=true`: Required for non-dev environments (staging/prod).
+- `RDS_MODE=coupled|standalone`: Force mode if auto-detection is ambiguous.
+- `BUILD_ID` / `RUN_ID`: Include for traceability in audit logs.
+- Dry-run: `make rds-provision-auto-dry-run ENV=<env>` or `python3 scripts/rds_provision.py --dry-run`.
+- Guardrails (CI): `rds-size-approval-guard` and `rds-tfvars-drift-guard` run warn-only by default (`WARN_ONLY=true`). Flip to blocking by setting `WARN_ONLY=false` in those workflows.
+
 ## Platform Engineer Testing
 
 To test the full Backstage flow without using the UI, trigger the workflow directly via CLI:
