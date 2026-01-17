@@ -67,9 +67,9 @@ jobs:
                   open_count = line.count('{')
                   close_count = line.count('}')
 
-                  # At depth 1, look for key definitions
+                  # At depth 1, look for key definitions (handles both quoted and unquoted keys)
                   if depth == 1:
-                      key_match = re.match(r"^\s*([A-Za-z0-9_-]+)\s*=\s*\{", line)
+                      key_match = re.match(r'^\s*"?([A-Za-z0-9_-]+)"?\s*=\s*\{', line)
                       if key_match:
                           keys.add(key_match.group(1))
 
