@@ -41,30 +41,31 @@ output "public_subnet_ids" {
 }
 
 # -----------------------------------------------------------------------------
-# Platform RDS (Coupled Option - when enabled)
+# Platform RDS (Coupled Option - when enabled AND persistent)
+# Note: RDS is only created when rds_config.enabled AND cluster_lifecycle == "persistent"
 # -----------------------------------------------------------------------------
 
 output "rds_endpoint" {
   description = "The RDS instance endpoint (host:port)"
-  value       = var.rds_config.enabled ? module.platform_rds[0].db_instance_endpoint : null
+  value       = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? module.platform_rds[0].db_instance_endpoint : null
 }
 
 output "rds_address" {
   description = "The RDS instance hostname"
-  value       = var.rds_config.enabled ? module.platform_rds[0].db_instance_address : null
+  value       = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? module.platform_rds[0].db_instance_address : null
 }
 
 output "rds_port" {
   description = "The RDS instance port"
-  value       = var.rds_config.enabled ? module.platform_rds[0].db_instance_port : null
+  value       = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? module.platform_rds[0].db_instance_port : null
 }
 
 output "rds_master_secret_arn" {
   description = "ARN of the master credentials secret in Secrets Manager"
-  value       = var.rds_config.enabled ? module.platform_rds[0].master_secret_arn : null
+  value       = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? module.platform_rds[0].master_secret_arn : null
 }
 
 output "rds_app_secret_arns" {
   description = "Map of application database secret ARNs"
-  value       = var.rds_config.enabled ? module.platform_rds[0].app_secret_arns : {}
+  value       = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? module.platform_rds[0].app_secret_arns : {}
 }
