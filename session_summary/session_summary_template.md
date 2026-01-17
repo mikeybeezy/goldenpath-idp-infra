@@ -15,8 +15,9 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+relates_to:
+  - ADR-0162
 ---
-
 # Session Summary Template (append-only)
 
 ## Usage rules

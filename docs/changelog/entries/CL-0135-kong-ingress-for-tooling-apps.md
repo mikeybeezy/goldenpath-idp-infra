@@ -19,8 +19,11 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - CL-0133
   - CL-0133-idp-stack-deployment-runbook
+  - CL-0134
   - CL-0134-backstage-catalog-governance-registry-sync
+  - CL-0135
 supersedes: []
 superseded_by: []
 tags:
@@ -30,14 +33,13 @@ tags:
   - dns
 inheritance: {}
 value_quantification:
-  vq_class: "\u26AB LV/LQ"
+  vq_class: ⚫ LV/LQ
   impact_tier: medium
   potential_savings_hours: 2.0
 supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0135: Kong Ingress for Tooling Apps
 
 **Type**: Feature

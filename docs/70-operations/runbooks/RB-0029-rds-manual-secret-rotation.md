@@ -11,9 +11,10 @@ reliability:
   observability_tier: gold
   maturity: 1
 relates_to:
-  - ADR-0158-platform-standalone-rds-bounded-context
   - 30_PLATFORM_RDS_ARCHITECTURE
   - 35_TOOLING_SECRETS_LIFECYCLE
+  - ADR-0158
+  - ADR-0158-platform-standalone-rds-bounded-context
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
@@ -23,7 +24,6 @@ dependencies:
   - module:postgresql
 breaking_change: false
 ---
-
 ## RDS Manual Secret Rotation (Runbook)
 
 This runbook documents the manual process for rotating platform RDS database credentials.

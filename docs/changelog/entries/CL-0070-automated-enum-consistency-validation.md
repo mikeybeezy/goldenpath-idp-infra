@@ -19,6 +19,7 @@ schema_version: 1
 relates_to:
   - ADR-0114
   - CL-0069
+  - CL-0070
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +33,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 # CL-0070: Automated Enum Consistency Validation
 
 ## Summary

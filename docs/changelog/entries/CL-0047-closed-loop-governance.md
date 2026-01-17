@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0089
+  - CL-0047
   - METADATA_INJECTION_GUIDE
 supersedes: []
 superseded_by: []
@@ -31,7 +32,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0047: Closed-Loop Governance & Metadata Injection
 
 ## Summary

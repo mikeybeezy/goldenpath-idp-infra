@@ -12,7 +12,16 @@ reliability:
   observability_tier: bronze
   maturity: 2
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0007
+  - ADR-0007-platform-environment-model
+  - ADR-0063
+  - ADR-0063-platform-terraform-helm-bootstrap
+  - ADR-0148
+  - ADR-0153
+  - CL-0121
+  - CL-0121-seamless-build-deployment
+  - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 supersedes: []
 superseded_by: []
 tags: []
@@ -23,7 +32,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 ## ADR-0148: Seamless Build Deployment with Build ID Immutability
 
 **Status**: Accepted

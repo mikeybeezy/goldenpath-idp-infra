@@ -11,8 +11,9 @@ reliability:
   observability_tier: gold
   maturity: 1
 category: runbooks
+relates_to:
+  - PLATFORM_HEALTH
 ---
-
 ## RB-0014: Repo Health & Hygiene
 
 ```text

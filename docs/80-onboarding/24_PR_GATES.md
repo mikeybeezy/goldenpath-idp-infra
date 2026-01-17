@@ -12,8 +12,9 @@ relates_to:
   - 00_DOC_INDEX
   - 04_PR_GUARDRAILS
   - 30_DOCUMENTATION_FRESHNESS
-  - DOCS_CHANGELOG_README
   - ADR-0101
+  - DOCS_CHANGELOG_README
+  - RB-0027-frictionless-pr-gates
 supersedes: []
 superseded_by: []
 tags: []
@@ -24,7 +25,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # PR Gates and How to Unblock Them
 
 Doc contract:

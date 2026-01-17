@@ -18,6 +18,8 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0104
+  - ADR-0104-automated-script-docs
+  - CL-0066
   - scripts/index.md
 supersedes: []
 superseded_by: []
@@ -31,7 +33,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## [1.0.0] - 2026-01-06
 
 ### Added

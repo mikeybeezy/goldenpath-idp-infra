@@ -33,13 +33,13 @@ relates_to:
   - ADR-0039-platform-tag-scoped-iam-policy-template
   - ADR-0052
   - ADR-0052-platform-kube-prometheus-stack-bundle
+  - ADR-0101
   - DOCS_ADRS_README
 category: governance
 supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # Platform Governance Purpose
 
 Doc contract:

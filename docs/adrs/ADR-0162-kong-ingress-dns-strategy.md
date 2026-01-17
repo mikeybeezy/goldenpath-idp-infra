@@ -16,11 +16,11 @@ tags:
   - dns
   - tooling
 relates_to:
+  - 45_DNS_MANAGEMENT
   - ADR-0005
   - CL-0135
   - CL-0136
 ---
-
 ## Status
 
 Accepted

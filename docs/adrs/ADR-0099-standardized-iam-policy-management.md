@@ -14,6 +14,7 @@ reliability:
 schema_version: 1
 relates_to:
   - 33_IAM_ROLES_AND_POLICIES
+  - ADR-0099
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +27,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0099: Standardized IAM Policy Management
 
 ## Status

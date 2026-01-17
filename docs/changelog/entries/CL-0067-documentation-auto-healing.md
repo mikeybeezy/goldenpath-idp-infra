@@ -18,6 +18,8 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0111
+  - ADR-0111-platform-documentation-auto-healing
+  - CL-0067
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +32,6 @@ supported_until: 2028-01-04
 version: 1.0
 breaking_change: false
 ---
-
 # CL-0067: Automated Documentation Auto-Healing
 
 ## Summary

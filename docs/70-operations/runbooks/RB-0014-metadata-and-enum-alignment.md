@@ -11,8 +11,9 @@ reliability:
   observability_tier: bronze
   maturity: 1
 category: runbooks
+relates_to:
+  - GOVERNANCE_VOCABULARY
 ---
-
 ## RB-0013: Metadata & Enum Alignment
 
 ```text

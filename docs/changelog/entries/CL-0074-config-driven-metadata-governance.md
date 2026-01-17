@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0118
+  - CL-0074
   - CONFIG_DRIVEN_METADATA
 supersedes: []
 superseded_by: []
@@ -32,7 +33,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 ## CL-0074: Transition to Config-Driven Metadata Governance
 
 ## Summary

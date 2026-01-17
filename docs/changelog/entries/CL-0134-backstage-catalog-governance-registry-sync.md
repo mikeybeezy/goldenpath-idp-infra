@@ -18,8 +18,11 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - ADR-0159
   - ADR-0159-backstage-catalog-registry-sync
+  - CL-0129
   - CL-0129-backstage-catalog-registry-sync
+  - CL-0134
 supersedes: []
 superseded_by: []
 tags:
@@ -28,14 +31,13 @@ tags:
   - governance-registry
 inheritance: {}
 value_quantification:
-  vq_class: "\u26AB LV/LQ"
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 1.0
 supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0134: Backstage Catalog Synced to Governance Registry
 
 **Type**: Configuration

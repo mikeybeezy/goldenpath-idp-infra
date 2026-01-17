@@ -15,7 +15,8 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: silver
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0087
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,8 +28,10 @@ value_quantification:
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
+dependencies:
+  - module:vpc
+  - service:eks
 ---
-
 # ADR-0087: Integration of Governance Metadata with Kubernetes Resources
 
 ## Status

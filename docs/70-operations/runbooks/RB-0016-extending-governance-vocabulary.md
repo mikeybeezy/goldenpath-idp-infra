@@ -11,8 +11,9 @@ reliability:
   observability_tier: gold
   maturity: 1
 category: runbooks
+relates_to:
+  - GOVERNANCE_VOCABULARY
 ---
-
 ## RB-0015: Extending Governance Vocabulary
 
 ```text

@@ -11,14 +11,15 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
-  - ADR-0112
   - 01_adr_index
+  - ADR-0001
+  - ADR-0112
+  - CODEOWNERS_POLICY
 category: architecture
 supported_until: 2028-01-06
 version: '1.0'
 breaking_change: false
 ---
-
 ## Technical Spec: ADR Index Automation System (Living Doc)
 
 ## Overview

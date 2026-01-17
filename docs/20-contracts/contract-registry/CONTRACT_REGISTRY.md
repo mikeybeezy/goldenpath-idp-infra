@@ -10,8 +10,10 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
+relates_to:
+  - ADR-0143
+  - ADR-0143-secret-request-contract
 ---
-
 # Platform Contract Registry
 
 This registry tracks the maturity and implementation status of all Golden Path declarative interfaces.

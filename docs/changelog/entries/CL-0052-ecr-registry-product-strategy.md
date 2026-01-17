@@ -17,9 +17,11 @@ reliability:
   observability_tier: gold
 schema_version: 1
 relates_to:
-  - ADR-0092
   - ADR-0091
+  - ADR-0092
+  - ADR-0092-ecr-registry-product-strategy
   - CL-0051
+  - CL-0052
 supersedes: []
 superseded_by: []
 tags: []
@@ -34,7 +36,6 @@ dependencies:
   - CL-0051
 breaking_change: false
 ---
-
 # CL-0052: ECR Registry Product-Based Strategy & Shared Responsibility Model
 
 Date: 2026-01-05

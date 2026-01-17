@@ -2,8 +2,9 @@
 id: INDEX
 title: Extension Capabilities Index
 type: index
+relates_to:
+  - ADR-0149
 ---
-
 This directory tracks proposed platform capabilities for Golden Path IDP evaluation. Each capability is assigned an EC-XXXX ID and follows a lightweight governance model.
 
 ## Purpose

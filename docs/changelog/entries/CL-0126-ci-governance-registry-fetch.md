@@ -20,7 +20,9 @@ risk_profile:
 schema_version: 1
 relates_to:
   - ADR-0148
+  - ADR-0148-seamless-build-deployment-with-immutability
   - ADR-0155
+  - ADR-0155-ci-governance-registry-fetch
 supersedes: []
 superseded_by: []
 tags:
@@ -38,7 +40,6 @@ author: Michael Nouriel
 description: Adds explicit governance-registry branch fetch to CI workflows to ensure
   build_id immutability validation cannot be bypassed due to shallow clones.
 ---
-
 # CI Governance Registry Fetch for Build ID Validation
 
 This release hardens the build_id immutability check by ensuring CI workflows always have access to the governance-registry branch before running terraform apply.

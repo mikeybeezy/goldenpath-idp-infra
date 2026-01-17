@@ -11,10 +11,13 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 01_adr_index
+  - CI_WORKFLOWS
+  - DOCS_CHANGELOG_README
+  - SCRIPT_CERTIFICATION_MATRIX
   - platform_health.py
 category: governance
 ---
-
 ## Platform Health Audit Log
 
 Last updated: `2026-01-16 08:25:16`

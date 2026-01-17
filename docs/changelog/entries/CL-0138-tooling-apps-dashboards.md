@@ -21,9 +21,13 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - CL-0136-tooling-apps-ingress-configuration
-  - CL-0137-ootb-observability-dashboards
+  - ADR-0162
   - ADR-0162-kong-ingress-dns-strategy
+  - CL-0136
+  - CL-0136-tooling-apps-ingress-configuration
+  - CL-0137
+  - CL-0137-ootb-observability-dashboards
+  - CL-0138
 supersedes: []
 superseded_by: []
 tags:
@@ -35,14 +39,13 @@ tags:
   - loki
 inheritance: {}
 value_quantification:
-  vq_class: "\u26AB LV/LQ"
+  vq_class: ⚫ LV/LQ
   impact_tier: high
   potential_savings_hours: 8.0
 supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0138: RED/Golden Signals Dashboards for Tooling Applications
 
 **Type**: Feature

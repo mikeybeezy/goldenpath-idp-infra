@@ -18,6 +18,7 @@ schema_version: 1
 relates_to:
   - ADR-0082
   - ADR-0084
+  - ADR-0088
   - METADATA_MAINTENANCE_GUIDE
 supersedes: []
 superseded_by: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0088: Automated Metadata Remediation over Manual Compliance
 
 ## Status

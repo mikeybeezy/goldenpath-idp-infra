@@ -13,6 +13,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0097
+  - ADR-0110
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +27,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 ## ADR-0110: IDP Knowledge Graph Node Architecture
 
 ## Context

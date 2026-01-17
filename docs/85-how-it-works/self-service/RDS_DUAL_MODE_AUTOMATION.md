@@ -3,16 +3,21 @@ id: RDS_DUAL_MODE_AUTOMATION
 title: 'How It Works: Dual-Mode RDS Automation (Coupled + Standalone)'
 type: documentation
 relates_to:
-  - ADR-0158-platform-standalone-rds-bounded-context
-  - ADR-0160-rds-optional-toggle-integration
-  - ADR-0165-rds-user-db-provisioning-automation
-  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
   - 30_PLATFORM_RDS_ARCHITECTURE
-  - RDS_REQUEST_FLOW
-  - RDS_USER_DB_PROVISIONING
+  - ADR-0158
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0160
+  - ADR-0160-rds-optional-toggle-integration
+  - ADR-0165
+  - ADR-0165-rds-user-db-provisioning-automation
+  - ADR-0166
+  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
+  - CONTRACT_DRIVEN_ARCHITECTURE
   - RB-0031-idp-stack-deployment
   - RB-0032
+  - RDS_REQUEST_FLOW
   - RDS_REQUEST_V1
+  - RDS_USER_DB_PROVISIONING
   - SCRIPT-0034
   - SCRIPT-0035
 tags:
@@ -22,7 +27,6 @@ tags:
   - how-it-works
 status: active
 ---
-
 # How It Works: Dual-Mode RDS Automation (Coupled + Standalone)
 
 The platform supports two RDS modes that intentionally coexist:

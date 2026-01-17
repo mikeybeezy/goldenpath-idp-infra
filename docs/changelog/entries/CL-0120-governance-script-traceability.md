@@ -18,10 +18,11 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0146
-  - ADR-0147
+  - ADR-0093
   - ADR-0121
   - ADR-0124
+  - ADR-0146
+  - ADR-0147
 supersedes: []
 superseded_by: []
 tags: []
@@ -34,7 +35,6 @@ supported_until: '2028-01-01'
 date: 2026-01-12
 breaking_change: false
 ---
-
 # CL-0120: Governance Script Traceability
 
 ## Summary

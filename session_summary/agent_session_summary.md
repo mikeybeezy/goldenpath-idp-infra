@@ -16,7 +16,47 @@ reliability:
   observability_tier: bronze
   maturity: 1
 schema_version: 1
-relates_to: []
+relates_to:
+  - 00_DESIGN_PHILOSOPHY
+  - 00_START_HERE
+  - 01_GOVERNANCE
+  - 07_1_AI_COLLABORATION_PROTOCOL
+  - 07_AI_AGENT_GOVERNANCE
+  - 09_AGENT_COLLABORATION_MATRIX
+  - 09_PLATFORM_DASHBOARD_CATALOG
+  - 10_PLATFORM_REQUIREMENTS
+  - 13_COLLABORATION_GUIDE
+  - 23_NEW_JOINERS
+  - 24_PR_GATES
+  - 25_DAY_ONE_CHECKLIST
+  - 26_AI_AGENT_PROTOCOLS
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - 45_DNS_MANAGEMENT
+  - ADR-0162
+  - ADR-0163
+  - ADR-0163-agent-collaboration-governance
+  - ADR-0165
+  - ADR-0165-rds-user-db-provisioning-automation
+  - ADR-0166
+  - ADR-0166-rds-dual-mode-automation-and-enum-alignment
+  - AGENT_FIRST_BOOT
+  - CL-0132
+  - CL-0133
+  - CL-0134
+  - CL-0135
+  - CL-0136
+  - CL-0137
+  - CL-0138
+  - CL-0138-tooling-apps-dashboards
+  - CL-0140
+  - CL-0140-rds-user-db-provisioning
+  - DOCS_20-CONTRACTS_RESOURCE-CATALOGS_README
+  - PR-156-STABILIZATION-CHECKLIST
+  - PRD-0001-rds-user-db-provisioning
+  - RB-0031-idp-stack-deployment
+  - RB-0032-rds-user-provision
+  - RDS_DUAL_MODE_AUTOMATION
+  - RDS_USER_DB_PROVISIONING
 supersedes: []
 superseded_by: []
 tags: []
@@ -28,7 +68,6 @@ value_quantification:
 status: active
 category: platform
 ---
-
 When switching agents or context windows:
 
 Agents must:

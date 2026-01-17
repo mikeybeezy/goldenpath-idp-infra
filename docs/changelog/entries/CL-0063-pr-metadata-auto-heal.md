@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0101
+  - CL-0063
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +31,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0063: PR Metadata Auto-Heal and Scoped Validation
 
 Optimized the PR metadata validation workflow to reduce friction and improve velocity.

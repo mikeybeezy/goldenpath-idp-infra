@@ -15,6 +15,7 @@ schema_version: 1
 relates_to:
   - ADR-0092
   - ADR-0093
+  - ADR-0098
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +28,6 @@ supported_until: 2028-12-31
 version: 1.0
 breaking_change: false
 ---
-
 ## ADR-0098: Standardized PR Gates for ECR Pipeline
 
 ## Context

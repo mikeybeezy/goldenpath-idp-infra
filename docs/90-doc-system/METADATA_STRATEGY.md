@@ -11,14 +11,17 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 11_SECRETS_CATALOG_POLICY
+  - 35_RESOURCE_TAGGING
   - ADR-0050
   - ADR-0066
+  - ADR-0140
   - CL-0005
+  - CL-0101
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Platform Metadata Strategy
 
 ## Goal

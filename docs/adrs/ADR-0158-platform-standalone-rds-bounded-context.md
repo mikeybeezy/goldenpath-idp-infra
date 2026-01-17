@@ -12,13 +12,16 @@ reliability:
   observability_tier: gold
 schema_version: 1
 relates_to:
+  - 30_PLATFORM_RDS_ARCHITECTURE
   - ADR-0006
   - ADR-0007
   - ADR-0053
   - ADR-0157
+  - ADR-0158
+  - ADR-0165
   - ADR-0165-rds-user-db-provisioning-automation
+  - ADR-0166
   - ADR-0166-rds-dual-mode-automation-and-enum-alignment
-  - 30_PLATFORM_RDS_ARCHITECTURE
   - PRD-0001-rds-user-db-provisioning
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
@@ -41,7 +44,6 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: true
 ---
-
 ## ADR-0158: Standalone RDS as Bounded Context with Deletion Protection
 
 - **Status:** Accepted

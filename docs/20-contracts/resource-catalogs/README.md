@@ -11,7 +11,10 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - ADR-0092
+  - ADR-0092-ecr-registry-product-strategy
   - ADR-0097
+  - ADR-0097-domain-based-resource-catalogs
   - ADR-0158
   - ADR-0165
   - ADR-0166
@@ -19,7 +22,6 @@ supported_until: 2028-01-05
 version: '1.0'
 breaking_change: false
 ---
-
 ## Platform Resource Catalogs
 
 **Purpose:** Index of all domain-based resource catalogs

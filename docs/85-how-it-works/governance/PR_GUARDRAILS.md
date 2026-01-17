@@ -3,11 +3,11 @@ id: PR_GUARDRAILS
 title: 'How It Works: PR Guardrails'
 type: documentation
 relates_to:
+  - .github/workflows/pr-guardrails.yml
+  - RB-0027-frictionless-pr-gates
   - scripts/pr_guardrails.py
   - scripts/validate_enums.py
-  - .github/workflows/pr-guardrails.yml
 ---
-
 # How It Works: PR Guardrails
 
 This document explains how the platform enforces quality, traceability, and governance on every Pull Request using the "Guardrails" engine.

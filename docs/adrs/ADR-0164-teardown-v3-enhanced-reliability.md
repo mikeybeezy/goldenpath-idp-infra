@@ -13,11 +13,12 @@ reliability:
 schema_version: 1
 relates_to:
   - 15_TEARDOWN_AND_CLEANUP
-  - ADR-0048
   - ADR-0038
   - ADR-0043
   - ADR-0045
   - ADR-0047
+  - ADR-0048
+  - ADR-0164
 supersedes:
   - ADR-0048-platform-teardown-version-selector
 superseded_by: []
@@ -28,14 +29,13 @@ tags:
   - reliability
 inheritance: {}
 value_quantification:
-  vq_class: "\u26AB LV/LQ"
+  vq_class: ⚫ LV/LQ
   impact_tier: high
   potential_savings_hours: 4.0
 supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0164: Teardown V3 with Enhanced Reliability and RDS Support
 
 Filename: `ADR-0164-teardown-v3-enhanced-reliability.md`

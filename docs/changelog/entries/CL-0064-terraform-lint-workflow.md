@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0102
+  - CL-0064
   - docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md
 supersedes: []
 superseded_by: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## [1.0.0] - 2026-01-06
 
 ### Added

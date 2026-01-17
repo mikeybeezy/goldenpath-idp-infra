@@ -16,7 +16,11 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: gold
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0121
+  - ADR-0121-value-quantification-framework
+  - CL-0077
+  - VQ_TAGGING_GUIDE
 supersedes: []
 superseded_by: []
 tags: []
@@ -28,7 +32,6 @@ value_quantification:
 supported_until: '2028-01-01'
 date: 2026-01-07
 ---
-
 # CL-0077: Value Quantification (VQ) Infrastructure
 
 ## Description

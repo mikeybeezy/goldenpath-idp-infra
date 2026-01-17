@@ -14,6 +14,8 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0071
+  - ADR-0103
+  - ADR-0111
   - ci-workflows/CI_WORKFLOWS.md
 supersedes: []
 superseded_by: ADR-0111
@@ -28,7 +30,6 @@ version: '1.0'
 created_date: 2026-01-06
 breaking_change: false
 ---
-
 # ADR-0103: Automated CI Workflow Documentation
 
 ## Context

@@ -17,6 +17,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0084
+  - ADR-0113
   - FEDERATED_METADATA_STRATEGY
 supersedes: []
 superseded_by: []
@@ -31,7 +32,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 ## ADR-0113: Platform Queryable Intelligence Enums
 
 ## Context

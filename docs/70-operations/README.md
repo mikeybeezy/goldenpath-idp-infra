@@ -16,7 +16,15 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
+  - 01_LIFECYCLE_POLICY
+  - 06_REBUILD_SEQUENCE
+  - 10_INFRA_FAILURE_MODES
+  - 15_TEARDOWN_AND_CLEANUP
+  - 20_TOOLING_APPS_MATRIX
+  - 32_TERRAFORM_STATE_AND_LOCKING
+  - 36_STATE_KEY_STRATEGY
   - 40-delivery
+  - 40_COST_VISIBILITY
   - 80-runbooks
 supersedes: []
 superseded_by: []
@@ -32,7 +40,6 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
-
 ## Operations Documentation
 
 This directory contains operational documentation for running and maintaining the Goldenpath IDP platform.

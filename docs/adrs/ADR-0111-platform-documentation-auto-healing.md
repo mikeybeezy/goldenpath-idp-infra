@@ -13,6 +13,10 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0101
+  - ADR-0101-pr-metadata-auto-heal
+  - ADR-0103
+  - ADR-0104
+  - ADR-0111
 supersedes:
   - ADR-0103
   - ADR-0104
@@ -30,7 +34,6 @@ dependencies:
   - ADR-0104
 breaking_change: false
 ---
-
 ## ADR-0111: Automated Documentation Auto-Healing
 
 - **Status:** Accepted (Supersedes ADR-0103, ADR-0104)

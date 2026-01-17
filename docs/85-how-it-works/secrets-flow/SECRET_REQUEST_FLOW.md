@@ -3,10 +3,12 @@ id: SECRET_REQUEST_FLOW
 title: 'How It Works: Secret Request Flow'
 type: documentation
 relates_to:
-  - docs/adrs/ADR-0143-secret-request-contract.md
+  - ADR-0135
+  - ADR-0143
+  - RB-0026-local-secret-generation
   - docs/adrs/ADR-0135-platform-secrets-manager-eso-foundation.md
+  - docs/adrs/ADR-0143-secret-request-contract.md
 ---
-
 ## How It Works: Platform Secret Lifecycle
 
 This document explains the technical lifecycle of a platform secret, following the Golden Path "Intent vs. Projection" model. It emphasizes the philosophy that **Backstage is the front door for intent, while the platform owns creation, policy, and lifecycle.**

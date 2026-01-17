@@ -3,11 +3,11 @@ id: ECR_REQUEST_FLOW
 title: 'How It Works: ECR Request Flow'
 type: documentation
 relates_to:
+  - .github/workflows/create-ecr-registry.yml
+  - ADR-0095
   - docs/adrs/ADR-0095-self-service-registry-creation.md
   - scripts/scaffold_ecr.py
-  - .github/workflows/create-ecr-registry.yml
 ---
-
 ## How It Works: ECR Request Flow
 
 This document explains the technical lifecycle of an ECR (Elastic Container Registry) request, from the developer "Wizard" in Backstage to the automated provisioning in AWS.

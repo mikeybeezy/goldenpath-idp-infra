@@ -12,11 +12,11 @@ reliability:
   maturity: 1
 relates_to:
   - 00_INDEX
+  - PRD-0000-template
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Product Requirements Docs (PRDs)
 
 Purpose: capture product and feature requirements (the "what" and "why") before

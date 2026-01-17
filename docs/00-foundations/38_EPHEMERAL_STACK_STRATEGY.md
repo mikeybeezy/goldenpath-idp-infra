@@ -1,8 +1,10 @@
 ---
 id: 38_EPHEMERAL_STACK_STRATEGY
 title: 'Ephemeral Stack Strategy: "The Simulation"'
+relates_to:
+  - ADR-0161
+  - ADR-0161-ephemeral-infrastructure-stack
 ---
-
 ## Ephemeral Stack Strategy: "The Simulation"
 
 **Owner**: Platform Team

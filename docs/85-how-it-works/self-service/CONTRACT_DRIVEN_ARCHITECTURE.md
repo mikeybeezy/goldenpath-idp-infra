@@ -5,11 +5,13 @@ type: how-it-works
 owner: platform-team
 status: active
 relates_to:
+  - ADR-0158
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - RDS_REQUEST_FLOW
   - schemas/requests/rds.schema.yaml
   - scripts/rds_request_parser.py
   - scripts/secret_request_parser.py
 ---
-
 ## Contract-Driven Architecture for Self-Service Requests
 
 This document explains the contract-driven self-service architecture used by Golden Path IDP, including the "thin template" pattern where parsers generate all artifacts.

@@ -19,9 +19,12 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - RB-0031-idp-stack-deployment
+  - ADR-0159
   - ADR-0159-backstage-catalog-registry-sync
+  - ADR-0160
   - ADR-0160-rds-optional-toggle-integration
+  - CL-0133
+  - RB-0031-idp-stack-deployment
 supersedes: []
 superseded_by: []
 tags:
@@ -31,14 +34,13 @@ tags:
   - idp
 inheritance: {}
 value_quantification:
-  vq_class: "\u26AB LV/LQ"
+  vq_class: ⚫ LV/LQ
   impact_tier: medium
   potential_savings_hours: 4.0
 supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0133: IDP Stack Deployment Runbook
 
 **Type**: Documentation

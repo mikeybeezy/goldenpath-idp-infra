@@ -17,8 +17,10 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0095
   - ADR-0092
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0095
+  - ADR-0095-self-service-registry-creation
   - CL-0055
 supersedes: []
 superseded_by: []
@@ -35,7 +37,6 @@ dependencies:
   - yq
 breaking_change: false
 ---
-
 # CL-0055: Self-Service ECR Registry Creation Workflow
 
 **Date:** 2026-01-05

@@ -9,9 +9,12 @@ lifecycle: active
 exempt: false
 schema_version: 1
 relates_to:
-  - PRD-0001-rds-user-db-provisioning
-  - ADR-0165-rds-user-db-provisioning-automation
   - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0165
+  - ADR-0165-rds-user-db-provisioning-automation
+  - PRD-0001-rds-user-db-provisioning
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0030-rds-break-glass-deletion
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
   - RDS_USER_DB_PROVISIONING
@@ -22,7 +25,6 @@ tags:
   - database
   - automation
 ---
-
 # RB-0032: RDS User and Database Provisioning
 
 ## Purpose

@@ -11,19 +11,19 @@ reliability:
   observability_tier: silver
   maturity: 2
 relates_to:
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0160
+  - ADR-0160-rds-optional-toggle-integration
   - RB-0001-eks-access-recovery
   - RB-0012-argocd-app-readiness
-  - ADR-0160-rds-optional-toggle-integration
-  - 30_PLATFORM_RDS_ARCHITECTURE
+  - RB-0032
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_USER_DB_PROVISIONING
-  - RB-0032
 category: runbooks
 supported_until: 2028-01-15
 version: '1.0'
 breaking_change: false
 ---
-
 ## IDP Stack Deployment Runbook (Keycloak + Backstage)
 
 This runbook provides the complete sequence to deploy and verify the IDP core stack (Keycloak and Backstage) on a new or existing EKS cluster.

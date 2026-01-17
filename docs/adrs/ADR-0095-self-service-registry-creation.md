@@ -14,6 +14,11 @@ reliability:
 schema_version: 1
 relates_to:
   - 85-how-it-works/self-service/ECR_REQUEST_FLOW.md
+  - ADR-0092
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0093
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0095
 supersedes: []
 superseded_by: []
 tags: []
@@ -26,7 +31,6 @@ supported_until: '2028-01-01'
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0095: Self-Service ECR Registry Creation Workflow
 
 ## Status

@@ -14,9 +14,13 @@ risk_profile:
   coupling_risk: none
 schema_version: 1
 relates_to:
+  - 13_COLLABORATION_GUIDE
+  - 23_NEW_JOINERS
+  - 25_DAY_ONE_CHECKLIST
+  - 26_AI_AGENT_PROTOCOLS
   - ADR-0122
-  - VQ_PRINCIPLES
   - AGENT_FIRST_BOOT
+  - VQ_PRINCIPLES
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +31,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 # CL-0078: Automated VQ Enforcement and Onboarding Protocols
 
 Date: 2026-01-07

@@ -8,7 +8,8 @@ owner: platform-team
 lifecycle: active
 exempt: false
 schema_version: 1
-relates_to: []
+relates_to:
+  - ROADMAP
 supersedes: []
 superseded_by: []
 tags: []
@@ -17,7 +18,6 @@ status: active
 category: platform
 supported_until: '2028-01-01'
 ---
-
 # AI Agent First-Boot Protocol
 
 **Mandatory Reading for all AI Agents.**

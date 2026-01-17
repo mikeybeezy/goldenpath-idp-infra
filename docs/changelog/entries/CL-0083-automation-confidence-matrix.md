@@ -15,9 +15,10 @@ risk_profile:
 schema_version: 1
 relates_to:
   - ADR-0126
-  - platform_health.py
-  - CONFIDENCE_MATRIX.md
   - AUTOMATION_VERIFICATION_LOG.txt
+  - CL-0083
+  - CONFIDENCE_MATRIX.md
+  - platform_health.py
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +30,6 @@ value_quantification:
 supported_until: 2028-01-01
 version: '1.0'
 ---
-
 # CL-0083: Automation Confidence Matrix (Five-Star Certification)
 
 ## Summary

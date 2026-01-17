@@ -13,8 +13,10 @@ tags:
   - rds
   - infrastructure
   - self-service
+relates_to:
+  - ADR-0158
+  - ADR-0160
 ---
-
 ## Summary
 
 Added optional RDS toggle to EKS environment configuration, providing a second deployment model alongside the existing standalone bounded context (ADR-0158).

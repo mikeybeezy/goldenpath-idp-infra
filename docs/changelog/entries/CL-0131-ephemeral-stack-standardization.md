@@ -9,14 +9,16 @@ owner: platform-team
 lifecycle: active
 schema_version: 1
 relates_to:
+  - 20_TOOLING_APPS_MATRIX
+  - 38_EPHEMERAL_STACK_STRATEGY
   - ADR-0161
+  - ADR-0161-ephemeral-infrastructure-stack
 tags:
   - ephemeral
   - localstack
   - minio
   - postgres
 ---
-
 ## Changelog: Ephemeral Stack Standardization
 
 **Date**: 2026-01-15

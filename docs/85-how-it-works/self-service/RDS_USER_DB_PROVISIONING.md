@@ -1,6 +1,6 @@
 ---
 id: RDS_USER_DB_PROVISIONING
-title: "How It Works: RDS User and Database Provisioning"
+title: 'How It Works: RDS User and Database Provisioning'
 type: documentation
 domain: platform-core
 owner: platform-team
@@ -8,14 +8,17 @@ lifecycle: active
 status: active
 schema_version: 1
 relates_to:
-  - PRD-0001-rds-user-db-provisioning
-  - ADR-0165-rds-user-db-provisioning-automation
-  - ADR-0158-platform-standalone-rds-bounded-context
   - 30_PLATFORM_RDS_ARCHITECTURE
-  - RDS_DUAL_MODE_AUTOMATION
-  - SCRIPT-0035
+  - ADR-0158
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0165
+  - ADR-0165-rds-user-db-provisioning-automation
+  - PRD-0001-rds-user-db-provisioning
   - RB-0032
+  - RB-0032-rds-user-provision
+  - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
+  - SCRIPT-0035
 tags:
   - rds
   - provisioning
@@ -23,7 +26,6 @@ tags:
   - how-it-works
   - federation
 ---
-
 # How It Works: RDS User and Database Provisioning
 
 This document explains how the platform automatically creates PostgreSQL users and databases, the architectural decisions behind it, and how it scales across clusters and VPCs.

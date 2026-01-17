@@ -12,7 +12,11 @@ reliability:
   observability_tier: bronze
   maturity: 2
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0092
+  - ADR-0092-ecr-registry-product-strategy
+  - ADR-0094
+  - REGISTRY_CATALOG
 supersedes: []
 superseded_by: []
 tags: []
@@ -25,7 +29,6 @@ supported_until: '2028-01-01'
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0094: Automated Registry Catalog Documentation
 
 ## Status

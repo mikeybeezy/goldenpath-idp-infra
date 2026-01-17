@@ -11,7 +11,10 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
+  - ADR-0092
+  - ADR-0092-ecr-registry-product-strategy
   - ADR-0097
+  - ADR-0097-domain-based-resource-catalogs
   - ADR-0100
   - generate_catalog_docs.py
 category: catalog
@@ -19,7 +22,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## Delivery Catalog
 
 > **Auto-generated from `docs/20-contracts/resource-catalogs/ecr-catalog.yaml`**

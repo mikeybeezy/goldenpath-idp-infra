@@ -16,10 +16,12 @@ risk_profile:
   coupling_risk: low
 schema_version: 1
 relates_to:
-  - PRD-0001-rds-user-db-provisioning
+  - ADR-0165
   - ADR-0165-rds-user-db-provisioning-automation
-  - SCRIPT-0035
+  - PRD-0001-rds-user-db-provisioning
   - RB-0032
+  - RB-0032-rds-user-provision
+  - SCRIPT-0035
 supersedes: []
 superseded_by: []
 tags:
@@ -37,7 +39,6 @@ date: 2026-01-16
 author: platform-team
 breaking_change: false
 ---
-
 ## Summary
 
 - Automated RDS user and database provisioning driven by `application_databases` in tfvars

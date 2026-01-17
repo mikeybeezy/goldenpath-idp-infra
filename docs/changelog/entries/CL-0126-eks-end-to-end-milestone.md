@@ -14,9 +14,12 @@ risk_profile:
   coupling_risk: none
 schema_version: 1
 relates_to:
-  - V1_SCOPE_AND_TIMELINE
   - 2026-01-14_2213_eks-end-to-end-milestone
+  - 37_V1_SCOPE_AND_TIMELINE
   - ADR-0XXX-seamless-deployment
+  - CL-0126
+  - V1_04_CAPABILITY_MATRIX
+  - V1_SCOPE_AND_TIMELINE
 supersedes: []
 superseded_by: []
 tags:
@@ -35,7 +38,6 @@ author: platform-team
 impact: high
 breaking_change: false
 ---
-
 ## CL-0126: First Successful End-to-End EKS Deployment
 
 **Date**: 2026-01-14

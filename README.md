@@ -17,7 +17,9 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
+  - 00_START_HERE
   - 18_BACKSTAGE_MVP
+  - RB-0027-frictionless-pr-gates
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +34,6 @@ version: '1.0'
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 ## GoldenPath IDP Infrastructure
 
 Welcome to the core configuration and governance engine for the GoldenPath Internal Developer Platform (IDP).

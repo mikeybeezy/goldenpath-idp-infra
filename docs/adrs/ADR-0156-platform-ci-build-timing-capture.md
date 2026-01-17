@@ -14,7 +14,10 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0077
+  - ADR-0077-platform-ci-build-teardown-log-automation
   - ADR-0148
+  - ADR-0148-seamless-build-deployment-with-immutability
+  - ADR-0156
 supersedes: []
 superseded_by: []
 tags:
@@ -29,7 +32,6 @@ value_quantification:
   potential_savings_hours: 2.0
 supported_until: '2028-01-15'
 ---
-
 ## ADR-0156: CI Build Timing Capture at Source
 
 **Status**: Accepted

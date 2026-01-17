@@ -13,7 +13,11 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0145
+  - ADR-0145-governance-registry-mirror
   - ADR-0158
+  - ADR-0159
+  - ECR_REQUEST_FLOW
+  - RDS_REQUEST_FLOW
 supersedes: []
 superseded_by: []
 tags:
@@ -30,7 +34,6 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
-
 ## ADR-0159: Backstage Catalog Sync to Governance Registry
 
 - **Status:** Accepted

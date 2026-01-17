@@ -17,7 +17,10 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0092
+  - ADR-0092-ecr-registry-product-strategy
   - ADR-0093
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0096
   - CL-0056
 supersedes: []
 superseded_by: []
@@ -34,7 +37,6 @@ dependencies:
   - aws-ecr
 breaking_change: false
 ---
-
 ## ADR-0096: Risk-Based ECR Security Controls
 
 ## Status

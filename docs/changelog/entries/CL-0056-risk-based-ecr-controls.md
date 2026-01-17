@@ -17,9 +17,12 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
-  - ADR-0096
   - ADR-0092
+  - ADR-0092-ecr-registry-product-strategy
   - ADR-0093
+  - ADR-0093-automated-policy-enforcement
+  - ADR-0096
+  - ADR-0096-risk-based-ecr-controls
   - CL-0056
 supersedes: []
 superseded_by: []
@@ -36,7 +39,6 @@ dependencies:
   - aws-ecr
 breaking_change: false
 ---
-
 # CL-0056: Risk-Based ECR Security Controls
 
 **Date:** 2026-01-05

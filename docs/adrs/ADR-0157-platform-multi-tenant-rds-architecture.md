@@ -15,6 +15,8 @@ relates_to:
   - ADR-0006
   - ADR-0007
   - ADR-0053
+  - ADR-0157
+  - ADR-0158
 supersedes: []
 superseded_by:
   - ADR-0158
@@ -33,7 +35,6 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
-
 ## ADR-0157: Multi-Tenant RDS for Platform Tooling Applications
 
 - **Status:** Superseded (by ADR-0158)

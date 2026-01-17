@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0098
+  - CL-0059
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +31,6 @@ supported_until: 2028-12-31
 version: 1.0
 breaking_change: false
 ---
-
 # CL-0059: PR #156 – ECR Pipeline Stabilization and Metadata Compliance
 
 ## Summary

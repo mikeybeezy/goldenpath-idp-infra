@@ -16,17 +16,19 @@ tags:
   - automation
   - governance
 relates_to:
-  - ADR-0158-platform-standalone-rds-bounded-context
-  - ADR-0160-rds-optional-toggle-integration
-  - ADR-0165-rds-user-db-provisioning-automation
   - 30_PLATFORM_RDS_ARCHITECTURE
+  - ADR-0158
+  - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0160
+  - ADR-0160-rds-optional-toggle-integration
+  - ADR-0165
+  - ADR-0165-rds-user-db-provisioning-automation
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
   - RDS_REQUEST_V1
   - SCRIPT-0034
   - SCRIPT-0035
 ---
-
 ## Status
 
 Proposed

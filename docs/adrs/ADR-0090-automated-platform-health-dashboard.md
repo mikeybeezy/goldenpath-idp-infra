@@ -12,7 +12,8 @@ reliability:
   observability_tier: bronze
   maturity: 2
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0090
 supersedes: []
 superseded_by: []
 tags: []
@@ -25,7 +26,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0090: Automated Platform Health Dashboard
 
 ## Status

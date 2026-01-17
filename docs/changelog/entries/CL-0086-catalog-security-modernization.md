@@ -17,6 +17,7 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - ADR-0130
   - CL-0086
 supersedes: []
 superseded_by: []
@@ -30,7 +31,6 @@ supported_until: 2028-01-08
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0086: Catalog Security Hardening & Modernization
 
 ## Date

@@ -8,7 +8,8 @@ owner: platform-team
 lifecycle: active
 exempt: false
 schema_version: 1
-relates_to: []
+relates_to:
+  - 24_PR_GATES
 supersedes: []
 superseded_by: []
 tags: []
@@ -19,7 +20,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Contributing
 
 ## Branch Strategy

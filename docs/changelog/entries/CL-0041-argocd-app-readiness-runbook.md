@@ -20,6 +20,7 @@ relates_to:
   - 00_DOC_INDEX
   - 11_ARGOCD_APP_READINESS
   - CL-0041
+  - DOCS_70-OPERATIONS_RUNBOOKS_README
   - DOCS_RUNBOOKS_README
 supersedes: []
 superseded_by: []
@@ -33,7 +34,6 @@ supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0041: Argo CD app readiness runbook
 
 Date: 2026-01-03

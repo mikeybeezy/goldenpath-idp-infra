@@ -13,7 +13,9 @@ risk_profile:
   security_risk: none
   coupling_risk: none
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0014
+  - CL-0107
 supersedes: []
 superseded_by: []
 tags:
@@ -28,7 +30,6 @@ value_quantification:
   potential_savings_hours: 1.0
 supported_until: '2028-01-01'
 ---
-
 # CL-0108: Governance Stability and Automated Remediation
 
 ## Summary

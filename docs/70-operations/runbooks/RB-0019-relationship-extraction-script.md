@@ -22,15 +22,17 @@ relates_to:
   - ADR-0056
   - ADR-0067
   - ADR-0084
+  - ADR-0084-platform-enhanced-metadata-schema
   - CL-0016
   - CL-0042
   - CL-0043
+  - CL-0043-complete-metadata-backfill
+  - METADATA_STRATEGY
 category: runbooks
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## Relationship Extraction Script - Usage & Operations
 
 ## Overview

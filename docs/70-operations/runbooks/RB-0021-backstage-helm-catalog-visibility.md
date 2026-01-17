@@ -11,7 +11,9 @@ reliability:
   observability_tier: silver
   maturity: 1
 relates_to:
+  - ADR-0127
   - ADR-0127-backstage-deployment-roi-telemetry
+  - ADR-0128
   - ADR-0128-automated-ecr-catalog-sync
 tags:
   - backstage
@@ -31,7 +33,6 @@ dependencies:
   - curl
 breaking_change: false
 ---
-
 ## Backstage Helm Catalog Visibility (Runbook)
 
 This runbook provides step-by-step procedures to diagnose and fix catalog visibility issues in Backstage deployed via Helm.

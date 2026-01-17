@@ -12,7 +12,9 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - ADR-0128
   - ADR-0128-automated-ecr-catalog-sync
+  - ADR-0129
   - ADR-0129-platform-eventual-consistency-ecr-governance
 tags:
   - ecr
@@ -31,7 +33,6 @@ dependencies:
   - python3
 breaking_change: false
 ---
-
 ## ECR Catalog Sync (AWS Source of Truth)
 
 This runbook keeps Backstage aligned to the physical AWS ECR state by generating

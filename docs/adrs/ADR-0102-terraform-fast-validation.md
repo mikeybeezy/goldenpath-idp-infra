@@ -14,7 +14,9 @@ reliability:
   observability_tier: silver
 schema_version: 1
 relates_to:
+  - ADR-0034
   - ADR-0034 (CI Environment Contract)
+  - CL-0064
   - CL-0064 (Terraform Lint Workflow)
   - docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md
 supersedes: []
@@ -28,7 +30,6 @@ value_quantification:
 supported_until: '2028-01-01'
 version: 1.0
 ---
-
 ## ADR-0102: Layer 2 Terraform Validation (Fast Feedback Loop)
 
 ## Context

@@ -11,10 +11,12 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - METADATA_BACKFILL_SCRIPT
-  - RELATIONSHIP_EXTRACTION_SCRIPT
   - ADR-0084
+  - ADR-0088
+  - ADR-0088-automated-metadata-remediation
+  - METADATA_BACKFILL_SCRIPT
   - METADATA_STRATEGY
+  - RELATIONSHIP_EXTRACTION_SCRIPT
 category: governance
 supported_until: 2028-01-01
 version: 1.0
@@ -22,7 +24,6 @@ dependencies:
   - scripts/validate_metadata.py
 breaking_change: false
 ---
-
 ## Metadata Validation Runbook
 
 ## Overview

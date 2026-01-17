@@ -13,6 +13,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0114
+  - ADR-0115
   - IDP_PRODUCT_FEATURES
 supersedes: []
 superseded_by: []
@@ -27,7 +28,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 ## ADR-0115: Enhanced Enum Validation Engine
 
 ## Context

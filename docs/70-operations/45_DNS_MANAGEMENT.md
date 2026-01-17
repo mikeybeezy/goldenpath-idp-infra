@@ -16,8 +16,9 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0162-kong-ingress-dns-strategy
   - 20_TOOLING_APPS_MATRIX
+  - ADR-0162
+  - ADR-0162-kong-ingress-dns-strategy
 supersedes: []
 superseded_by: []
 tags:
@@ -35,7 +36,6 @@ supported_until: 2028-01-16
 version: 1.0
 breaking_change: false
 ---
-
 ## Platform DNS Management
 
 This living document captures the DNS configuration strategy, naming conventions, and operational procedures for the GoldenPath IDP platform.

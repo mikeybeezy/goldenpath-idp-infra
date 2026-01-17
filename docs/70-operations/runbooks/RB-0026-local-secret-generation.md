@@ -4,11 +4,13 @@ title: Local Secret Generation & Targeting
 type: runbook
 relates_to:
   - 85-how-it-works/secrets-flow/SECRET_REQUEST_FLOW.md
+  - ADR-0143
+  - ADR-0143-secret-request-contract
+  - ADR-0144
   - ADR-0144-intent-to-projection-parser.md
 category: runbooks
 version: '1.2'
 ---
-
 ## RB-0026: Local Secret Generation & Targeting
 
 This runbook explains how to execute the **Secret Request Parser** locally. This is useful for dry-running new secret requests, validating intent YAMLs, or surgically generating infrastructure variables without waiting for a full CI cycle.

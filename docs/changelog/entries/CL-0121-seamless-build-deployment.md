@@ -13,7 +13,12 @@ risk_profile:
   security_risk: none
   coupling_risk: none
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0148
+  - ADR-0148-seamless-build-deployment-with-immutability
+  - ADR-0153
+  - CL-0121
+  - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 supersedes: []
 superseded_by: []
 tags: []
@@ -24,7 +29,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 # CL-0121: Seamless Build Deployment with Build ID Immutability
 
 **Status**: Active

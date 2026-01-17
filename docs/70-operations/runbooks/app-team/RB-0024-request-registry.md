@@ -12,7 +12,9 @@ reliability:
   maturity: 1
 relates_to:
   - ADR-0092
+  - ADR-0092-ecr-registry-product-strategy
   - ADR-0096
+  - ADR-0096-risk-based-ecr-controls
   - ADR-0100
   - CL-0055
   - CL-0061
@@ -24,7 +26,6 @@ dependencies:
   - aws-ecr
 breaking_change: false
 ---
-
 # App Team Runbook: Request ECR Registry
 
 **Audience:** Application Teams

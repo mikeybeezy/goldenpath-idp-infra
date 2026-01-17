@@ -17,7 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 01_adr_index
   - ADR-0112
+  - CL-0068
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +32,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0068: Automated ADR Index Generation
 
 ## Summary

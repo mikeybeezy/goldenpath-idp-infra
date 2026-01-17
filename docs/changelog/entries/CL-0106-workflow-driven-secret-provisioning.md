@@ -13,7 +13,9 @@ risk_profile:
   security_risk: none
   coupling_risk: none
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0144
+  - CL-0106
 supersedes: []
 superseded_by: []
 tags: []
@@ -24,7 +26,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 # CL-0106: Workflow-Driven Secret Provisioning and Auto-Apply
 
 ## Summary

@@ -17,8 +17,9 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
-  - ADR-0143
   - ADR-0139
+  - ADR-0143
+  - ADR-0144
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-11
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0105: Secret Request Parser refinements and security upgrades
 
 Date: 2026-01-11

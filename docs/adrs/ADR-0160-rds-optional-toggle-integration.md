@@ -16,8 +16,10 @@ tags:
   - rds
   - infrastructure
   - self-service
+relates_to:
+  - ADR-0157
+  - ADR-0158
 ---
-
 ## Status
 
 Accepted

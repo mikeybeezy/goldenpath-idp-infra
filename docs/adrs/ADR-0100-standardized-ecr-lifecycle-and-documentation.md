@@ -16,6 +16,8 @@ relates_to:
   - ADR-0092
   - ADR-0093
   - ADR-0097
+  - ADR-0100
+  - REGISTRY_CATALOG
 supersedes: []
 superseded_by: []
 tags: []
@@ -28,7 +30,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## ADR-0100: Standardized ECR Lifecycle and Documentation
 
 ## Context

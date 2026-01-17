@@ -8,7 +8,12 @@ owner: platform-team
 lifecycle: active
 exempt: false
 schema_version: 1
-relates_to: []
+relates_to:
+  - 23_NEW_JOINERS
+  - 24_PR_GATES
+  - GOVERNANCE_VOCABULARY
+  - PLATFORM_DASHBOARDS
+  - RB-0027-frictionless-pr-gates
 supersedes: []
 superseded_by: []
 tags: []
@@ -17,7 +22,6 @@ status: active
 category: onboarding
 supported_until: '2028-01-01'
 ---
-
 ## 🚀 START HERE (5-Minute Onboarding)
 
 Welcome to the **GoldenPath IDP Infra** repository. This guide is designed to get you (Human or Agent) fully operational in under 5 minutes.

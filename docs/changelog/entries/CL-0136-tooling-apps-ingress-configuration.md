@@ -21,8 +21,13 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 20_TOOLING_APPS_MATRIX
+  - 45_DNS_MANAGEMENT
+  - ADR-0162
   - ADR-0162-kong-ingress-dns-strategy
+  - CL-0135
   - CL-0135-kong-ingress-for-tooling-apps
+  - CL-0136
 supersedes: []
 superseded_by: []
 tags:
@@ -32,14 +37,13 @@ tags:
   - tooling
 inheritance: {}
 value_quantification:
-  vq_class: "\u26AB LV/LQ"
+  vq_class: ⚫ LV/LQ
   impact_tier: medium
   potential_savings_hours: 4.0
 supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false
 ---
-
 ## CL-0136: Platform Tooling Apps Ingress Configuration
 
 **Type**: Feature

@@ -13,7 +13,11 @@ risk_profile:
   security_risk: none
   coupling_risk: none
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0134
+  - ADR-0134-metadata-inheritance-active-governance-and-leak-protection
+  - CL-0076
+  - METADATA_INHERITANCE_STRATEGY
 supersedes: []
 superseded_by: []
 tags: []
@@ -24,7 +28,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 ## CL-0076: Metadata Inheritance, Active Governance, and Leak Protection
 
 ## Goal

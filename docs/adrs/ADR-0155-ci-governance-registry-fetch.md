@@ -14,7 +14,9 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0148
+  - ADR-0148-seamless-build-deployment-with-immutability
   - ADR-0149
+  - ADR-0155
 supersedes: []
 superseded_by: []
 tags:
@@ -28,7 +30,6 @@ value_quantification:
   potential_savings_hours: 0.5
 supported_until: '2028-01-14'
 ---
-
 ## ADR-0155: CI Governance Registry Fetch for Build ID Validation
 
 **Status**: Accepted

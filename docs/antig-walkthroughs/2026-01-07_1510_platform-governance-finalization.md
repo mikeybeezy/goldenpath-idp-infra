@@ -3,8 +3,10 @@ id: 2026-01-07_1510_platform-governance-finalization
 title: Governance Finalization Walkthrough
 type: walkthrough
 category: education
+relates_to:
+  - 00_START_HERE
+  - PLATFORM_DASHBOARDS
 ---
-
 ## Walkthrough: Institutionalizing Testing Predictability (Agent-First)
 
 We have transformed the testing framework from a "document-heavy chore" into an **executable pipeline** that treats Agents and Humans as first-class partners.

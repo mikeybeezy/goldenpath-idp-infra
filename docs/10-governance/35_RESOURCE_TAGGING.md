@@ -12,6 +12,7 @@ reliability:
   maturity: 1
 relates_to:
   - 01_GOVERNANCE
+  - 11_SECRETS_CATALOG_POLICY
   - ADR-0037
   - ADR-0037-platform-resource-tagging-policy
 category: governance
@@ -19,7 +20,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # Resource Tagging (Living)
 
 Doc contract:

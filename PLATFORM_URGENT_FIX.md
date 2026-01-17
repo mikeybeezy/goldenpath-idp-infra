@@ -16,7 +16,8 @@ reliability:
   observability_tier: bronze
   maturity: 1
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0120
 supersedes: []
 superseded_by: []
 tags: []
@@ -27,7 +28,6 @@ value_quantification:
   potential_savings_hours: 0.0
 category: platform
 ---
-
 ## Platform Urgent Fix Matrix (V1-Aligned)
 
 This matrix extends the prioritized fix list with issue descriptions and the

@@ -13,7 +13,8 @@ risk_profile:
   security_risk: none
   coupling_risk: none
 schema_version: 1
-relates_to: []
+relates_to:
+  - CL-0075
 supersedes: []
 superseded_by: []
 tags: []
@@ -24,7 +25,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 ## CL-0075: Grand Metadata Healing and Contextual Alignment
 
 ## Goal

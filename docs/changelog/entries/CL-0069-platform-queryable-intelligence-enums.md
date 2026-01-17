@@ -18,6 +18,7 @@ reliability:
 schema_version: 1
 relates_to:
   - ADR-0113
+  - CL-0069
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +32,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 # CL-0069: Platform Queryable Intelligence Enums
 
 ## Summary
