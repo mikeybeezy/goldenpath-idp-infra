@@ -1,0 +1,98 @@
+# Owner: platform
+# Relates-To: docs/85-how-it-works/self-service/RDS_DUAL_MODE_AUTOMATION.md
+name: RDS tfvars Drift Guard
+
+on:
+  pull_request:
+    paths:
+      - "envs/*/terraform.tfvars"
+  workflow_dispatch:
+
+jobs:
+  check-tfvars-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect application_databases drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          import re
+          import sys
+          from pathlib import Path
+
+          def extract_db_keys(content: str) -> set[str]:
+              match = re.search(r"application_databases\s*=\s*\{([\s\S]*?)\n\}", content)
+              if not match:
+                  return set()
+              block = match.group(1)
+              keys = re.findall(r"^\s*([A-Za-z0-9_-]+)\s*=\s*\{", block, re.MULTILINE)
+              return set(keys)
+
+          def coupled_enabled(content: str) -> bool:
+              in_block = False
+              for line in content.splitlines():
+                  line = line.split("#", 1)[0]
+                  if re.match(r"^\s*rds_config\s*=", line):
+                      in_block = True
+                  elif in_block and re.match(r"^\s*}", line):
+                      in_block = False
+                  elif in_block:
+                      match = re.match(r"^\s*enabled\s*=\s*(true|false)\s*$", line)
+                      if match:
+                          return match.group(1) == "true"
+              return False
+
+          envs_dir = Path("envs")
+          if not envs_dir.exists():
+              print("No envs directory found.")
+              sys.exit(0)
+
+          mismatches = []
+
+          for env_path in envs_dir.iterdir():
+              if not env_path.is_dir():
+                  continue
+              if env_path.name.endswith("-rds"):
+                  continue
+              env_name = env_path.name
+              coupled_tfvars = env_path / "terraform.tfvars"
+              standalone_tfvars = envs_dir / f"{env_name}-rds" / "terraform.tfvars"
+
+              if not coupled_tfvars.exists() or not standalone_tfvars.exists():
+                  continue
+
+              coupled_content = coupled_tfvars.read_text()
+              standalone_content = standalone_tfvars.read_text()
+              if not coupled_enabled(coupled_content):
+                  continue
+
+              coupled = extract_db_keys(coupled_content)
+              standalone = extract_db_keys(standalone_content)
+
+              if not coupled or not standalone:
+                  continue
+
+              if coupled != standalone:
+                  mismatches.append(
+                      (env_name, sorted(coupled), sorted(standalone))
+                  )
+
+          if not mismatches:
+              print("✅ No application_databases drift detected.")
+              sys.exit(0)
+
+          print("❌ application_databases drift detected between coupled and standalone tfvars:")
+          for env_name, coupled, standalone in mismatches:
+              print(f"- {env_name}:")
+              print(f"  coupled:    {coupled}")
+              print(f"  standalone: {standalone}")
+          print("Align application_databases between envs/<env>/ and envs/<env>-rds/ to proceed.")
+          sys.exit(1)
+          PY

@@ -12,6 +12,9 @@ reliability:
   maturity: 1
 relates_to:
   - ADR-0097
+  - ADR-0158
+  - ADR-0165
+  - ADR-0166
 supported_until: 2028-01-05
 version: '1.0'
 breaking_change: false
@@ -33,17 +36,17 @@ breaking_change: false
 **Resources:** ECR container registries
 **Self-Service:** [Create ECR Registry Workflow](../../.github/workflows/create-ecr-registry.yml)
 
+### Databases - RDS
+
+**File:** [rds-catalog.yaml](./rds-catalog.yaml)
+**Domain:** `databases-rds`
+**Owner:** platform-team
+**Resources:** RDS databases
+**Self-Service:** [Create RDS Database Workflow](../../.github/workflows/create-rds-database.yml)
+
 ---
 
 ## Placeholder Catalogs (Schema Defined, Awaiting Implementation)
-
-### Databases - RDS
-
-**File:** [rds-catalog.yaml](./rds-catalog.yaml) (PLACEHOLDER)
-**Domain:** `databases-rds`
-**Owner:** database-team
-**Resources:** RDS databases, Aurora clusters
-**Status:** Placeholder - needs Terraform module & workflow
 
 ### Databases - DynamoDB
 

@@ -1,0 +1,85 @@
+# Owner: platform
+# Relates-To: docs/85-how-it-works/self-service/RDS_REQUEST_FLOW.md
+name: RDS Size Approval Guard
+
+on:
+  pull_request:
+    paths:
+      - "docs/20-contracts/resource-catalogs/rds-catalog.yaml"
+  workflow_dispatch:
+
+jobs:
+  enforce-size-approvals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate size tier approvals
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import re
+          import subprocess
+          import sys
+
+          event_path = os.environ.get("GITHUB_EVENT_PATH")
+          if not event_path:
+              print("ERROR: GITHUB_EVENT_PATH is not set.")
+              sys.exit(1)
+
+          with open(event_path, "r", encoding="utf-8") as handle:
+              event = json.load(handle)
+
+          base = event["pull_request"]["base"]["sha"]
+          head = event["pull_request"]["head"]["sha"]
+
+          files = subprocess.check_output(
+              ["git", "diff", "--name-only", base, head],
+              text=True,
+          ).splitlines()
+
+          targets = [
+              path for path in files
+              if path.startswith("docs/20-contracts/rds-requests/")
+              or path == "docs/20-contracts/resource-catalogs/rds-catalog.yaml"
+          ]
+
+          if not targets:
+              print("No RDS request/catalog files changed.")
+              sys.exit(0)
+
+          size_re = re.compile(
+              r"^\s*(size|size_tier)\s*[:=]\s*\"?(large|xlarge)\"?\b",
+              re.IGNORECASE | re.MULTILINE,
+          )
+
+          flagged = []
+          for path in targets:
+              try:
+                  content = open(path, "r", encoding="utf-8").read()
+              except FileNotFoundError:
+                  continue
+              if size_re.search(content):
+                  flagged.append(path)
+
+          if not flagged:
+              print("No large/xlarge size tiers detected.")
+              sys.exit(0)
+
+          labels = {label["name"] for label in event["pull_request"]["labels"]}
+          approved_labels = {"platform-approval", "rds-large-approved"}
+
+          if not labels.intersection(approved_labels):
+              print("❌ Large/xlarge RDS requests require approval.")
+              print(f"Files: {', '.join(flagged)}")
+              print("Add label: platform-approval (or rds-large-approved) to proceed.")
+              sys.exit(1)
+
+          print("✅ Large/xlarge requests approved via labels.")
+          PY

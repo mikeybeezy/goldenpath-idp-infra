@@ -5,12 +5,14 @@
 # All validation happens against this schema - Backstage templates and
 # CI workflows are "thin" consumers that just collect/validate input.
 #
-# Flow:
-#   1. Backstage collects input, validates against this schema
-#   2. Template opens PR with request YAML
-#   3. CI validates PR against schema (gate)
-#   4. On merge, parser generates Terraform + ESO manifests
-#   5. Terraform applies (no logic, just executes)
+# Flow (current):
+#   1. Backstage collects input and triggers create-rds-database.yml
+#   2. Workflow updates rds-catalog.yaml + envs/<env>-rds/terraform.tfvars
+#   3. PR review/merge, then Terraform apply + rds-provision
+#
+# Flow (planned):
+#   - Contract-driven parser generates TF vars + ExternalSecret manifests
+#   - Deferred until schema validation + outputs are canonical
 #
 # Reference: ADR-0158 (Platform Standalone RDS Bounded Context)
 ################################################################################
@@ -26,8 +28,11 @@ status: active
 metadata:
   description: "Contract for requesting RDS PostgreSQL databases"
   backstage_template: "backstage-helm/backstage-catalog/templates/rds-request.yaml"
-  parser_module: "scripts/parsers/rds_request_parser.py"
+  parser_module: "scripts/rds_request_parser.py"
+  parser_status: "deferred"
+  implementation_notes: "Parser integration follows after schema enforcement and generated artifacts become canonical."
   terraform_root: "envs/{environment}-rds/"
+  workflow: ".github/workflows/create-rds-database.yml"
 
 ################################################################################
 # Property Definitions
@@ -122,7 +127,7 @@ properties:
     type: string
     enum_from: risk_profile_security_risk  # References schemas/metadata/enums.yaml
     default: low
-    description: "Security risk classification"
+    description: "Security risk classification (none|low|medium|high|access)"
 
   # Optional: backup configuration
   backup_retention_days:
@@ -225,21 +230,16 @@ size_mapping:
     description: "Production heavy workloads"
 
 ################################################################################
-# Output Artifacts (what parser generates)
+# Output Artifacts (current workflow)
 ################################################################################
 
 generates:
-  terraform:
-    path: ".tmp/generated/{environment}/rds/{id}.auto.tfvars.json"
-    description: "Terraform variables for RDS provisioning"
-
-  external_secret:
-    path: ".tmp/generated/{environment}/rds/{id}-externalsecret.yaml"
-    description: "ExternalSecret manifest for K8s secret sync"
-
+  terraform_tfvars:
+    path: "envs/{environment}-rds/terraform.tfvars"
+    description: "Workflow appends application_databases entries"
   catalog_entry:
-    path: "docs/20-contracts/resource-catalogs/rds/{id}.yaml"
-    description: "Governance catalog entry for tracking"
+    path: "docs/20-contracts/resource-catalogs/rds-catalog.yaml"
+    description: "Workflow updates shared RDS catalog"
 
 ################################################################################
 # Approval Routing (based on risk/environment)

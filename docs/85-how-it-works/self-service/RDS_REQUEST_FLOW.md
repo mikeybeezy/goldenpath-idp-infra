@@ -121,6 +121,14 @@ application_databases = {
 }
 ```
 
+### 2.4 Contract-Driven Parser (Deferred)
+
+The schema and parser are intentionally deferred while the workflow performs
+explicit updates to the catalog and tfvars. This keeps the flow deterministic
+while enums, validation rules, and outputs stabilize. Once schema enforcement
+is wired into CI and the generated artifacts are canonical, the parser becomes
+the single source of truth.
+
 ## 3. Review: Pull Request
 
 The workflow creates a PR with comprehensive details:
