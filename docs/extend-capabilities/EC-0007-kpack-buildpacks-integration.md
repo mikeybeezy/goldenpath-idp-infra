@@ -336,7 +336,7 @@ Developers must still declare their application dependencies using standard lang
 ### What Buildpacks Eliminate
 
 ```text
-❌ No longer needed:
+No longer needed:
 ├── Dockerfile
 ├── .dockerignore
 ├── Multi-stage build complexity

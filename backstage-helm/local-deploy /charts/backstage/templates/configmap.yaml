@@ -8,4 +8,3 @@ data:
   DEMO_CATALOG_LOCATION: {{ .Values.catalog.demoCatalogLocation }}
   CUSTOM_CATALOG_LOCATION: {{ .Values.catalog.customCatalogLocation }}
   BASE_URL: {{ .Values.backstage.baseURL }}
-
