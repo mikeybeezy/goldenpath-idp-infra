@@ -35,11 +35,12 @@ on:
           - ephemeral
           - persistent
       teardown_version:
-        description: "Teardown script version (v3 recommended)"
+        description: "Teardown script version (v4 recommended - includes secrets cleanup)"
         required: true
-        default: "v3"
+        default: "v4"
         type: choice
         options:
+          - v4
           - v3
           - v2
           - v1

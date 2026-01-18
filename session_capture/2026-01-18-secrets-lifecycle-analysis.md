@@ -201,6 +201,31 @@ Signed: Claude Opus 4.5 (2026-01-18T21:00:00Z)
 
 ---
 
+### Update - 2026-01-18T21:15:00Z
+
+**What changed**
+
+- Updated `.github/workflows/ci-teardown.yml` to use v4 as the default teardown version
+  - Changed default from "v3" to "v4"
+  - Added v4 to the options list (now: v4, v3, v2, v1)
+  - Updated description to note "v4 recommended - includes secrets cleanup"
+
+**Artifacts touched**
+
+- `.github/workflows/ci-teardown.yml`
+
+**Validation**
+
+- Workflow syntax valid (YAML structure unchanged)
+
+**Next steps**
+
+- Commit and push changes
+
+Signed: Claude Opus 4.5 (2026-01-18T21:15:00Z)
+
+---
+
 ## Review/Validation Appendix
 
 ### Secrets Lifecycle Gap Analysis (Claude Opus 4.5 - 2026-01-18T20:00:00Z)
