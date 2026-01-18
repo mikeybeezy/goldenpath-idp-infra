@@ -2243,7 +2243,7 @@ Region: local
 
 ### Links
 - Session capture: `session_capture/2026-01-18-secrets-lifecycle-analysis.md`
-- Image updater docs: https://argocd-image-updater.readthedocs.io/
+- Image updater docs: <https://argocd-image-updater.readthedocs.io/>
 
 ### Session Report (end-of-session wrap-up)
 - Summary:
