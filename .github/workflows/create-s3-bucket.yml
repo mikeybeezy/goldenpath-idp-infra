@@ -151,33 +151,33 @@ jobs:
         run: |
           # Validate application name format
           if ! echo "${{ inputs.application }}" | grep -qE '^[a-z][a-z0-9-]{2,30}$'; then
-            echo "❌ Application name must be 3-31 chars, lowercase with hyphens"
+            echo " Application name must be 3-31 chars, lowercase with hyphens"
             exit 1
           fi
 
           # Validate user format
           if ! echo "${{ inputs.user }}" | grep -qE '^[a-z0-9-]+$'; then
-            echo "❌ User must be lowercase alphanumeric with dashes"
+            echo " User must be lowercase alphanumeric with dashes"
             exit 1
           fi
 
           # Validate cost alert GB is numeric
           if ! echo "${{ inputs.cost_alert_gb }}" | grep -qE '^[0-9]+$'; then
-            echo "❌ Cost alert GB must be numeric"
+            echo " Cost alert GB must be numeric"
             exit 1
           fi
 
           # Validate purpose description length
           DESC="${{ inputs.purpose_description }}"
           if [ ${#DESC} -lt 10 ] || [ ${#DESC} -gt 200 ]; then
-            echo "❌ Purpose description must be 10-200 characters"
+            echo " Purpose description must be 10-200 characters"
             exit 1
           fi
 
           # Validate retention rationale length
           RAT="${{ inputs.retention_rationale }}"
           if [ ${#RAT} -lt 10 ] || [ ${#RAT} -gt 500 ]; then
-            echo "❌ Retention rationale must be 10-500 characters"
+            echo " Retention rationale must be 10-500 characters"
             exit 1
           fi
 
@@ -322,7 +322,7 @@ jobs:
 
           ---
 
-          ## 📋 Configuration
+          ##  Configuration
 
           | Setting | Value |
           |---------|-------|
@@ -343,11 +343,11 @@ jobs:
 
           ---
 
-          ## 📝 Purpose
+          ##  Purpose
 
           > ${{ inputs.purpose_description }}
 
-          ## 📝 Retention Rationale
+          ##  Retention Rationale
 
           > ${{ inputs.retention_rationale }}
 

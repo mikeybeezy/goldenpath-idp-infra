@@ -204,18 +204,18 @@ All open decisions resolved and documented in ADR-0170:
 
 | Phase | Task | Artifact | Status |
 |-------|------|----------|--------|
-| 1 | Create JSON schema | `schemas/requests/s3.schema.yaml` | ⏳ Pending |
-| 1 | Create contract template | `docs/20-contracts/s3-requests/{env}/` | ⏳ Pending |
-| 1 | Create resource catalog | `docs/20-contracts/resource-catalogs/s3-catalog.yaml` | ⏳ Pending |
-| 2 | Implement parser | `scripts/s3_request_parser.py` (SCRIPT-0037) | ⏳ Pending |
-| 2 | Add parser tests | `tests/scripts/test_script_0037.py` | ⏳ Pending |
-| 3 | CI validation workflow | `.github/workflows/ci-s3-request-validation.yml` | ⏳ Pending |
-| 4 | Terraform S3 module | `modules/aws_s3/` (if needed) | ⏳ Pending |
-| 5 | Apply workflow | `.github/workflows/s3-request-apply.yml` | ⏳ Pending |
-| 5 | Approval guard | `.github/workflows/s3-approval-guard.yml` | ⏳ Pending |
-| 6 | Backstage template | `backstage-helm/backstage-catalog/templates/s3-request.yaml` | ⏳ Pending |
-| 7 | How-it-works doc | `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md` | ⏳ Pending |
-| 7 | Runbook | `docs/70-operations/runbooks/RB-0032-s3-request.md` | ⏳ Pending |
+| 1 | Create JSON schema | `schemas/requests/s3.schema.yaml` |  Pending |
+| 1 | Create contract template | `docs/20-contracts/s3-requests/{env}/` |  Pending |
+| 1 | Create resource catalog | `docs/20-contracts/resource-catalogs/s3-catalog.yaml` |  Pending |
+| 2 | Implement parser | `scripts/s3_request_parser.py` (SCRIPT-0037) |  Pending |
+| 2 | Add parser tests | `tests/scripts/test_script_0037.py` |  Pending |
+| 3 | CI validation workflow | `.github/workflows/ci-s3-request-validation.yml` |  Pending |
+| 4 | Terraform S3 module | `modules/aws_s3/` (if needed) |  Pending |
+| 5 | Apply workflow | `.github/workflows/s3-request-apply.yml` |  Pending |
+| 5 | Approval guard | `.github/workflows/s3-approval-guard.yml` |  Pending |
+| 6 | Backstage template | `backstage-helm/backstage-catalog/templates/s3-request.yaml` |  Pending |
+| 7 | How-it-works doc | `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md` |  Pending |
+| 7 | Runbook | `docs/70-operations/runbooks/RB-0032-s3-request.md` |  Pending |
 
 **Guardrails Summary**
 
@@ -298,13 +298,13 @@ All Phase 1 artifacts created and pushed to `feature/s3-request-flow-planning`:
 | 1 | Create resource catalog | `docs/20-contracts/resource-catalogs/s3-catalog.yaml` | ✅ Complete |
 | 2 | Implement parser | `scripts/s3_request_parser.py` (SCRIPT-0037) | ✅ Complete |
 | 2 | Add parser tests | `tests/scripts/test_script_0037.py` | ✅ Complete |
-| 3 | CI validation workflow | `.github/workflows/ci-s3-request-validation.yml` | ⏳ Pending |
-| 4 | Terraform S3 module | `modules/aws_s3/` (if needed) | ⏳ Pending |
-| 5 | Apply workflow | `.github/workflows/s3-request-apply.yml` | ⏳ Pending |
-| 5 | Approval guard | `.github/workflows/s3-approval-guard.yml` | ⏳ Pending |
-| 6 | Backstage template | `backstage-helm/backstage-catalog/templates/s3-request.yaml` | ⏳ Pending |
-| 7 | How-it-works doc | `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md` | ⏳ Pending |
-| 7 | Runbook | `docs/70-operations/runbooks/RB-0032-s3-request.md` | ⏳ Pending |
+| 3 | CI validation workflow | `.github/workflows/ci-s3-request-validation.yml` |  Pending |
+| 4 | Terraform S3 module | `modules/aws_s3/` (if needed) |  Pending |
+| 5 | Apply workflow | `.github/workflows/s3-request-apply.yml` |  Pending |
+| 5 | Approval guard | `.github/workflows/s3-approval-guard.yml` |  Pending |
+| 6 | Backstage template | `backstage-helm/backstage-catalog/templates/s3-request.yaml` |  Pending |
+| 7 | How-it-works doc | `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md` |  Pending |
+| 7 | Runbook | `docs/70-operations/runbooks/RB-0032-s3-request.md` |  Pending |
 
 **Next Steps**
 
@@ -474,10 +474,10 @@ CI validation workflow created and pushed to `feature/s3-request-flow-planning`:
 | 1 | Schema + Contracts | ✅ Complete |
 | 2 | Parser + Tests | ✅ Complete |
 | 3 | CI Validation Workflow | ✅ Complete |
-| 4 | Terraform S3 Module | ⏳ Pending |
-| 5 | Apply Workflow + Approval Guard | ⏳ Pending |
-| 6 | Backstage Template | ⏳ Pending |
-| 7 | Docs + Runbook | ⏳ Pending |
+| 4 | Terraform S3 Module |  Pending |
+| 5 | Apply Workflow + Approval Guard |  Pending |
+| 6 | Backstage Template |  Pending |
+| 7 | Docs + Runbook |  Pending |
 
 **Next Steps:** Phase 4 - Terraform S3 module (if needed) or skip to Phase 5 (Apply workflow).
 
@@ -585,8 +585,8 @@ Labels: `platform-approved` or `s3-approved`
 | 3 | CI Validation Workflow | ✅ Complete |
 | 4 | Terraform S3 Module | ✅ Complete (Codex) |
 | 5 | Apply Workflow + Approval Guard | ✅ Complete |
-| 6 | Backstage Template | ⏳ Pending |
-| 7 | Docs + Runbook | ⏳ Pending |
+| 6 | Backstage Template |  Pending |
+| 7 | Docs + Runbook |  Pending |
 
 **Next Steps:** Phase 6 - Backstage template.
 
@@ -631,7 +631,7 @@ Backstage template and creation workflow created and pushed.
 | 4 | Terraform S3 Module | ✅ Complete (Codex) |
 | 5 | Apply Workflow + Approval Guard | ✅ Complete |
 | 6 | Backstage Template | ✅ Complete |
-| 7 | Docs + Runbook | ⏳ Pending |
+| 7 | Docs + Runbook |  Pending |
 
 **Next Steps:** Phase 7 - How-it-works doc and Runbook.
 
@@ -674,7 +674,7 @@ Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-18T03:00:00Z
 | 5 | Apply Workflow + Approval Guard | ✅ Complete |
 | 6 | Backstage Template | ✅ Complete |
 | 7 | Runbook | ✅ Complete |
-| 7 | How-it-works doc | ⏳ Pending |
+| 7 | How-it-works doc |  Pending |
 
 **Next Steps:** Create `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md`
 

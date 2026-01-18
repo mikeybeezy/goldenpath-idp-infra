@@ -258,7 +258,7 @@ After scope gate (CL-0142), EKS changes require manual trigger.
 
 ## Consistency Requirements
 
-### All Self-Service Resources Must Have:
+### All Self-Service Resources Must Have
 
 | Requirement | RDS | ECR | EKS |
 |-------------|-----|-----|-----|
