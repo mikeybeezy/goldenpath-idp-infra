@@ -1,0 +1,27 @@
+# Argo CD Image Updater - Local Environment (Kind)
+# Watches ECR for new images and updates git with new tags
+
+config:
+  # ECR registry configuration - uses pullsecret copied to argocd namespace
+  registries:
+    - name: ECR
+      api_url: https://593517239005.dkr.ecr.eu-west-2.amazonaws.com
+      prefix: 593517239005.dkr.ecr.eu-west-2.amazonaws.com
+      credentials: pullsecret:argocd/ecr-pull-secret
+      default: true
+
+  # Logging
+  logLevel: debug
+
+# Resource limits for local
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# Check interval (faster for local dev - 60s instead of default 2m)
+extraArgs:
+  - --interval=60s

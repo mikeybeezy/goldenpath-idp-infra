@@ -9,6 +9,11 @@ metadata:
     goldenpath.idp/owner: platform-team
     goldenpath.idp/risk: low
     argocd.argoproj.io/sync-wave: "10"  # Deploy after infra
+    # Image Updater annotations - latest strategy for local
+    argocd-image-updater.argoproj.io/image-list: app=593517239005.dkr.ecr.eu-west-2.amazonaws.com/hello-goldenpath-idp
+    argocd-image-updater.argoproj.io/app.update-strategy: latest
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
   labels:
     app.kubernetes.io/part-of: goldenpath-idp
     environment: local
