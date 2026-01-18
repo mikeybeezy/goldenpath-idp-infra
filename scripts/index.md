@@ -91,6 +91,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [record-build-timing.sh](record-build-timing.sh) | Record build timing to governance-registry branch |
 | [reliability-metrics.sh](reliability-metrics.sh) | --- |
 | [repair_shebangs.py](repair_shebangs.py) | --- |
+| [s3_request_parser.py](s3_request_parser.py) | --- |
 | [scaffold_doc.py](scaffold_doc.py) | --- |
 | [scaffold_test.py](scaffold_test.py) | --- |
 | [secret_request_parser.py](secret_request_parser.py) | --- |
