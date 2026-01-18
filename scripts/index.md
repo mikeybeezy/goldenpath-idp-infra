@@ -75,6 +75,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [backfill_metadata.py](backfill_metadata.py) | --- |
 | [check_script_traceability.py](check_script_traceability.py) | --- |
 | [deploy-backstage.sh](deploy-backstage.sh) | --- |
+| [eks_request_parser.py](eks_request_parser.py) | --- |
 | [enforce_emoji_policy.py](enforce_emoji_policy.py) | --- |
 | [fix_yaml_syntax.py](fix_yaml_syntax.py) | --- |
 | [generate_adr_index.py](generate_adr_index.py) | --- |
@@ -90,6 +91,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [record-build-timing.sh](record-build-timing.sh) | Record build timing to governance-registry branch |
 | [reliability-metrics.sh](reliability-metrics.sh) | --- |
 | [repair_shebangs.py](repair_shebangs.py) | --- |
+| [s3_request_parser.py](s3_request_parser.py) | --- |
 | [scaffold_doc.py](scaffold_doc.py) | --- |
 | [scaffold_test.py](scaffold_test.py) | --- |
 | [secret_request_parser.py](secret_request_parser.py) | --- |

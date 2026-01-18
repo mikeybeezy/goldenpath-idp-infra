@@ -5,6 +5,10 @@ ignore: |
   **/templates/*.yml
   gitops/helm/*/templates/*.yaml
   modules/*/bootstrap-chart/templates/*.yaml
+  # Backstage skeleton files contain template variables that are not valid YAML
+  backstage-helm/backstage-catalog/templates/skeletons/**/*.yaml
+  # GitHub workflow files with heredocs are not pure YAML
+  .github/workflows/create-s3-bucket.yml
 
 rules:
   line-length: disable

@@ -347,6 +347,55 @@ variable "app_secrets" {
 }
 
 ################################################################################
+# S3 Buckets (Contract-Driven)
+################################################################################
+
+variable "s3_bucket" {
+  description = "S3 bucket configuration generated from contract-driven requests."
+  type = object({
+    bucket_name        = string
+    versioning_enabled = bool
+    encryption = object({
+      type          = string
+      kms_key_alias = optional(string)
+    })
+    public_access_block = object({
+      block_public_acls       = bool
+      block_public_policy     = bool
+      ignore_public_acls      = bool
+      restrict_public_buckets = bool
+    })
+    lifecycle_rules = optional(list(object({
+      id      = string
+      enabled = bool
+      expiration = optional(object({
+        days = number
+      }))
+      transition = optional(list(object({
+        days          = number
+        storage_class = string
+      })))
+    })))
+    logging = optional(object({
+      enabled       = bool
+      target_bucket = optional(string)
+      target_prefix = optional(string, "")
+    }))
+    tags = map(string)
+  })
+  default = null
+}
+
+variable "cost_alert" {
+  description = "Optional cost alert configuration for S3 buckets."
+  type = object({
+    threshold_gb = number
+    alarm_name   = string
+  })
+  default = null
+}
+
+################################################################################
 # Platform RDS (Shared PostgreSQL)
 ################################################################################
 

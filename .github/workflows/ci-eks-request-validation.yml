@@ -1,0 +1,121 @@
+# Owner: platform
+# Relates-To: schemas/requests/eks.schema.yaml
+name: Quality - EKS Request Validation
+
+on:
+  pull_request:
+    branches: [main, development]
+    paths:
+      - "docs/20-contracts/eks-requests/**/*.yml"
+      - "docs/20-contracts/eks-requests/**/*.yaml"
+      - "schemas/requests/eks.schema.yaml"
+      - "schemas/metadata/enums.yaml"
+      - "scripts/eks_request_parser.py"
+      - ".github/workflows/ci-eks-request-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate_eks_requests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine request files to validate
+        id: inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BASE_REF="${{ github.base_ref }}"
+          if [ -n "$BASE_REF" ]; then
+            CHANGED=$(git diff --name-only "origin/${BASE_REF}"...HEAD || true)
+          else
+            CHANGED=""
+          fi
+
+          REQUEST_CHANGED=$(echo "$CHANGED" | grep -E '^docs/20-contracts/eks-requests/.+\.ya?ml$' || true)
+          SCHEMA_CHANGED=$(echo "$CHANGED" | grep -E '^(schemas/requests/eks\.schema\.yaml|schemas/metadata/enums\.yaml|scripts/eks_request_parser\.py)$' || true)
+
+          if [ -z "$BASE_REF" ]; then
+            INPUTS=$(git ls-files 'docs/20-contracts/eks-requests/**/*.yaml' 'docs/20-contracts/eks-requests/**/*.yml')
+            REASON="manual run"
+            REQUEST_CHANGED="false"
+          elif [ -n "$REQUEST_CHANGED" ]; then
+            INPUTS="$REQUEST_CHANGED"
+            REASON="changed request files"
+            REQUEST_CHANGED="true"
+          elif [ -n "$SCHEMA_CHANGED" ]; then
+            INPUTS=$(git ls-files 'docs/20-contracts/eks-requests/**/*.yaml' 'docs/20-contracts/eks-requests/**/*.yml')
+            REASON="schema/enums/parser changed"
+            REQUEST_CHANGED="false"
+          else
+            INPUTS=""
+            REASON="no relevant changes"
+            REQUEST_CHANGED="false"
+          fi
+
+          echo "inputs<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$INPUTS" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "reason=$REASON" >> "$GITHUB_OUTPUT"
+          echo "request_changed=$REQUEST_CHANGED" >> "$GITHUB_OUTPUT"
+
+      - name: Require platform approval label
+        if: steps.inputs.outputs.request_changed == 'true' && github.event_name == 'pull_request'
+        env:
+          EVENT_PATH: ${{ github.event_path }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+
+          event_path = os.environ.get("EVENT_PATH")
+          with open(event_path, "r", encoding="utf-8") as handle:
+            event = json.load(handle)
+
+          labels = {label["name"] for label in event.get("pull_request", {}).get("labels", [])}
+          approved = {"platform-approval", "eks-approved"}
+          if not labels.intersection(approved):
+            print("EKS requests require platform approval.")
+            print("Add label: platform-approval (or eks-approved) to proceed.")
+            sys.exit(1)
+          PY
+
+      - name: Set up Python
+        if: steps.inputs.outputs.inputs != ''
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        if: steps.inputs.outputs.inputs != ''
+        run: |
+          pip install -r requirements-dev.txt
+
+      - name: Validate EKS request files
+        if: steps.inputs.outputs.inputs != ''
+        run: |
+          python3 scripts/eks_request_parser.py \
+            --mode validate \
+            --enums schemas/metadata/enums.yaml \
+            --input-files ${{ steps.inputs.outputs.inputs }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## EKS Request Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Reason: ${{ steps.inputs.outputs.reason }}" >> $GITHUB_STEP_SUMMARY
+          if [ -z "${{ steps.inputs.outputs.inputs }}" ]; then
+            echo "No request files to validate." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Validated files:" >> $GITHUB_STEP_SUMMARY
+            echo "${{ steps.inputs.outputs.inputs }}" >> $GITHUB_STEP_SUMMARY
+          fi

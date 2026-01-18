@@ -135,6 +135,46 @@ environments:
   - prod
   - ephemeral
 
+eks_environments:
+  - dev
+  - test
+  - staging
+  - prod
+
+eks_modes:
+  - cluster-only
+  - bootstrap-only
+  - cluster+bootstrap
+
+eks_node_tiers:
+  - small
+  - medium
+  - large
+  - xlarge
+
+kubernetes_versions:
+  - "1.28"
+  - "1.29"
+  - "1.30"
+
+eks_capacity_types:
+  - ON_DEMAND
+  - SPOT
+
+eks_gitops_controllers:
+  - argocd
+
+eks_bootstrap_profiles:
+  - core-tooling
+  - tooling-plus-sample-apps
+
+eks_ingress_providers:
+  - kong
+
+eks_aws_lb_types:
+  - nlb
+  - alb
+
 approval_tiers:
   - self-serve
   - platform-approval

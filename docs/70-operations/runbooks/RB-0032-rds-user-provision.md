@@ -239,6 +239,12 @@ timestamp_utc,environment,build_id,run_id,database,username,action,status,durati
 2026-01-16T10:30:00Z,dev,16-01-26-01,12345678,keycloak,keycloak_user,create_role,success,45,Role created
 ```
 
+When run via the CI workflow, audit records are also persisted to:
+
+```
+governance/{environment}/rds_request_audit.csv
+```
+
 Status values:
 - `success`: Resource created
 - `no_change`: Resource already exists (idempotent)

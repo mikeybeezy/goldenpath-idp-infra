@@ -1,0 +1,244 @@
+# Owner: platform
+# Description: Manual apply for EKS request files (cluster creation only).
+# Relates-To: schemas/requests/eks.schema.yaml
+name: EKS Requests (Apply)
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_file:
+        description: "Path to EKS request file (e.g., docs/20-contracts/eks-requests/dev/EKS-0001.yaml)"
+        required: true
+        type: string
+      platform_approved:
+        description: "Platform approval acknowledged"
+        required: true
+        default: false
+        type: boolean
+      allow_non_dev:
+        description: "Allow non-dev apply (staging/prod)"
+        required: false
+        default: false
+        type: boolean
+      allow_build_id_reuse:
+        description: "Allow reuse of build_id (unsafe)"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+
+      - name: Validate EKS request
+        run: |
+          python3 scripts/eks_request_parser.py \
+            --mode validate \
+            --input-files "${{ inputs.request_file }}" \
+            --enums schemas/metadata/enums.yaml
+
+      - name: Generate tfvars
+        run: |
+          python3 scripts/eks_request_parser.py \
+            --mode generate \
+            --input-files "${{ inputs.request_file }}" \
+            --enums schemas/metadata/enums.yaml \
+            --tfvars-out-root envs
+
+      - name: Commit generated outputs
+        run: |
+          set -euo pipefail
+          git config user.name "goldenpath-bot"
+          git config user.email "goldenpath-bot@users.noreply.github.com"
+
+          git add envs/**/clusters/generated/**.auto.tfvars.json || true
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(eks): generate tfvars output [skip ci]"
+          git push
+
+      - name: Resolve context
+        id: context
+        run: |
+          set -euo pipefail
+          FILE="${{ inputs.request_file }}"
+          python3 - "$FILE" <<'PY' >> "$GITHUB_OUTPUT"
+          import sys
+          import yaml
+
+          path = sys.argv[1]
+          data = yaml.safe_load(open(path)) or {}
+          spec = data.get("spec", {})
+          build = spec.get("build", {})
+
+          env = data.get("environment") or data.get("metadata", {}).get("environment")
+          region = data.get("region") or data.get("metadata", {}).get("region")
+          mode = spec.get("mode")
+          build_id = build.get("build_id", "")
+          eks_id = data.get("id")
+
+          print(f"ENV={env}")
+          print(f"MODE={mode}")
+          print(f"BUILD_ID={build_id}")
+          print(f"EKS_ID={eks_id}")
+          print(f"REGION={region}")
+          PY
+
+      - name: Guard non-dev requests
+        if: steps.context.outputs.ENV != 'dev' && inputs.allow_non_dev != true
+        run: |
+          echo "Non-dev apply requires allow_non_dev=true"
+          exit 1
+
+      - name: Guard platform approval
+        if: inputs.platform_approved != true
+        run: |
+          echo "Platform approval is required. Set platform_approved=true."
+          exit 1
+
+      - name: Resolve backend config
+        if: steps.context.outputs.MODE != 'bootstrap-only'
+        id: backend
+        run: |
+          set -euo pipefail
+          ENV="${{ steps.context.outputs.ENV }}"
+          case "$ENV" in
+            dev)
+              echo "BUCKET=goldenpath-idp-dev-bucket" >> "$GITHUB_OUTPUT"
+              echo "LOCK_TABLE=goldenpath-idp-dev-locks" >> "$GITHUB_OUTPUT"
+              echo "ROLE=${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}" >> "$GITHUB_OUTPUT"
+              ;;
+            staging)
+              echo "BUCKET=goldenpath-idp-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "LOCK_TABLE=goldenpath-idp-staging-db" >> "$GITHUB_OUTPUT"
+              echo "ROLE=${{ secrets.TF_AWS_IAM_ROLE_STAGING_APPLY }}" >> "$GITHUB_OUTPUT"
+              ;;
+            prod)
+              echo "BUCKET=goldenpath-idp-prod-bucket" >> "$GITHUB_OUTPUT"
+              echo "LOCK_TABLE=goldenpath-idp-prod-db" >> "$GITHUB_OUTPUT"
+              echo "ROLE=${{ secrets.TF_AWS_IAM_ROLE_PROD_APPLY }}" >> "$GITHUB_OUTPUT"
+              ;;
+            test)
+              echo "BUCKET=goldenpath-test-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "LOCK_TABLE=goldenpath-idp-test-db" >> "$GITHUB_OUTPUT"
+              echo "ROLE=${{ secrets.TF_AWS_IAM_ROLE_TEST_APPLY }}" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported environment: $ENV"
+              exit 1
+              ;;
+          esac
+
+      - name: Guard bootstrap-only requests
+        if: steps.context.outputs.MODE == 'bootstrap-only'
+        run: |
+          echo "bootstrap-only request detected. Terraform apply is skipped."
+
+      - name: Setup Terraform
+        if: steps.context.outputs.MODE != 'bootstrap-only'
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials (Apply Role)
+        if: steps.context.outputs.MODE != 'bootstrap-only'
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ steps.context.outputs.REGION }}
+          role-to-assume: ${{ steps.backend.outputs.ROLE }}
+
+      - name: Terraform Init
+        if: steps.context.outputs.MODE != 'bootstrap-only'
+        run: |
+          set -euo pipefail
+          ENV="${{ steps.context.outputs.ENV }}"
+          BUILD_ID="${{ steps.context.outputs.BUILD_ID }}"
+
+          if [ -z "$ENV" ]; then
+            echo "ENV not found in request file"; exit 1; fi
+
+          if [ -n "$BUILD_ID" ]; then
+            STATE_KEY="envs/${ENV}/builds/${BUILD_ID}/terraform.tfstate"
+          else
+            STATE_KEY="envs/${ENV}/terraform.tfstate"
+          fi
+
+          terraform -chdir=envs/${ENV} init \
+            -backend-config="bucket=${{ steps.backend.outputs.BUCKET }}" \
+            -backend-config="key=${STATE_KEY}" \
+            -backend-config="region=${{ steps.context.outputs.REGION }}" \
+            -backend-config="dynamodb_table=${{ steps.backend.outputs.LOCK_TABLE }}" \
+            -backend-config="encrypt=true"
+
+      - name: Terraform Apply
+        if: steps.context.outputs.MODE != 'bootstrap-only'
+        run: |
+          set -euo pipefail
+          ENV="${{ steps.context.outputs.ENV }}"
+          EKS_ID="${{ steps.context.outputs.EKS_ID }}"
+
+          VAR_FILE="clusters/generated/${EKS_ID}.auto.tfvars.json"
+          VAR_ARGS=()
+          if [ "${{ inputs.allow_build_id_reuse }}" = "true" ]; then
+            VAR_ARGS+=( -var "allow_build_id_reuse=true" )
+          fi
+
+          terraform -chdir=envs/${ENV} apply -auto-approve -input=false -no-color \
+            -var-file="${VAR_FILE}" "${VAR_ARGS[@]}"
+
+      - name: Update catalog + audit trail
+        if: steps.context.outputs.MODE != 'bootstrap-only'
+        run: |
+          set -euo pipefail
+          ENV="${{ steps.context.outputs.ENV }}"
+
+          python3 scripts/eks_request_parser.py \
+            --mode generate \
+            --input-files "${{ inputs.request_file }}" \
+            --enums schemas/metadata/enums.yaml \
+            --tfvars-out-root envs \
+            --catalog-path "docs/20-contracts/resource-catalogs/eks-catalog.yaml" \
+            --catalog-status "active" \
+            --audit-path "governance/${ENV}/eks_request_audit.csv" \
+            --audit-action "apply" \
+            --audit-status "success" \
+            --audit-approver "${{ github.actor }}"
+
+      - name: Commit catalog + audit updates
+        if: steps.context.outputs.MODE != 'bootstrap-only'
+        run: |
+          set -euo pipefail
+          git config user.name "goldenpath-bot"
+          git config user.email "goldenpath-bot@users.noreply.github.com"
+
+          git add docs/20-contracts/resource-catalogs/eks-catalog.yaml || true
+          git add governance/**/eks_request_audit.csv || true
+          git add envs/**/clusters/generated/**.auto.tfvars.json || true
+
+          if git diff --cached --quiet; then
+            echo "No catalog/audit changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(eks): update catalog and audit trail [skip ci]"
+          git push

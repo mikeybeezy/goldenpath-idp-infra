@@ -169,6 +169,9 @@ relates_to:
   - ADR-0164-teardown-v3-enhanced-reliability
   - ADR-0165
   - ADR-0166
+  - ADR-0167
+  - ADR-0168
+  - ADR-0169
   - ADR_INDEX_AUTOMATION_SPEC
   - AUTO_HEALING_GUIDE
   - CL-0068-adr-index-automation
@@ -363,6 +366,9 @@ relates_to:
   - ADR-0165
   - ADR-0166
   - ADR-0167
+  - ADR-0168
+  - ADR-0169
+  - ADR-0170
 <!-- ADR_RELATE_END -->
 ---
 
@@ -539,6 +545,9 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0165](ADR-0165-rds-user-db-provisioning-automation.md) | Platform | Automated RDS User and Database Provisioning | Proposed | 2026-01-16 | Terraform currently creates Secrets Manager entries for database credentials but does not create the corresponding Postgres roles or databases. This leaves a manual gap (psql access) and introduces... |
 | [ADR-0166](ADR-0166-rds-dual-mode-automation-and-enum-alignment.md) | Platform | Dual-Mode RDS Automation with Enum-Aligned Requests | Proposed | 2026-01-16 | The platform intentionally supports two RDS deployment modes: |
 | [ADR-0167](ADR-0167-session-capture-guardrail.md) | Platform | Session Capture Append-Only Guardrail | Proposed | 2026-01-17 | Session captures are intended to preserve context for AI and human collaboration, but without enforcement they can drift, be overwritten, or lose traceability. We need a standardized, append-only f... |
+| [ADR-0168](ADR-0168-eks-request-parser-and-mode-aware-workflows.md) | Platform | EKS Request Parser and Mode-Aware Workflows | Proposed | 2026-01-17 | EKS provisioning needed the same contract-driven, parser-first path used for RDS and Secrets, but EKS requests were either implicit (Terraform edits) or blocked by the scope gate. This created drif... |
+| [ADR-0169](ADR-0169-secret-request-system-generated-ids.md) | Platform | System-Generated SecretRequest IDs with CI Immutability Guard | Proposed | 2026-01-17 | SecretRequest identifiers are used for governance, auditability, and traceability across request files, generated tfvars, and Terraform targets. When IDs are manually entered, they are prone to col... |
+| [ADR-0170](ADR-0170-s3-self-service-request-system.md) | Platform | S3 Self-Service Request System | Proposed | 2026-01-17 | S3 buckets are the third pillar of the core infrastructure trio (RDS, ECR, S3). Currently, bucket provisioning requires direct Terraform access or manual requests, creating inconsistent configurati... |
 <!-- ADR_TABLE_END -->
 
 ---

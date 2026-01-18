@@ -1,0 +1,93 @@
+# Owner: platform-team
+# Relates-To: EKS_REQUEST_FLOW, ADR-0168, PR_GUARDRAILS_INDEX
+name: EKS Size Approval Guard
+
+on:
+  pull_request:
+    paths:
+      - "docs/20-contracts/resource-catalogs/eks-catalog.yaml"
+      - "docs/20-contracts/eks-requests/**/*.yaml"
+      - "docs/20-contracts/eks-requests/**/*.yml"
+  workflow_dispatch:
+
+jobs:
+  enforce-tier-approvals:
+    runs-on: ubuntu-latest
+    env:
+      WARN_ONLY: "true"
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate node tier approvals
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import re
+          import subprocess
+          import sys
+
+          event_path = os.environ.get("GITHUB_EVENT_PATH")
+          warn_only = os.environ.get("WARN_ONLY", "false").lower() == "true"
+          if not event_path:
+              print("ERROR: GITHUB_EVENT_PATH is not set.")
+              sys.exit(1)
+
+          with open(event_path, "r", encoding="utf-8") as handle:
+              event = json.load(handle)
+
+          base = event["pull_request"]["base"]["sha"]
+          head = event["pull_request"]["head"]["sha"]
+
+          files = subprocess.check_output(
+              ["git", "diff", "--name-only", base, head],
+              text=True,
+          ).splitlines()
+
+          targets = [
+              path for path in files
+              if path.startswith("docs/20-contracts/eks-requests/")
+              or path == "docs/20-contracts/resource-catalogs/eks-catalog.yaml"
+          ]
+
+          if not targets:
+              print("No EKS request/catalog files changed.")
+              sys.exit(0)
+
+          tier_re = re.compile(
+              r"^\s*(node_tier|tier)\s*[:=]\s*\"?(large|xlarge)\"?\b",
+              re.IGNORECASE | re.MULTILINE,
+          )
+
+          flagged = []
+          for path in targets:
+              try:
+                  content = open(path, "r", encoding="utf-8").read()
+              except FileNotFoundError:
+                  continue
+              if tier_re.search(content):
+                  flagged.append(path)
+
+          if not flagged:
+              print("No large/xlarge node tiers detected.")
+              sys.exit(0)
+
+          labels = {label["name"] for label in event["pull_request"]["labels"]}
+          approved_labels = {"platform-approval", "eks-large-approved"}
+
+          if not labels.intersection(approved_labels):
+              message = "Large/xlarge EKS node tiers require approval."
+              print(f"⚠️ {message}" if warn_only else f"🚫 {message}")
+              print(f"Files: {', '.join(flagged)}")
+              print("Add label: platform-approval (or eks-large-approved) to proceed.")
+              if warn_only:
+                  sys.exit(0)
+              sys.exit(1)
+
+          print("✅ Large/xlarge node tiers approved via labels.")
+          PY

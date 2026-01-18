@@ -59,3 +59,4 @@ scripts/lib/__pycache__/
 
 
 values-local.secrets.yaml
+tests/scripts/__pycache__/

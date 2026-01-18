@@ -1,0 +1,400 @@
+################################################################################
+# S3 Request Schema - The Contract
+#
+# Defines the request contract for S3 bucket provisioning.
+# Backstage templates and CI workflows should be thin consumers of this schema.
+#
+# Flow:
+#   1. Backstage collects input and creates S3-XXXX.yaml contract
+#   2. CI validates against this schema
+#   3. Parser generates Terraform tfvars + IAM policy snippets
+#   4. Apply workflow provisions bucket with platform approval
+#
+# Reference: ADR-0170 (S3 Self-Service Request System)
+################################################################################
+
+id: S3_REQUEST_V1
+version: "1.0"
+type: request
+domain: platform-core
+owner: platform-team
+status: active
+
+metadata:
+  description: "Contract for requesting S3 buckets"
+  backstage_template: "backstage-helm/backstage-catalog/templates/s3-request.yaml"
+  parser_module: "scripts/s3_request_parser.py"
+  parser_id: "SCRIPT-0037"
+  parser_status: "active"
+  terraform_root: "envs/{environment}/"
+  workflow: ".github/workflows/s3-request-apply.yml"
+  validation_workflow: ".github/workflows/ci-s3-request-validation.yml"
+
+################################################################################
+# Property Definitions
+################################################################################
+
+properties:
+  # Unique request identifier
+  id:
+    type: string
+    pattern: "^S3-[0-9]{4}$"
+    description: "Unique request ID (e.g., S3-0001)"
+    examples:
+      - "S3-0001"
+      - "S3-0042"
+
+  # Target environment (hardcoded - S3 buckets are persistent, no ephemeral)
+  environment:
+    type: string
+    enum:
+      - dev
+      - test
+      - staging
+      - prod
+    description: "Deployment environment"
+
+  # Bucket name - strictly formatted
+  bucketName:
+    type: string
+    pattern: "^goldenpath-[a-z]+-[a-z0-9-]+-[a-z0-9-]+$"
+    description: "Bucket name following goldenpath-{env}-{app}-{purpose} convention"
+    examples:
+      - "goldenpath-dev-payments-uploads"
+      - "goldenpath-prod-analytics-data-lake"
+
+  # Purpose classification - replaces tier system
+  purpose:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - logs
+          - uploads
+          - backups
+          - data-lake
+          - static-assets
+        description: "Bucket purpose category"
+      description:
+        type: string
+        minLength: 10
+        maxLength: 200
+        description: "Human-readable explanation of bucket purpose"
+    required:
+      - type
+      - description
+
+  # Storage class
+  storageClass:
+    type: string
+    enum:
+      - standard
+      - intelligent-tiering
+      - standard-ia
+      - glacier
+    default: standard
+    description: "S3 storage class"
+
+  # Encryption configuration
+  encryption:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - sse-s3
+          - sse-kms
+        description: "Encryption type"
+      kmsKeyAlias:
+        type: string
+        pattern: "^alias/[a-z0-9-]+$"
+        description: "KMS key alias (required if type is sse-kms)"
+    required:
+      - type
+
+  # Versioning
+  versioning:
+    type: boolean
+    default: true
+    description: "Enable S3 versioning"
+
+  # Public access
+  publicAccess:
+    type: string
+    enum:
+      - blocked
+      - exception-approved
+    default: blocked
+    description: "Public access configuration (blocked by default)"
+
+  # Retention policy - captures intent without forcing lifecycle rules
+  retentionPolicy:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - indefinite
+          - time-bounded
+          - compliance-driven
+        description: "Retention strategy"
+      rationale:
+        type: string
+        minLength: 10
+        maxLength: 500
+        description: "Explanation for retention choice"
+    required:
+      - type
+      - rationale
+
+  # Lifecycle rules (optional - only if retentionPolicy.type != indefinite)
+  lifecycle:
+    type: object
+    properties:
+      expireDays:
+        type: integer
+        minimum: 1
+        maximum: 3650
+        description: "Days after which objects expire"
+      transitionToIaDays:
+        type: integer
+        minimum: 30
+        description: "Days after which objects transition to Standard-IA"
+      transitionToGlacierDays:
+        type: integer
+        minimum: 90
+        description: "Days after which objects transition to Glacier"
+    description: "Lifecycle rules (required if retentionPolicy.type != indefinite)"
+
+  # Access logging
+  accessLogging:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: false
+        description: "Enable access logging"
+      targetBucket:
+        type: string
+        pattern: "^goldenpath-[a-z]+-logs$"
+        description: "Target bucket for access logs"
+    required:
+      - enabled
+
+  # Cost alert threshold
+  costAlertGb:
+    type: integer
+    minimum: 1
+    maximum: 10000
+    description: "Storage threshold in GB for CloudWatch cost alert"
+
+  # CORS (blocked by default)
+  corsEnabled:
+    type: boolean
+    default: false
+    description: "Enable CORS (blocked by default)"
+
+  # Tags
+  tags:
+    type: object
+    properties:
+      costCenter:
+        type: string
+        description: "Cost center for billing"
+    required:
+      - costCenter
+    additionalProperties: true
+
+  # Ownership
+  owner:
+    type: string
+    enum_from: owners
+    description: "Team responsible for this bucket"
+
+  application:
+    type: string
+    pattern: "^[a-z][a-z0-9-]{2,30}$"
+    description: "Application name"
+
+  requester:
+    type: string
+    description: "Person or service account making the request"
+
+################################################################################
+# Required Fields
+################################################################################
+
+required:
+  - id
+  - environment
+  - bucketName
+  - purpose
+  - encryption
+  - retentionPolicy
+  - costAlertGb
+  - tags
+  - owner
+  - application
+  - requester
+
+################################################################################
+# Conditional Rules
+################################################################################
+
+conditional_rules:
+  # SSE-KMS required in staging/prod
+  - name: prod_staging_requires_kms
+    description: "Staging and production require SSE-KMS encryption"
+    when:
+      environment:
+        in:
+          - staging
+          - prod
+    then:
+      encryption.type:
+        equals: sse-kms
+        error: "SSE-KMS encryption required for staging/prod environments"
+
+  # KMS key alias required when using SSE-KMS
+  - name: kms_key_required_for_sse_kms
+    description: "KMS key alias required when encryption type is sse-kms"
+    when:
+      encryption.type:
+        equals: sse-kms
+    then:
+      encryption.kmsKeyAlias:
+        required: true
+
+  # Access logging required in staging/prod
+  - name: prod_staging_requires_logging
+    description: "Staging and production require access logging"
+    when:
+      environment:
+        in:
+          - staging
+          - prod
+    then:
+      accessLogging.enabled:
+        equals: true
+        error: "Access logging required for staging/prod environments"
+
+  # Lifecycle required if retention is not indefinite
+  - name: lifecycle_required_for_time_bounded
+    description: "Lifecycle rules required for time-bounded retention"
+    when:
+      retentionPolicy.type:
+        in:
+          - time-bounded
+          - compliance-driven
+    then:
+      lifecycle:
+        required: true
+
+  # Public access exception requires platform approval
+  - name: public_access_requires_approval
+    description: "Public access exceptions require platform-approval label"
+    when:
+      publicAccess:
+        equals: exception-approved
+    then:
+      approval_required:
+        label: platform-approval
+        error: "Public access exceptions require platform-approval label on PR"
+
+  # Static assets purpose requires review
+  - name: static_assets_requires_review
+    description: "Static assets buckets require additional review"
+    when:
+      purpose.type:
+        equals: static-assets
+    then:
+      approval_required:
+        label: platform-approval
+        warning: "Static asset buckets may need CDN/public access review"
+
+################################################################################
+# Purpose-Based Defaults
+################################################################################
+
+purpose_defaults:
+  logs:
+    versioning: false
+    lifecycle:
+      expireDays: 90
+    storageClass: standard-ia
+    description: "Application and audit logs"
+
+  uploads:
+    versioning: true
+    lifecycle: null
+    storageClass: standard
+    description: "User file uploads"
+
+  backups:
+    versioning: true
+    lifecycle:
+      transitionToGlacierDays: 90
+    storageClass: standard
+    description: "Database and configuration backups"
+
+  data-lake:
+    versioning: false
+    lifecycle: null
+    storageClass: intelligent-tiering
+    description: "Analytics and data warehouse"
+
+  static-assets:
+    versioning: true
+    lifecycle: null
+    storageClass: standard
+    description: "CDN/website static files (requires review)"
+
+################################################################################
+# Output Artifacts
+################################################################################
+
+generates:
+  terraform_tfvars:
+    path: "envs/{environment}/s3/generated/{id}.auto.tfvars.json"
+    description: "Parser generates S3 bucket configuration"
+  iam_policy:
+    path: "envs/generated/iam/{application}-s3-policy.json"
+    description: "IAM policy snippet for app role"
+  catalog_entry:
+    path: "docs/20-contracts/resource-catalogs/s3-catalog.yaml"
+    description: "Updates shared S3 catalog"
+    status: active
+  audit_record:
+    path: "governance/{environment}/s3_request_audit.csv"
+    description: "Audit trail entry"
+    status: active
+
+################################################################################
+# Approval Routing
+################################################################################
+
+approval_routing:
+  - condition:
+      publicAccess: exception-approved
+    approval_tier: platform-approval
+    reviewers:
+      - platform-team
+
+  - condition:
+      environment: prod
+    approval_tier: platform-approval
+    reviewers:
+      - platform-team
+
+  - condition:
+      purpose.type: static-assets
+    approval_tier: platform-approval
+    reviewers:
+      - platform-team
+
+  - condition:
+      environment:
+        in: [dev, test]
+    approval_tier: self-serve
+    reviewers: []

@@ -1,0 +1,163 @@
+# Owner: platform-team
+# Relates-To: S3_REQUEST_FLOW, ADR-0170, PR_GUARDRAILS_INDEX
+name: S3 Approval Guard
+
+on:
+  pull_request:
+    paths:
+      - "docs/20-contracts/s3-requests/**/*.yaml"
+      - "docs/20-contracts/s3-requests/**/*.yml"
+  workflow_dispatch:
+    inputs:
+      warn_only:
+        description: "Warn only (do not block PR)"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  check-approval:
+    runs-on: ubuntu-latest
+    env:
+      WARN_ONLY: ${{ inputs.warn_only || 'false' }}
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Python deps
+        run: pip install pyyaml
+
+      - name: Validate S3 requests and check approvals
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+          import sys
+
+          import yaml
+
+          event_path = os.environ.get("GITHUB_EVENT_PATH")
+          warn_only = os.environ.get("WARN_ONLY", "false").lower() == "true"
+
+          if not event_path:
+              print("ERROR: GITHUB_EVENT_PATH is not set.")
+              sys.exit(1)
+
+          with open(event_path, "r", encoding="utf-8") as handle:
+              event = json.load(handle)
+
+          # Get changed files
+          base = event.get("pull_request", {}).get("base", {}).get("sha", "HEAD~1")
+          head = event.get("pull_request", {}).get("head", {}).get("sha", "HEAD")
+
+          try:
+              files = subprocess.check_output(
+                  ["git", "diff", "--name-only", base, head],
+                  text=True,
+              ).splitlines()
+          except subprocess.CalledProcessError:
+              files = []
+
+          # Filter to S3 request files
+          s3_requests = [
+              f for f in files
+              if f.startswith("docs/20-contracts/s3-requests/")
+              and (f.endswith(".yaml") or f.endswith(".yml"))
+              and "/README" not in f
+          ]
+
+          if not s3_requests:
+              print("No S3 request files changed.")
+              sys.exit(0)
+
+          needs_approval = []
+          reasons = {}
+
+          for path in s3_requests:
+              try:
+                  with open(path, "r", encoding="utf-8") as f:
+                      data = yaml.safe_load(f) or {}
+
+                  env = data.get("environment") or data.get("metadata", {}).get("environment")
+                  spec = data.get("spec", {})
+                  public_access = spec.get("publicAccess", "blocked")
+                  purpose_type = spec.get("purpose", {}).get("type", "")
+
+                  file_reasons = []
+
+                  # Non-dev environment requires approval
+                  if env in ("staging", "prod"):
+                      file_reasons.append(f"non-dev environment ({env})")
+
+                  # Public access exception requires approval
+                  if public_access == "exception-approved":
+                      file_reasons.append("public access exception")
+
+                  # Static assets require platform review
+                  if purpose_type == "static-assets":
+                      file_reasons.append("static-assets purpose (CDN/public review)")
+
+                  if file_reasons:
+                      needs_approval.append(path)
+                      reasons[path] = file_reasons
+
+              except FileNotFoundError:
+                  # File was deleted, skip
+                  continue
+              except Exception as exc:
+                  print(f"ERROR: Failed to parse {path}: {exc}")
+                  sys.exit(1)
+
+          if not needs_approval:
+              print("All S3 requests are dev-only with blocked public access.")
+              print("Auto-approval allowed.")
+              sys.exit(0)
+
+          # Check for approval label
+          labels = [l.get("name", "") for l in event.get("pull_request", {}).get("labels", [])]
+          has_approval = "platform-approved" in labels or "s3-approved" in labels
+
+          if has_approval:
+              print("S3 requests require approval but approval label found.")
+              for f in needs_approval:
+                  print(f"   - {f}: {', '.join(reasons[f])}")
+              sys.exit(0)
+
+          # Needs approval but no label
+          print("S3 REQUESTS REQUIRE PLATFORM APPROVAL")
+          print("")
+          print("The following S3 requests need review:")
+          for f in needs_approval:
+              print(f"   - {f}")
+              for r in reasons[f]:
+                  print(f"       * {r}")
+          print("")
+          print("To proceed, a platform-team member must:")
+          print("  1. Review the PR")
+          print("  2. Add the 'platform-approved' or 's3-approved' label")
+          print("")
+
+          if warn_only:
+              print("WARN_ONLY mode: Allowing PR to proceed with warning.")
+              sys.exit(0)
+          else:
+              print("Blocking PR until approval label is added.")
+              sys.exit(1)
+          PY
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## S3 Approval Guard" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Condition | Approval Required |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|-------------------|" >> $GITHUB_STEP_SUMMARY
+          echo "| dev environment, blocked access | No |" >> $GITHUB_STEP_SUMMARY
+          echo "| staging/prod environment | **Yes** |" >> $GITHUB_STEP_SUMMARY
+          echo "| Public access exception | **Yes** |" >> $GITHUB_STEP_SUMMARY
+          echo "| static-assets purpose | **Yes** |" >> $GITHUB_STEP_SUMMARY

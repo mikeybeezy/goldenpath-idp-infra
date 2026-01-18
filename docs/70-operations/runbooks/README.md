@@ -45,6 +45,8 @@ relates_to:
   - RB-0029-rds-manual-secret-rotation
   - RB-0030-rds-break-glass-deletion
   - RB-0031-idp-stack-deployment
+  - RB-0033-persistent-cluster-teardown
+  - RB-0034-persistent-cluster-deployment
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
@@ -82,6 +84,8 @@ breaking_change: false
 - [docs/70-operations/runbooks/RB-0029-rds-manual-secret-rotation.md](RB-0029-rds-manual-secret-rotation.md) — Manually rotate RDS credentials in Secrets Manager.
 - [docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md](RB-0030-rds-break-glass-deletion.md) — Emergency RDS instance deletion procedures.
 - [docs/70-operations/runbooks/RB-0031-idp-stack-deployment.md](RB-0031-idp-stack-deployment.md) — Deploy Keycloak and Backstage IDP stack with ECR images and RDS.
+- [docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md](RB-0033-persistent-cluster-teardown.md) — Destroy persistent clusters using root state.
+- [docs/70-operations/runbooks/RB-0034-persistent-cluster-deployment.md](RB-0034-persistent-cluster-deployment.md) — Deploy persistent clusters with coupled RDS support.
 
 ### App Team Runbooks
 

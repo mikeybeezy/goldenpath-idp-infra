@@ -132,14 +132,14 @@ When a user requests a database via Backstage, they complete **one form** with t
 
 | Field | Required | Example | Description |
 | ----- | -------- | ------- | ----------- |
-| `database_name` | Yes | `inventory_service` | Name for the PostgreSQL database |
+| `databaseName` | Yes | `inventory_service` | Name for the PostgreSQL database |
 | `username` | Yes | `inventory_user` | PostgreSQL role that owns this database |
 | `owner` | Yes | `app-team` | Team responsible for this database |
 | `requester` | Yes | `daniel-deans` | Person submitting the request |
 | `environment` | Yes | `dev` | Target environment (dev/staging/prod) |
 | `domain` | Yes | `application` | Business domain classification |
 | `risk` | Yes | `medium` | Data sensitivity (affects backup retention) |
-| `initial_schema` | No | `none` | Optional pre-built schema template |
+| `initialSchema` | No | `none` | Optional pre-built schema template |
 
 **Important:** Each form submission creates **one** database request. The provisioning script then processes **all** entries in tfvars but is **idempotent** - existing databases are skipped, only new ones are created.
 

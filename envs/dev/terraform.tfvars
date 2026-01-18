@@ -4,7 +4,7 @@ vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
 cluster_lifecycle = "ephemeral"
 # NEED TO UPDATE persistent or ephemeral
-build_id = "15-01-26-15"
+build_id = "17-01-26-01"
 
 # -----------------------------------------------------------------------------
 # CRITICAL CONFIGURATION (Moved to Top)
@@ -41,7 +41,7 @@ app_secrets = {
 # Platform RDS Configuration
 # Manage database size, engine, and application databases here.
 rds_config = {
-  enabled               = true # ENABLED for Dev
+  enabled               = false # DISABLED for ephemeral mode - use standalone RDS workflow
   identifier            = "goldenpath-platform-db"
   instance_class        = "db.t3.micro"
   engine_version        = "15.15"

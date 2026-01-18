@@ -5,6 +5,9 @@ type: index
 relates_to:
   - EC-0001-knative-integration
   - EC-0002-shared-parser-library
+  - EC-0003-kong-backstage-plugin
+  - EC-0004-backstage-copilot-plugin
+  - EC-0005-kubernetes-operator-framework
 ---
 
 This directory tracks proposed platform capabilities for Golden Path IDP evaluation. Each capability is assigned an EC-XXXX ID and follows a lightweight governance model.
@@ -86,6 +89,9 @@ relates_to: [ADRs, roadmap items]
 |------------------------------------------------------|------------------------------------------------|----------|----------|---------------------|---------------|
 |[EC-0001](EC-0001-knative-integration.md)|Knative Integration for Serverless Workloads|proposed|medium|$13K/year|platform-team|
 |[EC-0002](EC-0002-shared-parser-library.md)|Shared Parser Library for Requests|proposed|low|Reduced duplication|platform-team|
+|[EC-0003](EC-0003-kong-backstage-plugin.md)|Kong Self-Service Backstage Plugin|proposed|medium|$8K/year|platform-team|
+|[EC-0004](EC-0004-backstage-copilot-plugin.md)|Backstage AI Copilot Plugin|proposed|medium|$15K/year|platform-team|
+|[EC-0005](EC-0005-kubernetes-operator-framework.md)|Kubernetes Operator Framework|proposed|high|$25K/year|platform-team|
 
 ## Implemented Capabilities
 
@@ -178,5 +184,5 @@ python3 scripts/generate_ec_index.py
 
 ---
 
-**Last Updated**: 2026-01-15
-**Total ECs**: 2 proposed, 0 validated, 0 accepted, 0 rejected, 0 implemented
+**Last Updated**: 2026-01-17
+**Total ECs**: 5 proposed, 0 validated, 0 accepted, 0 rejected, 0 implemented

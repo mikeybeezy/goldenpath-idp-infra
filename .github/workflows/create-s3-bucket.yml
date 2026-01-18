@@ -1,0 +1,381 @@
+# Owner: platform
+# Relates-To: ADR-0170, schemas/requests/s3.schema.yaml
+name: Create S3 Bucket Request
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_branch:
+        description: 'PR base branch'
+        required: true
+        default: development
+      application:
+        description: 'Application name (e.g., payments-api)'
+        required: true
+      purpose_type:
+        description: 'Bucket purpose'
+        type: choice
+        required: true
+        options: [logs, uploads, backups, data-lake, static-assets]
+      purpose_description:
+        description: 'Purpose description (10-200 chars)'
+        required: true
+      owner:
+        description: 'Owner team'
+        type: choice
+        required: true
+        options:
+          - platform-team
+          - security-team
+          - operations-team
+          - sre-team
+          - app-team
+          - database-team
+          - unknown
+      user:
+        description: 'Requesting user (e.g., daniel-deans)'
+        required: true
+      environment:
+        description: 'Target environment'
+        type: choice
+        required: true
+        options: [dev, test, staging, prod]
+      cost_center:
+        description: 'Cost center for billing'
+        required: true
+      cost_alert_gb:
+        description: 'Storage threshold in GB for alert'
+        required: true
+        default: '100'
+      storage_class:
+        description: 'Storage class'
+        type: choice
+        required: true
+        options: [standard, intelligent-tiering, standard-ia, glacier]
+        default: standard
+      versioning:
+        description: 'Enable versioning'
+        type: boolean
+        required: true
+        default: true
+      cors_enabled:
+        description: 'Enable CORS'
+        type: boolean
+        required: false
+        default: false
+      retention_type:
+        description: 'Retention type'
+        type: choice
+        required: true
+        options: [indefinite, time-bounded, compliance-driven]
+        default: indefinite
+      retention_rationale:
+        description: 'Retention rationale (10-500 chars)'
+        required: true
+      expire_days:
+        description: 'Days to expire objects (if time-bounded)'
+        required: false
+      transition_to_ia_days:
+        description: 'Days to transition to Standard-IA'
+        required: false
+      transition_to_glacier_days:
+        description: 'Days to transition to Glacier'
+        required: false
+      public_access:
+        description: 'Public access setting'
+        type: choice
+        required: true
+        options: [blocked, exception-approved]
+        default: blocked
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  propose:
+    name: Propose S3 Bucket Creation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Calculate Request ID
+        id: calc
+        run: |
+          set -euo pipefail
+          # Find the next S3 ID
+          EXISTING=$(find docs/20-contracts/s3-requests -name 'S3-*.yaml' 2>/dev/null | \
+            sed 's/.*S3-\([0-9]*\)\.yaml/\1/' | sort -n | tail -1 || echo "0")
+          NEXT=$((${EXISTING:-0} + 1))
+          ID=$(printf "S3-%04d" $NEXT)
+          echo "id=$ID" >> $GITHUB_OUTPUT
+          echo "✅ Calculated ID: $ID"
+
+      - name: Derive bucket name
+        id: bucket
+        run: |
+          ENV="${{ inputs.environment }}"
+          APP="${{ inputs.application }}"
+          PURPOSE="${{ inputs.purpose_type }}"
+          BUCKET="goldenpath-${ENV}-${APP}-${PURPOSE}"
+          echo "name=$BUCKET" >> $GITHUB_OUTPUT
+          echo "✅ Bucket name: $BUCKET"
+
+      - name: Determine encryption settings
+        id: encryption
+        run: |
+          ENV="${{ inputs.environment }}"
+          if [[ "$ENV" == "staging" || "$ENV" == "prod" ]]; then
+            echo "type=sse-kms" >> $GITHUB_OUTPUT
+            echo "kms_alias=alias/goldenpath-${ENV}-s3" >> $GITHUB_OUTPUT
+          else
+            echo "type=sse-s3" >> $GITHUB_OUTPUT
+            echo "kms_alias=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Determine access logging settings
+        id: logging
+        run: |
+          ENV="${{ inputs.environment }}"
+          if [[ "$ENV" == "staging" || "$ENV" == "prod" ]]; then
+            echo "enabled=true" >> $GITHUB_OUTPUT
+            echo "target=goldenpath-${ENV}-logs" >> $GITHUB_OUTPUT
+          else
+            echo "enabled=false" >> $GITHUB_OUTPUT
+            echo "target=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate inputs
+        run: |
+          # Validate application name format
+          if ! echo "${{ inputs.application }}" | grep -qE '^[a-z][a-z0-9-]{2,30}$'; then
+            echo " Application name must be 3-31 chars, lowercase with hyphens"
+            exit 1
+          fi
+
+          # Validate user format
+          if ! echo "${{ inputs.user }}" | grep -qE '^[a-z0-9-]+$'; then
+            echo " User must be lowercase alphanumeric with dashes"
+            exit 1
+          fi
+
+          # Validate cost alert GB is numeric
+          if ! echo "${{ inputs.cost_alert_gb }}" | grep -qE '^[0-9]+$'; then
+            echo " Cost alert GB must be numeric"
+            exit 1
+          fi
+
+          # Validate purpose description length
+          DESC="${{ inputs.purpose_description }}"
+          if [ ${#DESC} -lt 10 ] || [ ${#DESC} -gt 200 ]; then
+            echo " Purpose description must be 10-200 characters"
+            exit 1
+          fi
+
+          # Validate retention rationale length
+          RAT="${{ inputs.retention_rationale }}"
+          if [ ${#RAT} -lt 10 ] || [ ${#RAT} -gt 500 ]; then
+            echo " Retention rationale must be 10-500 characters"
+            exit 1
+          fi
+
+          echo "✅ All inputs validated"
+
+      - name: Create S3 request contract
+        run: |
+          set -euo pipefail
+          ID="${{ steps.calc.outputs.id }}"
+          ENV="${{ inputs.environment }}"
+          BUCKET="${{ steps.bucket.outputs.name }}"
+          DIR="docs/20-contracts/s3-requests/${ENV}"
+          FILE="${DIR}/${ID}.yaml"
+
+          mkdir -p "$DIR"
+
+          # Build lifecycle section if applicable
+          LIFECYCLE=""
+          if [[ "${{ inputs.retention_type }}" != "indefinite" ]]; then
+            LIFECYCLE="lifecycle:"
+            if [[ -n "${{ inputs.expire_days }}" ]]; then
+              LIFECYCLE="${LIFECYCLE}
+    expireDays: ${{ inputs.expire_days }}"
+            fi
+            if [[ -n "${{ inputs.transition_to_ia_days }}" ]]; then
+              LIFECYCLE="${LIFECYCLE}
+    transitionToIaDays: ${{ inputs.transition_to_ia_days }}"
+            fi
+            if [[ -n "${{ inputs.transition_to_glacier_days }}" ]]; then
+              LIFECYCLE="${LIFECYCLE}
+    transitionToGlacierDays: ${{ inputs.transition_to_glacier_days }}"
+            fi
+          fi
+
+          # Build KMS alias line if applicable
+          KMS_LINE=""
+          if [[ "${{ steps.encryption.outputs.type }}" == "sse-kms" ]]; then
+            KMS_LINE="    kmsKeyAlias: ${{ steps.encryption.outputs.kms_alias }}"
+          fi
+
+          # Build logging target line if applicable
+          LOGGING_TARGET=""
+          if [[ "${{ steps.logging.outputs.enabled }}" == "true" ]]; then
+            LOGGING_TARGET="    targetBucket: ${{ steps.logging.outputs.target }}"
+          fi
+
+          cat > "$FILE" << EOF
+          apiVersion: goldenpath.io/v1
+          kind: S3BucketRequest
+          id: ${ID}
+          environment: ${ENV}
+          owner: ${{ inputs.owner }}
+          application: ${{ inputs.application }}
+          requester: ${{ inputs.user }}
+
+          spec:
+            bucketName: ${BUCKET}
+
+            purpose:
+              type: ${{ inputs.purpose_type }}
+              description: "${{ inputs.purpose_description }}"
+
+            storageClass: ${{ inputs.storage_class }}
+
+            encryption:
+              type: ${{ steps.encryption.outputs.type }}
+          ${KMS_LINE}
+
+            versioning: ${{ inputs.versioning }}
+            publicAccess: ${{ inputs.public_access }}
+
+            retentionPolicy:
+              type: ${{ inputs.retention_type }}
+              rationale: "${{ inputs.retention_rationale }}"
+
+            ${LIFECYCLE}
+
+            accessLogging:
+              enabled: ${{ steps.logging.outputs.enabled }}
+          ${LOGGING_TARGET}
+
+            costAlertGb: ${{ inputs.cost_alert_gb }}
+            corsEnabled: ${{ inputs.cors_enabled }}
+
+            tags:
+              costCenter: ${{ inputs.cost_center }}
+          EOF
+
+          # Clean up empty lines and fix indentation
+          sed -i 's/^          //' "$FILE"
+          sed -i '/^$/d' "$FILE"
+
+          echo "✅ Created contract: $FILE"
+          cat "$FILE"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Validate contract
+        run: |
+          python3 scripts/s3_request_parser.py \
+            --mode validate \
+            --input-files "docs/20-contracts/s3-requests/${{ inputs.environment }}/${{ steps.calc.outputs.id }}.yaml"
+          echo "✅ Contract validated successfully"
+
+      - name: Generate PR body
+        id: pr_body
+        run: |
+          ID="${{ steps.calc.outputs.id }}"
+          BUCKET="${{ steps.bucket.outputs.name }}"
+
+          # Determine approval requirements
+          APPROVAL_NOTES=""
+          if [[ "${{ inputs.environment }}" == "staging" || "${{ inputs.environment }}" == "prod" ]]; then
+            APPROVAL_NOTES="${APPROVAL_NOTES}\n- ⚠️ **Non-dev environment** - requires platform approval"
+          fi
+          if [[ "${{ inputs.public_access }}" == "exception-approved" ]]; then
+            APPROVAL_NOTES="${APPROVAL_NOTES}\n- ⚠️ **Public access exception** - requires platform approval"
+          fi
+          if [[ "${{ inputs.purpose_type }}" == "static-assets" ]]; then
+            APPROVAL_NOTES="${APPROVAL_NOTES}\n- ⚠️ **Static assets** - requires CDN/public access review"
+          fi
+
+          if [[ -z "$APPROVAL_NOTES" ]]; then
+            APPROVAL_NOTES="- ✅ Auto-approval eligible (dev environment, blocked access)"
+          fi
+
+          cat > pr_body.txt << EOF
+          ## 🪣 S3 Bucket Request
+
+          **Request ID:** \`${ID}\`
+          **Bucket Name:** \`${BUCKET}\`
+          **Environment:** \`${{ inputs.environment }}\`
+          **Application:** \`${{ inputs.application }}\`
+          **Owner:** \`${{ inputs.owner }}\`
+          **Requested By:** \`${{ inputs.user }}\`
+
+          ---
+
+          ##  Configuration
+
+          | Setting | Value |
+          |---------|-------|
+          | Purpose | ${{ inputs.purpose_type }} |
+          | Storage Class | ${{ inputs.storage_class }} |
+          | Encryption | ${{ steps.encryption.outputs.type }} |
+          | Versioning | ${{ inputs.versioning }} |
+          | Public Access | ${{ inputs.public_access }} |
+          | Access Logging | ${{ steps.logging.outputs.enabled }} |
+          | Retention | ${{ inputs.retention_type }} |
+          | Cost Alert | ${{ inputs.cost_alert_gb }} GB |
+
+          ---
+
+          ## 🔒 Approval Requirements
+
+          ${APPROVAL_NOTES}
+
+          ---
+
+          ##  Purpose
+
+          > ${{ inputs.purpose_description }}
+
+          ##  Retention Rationale
+
+          > ${{ inputs.retention_rationale }}
+
+          ---
+
+          ## 🚀 Next Steps
+
+          1. **Review** this PR and the generated contract
+          2. **Add labels** if approval is required (\`platform-approved\` or \`s3-approved\`)
+          3. **Merge** to trigger validation
+          4. **Run Apply** workflow to provision the bucket
+
+          ---
+
+          /cc @platform-team
+          EOF
+
+          echo "✅ PR body generated"
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          base: ${{ inputs.base_branch }}
+          branch: "s3/create-${{ inputs.application }}-${{ inputs.purpose_type }}"
+          title: "🪣 Create S3 Bucket: ${{ steps.bucket.outputs.name }} (${{ inputs.environment }})"
+          commit-message: "s3: create ${{ steps.calc.outputs.id }} - ${{ steps.bucket.outputs.name }}"
+          body-path: pr_body.txt
+          labels: |
+            s3-bucket
+            ${{ inputs.environment }}
+            ${{ inputs.purpose_type }}

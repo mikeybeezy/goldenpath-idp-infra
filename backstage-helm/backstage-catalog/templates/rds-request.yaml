@@ -21,7 +21,7 @@ spec:
   parameters:
     - title: Database Details
       required:
-        - database_name
+        - databaseName
         - username
         - owner
         - requester
@@ -30,7 +30,7 @@ spec:
         - risk
         - size
       properties:
-        database_name:
+        databaseName:
           title: Database Name
           type: string
           description: Name for the database (e.g., myapp). Will be created on the shared Platform RDS instance.
@@ -122,7 +122,7 @@ spec:
             - medium: db.t3.small (staging)
             - large: db.t3.medium (prod light)
             - xlarge: db.r6g.large (prod heavy)
-        initial_schema:
+        initialSchema:
           title: Initial Schema Setup
           type: string
           description: Optional SQL schema to run on database creation.
@@ -143,7 +143,7 @@ spec:
       input:
         message: |
           RDS Database Request:
-          database_name=${{ parameters.database_name }}
+          databaseName=${{ parameters.databaseName }}
           username=${{ parameters.username }}
           owner=${{ parameters.owner }}
           requester=${{ parameters.requester }}
@@ -151,7 +151,7 @@ spec:
           environment=${{ parameters.environment }}
           risk=${{ parameters.risk }}
           size=${{ parameters.size }}
-          initial_schema=${{ parameters.initial_schema }}
+          initialSchema=${{ parameters.initialSchema }}
 
     - id: trigger-workflow
       name: Trigger Creation Workflow
@@ -162,7 +162,7 @@ spec:
         branchOrTagName: main
         workflowInputs:
           base_branch: development
-          database_name: ${{ parameters.database_name }}
+          database_name: ${{ parameters.databaseName }}
           username: ${{ parameters.username }}
           owner: ${{ parameters.owner }}
           user: ${{ parameters.requester }}
@@ -170,14 +170,14 @@ spec:
           environment: ${{ parameters.environment }}
           risk: ${{ parameters.risk }}
           size: ${{ parameters.size }}
-          initial_schema: ${{ parameters.initial_schema }}
+          initial_schema: ${{ parameters.initialSchema }}
 
   output:
     links:
       - title: Open Workflow Runs
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/workflows/create-rds-database.yml
       - title: PR Link (filtered by branch)
-        url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls?q=is%3Apr+head%3Adatabase%2Fcreate-${{ parameters.database_name }}
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls?q=is%3Apr+head%3Adatabase%2Fcreate-${{ parameters.databaseName }}
       - title: PR List (fallback)
         url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls
       - title: RDS Catalog

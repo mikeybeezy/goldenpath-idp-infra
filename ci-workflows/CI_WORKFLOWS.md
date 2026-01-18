@@ -47,12 +47,14 @@ CI Workflows (GitHub Actions)
 │   ├─ Bootstrap - CI Backstage (Stub)
 │   ├─ Bootstrap - CI Bootstrap (Stub)
 │   ├─ Create ECR Registry
+│   ├─ EKS Bootstrap (Bootstrap-Only Requests)
 │   ├─ Governance Registry Writer
 │   ├─ Quality - Backstage Entity Sync
 │   └─ Scaffold App Repository
 │
 ├─ Guardrails / Policy (PR)
 │   ├─ Daily Policy Enforcement
+│   ├─ EKS Size Approval Guard
 │   ├─ Ops - Secret Rotation Compliance Check
 │   ├─ Plan - Infra Terraform Checks
 │   ├─ Policy - ADR Policy
@@ -64,14 +66,18 @@ CI Workflows (GitHub Actions)
 │   ├─ Policy - Secret Rotation Warning (Soft Gate)
 │   ├─ Quality - Doc Freshness Check
 │   ├─ Quality - Docs & Config Linter
+│   ├─ Quality - EKS Request Validation
 │   ├─ Quality - Metadata Validation
 │   ├─ Quality - Platform Health Check
 │   ├─ Quality - Pre-commit checks
 │   ├─ Quality - RDS Request Validation
+│   ├─ Quality - S3 Request Validation
 │   ├─ Quality - Terraform Lint
 │   ├─ Quality - YAML Lint
 │   ├─ RDS Size Approval Guard
 │   ├─ RDS tfvars Drift Guard
+│   ├─ S3 Approval Guard
+│   ├─ Secret Approval Guard
 │   └─ Session Capture Guardrail
 │
 ├─ Teardown / Recovery
@@ -86,7 +92,9 @@ CI Workflows (GitHub Actions)
 │   ├─ Apply - Infra Terraform Apply (prod)
 │   ├─ Apply - Infra Terraform Apply (staging)
 │   ├─ Apply - Infra Terraform Apply (test)
+│   ├─ EKS Requests (Apply)
 │   ├─ RDS Database Apply
+│   ├─ S3 Requests (Apply)
 │   └─ Secret Requests (Apply)
 │
 ├─ Terraform Plan
@@ -137,6 +145,11 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
+### EKS Bootstrap (Bootstrap-Only Requests)
+- **File**: `eks-bootstrap-only.yml`
+- **Owner**: platform-team
+- **Triggers**:
+
 ### Governance Registry Writer
 - **File**: `governance-registry-writer.yml`
 - **Owner**: platform
@@ -157,6 +170,11 @@ CI Workflows (GitHub Actions)
 ### Daily Policy Enforcement
 - **File**: `policy-enforcement.yml`
 - **Owner**: platform
+- **Triggers**:
+
+### EKS Size Approval Guard
+- **File**: `eks-size-approval-guard.yml`
+- **Owner**: platform-team
 - **Triggers**:
 
 ### Ops - Secret Rotation Compliance Check
@@ -214,6 +232,11 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
+### Quality - EKS Request Validation
+- **File**: `ci-eks-request-validation.yml`
+- **Owner**: platform
+- **Triggers**:
+
 ### Quality - Metadata Validation
 - **File**: `ci-metadata-validation.yml`
 - **Owner**: platform
@@ -234,6 +257,11 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
+### Quality - S3 Request Validation
+- **File**: `ci-s3-request-validation.yml`
+- **Owner**: platform
+- **Triggers**:
+
 ### Quality - Terraform Lint
 - **File**: `ci-terraform-lint.yml`
 - **Owner**: platform
@@ -251,6 +279,16 @@ CI Workflows (GitHub Actions)
 
 ### RDS tfvars Drift Guard
 - **File**: `rds-tfvars-drift-guard.yml`
+- **Owner**: platform-team
+- **Triggers**:
+
+### S3 Approval Guard
+- **File**: `s3-approval-guard.yml`
+- **Owner**: platform-team
+- **Triggers**:
+
+### Secret Approval Guard
+- **File**: `secret-approval-guard.yml`
 - **Owner**: platform-team
 - **Triggers**:
 
@@ -308,9 +346,19 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
+### EKS Requests (Apply)
+- **File**: `eks-request-apply.yml`
+- **Owner**: platform
+- **Triggers**:
+
 ### RDS Database Apply
 - **File**: `rds-database-apply.yml`
 - **Owner**: platform-team
+- **Triggers**:
+
+### S3 Requests (Apply)
+- **File**: `s3-request-apply.yml`
+- **Owner**: platform
 - **Triggers**:
 
 ### Secret Requests (Apply)

@@ -19,7 +19,7 @@ on:
         options: [dev, staging, prod]
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 env:
@@ -149,9 +149,9 @@ jobs:
                           --master-secret goldenpath/${{ env.ENV }}/rds/master \
                           --build-id ci-${{ github.run_number }} \
                           --run-id ${{ github.run_id }} \
-                          --audit-output /tmp/audit.csv
+                          --audit-output /workspace/governance/${{ env.ENV }}/rds_request_audit.csv
                         echo "Provisioning complete"
-                        cat /tmp/audit.csv
+                        cat /workspace/governance/${{ env.ENV }}/rds_request_audit.csv
                     volumeMounts:
                       - name: workspace
                         mountPath: /workspace
@@ -188,3 +188,32 @@ jobs:
           }
           echo "Provisioning completed successfully"
           kubectl logs job/rds-provision-${{ env.ENV }}-${{ github.run_number }} -n platform-system
+
+      - name: Fetch audit CSV
+        run: |
+          set -euo pipefail
+          ENV="${{ env.ENV }}"
+          POD=$(kubectl get pods -n platform-system \
+            -l app=rds-provisioning,run-id="${{ github.run_id }}" \
+            -o jsonpath='{.items[0].metadata.name}')
+          if [ -z "$POD" ]; then
+            echo "Unable to locate provisioning pod for audit export."
+            exit 1
+          fi
+          mkdir -p "governance/${ENV}"
+          kubectl exec -n platform-system "$POD" -- \
+            cat "/workspace/governance/${ENV}/rds_request_audit.csv" \
+            > "governance/${ENV}/rds_request_audit.csv"
+
+      - name: Commit audit record
+        run: |
+          set -euo pipefail
+          git config user.name "goldenpath-bot"
+          git config user.email "goldenpath-bot@users.noreply.github.com"
+          git add governance/**/rds_request_audit.csv || true
+          if git diff --cached --quiet; then
+            echo "No audit record changes to commit."
+            exit 0
+          fi
+          git commit -m "chore(rds): append provision audit trail [skip ci]"
+          git push

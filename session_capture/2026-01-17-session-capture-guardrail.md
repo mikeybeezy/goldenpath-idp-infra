@@ -220,3 +220,55 @@ Signed: Codex (2026-01-17T10:21:49Z)
 - Verified RDS Size Approval Guard, RDS tfvars Drift Guard, Session Capture Guardrail all categorized correctly
 
 Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-17T11:00:00Z
+
+### Update - 2026-01-17T15:01:12Z
+
+**What changed**
+
+Review of Secret Request system revealed issues with filename/ID alignment and non-deterministic ID generation.
+
+#### Issues Identified
+
+| Issue | Impact | Recommendation |
+| --- | --- | --- |
+| Filename/id mismatch | P0 | Generate SEC-XXXX id for both filename and YAML id |
+| Non-unique ID generation | P1 | Replace Date.now with deterministic ID |
+| Guard uses regex only | P2 | Parse YAML and check spec.risk.tier directly |
+| WARN_ONLY not configurable | P2 | Add workflow input for warn-only mode |
+| Hardcoded enum lists | P3 | Add sync check for Backstage template |
+
+Signed: Codex (2026-01-17T15:01:12Z)
+
+### Update - 2026-01-17T15:03:17Z
+
+**What changed**
+
+- Aligned SecretRequest filename with SEC-XXXX ids and removed non-deterministic id generation
+- Added request_id input to Backstage secret scaffolder and wired it through PR metadata
+- Updated secret-approval-guard to parse YAML risk tier and added warn-only input
+
+**Artifacts touched**
+
+- `backstage-helm/backstage-catalog/templates/secret-request.yaml`
+- `backstage-helm/backstage-catalog/templates/skeletons/secret-request/${{ values.request_id }}.yaml`
+- `.github/workflows/secret-approval-guard.yml`
+
+Signed: Codex (2026-01-17T15:03:17Z)
+
+### Update - 2026-01-17T15:15:20Z
+
+**What changed**
+
+- Switched Backstage secret request to dispatch `request-app-secret.yml` so the system generates IDs
+- Added CI immutability check for SecretRequest IDs and filename/id alignment
+
+**Artifacts touched**
+
+- `backstage-helm/backstage-catalog/templates/secret-request.yaml`
+- `.github/workflows/secret-request-pr.yml`
+
+**Next steps**
+
+- Consider enforcing uniqueness across all secret request IDs (repo-wide)
+
+Signed: Codex (2026-01-17T15:15:20Z)

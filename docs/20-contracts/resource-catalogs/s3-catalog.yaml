@@ -1,24 +1,78 @@
+---
+id: s3-catalog
+title: S3 Bucket Catalog
+type: resource-catalog
+domain: platform-core
+owner: platform-team
+lifecycle: active
+relates_to:
+  - ADR-0170-s3-self-service-request-system
+  - schemas/requests/s3.schema.yaml
+  - CL-0146
+---
+
 version: "1.0"
 domain: platform-core
 owner: platform-team
-last_updated: "2026-01-05"
+last_updated: "2026-01-17"
 managed_by: platform-team
 
+# S3 Buckets Registry
+# Updated by s3-request-apply.yml workflow
+# Source contracts: docs/20-contracts/s3-requests/{env}/
+
 buckets:
-# Example structure:
-# wordpress-assets:
-# metadata:
-# id: S3_WORDPRESS_ASSETS
-# owner: app-team-wordpress
-# risk: medium
-# environment: prod
-# created_date: "2026-01-05"
-# status: active
-# aws:
-# bucket_name: goldenpath-wordpress-assets-prod
-# region: eu-west-2
-# arn: arn:aws:s3:::goldenpath-wordpress-assets-prod
-# governance:
-# versioning: true
-# encryption: AES256
-# public_access_block: true
+  # Example entry (populated by parser/workflow):
+  #
+  # goldenpath-dev-platform-logs:
+  #   metadata:
+  #     id: S3-0001
+  #     owner: platform-team
+  #     application: platform-logs
+  #     requested_by: platform-team
+  #     purpose: logs
+  #     environment: dev
+  #     status: active
+  #     created_date: "2026-01-17"
+  #   aws:
+  #     bucket_name: goldenpath-dev-platform-logs
+  #     region: eu-west-2
+  #     arn: arn:aws:s3:::goldenpath-dev-platform-logs
+  #   governance:
+  #     versioning: false
+  #     encryption: sse-s3
+  #     public_access_block: true
+  #     access_logging: false
+  #   retention:
+  #     type: time-bounded
+  #     expire_days: 90
+  #   cost:
+  #     cost_center: platform
+  #     alert_threshold_gb: 100
+
+  goldenpath-dev-platform-logs:
+    metadata:
+      id: S3-0001
+      owner: platform-team
+      application: platform-logs
+      requested_by: platform-team
+      purpose: logs
+      environment: dev
+      status: pending
+      created_date: "2026-01-17"
+    aws:
+      bucket_name: goldenpath-dev-platform-logs
+      region: eu-west-2
+      arn: null  # Populated after apply
+    governance:
+      versioning: false
+      encryption: sse-s3
+      public_access_block: true
+      access_logging: false
+    retention:
+      type: time-bounded
+      expire_days: 90
+      transition_to_ia_days: 30
+    cost:
+      cost_center: platform
+      alert_threshold_gb: 100
