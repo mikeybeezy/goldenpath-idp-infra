@@ -122,14 +122,22 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          SKIP_EXEMPT: ${{ steps.exempt.outputs.skip }}
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+          DRIFT_DETECTED: ${{ steps.report.outputs.drift }}
+          VALIDATE_OUTCOME: ${{ steps.validate.outcome }}
+          EMOJI_OUTCOME: ${{ steps.emoji.outcome }}
+          ENUMS_OUTCOME: ${{ steps.enums.outcome }}
+          ROUTING_OUTCOME: ${{ steps.routing.outcome }}
         run: |
           echo "## Quality Guardrails Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          if [ "${{ steps.exempt.outputs.skip }}" == "true" ]; then
+          if [ "$SKIP_EXEMPT" == "true" ]; then
             echo " **Skipped** - Exempt label detected" >> $GITHUB_STEP_SUMMARY
-          elif [ -z "${{ steps.changed.outputs.files }}" ]; then
+          elif [ -z "$CHANGED_FILES" ]; then
             echo " **No metadata or documentation files changed**" >> $GITHUB_STEP_SUMMARY
-          elif [ "${{ steps.report.outputs.drift }}" == "true" ]; then
+          elif [ "$DRIFT_DETECTED" == "true" ]; then
             echo " **Governance Drift Detected**" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "###  Local Remediation" >> $GITHUB_STEP_SUMMARY
@@ -137,7 +145,7 @@ jobs:
             echo '```bash' >> $GITHUB_STEP_SUMMARY
             echo 'bin/governance heal .' >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
-          elif [ "${{ steps.validate.outcome }}" == "success" ] && [ "${{ steps.emoji.outcome }}" == "success" ] && [ "${{ steps.enums.outcome }}" == "success" ] && [ "${{ steps.routing.outcome }}" == "success" ]; then
+          elif [ "$VALIDATE_OUTCOME" == "success" ] && [ "$EMOJI_OUTCOME" == "success" ] && [ "$ENUMS_OUTCOME" == "success" ] && [ "$ROUTING_OUTCOME" == "success" ]; then
             echo "✅ **Passed** - All metadata, enums, routing, and visual standards valid" >> $GITHUB_STEP_SUMMARY
           else
             echo " **Failed** - Unexpected CI error" >> $GITHUB_STEP_SUMMARY
