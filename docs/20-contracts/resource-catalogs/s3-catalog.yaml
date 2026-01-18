@@ -24,7 +24,7 @@ managed_by: platform-team
 buckets:
   # Example entry (populated by parser/workflow):
   #
-  # platform-logs-dev:
+  # goldenpath-dev-platform-logs:
   #   metadata:
   #     id: S3-0001
   #     owner: platform-team
@@ -50,7 +50,7 @@ buckets:
   #     cost_center: platform
   #     alert_threshold_gb: 100
 
-  platform-logs-dev:
+  goldenpath-dev-platform-logs:
     metadata:
       id: S3-0001
       owner: platform-team

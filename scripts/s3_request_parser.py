@@ -487,7 +487,7 @@ def update_s3_catalog(
     body.setdefault("buckets", {})
     body["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-    bucket_key = f"{req.application}-{req.environment}"
+    bucket_key = req.bucket_name
     created_date = req.created_date or datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     body["buckets"][bucket_key] = {

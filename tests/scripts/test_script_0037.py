@@ -95,18 +95,18 @@ def valid_s3_request_file(valid_s3_request_doc):
 def prod_s3_request_doc(valid_s3_request_doc):
     """Prod request requiring SSE-KMS and access logging."""
     doc = valid_s3_request_doc.copy()
-        doc["environment"] = "prod"
-        doc["spec"] = valid_s3_request_doc["spec"].copy()
-        doc["spec"]["bucketName"] = "goldenpath-prod-payments-api-uploads"
-        doc["spec"]["encryption"] = {
-            "type": "sse-kms",
-            "kmsKeyAlias": "alias/platform-s3",
-        }
-        doc["spec"]["accessLogging"] = {
-            "enabled": True,
-            "targetBucket": "goldenpath-prod-logs",
-        }
-        return doc
+    doc["environment"] = "prod"
+    doc["spec"] = valid_s3_request_doc["spec"].copy()
+    doc["spec"]["bucketName"] = "goldenpath-prod-payments-api-uploads"
+    doc["spec"]["encryption"] = {
+        "type": "sse-kms",
+        "kmsKeyAlias": "alias/platform-s3",
+    }
+    doc["spec"]["accessLogging"] = {
+        "enabled": True,
+        "targetBucket": "goldenpath-prod-logs",
+    }
+    return doc
 
 
 @pytest.fixture
