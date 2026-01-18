@@ -45,8 +45,8 @@ config:
 config:
   registries:
     - name: ECR
-      api_url: https://339712971032.dkr.ecr.eu-west-2.amazonaws.com
-      prefix: 339712971032.dkr.ecr.eu-west-2.amazonaws.com
+      api_url: https://593517239005.dkr.ecr.eu-west-2.amazonaws.com
+      prefix: 593517239005.dkr.ecr.eu-west-2.amazonaws.com
       ping: yes
       insecure: no
       credentials: pullsecret:argocd/ecr-credentials
@@ -58,7 +58,7 @@ serviceAccount:
   create: true
   name: argocd-image-updater
   annotations:
-    # eks.amazonaws.com/role-arn: arn:aws:iam::339712971032:role/argocd-image-updater-staging
+    # eks.amazonaws.com/role-arn: arn:aws:iam::593517239005:role/argocd-image-updater-staging
 
 # -----------------------------------------------------------------------------
 # RBAC
