@@ -44,10 +44,14 @@ properties:
       - "S3-0001"
       - "S3-0042"
 
-  # Target environment
+  # Target environment (hardcoded - S3 buckets are persistent, no ephemeral)
   environment:
     type: string
-    enum_from: environments
+    enum:
+      - dev
+      - test
+      - staging
+      - prod
     description: "Deployment environment"
 
   # Bucket name - strictly formatted
