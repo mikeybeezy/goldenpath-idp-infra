@@ -1,9 +1,47 @@
-resource "aws_secretsmanager_secret" "this" {
-  name        = var.name
-  description = var.description
-  kms_key_id  = var.kms_key_id
+# -----------------------------------------------------------------------------
+# Adopt-or-Create Pattern for Idempotent Secret Management
+# -----------------------------------------------------------------------------
+# When adopt_existing=true:
+#   - First checks if secret exists using external data source
+#   - If exists: adopts it (updates tags, returns existing ARN)
+#   - If not exists: creates new secret
+# This enables `make deploy` to succeed even when Terraform state is lost
+# -----------------------------------------------------------------------------
 
-  tags = merge(
+# Use external data source to check existence (doesn't fail if not found)
+data "external" "secret_check" {
+  count = var.adopt_existing ? 1 : 0
+  program = ["bash", "-c", <<-EOT
+    secret=$(aws secretsmanager describe-secret --secret-id "${var.name}" --region "${data.aws_region.current.name}" 2>/dev/null || echo "")
+    if [ -n "$secret" ]; then
+      arn=$(echo "$secret" | jq -r '.ARN')
+      deleted=$(echo "$secret" | jq -r '.DeletedDate // empty')
+      if [ -n "$deleted" ]; then
+        # Secret is scheduled for deletion - restore it
+        aws secretsmanager restore-secret --secret-id "${var.name}" --region "${data.aws_region.current.name}" >/dev/null 2>&1 || true
+      fi
+      echo "{\"exists\": \"true\", \"arn\": \"$arn\"}"
+    else
+      echo "{\"exists\": \"false\", \"arn\": \"\"}"
+    fi
+  EOT
+  ]
+}
+
+data "aws_region" "current" {}
+
+locals {
+  # Check if we're adopting an existing secret
+  secret_exists       = var.adopt_existing && length(data.external.secret_check) > 0 ? data.external.secret_check[0].result.exists == "true" : false
+  existing_secret_arn = local.secret_exists ? data.external.secret_check[0].result.arn : null
+  should_create       = !local.secret_exists
+
+  # Compute the effective secret ARN (either created or existing)
+  secret_arn = local.should_create ? (length(aws_secretsmanager_secret.this) > 0 ? aws_secretsmanager_secret.this[0].arn : null) : local.existing_secret_arn
+  secret_id  = local.should_create ? (length(aws_secretsmanager_secret.this) > 0 ? aws_secretsmanager_secret.this[0].id : null) : local.existing_secret_arn
+
+  # Compute tags to apply
+  computed_tags = merge(
     var.tags,
     var.metadata != null ? {
       "goldenpath.idp/id"    = var.metadata.id
@@ -11,19 +49,54 @@ resource "aws_secretsmanager_secret" "this" {
       "goldenpath.idp/risk"  = var.metadata.risk
     } : {}
   )
+}
+
+# -----------------------------------------------------------------------------
+# Create secret (only when not adopting existing)
+# -----------------------------------------------------------------------------
+resource "aws_secretsmanager_secret" "this" {
+  count = local.should_create ? 1 : 0
+
+  name        = var.name
+  description = var.description
+  kms_key_id  = var.kms_key_id
+  tags        = local.computed_tags
 
   recovery_window_in_days = var.recovery_window_in_days
 }
 
+# -----------------------------------------------------------------------------
+# Update tags on adopted secret
+# -----------------------------------------------------------------------------
+resource "null_resource" "adopt_tags" {
+  count = local.secret_exists ? 1 : 0
+
+  triggers = {
+    secret_arn = local.existing_secret_arn
+    tags_hash  = sha256(jsonencode(local.computed_tags))
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      aws secretsmanager tag-resource \
+        --secret-id "${local.existing_secret_arn}" \
+        --region "${data.aws_region.current.name}" \
+        --tags '${jsonencode([for k, v in local.computed_tags : { Key = k, Value = v }])}'
+    EOT
+  }
+}
+
+# -----------------------------------------------------------------------------
+# Resource Policy
+# -----------------------------------------------------------------------------
 locals {
   # Use explicit create_policy if set, otherwise fall back to checking principal lengths
-  # This avoids the "count depends on computed values" error when principals contain resource references
   should_create_policy = var.create_policy != null ? var.create_policy : (length(var.read_principals) > 0 || length(var.write_principals) > 0 || length(var.break_glass_principals) > 0)
 }
 
 resource "aws_secretsmanager_secret_policy" "this" {
-  count      = local.should_create_policy ? 1 : 0
-  secret_arn = aws_secretsmanager_secret.this.arn
+  count      = local.should_create_policy && local.secret_arn != null ? 1 : 0
+  secret_arn = local.secret_arn
   policy     = data.aws_iam_policy_document.this[0].json
 }
 
@@ -39,7 +112,7 @@ data "aws_iam_policy_document" "this" {
         "secretsmanager:GetSecretValue",
         "secretsmanager:DescribeSecret"
       ]
-      resources = [aws_secretsmanager_secret.this.arn]
+      resources = [local.secret_arn]
       principals {
         type        = "AWS"
         identifiers = var.read_principals
@@ -56,7 +129,7 @@ data "aws_iam_policy_document" "this" {
         "secretsmanager:PutSecretValue",
         "secretsmanager:UpdateSecret"
       ]
-      resources = [aws_secretsmanager_secret.this.arn]
+      resources = [local.secret_arn]
       principals {
         type        = "AWS"
         identifiers = var.write_principals
@@ -70,7 +143,7 @@ data "aws_iam_policy_document" "this" {
       sid       = "AllowBreakGlass"
       effect    = "Allow"
       actions   = ["secretsmanager:*"]
-      resources = [aws_secretsmanager_secret.this.arn]
+      resources = [local.secret_arn]
       principals {
         type        = "AWS"
         identifiers = var.break_glass_principals
@@ -79,10 +152,13 @@ data "aws_iam_policy_document" "this" {
   }
 }
 
+# -----------------------------------------------------------------------------
+# Secret Rotation
+# -----------------------------------------------------------------------------
 resource "aws_secretsmanager_secret_rotation" "this" {
-  count = var.rotation_lambda_arn != null ? 1 : 0
+  count = var.rotation_lambda_arn != null && local.secret_id != null ? 1 : 0
 
-  secret_id           = aws_secretsmanager_secret.this.id
+  secret_id           = local.secret_id
   rotation_lambda_arn = var.rotation_lambda_arn
 
   lifecycle {

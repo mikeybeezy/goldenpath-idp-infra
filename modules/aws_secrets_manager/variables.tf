@@ -90,3 +90,9 @@ variable "break_glass_principals" {
   type        = list(string)
   default     = []
 }
+
+variable "adopt_existing" {
+  description = "If true, adopt an existing secret instead of failing on ResourceExistsException. Enables idempotent deploys when Terraform state is lost."
+  type        = bool
+  default     = false
+}
