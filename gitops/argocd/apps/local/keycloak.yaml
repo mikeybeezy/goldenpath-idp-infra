@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-    targetRevision: feature/tooling-apps-config
+    targetRevision: development
     path: gitops/helm/keycloak
     helm:
       valueFiles:

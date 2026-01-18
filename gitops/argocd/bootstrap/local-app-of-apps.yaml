@@ -1,0 +1,28 @@
+# App-of-Apps for Local Kind Cluster
+# This bootstraps all local applications when Argo CD starts
+# Apply once: kubectl apply -f gitops/argocd/bootstrap/local-app-of-apps.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: local-apps
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: goldenpath-idp
+    environment: local
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    targetRevision: development
+    path: gitops/argocd/apps/local
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
