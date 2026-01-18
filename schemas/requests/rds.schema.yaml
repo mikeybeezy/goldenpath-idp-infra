@@ -63,7 +63,7 @@ properties:
     description: "Deployment environment"
 
   # Database name
-  database_name:
+  databaseName:
     type: string
     pattern: "^[a-z][a-z0-9_]{2,62}$"
     description: "Database name (lowercase, alphanumeric, underscores)"
@@ -92,14 +92,14 @@ properties:
     default: small
 
   # Storage configuration
-  storage_gb:
+  storageGb:
     type: integer
     minimum: 20
     maximum: 500
     default: 20
     description: "Allocated storage in GB"
 
-  max_storage_gb:
+  maxStorageGb:
     type: integer
     minimum: 20
     maximum: 1000
@@ -130,7 +130,7 @@ properties:
     description: "Security risk classification (none|low|medium|high|access)"
 
   # Optional: backup configuration
-  backup_retention_days:
+  backupRetentionDays:
     type: integer
     minimum: 1
     maximum: 35
@@ -138,13 +138,13 @@ properties:
     description: "Number of days to retain automated backups"
 
   # Optional: multi-az (prod only)
-  multi_az:
+  multiAz:
     type: boolean
     default: false
     description: "Enable Multi-AZ deployment (recommended for prod)"
 
   # Optional: performance insights
-  performance_insights:
+  performanceInsights:
     type: boolean
     default: true
     description: "Enable Performance Insights monitoring"
@@ -157,7 +157,7 @@ required:
   - id
   - service
   - environment
-  - database_name
+  - databaseName
   - username
   - size
   - domain
@@ -175,7 +175,7 @@ conditional_rules:
       environment:
         equals: prod
     then:
-      multi_az:
+      multiAz:
         recommended: true
         warning: "Production databases without Multi-AZ may have availability gaps"
 
@@ -185,7 +185,7 @@ conditional_rules:
       environment:
         equals: prod
     then:
-      backup_retention_days:
+      backupRetentionDays:
         minimum: 14
 
   - name: dev_max_size
@@ -201,11 +201,11 @@ conditional_rules:
   - name: storage_max_must_exceed_allocated
     description: "Max storage must be greater than allocated"
     when:
-      max_storage_gb:
+      maxStorageGb:
         defined: true
     then:
-      max_storage_gb:
-        greater_than_field: storage_gb
+      maxStorageGb:
+        greater_than_field: storageGb
 
 ################################################################################
 # Instance Size Mapping (for parser/terraform)
@@ -240,6 +240,9 @@ generates:
   catalog_entry:
     path: "docs/20-contracts/resource-catalogs/rds-catalog.yaml"
     description: "Workflow updates shared RDS catalog"
+  audit_record:
+    path: "governance/{environment}/rds_request_audit.csv"
+    description: "Audit trail entry"
 
 ################################################################################
 # Approval Routing (based on risk/environment)

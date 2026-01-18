@@ -53,32 +53,32 @@ def valid_s3_request_doc():
             "description": "User uploads for payments",
             "created": "2026-01-17",
         },
-        "spec": {
-            "bucket_name": "goldenpath-dev-payments-api-uploads",
-            "purpose": {
-                "type": "uploads",
-                "description": "User-uploaded documents for payment verification",
+            "spec": {
+                "bucketName": "goldenpath-dev-payments-api-uploads",
+                "purpose": {
+                    "type": "uploads",
+                    "description": "User-uploaded documents for payment verification",
+                },
+                "storageClass": "standard",
+                "encryption": {
+                    "type": "sse-s3",
+                },
+                "versioning": True,
+                "publicAccess": "blocked",
+                "retentionPolicy": {
+                    "type": "indefinite",
+                    "rationale": "User documents retained for compliance",
+                },
+                "accessLogging": {
+                    "enabled": False,
+                },
+                "costAlertGb": 50,
+                "corsEnabled": False,
+                "tags": {
+                    "costCenter": "payments",
+                },
             },
-            "storage_class": "standard",
-            "encryption": {
-                "type": "sse-s3",
-            },
-            "versioning": True,
-            "public_access": "blocked",
-            "retention_policy": {
-                "type": "indefinite",
-                "rationale": "User documents retained for compliance",
-            },
-            "access_logging": {
-                "enabled": False,
-            },
-            "cost_alert_gb": 50,
-            "cors_enabled": False,
-            "tags": {
-                "cost-center": "payments",
-            },
-        },
-    }
+        }
 
 
 @pytest.fixture
@@ -95,18 +95,18 @@ def valid_s3_request_file(valid_s3_request_doc):
 def prod_s3_request_doc(valid_s3_request_doc):
     """Prod request requiring SSE-KMS and access logging."""
     doc = valid_s3_request_doc.copy()
-    doc["environment"] = "prod"
-    doc["spec"] = valid_s3_request_doc["spec"].copy()
-    doc["spec"]["bucket_name"] = "goldenpath-prod-payments-api-uploads"
-    doc["spec"]["encryption"] = {
-        "type": "sse-kms",
-        "kms_key_alias": "alias/platform-s3",
-    }
-    doc["spec"]["access_logging"] = {
-        "enabled": True,
-        "target_bucket": "goldenpath-prod-logs",
-    }
-    return doc
+        doc["environment"] = "prod"
+        doc["spec"] = valid_s3_request_doc["spec"].copy()
+        doc["spec"]["bucketName"] = "goldenpath-prod-payments-api-uploads"
+        doc["spec"]["encryption"] = {
+            "type": "sse-kms",
+            "kmsKeyAlias": "alias/platform-s3",
+        }
+        doc["spec"]["accessLogging"] = {
+            "enabled": True,
+            "targetBucket": "goldenpath-prod-logs",
+        }
+        return doc
 
 
 @pytest.fixture
@@ -137,12 +137,12 @@ class TestParseRequest:
 
     def test_missing_required_field_raises(self, valid_s3_request_doc):
         doc = valid_s3_request_doc.copy()
-        del doc["spec"]["bucket_name"]
+        del doc["spec"]["bucketName"]
 
         with pytest.raises(ValueError) as exc_info:
             parse_request(doc, Path("test.yaml"))
 
-        assert "spec.bucket_name" in str(exc_info.value)
+        assert "spec.bucketName" in str(exc_info.value)
 
     def test_missing_purpose_type_raises(self, valid_s3_request_doc):
         doc = valid_s3_request_doc.copy()
@@ -162,7 +162,7 @@ class TestParseRequest:
         with pytest.raises(ValueError) as exc_info:
             parse_request(doc, Path("test.yaml"))
 
-        assert "spec.tags.cost-center" in str(exc_info.value)
+        assert "spec.tags.costCenter" in str(exc_info.value)
 
 
 # --- Validate Enums Tests ---
@@ -213,7 +213,7 @@ class TestValidateGuardrails:
         doc = valid_s3_request_doc.copy()
         doc["environment"] = "prod"
         doc["spec"] = valid_s3_request_doc["spec"].copy()
-        doc["spec"]["bucket_name"] = "goldenpath-prod-payments-api-uploads"
+        doc["spec"]["bucketName"] = "goldenpath-prod-payments-api-uploads"
         # Keep SSE-S3 (should fail)
 
         req = parse_request(doc, Path("test.yaml"))
@@ -227,10 +227,10 @@ class TestValidateGuardrails:
         doc = valid_s3_request_doc.copy()
         doc["environment"] = "prod"
         doc["spec"] = valid_s3_request_doc["spec"].copy()
-        doc["spec"]["bucket_name"] = "goldenpath-prod-payments-api-uploads"
+        doc["spec"]["bucketName"] = "goldenpath-prod-payments-api-uploads"
         doc["spec"]["encryption"] = {
             "type": "sse-kms",
-            "kms_key_alias": "alias/platform-s3",
+            "kmsKeyAlias": "alias/platform-s3",
         }
         # Keep access_logging disabled (should fail)
 
@@ -239,24 +239,24 @@ class TestValidateGuardrails:
         with pytest.raises(ValueError) as exc_info:
             validate_guardrails(req, Path("test.yaml"))
 
-        assert "access_logging required" in str(exc_info.value)
+        assert "accessLogging required" in str(exc_info.value)
 
     def test_kms_requires_key_alias(self, valid_s3_request_doc):
         doc = valid_s3_request_doc.copy()
         doc["spec"] = valid_s3_request_doc["spec"].copy()
-        doc["spec"]["encryption"] = {"type": "sse-kms"}  # Missing kms_key_alias
+        doc["spec"]["encryption"] = {"type": "sse-kms"}  # Missing kmsKeyAlias
 
         req = parse_request(doc, Path("test.yaml"))
 
         with pytest.raises(ValueError) as exc_info:
             validate_guardrails(req, Path("test.yaml"))
 
-        assert "kms_key_alias required" in str(exc_info.value)
+        assert "kmsKeyAlias required" in str(exc_info.value)
 
     def test_time_bounded_requires_lifecycle(self, valid_s3_request_doc):
         doc = valid_s3_request_doc.copy()
         doc["spec"] = valid_s3_request_doc["spec"].copy()
-        doc["spec"]["retention_policy"] = {
+        doc["spec"]["retentionPolicy"] = {
             "type": "time-bounded",
             "rationale": "Expire after 90 days",
         }
@@ -272,19 +272,19 @@ class TestValidateGuardrails:
     def test_bucket_naming_convention(self, valid_s3_request_doc):
         doc = valid_s3_request_doc.copy()
         doc["spec"] = valid_s3_request_doc["spec"].copy()
-        doc["spec"]["bucket_name"] = "wrong-prefix-bucket"
+        doc["spec"]["bucketName"] = "wrong-prefix-bucket"
 
         req = parse_request(doc, Path("test.yaml"))
 
         with pytest.raises(ValueError) as exc_info:
             validate_guardrails(req, Path("test.yaml"))
 
-        assert "bucket_name must start with" in str(exc_info.value)
+        assert "bucketName must match" in str(exc_info.value)
 
     def test_public_access_exception_warning(self, valid_s3_request_doc):
         doc = valid_s3_request_doc.copy()
         doc["spec"] = valid_s3_request_doc["spec"].copy()
-        doc["spec"]["public_access"] = "exception-approved"
+        doc["spec"]["publicAccess"] = "exception-approved"
 
         req = parse_request(doc, Path("test.yaml"))
         warnings = validate_guardrails(req, Path("test.yaml"))
@@ -340,13 +340,13 @@ class TestGenerateTfvars:
     def test_generates_lifecycle_rules(self, valid_s3_request_doc):
         doc = valid_s3_request_doc.copy()
         doc["spec"] = valid_s3_request_doc["spec"].copy()
-        doc["spec"]["retention_policy"] = {
+        doc["spec"]["retentionPolicy"] = {
             "type": "time-bounded",
             "rationale": "Expire after 90 days",
         }
         doc["spec"]["lifecycle"] = {
-            "expire_days": 90,
-            "transition_to_ia_days": 30,
+            "expireDays": 90,
+            "transitionToIaDays": 30,
         }
 
         req = parse_request(doc, Path("test.yaml"))

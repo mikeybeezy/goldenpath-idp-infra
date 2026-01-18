@@ -69,7 +69,7 @@ jobs:
           git config user.email "goldenpath-bot@users.noreply.github.com"
 
           git add envs/**/s3/generated/*.auto.tfvars.json || true
-          git add generated/iam/*-s3-policy.json || true
+          git add envs/generated/iam/*-s3-policy.json || true
           if git diff --cached --quiet; then
             echo "No generated changes to commit."
             exit 0
@@ -95,11 +95,15 @@ jobs:
           s3_id = data.get("id")
           bucket_name = spec.get("bucketName")
           public_access = spec.get("publicAccess", "blocked")
+          purpose_type = (spec.get("purpose") or {}).get("type", "")
+          needs_approval = env != "dev" or public_access == "exception-approved" or purpose_type == "static-assets"
 
           print(f"ENV={env}")
           print(f"S3_ID={s3_id}")
           print(f"BUCKET_NAME={bucket_name}")
           print(f"PUBLIC_ACCESS={public_access}")
+          print(f"PURPOSE_TYPE={purpose_type}")
+          print(f"NEEDS_APPROVAL={'true' if needs_approval else 'false'}")
           PY
 
       - name: Guard non-dev requests
@@ -109,15 +113,14 @@ jobs:
           exit 1
 
       - name: Guard platform approval
-        if: inputs.platform_approved != true
+        if: steps.context.outputs.NEEDS_APPROVAL == 'true' && inputs.platform_approved != true
         run: |
-          echo "Platform approval is required. Set platform_approved=true."
-          exit 1
-
-      - name: Guard public access exception
-        if: steps.context.outputs.PUBLIC_ACCESS == 'exception-approved' && inputs.platform_approved != true
-        run: |
-          echo "Public access exception requires explicit platform approval."
+          echo "Platform approval is required for this request."
+          echo "Context:"
+          echo "  env=${{ steps.context.outputs.ENV }}"
+          echo "  public_access=${{ steps.context.outputs.PUBLIC_ACCESS }}"
+          echo "  purpose_type=${{ steps.context.outputs.PURPOSE_TYPE }}"
+          echo "Set platform_approved=true to proceed."
           exit 1
 
       - name: Resolve backend config
@@ -209,6 +212,45 @@ jobs:
 
           terraform -chdir=envs/${ENV} apply -auto-approve -input=false -no-color \
             -var-file="${VAR_FILE}"
+
+      - name: Update catalog + audit trail
+        if: inputs.dry_run != true
+        run: |
+          set -euo pipefail
+          ENV="${{ steps.context.outputs.ENV }}"
+          REGION="${{ steps.backend.outputs.REGION }}"
+
+          python3 scripts/s3_request_parser.py \
+            --mode generate \
+            --input-files "${{ inputs.request_file }}" \
+            --output-root envs \
+            --catalog-path "docs/20-contracts/resource-catalogs/s3-catalog.yaml" \
+            --catalog-region "${REGION}" \
+            --catalog-status "active" \
+            --audit-path "governance/${ENV}/s3_request_audit.csv" \
+            --audit-action "apply" \
+            --audit-status "success" \
+            --audit-approver "${{ github.actor }}"
+
+      - name: Commit catalog + audit updates
+        if: inputs.dry_run != true
+        run: |
+          set -euo pipefail
+          git config user.name "goldenpath-bot"
+          git config user.email "goldenpath-bot@users.noreply.github.com"
+
+          git add docs/20-contracts/resource-catalogs/s3-catalog.yaml || true
+          git add governance/**/s3_request_audit.csv || true
+          git add envs/**/s3/generated/*.auto.tfvars.json || true
+          git add envs/generated/iam/*-s3-policy.json || true
+
+          if git diff --cached --quiet; then
+            echo "No catalog/audit changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(s3): update catalog and audit trail [skip ci]"
+          git push
 
       - name: Apply summary
         if: inputs.dry_run != true

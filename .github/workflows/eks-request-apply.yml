@@ -205,3 +205,40 @@ jobs:
 
           terraform -chdir=envs/${ENV} apply -auto-approve -input=false -no-color \
             -var-file="${VAR_FILE}" "${VAR_ARGS[@]}"
+
+      - name: Update catalog + audit trail
+        if: steps.context.outputs.MODE != 'bootstrap-only'
+        run: |
+          set -euo pipefail
+          ENV="${{ steps.context.outputs.ENV }}"
+
+          python3 scripts/eks_request_parser.py \
+            --mode generate \
+            --input-files "${{ inputs.request_file }}" \
+            --enums schemas/metadata/enums.yaml \
+            --tfvars-out-root envs \
+            --catalog-path "docs/20-contracts/resource-catalogs/eks-catalog.yaml" \
+            --catalog-status "active" \
+            --audit-path "governance/${ENV}/eks_request_audit.csv" \
+            --audit-action "apply" \
+            --audit-status "success" \
+            --audit-approver "${{ github.actor }}"
+
+      - name: Commit catalog + audit updates
+        if: steps.context.outputs.MODE != 'bootstrap-only'
+        run: |
+          set -euo pipefail
+          git config user.name "goldenpath-bot"
+          git config user.email "goldenpath-bot@users.noreply.github.com"
+
+          git add docs/20-contracts/resource-catalogs/eks-catalog.yaml || true
+          git add governance/**/eks_request_audit.csv || true
+          git add envs/**/clusters/generated/**.auto.tfvars.json || true
+
+          if git diff --cached --quiet; then
+            echo "No catalog/audit changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(eks): update catalog and audit trail [skip ci]"
+          git push

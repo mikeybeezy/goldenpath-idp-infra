@@ -16,25 +16,25 @@ metadata:
   created: "2026-01-17"
 
 spec:
-  bucket_name: goldenpath-dev-platform-logs
+  bucketName: goldenpath-dev-platform-logs
   purpose:
     type: logs
     description: "Centralized logging for platform components including Kong, ArgoCD, and infrastructure services"
-  storage_class: standard
+  storageClass: standard
   encryption:
     type: sse-s3
   versioning: false
-  public_access: blocked
-  retention_policy:
+  publicAccess: blocked
+  retentionPolicy:
     type: time-bounded
     rationale: "Logs retained for 90 days for troubleshooting and audit purposes"
   lifecycle:
-    expire_days: 90
-    transition_to_ia_days: 30
-  access_logging:
+    expireDays: 90
+    transitionToIaDays: 30
+  accessLogging:
     enabled: false
-  cost_alert_gb: 100
-  cors_enabled: false
+  costAlertGb: 100
+  corsEnabled: false
   tags:
-    cost-center: platform
+    costCenter: platform
     purpose: logging

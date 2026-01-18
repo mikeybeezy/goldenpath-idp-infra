@@ -78,30 +78,30 @@ metadata:
   environment: dev | test | staging | prod
   application: app-name
 spec:
-  bucket_name: goldenpath-{env}-{app}-{purpose}
+  bucketName: goldenpath-{env}-{app}-{purpose}
   purpose:
     type: logs | uploads | backups | data-lake | static-assets
     description: "Human-readable explanation"
-  storage_class: standard | intelligent-tiering | standard-ia | glacier
+  storageClass: standard | intelligent-tiering | standard-ia | glacier
   encryption:
     type: sse-s3 | sse-kms
-    kms_key_alias: alias/platform-s3  # Only if sse-kms
+    kmsKeyAlias: alias/platform-s3  # Only if sse-kms
   versioning: true | false
-  public_access: blocked | exception-approved
-  retention_policy:
+  publicAccess: blocked | exception-approved
+  retentionPolicy:
     type: indefinite | time-bounded | compliance-driven
     rationale: "Required explanation for retention choice"
-  lifecycle:  # Optional - only if retention_policy.type != indefinite
-    expire_days: 90
-    transition_to_ia_days: 30
-    transition_to_glacier_days: 60
-  access_logging:
+  lifecycle:  # Optional - only if retentionPolicy.type != indefinite
+    expireDays: 90
+    transitionToIaDays: 30
+    transitionToGlacierDays: 60
+  accessLogging:
     enabled: true | false
-    target_bucket: goldenpath-{env}-logs  # If enabled
-  cost_alert_gb: 100  # CloudWatch alarm threshold
-  cors_enabled: false  # Blocked by default
+    targetBucket: goldenpath-{env}-logs  # If enabled
+  costAlertGb: 100  # CloudWatch alarm threshold
+  corsEnabled: false  # Blocked by default
   tags:
-    cost-center: team-cost-center
+    costCenter: team-cost-center
 ```
 
 ### Guardrails (V1)
@@ -139,14 +139,14 @@ The parser (SCRIPT-0037) generates:
 
 1. **Terraform tfvars** for S3 module invocation
 2. **IAM policy snippet** granting app role access to the bucket
-3. **Audit record** for governance-registry
+3. **Audit record** for governance tracking
 
 ### Audit Trail
 
-All S3 requests logged to `governance-registry`:
+All S3 requests logged to `governance/{env}`:
 
 ```csv
-# environments/{env}/latest/s3_request_audit.csv
+# governance/{env}/s3_request_audit.csv
 timestamp_utc,request_id,bucket_name,owner,environment,purpose,action,approver,status
 ```
 
@@ -166,7 +166,7 @@ timestamp_utc,request_id,bucket_name,owner,environment,purpose,action,approver,s
 - **Self-service**: Teams can request buckets without platform tickets
 - **Governance**: All buckets tracked, audited, and policy-compliant
 - **Security**: Public access blocked by default, encryption enforced
-- **Cost visibility**: Mandatory cost-center tags and alert thresholds
+- **Cost visibility**: Mandatory costCenter tags and alert thresholds
 
 ### Negative
 

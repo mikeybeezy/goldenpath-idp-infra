@@ -25,7 +25,7 @@ metadata:
   backstage_template: "backstage-helm/backstage-catalog/templates/s3-request.yaml"
   parser_module: "scripts/s3_request_parser.py"
   parser_id: "SCRIPT-0037"
-  parser_status: "planned"
+  parser_status: "active"
   terraform_root: "envs/{environment}/"
   workflow: ".github/workflows/s3-request-apply.yml"
   validation_workflow: ".github/workflows/ci-s3-request-validation.yml"
@@ -55,7 +55,7 @@ properties:
     description: "Deployment environment"
 
   # Bucket name - strictly formatted
-  bucket_name:
+  bucketName:
     type: string
     pattern: "^goldenpath-[a-z]+-[a-z0-9-]+-[a-z0-9-]+$"
     description: "Bucket name following goldenpath-{env}-{app}-{purpose} convention"
@@ -86,7 +86,7 @@ properties:
       - description
 
   # Storage class
-  storage_class:
+  storageClass:
     type: string
     enum:
       - standard
@@ -106,7 +106,7 @@ properties:
           - sse-s3
           - sse-kms
         description: "Encryption type"
-      kms_key_alias:
+      kmsKeyAlias:
         type: string
         pattern: "^alias/[a-z0-9-]+$"
         description: "KMS key alias (required if type is sse-kms)"
@@ -120,7 +120,7 @@ properties:
     description: "Enable S3 versioning"
 
   # Public access
-  public_access:
+  publicAccess:
     type: string
     enum:
       - blocked
@@ -129,7 +129,7 @@ properties:
     description: "Public access configuration (blocked by default)"
 
   # Retention policy - captures intent without forcing lifecycle rules
-  retention_policy:
+  retentionPolicy:
     type: object
     properties:
       type:
@@ -148,34 +148,34 @@ properties:
       - type
       - rationale
 
-  # Lifecycle rules (optional - only if retention_policy.type != indefinite)
+  # Lifecycle rules (optional - only if retentionPolicy.type != indefinite)
   lifecycle:
     type: object
     properties:
-      expire_days:
+      expireDays:
         type: integer
         minimum: 1
         maximum: 3650
         description: "Days after which objects expire"
-      transition_to_ia_days:
+      transitionToIaDays:
         type: integer
         minimum: 30
         description: "Days after which objects transition to Standard-IA"
-      transition_to_glacier_days:
+      transitionToGlacierDays:
         type: integer
         minimum: 90
         description: "Days after which objects transition to Glacier"
-    description: "Lifecycle rules (required if retention_policy.type != indefinite)"
+    description: "Lifecycle rules (required if retentionPolicy.type != indefinite)"
 
   # Access logging
-  access_logging:
+  accessLogging:
     type: object
     properties:
       enabled:
         type: boolean
         default: false
         description: "Enable access logging"
-      target_bucket:
+      targetBucket:
         type: string
         pattern: "^goldenpath-[a-z]+-logs$"
         description: "Target bucket for access logs"
@@ -183,14 +183,14 @@ properties:
       - enabled
 
   # Cost alert threshold
-  cost_alert_gb:
+  costAlertGb:
     type: integer
     minimum: 1
     maximum: 10000
     description: "Storage threshold in GB for CloudWatch cost alert"
 
   # CORS (blocked by default)
-  cors_enabled:
+  corsEnabled:
     type: boolean
     default: false
     description: "Enable CORS (blocked by default)"
@@ -199,11 +199,11 @@ properties:
   tags:
     type: object
     properties:
-      cost-center:
+      costCenter:
         type: string
         description: "Cost center for billing"
     required:
-      - cost-center
+      - costCenter
     additionalProperties: true
 
   # Ownership
@@ -228,11 +228,11 @@ properties:
 required:
   - id
   - environment
-  - bucket_name
+  - bucketName
   - purpose
   - encryption
-  - retention_policy
-  - cost_alert_gb
+  - retentionPolicy
+  - costAlertGb
   - tags
   - owner
   - application
@@ -263,7 +263,7 @@ conditional_rules:
       encryption.type:
         equals: sse-kms
     then:
-      encryption.kms_key_alias:
+      encryption.kmsKeyAlias:
         required: true
 
   # Access logging required in staging/prod
@@ -275,7 +275,7 @@ conditional_rules:
           - staging
           - prod
     then:
-      access_logging.enabled:
+      accessLogging.enabled:
         equals: true
         error: "Access logging required for staging/prod environments"
 
@@ -283,7 +283,7 @@ conditional_rules:
   - name: lifecycle_required_for_time_bounded
     description: "Lifecycle rules required for time-bounded retention"
     when:
-      retention_policy.type:
+      retentionPolicy.type:
         in:
           - time-bounded
           - compliance-driven
@@ -295,7 +295,7 @@ conditional_rules:
   - name: public_access_requires_approval
     description: "Public access exceptions require platform-approval label"
     when:
-      public_access:
+      publicAccess:
         equals: exception-approved
     then:
       approval_required:
@@ -321,33 +321,33 @@ purpose_defaults:
   logs:
     versioning: false
     lifecycle:
-      expire_days: 90
-    storage_class: standard-ia
+      expireDays: 90
+    storageClass: standard-ia
     description: "Application and audit logs"
 
   uploads:
     versioning: true
     lifecycle: null
-    storage_class: standard
+    storageClass: standard
     description: "User file uploads"
 
   backups:
     versioning: true
     lifecycle:
-      transition_to_glacier_days: 90
-    storage_class: standard
+      transitionToGlacierDays: 90
+    storageClass: standard
     description: "Database and configuration backups"
 
   data-lake:
     versioning: false
     lifecycle: null
-    storage_class: intelligent-tiering
+    storageClass: intelligent-tiering
     description: "Analytics and data warehouse"
 
   static-assets:
     versioning: true
     lifecycle: null
-    storage_class: standard
+    storageClass: standard
     description: "CDN/website static files (requires review)"
 
 ################################################################################
@@ -356,17 +356,19 @@ purpose_defaults:
 
 generates:
   terraform_tfvars:
-    path: "envs/{environment}/s3_buckets.auto.tfvars"
+    path: "envs/{environment}/s3/generated/{id}.auto.tfvars.json"
     description: "Parser generates S3 bucket configuration"
   iam_policy:
-    path: "generated/iam/{application}-s3-policy.json"
+    path: "envs/generated/iam/{application}-s3-policy.json"
     description: "IAM policy snippet for app role"
   catalog_entry:
     path: "docs/20-contracts/resource-catalogs/s3-catalog.yaml"
     description: "Updates shared S3 catalog"
+    status: active
   audit_record:
-    path: "governance-registry/environments/{environment}/latest/s3_request_audit.csv"
+    path: "governance/{environment}/s3_request_audit.csv"
     description: "Audit trail entry"
+    status: active
 
 ################################################################################
 # Approval Routing
@@ -374,7 +376,7 @@ generates:
 
 approval_routing:
   - condition:
-      public_access: exception-approved
+      publicAccess: exception-approved
     approval_tier: platform-approval
     reviewers:
       - platform-team

@@ -482,3 +482,355 @@ CI validation workflow created and pushed to `feature/s3-request-flow-planning`:
 **Next Steps:** Phase 4 - Terraform S3 module (if needed) or skip to Phase 5 (Apply workflow).
 
 Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-18T02:15:00Z
+
+### Update - 2026-01-18T01:15:11Z
+
+**CI Validation Ordering Fix**
+
+- Ensured schema/parser changes take precedence over request file diffs, so PRs that change schema/parser always validate **all** S3 contracts (not just the changed files).
+- Aligns workflow behavior with the documented Phase 3 feature list.
+
+Signed: Codex (2026-01-18T01:15:11Z)
+
+### Update - 2026-01-18T01:22:43Z
+
+**CI Diff Base Refinement**
+
+- Switched diff base to `${{ github.event.pull_request.base.sha }}` so PR validation does not rely on `origin/$BASE_REF`.
+- Avoids silent skips when base refs are missing in fork PR contexts.
+
+Signed: Codex (2026-01-18T01:22:43Z)
+
+### Update - 2026-01-18T01:31:18Z
+
+**Apply Workflow Approval Alignment**
+
+- Updated S3 apply workflow to require platform approval only when needed:
+  non-dev environments, public access exception, or static-assets purpose.
+- Added purpose type + approval requirement to workflow context outputs.
+- Removed redundant public-access-only guard in favor of unified approval check.
+
+Signed: Codex (2026-01-18T01:31:18Z)
+
+### Update - 2026-01-18T01:41:51Z
+
+**Phase 4 Implemented: S3 Terraform Module**
+
+- Added `modules/aws_s3` with bucket, encryption, public access block, lifecycle, logging, and cost alert support.
+- Wired `s3_bucket` + `cost_alert` variables into envs (`dev`, `test`, `staging`, `prod`) and added module calls.
+- Apply workflow can now consume generated tfvars without failing on missing module.
+
+Signed: Codex (2026-01-18T01:41:51Z)
+
+### Update - 2026-01-18T01:47:59Z
+
+**Decision: Per-Bucket State Isolation**
+
+- Keep one bucket per apply/state key (`envs/<env>/s3/<id>/terraform.tfstate`).
+- Matches buildId-style isolation to reduce blast radius and avoid state collisions.
+- Multi-bucket state aggregation deferred.
+
+Signed: Codex (2026-01-18T01:47:59Z)
+
+### Update - 2026-01-18T02:01:35Z
+
+**Make Targets: S3 Provisioning**
+
+- Added `make s3-validate`, `make s3-generate`, `make s3-apply` targets.
+- Targets call `scripts/s3_request_parser.py` for validation + generation (enum/guardrail enforcement).
+- `s3-apply` initializes per-bucket state (`envs/<env>/s3/<id>/terraform.tfstate`) and applies the generated tfvars.
+- Requires explicit backend inputs (`S3_STATE_BUCKET`, `S3_LOCK_TABLE`, optional `S3_STATE_REGION`).
+
+Signed: Codex (2026-01-18T02:01:35Z)
+
+### Update - 2026-01-18T02:30:00Z
+
+**Phase 5 Complete**
+
+Apply workflow and approval guard created and pushed.
+
+**Note:** Phase 4 was implemented by Codex (see Update 2026-01-18T01:41:51Z above) - `modules/aws_s3` now exists with bucket, encryption, public access block, lifecycle, logging, and cost alert support.
+
+| Artifact | Path | Status |
+|----------|------|--------|
+| Apply Workflow | `.github/workflows/s3-request-apply.yml` | ✅ Created |
+| Approval Guard | `.github/workflows/s3-approval-guard.yml` | ✅ Created |
+
+**Apply Workflow Features:**
+
+- Manual dispatch with request file path
+- Validates contract and generates tfvars + IAM policy
+- Guards: non-dev requires `allow_non_dev`, public access exception requires approval
+- Commits generated outputs to repo
+- Per-bucket Terraform state isolation (`envs/{env}/s3/{id}/terraform.tfstate`)
+- Dry-run mode for validation without apply
+
+**Approval Guard Features:**
+
+| Condition | Approval Required |
+|-----------|-------------------|
+| dev + blocked access | No (auto-approve) |
+| staging/prod environment | Yes |
+| Public access exception | Yes |
+| static-assets purpose | Yes |
+
+Labels: `platform-approved` or `s3-approved`
+
+**Updated Implementation Matrix:**
+
+| Phase | Task | Status |
+|-------|------|--------|
+| 1 | Schema + Contracts | ✅ Complete |
+| 2 | Parser + Tests | ✅ Complete |
+| 3 | CI Validation Workflow | ✅ Complete |
+| 4 | Terraform S3 Module | ✅ Complete (Codex) |
+| 5 | Apply Workflow + Approval Guard | ✅ Complete |
+| 6 | Backstage Template | ⏳ Pending |
+| 7 | Docs + Runbook | ⏳ Pending |
+
+**Next Steps:** Phase 6 - Backstage template.
+
+Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-18T02:30:00Z
+
+### Update - 2026-01-18T03:00:00Z
+
+**Phase 6 Complete: Backstage Template**
+
+Backstage template and creation workflow created and pushed.
+
+| Artifact | Path | Status |
+|----------|------|--------|
+| Backstage Template | `backstage-helm/backstage-catalog/templates/s3-request.yaml` | ✅ Created |
+| Creation Workflow | `.github/workflows/create-s3-bucket.yml` | ✅ Created |
+
+**Backstage Template Features:**
+
+- Collects: application, purpose, owner, environment, cost center, retention policy
+- Validates input patterns (application name, user format)
+- Purpose-based defaults guidance
+- Links to creation workflow via `github:actions:dispatch`
+
+**Creation Workflow Features:**
+
+- Auto-calculates next S3-XXXX ID (sequential)
+- Derives bucket name: `goldenpath-{env}-{app}-{purpose}`
+- Auto-applies guardrails:
+  - SSE-KMS for staging/prod
+  - Access logging for staging/prod
+- Validates contract with parser before PR
+- Generates PR with approval requirements summary
+- Labels: s3-bucket, {environment}, {purpose_type}
+
+**Updated Implementation Matrix:**
+
+| Phase | Task | Status |
+|-------|------|--------|
+| 1 | Schema + Contracts | ✅ Complete |
+| 2 | Parser + Tests | ✅ Complete |
+| 3 | CI Validation Workflow | ✅ Complete |
+| 4 | Terraform S3 Module | ✅ Complete (Codex) |
+| 5 | Apply Workflow + Approval Guard | ✅ Complete |
+| 6 | Backstage Template | ✅ Complete |
+| 7 | Docs + Runbook | ⏳ Pending |
+
+**Next Steps:** Phase 7 - How-it-works doc and Runbook.
+
+Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-18T03:00:00Z
+
+### Update - 2026-01-18T03:30:00Z
+
+**Phase 7 Partial: S3 Request Runbook Created**
+
+| Artifact | Path | Status |
+|----------|------|--------|
+| S3 Request Runbook | `docs/70-operations/runbooks/RB-0035-s3-request.md` | ✅ Created |
+
+**Runbook Sections:**
+
+- Overview of S3 request flow
+- Common operations:
+  - Request via Backstage (standard path)
+  - Manual contract creation
+  - Validate contracts
+  - Generate Terraform variables (dry run)
+  - Apply S3 bucket
+  - Check bucket status
+- Troubleshooting:
+  - CI validation failures
+  - Apply workflow failures
+  - Bucket creation issues
+- Approval matrix (when platform approval required)
+- Bucket deletion (break-glass procedure)
+- Cost monitoring
+
+**Updated Implementation Matrix:**
+
+| Phase | Task | Status |
+|-------|------|--------|
+| 1 | Schema + Contracts | ✅ Complete |
+| 2 | Parser + Tests | ✅ Complete |
+| 3 | CI Validation Workflow | ✅ Complete |
+| 4 | Terraform S3 Module | ✅ Complete (Codex) |
+| 5 | Apply Workflow + Approval Guard | ✅ Complete |
+| 6 | Backstage Template | ✅ Complete |
+| 7 | Runbook | ✅ Complete |
+| 7 | How-it-works doc | ⏳ Pending |
+
+**Next Steps:** Create `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md`
+
+Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-18T03:30:00Z
+
+### Update - 2026-01-18T03:45:00Z
+
+**Phase 7 Complete: All S3 Request Flow Artifacts Delivered**
+
+| Artifact | Path | Status |
+|----------|------|--------|
+| S3 Request Runbook | `docs/70-operations/runbooks/RB-0035-s3-request.md` | ✅ Created |
+| How-it-works Doc | `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md` | ✅ Created |
+
+**How-it-works Doc Sections:**
+
+- High-level architecture diagram
+- Backstage template fields
+- Workflow execution (ID calculation, bucket name derivation, guardrails)
+- Contract generation and validation
+- Approval matrix and CI guards
+- Apply workflow steps with per-bucket state isolation
+- What gets created (bucket, CloudWatch alarm, IAM policy)
+- Purpose-based defaults
+- Value loop summary
+
+**Final Implementation Matrix:**
+
+| Phase | Task | Status |
+|-------|------|--------|
+| 1 | Schema + Contracts | ✅ Complete |
+| 2 | Parser + Tests | ✅ Complete |
+| 3 | CI Validation Workflow | ✅ Complete |
+| 4 | Terraform S3 Module | ✅ Complete (Codex) |
+| 5 | Apply Workflow + Approval Guard | ✅ Complete |
+| 6 | Backstage Template | ✅ Complete |
+| 7 | Runbook | ✅ Complete |
+| 7 | How-it-works doc | ✅ Complete |
+
+**S3 Request Flow Implementation Complete.**
+
+All 7 phases delivered. The S3 self-service request system is now fully implemented with:
+- Contract-driven architecture (schema, parser, validation)
+- CI/CD workflows (validation, approval guard, apply)
+- Backstage integration (template + creation workflow)
+- Terraform module (bucket, encryption, logging, cost alerts)
+- Documentation (runbook + how-it-works)
+
+Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-18T03:45:00Z
+
+### Update - 2026-01-18T04:20:00Z
+
+**Governance Integration: Catalog + Audit Trail Wired**
+
+| Change | Artifact | Status |
+|--------|----------|--------|
+| Parser outputs | `scripts/s3_request_parser.py` | ✅ Catalog + audit updates supported |
+| Apply workflow | `.github/workflows/s3-request-apply.yml` | ✅ Updates catalog + audit post-apply |
+| Schema outputs | `schemas/requests/s3.schema.yaml` | ✅ Catalog/audit status set to active |
+| ADR audit path | `docs/adrs/ADR-0170-s3-self-service-request-system.md` | ✅ Aligned to `governance/{env}/s3_request_audit.csv` |
+| Contract README | `docs/20-contracts/s3-requests/README.md` | ✅ Catalog + audit documented |
+| Runbook | `docs/70-operations/runbooks/RB-0035-s3-request.md` | ✅ Make targets + IAM path aligned |
+| How-it-works | `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md` | ✅ Apply steps include catalog/audit |
+
+**Notes:**
+- Catalog updates now target `docs/20-contracts/resource-catalogs/s3-catalog.yaml`.
+- Audit trail appended to `governance/{environment}/s3_request_audit.csv`.
+- Apply workflow commits both catalog + audit updates after successful apply.
+
+Signed: Codex (gpt-5) — 2026-01-18T04:20:00Z
+
+### Update - 2026-01-18T02:55:11Z
+
+**Commit/Push Blocked by Local Permissions**
+
+Attempted to stage and commit all changes, but Git operations are blocked:
+
+- `git add` failed: unable to create `.git/index.lock` (permission denied)
+- `rm tests/scripts/__pycache__/test_script_0037...` failed (permission denied)
+
+**Next Step Needed:** Fix local `.git` permissions (or run commit/push manually), then re-run `git add -A` and `git commit`.
+
+Signed: Codex (gpt-5) — 2026-01-18T02:55:11Z
+
+---
+
+## Session Summary - 2026-01-18
+
+**Branch:** `feature/s3-request-flow-planning`
+
+**Objective:** Implement complete S3 self-service request system following contract-driven architecture.
+
+### All 7 Phases Delivered
+
+| Phase | Deliverable | Key Files |
+|-------|-------------|-----------|
+| 1 | Schema + Contracts | `schemas/requests/s3.schema.yaml`, `docs/20-contracts/s3-requests/` |
+| 2 | Parser + Tests | `scripts/s3_request_parser.py` (SCRIPT-0037), `tests/scripts/test_script_0037.py` |
+| 3 | CI Validation | `.github/workflows/ci-s3-request-validation.yml` |
+| 4 | Terraform Module | `modules/aws_s3/` (Codex) |
+| 5 | Apply + Guard | `.github/workflows/s3-request-apply.yml`, `s3-approval-guard.yml` |
+| 6 | Backstage | `backstage-helm/backstage-catalog/templates/s3-request.yaml`, `create-s3-bucket.yml` |
+| 7 | Docs | `RB-0035-s3-request.md`, `S3_REQUEST_FLOW.md` |
+
+### Key Design Decisions
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Bucket scope | Per-environment | Simpler IAM, cleaner teardown |
+| KMS strategy | Shared platform key | Simplicity for V1 |
+| Environment enum | Hardcoded (no ephemeral) | S3 buckets are persistent |
+| Terraform state | Per-bucket isolation | Reduced blast radius |
+| Approval gates | Non-dev, public access, static-assets | Security by default |
+
+### Guardrails Implemented
+
+| Environment | Encryption | Access Logging |
+|-------------|------------|----------------|
+| dev/test | SSE-S3 | Optional |
+| staging/prod | SSE-KMS | Required |
+
+### Flow Summary
+
+```text
+Backstage → GitHub Workflow → Contract PR → CI Validation → Approval Guard → Apply Workflow → S3 Bucket
+```
+
+### Artifacts Created This Session
+
+**Workflows:**
+
+- `.github/workflows/ci-s3-request-validation.yml`
+- `.github/workflows/s3-request-apply.yml`
+- `.github/workflows/s3-approval-guard.yml`
+- `.github/workflows/create-s3-bucket.yml`
+
+**Templates:**
+
+- `backstage-helm/backstage-catalog/templates/s3-request.yaml`
+
+**Documentation:**
+
+- `docs/70-operations/runbooks/RB-0035-s3-request.md`
+- `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md`
+
+**Codex Contributions:**
+
+- `modules/aws_s3/` (Terraform module)
+- CI diff base refinement (SHA-based)
+- Apply workflow approval alignment
+- Governance integration (catalog + audit trail)
+
+### Status
+
+**S3 Request Flow: COMPLETE**
+
+All phases delivered. Ready for end-to-end testing.
+
+Signed: Claude Opus 4.5 (claude-opus-4-5-20251101) — 2026-01-18T04:00:00Z

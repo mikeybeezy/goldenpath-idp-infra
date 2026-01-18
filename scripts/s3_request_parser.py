@@ -40,8 +40,12 @@ Reference: ADR-0170, schemas/requests/s3.schema.yaml
 """
 
 import argparse
+import csv
 import json
+import os
+import re
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -56,6 +60,12 @@ VALID_ENCRYPTION_TYPES = {"sse-s3", "sse-kms"}
 VALID_PUBLIC_ACCESS = {"blocked", "exception-approved"}
 VALID_RETENTION_TYPES = {"indefinite", "time-bounded", "compliance-driven"}
 
+ID_PATTERN = re.compile(r"^S3-[0-9]{4}$")
+APP_PATTERN = re.compile(r"^[a-z][a-z0-9-]{2,30}$")
+BUCKET_PATTERN = re.compile(r"^goldenpath-[a-z]+-[a-z0-9-]+-[a-z0-9-]+$")
+KMS_ALIAS_PATTERN = re.compile(r"^alias/[a-z0-9-]+$")
+LOGGING_TARGET_PATTERN = re.compile(r"^goldenpath-[a-z]+-logs$")
+
 
 @dataclass(frozen=True)
 class S3Request:
@@ -67,6 +77,7 @@ class S3Request:
     owner: str
     application: str
     requester: str
+    created_date: Optional[str]
 
     # Purpose
     purpose_type: str
@@ -117,9 +128,10 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> S3Request:
     owner = doc.get("owner") or md.get("owner")
     application = doc.get("application") or md.get("application")
     requester = doc.get("requester") or md.get("requester")
+    created_date = md.get("created") or md.get("created_date") or md.get("createdDate")
 
     # Spec fields
-    bucket_name = spec.get("bucket_name")
+    bucket_name = spec.get("bucketName")
 
     # Purpose (nested object)
     purpose = spec.get("purpose", {})
@@ -127,38 +139,38 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> S3Request:
     purpose_description = purpose.get("description")
 
     # Configuration
-    storage_class = spec.get("storage_class", "standard")
+    storage_class = spec.get("storageClass", "standard")
 
     encryption = spec.get("encryption", {})
     encryption_type = encryption.get("type", "sse-s3")
-    kms_key_alias = encryption.get("kms_key_alias")
+    kms_key_alias = encryption.get("kmsKeyAlias")
 
     versioning = spec.get("versioning", True)
-    public_access = spec.get("public_access", "blocked")
+    public_access = spec.get("publicAccess", "blocked")
 
     # Retention
-    retention = spec.get("retention_policy", {})
+    retention = spec.get("retentionPolicy", {})
     retention_type = retention.get("type")
     retention_rationale = retention.get("rationale")
 
     # Lifecycle (optional)
     lifecycle = spec.get("lifecycle", {})
-    lifecycle_expire_days = lifecycle.get("expire_days")
-    lifecycle_transition_ia_days = lifecycle.get("transition_to_ia_days")
-    lifecycle_transition_glacier_days = lifecycle.get("transition_to_glacier_days")
+    lifecycle_expire_days = lifecycle.get("expireDays")
+    lifecycle_transition_ia_days = lifecycle.get("transitionToIaDays")
+    lifecycle_transition_glacier_days = lifecycle.get("transitionToGlacierDays")
 
     # Access logging
-    access_logging = spec.get("access_logging", {})
+    access_logging = spec.get("accessLogging", {})
     access_logging_enabled = access_logging.get("enabled", False)
-    access_logging_target = access_logging.get("target_bucket")
+    access_logging_target = access_logging.get("targetBucket")
 
     # Cost
-    cost_alert_gb = spec.get("cost_alert_gb")
+    cost_alert_gb = spec.get("costAlertGb")
     tags = spec.get("tags", {})
-    cost_center = tags.get("cost-center")
+    cost_center = tags.get("costCenter")
 
     # Other
-    cors_enabled = spec.get("cors_enabled", False)
+    cors_enabled = spec.get("corsEnabled", False)
 
     # Validate required fields
     missing = [k for k, v in {
@@ -167,14 +179,14 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> S3Request:
         "owner": owner,
         "application": application,
         "requester": requester,
-        "spec.bucket_name": bucket_name,
+        "spec.bucketName": bucket_name,
         "spec.purpose.type": purpose_type,
         "spec.purpose.description": purpose_description,
         "spec.encryption.type": encryption_type,
-        "spec.retention_policy.type": retention_type,
-        "spec.retention_policy.rationale": retention_rationale,
-        "spec.cost_alert_gb": cost_alert_gb,
-        "spec.tags.cost-center": cost_center,
+        "spec.retentionPolicy.type": retention_type,
+        "spec.retentionPolicy.rationale": retention_rationale,
+        "spec.costAlertGb": cost_alert_gb,
+        "spec.tags.costCenter": cost_center,
     }.items() if not v]
 
     if missing:
@@ -187,6 +199,7 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> S3Request:
         owner=str(owner),
         application=str(application),
         requester=str(requester),
+        created_date=str(created_date) if created_date else None,
         purpose_type=str(purpose_type),
         purpose_description=str(purpose_description),
         storage_class=str(storage_class),
@@ -218,16 +231,16 @@ def validate_enums(req: S3Request, src_path: Path) -> None:
         errors.append(f"purpose.type='{req.purpose_type}' not in {VALID_PURPOSE_TYPES}")
 
     if req.storage_class not in VALID_STORAGE_CLASSES:
-        errors.append(f"storage_class='{req.storage_class}' not in {VALID_STORAGE_CLASSES}")
+        errors.append(f"storageClass='{req.storage_class}' not in {VALID_STORAGE_CLASSES}")
 
     if req.encryption_type not in VALID_ENCRYPTION_TYPES:
         errors.append(f"encryption.type='{req.encryption_type}' not in {VALID_ENCRYPTION_TYPES}")
 
     if req.public_access not in VALID_PUBLIC_ACCESS:
-        errors.append(f"public_access='{req.public_access}' not in {VALID_PUBLIC_ACCESS}")
+        errors.append(f"publicAccess='{req.public_access}' not in {VALID_PUBLIC_ACCESS}")
 
     if req.retention_type not in VALID_RETENTION_TYPES:
-        errors.append(f"retention_policy.type='{req.retention_type}' not in {VALID_RETENTION_TYPES}")
+        errors.append(f"retentionPolicy.type='{req.retention_type}' not in {VALID_RETENTION_TYPES}")
 
     if errors:
         raise ValueError(f"{src_path}: invalid enum values: {'; '.join(errors)}")
@@ -244,21 +257,38 @@ def validate_guardrails(req: S3Request, src_path: Path) -> List[str]:
 
     # KMS key alias required when using SSE-KMS
     if req.encryption_type == "sse-kms" and not req.kms_key_alias:
-        errors.append("kms_key_alias required when encryption.type is sse-kms")
+        errors.append("kmsKeyAlias required when encryption.type is sse-kms")
+    if req.kms_key_alias and not KMS_ALIAS_PATTERN.match(req.kms_key_alias):
+        errors.append("kmsKeyAlias must match alias/<name> pattern")
 
     # Access logging required in staging/prod
     if req.environment in ("staging", "prod") and not req.access_logging_enabled:
-        errors.append(f"access_logging required for {req.environment} environment")
+        errors.append(f"accessLogging required for {req.environment} environment")
+    if req.access_logging_enabled and not req.access_logging_target:
+        errors.append("accessLogging.targetBucket required when accessLogging.enabled is true")
+    if req.access_logging_target and not LOGGING_TARGET_PATTERN.match(req.access_logging_target):
+        errors.append("accessLogging.targetBucket must match goldenpath-<env>-logs pattern")
 
     # Lifecycle required for time-bounded/compliance-driven retention
     if req.retention_type in ("time-bounded", "compliance-driven"):
         if not req.lifecycle_expire_days and not req.lifecycle_transition_ia_days and not req.lifecycle_transition_glacier_days:
-            errors.append("lifecycle rules required when retention_policy.type is not 'indefinite'")
+            errors.append("lifecycle rules required when retentionPolicy.type is not 'indefinite'")
 
     # Bucket naming convention
-    expected_prefix = f"goldenpath-{req.environment}-"
-    if not req.bucket_name.startswith(expected_prefix):
-        errors.append(f"bucket_name must start with '{expected_prefix}'")
+    if not BUCKET_PATTERN.match(req.bucket_name):
+        errors.append("bucketName must match goldenpath-{env}-{app}-{purpose} pattern")
+    if not req.bucket_name.startswith(f"goldenpath-{req.environment}-"):
+        errors.append("bucketName must use the requested environment prefix")
+
+    # Request/application identifier hygiene
+    if not ID_PATTERN.match(req.s3_id):
+        errors.append("id must match S3-0000 format")
+    if not APP_PATTERN.match(req.application):
+        errors.append("application must match ^[a-z][a-z0-9-]{2,30}$")
+
+    # Cost alert bounds
+    if not 1 <= req.cost_alert_gb <= 10000:
+        errors.append("costAlertGb must be between 1 and 10000")
 
     # Public access exception warning
     if req.public_access == "exception-approved":
@@ -350,32 +380,54 @@ def generate_tfvars(req: S3Request) -> Dict[str, Any]:
 def generate_iam_policy(req: S3Request) -> Dict[str, Any]:
     """Generate IAM policy snippet for application access."""
     bucket_arn = f"arn:aws:s3:::{req.bucket_name}"
+    statements = [
+        {
+            "Sid": f"S3Access{req.s3_id.replace('-', '')}",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "s3:ListBucket",
+            ],
+            "Resource": [
+                bucket_arn,
+                f"{bucket_arn}/*",
+            ],
+        }
+    ]
+
+    if req.encryption_type == "sse-kms":
+        statements.append(
+            {
+                "Sid": f"KmsAccess{req.s3_id.replace('-', '')}",
+                "Effect": "Allow",
+                "Action": [
+                    "kms:Decrypt",
+                    "kms:Encrypt",
+                    "kms:GenerateDataKey",
+                    "kms:DescribeKey",
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "StringLike": {
+                        "kms:EncryptionContext:aws:s3:arn": [
+                            bucket_arn,
+                            f"{bucket_arn}/*",
+                        ]
+                    }
+                },
+            }
+        )
 
     return {
         "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Sid": f"S3Access{req.s3_id.replace('-', '')}",
-                "Effect": "Allow",
-                "Action": [
-                    "s3:GetObject",
-                    "s3:PutObject",
-                    "s3:DeleteObject",
-                    "s3:ListBucket",
-                ],
-                "Resource": [
-                    bucket_arn,
-                    f"{bucket_arn}/*",
-                ],
-            },
-        ],
+        "Statement": statements,
     }
 
 
-def generate_audit_record(req: S3Request, action: str, status: str) -> Dict[str, Any]:
+def generate_audit_record(req: S3Request, action: str, status: str, approver: str) -> Dict[str, Any]:
     """Generate audit record for governance registry."""
-    from datetime import datetime, timezone
-
     return {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "request_id": req.s3_id,
@@ -384,8 +436,121 @@ def generate_audit_record(req: S3Request, action: str, status: str) -> Dict[str,
         "environment": req.environment,
         "purpose": req.purpose_type,
         "action": action,
+        "approver": approver,
         "status": status,
     }
+
+
+def read_catalog_documents(path: Path) -> tuple[Dict[str, Any], Dict[str, Any]]:
+    """Read catalog YAML with optional frontmatter document."""
+    if not path.exists():
+        return {}, {
+            "version": "1.0",
+            "domain": "platform-core",
+            "owner": "platform-team",
+            "last_updated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            "managed_by": "platform-team",
+            "buckets": {},
+        }
+
+    docs = list(yaml.safe_load_all(path.read_text(encoding="utf-8")))
+    if len(docs) == 1:
+        return {}, docs[0] or {}
+    frontmatter = docs[0] or {}
+    body = docs[1] or {}
+    return frontmatter, body
+
+
+def write_catalog_documents(path: Path, frontmatter: Dict[str, Any], body: Dict[str, Any], dry_run: bool) -> None:
+    """Write catalog YAML, preserving frontmatter as a separate document."""
+    payload = [frontmatter, body] if frontmatter else [body]
+    if dry_run:
+        print(f"[DRY-RUN] Would write catalog: {path}")
+        print(yaml.safe_dump_all(payload, sort_keys=False))
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        yaml.safe_dump_all(payload, sort_keys=False, explicit_start=True),
+        encoding="utf-8",
+    )
+
+
+def update_s3_catalog(
+    req: S3Request,
+    catalog_path: Path,
+    region: str,
+    status: str,
+    dry_run: bool,
+) -> None:
+    """Update the shared S3 catalog with this request."""
+    frontmatter, body = read_catalog_documents(catalog_path)
+    body.setdefault("buckets", {})
+    body["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    bucket_key = f"{req.application}-{req.environment}"
+    created_date = req.created_date or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    body["buckets"][bucket_key] = {
+        "metadata": {
+            "id": req.s3_id,
+            "owner": req.owner,
+            "application": req.application,
+            "requested_by": req.requester,
+            "purpose": req.purpose_type,
+            "environment": req.environment,
+            "status": status,
+            "created_date": created_date,
+        },
+        "aws": {
+            "bucket_name": req.bucket_name,
+            "region": region,
+            "arn": f"arn:aws:s3:::{req.bucket_name}",
+        },
+        "governance": {
+            "versioning": req.versioning,
+            "encryption": req.encryption_type,
+            "public_access_block": req.public_access == "blocked",
+            "access_logging": req.access_logging_enabled,
+        },
+        "retention": {
+            "type": req.retention_type,
+            "expire_days": req.lifecycle_expire_days,
+            "transition_to_ia_days": req.lifecycle_transition_ia_days,
+            "transition_to_glacier_days": req.lifecycle_transition_glacier_days,
+        },
+        "cost": {
+            "cost_center": req.cost_center,
+            "alert_threshold_gb": req.cost_alert_gb,
+        },
+    }
+
+    write_catalog_documents(catalog_path, frontmatter, body, dry_run)
+
+
+def append_audit_record(path: Path, record: Dict[str, Any], dry_run: bool) -> None:
+    """Append an audit record to a CSV file."""
+    header = [
+        "timestamp_utc",
+        "request_id",
+        "bucket_name",
+        "owner",
+        "environment",
+        "purpose",
+        "action",
+        "approver",
+        "status",
+    ]
+    if dry_run:
+        print(f"[DRY-RUN] Would append audit record: {path}")
+        print(record)
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    exists = path.exists()
+    with path.open("a", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=header)
+        if not exists:
+            writer.writeheader()
+        writer.writerow({k: record.get(k, "") for k in header})
 
 
 def tfvars_output_path(output_root: Path, req: S3Request) -> Path:
@@ -433,6 +598,41 @@ def main() -> int:
         action="store_true",
         help="Print output instead of writing files",
     )
+    parser.add_argument(
+        "--catalog-path",
+        default="",
+        help="Optional S3 catalog path to update",
+    )
+    parser.add_argument(
+        "--catalog-region",
+        default="",
+        help="Region to record in the S3 catalog (defaults to AWS_REGION)",
+    )
+    parser.add_argument(
+        "--catalog-status",
+        default="active",
+        help="Catalog status to write (default: active)",
+    )
+    parser.add_argument(
+        "--audit-path",
+        default="",
+        help="Optional audit CSV path to append",
+    )
+    parser.add_argument(
+        "--audit-action",
+        default="apply",
+        help="Audit action to record (default: apply)",
+    )
+    parser.add_argument(
+        "--audit-status",
+        default="success",
+        help="Audit status to record (default: success)",
+    )
+    parser.add_argument(
+        "--audit-approver",
+        default="",
+        help="Audit approver (defaults to GITHUB_ACTOR)",
+    )
     args = parser.parse_args()
 
     exit_code = 0
@@ -462,6 +662,26 @@ def main() -> int:
                     print(f"[OK] {path} -> {tfvars_path}, {iam_path}")
                 else:
                     print(f"[DRY-RUN] {path} -> {tfvars_path}, {iam_path}")
+
+                if args.catalog_path:
+                    region = (
+                        args.catalog_region
+                        or os.environ.get("AWS_REGION")
+                        or os.environ.get("AWS_DEFAULT_REGION")
+                        or "unknown"
+                    )
+                    update_s3_catalog(
+                        req,
+                        Path(args.catalog_path),
+                        region,
+                        args.catalog_status,
+                        args.dry_run,
+                    )
+
+                if args.audit_path:
+                    approver = args.audit_approver or os.environ.get("GITHUB_ACTOR", "unknown")
+                    record = generate_audit_record(req, args.audit_action, args.audit_status, approver)
+                    append_audit_record(Path(args.audit_path), record, args.dry_run)
             else:
                 print(f"[OK] {path} validated")
 

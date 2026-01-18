@@ -35,7 +35,7 @@ s3-requests/
 2. **Validate**: CI validates against `schemas/requests/s3.schema.yaml`
 3. **Review**: PR requires platform-approval for prod/public access
 4. **Apply**: Approved PRs trigger `s3-request-apply.yml` workflow
-5. **Catalog**: Bucket added to `resource-catalogs/s3-catalog.yaml`
+5. **Catalog + Audit**: Bucket added to `resource-catalogs/s3-catalog.yaml` and audit record appended
 
 ## Contract Schema
 
@@ -47,14 +47,14 @@ All requests must follow the schema defined in `schemas/requests/s3.schema.yaml`
 |-------|-------------|
 | `id` | Unique ID (S3-XXXX format) |
 | `environment` | Target environment |
-| `bucket_name` | Following `goldenpath-{env}-{app}-{purpose}` convention |
+| `bucketName` | Following `goldenpath-{env}-{app}-{purpose}` convention |
 | `purpose.type` | logs, uploads, backups, data-lake, static-assets |
 | `purpose.description` | Human-readable explanation |
 | `encryption.type` | sse-s3 or sse-kms |
-| `retention_policy.type` | indefinite, time-bounded, compliance-driven |
-| `retention_policy.rationale` | Explanation for retention choice |
-| `cost_alert_gb` | CloudWatch alarm threshold |
-| `tags.cost-center` | Cost allocation tag |
+| `retentionPolicy.type` | indefinite, time-bounded, compliance-driven |
+| `retentionPolicy.rationale` | Explanation for retention choice |
+| `costAlertGb` | CloudWatch alarm threshold |
+| `tags.costCenter` | Cost allocation tag |
 | `owner` | Owning team |
 | `application` | Application name |
 | `requester` | Requester name |
@@ -95,29 +95,31 @@ metadata:
   created: "2026-01-17"
 
 spec:
-  bucket_name: goldenpath-dev-payments-api-uploads
+  bucketName: goldenpath-dev-payments-api-uploads
   purpose:
     type: uploads
     description: "User-uploaded documents for payment verification"
-  storage_class: standard
+  storageClass: standard
   encryption:
     type: sse-s3
   versioning: true
-  public_access: blocked
-  retention_policy:
+  publicAccess: blocked
+  retentionPolicy:
     type: indefinite
     rationale: "User documents must be retained indefinitely for compliance"
-  access_logging:
+  accessLogging:
     enabled: false
-  cost_alert_gb: 50
-  cors_enabled: false
+  costAlertGb: 50
+  corsEnabled: false
   tags:
-    cost-center: payments
+    costCenter: payments
 ```
 
 ## Governance
 
 - **ADR**: [ADR-0170](../../adrs/ADR-0170-s3-self-service-request-system.md)
+- **Catalog**: [S3 Catalog](../resource-catalogs/s3-catalog.yaml)
+- **Audit Trail**: `governance/{environment}/s3_request_audit.csv`
 - **Schema**: [s3.schema.yaml](../../../schemas/requests/s3.schema.yaml)
 - **Parser**: SCRIPT-0037 (`scripts/s3_request_parser.py`)
 - **Changelog**: [CL-0146](../../changelog/entries/CL-0146-s3-request-system.md)

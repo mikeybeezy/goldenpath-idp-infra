@@ -16,6 +16,11 @@ TF_DIR ?= $(ENV_DIR)
 NODEGROUP ?=
 CLEANUP_ORPHANS ?= false
 ALLOW_REUSE_BUILD_ID ?= false
+S3_REQUEST ?=
+S3_OUTPUT_ROOT ?= envs
+S3_STATE_BUCKET ?=
+S3_LOCK_TABLE ?=
+S3_STATE_REGION ?= $(REGION)
 
 # Derived Variables
 CLUSTER_BASE ?= $(shell awk -F'=' '/^[[:space:]]*cluster_name[[:space:]]*=/{gsub(/"/,"",$$2);gsub(/[[:space:]]/,"",$$2);print $$2;exit}' $(ENV_DIR)/terraform.tfvars 2>/dev/null)
@@ -69,6 +74,25 @@ define require_build_id_allow_reuse
 	fi
 endef
 
+define require_s3_request
+	@if [ -z "$(S3_REQUEST)" ]; then \
+	  echo "S3_REQUEST is required. Example: make s3-apply S3_REQUEST=docs/20-contracts/s3-requests/dev/S3-0001.yaml"; \
+	  exit 1; \
+	fi
+	@if [ ! -f "$(S3_REQUEST)" ]; then \
+	  echo "S3_REQUEST not found: $(S3_REQUEST)"; \
+	  exit 1; \
+	fi
+endef
+
+define require_s3_backend
+	@if [ -z "$(S3_STATE_BUCKET)" ] || [ -z "$(S3_LOCK_TABLE)" ]; then \
+	  echo "S3_STATE_BUCKET and S3_LOCK_TABLE are required."; \
+	  echo "Example: make s3-apply S3_REQUEST=... S3_STATE_BUCKET=goldenpath-idp-dev-bucket S3_LOCK_TABLE=goldenpath-idp-dev-locks"; \
+	  exit 1; \
+	fi
+endef
+
 # Usage:
 #   make init ENV=dev     # terraform -chdir=envs/dev init
 #   make plan ENV=staging # terraform -chdir=envs/staging plan
@@ -82,7 +106,7 @@ endef
 #   make drain-nodegroup NODEGROUP=dev-default
 #   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 
-.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help rds-init rds-plan rds-apply rds-status rds-provision rds-provision-dry-run rds-provision-auto rds-provision-auto-dry-run apply-persistent bootstrap-persistent deploy-persistent teardown-persistent
+.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help s3-validate s3-generate s3-apply rds-init rds-plan rds-apply rds-status rds-provision rds-provision-dry-run rds-provision-auto rds-provision-auto-dry-run apply-persistent bootstrap-persistent deploy-persistent teardown-persistent
 
 init:
 	$(TF_BIN) -chdir=$(ENV_DIR) init
@@ -103,6 +127,55 @@ apply:
 
 destroy:
 	$(TF_BIN) -chdir=$(ENV_DIR) destroy
+
+################################################################################
+# S3 Request (Contract-Driven)
+################################################################################
+
+s3-validate:
+	$(call require_s3_request)
+	python3 scripts/s3_request_parser.py \
+		--mode validate \
+		--input-files "$(S3_REQUEST)"
+
+s3-generate:
+	$(call require_s3_request)
+	python3 scripts/s3_request_parser.py \
+		--mode generate \
+		--input-files "$(S3_REQUEST)" \
+		--output-root "$(S3_OUTPUT_ROOT)"
+
+s3-apply:
+	$(call require_s3_request)
+	$(call require_s3_backend)
+	@bash -c '\
+	set -euo pipefail; \
+	python3 scripts/s3_request_parser.py --mode validate --input-files "$(S3_REQUEST)"; \
+	python3 scripts/s3_request_parser.py --mode generate --input-files "$(S3_REQUEST)" --output-root "$(S3_OUTPUT_ROOT)"; \
+	read -r S3_ENV S3_ID <<EOF; \
+$$(python3 - "$(S3_REQUEST)" <<'"'"'PY'"'"' \
+import sys, yaml
+data = yaml.safe_load(open(sys.argv[1])) or {}
+env = data.get("environment") or data.get("metadata", {}).get("environment")
+s3_id = data.get("id") or data.get("metadata", {}).get("id")
+print(f"{env} {s3_id}")
+PY \
+); \
+EOF; \
+	if [ -z "$$S3_ENV" ] || [ -z "$$S3_ID" ]; then \
+	  echo "Failed to resolve environment or id from $(S3_REQUEST)"; \
+	  exit 1; \
+	fi; \
+	STATE_KEY="envs/$${S3_ENV}/s3/$${S3_ID}/terraform.tfstate"; \
+	$(TF_BIN) -chdir=envs/$${S3_ENV} init \
+	  -backend-config="bucket=$(S3_STATE_BUCKET)" \
+	  -backend-config="key=$${STATE_KEY}" \
+	  -backend-config="region=$(S3_STATE_REGION)" \
+	  -backend-config="dynamodb_table=$(S3_LOCK_TABLE)" \
+	  -backend-config="encrypt=true"; \
+	$(TF_BIN) -chdir=envs/$${S3_ENV} apply -auto-approve -input=false -no-color \
+	  -var-file="s3/generated/$${S3_ID}.auto.tfvars.json"; \
+	'
 
 build:
 	$(call require_build_id)
@@ -700,6 +773,13 @@ teardown-persistent:
 
 help:
 	@echo "Targets:"
+	@echo ""
+	@echo "== S3 Requests (Contract-Driven) =="
+	@echo "  make s3-validate S3_REQUEST=docs/20-contracts/s3-requests/dev/S3-0001.yaml"
+	@echo "  make s3-generate S3_REQUEST=docs/20-contracts/s3-requests/dev/S3-0001.yaml"
+	@echo "  make s3-apply S3_REQUEST=docs/20-contracts/s3-requests/dev/S3-0001.yaml \\"
+	@echo "       S3_STATE_BUCKET=goldenpath-idp-dev-bucket S3_LOCK_TABLE=goldenpath-idp-dev-locks"
+	@echo "  NOTE: Uses per-bucket state key envs/<env>/s3/<id>/terraform.tfstate"
 	@echo ""
 	@echo "== Platform RDS (Persistent Data Layer) =="
 	@echo "  make rds-init ENV=dev          # Initialize RDS Terraform"

@@ -1,21 +1,21 @@
 apiVersion: goldenpath.io/v1
 kind: SecretRequest
-id: ${{ values.request_id }}
+id: ${{ values.requestId }}
 description: "${{ values.description }}"
 owner: ${{ values.owner }}
 metadata:
-  name: ${{ values.secret_name }}
-  service: ${{ values.service }}
+  name: ${{ values.secretName }}
+  service: ${{ values.serviceName }}
   environment: ${{ values.environment }}
   domain: ${{ values.domain }}
   requester: ${{ values.requester }}
 spec:
   provider: aws-secrets-manager
-  secretType: ${{ values.secret_type }}
+  secretType: ${{ values.secretType }}
   risk:
     tier: ${{ values.risk }}
   rotation:
-    rotationClass: ${{ values.rotation }}
+    rotationClass: ${{ values.rotationClass }}
   lifecycle:
     status: active
 {%- if values.risk == 'low' %}
@@ -27,4 +27,4 @@ spec:
 {%- endif %}
   access:
     namespace: ${{ values.namespace }}
-    k8sSecretName: ${{ values.k8s_secret_name }}
+    k8sSecretName: ${{ values.k8sSecretName }}
