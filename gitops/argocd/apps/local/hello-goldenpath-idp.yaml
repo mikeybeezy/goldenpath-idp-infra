@@ -12,6 +12,7 @@ metadata:
     # Image Updater annotations - digest strategy detects when :latest changes
     argocd-image-updater.argoproj.io/image-list: app=593517239005.dkr.ecr.eu-west-2.amazonaws.com/hello-goldenpath-idp:latest
     argocd-image-updater.argoproj.io/app.update-strategy: digest
+    argocd-image-updater.argoproj.io/app.platforms: linux/amd64
     argocd-image-updater.argoproj.io/write-back-method: argocd
     argocd-image-updater.argoproj.io/app.force-update: "true"
   labels:
