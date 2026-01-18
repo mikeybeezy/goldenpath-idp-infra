@@ -2094,7 +2094,7 @@ Goal: Install Argo CD on local Kind cluster, deploy hello-goldenpath-idp via Git
 **Argo CD Installation**
 - Namespace: argocd
 - Pods: 7 running (server, repo-server, application-controller, redis, dex-server, notifications-controller, applicationset-controller)
-- Admin password: `4MoBTijnQ2oHFvXI`
+- Admin password: Run `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 - Access: `kubectl port-forward svc/argocd-server -n argocd 8080:443`
 
 **App-of-Apps Bootstrap**

@@ -80,7 +80,7 @@ appConfig: |
   backend:
     baseUrl: ${BASE_URL}:7007
     listen: ':7007'
-    
+
     database:
       client: pg
       connection:

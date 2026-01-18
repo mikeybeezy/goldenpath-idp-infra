@@ -394,7 +394,7 @@ Signed: claude-opus-4.5 (2026-01-18T12:45:00Z)
 
 - **Argo CD installed on local Kind cluster** (ha-cluster)
   - All 7 Argo CD pods running and healthy
-  - Admin password retrieved: `4MoBTijnQ2oHFvXI`
+  - Admin password retrieved via: `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
   - Accessible via port-forward on localhost:8080
 
 - **App-of-Apps bootstrap pattern implemented**
