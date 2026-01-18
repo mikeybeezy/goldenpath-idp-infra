@@ -4,3 +4,10 @@
 # Local development secrets - these are intentionally hardcoded placeholder values
 # for local Kind cluster testing only. They are NOT used in any real environment.
 c6c524a7f4dd970a883522de0909e6fd223526c2:gitops/kustomize/overlays/local/secrets.yaml:generic-api-key:24
+
+# False positives: Terraform variable references flagged as "generic-api-key"
+# These are just Terraform variable names like `public_access_block`, not actual secrets
+d45306e93b5899cafc9d1ae3d052ac857088df5b:envs/dev/main.tf:generic-api-key:566
+d45306e93b5899cafc9d1ae3d052ac857088df5b:envs/prod/main.tf:generic-api-key:187
+d45306e93b5899cafc9d1ae3d052ac857088df5b:envs/staging/main.tf:generic-api-key:187
+d45306e93b5899cafc9d1ae3d052ac857088df5b:envs/test/main.tf:generic-api-key:187
