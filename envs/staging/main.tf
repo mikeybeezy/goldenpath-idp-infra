@@ -173,6 +173,29 @@ module "app_secrets" {
   }
 }
 
+################################################################################
+# S3 Buckets (Contract-Driven)
+################################################################################
+
+module "s3_bucket" {
+  source = "../../modules/aws_s3"
+  count  = var.s3_bucket == null ? 0 : 1
+
+  bucket_name        = var.s3_bucket != null ? var.s3_bucket.bucket_name : ""
+  versioning_enabled = var.s3_bucket != null ? var.s3_bucket.versioning_enabled : true
+  encryption         = var.s3_bucket != null ? var.s3_bucket.encryption : { type = "SSE_S3" }
+  public_access_block = var.s3_bucket != null ? var.s3_bucket.public_access_block : {
+    block_public_acls       = true
+    block_public_policy     = true
+    ignore_public_acls      = true
+    restrict_public_buckets = true
+  }
+  lifecycle_rules = var.s3_bucket != null && var.s3_bucket.lifecycle_rules != null ? var.s3_bucket.lifecycle_rules : []
+  logging         = var.s3_bucket != null ? var.s3_bucket.logging : null
+  tags            = merge(local.common_tags, var.s3_bucket != null ? var.s3_bucket.tags : {})
+  cost_alert      = var.cost_alert
+}
+
 module "kubernetes_addons" {
   source = "../../modules/kubernetes_addons"
   count  = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0

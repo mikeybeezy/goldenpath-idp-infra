@@ -1,0 +1,94 @@
+# Owner: platform
+# Relates-To: schemas/requests/s3.schema.yaml
+name: Quality - S3 Request Validation
+
+on:
+  pull_request:
+    branches: [main, development]
+    paths:
+      - "docs/20-contracts/s3-requests/**/*.yml"
+      - "docs/20-contracts/s3-requests/**/*.yaml"
+      - "schemas/requests/s3.schema.yaml"
+      - "scripts/s3_request_parser.py"
+      - ".github/workflows/ci-s3-request-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate_s3_requests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine request files to validate
+        id: inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BASE_REF="${{ github.base_ref }}"
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.sha }}"
+          if [ -n "$BASE_SHA" ]; then
+            CHANGED=$(git diff --name-only "${BASE_SHA}...${HEAD_SHA}" || true)
+          else
+            CHANGED=""
+          fi
+
+          REQUEST_CHANGED=$(echo "$CHANGED" | grep -E '^docs/20-contracts/s3-requests/.+\.ya?ml$' || true)
+          SCHEMA_CHANGED=$(echo "$CHANGED" | grep -E '^(schemas/requests/s3\.schema\.yaml|scripts/s3_request_parser\.py)$' || true)
+
+          if [ -z "$BASE_REF" ]; then
+            INPUTS=$(git ls-files 'docs/20-contracts/s3-requests/**/*.yaml' 'docs/20-contracts/s3-requests/**/*.yml')
+            REASON="manual run"
+          elif [ -n "$SCHEMA_CHANGED" ]; then
+            INPUTS=$(git ls-files 'docs/20-contracts/s3-requests/**/*.yaml' 'docs/20-contracts/s3-requests/**/*.yml')
+            REASON="schema/parser changed"
+          elif [ -n "$REQUEST_CHANGED" ]; then
+            INPUTS="$REQUEST_CHANGED"
+            REASON="changed request files"
+          else
+            INPUTS=""
+            REASON="no relevant changes"
+          fi
+
+          echo "inputs<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$INPUTS" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "reason=$REASON" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Python
+        if: steps.inputs.outputs.inputs != ''
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        if: steps.inputs.outputs.inputs != ''
+        run: |
+          pip install -r requirements-dev.txt
+
+      - name: Validate S3 request files
+        if: steps.inputs.outputs.inputs != ''
+        run: |
+          python3 scripts/s3_request_parser.py \
+            --mode validate \
+            --input-files ${{ steps.inputs.outputs.inputs }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## S3 Request Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Reason: ${{ steps.inputs.outputs.reason }}" >> $GITHUB_STEP_SUMMARY
+          if [ -z "${{ steps.inputs.outputs.inputs }}" ]; then
+            echo "No request files to validate." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Validated files:" >> $GITHUB_STEP_SUMMARY
+            echo "${{ steps.inputs.outputs.inputs }}" >> $GITHUB_STEP_SUMMARY
+          fi

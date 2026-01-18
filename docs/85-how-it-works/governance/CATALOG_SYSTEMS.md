@@ -99,7 +99,7 @@ spec:
   parameters:
     - title: Database Details
       properties:
-        database_name:
+        databaseName:
           title: Database Name
           type: string
 ```

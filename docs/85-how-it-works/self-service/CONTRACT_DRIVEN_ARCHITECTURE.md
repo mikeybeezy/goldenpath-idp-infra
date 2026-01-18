@@ -68,7 +68,7 @@ steps:
       values:
         id: ${{ parameters.id }}
         environment: ${{ parameters.environment }}
-        database_name: ${{ parameters.database_name }}
+        databaseName: ${{ parameters.databaseName }}
         # ... other values
 
   - id: publish-pr
@@ -139,10 +139,14 @@ The codebase follows consistent case conventions:
 
 |Context|Convention|Example|
 |---------|------------|---------|
-|YAML contracts|camelCase|`databaseName`, `storageGb`, `multiAz`|
+|YAML contract spec fields|camelCase|`databaseName`, `storageGb`, `multiAz`|
+|Contract request filenames|ID format (prefix + zero-padded number)|`S3-0001.yaml`, `RDS-0001.yaml`|
+|Python scripts/modules|snake_case|`s3_request_parser.py`|
 |Python internals|snake_case|`rds_id`, `database_name`|
 |Terraform|snake_case|`allocated_storage`, `multi_az`|
 |K8s labels|kebab-case|`platform.idp/service`, `goldenpath.idp/id`|
+
+Use camelCase for new contract spec fields; keep top-level identifiers (`id`, `environment`, `owner`) lowercase for consistency with existing contracts.
 
 ## Running Parsers
 

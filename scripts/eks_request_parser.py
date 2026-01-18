@@ -36,7 +36,10 @@ Modes:
 """
 
 import argparse
+import csv
 import json
+import os
+from datetime import datetime, timezone
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -59,6 +62,7 @@ class EksRequest:
     region: str
     owner: str
     requester: str
+    created_date: Optional[str]
     cluster_lifecycle: str
     mode: str
     build_id: str
@@ -121,43 +125,46 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> EksRequest:
     region = doc.get("region") or md.get("region")
     owner = doc.get("owner") or md.get("owner")
     requester = doc.get("requester") or md.get("requester")
-    cluster_lifecycle = doc.get("cluster_lifecycle") or md.get("cluster_lifecycle") or ""
+    created_date = md.get("created") or md.get("created_date") or md.get("createdDate")
+    cluster_lifecycle = doc.get("clusterLifecycle") or doc.get("cluster_lifecycle") or md.get("clusterLifecycle") or md.get("cluster_lifecycle") or ""
 
     mode = spec.get("mode")
     build = spec.get("build", {})
-    build_id = build.get("build_id", "")
+    build_id = build.get("buildId") or build.get("build_id", "")
 
     cluster = spec.get("cluster", {})
-    cluster_name = cluster.get("name")
-    kubernetes_version = cluster.get("kubernetes_version")
-    private_endpoint_only = cluster.get("private_endpoint_only", True)
+    cluster_name = cluster.get("clusterName") or cluster.get("name")
+    kubernetes_version = cluster.get("kubernetesVersion") or cluster.get("kubernetes_version")
+    private_endpoint_only = cluster.get("privateEndpointOnly")
+    if private_endpoint_only is None:
+        private_endpoint_only = cluster.get("private_endpoint_only", True)
     irsa = cluster.get("irsa", {})
     irsa_enabled = bool(irsa.get("enabled", False))
 
     access = cluster.get("access", {})
-    ssm_break_glass = bool(access.get("ssm_break_glass", True))
-    ssh_break_glass = bool(access.get("ssh_break_glass", False))
-    ssh_key_name = access.get("ssh_key_name")
-    ssh_source_sg_ids = access.get("ssh_source_sg_ids") or access.get("ssh_source_security_group_ids") or []
+    ssm_break_glass = bool(access.get("ssmBreakGlass", access.get("ssm_break_glass", True)))
+    ssh_break_glass = bool(access.get("sshBreakGlass", access.get("ssh_break_glass", False)))
+    ssh_key_name = access.get("sshKeyName") or access.get("ssh_key_name")
+    ssh_source_sg_ids = access.get("sshSourceSgIds") or access.get("ssh_source_sg_ids") or access.get("ssh_source_security_group_ids") or []
 
-    node_pool = spec.get("node_pool", {})
-    node_tier = node_pool.get("node_tier") or node_pool.get("tier") or ""
-    instance_type = node_pool.get("instance_type") or ""
-    node_min = node_pool.get("min") or node_pool.get("min_size")
-    node_desired = node_pool.get("desired") or node_pool.get("desired_size")
-    node_max = node_pool.get("max") or node_pool.get("max_size")
-    capacity_type = node_pool.get("capacity_type", "ON_DEMAND")
+    node_pool = spec.get("nodePool") or spec.get("node_pool") or {}
+    node_tier = node_pool.get("nodeTier") or node_pool.get("node_tier") or node_pool.get("tier") or ""
+    instance_type = node_pool.get("instanceType") or node_pool.get("instance_type") or ""
+    node_min = node_pool.get("nodeMin") or node_pool.get("min") or node_pool.get("min_size")
+    node_desired = node_pool.get("nodeDesired") or node_pool.get("desired") or node_pool.get("desired_size")
+    node_max = node_pool.get("nodeMax") or node_pool.get("max") or node_pool.get("max_size")
+    capacity_type = node_pool.get("capacityType") or node_pool.get("capacity_type") or "ON_DEMAND"
     autoscaler = node_pool.get("autoscaler", {})
     autoscaler_enabled = bool(autoscaler.get("enabled", True))
 
     gitops = spec.get("gitops", {})
     gitops_controller = gitops.get("controller", "argocd")
     gitops_install = bool(gitops.get("install", True))
-    bootstrap_profile = gitops.get("bootstrap_profile", "core-tooling")
+    bootstrap_profile = gitops.get("bootstrapProfile") or gitops.get("bootstrap_profile") or "core-tooling"
 
     ingress = spec.get("ingress", {})
     ingress_provider = ingress.get("provider", "kong")
-    aws_lb_type = ingress.get("aws_lb_type", "nlb")
+    aws_lb_type = ingress.get("awsLbType") or ingress.get("aws_lb_type") or "nlb"
     ingress_internal = bool(ingress.get("internal", True))
 
     missing = [k for k, v in {
@@ -167,17 +174,17 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> EksRequest:
         "owner": owner,
         "requester": requester,
         "spec.mode": mode,
-        "spec.cluster.name": cluster_name,
-        "spec.cluster.kubernetes_version": kubernetes_version,
-        "spec.node_pool.desired": node_desired,
-        "spec.node_pool.max": node_max,
+        "spec.cluster.clusterName": cluster_name,
+        "spec.cluster.kubernetesVersion": kubernetes_version,
+        "spec.nodePool.nodeDesired": node_desired,
+        "spec.nodePool.nodeMax": node_max,
     }.items() if not v]
 
     if mode in ["cluster-only", "cluster+bootstrap"] and not build_id:
-        missing.append("spec.build.build_id")
+        missing.append("spec.build.buildId")
 
     if not instance_type and not node_tier:
-        missing.append("spec.node_pool.node_tier or spec.node_pool.instance_type")
+        missing.append("spec.nodePool.nodeTier or spec.nodePool.instanceType")
 
     if missing:
         raise ValueError(f"{src_path}: missing required fields: {', '.join(missing)}")
@@ -188,12 +195,12 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> EksRequest:
 
     if node_min_val > node_desired_val or node_desired_val > node_max_val:
         raise ValueError(
-            f"{src_path}: node_pool sizing must satisfy min <= desired <= max"
+            f"{src_path}: nodePool sizing must satisfy min <= desired <= max"
         )
 
     resolved_instance_type = instance_type or NODE_TIER_TO_INSTANCE.get(node_tier, "")
     if not resolved_instance_type:
-        raise ValueError(f"{src_path}: unsupported node_tier '{node_tier}'")
+        raise ValueError(f"{src_path}: unsupported nodeTier '{node_tier}'")
 
     return EksRequest(
         eks_id=str(eks_id),
@@ -201,6 +208,7 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> EksRequest:
         region=str(region),
         owner=str(owner),
         requester=str(requester),
+        created_date=str(created_date) if created_date else None,
         cluster_lifecycle=str(cluster_lifecycle),
         mode=str(mode),
         build_id=str(build_id),
@@ -239,13 +247,13 @@ def validate_enums(req: EksRequest, enums: Dict[str, List[str]], src_path: Path)
 
     check("environment", req.environment, enums["environment"])
     check("mode", req.mode, enums["mode"])
-    check("node_tier", req.node_tier, enums["node_tier"])
+    check("nodeTier", req.node_tier, enums["node_tier"])
     check("kubernetes_version", req.kubernetes_version, enums["kubernetes_version"])
-    check("capacity_type", req.capacity_type, enums["capacity_type"])
-    check("gitops_controller", req.gitops_controller, enums["gitops_controller"])
-    check("bootstrap_profile", req.bootstrap_profile, enums["bootstrap_profile"])
-    check("ingress_provider", req.ingress_provider, enums["ingress_provider"])
-    check("aws_lb_type", req.aws_lb_type, enums["aws_lb_type"])
+    check("capacityType", req.capacity_type, enums["capacity_type"])
+    check("gitopsController", req.gitops_controller, enums["gitops_controller"])
+    check("bootstrapProfile", req.bootstrap_profile, enums["bootstrap_profile"])
+    check("ingressProvider", req.ingress_provider, enums["ingress_provider"])
+    check("awsLbType", req.aws_lb_type, enums["aws_lb_type"])
     check("owner", req.owner, enums["owner"])
 
 
@@ -257,6 +265,113 @@ def tfvars_output_path(tfvars_out_root: Path, req: EksRequest) -> Path:
         / "generated"
         / f"{req.eks_id}.auto.tfvars.json"
     )
+
+
+def read_catalog(path: Path) -> Dict[str, Any]:
+    if not path.exists():
+        return {
+            "version": "1.0",
+            "domain": "platform-core",
+            "owner": "platform-team",
+            "last_updated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            "managed_by": "platform-team",
+            "clusters": {},
+        }
+    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+
+def write_catalog(path: Path, data: Dict[str, Any], dry_run: bool) -> None:
+    if dry_run:
+        print(f"[DRY-RUN] Would write catalog: {path}")
+        print(yaml.safe_dump(data, sort_keys=False))
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+
+
+def derive_risk(environment: str) -> str:
+    if environment == "prod":
+        return "high"
+    if environment == "staging":
+        return "medium"
+    return "low"
+
+
+def update_eks_catalog(req: EksRequest, catalog_path: Path, status: str, dry_run: bool) -> None:
+    catalog = read_catalog(catalog_path)
+    catalog.setdefault("clusters", {})
+    catalog["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    created_date = req.created_date or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    catalog["clusters"][req.cluster_name] = {
+        "metadata": {
+            "id": req.eks_id,
+            "owner": req.owner,
+            "requested_by": req.requester,
+            "domain": "platform-core",
+            "risk": derive_risk(req.environment),
+            "environment": req.environment,
+            "status": status,
+            "created_date": created_date,
+        },
+        "aws": {
+            "cluster_name": req.cluster_name,
+            "region": req.region,
+            "version": req.kubernetes_version,
+        },
+        "configuration": {
+            "mode": req.mode,
+            "node_tier": req.node_tier,
+            "node_min": req.node_min,
+            "node_desired": req.node_desired,
+            "node_max": req.node_max,
+            "capacity_type": req.capacity_type.lower(),
+            "build_id": req.build_id,
+        },
+    }
+
+    write_catalog(catalog_path, catalog, dry_run)
+
+
+def generate_audit_record(req: EksRequest, action: str, status: str, approver: str) -> Dict[str, Any]:
+    return {
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "request_id": req.eks_id,
+        "cluster_name": req.cluster_name,
+        "owner": req.owner,
+        "environment": req.environment,
+        "mode": req.mode,
+        "build_id": req.build_id,
+        "action": action,
+        "approver": approver,
+        "status": status,
+    }
+
+
+def append_audit_record(path: Path, record: Dict[str, Any], dry_run: bool) -> None:
+    header = [
+        "timestamp_utc",
+        "request_id",
+        "cluster_name",
+        "owner",
+        "environment",
+        "mode",
+        "build_id",
+        "action",
+        "approver",
+        "status",
+    ]
+    if dry_run:
+        print(f"[DRY-RUN] Would append audit record: {path}")
+        print(record)
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    exists = path.exists()
+    with path.open("a", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=header)
+        if not exists:
+            writer.writeheader()
+        writer.writerow({k: record.get(k, "") for k in header})
 
 
 def generate_tfvars(req: EksRequest) -> Dict[str, Any]:
@@ -294,13 +409,13 @@ def generate_tfvars(req: EksRequest) -> Dict[str, Any]:
 def validate_request(req: EksRequest, enums: Dict[str, List[str]], src_path: Path) -> None:
     validate_enums(req, enums, src_path)
     if req.cluster_lifecycle and req.cluster_lifecycle != "ephemeral":
-        raise ValueError(f"{src_path}: cluster_lifecycle must be ephemeral for now")
+        raise ValueError(f"{src_path}: clusterLifecycle must be ephemeral for now")
     if req.bootstrap_profile != "core-tooling":
-        print(f"[WARN] {src_path}: bootstrap_profile is not wired to automation yet")
+        print(f"[WARN] {src_path}: bootstrapProfile is not wired to automation yet")
     if req.ingress_provider != "kong" or req.aws_lb_type != "nlb":
         print(f"[WARN] {src_path}: ingress settings are not wired to automation yet")
     if req.irsa_enabled:
-        print(f"[WARN] {src_path}: irsa_enabled is not wired to automation yet")
+        print(f"[WARN] {src_path}: irsaEnabled is not wired to automation yet")
 
 
 def load_requests(input_files: List[str]) -> List[Path]:
@@ -322,6 +437,12 @@ def main() -> int:
     parser.add_argument("--enums", required=True)
     parser.add_argument("--tfvars-out-root", default="envs")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--catalog-path", default="")
+    parser.add_argument("--catalog-status", default="active")
+    parser.add_argument("--audit-path", default="")
+    parser.add_argument("--audit-action", default="apply")
+    parser.add_argument("--audit-status", default="success")
+    parser.add_argument("--audit-approver", default="")
     args = parser.parse_args()
 
     enums = load_enums(Path(args.enums))
@@ -341,6 +462,14 @@ def main() -> int:
             out_path = tfvars_output_path(Path(args.tfvars_out_root), req)
             write_json(out_path, tfvars, args.dry_run)
             print(f"[OK] {path} -> {out_path}")
+
+            if args.catalog_path:
+                update_eks_catalog(req, Path(args.catalog_path), args.catalog_status, args.dry_run)
+
+            if args.audit_path:
+                approver = args.audit_approver or os.environ.get("GITHUB_ACTOR", "unknown")
+                record = generate_audit_record(req, args.audit_action, args.audit_status, approver)
+                append_audit_record(Path(args.audit_path), record, args.dry_run)
         else:
             print(f"[OK] {path} validated")
 

@@ -1,0 +1,250 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: s3-request
+  title: Request S3 Bucket
+  description: |
+    Request a new S3 bucket on the GoldenPath platform.
+    Creates a bucket with platform-enforced guardrails (encryption, public access block, naming convention).
+    Reference: ADR-0170 (S3 Self-Service Request System)
+  tags:
+    - aws
+    - s3
+    - storage
+    - infrastructure
+    - gitops
+spec:
+  owner: platform-team
+  type: service
+
+  parameters:
+    - title: Bucket Details
+      required:
+        - application
+        - purposeType
+        - purposeDescription
+        - owner
+        - requester
+        - environment
+        - costCenter
+        - costAlertGb
+      properties:
+        application:
+          title: Application Name
+          type: string
+          description: Application that will use this bucket.
+          ui:autofocus: true
+          pattern: '^[a-z][a-z0-9-]{2,30}$'
+          ui:help: "3-31 chars, lowercase letters/numbers/hyphens only. Must start with a letter."
+        purposeType:
+          title: Bucket Purpose
+          type: string
+          description: Primary use case for this bucket.
+          enum:
+            - logs
+            - uploads
+            - backups
+            - data-lake
+            - static-assets
+          default: uploads
+          ui:help: |
+            - logs: Application and audit logs
+            - uploads: User file uploads
+            - backups: Database and config backups
+            - data-lake: Analytics and data warehouse
+            - static-assets: CDN/website files (requires review)
+        purposeDescription:
+          title: Purpose Description
+          type: string
+          description: Explain what this bucket will be used for.
+          minLength: 10
+          maxLength: 200
+          ui:help: "Minimum 10 characters. Be specific about the use case."
+        owner:
+          title: Owner Team
+          type: string
+          description: Team that owns this bucket.
+          enum:
+            - platform-team
+            - security-team
+            - operations-team
+            - sre-team
+            - app-team
+            - database-team
+            - unknown
+          default: app-team
+        requester:
+          title: Requesting User
+          type: string
+          description: Your username (e.g., daniel-deans).
+          pattern: '^[a-z0-9-]+$'
+        environment:
+          title: Environment
+          type: string
+          description: Target environment.
+          enum:
+            - dev
+            - test
+            - staging
+            - prod
+          default: dev
+        costCenter:
+          title: Cost Center
+          type: string
+          description: Cost center for billing.
+          pattern: '^[a-z0-9-]+$'
+        costAlertGb:
+          title: Cost Alert Threshold (GB)
+          type: integer
+          description: Storage threshold in GB for CloudWatch alert.
+          minimum: 1
+          maximum: 10000
+          default: 100
+
+    - title: Storage Configuration
+      properties:
+        storageClass:
+          title: Storage Class
+          type: string
+          description: S3 storage class.
+          enum:
+            - standard
+            - intelligent-tiering
+            - standard-ia
+            - glacier
+          default: standard
+          ui:help: |
+            - standard: General purpose (default)
+            - intelligent-tiering: Auto-tiering for variable access
+            - standard-ia: Infrequent access (30+ day retention)
+            - glacier: Archive (90+ day retention)
+        versioning:
+          title: Enable Versioning
+          type: boolean
+          description: Enable S3 versioning for object history.
+          default: true
+        corsEnabled:
+          title: Enable CORS
+          type: boolean
+          description: Enable Cross-Origin Resource Sharing.
+          default: false
+
+    - title: Retention Policy
+      required:
+        - retentionType
+        - retentionRationale
+      properties:
+        retentionType:
+          title: Retention Type
+          type: string
+          description: Data retention strategy.
+          enum:
+            - indefinite
+            - time-bounded
+            - compliance-driven
+          default: indefinite
+          ui:help: |
+            - indefinite: No automatic deletion
+            - time-bounded: Objects expire after N days
+            - compliance-driven: Regulatory retention requirements
+        retentionRationale:
+          title: Retention Rationale
+          type: string
+          description: Explain why this retention policy is appropriate.
+          minLength: 10
+          maxLength: 500
+        expireDays:
+          title: Expire After (Days)
+          type: integer
+          description: Days after which objects are deleted (if time-bounded/compliance-driven).
+          minimum: 1
+          maximum: 3650
+        transitionToIaDays:
+          title: Transition to Standard-IA (Days)
+          type: integer
+          description: Days after which objects move to Standard-IA.
+          minimum: 30
+        transitionToGlacierDays:
+          title: Transition to Glacier (Days)
+          type: integer
+          description: Days after which objects move to Glacier.
+          minimum: 90
+
+    - title: Access Control
+      properties:
+        publicAccess:
+          title: Public Access
+          type: string
+          description: Public access configuration. Blocked by default.
+          enum:
+            - blocked
+            - exception-approved
+          default: blocked
+          ui:help: |
+            - blocked: All public access blocked (default, recommended)
+            - exception-approved: Requires platform-team approval
+
+  steps:
+    - id: debug-inputs
+      name: Debug Inputs
+      action: debug:log
+      input:
+        message: |
+          S3 Bucket Request:
+          application=${{ parameters.application }}
+          purposeType=${{ parameters.purposeType }}
+          purposeDescription=${{ parameters.purposeDescription }}
+          owner=${{ parameters.owner }}
+          requester=${{ parameters.requester }}
+          environment=${{ parameters.environment }}
+          costCenter=${{ parameters.costCenter }}
+          costAlertGb=${{ parameters.costAlertGb }}
+          storageClass=${{ parameters.storageClass }}
+          versioning=${{ parameters.versioning }}
+          corsEnabled=${{ parameters.corsEnabled }}
+          retentionType=${{ parameters.retentionType }}
+          retentionRationale=${{ parameters.retentionRationale }}
+          expireDays=${{ parameters.expireDays }}
+          transitionToIaDays=${{ parameters.transitionToIaDays }}
+          transitionToGlacierDays=${{ parameters.transitionToGlacierDays }}
+          publicAccess=${{ parameters.publicAccess }}
+
+    - id: trigger-workflow
+      name: Trigger Creation Workflow
+      action: github:actions:dispatch
+      input:
+        repoUrl: github.com?owner=mikeybeezy&repo=goldenpath-idp-infra
+        workflowId: create-s3-bucket.yml
+        branchOrTagName: main
+        workflowInputs:
+          base_branch: development
+          application: ${{ parameters.application }}
+          purpose_type: ${{ parameters.purposeType }}
+          purpose_description: ${{ parameters.purposeDescription }}
+          owner: ${{ parameters.owner }}
+          user: ${{ parameters.requester }}
+          environment: ${{ parameters.environment }}
+          cost_center: ${{ parameters.costCenter }}
+          cost_alert_gb: ${{ parameters.costAlertGb }}
+          storage_class: ${{ parameters.storageClass }}
+          versioning: ${{ parameters.versioning }}
+          cors_enabled: ${{ parameters.corsEnabled }}
+          retention_type: ${{ parameters.retentionType }}
+          retention_rationale: ${{ parameters.retentionRationale }}
+          expire_days: ${{ parameters.expireDays }}
+          transition_to_ia_days: ${{ parameters.transitionToIaDays }}
+          transition_to_glacier_days: ${{ parameters.transitionToGlacierDays }}
+          public_access: ${{ parameters.publicAccess }}
+
+  output:
+    links:
+      - title: Open Workflow Runs
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/workflows/create-s3-bucket.yml
+      - title: PR Link (filtered by branch)
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls?q=is%3Apr+head%3As3%2Fcreate-${{ parameters.application }}
+      - title: PR List (fallback)
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/pulls
+      - title: S3 Catalog
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/20-contracts/resource-catalogs/s3-catalog.yaml
+      - title: S3 Request Flow
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0170-s3-self-service-request-system.md

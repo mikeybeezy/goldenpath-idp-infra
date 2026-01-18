@@ -65,7 +65,7 @@ Application teams use the **"Request Platform RDS Database"** template in the Ba
 
 |Field|Description|Example|
 |-------|-------------|---------|
-|`database_name`|Logical database name|`inventory_service`|
+|`databaseName`|Logical database name|`inventory_service`|
 |`username`|Database user|`inventory_user`|
 |`owner`|Owning team|`app-team`|
 |`requester`|Requesting user|`daniel-deans`|
@@ -183,6 +183,14 @@ This executes the Terraform configuration which:
 3. Generates a secure random password
 4. Stores credentials in AWS Secrets Manager
 
+### Audit Trail
+
+When provisioning runs in CI, audit records are persisted to:
+
+```
+governance/{environment}/rds_request_audit.csv
+```
+
 ## 5. Credential Access
 
 ### AWS Secrets Manager
@@ -190,7 +198,7 @@ This executes the Terraform configuration which:
 Credentials are stored at:
 
 ```text
-goldenpath/{env}/{database_name}/postgres
+goldenpath/{env}/{databaseName}/postgres
 ```
 
 Secret structure:

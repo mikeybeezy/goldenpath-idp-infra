@@ -44,12 +44,13 @@ Terraform state.
 
 The Backstage template collects the minimal set of inputs:
 
-- `request_id` (EKS-0001)
+- `requestId` (EKS-0001)
 - `environment`, `region`
+- `clusterLifecycle` (ephemeral only for now)
 - `mode` (cluster-only | bootstrap-only | cluster+bootstrap)
-- `build_id` (required if mode includes cluster creation)
-- `cluster_name`, `kubernetes_version`
-- `node_tier`, `node_desired`, `node_max`, `capacity_type`
+- `buildId` (required if mode includes cluster creation)
+- `clusterName`, `kubernetesVersion`
+- `nodeTier`, `nodeDesired`, `nodeMax`, `capacityType`
 
 Result: a PR that adds a request file to:
 
@@ -70,15 +71,15 @@ requester: platform-team
 spec:
   mode: cluster+bootstrap
   build:
-    build_id: 17-01-26-01
+    buildId: 17-01-26-01
   cluster:
-    name: goldenpath-dev-eks-17-01-26-01
-    kubernetes_version: "1.29"
-  node_pool:
-    node_tier: small
-    desired: 3
-    max: 5
-    capacity_type: ON_DEMAND
+    clusterName: goldenpath-dev-eks-17-01-26-01
+    kubernetesVersion: "1.29"
+  nodePool:
+    nodeTier: small
+    nodeDesired: 3
+    nodeMax: 5
+    capacityType: ON_DEMAND
 ```
 
 ## 3. Validation (CI)
@@ -123,8 +124,15 @@ EKS applies are intentionally manual to avoid accidental rebuilds:
 Key guardrails:
 
 - Non-dev requires `allow_non_dev=true`
-- `build_id` is used to select ephemeral state keys
+- `buildId` is used to select ephemeral state keys
 - `bootstrap-only` skips Terraform apply and is handled separately
+
+### Catalog + Audit Updates
+
+After a successful apply (non-`bootstrap-only`), the workflow:
+
+- updates `docs/20-contracts/resource-catalogs/eks-catalog.yaml`
+- appends an audit record to `governance/{environment}/eks_request_audit.csv`
 
 ### Bootstrap-Only Workflow
 
@@ -161,3 +169,4 @@ workflow_dispatch runs also require `allow_non_dev=true`.
 - `scripts/eks_request_parser.py`
 - `.github/workflows/ci-eks-request-validation.yml`
 - `.github/workflows/eks-request-apply.yml`
+ - `docs/20-contracts/resource-catalogs/eks-catalog.yaml`

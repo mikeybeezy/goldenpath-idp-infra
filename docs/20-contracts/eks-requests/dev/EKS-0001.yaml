@@ -7,7 +7,7 @@ environment: dev
 region: eu-west-2
 owner: platform-team
 requester: platform-team
-cluster_lifecycle: ephemeral
+clusterLifecycle: ephemeral
 
 metadata:
   title: "EKS Cluster - Dev"
@@ -17,28 +17,28 @@ metadata:
 spec:
   mode: cluster+bootstrap
   build:
-    build_id: 17-01-26-01
+    buildId: 17-01-26-01
   cluster:
-    name: goldenpath-dev-eks-17-01-26-01
-    kubernetes_version: "1.29"
-    private_endpoint_only: true
+    clusterName: goldenpath-dev-eks-17-01-26-01
+    kubernetesVersion: "1.29"
+    privateEndpointOnly: true
     irsa:
       enabled: false
     access:
-      ssm_break_glass: true
-      ssh_break_glass: false
-  node_pool:
-    instance_type: t3.small
-    desired: 3
-    max: 5
-    capacity_type: ON_DEMAND
+      ssmBreakGlass: true
+      sshBreakGlass: false
+  nodePool:
+    instanceType: t3.small
+    nodeDesired: 3
+    nodeMax: 5
+    capacityType: ON_DEMAND
     autoscaler:
       enabled: true
   gitops:
     controller: argocd
     install: true
-    bootstrap_profile: core-tooling
+    bootstrapProfile: core-tooling
   ingress:
     provider: kong
-    aws_lb_type: nlb
+    awsLbType: nlb
     internal: true

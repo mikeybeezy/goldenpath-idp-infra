@@ -2028,3 +2028,35 @@ Goal: Create Extension Capability documents for Kong Backstage plugin and AI Cop
 
 **Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
 **Timestamp**: 2026-01-17T20:30:00Z
+
+## 2026-01-18T02:56Z — Governance Sync: S3/EKS/RDS — env=na build_id=na
+
+Owner: platform-team
+Agent: Codex (gpt-5)
+Goal: Close governance loop for S3/EKS/RDS (catalog + audit outputs) and document changes.
+
+### In-Session Log (append as you go)
+- Completed: S3 apply workflow updates catalog + audit; parser outputs aligned; docs updated.
+- Completed: EKS parser updates `eks-catalog.yaml` + audit; apply workflow commits outputs.
+- Completed: RDS apply workflow persists audit CSV to `governance/{env}/rds_request_audit.csv`.
+- Added: CL-0147 (governance registry sync) and doc/runbook/schema updates.
+- Blocker: commit/push blocked by local `.git` permissions.
+
+### Sprint Highlights
+- Governance loop closed for S3, EKS, and RDS (catalog + audit outputs).
+- Standardized audit paths under `governance/{env}/...`.
+- New changelog entry `CL-0147` to capture the sync.
+
+### Outputs produced (optional)
+- `.github/workflows/s3-request-apply.yml`
+- `.github/workflows/eks-request-apply.yml`
+- `.github/workflows/rds-database-apply.yml`
+- `scripts/eks_request_parser.py`
+- `schemas/requests/s3.schema.yaml`
+- `schemas/requests/eks.schema.yaml`
+- `schemas/requests/rds.schema.yaml`
+- `docs/85-how-it-works/self-service/S3_REQUEST_FLOW.md`
+- `docs/85-how-it-works/self-service/EKS_REQUEST_FLOW.md`
+- `docs/85-how-it-works/self-service/RDS_REQUEST_FLOW.md`
+- `docs/70-operations/runbooks/RB-0032-rds-user-provision.md`
+- `docs/changelog/entries/CL-0147-governance-registry-sync-rds-eks-s3.md`
