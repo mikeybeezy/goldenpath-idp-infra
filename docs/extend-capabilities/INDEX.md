@@ -8,6 +8,7 @@ relates_to:
   - EC-0003-kong-backstage-plugin
   - EC-0004-backstage-copilot-plugin
   - EC-0005-kubernetes-operator-framework
+  - EC-0006-competitor-analysis-tap
 ---
 
 This directory tracks proposed platform capabilities for Golden Path IDP evaluation. Each capability is assigned an EC-XXXX ID and follows a lightweight governance model.
@@ -92,6 +93,7 @@ relates_to: [ADRs, roadmap items]
 |[EC-0003](EC-0003-kong-backstage-plugin.md)|Kong Self-Service Backstage Plugin|proposed|medium|$8K/year|platform-team|
 |[EC-0004](EC-0004-backstage-copilot-plugin.md)|Backstage AI Copilot Plugin|proposed|medium|$15K/year|platform-team|
 |[EC-0005](EC-0005-kubernetes-operator-framework.md)|Kubernetes Operator Framework|proposed|high|$25K/year|platform-team|
+|[EC-0006](EC-0006-competitor-analysis-tap.md)|Competitor Analysis - VMware TAP|validated|medium|Strategic positioning|platform-team|
 
 ## Implemented Capabilities
 
@@ -184,5 +186,5 @@ python3 scripts/generate_ec_index.py
 
 ---
 
-**Last Updated**: 2026-01-17
-**Total ECs**: 5 proposed, 0 validated, 0 accepted, 0 rejected, 0 implemented
+**Last Updated**: 2026-01-18
+**Total ECs**: 5 proposed, 1 validated, 0 accepted, 0 rejected, 0 implemented
