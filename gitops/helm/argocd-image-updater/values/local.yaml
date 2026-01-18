@@ -1,26 +1,93 @@
 # Argo CD Image Updater - Local Environment (Kind)
-# Watches ECR for new images and updates git with new tags
+# Chart: argoproj/argocd-image-updater
+# Purpose: Auto-update image tags from ECR to Git
 
+# -----------------------------------------------------------------------------
+# Core Configuration
+# -----------------------------------------------------------------------------
+image:
+  repository: quay.io/argoprojlabs/argocd-image-updater
+  tag: v0.12.2
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+# -----------------------------------------------------------------------------
+# Argo CD Integration
+# -----------------------------------------------------------------------------
 config:
-  # ECR registry configuration - uses pullsecret copied to argocd namespace
+  # Argo CD server address (in-cluster)
+  argocd:
+    grpcWeb: true
+    serverAddress: argocd-server.argocd.svc.cluster.local
+    insecure: true
+    plaintext: false
+
+  # Logging - debug for local troubleshooting
+  logLevel: debug
+
+  # Git write-back configuration
+  gitCommitUser: argocd-image-updater
+  gitCommitMail: image-updater@goldenpath.dev
+  gitCommitSignOff: true
+  gitCommitMessageTemplate: |
+    build: update image {{ .AppName }} to {{ .NewImage }}
+
+    Image: {{ .Image.Name }}
+    Old tag: {{ .OldTag }}
+    New tag: {{ .NewTag }}
+
+    Signed-off-by: argocd-image-updater <image-updater@goldenpath.dev>
+
+# -----------------------------------------------------------------------------
+# Registry Configuration
+# -----------------------------------------------------------------------------
   registries:
     - name: ECR
       api_url: https://593517239005.dkr.ecr.eu-west-2.amazonaws.com
       prefix: 593517239005.dkr.ecr.eu-west-2.amazonaws.com
+      ping: yes
+      insecure: no
       credentials: pullsecret:argocd/ecr-pull-secret
-      default: true
 
-  # Logging
-  logLevel: debug
+# -----------------------------------------------------------------------------
+# Service Account
+# -----------------------------------------------------------------------------
+serviceAccount:
+  create: true
+  name: argocd-image-updater
 
-# Resource limits for local
+# -----------------------------------------------------------------------------
+# RBAC
+# -----------------------------------------------------------------------------
+rbac:
+  enabled: true
+
+# -----------------------------------------------------------------------------
+# Resources (minimal for local)
+# -----------------------------------------------------------------------------
 resources:
-  limits:
-    cpu: 200m
-    memory: 256Mi
   requests:
     cpu: 50m
     memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+# -----------------------------------------------------------------------------
+# Pod Configuration
+# -----------------------------------------------------------------------------
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
 
 # Check interval (faster for local dev - 60s instead of default 2m)
 extraArgs:
