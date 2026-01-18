@@ -152,16 +152,8 @@ s3-apply:
 	set -euo pipefail; \
 	python3 scripts/s3_request_parser.py --mode validate --input-files "$(S3_REQUEST)"; \
 	python3 scripts/s3_request_parser.py --mode generate --input-files "$(S3_REQUEST)" --output-root "$(S3_OUTPUT_ROOT)"; \
-	read -r S3_ENV S3_ID <<EOF; \
-$$(python3 - "$(S3_REQUEST)" <<'"'"'PY'"'"' \
-import sys, yaml
-data = yaml.safe_load(open(sys.argv[1])) or {}
-env = data.get("environment") or data.get("metadata", {}).get("environment")
-s3_id = data.get("id") or data.get("metadata", {}).get("id")
-print(f"{env} {s3_id}")
-PY \
-); \
-EOF; \
+	S3_ENV=$$(python3 -c "import sys, yaml; d=yaml.safe_load(open(sys.argv[1])) or {}; print(d.get(\"environment\") or d.get(\"metadata\", {}).get(\"environment\"))" "$(S3_REQUEST)"); \
+	S3_ID=$$(python3 -c "import sys, yaml; d=yaml.safe_load(open(sys.argv[1])) or {}; print(d.get(\"id\") or d.get(\"metadata\", {}).get(\"id\"))" "$(S3_REQUEST)"); \
 	if [ -z "$$S3_ENV" ] || [ -z "$$S3_ID" ]; then \
 	  echo "Failed to resolve environment or id from $(S3_REQUEST)"; \
 	  exit 1; \
