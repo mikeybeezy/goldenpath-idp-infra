@@ -85,12 +85,12 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [generate_governance_vocab.py](generate_governance_vocab.py) | --- |
 | [generate_script_matrix.py](generate_script_matrix.py) | --- |
 | [inject_script_metadata.py](inject_script_metadata.py) | --- |
-| [load-image-to-kind.sh](load-image-to-kind.sh) | load-image-to-kind.sh |
+| [load-image-to-kind.sh](load-image-to-kind.sh) | --- |
 | [migrate_partial_metadata.py](migrate_partial_metadata.py) | --- |
 | [rds_provision.py](rds_provision.py) | --- |
 | [rds_request_parser.py](rds_request_parser.py) | --- |
 | [record-build-timing.sh](record-build-timing.sh) | Record build timing to governance-registry branch |
-| [refresh-ecr-secret.sh](refresh-ecr-secret.sh) | refresh-ecr-secret.sh |
+| [refresh-ecr-secret.sh](refresh-ecr-secret.sh) | --- |
 | [reliability-metrics.sh](reliability-metrics.sh) | --- |
 | [repair_shebangs.py](repair_shebangs.py) | --- |
 | [s3_request_parser.py](s3_request_parser.py) | --- |
