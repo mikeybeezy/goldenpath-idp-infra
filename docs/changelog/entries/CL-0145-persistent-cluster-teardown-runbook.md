@@ -3,9 +3,10 @@ id: CL-0145
 title: Persistent Cluster Teardown Runbook
 type: changelog
 status: active
+owner: platform-team
 date: 2026-01-17
 author: platform-team
-category: operations
+category: runbooks
 relates_to:
   - RB-0033-persistent-cluster-teardown
   - 32_TERRAFORM_STATE_AND_LOCKING

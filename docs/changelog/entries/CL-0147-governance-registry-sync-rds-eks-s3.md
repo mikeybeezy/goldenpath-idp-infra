@@ -3,9 +3,10 @@ id: CL-0147
 title: Governance Registry Sync for RDS/EKS/S3
 type: changelog
 status: active
+owner: platform-team
 date: 2026-01-18
 author: platform-team
-category: ci-workflow
+category: governance
 relates_to:
   - ADR-0170-s3-self-service-request-system
   - ADR-0168-eks-request-parser-and-mode-aware-workflows

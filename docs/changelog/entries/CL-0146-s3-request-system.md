@@ -2,10 +2,11 @@
 id: CL-0146
 title: S3 Self-Service Request System
 type: changelog
-status: planned
+status: active
+owner: platform-team
 date: 2026-01-17
 author: platform-team
-category: feature
+category: platform
 relates_to:
   - ADR-0170-s3-self-service-request-system
   - SCRIPT-0037
