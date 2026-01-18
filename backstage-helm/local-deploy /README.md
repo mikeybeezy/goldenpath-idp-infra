@@ -7,7 +7,7 @@ Deploy Backstage in 5 minutes.
 
 <br>
 <a href="https://www.platformers.community/">
-Powered by <img src="./img/platformers-logo.png" width=100 height=100>
+Powered by <img src="./img/platformers-logo.png" width=100 height=100 alt="Platformers Community Logo">
 The Platformers Community
  </a>
 

@@ -421,7 +421,7 @@ kpack uses Paketo Buildpacks which auto-detect based on project files:
 | Node.js | package.json |
 | Python | requirements.txt, Pipfile, setup.py |
 | Go | go.mod |
-| .NET | *.csproj, *.fsproj |
+| .NET | `*.csproj`, `*.fsproj` |
 | Ruby | Gemfile |
 
 ## Automatic Base Image Updates
