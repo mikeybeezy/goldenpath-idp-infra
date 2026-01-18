@@ -330,12 +330,12 @@ config:
 
 - Platform team: ~2 hours/week on Kong requests
 - Engineer cost: ~$80/hour
-- Annual cost: 2 * 52 * $80 = **$8,320/year**
+- Annual cost: 2 x 52 x $80 = **$8,320/year**
 
 ### With Self-Service
 
 - Platform team: ~15 min/week (reviews only)
-- Annual cost: 0.25 * 52 * $80 = **$1,040/year**
+- Annual cost: 0.25 x 52 x $80 = **$1,040/year**
 
 **Net Savings**: $8,320 - $1,040 = **$7,280/year**
 

@@ -169,4 +169,4 @@ workflow_dispatch runs also require `allow_non_dev=true`.
 - `scripts/eks_request_parser.py`
 - `.github/workflows/ci-eks-request-validation.yml`
 - `.github/workflows/eks-request-apply.yml`
- - `docs/20-contracts/resource-catalogs/eks-catalog.yaml`
+- `docs/20-contracts/resource-catalogs/eks-catalog.yaml`

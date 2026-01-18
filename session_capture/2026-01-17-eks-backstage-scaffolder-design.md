@@ -602,7 +602,7 @@ Goldenpathidp can keep your clean separation and keep determinism:
 
 This schema supports all three with mode.
 
-Signed michael.. 
+Signed michael..
 
 ### Update - 2026-01-17T13:42:39Z
 
@@ -1182,8 +1182,8 @@ The Makefile enforces BUILD_ID for teardown:
 
 ```makefile
 teardown:
-	@if [ -z "$(BUILD_ID)" ]; then echo "ERROR: BUILD_ID required"; exit 1; fi
-	# ... rest of teardown logic
+    @if [ -z "$(BUILD_ID)" ]; then echo "ERROR: BUILD_ID required"; exit 1; fi
+    # ... rest of teardown logic
 ```
 
 Persistent mode doesn't use BUILD_ID, so there's no Makefile path to tear it down.
@@ -1196,24 +1196,24 @@ Persistent mode doesn't use BUILD_ID, so there's no Makefile path to tear it dow
 ################################################################################
 
 teardown-persistent:
-	@if [ -z "$(ENV)" ]; then echo "ERROR: ENV required"; exit 1; fi
-	@if [ -z "$(CLUSTER)" ]; then echo "ERROR: CLUSTER required"; exit 1; fi
-	@if [ -z "$(REGION)" ]; then echo "ERROR: REGION required"; exit 1; fi
-	@if [ "$(CONFIRM_DESTROY)" != "yes" ]; then \
-		echo "WARNING: This will destroy all persistent resources for $(ENV)"; \
-		echo "Set CONFIRM_DESTROY=yes to proceed"; exit 1; \
-	fi
-	cd envs/$(ENV) && terraform init \
-		-backend-config="bucket=$(TF_STATE_BUCKET)" \
-		-backend-config="key=envs/$(ENV)/terraform.tfstate" \
-		-backend-config="region=$(REGION)" \
-		-backend-config="dynamodb_table=$(TF_LOCK_TABLE)"
-	cd envs/$(ENV) && terraform destroy -auto-approve
-	# Run teardown script for remaining AWS resources
-	bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh \
-		--cluster-name $(CLUSTER) \
-		--region $(REGION) \
-		--skip-terraform
+    @if [ -z "$(ENV)" ]; then echo "ERROR: ENV required"; exit 1; fi
+    @if [ -z "$(CLUSTER)" ]; then echo "ERROR: CLUSTER required"; exit 1; fi
+    @if [ -z "$(REGION)" ]; then echo "ERROR: REGION required"; exit 1; fi
+    @if [ "$(CONFIRM_DESTROY)" != "yes" ]; then \
+        echo "WARNING: This will destroy all persistent resources for $(ENV)"; \
+        echo "Set CONFIRM_DESTROY=yes to proceed"; exit 1; \
+    fi
+    cd envs/$(ENV) && terraform init \
+        -backend-config="bucket=$(TF_STATE_BUCKET)" \
+        -backend-config="key=envs/$(ENV)/terraform.tfstate" \
+        -backend-config="region=$(REGION)" \
+        -backend-config="dynamodb_table=$(TF_LOCK_TABLE)"
+    cd envs/$(ENV) && terraform destroy -auto-approve
+    # Run teardown script for remaining AWS resources
+    bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh \
+        --cluster-name $(CLUSTER) \
+        --region $(REGION) \
+        --skip-terraform
 ```
 
 **Key Differences**
