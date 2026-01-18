@@ -76,30 +76,42 @@ jobs:
         id: validate
         if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
         continue-on-error: true
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
         run: |
           chmod +x scripts/validate_metadata.py
-          echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/validate_metadata.py
+          # Filter out Backstage skeleton files with template variables (files containing dollar-brace patterns)
+          echo "$CHANGED_FILES" | grep -v 'skeletons/' | xargs -r python3 scripts/validate_metadata.py
 
       - name: Validate Enums (Changed Files Only)
         id: enums
         if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
         continue-on-error: true
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
         run: |
-          echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/validate_enums.py
+          # Filter out Backstage skeleton files with template variables
+          echo "$CHANGED_FILES" | grep -v 'skeletons/' | xargs -r python3 scripts/validate_enums.py
 
       - name: Validate Governance Routing (Changed Files Only)
         id: routing
         if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
         continue-on-error: true
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
         run: |
-          echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/validate_routing_compliance.py
+          # Filter out Backstage skeleton files with template variables
+          echo "$CHANGED_FILES" | grep -v 'skeletons/' | xargs -r python3 scripts/validate_routing_compliance.py
 
       - name: Run Emoji Policy Enforcer (Changed Files Only)
         id: emoji
         if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
         continue-on-error: true
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
         run: |
-          echo "${{ steps.changed.outputs.files }}" | xargs -r python3 scripts/enforce_emoji_policy.py --dry-run
+          # Filter out Backstage skeleton files with template variables
+          echo "$CHANGED_FILES" | grep -v 'skeletons/' | xargs -r python3 scripts/enforce_emoji_policy.py --dry-run
 
       - name: Report Issues (No Auto-Push)
         id: report
