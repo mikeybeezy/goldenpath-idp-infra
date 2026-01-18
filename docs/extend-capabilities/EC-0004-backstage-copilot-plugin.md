@@ -504,3 +504,40 @@ make help
 **Status**: Proposed (awaiting platform team review)
 **Next Action**: Discuss at next platform architecture meeting
 **Contact**: @platform-team for questions
+
+## RAG Readiness and Fit (Notes)
+
+Short answer: we are structurally prepared for retrieval, but there is no RAG pipeline, vector store, or LLM integration in this repo today. The knowledge-graph and metadata work provides strong raw material, but integrating it would be new scope.
+
+### What exists today (RAG-adjacent foundations)
+
+- Knowledge graph architecture and intent are documented, not implemented as a retrievable store: `docs/adrs/ADR-0110-idp-knowledge-graph-architecture.md`.
+- Relationship extraction builds a graph from doc references and calls out semantic gaps: `docs/70-operations/runbooks/RB-0019-relationship-extraction-script.md`.
+- Metadata coverage and standardized IDs provide a clean corpus for chunking/indexing: `docs/10-governance/FEDERATED_METADATA_STRATEGY.md`, `scripts/extract_relationships.py`.
+- Backstage currently links docs to GitHub rather than TechDocs, so RAG would need its own ingestion path: `docs/changelog/entries/CL-0102-backstage-docs-linkout.md`.
+
+### Where RAG could fit
+
+- Backstage assistant/search plugin that retrieves from docs + catalog metadata + relationship graph.
+- CI/ops impact analysis helper that uses the relationship graph + doc corpus.
+- Standalone internal service that indexes repo docs + metadata on a schedule and serves retrieval APIs.
+
+### Scope call
+
+- If the near-term goal is infra baseline + governance stability, RAG is likely out of scope (new service, data pipeline, and security model).
+- If the goal includes developer-portal intelligence, a thin POC is a logical next layer.
+
+### POC acceptance criteria (suggested)
+
+- **Corpus**: index runbooks + Makefile targets + request schemas only (no ADRs in POC).
+- **Retrieval quality**: for a curated set of 10 operator questions, top-3 results contain the correct runbook in at least 8 cases.
+- **Citations**: every response includes source paths/links to the retrieved docs.
+- **Safety**: read-only answers; no command execution; no secret content indexed.
+- **Latency**: p50 response under 5 seconds in dev/staging.
+- **Ops**: re-index on doc changes via CI or nightly job; basic query audit log retained 30 days.
+
+### Out of scope (POC)
+
+- Command execution or automation triggers.
+- Production rollout or SSO integration.
+- Indexing incident logs or external systems.

@@ -1,0 +1,31 @@
+# Managed by scripts/standardize_metadata.py
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: staging-tempo
+  namespace: argocd
+  annotations:
+    goldenpath.idp/id: APPS_STAGING_TEMPO
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: medium
+spec:
+  project: default
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: tempo
+      targetRevision: 1.10.3
+      helm:
+        valueFiles:
+          - $values/gitops/helm/tempo/values/staging.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

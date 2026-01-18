@@ -1,0 +1,126 @@
+# Tempo Helm Values - Production Environment
+# Chart: grafana/tempo v1.10.x
+# Managed by scripts/standardize_metadata.py
+governance:
+  id: HELM_TEMPO_PROD
+  owner: platform-team
+  risk_profile: high
+  reliability: gold
+
+# -----------------------------------------------------------------------------
+# Deployment Mode: Distributed for production scale
+# -----------------------------------------------------------------------------
+tempo:
+  image:
+    repository: grafana/tempo
+    tag: 2.3.1
+    pullPolicy: IfNotPresent
+
+  # Distributed mode components
+  distributor:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+  ingester:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+
+  querier:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+  queryFrontend:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 300m
+        memory: 256Mi
+
+  compactor:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+
+  # Retention: 30 days for production
+  retention: 720h
+
+  # Storage: S3 for production
+  storage:
+    trace:
+      backend: s3
+      s3:
+        bucket: goldenpath-prod-tempo-traces
+        region: eu-west-2
+        insecure: false
+      wal:
+        path: /var/tempo/wal
+
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+    jaeger:
+      protocols:
+        thrift_http:
+          endpoint: 0.0.0.0:14268
+    zipkin:
+      endpoint: 0.0.0.0:9411
+
+  # Query limits for production
+  queryLimits:
+    maxBytesPerTagValues: 5000000
+
+service:
+  type: ClusterIP
+
+# Ingester WAL persistence
+persistence:
+  enabled: true
+  size: 20Gi
+  storageClassName: gp3
+
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+
+# IRSA configuration
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/goldenpath-prod-tempo
+
+# Pod disruption budget for HA
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1

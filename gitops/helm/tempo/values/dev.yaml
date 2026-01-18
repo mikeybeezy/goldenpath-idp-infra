@@ -1,0 +1,79 @@
+# Tempo Helm Values - Dev Environment
+# Chart: grafana/tempo v1.10.x
+# Managed by scripts/standardize_metadata.py
+governance:
+  id: HELM_TEMPO_DEV
+  owner: platform-team
+  risk_profile: low
+  reliability: bronze
+
+# -----------------------------------------------------------------------------
+# Deployment Mode: SingleBinary (simple, low resource for dev)
+# -----------------------------------------------------------------------------
+tempo:
+  image:
+    repository: grafana/tempo
+    tag: 2.3.1
+    pullPolicy: IfNotPresent
+
+  # Resources for dev environment
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  # Retention: 3 days for dev
+  retention: 72h
+
+  # Storage: local filesystem for dev
+  storage:
+    trace:
+      backend: local
+      local:
+        path: /var/tempo/traces
+      wal:
+        path: /var/tempo/wal
+
+  # Receivers configuration
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+    jaeger:
+      protocols:
+        thrift_http:
+          endpoint: 0.0.0.0:14268
+    zipkin:
+      endpoint: 0.0.0.0:9411
+
+  # Query configuration
+  querier:
+    max_concurrent_queries: 5
+
+  # Compactor configuration
+  compactor:
+    compaction:
+      block_retention: 72h
+
+# Service configuration
+service:
+  type: ClusterIP
+
+# Persistence for dev (small PVC)
+persistence:
+  enabled: true
+  size: 5Gi
+  storageClassName: ""  # Use default storage class
+
+# ServiceMonitor for Prometheus scraping
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack

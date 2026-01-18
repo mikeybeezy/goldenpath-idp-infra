@@ -23,7 +23,7 @@
         "ecr:DescribeImages",
         "ecr:ListImages"
       ],
-      "Resource": "arn:aws:ecr:us-east-1:ACCOUNT_ID:repository/*"
+      "Resource": "arn:aws:ecr:*:ACCOUNT_ID:repository/*"
     }
   ]
 }

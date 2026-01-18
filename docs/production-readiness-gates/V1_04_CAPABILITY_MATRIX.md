@@ -24,7 +24,7 @@ breaking_change: false
 
 # Capability Matrix – Golden Path IDP Infra
 
-Last updated: 2026-01-03
+Last updated: 2026-01-18
 
 | Capability | Description | Modules / Components | Status | Notes |
 | ------ | ------- | ------------- | ----- | ---- |
@@ -38,16 +38,18 @@ Last updated: 2026-01-03
 | **Documentation & Onboarding** | Root README, module-level READMEs, capability overview. | `README.md`, `modules/*/README.md`, `CAPABILITY_MATRIX.md` |  In progress | VPC module doc complete; other modules pending the same format. |
 | **Teardown determinism (LB/ENI cleanup)** | Bounded retry with cluster-scoped LB cleanup and ENI wait to unblock subnet deletes. | teardown scripts + runbooks | ✅ In place | Eventual consistency remains; break-glass defaults are scoped by cluster tag. |
 | **Observability baseline (RED + Golden Signals)** | Metrics-first RED signals with derived Golden Signals dashboards and minimal alerts. | Prometheus/Grafana + docs/50-observability/05_OBSERVABILITY_DECISIONS.md |  In progress | Traces deferred to V1.1; labels and dashboards are the V1 focus. |
+| **Distributed Tracing (Tempo)** | OpenTelemetry trace ingestion and visualization via Grafana Tempo. | `gitops/helm/tempo/`, `gitops/argocd/apps/<env>/tempo.yaml` | ✅ Configured | V1.1 capability: Helm values, Argo apps, Grafana datasource ready. ADR-0055. |
 | **Observability/SLO governance** | Ownership split: platform team owns CI/infra SLOs; app teams own service SLOs. | docs/00-foundations/37_V1_SCOPE_AND_TIMELINE.md |  In progress | Ownership model needs formal doc + review cadence. |
 | **Stateless app template** | Standard stateless workload deployable via app template. | `apps/fast-api-app-template` | ⚠️ Dev-only | Template exists; multi-env deploy not validated. Updated 2026-01-03. |
 | **Stateful app template** | Standard stateful workload with PVC + storage contract. | (TBD) |  Missing | No stateful template defined yet. Updated 2026-01-03. |
 | **App observability (OOTB)** | App dashboards + ServiceMonitor shipped by default template. | `apps/fast-api-app-template` + kube-prometheus-stack | ⚠️ Partial | Depends on env EKS + observability stack. Updated 2026-01-03. |
-| **Platform observability (OOTB)** | Prometheus/Grafana/Loki/Fluent Bit baseline per env. | `gitops/argocd/apps/<env>` | ⚠️ Partial | Wired per env but not validated beyond dev. Updated 2026-01-03. |
+| **Platform observability (OOTB)** | Prometheus/Grafana/Loki/Tempo/Fluent Bit baseline per env. | `gitops/argocd/apps/<env>` | ⚠️ Partial | Wired per env but not validated beyond dev. Tempo added 2026-01-18. |
 | **Change management / release workflow** | PR → plan → apply → bootstrap → add teardown; approvals and gates codified. | workflows + docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md |  In progress | Flow documented; enforcement still evolving. |
 | **Incident response expectations** | Clear lead, comms channel, postmortem cadence, and response steps. | runbooks |  In progress | Requires defined owner and SLA targets. |
 | **Secret rotation cadence** | Rotation schedule + trigger ownership for AWS Secrets Manager/SSM. | AWS Secrets Manager / SSM (TBD) |  In progress | Define cadence and audit evidence. |
 | **Compliance / audit logging** | Decisions and changes tracked with ADRs + changelog; retention expectations defined. | docs/adrs, docs/changelog |  In progress | Formalize retention + review cadence. |
-| **Poly-repo CI/CD** | Connect pipelines from external app repos to the IDP. | (TBD) | 🚫 Missing | New V1 Requirement. |
+| **Poly-repo CI/CD** | Connect pipelines from external app repos to the IDP. | `hello-goldenpath-idp/.github/workflows/build-push.yml` | ⚠️ In Progress | hello-goldenpath-idp repo created with ECR push workflow. Updated 2026-01-18. |
+| **CI Build Tracing** | OpenTelemetry traces for CI pipelines via otel-cli → Tempo. | otel-cli + gitops/helm/tempo | ⚠️ Planned | ADR-0055: otel-cli chosen over GH Actions native. Updated 2026-01-18. |
 | **Multi-env Flow** | Verified promotion: Dev → Staging → Prod. | (TBD) | 🚫 Missing | New V1 Requirement. |
 | **Prov: Stateless Apps** | Deploy standard web/worker services via PR/Backstage. | (TBD) | 🚫 Missing | New V1 Requirement. |
 | **Prov: Stateful Apps** | Deploy apps with Database/PVC via PR/Backstage. | (TBD) | 🚫 Missing | New V1 Requirement. |
