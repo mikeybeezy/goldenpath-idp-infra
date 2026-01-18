@@ -1,4 +1,22 @@
 #!/bin/bash
+# ---
+# id: SCRIPT-0051
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 2
+# dry_run:
+#   supported: false
+# test:
+#   runner: manual
+#   command: ./scripts/load-image-to-kind.sh hello-goldenpath-idp:latest ha-cluster
+#   evidence: manual
+# risk_profile:
+#   production_impact: low
+#   security_risk: low
+#   coupling_risk: low
+# ---
+#
 # load-image-to-kind.sh
 # Pulls an image from ECR and loads it directly into Kind cluster
 # This bypasses the need for ECR pull secrets in the cluster
@@ -13,7 +31,7 @@ set -euo pipefail
 IMAGE="${1:-hello-goldenpath-idp:latest}"
 KIND_CLUSTER="${2:-kind}"
 AWS_REGION="${AWS_REGION:-eu-west-2}"
-AWS_ACCOUNT="${AWS_ACCOUNT:-339712971032}"
+AWS_ACCOUNT="${AWS_ACCOUNT:-593517239005}"
 ECR_REGISTRY="${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com"
 FULL_IMAGE="${ECR_REGISTRY}/${IMAGE}"
 

@@ -1,4 +1,22 @@
 #!/bin/bash
+# ---
+# id: SCRIPT-0050
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 2
+# dry_run:
+#   supported: false
+# test:
+#   runner: manual
+#   command: ./scripts/refresh-ecr-secret.sh apps
+#   evidence: manual
+# risk_profile:
+#   production_impact: low
+#   security_risk: low
+#   coupling_risk: low
+# ---
+#
 # refresh-ecr-secret.sh
 # Refreshes the ECR pull secret for local Kind cluster
 # ECR tokens expire after 12 hours, so run this before deploying
