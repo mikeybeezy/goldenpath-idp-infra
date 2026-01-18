@@ -1,0 +1,110 @@
+# Argo CD Image Updater - Dev Environment
+# Chart: argoproj/argocd-image-updater
+# Purpose: Auto-update image tags from ECR to Git
+
+# -----------------------------------------------------------------------------
+# Core Configuration
+# -----------------------------------------------------------------------------
+image:
+  repository: quay.io/argoprojlabs/argocd-image-updater
+  tag: v0.12.2
+  pullPolicy: IfNotPresent
+
+# Number of replicas (single instance sufficient for dev)
+replicaCount: 1
+
+# -----------------------------------------------------------------------------
+# Argo CD Integration
+# -----------------------------------------------------------------------------
+config:
+  # Argo CD server address (in-cluster)
+  argocd:
+    grpcWeb: true
+    serverAddress: argocd-server.argocd.svc.cluster.local
+    insecure: true  # TLS terminated at ingress
+    plaintext: false
+
+  # Logging
+  logLevel: info
+
+  # Git write-back configuration
+  # Image Updater will commit tag changes back to Git
+  gitCommitUser: argocd-image-updater
+  gitCommitMail: image-updater@goldenpath.dev
+  gitCommitSigningKey: ""
+  gitCommitSignOff: true
+  gitCommitMessageTemplate: |
+    build: update image {{ .AppName }} to {{ .NewImage }}
+
+    Image: {{ .Image.Name }}
+    Old tag: {{ .OldTag }}
+    New tag: {{ .NewTag }}
+
+    Signed-off-by: argocd-image-updater <image-updater@goldenpath.dev>
+
+# -----------------------------------------------------------------------------
+# Registry Configuration
+# -----------------------------------------------------------------------------
+config:
+  registries:
+    - name: ECR
+      api_url: https://339712971032.dkr.ecr.eu-west-2.amazonaws.com
+      prefix: 339712971032.dkr.ecr.eu-west-2.amazonaws.com
+      ping: yes
+      insecure: no
+      credentials: pullsecret:argocd/ecr-credentials
+      # Or use IRSA:
+      # credentials: ext:/scripts/ecr-login.sh
+
+# -----------------------------------------------------------------------------
+# Service Account
+# -----------------------------------------------------------------------------
+serviceAccount:
+  create: true
+  name: argocd-image-updater
+  annotations:
+    # Uncomment for IRSA (EKS)
+    # eks.amazonaws.com/role-arn: arn:aws:iam::339712971032:role/argocd-image-updater-dev
+
+# -----------------------------------------------------------------------------
+# RBAC
+# -----------------------------------------------------------------------------
+rbac:
+  enabled: true
+
+# -----------------------------------------------------------------------------
+# Metrics
+# -----------------------------------------------------------------------------
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: argocd
+    labels:
+      release: kube-prometheus-stack
+
+# -----------------------------------------------------------------------------
+# Resources (minimal for dev)
+# -----------------------------------------------------------------------------
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+# -----------------------------------------------------------------------------
+# Pod Configuration
+# -----------------------------------------------------------------------------
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL

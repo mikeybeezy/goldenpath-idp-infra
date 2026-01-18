@@ -1,0 +1,37 @@
+# Argo CD Image Updater - Production Environment
+# Updates image tags in Git (apps use MANUAL sync)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-argocd-image-updater
+  namespace: argocd
+  annotations:
+    goldenpath.idp/id: APPS_PROD_ARGOCD_IMAGE_UPDATER
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: medium
+  labels:
+    app.kubernetes.io/part-of: goldenpath-idp
+    environment: prod
+spec:
+  project: default
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://argoproj.github.io/argo-helm
+      chart: argocd-image-updater
+      targetRevision: 0.9.1
+      helm:
+        valueFiles:
+          - $values/gitops/helm/argocd-image-updater/values/prod.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: main
+      ref: values
+  syncPolicy:
+    # Image Updater itself can auto-sync
+    # Application images require manual sync
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

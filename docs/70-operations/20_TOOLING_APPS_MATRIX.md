@@ -36,7 +36,7 @@ breaking_change: false
 
 This living document captures the configuration requirements, dependencies, and operational status of all platform tooling applications deployed via Argo CD.
 
-**Last Updated**: 2026-01-16
+**Last Updated**: 2026-01-18
 **Maintainer**: platform-team
 
 ---
@@ -109,7 +109,9 @@ For wildcard DNS, configure `*.dev.goldenpathidp.io`, `*.staging.goldenpathidp.i
 |[backstage](#backstage)|backstage|backstage/backstage|2.6.3|1.29.0|Configured|P2|
 |[kube-prometheus-stack](#kube-prometheus-stack)|monitoring|prometheus-community/kube-prometheus-stack|45.7.1|v2.47.2|Configured|P3|
 |[loki](#loki)|monitoring|grafana/loki-stack|2.9.11|2.9.4|Configured|P3|
+|[tempo](#tempo)|monitoring|grafana/tempo|1.10.x|2.3.1|Configured|P3|
 |[fluent-bit](#fluent-bit)|monitoring|fluent/fluent-bit|0.47.0|3.0.3|Configured|P3|
+|[argocd-image-updater](#argocd-image-updater)|argocd|argoproj/argocd-image-updater|0.9.1|v0.12.2|Configured|P1|
 |[localstack](#localstack)|local-infra|localstack/localstack|3.0.0|3.0.0|Standard (Ephem)|P0|
 |[minio](#minio)|local-infra|minio/minio|5.0.0|RELEASE.2024-01|Standard (Ephem)|P0|
 |[postgresql](#postgresql)|local-infra|bitnami/postgresql|13.2.24|15.6.0|Standard (Ephem)|P0|
@@ -156,13 +158,20 @@ For wildcard DNS, configure `*.dev.goldenpathidp.io`, `*.staging.goldenpathidp.i
                    │ (Developer Portal)│
                    └───────────────────┘
 
-     ┌─────────────────────────────────────────────┐
-     │              OBSERVABILITY STACK            │
-     │  ┌───────────┐  ┌──────┐  ┌──────────────┐  │
-     │  │ fluent-bit│─►│ loki │◄─│ prometheus   │  │
-     │  │  (logs)   │  │      │  │  + grafana   │  │
-     │  └───────────┘  └──────┘  └──────────────┘  │
-     └─────────────────────────────────────────────┘
+     ┌───────────────────────────────────────────────────────────┐
+     │                   OBSERVABILITY STACK                     │
+     │  ┌───────────┐  ┌──────┐  ┌───────┐  ┌──────────────┐     │
+     │  │ fluent-bit│─►│ loki │  │ tempo │◄─│ prometheus   │     │
+     │  │  (logs)   │  │      │  │(traces)│  │  + grafana   │     │
+     │  └───────────┘  └──┬───┘  └───┬───┘  └──────┬───────┘     │
+     │                    │          │             │              │
+     │                    └──────────┴─────────────┘              │
+     │                           ▼                                │
+     │                    ┌────────────┐                          │
+     │                    │  Grafana   │                          │
+     │                    │ (unified)  │                          │
+     │                    └────────────┘                          │
+     └───────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -559,6 +568,20 @@ grafana:
       type: loki
       access: proxy
       url: http://loki-gateway.monitoring.svc:3100
+    - name: Tempo
+      type: tempo
+      access: proxy
+      url: http://tempo.monitoring.svc:3100
+      jsonData:
+        tracesToLogsV2:
+          datasourceUid: loki
+          tags: ['job', 'namespace', 'pod']
+        serviceMap:
+          datasourceUid: prometheus
+        nodeGraph:
+          enabled: true
+        lokiSearch:
+          datasourceUid: loki
 ```
 
 #### Optional Enhancements
@@ -604,6 +627,90 @@ grafana:
 
 - **Upstream**: Storage (local or S3)
 - **Downstream**: Grafana (visualization), Fluent-bit (log source)
+
+---
+
+### tempo
+
+**Purpose**: Distributed tracing backend for OpenTelemetry traces
+
+|Attribute|Value|
+|---------|-----|
+|Chart|grafana/tempo|
+|Chart Version|1.10.x|
+|Image Tag|2.3.1|
+|Namespace|monitoring|
+|Argo App|`gitops/argocd/apps/dev/tempo.yaml`|
+|Values File|`gitops/helm/tempo/values/dev.yaml`|
+|Risk Level|Low|
+|ADR|ADR-0055|
+
+#### tempo Required Configuration
+
+|Config Item|Description|Source|Status|
+|-----------|-----------|------|------|
+|deploymentMode|SingleBinary (dev) or Distributed (prod)|Values file|Configured|
+|storage.trace.backend|local (dev) or s3 (staging/prod)|Values file|Configured|
+|retention|Trace retention period|Values file|Configured|
+|receivers.otlp|OTLP gRPC and HTTP endpoints|Values file|Configured|
+
+#### Tempo Configuration by Environment
+
+|Environment|Mode|Storage|Retention|
+|-----------|------|-------|---------|
+|dev|SingleBinary|local|3 days|
+|test|SingleBinary|local|7 days|
+|staging|SingleBinary|S3|14 days|
+|prod|Distributed|S3|30 days|
+
+#### Ingestion Endpoints
+
+|Protocol|Port|Use Case|
+|--------|------|--------|
+|OTLP gRPC|4317|High-volume apps, otel-cli|
+|OTLP HTTP|4318|Simple HTTP push|
+|Jaeger|14268|Legacy Jaeger clients|
+|Zipkin|9411|Legacy Zipkin clients|
+
+#### Minimum Values Required (Dev)
+
+```yaml
+tempo:
+  image:
+    repository: grafana/tempo
+    tag: 2.3.1
+
+  retention: 72h
+
+  storage:
+    trace:
+      backend: local
+      local:
+        path: /var/tempo/traces
+
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+
+persistence:
+  enabled: true
+  size: 5Gi
+
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+```
+
+#### tempo Dependencies
+
+- **Upstream**: Storage (local or S3), ServiceAccount (IRSA for S3)
+- **Downstream**: Grafana (visualization), otel-cli (CI traces), App OTel SDKs
 
 ---
 
@@ -655,6 +762,66 @@ config:
 
 - **Upstream**: Node filesystem access, Kubernetes API
 - **Downstream**: Loki
+
+---
+
+### argocd-image-updater
+
+**Purpose**: Automated image tag updates from container registries to GitOps repositories
+
+|Attribute|Value|
+|---------|-----|
+|Chart|argoproj/argocd-image-updater|
+|Chart Version|0.9.1|
+|Image Tag|v0.12.2|
+|Namespace|argocd|
+|Argo App|`gitops/argocd/apps/dev/argocd-image-updater.yaml`|
+|Values File|`gitops/helm/argocd-image-updater/values/dev.yaml`|
+|Risk Level|Medium|
+|ADR|ADR-0172|
+
+#### argocd-image-updater Required Configuration
+
+|Config Item|Description|Source|Status|
+|-----------|-----------|------|------|
+|config.argocd.serverAddress|Argo CD server address|Values file|Configured|
+|config.registries|ECR registry configuration|Values file|Configured|
+|config.gitCommitUser|Git commit author|Values file|Configured|
+|serviceAccount|IRSA for ECR access|Values file|Configured|
+
+#### Image Update Strategies
+
+|Strategy|Description|Use Case|
+|--------|-----------|--------|
+|`latest`|Always use most recent tag|dev/test|
+|`semver`|Follow semantic versioning|staging/prod|
+|`digest`|Pin exact image digest|security-critical|
+
+#### Application Annotations Required
+
+```yaml
+# For apps managed by Image Updater
+metadata:
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: app=<ecr-repo>
+    argocd-image-updater.argoproj.io/app.update-strategy: latest|semver
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
+```
+
+#### Sync Policy by Environment (ADR-0172)
+
+|Environment|App Sync|Image Strategy|Rationale|
+|-----------|--------|--------------|---------|
+|dev|automated|latest|Fast iteration|
+|test|automated|latest|Integration testing|
+|staging|automated|semver|Pre-prod validation|
+|prod|**manual**|semver|Explicit approval required|
+
+#### argocd-image-updater Dependencies
+
+- **Upstream**: Argo CD, ECR (registry access), Git (write-back)
+- **Downstream**: All application deployments using image automation
 
 ---
 
@@ -758,6 +925,10 @@ goldenpath/{env}/{app}/{secret-name}
 |2026-01-15|platform-team|Bumped Keycloak (25.2.0) and Backstage (2.6.3) chart versions|
 |2026-01-16|platform-team|Added Tooling Access URLs section with Kong Ingress configuration|
 |2026-01-16|platform-team|Configured ingress for Backstage, ArgoCD, and Grafana across all environments|
+|2026-01-18|platform-team|Added Tempo distributed tracing backend (ADR-0055)|
+|2026-01-18|platform-team|Added Tempo datasource to kube-prometheus-stack Grafana config|
+|2026-01-18|platform-team|Updated observability stack dependency graph to include Tempo|
+|2026-01-18|platform-team|Added Argo CD Image Updater for automated image tag updates (ADR-0172)|
 
 ---
 
@@ -765,5 +936,8 @@ goldenpath/{env}/{app}/{secret-name}
 
 - [ADR-0005: Keycloak as Identity Provider](../adrs/ADR-0005-app-keycloak-as-identity-provider-for-human-sso.md)
 - [ADR-0006: Vault for Secret Management](../adrs/ADR-0006-app-hashicorp-vault-for-secret-management.md)
+- [ADR-0055: Tempo Tracing Backend](../adrs/ADR-0055-platform-tempo-tracing-backend.md)
+- [ADR-0171: Application Packaging Strategy](../adrs/ADR-0171-platform-application-packaging-strategy.md)
+- [ADR-0172: CD Promotion Strategy](../adrs/ADR-0172-cd-promotion-strategy-with-approval-gates.md)
 - [Bootstrap Scripts](../../bootstrap/10_bootstrap/)
 - [Argo CD Apps](../../gitops/argocd/apps/)

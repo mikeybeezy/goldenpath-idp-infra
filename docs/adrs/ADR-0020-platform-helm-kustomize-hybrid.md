@@ -2,10 +2,10 @@
 id: ADR-0020-platform-helm-kustomize-hybrid
 title: 'ADR-0020: Hybrid GitOps approach with Helm and Kustomize'
 type: adr
-status: active
+status: superseded
 domain: platform-core
 owner: platform-team
-lifecycle: active
+lifecycle: superseded
 exempt: false
 reliability:
   rollback_strategy: git-revert
@@ -15,9 +15,11 @@ schema_version: 1
 relates_to:
   - 01_adr_index
   - ADR-0020-platform-helm-kustomize-hybrid
+  - ADR-0171-platform-application-packaging-strategy
   - audit-20260103
 supersedes: []
-superseded_by: []
+superseded_by:
+  - ADR-0171-platform-application-packaging-strategy
 tags: []
 inheritance: {}
 value_quantification:
@@ -31,12 +33,17 @@ breaking_change: false
 
 # ADR-0020: Hybrid GitOps approach with Helm and Kustomize
 
-- **Status:** Proposed
+- **Status:** Superseded
+- **Superseded by:** [ADR-0171](ADR-0171-platform-application-packaging-strategy.md)
 - **Date:** 2025-12-27
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Architecture | Operations
 - **Related:** docs/30-architecture/09_ARCHITECTURE.md, docs/20-contracts/20_CI_ENVIRONMENT_SEPARATION.md
+
+> **Note:** This ADR has been superseded by ADR-0171, which provides explicit
+> decision criteria for when to use Helm vs Kustomize. The core decision
+> (hybrid approach) remains valid; ADR-0171 adds actionable guidance.
 
 ---
 

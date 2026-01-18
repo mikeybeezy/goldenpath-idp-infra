@@ -1,0 +1,38 @@
+---
+id: HELM_ARGOCD_IMAGE_UPDATER_METADATA
+title: Argo CD Image Updater Values Metadata
+type: documentation
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: medium
+  security_risk: low
+  coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
+schema_version: 1
+relates_to:
+  - ADR-0172-cd-promotion-strategy-with-approval-gates
+supersedes: []
+superseded_by: []
+tags:
+  - cd
+  - gitops
+  - image-updater
+inheritance: {}
+value_quantification:
+  vq_class: HV/HQ
+  impact_tier: high
+  potential_savings_hours: 8.0
+category: platform
+status: active
+governance:
+  id: HELM_ARGOCD_IMAGE_UPDATER_METADATA
+  owner: platform-team
+  risk_profile: medium
+  reliability: bronze
