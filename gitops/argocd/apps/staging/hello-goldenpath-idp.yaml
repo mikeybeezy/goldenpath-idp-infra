@@ -1,0 +1,37 @@
+# hello-goldenpath-idp - Staging Environment
+# Auto-sync enabled, Image Updater with semver strategy
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: staging-hello-goldenpath-idp
+  namespace: argocd
+  annotations:
+    goldenpath.idp/id: APPS_STAGING_HELLO_GOLDENPATH_IDP
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: low
+    argocd.argoproj.io/sync-wave: "10"
+    # Image Updater annotations - semver strategy for staging
+    argocd-image-updater.argoproj.io/image-list: app=593517239005.dkr.ecr.eu-west-2.amazonaws.com/hello-goldenpath-idp
+    argocd-image-updater.argoproj.io/app.update-strategy: semver
+    argocd-image-updater.argoproj.io/app.allow-tags: regexp:^v\d+\.\d+\.\d+$
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
+  labels:
+    app.kubernetes.io/part-of: goldenpath-idp
+    environment: staging
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mikeybeezy/hello-goldenpath-idp.git
+    targetRevision: main
+    path: deploy/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apps
+  syncPolicy:
+    # Staging: automated sync per ADR-0172
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

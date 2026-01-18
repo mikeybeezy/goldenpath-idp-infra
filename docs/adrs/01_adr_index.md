@@ -369,6 +369,8 @@ relates_to:
   - ADR-0168
   - ADR-0169
   - ADR-0170
+  - ADR-0171
+  - ADR-0172
 <!-- ADR_RELATE_END -->
 ---
 
@@ -407,7 +409,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0017](ADR-0017-platform-policy-as-code.md) | Platform | Policy as code for infrastructure and application changes | Active | 2026-01-0? | As the platform scales, we need consistent guardrails that prevent unsafe infrastructure and application changes without relying solely on manual review. With Backstage as our first client, we must... |
 | [ADR-0018](ADR-0018-platform-container-registry-standard.md) | Platform | Container registry standard — ECR default, GHCR supported, Docker Hub discouraged | Active | 2026-01-0? | GoldenPath V1 targets an AWS-first, EKS-based platform with: |
 | [ADR-0019](ADR-0019-platform-pre-commit-hooks.md) | Platform | Pre-commit hooks as local quality gates | Active | 2026-01-0? | We want fast, consistent feedback for contributors before changes reach CI. Local pre-commit hooks can prevent common formatting and lint issues while keeping the CI pipeline authoritative. The pla... |
-| [ADR-0020](ADR-0020-platform-helm-kustomize-hybrid.md) | Platform | Hybrid GitOps approach with Helm and Kustomize | Active | 2026-01-0? | The repo already includes Helm-based GitOps and Kustomize overlays. We want a consistent, scalable approach that keeps packaging benefits for third-party tools while making environment-specific cha... |
+| [ADR-0020](ADR-0020-platform-helm-kustomize-hybrid.md) | Platform | Hybrid GitOps approach with Helm and Kustomize | Superseded | 2026-01-0? | The repo already includes Helm-based GitOps and Kustomize overlays. We want a consistent, scalable approach that keeps packaging benefits for third-party tools while making environment-specific cha... |
 | [ADR-0021](ADR-0021-platform-pr-terraform-plan.md) | Platform | PR Terraform plan with automated comments | Active | 2026-01-0? | We want Terraform plan feedback on pull requests without introducing Atlantis or requiring manual copy/paste. The goal is to surface infrastructure changes early while keeping apply manual and cont... |
 | [ADR-0022](ADR-0022-platform-post-apply-health-checks.md) | Platform | Post-apply health checks for platform readiness | Active | 2026-01-0? | Terraform apply and bootstrap do not guarantee that the platform is usable. We need a deterministic, binary signal that the environment is healthy after apply so that promotions and demos are safe ... |
 | [ADR-0023](ADR-0023-platform-ci-image-scanning.md) | Platform | CI image scanning standard | Active | 2026-01-0? | We need a registry-agnostic image vulnerability gate in CI. The platform should provide a default scanner that works with ECR, GHCR, or other registries, while keeping future options open. |
@@ -548,6 +550,8 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0168](ADR-0168-eks-request-parser-and-mode-aware-workflows.md) | Platform | EKS Request Parser and Mode-Aware Workflows | Proposed | 2026-01-17 | EKS provisioning needed the same contract-driven, parser-first path used for RDS and Secrets, but EKS requests were either implicit (Terraform edits) or blocked by the scope gate. This created drif... |
 | [ADR-0169](ADR-0169-secret-request-system-generated-ids.md) | Platform | System-Generated SecretRequest IDs with CI Immutability Guard | Proposed | 2026-01-17 | SecretRequest identifiers are used for governance, auditability, and traceability across request files, generated tfvars, and Terraform targets. When IDs are manually entered, they are prone to col... |
 | [ADR-0170](ADR-0170-s3-self-service-request-system.md) | Platform | S3 Self-Service Request System | Proposed | 2026-01-17 | S3 buckets are the third pillar of the core infrastructure trio (RDS, ECR, S3). Currently, bucket provisioning requires direct Terraform access or manual requests, creating inconsistent configurati... |
+| [ADR-0171](ADR-0171-platform-application-packaging-strategy.md) | Platform | Application Packaging Strategy - Helm vs Kustomize | Active | 2026-01-0? | ADR-0020 established that we use a hybrid approach (Helm + Kustomize) but did not provide clear guidance on **when to choose each tool**. This led to inconsistent decisions and confusion about whet... |
+| [ADR-0172](ADR-0172-cd-promotion-strategy-with-approval-gates.md) | Platform | CD Promotion Strategy with Approval Gates | Active | 2026-01-0? | With CI pipelines building and pushing images to ECR, we need a clear strategy for how those images get promoted through environments. Key requirements: |
 <!-- ADR_TABLE_END -->
 
 ---

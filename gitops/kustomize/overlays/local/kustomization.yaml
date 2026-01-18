@@ -9,3 +9,4 @@ namespace: default
 resources:
   - namespaces.yaml
   - secrets.yaml
+  - ecr-pull-secret.yaml

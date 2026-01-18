@@ -1,0 +1,29 @@
+# Managed by scripts/standardize_metadata.py
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-goldenpath-idp
+  namespace: argocd
+  annotations:
+    goldenpath.idp/id: APPS_LOCAL_HELLO
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: low
+    argocd.argoproj.io/sync-wave: "10"  # Deploy after infra
+  labels:
+    app.kubernetes.io/part-of: goldenpath-idp
+    environment: local
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mikeybeezy/hello-goldenpath-idp.git
+    targetRevision: main
+    path: deploy/overlays/local
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apps
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

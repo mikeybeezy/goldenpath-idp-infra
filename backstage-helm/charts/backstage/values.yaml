@@ -68,6 +68,10 @@ additionalConfigMapMounts: []
 github:
   accessToken: ""
 
+# External Secrets configuration (for AWS Secrets Manager integration)
+externalSecret:
+  enabled: false
+
 postgres:
   port: "5432"
   host: backstage-rw

@@ -7,13 +7,16 @@ metadata:
     argocd.argoproj.io/sync-wave: "5"  # Deploy after Keycloak
 spec:
   project: default
-  source:
-    repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-    targetRevision: feature/tooling-apps-config
-    path: backstage-helm/charts/backstage
-    helm:
-      valueFiles:
-        - ../../../gitops/helm/backstage/values/local.yaml
+  sources:
+    - repoURL: https://backstage.github.io/charts
+      chart: backstage
+      targetRevision: 2.6.3
+      helm:
+        valueFiles:
+          - $values/gitops/helm/backstage/values/local.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: development
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: backstage

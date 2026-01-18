@@ -16,5 +16,8 @@ spec:
     - ./docs/governance-index.yaml
     - ./templates/ecr-request.yaml
     - ./templates/rds-request.yaml
+    - ./templates/s3-request.yaml
+    - ./templates/eks-request.yaml
+    - ./templates/secret-request.yaml
     - ./templates/app-template/template.yaml
     - ./templates/ci-apply-dev/template.yaml

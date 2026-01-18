@@ -1,0 +1,71 @@
+# Tempo Helm Values - Test Environment
+# Chart: grafana/tempo v1.10.x
+# Managed by scripts/standardize_metadata.py
+governance:
+  id: HELM_TEMPO_TEST
+  owner: platform-team
+  risk_profile: low
+  reliability: bronze
+
+# -----------------------------------------------------------------------------
+# Deployment Mode: SingleBinary
+# -----------------------------------------------------------------------------
+tempo:
+  image:
+    repository: grafana/tempo
+    tag: 2.3.1
+    pullPolicy: IfNotPresent
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  # Retention: 7 days for test
+  retention: 168h
+
+  storage:
+    trace:
+      backend: local
+      local:
+        path: /var/tempo/traces
+      wal:
+        path: /var/tempo/wal
+
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+    jaeger:
+      protocols:
+        thrift_http:
+          endpoint: 0.0.0.0:14268
+    zipkin:
+      endpoint: 0.0.0.0:9411
+
+  querier:
+    max_concurrent_queries: 10
+
+  compactor:
+    compaction:
+      block_retention: 168h
+
+service:
+  type: ClusterIP
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClassName: ""
+
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack

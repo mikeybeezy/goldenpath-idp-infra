@@ -1,0 +1,103 @@
+# Argo CD Image Updater - Staging Environment
+# Chart: argoproj/argocd-image-updater
+# Purpose: Auto-update image tags from ECR to Git (pre-prod validation)
+
+# -----------------------------------------------------------------------------
+# Core Configuration
+# -----------------------------------------------------------------------------
+image:
+  repository: quay.io/argoprojlabs/argocd-image-updater
+  tag: v0.12.2
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+# -----------------------------------------------------------------------------
+# Argo CD Integration
+# -----------------------------------------------------------------------------
+config:
+  argocd:
+    grpcWeb: true
+    serverAddress: argocd-server.argocd.svc.cluster.local
+    insecure: true
+    plaintext: false
+
+  logLevel: info
+
+  gitCommitUser: argocd-image-updater
+  gitCommitMail: image-updater@goldenpath.dev
+  gitCommitSignOff: true
+  gitCommitMessageTemplate: |
+    build: update image {{ .AppName }} to {{ .NewImage }}
+
+    Environment: staging
+    Image: {{ .Image.Name }}
+    Old tag: {{ .OldTag }}
+    New tag: {{ .NewTag }}
+
+    This image will be validated before production deployment.
+
+    Signed-off-by: argocd-image-updater <image-updater@goldenpath.dev>
+
+# -----------------------------------------------------------------------------
+# Registry Configuration
+# -----------------------------------------------------------------------------
+  registries:
+    - name: ECR
+      api_url: https://593517239005.dkr.ecr.eu-west-2.amazonaws.com
+      prefix: 593517239005.dkr.ecr.eu-west-2.amazonaws.com
+      ping: yes
+      insecure: no
+      credentials: pullsecret:argocd/ecr-credentials
+
+# -----------------------------------------------------------------------------
+# Service Account
+# -----------------------------------------------------------------------------
+serviceAccount:
+  create: true
+  name: argocd-image-updater
+  annotations:
+    # eks.amazonaws.com/role-arn: arn:aws:iam::593517239005:role/argocd-image-updater-staging
+
+# -----------------------------------------------------------------------------
+# RBAC
+# -----------------------------------------------------------------------------
+rbac:
+  enabled: true
+
+# -----------------------------------------------------------------------------
+# Metrics
+# -----------------------------------------------------------------------------
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: argocd
+    labels:
+      release: kube-prometheus-stack
+
+# -----------------------------------------------------------------------------
+# Resources (slightly higher for staging load)
+# -----------------------------------------------------------------------------
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 300m
+    memory: 384Mi
+
+# -----------------------------------------------------------------------------
+# Pod Configuration
+# -----------------------------------------------------------------------------
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL

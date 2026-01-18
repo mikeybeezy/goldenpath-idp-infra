@@ -2060,3 +2060,120 @@ Goal: Close governance loop for S3/EKS/RDS (catalog + audit outputs) and documen
 - `docs/85-how-it-works/self-service/RDS_REQUEST_FLOW.md`
 - `docs/70-operations/runbooks/RB-0032-rds-user-provision.md`
 - `docs/changelog/entries/CL-0147-governance-registry-sync-rds-eks-s3.md`
+
+---
+
+## 2026-01-18T17:00:00Z — Local Kind Cluster: Argo CD + hello-goldenpath-idp Deployment
+
+Owner: platform-team
+Agent: Claude Opus 4.5 (claude-opus-4-5-20251101)
+Goal: Install Argo CD on local Kind cluster, deploy hello-goldenpath-idp via GitOps.
+
+### In-Session Log (append as you go)
+- 10:00Z — Session started, Backstage fixes from earlier session
+- 12:00Z — Docker Desktop unresponsive (QEMU VM running 8 days), restarted
+- 13:00Z — Argo CD installed on Kind cluster (7 pods healthy)
+- 13:30Z — Created App-of-Apps bootstrap pattern
+- 14:00Z — Fixed ECR account ID (339712971032 → 593517239005) across codebase
+- 15:00Z — hello-goldenpath-idp deployed and health check verified
+- 16:00Z — Created ADR-0171 (Packaging Strategy) and ADR-0172 (CD Promotion)
+- 17:00Z — Updated session capture, session complete
+
+### Checkpoints
+- [x] Install Argo CD on local Kind cluster
+- [x] Create App-of-Apps bootstrap pattern
+- [x] Fix ECR account ID across entire codebase
+- [x] Deploy hello-goldenpath-idp via Argo CD
+- [x] Verify health endpoint responds correctly
+- [x] Update ECR secret refresh script
+- [x] Create ADR-0171 and ADR-0172
+- [x] Update session capture documentation
+
+### Outputs produced
+
+**Argo CD Installation**
+- Namespace: argocd
+- Pods: 7 running (server, repo-server, application-controller, redis, dex-server, notifications-controller, applicationset-controller)
+- Admin password: Run `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
+- Access: `kubectl port-forward svc/argocd-server -n argocd 8080:443`
+
+**App-of-Apps Bootstrap**
+- File: `gitops/argocd/bootstrap/local-app-of-apps.yaml`
+- Deploys all apps from `gitops/argocd/apps/local/`
+- Sync waves: -5 (infra) → 1-3 (core) → 5 (backstage) → 10 (apps)
+
+**ECR Account Fix**
+- Old: 339712971032
+- New: 593517239005
+- Files updated: 30+ across both repos
+
+**ADRs Created**
+- ADR-0171: Platform Application Packaging Strategy
+- ADR-0172: CD Promotion Strategy with Approval Gates
+
+**hello-goldenpath-idp Deployment**
+- Namespace: apps
+- Image: `593517239005.dkr.ecr.eu-west-2.amazonaws.com/hello-goldenpath-idp:latest`
+- Health check: `curl localhost:8081/health` returns `{"status":"healthy"}`
+- Access: `kubectl port-forward svc/hello-goldenpath-idp -n apps 8081:80`
+
+### Architecture Established
+
+```
+GitHub Actions (CI)
+       ↓
+ECR (593517239005.dkr.ecr.eu-west-2.amazonaws.com)
+       ↓
+Argo CD Image Updater (watches tags)
+       ↓
+Argo CD (syncs to cluster)
+       ↓
+Kind Cluster (hello-goldenpath-idp running)
+```
+
+### Files Modified/Created
+
+**Infra repo (goldenpath-idp-infra):**
+- `gitops/argocd/bootstrap/local-app-of-apps.yaml` (new)
+- `gitops/argocd/apps/local/*.yaml` (updated - branch refs, multi-source)
+- `gitops/argocd/apps/*/hello-goldenpath-idp.yaml` (updated - ECR account)
+- `gitops/helm/argocd-image-updater/values/*.yaml` (updated - ECR account)
+- `scripts/refresh-ecr-secret.sh` (updated - ECR account)
+- `docs/adrs/ADR-0171-platform-application-packaging-strategy.md` (new)
+- `docs/adrs/ADR-0172-cd-promotion-strategy-with-approval-gates.md` (new)
+
+**App repo (hello-goldenpath-idp):**
+- `deploy/overlays/*/kustomization.yaml` (all updated - ECR account)
+- `deploy/base/deployment.yaml` (new)
+- `deploy/base/service.yaml` (new)
+- `deploy/base/kustomization.yaml` (new)
+
+### Session Report (end-of-session wrap-up)
+- Summary:
+  - Complete CI/CD pipeline now operational: GitHub Actions → ECR → Argo CD → Kind
+  - App-of-Apps pattern enables single-command deployment of entire local stack
+  - First platform application (hello-goldenpath-idp) running and healthy
+- Decisions:
+  - App-of-Apps for local development (single bootstrap manifest)
+  - Kustomize for internal apps, Helm for distributed tools (per ADR-0171)
+  - Auto-sync for dev/test/staging, manual approval for prod (per ADR-0172)
+- Risks/Follow-ups:
+  - Docker Desktop QEMU VM can become unresponsive after ~8 days
+  - ECR tokens expire every 12 hours — use `./scripts/refresh-ecr-secret.sh`
+  - Image Updater not yet tested end-to-end
+- Validation:
+  - `kubectl get pods -n argocd` — 7 pods Running
+  - `kubectl get pods -n apps` — hello-goldenpath-idp Running
+  - `curl localhost:8081/health` — returns healthy
+
+### Next Session Priorities
+1. Deploy Backstage with CNPG database on local cluster
+2. Install Keycloak for authentication
+3. Configure Kong API Gateway
+4. Test Image Updater end-to-end (push new tag → auto-deploy)
+5. Register hello-goldenpath-idp in Backstage catalog
+
+---
+
+**Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
+**Timestamp**: 2026-01-18T17:00:00Z
