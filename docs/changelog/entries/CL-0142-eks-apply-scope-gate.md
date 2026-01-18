@@ -3,9 +3,10 @@ id: CL-0142
 title: EKS Apply Scope Gate
 type: changelog
 status: active
+owner: platform-team
 date: 2026-01-17
 author: platform-team
-category: ci-workflow
+category: infrastructure
 relates_to:
   - ADR-0028-platform-dev-branch-gate
   - infra-terraform-apply-dev
