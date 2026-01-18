@@ -355,7 +355,7 @@ def generate_tfvars(req: S3Request) -> Dict[str, Any]:
                 "ignore_public_acls": True,
                 "restrict_public_buckets": req.public_access == "blocked",
             },
-            "lifecycle_rules": lifecycle_rules if lifecycle_rules else None,
+            "lifecycle_rules": lifecycle_rules,
             "logging": {
                 "enabled": req.access_logging_enabled,
                 "target_bucket": req.access_logging_target,
