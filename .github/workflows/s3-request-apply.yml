@@ -1,0 +1,225 @@
+# Owner: platform
+# Description: Manual apply for S3 request files (bucket creation).
+# Relates-To: schemas/requests/s3.schema.yaml, ADR-0170
+name: S3 Requests (Apply)
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_file:
+        description: "Path to S3 request file (e.g., docs/20-contracts/s3-requests/dev/S3-0001.yaml)"
+        required: true
+        type: string
+      platform_approved:
+        description: "Platform approval acknowledged"
+        required: true
+        default: false
+        type: boolean
+      allow_non_dev:
+        description: "Allow non-dev apply (staging/prod)"
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: "Dry run (validate and generate only, no Terraform apply)"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+
+      - name: Validate S3 request
+        run: |
+          python3 scripts/s3_request_parser.py \
+            --mode validate \
+            --input-files "${{ inputs.request_file }}"
+
+      - name: Generate tfvars
+        run: |
+          python3 scripts/s3_request_parser.py \
+            --mode generate \
+            --input-files "${{ inputs.request_file }}" \
+            --output-root envs
+
+      - name: Commit generated outputs
+        run: |
+          set -euo pipefail
+          git config user.name "goldenpath-bot"
+          git config user.email "goldenpath-bot@users.noreply.github.com"
+
+          git add envs/**/s3/generated/*.auto.tfvars.json || true
+          git add generated/iam/*-s3-policy.json || true
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(s3): generate tfvars and IAM policy output [skip ci]"
+          git push
+
+      - name: Resolve context
+        id: context
+        run: |
+          set -euo pipefail
+          FILE="${{ inputs.request_file }}"
+          python3 - "$FILE" <<'PY' >> "$GITHUB_OUTPUT"
+          import sys
+          import yaml
+
+          path = sys.argv[1]
+          data = yaml.safe_load(open(path)) or {}
+          spec = data.get("spec", {})
+
+          env = data.get("environment") or data.get("metadata", {}).get("environment")
+          s3_id = data.get("id")
+          bucket_name = spec.get("bucketName")
+          public_access = spec.get("publicAccess", "blocked")
+
+          print(f"ENV={env}")
+          print(f"S3_ID={s3_id}")
+          print(f"BUCKET_NAME={bucket_name}")
+          print(f"PUBLIC_ACCESS={public_access}")
+          PY
+
+      - name: Guard non-dev requests
+        if: steps.context.outputs.ENV != 'dev' && inputs.allow_non_dev != true
+        run: |
+          echo "Non-dev apply requires allow_non_dev=true"
+          exit 1
+
+      - name: Guard platform approval
+        if: inputs.platform_approved != true
+        run: |
+          echo "Platform approval is required. Set platform_approved=true."
+          exit 1
+
+      - name: Guard public access exception
+        if: steps.context.outputs.PUBLIC_ACCESS == 'exception-approved' && inputs.platform_approved != true
+        run: |
+          echo "Public access exception requires explicit platform approval."
+          exit 1
+
+      - name: Resolve backend config
+        if: inputs.dry_run != true
+        id: backend
+        run: |
+          set -euo pipefail
+          ENV="${{ steps.context.outputs.ENV }}"
+          case "$ENV" in
+            dev)
+              echo "BUCKET=goldenpath-idp-dev-bucket" >> "$GITHUB_OUTPUT"
+              echo "LOCK_TABLE=goldenpath-idp-dev-locks" >> "$GITHUB_OUTPUT"
+              echo "ROLE=${{ secrets.TF_AWS_IAM_ROLE_DEV_APPLY }}" >> "$GITHUB_OUTPUT"
+              echo "REGION=ap-southeast-2" >> "$GITHUB_OUTPUT"
+              ;;
+            staging)
+              echo "BUCKET=goldenpath-idp-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "LOCK_TABLE=goldenpath-idp-staging-db" >> "$GITHUB_OUTPUT"
+              echo "ROLE=${{ secrets.TF_AWS_IAM_ROLE_STAGING_APPLY }}" >> "$GITHUB_OUTPUT"
+              echo "REGION=ap-southeast-2" >> "$GITHUB_OUTPUT"
+              ;;
+            prod)
+              echo "BUCKET=goldenpath-idp-prod-bucket" >> "$GITHUB_OUTPUT"
+              echo "LOCK_TABLE=goldenpath-idp-prod-db" >> "$GITHUB_OUTPUT"
+              echo "ROLE=${{ secrets.TF_AWS_IAM_ROLE_PROD_APPLY }}" >> "$GITHUB_OUTPUT"
+              echo "REGION=ap-southeast-2" >> "$GITHUB_OUTPUT"
+              ;;
+            test)
+              echo "BUCKET=goldenpath-test-staging-bucket" >> "$GITHUB_OUTPUT"
+              echo "LOCK_TABLE=goldenpath-idp-test-db" >> "$GITHUB_OUTPUT"
+              echo "ROLE=${{ secrets.TF_AWS_IAM_ROLE_TEST_APPLY }}" >> "$GITHUB_OUTPUT"
+              echo "REGION=ap-southeast-2" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported environment: $ENV"
+              exit 1
+              ;;
+          esac
+
+      - name: Dry run summary
+        if: inputs.dry_run == true
+        run: |
+          echo "## S3 Request Apply (Dry Run)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Request | ${{ inputs.request_file }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| S3 ID | ${{ steps.context.outputs.S3_ID }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Environment | ${{ steps.context.outputs.ENV }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bucket | ${{ steps.context.outputs.BUCKET_NAME }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Dry run complete. Terraform apply was skipped." >> $GITHUB_STEP_SUMMARY
+
+      - name: Setup Terraform
+        if: inputs.dry_run != true
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials (Apply Role)
+        if: inputs.dry_run != true
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ steps.backend.outputs.REGION }}
+          role-to-assume: ${{ steps.backend.outputs.ROLE }}
+
+      - name: Terraform Init
+        if: inputs.dry_run != true
+        run: |
+          set -euo pipefail
+          ENV="${{ steps.context.outputs.ENV }}"
+          S3_ID="${{ steps.context.outputs.S3_ID }}"
+
+          STATE_KEY="envs/${ENV}/s3/${S3_ID}/terraform.tfstate"
+
+          terraform -chdir=envs/${ENV} init \
+            -backend-config="bucket=${{ steps.backend.outputs.BUCKET }}" \
+            -backend-config="key=${STATE_KEY}" \
+            -backend-config="region=${{ steps.backend.outputs.REGION }}" \
+            -backend-config="dynamodb_table=${{ steps.backend.outputs.LOCK_TABLE }}" \
+            -backend-config="encrypt=true"
+
+      - name: Terraform Apply
+        if: inputs.dry_run != true
+        run: |
+          set -euo pipefail
+          ENV="${{ steps.context.outputs.ENV }}"
+          S3_ID="${{ steps.context.outputs.S3_ID }}"
+
+          VAR_FILE="s3/generated/${S3_ID}.auto.tfvars.json"
+
+          terraform -chdir=envs/${ENV} apply -auto-approve -input=false -no-color \
+            -var-file="${VAR_FILE}"
+
+      - name: Apply summary
+        if: inputs.dry_run != true
+        run: |
+          echo "## S3 Request Apply" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Request | ${{ inputs.request_file }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| S3 ID | ${{ steps.context.outputs.S3_ID }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Environment | ${{ steps.context.outputs.ENV }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bucket | ${{ steps.context.outputs.BUCKET_NAME }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Terraform apply completed successfully." >> $GITHUB_STEP_SUMMARY
