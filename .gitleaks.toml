@@ -13,8 +13,7 @@ paths = [
   '''session_summary/.*\.md$''',
 ]
 
-# Specific fingerprints that are false positives
-# These are Argo CD auto-generated passwords documented in session logs
-[[allowlist.commits]]
-commitSha = "774a852d8c308d67ca314dd83d1b11675d6e5a03"
-rule = "generic-api-key"
+# Commits to allowlist (false positives in git history)
+commits = [
+  "774a852d8c308d67ca314dd83d1b11675d6e5a03",
+]
