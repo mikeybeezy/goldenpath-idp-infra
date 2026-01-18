@@ -254,3 +254,111 @@ Signed: Claude Opus 4.5 (2026-01-18T21:15:00Z)
 | P2 | Implement adopt-or-create in aws_secrets_manager module | Medium | Complete |
 
 Signed: Claude Opus 4.5 (2026-01-18T20:30:00Z)
+
+---
+
+### Update - 2026-01-18T22:00:00Z
+
+**What changed**
+
+- Deployed argocd-image-updater for local Kind environment
+  - Created `gitops/argocd/apps/local/argocd-image-updater.yaml` (Application manifest)
+  - Created `gitops/helm/argocd-image-updater/values/local.yaml` (Helm values)
+  - Added image-updater annotations to `gitops/argocd/apps/local/hello-goldenpath-idp.yaml`
+- Fixed CI workflow PUSH_LATEST logic in `hello-goldenpath-idp/.github/workflows/build-push.yml`
+  - Changed from `${{ inputs.push_latest != false }}` to `${{ github.event_name == 'push' || inputs.push_latest == true }}`
+  - The old logic failed because `inputs.push_latest` is null (not false) for push events
+- Set ECR repository tag mutability to MUTABLE for `hello-goldenpath-idp`
+  - Required for digest-based updates with `:latest` tag
+- Removed hardcoded `newTag` from `hello-goldenpath-idp/deploy/overlays/local/kustomization.yaml`
+  - Allows argocd-image-updater to control the image tag
+
+#### Key Technical Decisions
+
+- **Update Strategy: digest** - Detects when underlying image content changes for mutable tags like `:latest`
+- **Platform Filter: linux/amd64** - Required because Kind nodes are amd64, image-updater defaults to host arch (arm64 on M1 Mac)
+- **Write-back Method: argocd** - Updates Application in-cluster (vs git commit write-back)
+
+**Artifacts touched**
+
+- `gitops/argocd/apps/local/argocd-image-updater.yaml` (NEW)
+- `gitops/argocd/apps/local/hello-goldenpath-idp.yaml` (MODIFIED)
+- `gitops/helm/argocd-image-updater/values/local.yaml` (NEW)
+- `hello-goldenpath-idp/.github/workflows/build-push.yml` (MODIFIED)
+- `hello-goldenpath-idp/deploy/overlays/local/kustomization.yaml` (MODIFIED)
+
+**Validation**
+
+- End-to-end pipeline tested:
+  1. Modified `app.py` with UI changes (white/black/green background buttons)
+  2. Committed and pushed to main
+  3. GitHub Actions built and pushed to ECR
+  4. argocd-image-updater detected new digest
+  5. Argo CD synced and rolled out new pods
+  6. UI changes visible in browser
+
+Signed: Claude Opus 4.5 (2026-01-18T22:00:00Z)
+
+---
+
+### Update - 2026-01-18T22:30:00Z
+
+**What changed**
+
+- Added visible UI change to `hello-goldenpath-idp/app.py` for end-to-end pipeline testing
+  - HTML page with "Hello from GoldenPath IDP!" heading
+  - Three buttons: White, Black, Green - toggle background color on click
+  - Displays version and environment info
+
+**Artifacts touched**
+
+- `hello-goldenpath-idp/app.py` (MODIFIED)
+
+**Validation**
+
+- Pipeline executed successfully twice (black button, then green button additions)
+- Confirmed full GitOps flow: commit → CI build → ECR push → image-updater detect → Argo sync → pod rollout
+
+Signed: Claude Opus 4.5 (2026-01-18T22:30:00Z)
+
+---
+
+## Session Close Summary
+
+**Session Duration:** 2026-01-18T20:00:00Z to 2026-01-18T22:30:00Z
+
+### Accomplishments
+
+1. **PR #258 CI Fixes** - All 19 CI checks passing, ready for merge
+2. **Secrets Lifecycle Gap Resolution** - Implemented adopt-or-create pattern and v4 teardown with secrets cleanup
+3. **argocd-image-updater for Local** - Full GitOps image automation working in Kind cluster
+4. **End-to-End Pipeline Validation** - Demonstrated complete flow from code commit to deployed UI change
+
+### Key Learnings
+
+| Topic | Finding |
+| ----- | ------- |
+| GitHub Actions inputs | `inputs.push_latest` is `null` (not `false`) for push events; use explicit `==` checks |
+| ECR tag mutability | Must be MUTABLE for digest-based updates to work with `:latest` |
+| Image-updater platforms | Defaults to host architecture; must specify `linux/amd64` on ARM Macs for x86 Kind nodes |
+| Kustomize newTag | Must be omitted to allow image-updater control |
+
+### Files Created This Session
+
+| File | Purpose |
+| ---- | ------- |
+| `gitops/argocd/apps/local/argocd-image-updater.yaml` | Image updater Application for local |
+| `gitops/helm/argocd-image-updater/values/local.yaml` | Local Helm values for image updater |
+| `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh` | Teardown with secrets cleanup |
+| `modules/aws_secrets_manager/versions.tf` | Provider declarations for module |
+| `.gitleaks.toml` | Allowlist for false positives |
+| `docs/changelog/entries/CL-0148-local-kind-argocd-gitops.md` | Changelog entry |
+
+### Outstanding Items
+
+- PR #258 awaiting review and merge
+- Consider adding argocd-image-updater to App of Apps pattern for auto-deployment
+
+### Session Status: COMPLETE
+
+Signed: Claude Opus 4.5 (2026-01-18T22:30:00Z)
