@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0091
-  title: 'CL-0091: Platform health outcome metrics proposal'
+  title: CL-0091-platform-health-outcome-metrics
   description: 'Date: 2026-01-08
 
     Owner: platform-team

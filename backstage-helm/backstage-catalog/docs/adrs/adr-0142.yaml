@@ -2,8 +2,8 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0142
-  title: 'ADR-0142: Strategic Adoption of Declarative Platform Contracts'
-  description: ''
+  title: ADR-0142-declarative-platform-contracts
+  description: Proposed
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0142-declarative-platform-contracts.md
@@ -18,6 +18,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0132
-  title: 'CL-0132: ClusterSecretStore Addon Deployment Fix'
+  title: Verify ClusterSecretStore exists
   description: '**Type**: Bug Fix
 
     **Component**: Infrastructure / EKS Addons

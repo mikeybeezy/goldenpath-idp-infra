@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0154
-  title: Promote Bootstrap V3 as Default
+  title: ADR-0154-promote-bootstrap-v3
   description: 'The platform bootstrap logic (`bootstrap/`) has evolved through versions
     `v1` (legacy), `v2` (interim), and `v3` (current).
 
@@ -21,6 +21,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

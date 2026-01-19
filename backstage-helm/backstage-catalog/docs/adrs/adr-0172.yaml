@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0172
+  title: 'ADR-0172: CD Promotion Strategy with Approval Gates'
+  description: '- **Status:** Active
+
+    - **Date:** 2026-01-18
+
+    - **Owners:** platform-team
+
+    - **Domain:** Platform
+
+    - **Decision type:** Architecture | Operations
+
+    - **Related:** `docs/20-contracts/29_CD_DEPLOYMENT_CONTRAC...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0172-cd-promotion-strategy-with-approval-gates.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0172-cd-promotion-strategy-with-approval-gates.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0172-cd-promotion-strategy-with-approval-gates.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

@@ -2,8 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0114
-  title: 'ADR-0114: Automated Enum Consistency Validation'
-  description: ''
+  title: ADR-0114-automated-enum-consistency-validation
+  description: With the introduction of unified enums in [ADR-0113](ADR-0113-platform-queryable-intelligence-enums.md),
+    we need a mechanism to enforce these values across the repository. Manual review
+    is insufficien...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0114-automated-enum-consistency-validation.md
@@ -18,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

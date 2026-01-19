@@ -2,8 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0075
-  title: 'CL-0075: Grand Metadata Healing and Contextual Alignment'
-  description: ''
+  title: CL-0075-grand-metadata-healing-and-contextual-alignment
+  description: Achieve 100% repository-wide compliance with the Config-Driven Metadata
+    Governance policy by automatically resolving legacy placeholder values and generic
+    types.
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0075-grand-metadata-healing-and-contextual-alignment.md

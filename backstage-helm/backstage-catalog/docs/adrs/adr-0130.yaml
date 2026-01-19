@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0130
-  title: 'ADR-0130: Zoned Defense for Catalog Ingestion Security'
+  title: ADR-0130-platform-catalog-zoned-defense-security
   description: '- **Status:** Accepted
 
     - **Date:** 2026-01-08
@@ -24,6 +24,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

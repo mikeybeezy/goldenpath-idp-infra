@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0126
-  title: 'ADR-0126: IDP Automation Confidence Matrix'
+  title: ADR-0126-idp-automation-confidence-matrix
   description: Accepted
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
@@ -18,6 +18,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records
