@@ -1,0 +1,258 @@
+# GoldenPath IDP - Image Promotion Workflow
+# GOV-0012: Build Pipeline Standards
+# ADR-0170: Build Pipeline Architecture
+#
+# Promotes an image from one environment to another by re-tagging.
+# Example: Promote hello-goldenpath-idp from test to staging
+#   - Source tag: test-a1b2c3d (REQUIRED - no :latest allowed)
+#   - Target tag: staging-a1b2c3d
+#
+# IMPORTANT: Source tag MUST be in <env>-<sha> format for test/staging/prod.
+# Dev promotions can use :latest but the target will be <env>-<sha>.
+#
+# This workflow is triggered manually or by successful deployment to lower env.
+
+name: Promote Image
+
+on:
+  workflow_call:
+    inputs:
+      ecr_repository:
+        description: 'ECR repository name'
+        required: true
+        type: string
+      source_environment:
+        description: 'Source environment (dev, test, staging)'
+        required: true
+        type: string
+      target_environment:
+        description: 'Target environment (test, staging, prod)'
+        required: true
+        type: string
+      source_tag:
+        description: 'Source image tag - REQUIRED for non-dev (e.g., test-a1b2c3d). Dev can use "latest".'
+        required: true
+        type: string
+      commit_sha:
+        description: 'Git commit SHA for target tag (required when source_tag=latest)'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      AWS_ROLE_ARN:
+        required: true
+
+env:
+  AWS_REGION: eu-west-2
+  ECR_REGISTRY: 593517239005.dkr.ecr.eu-west-2.amazonaws.com
+
+jobs:
+  validate:
+    name: Validate Promotion Path
+    runs-on: ubuntu-latest
+    outputs:
+      valid: ${{ steps.check.outputs.valid }}
+      source_tag: ${{ steps.resolve.outputs.source_tag }}
+      target_tag: ${{ steps.resolve.outputs.target_tag }}
+    steps:
+      - name: Validate promotion path
+        id: check
+        run: |
+          SOURCE="${{ inputs.source_environment }}"
+          TARGET="${{ inputs.target_environment }}"
+
+          # Define valid promotion paths (GOV-0012)
+          # dev -> test -> staging -> prod
+          case "$SOURCE-$TARGET" in
+            dev-test|test-staging|staging-prod)
+              echo "valid=true" >> "$GITHUB_OUTPUT"
+              echo "Valid promotion path: $SOURCE -> $TARGET"
+              ;;
+            *)
+              echo "valid=false" >> "$GITHUB_OUTPUT"
+              echo "::error::Invalid promotion path: $SOURCE -> $TARGET"
+              echo "::error::Valid paths: dev->test, test->staging, staging->prod"
+              exit 1
+              ;;
+          esac
+
+      - name: Validate source tag format
+        id: validate-tag
+        run: |
+          SOURCE="${{ inputs.source_environment }}"
+          SOURCE_TAG="${{ inputs.source_tag }}"
+
+          # For dev->test: allow "latest" or SHA-based tags
+          # For test->staging and staging->prod: REQUIRE <env>-<sha> format
+          if [[ "$SOURCE" == "dev" ]]; then
+            # Dev can use "latest" or a SHA
+            if [[ "$SOURCE_TAG" == "latest" || "$SOURCE_TAG" =~ ^[a-f0-9]{7,40}$ ]]; then
+              echo "tag_valid=true" >> "$GITHUB_OUTPUT"
+              echo "Source tag '$SOURCE_TAG' is valid for dev promotion"
+            else
+              echo "::error::Invalid dev source tag: $SOURCE_TAG"
+              echo "::error::Dev promotions accept: 'latest' or a git SHA"
+              exit 1
+            fi
+          else
+            # Non-dev MUST use <env>-<sha> format
+            EXPECTED_PATTERN="^${SOURCE}-[a-f0-9]{7,40}$"
+            if [[ "$SOURCE_TAG" =~ $EXPECTED_PATTERN ]]; then
+              echo "tag_valid=true" >> "$GITHUB_OUTPUT"
+              echo "Source tag '$SOURCE_TAG' matches required pattern: ${SOURCE}-<sha>"
+            else
+              echo "::error::Invalid source tag format: $SOURCE_TAG"
+              echo "::error::Expected pattern: ${SOURCE}-<sha> (e.g., ${SOURCE}-a1b2c3d)"
+              echo "::error::Promoting ':latest' to test/staging/prod is not allowed (GOV-0012)"
+              exit 1
+            fi
+          fi
+
+      - name: Resolve tags
+        id: resolve
+        run: |
+          SOURCE="${{ inputs.source_environment }}"
+          SOURCE_TAG="${{ inputs.source_tag }}"
+
+          echo "source_tag=$SOURCE_TAG" >> "$GITHUB_OUTPUT"
+
+          # Extract SHA from source tag or use provided commit_sha
+          SHA="${{ inputs.commit_sha }}"
+          if [[ -z "$SHA" ]]; then
+            if [[ "$SOURCE_TAG" =~ -([a-f0-9]{7,40})$ ]]; then
+              # Extract SHA from <env>-<sha> format
+              SHA="${BASH_REMATCH[1]}"
+              echo "Extracted SHA from source tag: $SHA"
+            elif [[ "$SOURCE_TAG" =~ ^[a-f0-9]{7,40}$ ]]; then
+              # Source tag is already a SHA
+              SHA="$SOURCE_TAG"
+              echo "Source tag is a SHA: $SHA"
+            elif [[ "$SOURCE_TAG" == "latest" ]]; then
+              if [[ -z "$SHA" ]]; then
+                echo "::error::source_tag=latest requires commit_sha input"
+                exit 1
+              fi
+            fi
+          fi
+
+          SHORT_SHA="${SHA:0:7}"
+          TARGET_TAG="${{ inputs.target_environment }}-$SHORT_SHA"
+          echo "target_tag=$TARGET_TAG" >> "$GITHUB_OUTPUT"
+          echo "source_sha=$SHA" >> "$GITHUB_OUTPUT"
+
+          echo "Source tag: $SOURCE_TAG"
+          echo "Target tag: $TARGET_TAG"
+          echo "SHA used: $SHORT_SHA"
+
+  # ============================================================================
+  # Pipeline Readiness Check
+  # Ensures GitHub App secret exists before allowing promotion to non-dev
+  # ADR-0174: Pipeline decoupled from bootstrap, but required for promotion
+  # ============================================================================
+  pipeline-check:
+    name: Verify Pipeline Configured
+    runs-on: ubuntu-latest
+    needs: [validate]
+    if: needs.validate.outputs.valid == 'true' && inputs.target_environment != 'dev'
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Check GitHub App secret exists
+        id: check-secret
+        run: |
+          TARGET_ENV="${{ inputs.target_environment }}"
+          SECRET_NAME="goldenpath/${TARGET_ENV}/github-app/image-updater"
+
+          echo "Checking for pipeline secret: $SECRET_NAME"
+
+          if aws secretsmanager describe-secret --secret-id "$SECRET_NAME" --region ${{ env.AWS_REGION }} 2>/dev/null; then
+            echo "Pipeline secret exists for $TARGET_ENV"
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Pipeline not configured for $TARGET_ENV environment"
+            echo "::error::GitHub App secret '$SECRET_NAME' not found in Secrets Manager"
+            echo "::error::Complete RB-0036 and RB-0037 before promoting to $TARGET_ENV"
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+  promote:
+    name: Promote Image
+    runs-on: ubuntu-latest
+    needs: [validate, pipeline-check]
+    if: always() && needs.validate.outputs.valid == 'true' && (needs.pipeline-check.result == 'success' || needs.pipeline-check.result == 'skipped')
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Check dev pipeline status (advisory)
+        if: inputs.target_environment == 'dev'
+        run: |
+          SECRET_NAME="goldenpath/dev/github-app/image-updater"
+
+          if aws secretsmanager describe-secret --secret-id "$SECRET_NAME" --region ${{ env.AWS_REGION }} 2>/dev/null; then
+            echo "Pipeline configured for dev environment"
+          else
+            echo "::warning::Pipeline not yet configured for dev environment"
+            echo "::warning::Image Updater will not write back to Git until RB-0036 and RB-0037 are completed"
+            echo "::warning::This is advisory only - promotion will proceed"
+          fi
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Pull source image
+        run: |
+          SOURCE_IMAGE="${{ env.ECR_REGISTRY }}/${{ inputs.ecr_repository }}:${{ needs.validate.outputs.source_tag }}"
+          echo "Pulling: $SOURCE_IMAGE"
+          docker pull "$SOURCE_IMAGE"
+
+      - name: Re-tag and push
+        run: |
+          SOURCE_IMAGE="${{ env.ECR_REGISTRY }}/${{ inputs.ecr_repository }}:${{ needs.validate.outputs.source_tag }}"
+          TARGET_IMAGE="${{ env.ECR_REGISTRY }}/${{ inputs.ecr_repository }}:${{ needs.validate.outputs.target_tag }}"
+
+          echo "Re-tagging: $SOURCE_IMAGE -> $TARGET_IMAGE"
+          docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE"
+
+          echo "Pushing: $TARGET_IMAGE"
+          docker push "$TARGET_IMAGE"
+
+      - name: Output promotion summary
+        run: |
+          echo "## Image Promotion Complete" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Property | Value |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|----------|-------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Repository | ${{ inputs.ecr_repository }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Source Env | ${{ inputs.source_environment }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Target Env | ${{ inputs.target_environment }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Source Tag | ${{ needs.validate.outputs.source_tag }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Target Tag | ${{ needs.validate.outputs.target_tag }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "ArgoCD Image Updater will detect this new tag and update the deployment." >> "$GITHUB_STEP_SUMMARY"
+
+  notify:
+    name: Notify (Prod Only)
+    runs-on: ubuntu-latest
+    needs: [validate, promote]
+    if: inputs.target_environment == 'prod'
+    steps:
+      - name: Prod promotion notice
+        run: |
+          echo "::notice::Production image promoted. Manual sync required."
+          echo "::notice::Run: argocd app sync prod-${{ inputs.ecr_repository }}"
