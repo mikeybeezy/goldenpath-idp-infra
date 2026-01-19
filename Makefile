@@ -673,6 +673,152 @@ rds-provision-auto-dry-run:
 		--dry-run
 
 ################################################################################
+# Pipeline Enablement (ArgoCD Image Updater)
+#
+# Enables the CI/CD pipeline for Git write-back after cluster bootstrap.
+# ADR-0174: Pipeline intentionally decoupled from cluster bootstrap.
+#
+# Prerequisites:
+#   - GitHub App created per RB-0036
+#   - Credentials stored in Secrets Manager: goldenpath/<env>/github-app/image-updater
+#
+# Related: ADR-0174, RB-0036, RB-0037
+################################################################################
+
+PIPELINE_SECRET_NAME = goldenpath/$(ENV)/github-app/image-updater
+PIPELINE_K8S_SECRET = github-app-image-updater
+PIPELINE_NAMESPACE = argocd
+
+# Enable pipeline for an environment - creates K8s secret from Secrets Manager
+pipeline-enable:
+	@echo "========================================"
+	@echo "Pipeline Enablement for $(ENV)"
+	@echo "========================================"
+	@echo ""
+	@echo "[1/5] Checking Secrets Manager for GitHub App credentials..."
+	@if ! aws secretsmanager describe-secret --secret-id "$(PIPELINE_SECRET_NAME)" --region $(REGION) >/dev/null 2>&1; then \
+		echo ""; \
+		echo "ERROR: GitHub App secret not found in Secrets Manager"; \
+		echo ""; \
+		echo "  Secret: $(PIPELINE_SECRET_NAME)"; \
+		echo ""; \
+		echo "Complete RB-0036 first to create the GitHub App and store credentials."; \
+		echo "See: docs/70-operations/runbooks/RB-0036-github-app-image-updater.md"; \
+		echo ""; \
+		exit 1; \
+	fi
+	@echo "  Found: $(PIPELINE_SECRET_NAME)"
+	@echo ""
+	@echo "[2/5] Fetching credentials from Secrets Manager..."
+	@SECRET_JSON=$$(aws secretsmanager get-secret-value \
+		--secret-id "$(PIPELINE_SECRET_NAME)" \
+		--query SecretString --output text \
+		--region $(REGION)); \
+	APP_ID=$$(echo "$$SECRET_JSON" | jq -r '.appID // .app_id // .app-id'); \
+	INSTALLATION_ID=$$(echo "$$SECRET_JSON" | jq -r '.installationID // .installation_id // .installation-id'); \
+	PRIVATE_KEY=$$(echo "$$SECRET_JSON" | jq -r '.privateKey // .private_key // .["private-key"]'); \
+	if [ "$$APP_ID" = "null" ] || [ -z "$$APP_ID" ]; then \
+		echo "ERROR: appID not found in secret"; \
+		exit 1; \
+	fi; \
+	if [ "$$INSTALLATION_ID" = "null" ] || [ -z "$$INSTALLATION_ID" ]; then \
+		echo "ERROR: installationID not found in secret"; \
+		exit 1; \
+	fi; \
+	if [ "$$PRIVATE_KEY" = "null" ] || [ -z "$$PRIVATE_KEY" ]; then \
+		echo "ERROR: privateKey not found in secret"; \
+		exit 1; \
+	fi; \
+	echo "  App ID: $$APP_ID"; \
+	echo "  Installation ID: $$INSTALLATION_ID"; \
+	echo "  Private Key: [REDACTED - $$(echo "$$PRIVATE_KEY" | wc -c | tr -d ' ') bytes]"; \
+	echo ""; \
+	echo "[3/5] Creating/updating Kubernetes secret..."; \
+	kubectl create secret generic $(PIPELINE_K8S_SECRET) \
+		--namespace $(PIPELINE_NAMESPACE) \
+		--from-literal=app-id="$$APP_ID" \
+		--from-literal=installation-id="$$INSTALLATION_ID" \
+		--from-literal=private-key="$$PRIVATE_KEY" \
+		--dry-run=client -o yaml | kubectl apply -f -; \
+	echo ""; \
+	echo "[4/5] Restarting ArgoCD Image Updater..."; \
+	kubectl rollout restart deployment argocd-image-updater -n $(PIPELINE_NAMESPACE) 2>/dev/null || \
+		echo "  Note: Image Updater deployment not found - may need to sync ArgoCD first"; \
+	kubectl rollout status deployment argocd-image-updater -n $(PIPELINE_NAMESPACE) --timeout=60s 2>/dev/null || true; \
+	echo ""; \
+	echo "[5/5] Verifying configuration..."; \
+	if kubectl get secret $(PIPELINE_K8S_SECRET) -n $(PIPELINE_NAMESPACE) >/dev/null 2>&1; then \
+		echo "  K8s secret: Created"; \
+	else \
+		echo "  K8s secret: FAILED"; \
+		exit 1; \
+	fi
+	@echo ""
+	@echo "========================================"
+	@echo "Pipeline enabled for $(ENV)"
+	@echo "========================================"
+	@echo ""
+	@echo "Next steps:"
+	@echo "  1. Sync ArgoCD Image Updater if not already deployed"
+	@echo "  2. Push an image to ECR to trigger write-back"
+	@echo "  3. Check logs: kubectl logs -n argocd -l app.kubernetes.io/name=argocd-image-updater"
+	@echo ""
+
+# Check pipeline status for an environment
+pipeline-status:
+	@echo "========================================"
+	@echo "Pipeline Status for $(ENV)"
+	@echo "========================================"
+	@echo ""
+	@echo "Secrets Manager:"
+	@if aws secretsmanager describe-secret --secret-id "$(PIPELINE_SECRET_NAME)" --region $(REGION) >/dev/null 2>&1; then \
+		echo "  $(PIPELINE_SECRET_NAME): EXISTS"; \
+	else \
+		echo "  $(PIPELINE_SECRET_NAME): NOT FOUND"; \
+		echo "  Action: Complete RB-0036 to create GitHub App"; \
+	fi
+	@echo ""
+	@echo "Kubernetes Secret:"
+	@if kubectl get secret $(PIPELINE_K8S_SECRET) -n $(PIPELINE_NAMESPACE) >/dev/null 2>&1; then \
+		echo "  $(PIPELINE_K8S_SECRET) in $(PIPELINE_NAMESPACE): EXISTS"; \
+		kubectl get secret $(PIPELINE_K8S_SECRET) -n $(PIPELINE_NAMESPACE) -o jsonpath='{.data}' | jq -r 'keys[]' | while read key; do \
+			echo "    - $$key: present"; \
+		done; \
+	else \
+		echo "  $(PIPELINE_K8S_SECRET) in $(PIPELINE_NAMESPACE): NOT FOUND"; \
+		echo "  Action: Run 'make pipeline-enable ENV=$(ENV)'"; \
+	fi
+	@echo ""
+	@echo "Image Updater Pod:"
+	@kubectl get pods -n $(PIPELINE_NAMESPACE) -l app.kubernetes.io/name=argocd-image-updater -o wide 2>/dev/null || \
+		echo "  Not found - may need to sync ArgoCD"
+	@echo ""
+
+# Preview what pipeline-enable would do (dry-run)
+pipeline-enable-dry-run:
+	@echo "========================================"
+	@echo "[DRY-RUN] Pipeline Enablement for $(ENV)"
+	@echo "========================================"
+	@echo ""
+	@echo "Would check: $(PIPELINE_SECRET_NAME)"
+	@if aws secretsmanager describe-secret --secret-id "$(PIPELINE_SECRET_NAME)" --region $(REGION) >/dev/null 2>&1; then \
+		echo "  Status: Found in Secrets Manager"; \
+		echo ""; \
+		echo "Would create K8s secret:"; \
+		echo "  Name: $(PIPELINE_K8S_SECRET)"; \
+		echo "  Namespace: $(PIPELINE_NAMESPACE)"; \
+		echo "  Keys: app-id, installation-id, private-key"; \
+		echo ""; \
+		echo "Would restart: argocd-image-updater deployment"; \
+	else \
+		echo "  Status: NOT FOUND"; \
+		echo ""; \
+		echo "ERROR: Cannot proceed - GitHub App secret missing"; \
+		echo "Complete RB-0036 first."; \
+	fi
+	@echo ""
+
+################################################################################
 # Persistent Mode Targets
 #
 # For clusters with cluster_lifecycle=persistent, BUILD_ID is not used.
@@ -784,6 +930,13 @@ help:
 	@echo "  make rds-provision-auto-dry-run ENV=dev  # Preview with mode detection"
 	@echo "  NOTE: No rds-destroy target. See RB-0030 for deletion."
 	@echo "  NOTE: Non-dev requires ALLOW_DB_PROVISION=true"
+	@echo ""
+	@echo "== Pipeline Enablement (ArgoCD Image Updater) =="
+	@echo "  make pipeline-status ENV=dev           # Check pipeline configuration status"
+	@echo "  make pipeline-enable ENV=dev           # Enable pipeline (create K8s secret)"
+	@echo "  make pipeline-enable-dry-run ENV=dev   # Preview pipeline enablement"
+	@echo "  NOTE: Requires GitHub App in Secrets Manager (see RB-0036)"
+	@echo "  NOTE: ADR-0174 - Pipeline decoupled from cluster bootstrap"
 	@echo ""
 	@echo "== Persistent Mode (no BUILD_ID) =="
 	@echo "  make apply-persistent ENV=dev REGION=eu-west-2"
