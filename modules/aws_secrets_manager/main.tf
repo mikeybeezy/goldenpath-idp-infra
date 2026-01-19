@@ -67,7 +67,7 @@ resource "null_resource" "restore_guard" {
 
   lifecycle {
     precondition {
-      condition     = false
+      condition     = !local.restore_failed
       error_message = "Secret ${var.name} is scheduled for deletion and could not be restored. Ensure secretsmanager:RestoreSecret permissions or clear the deletion window before retrying."
     }
   }
