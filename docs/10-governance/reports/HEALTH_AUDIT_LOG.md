@@ -2,6 +2,10 @@
 id: HEALTH_AUDIT_LOG
 title: Platform Health Audit Log
 type: report
+category: governance
+status: active
+owner: platform-team
+lifecycle: active
 risk_profile:
   production_impact: low
   security_risk: none
@@ -9,20 +13,14 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-  maturity: 1
+schema_version: 1
 relates_to:
-  - 01_adr_index
-  - CAPABILITY_LEDGER
-  - CI_WORKFLOWS
-  - DOCS_CHANGELOG_README
-  - SCRIPT_CERTIFICATION_MATRIX
   - platform_health.py
-category: governance
 ---
 
-## Platform Health Audit Log
+# Platform Health Audit Log
 
-Last updated: `2026-01-16 08:25:16`
+Last updated: `2026-01-19 05:13:49`
 
 - This file keeps only the latest snapshot.
 - Full history can be regenerated from source data if needed.
@@ -36,53 +34,53 @@ type: documentation
 category: governance
 status: active
 owner: platform-team
-version: '2026-01-16'
+version: '2026-01-19'
 relates_to:
-
-- platform_health.py
-
+  - platform_health.py
 ---
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-16 08:25:16` | **V1 Readiness**: `93.0%` | **Mean Confidence**: `⭐ (1.3/5.0)`
+**Generated**: `2026-01-19 05:13:49` | **V1 Readiness**: `91.2%` | **Mean Confidence**: `⭐ (1.3/5.0)`
 
-**Realized Value**: `133.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Realized Value**: `155.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **93.0%** ready for V1 production rollout.
+> The platform is currently **91.2%** ready for V1 production rollout.
 
-|Milestone|Status|Readiness|
-|:---|:---|:---|
-|**Metadata Integrity**|✅|100.0%|
-|**Injection Integrity**|✅|100.0%|
-|**Architecture Maturity**|🚧|95/146 Active|
-|**Changelog Activity**|✅|136 Entries|
+| Milestone | Status | Readiness |
+| :--- | :--- | :--- |
+| **Metadata Integrity** | ✅ | 99.6% |
+| **Injection Integrity** | ✅ | 97.2% |
+| **Architecture Maturity** | 🚧 | 97/162 Active |
+| **Changelog Activity** | ✅ | 146 Entries |
 
 ## Knowledge Graph Vitality
 
-|Metric|Count|Source|
-|:---|:---|:---|
-|**Architecture Decisions**|146|[ADR Index](../../adrs/01_adr_index.md)|
-|**Automation Scripts**|47|[Script Index](../../../scripts/index.md)|
-|**Certified Scripts (M3)**|1/47 (2%)|[Certification Matrix](../SCRIPT_CERTIFICATION_MATRIX.md)|
-|**CI Workflows**|44|[Workflow Index](../../../ci-workflows/CI_WORKFLOWS.md)|
-|**Change Logs**|136|[Changelog Index](../../changelog/README.md)|
-|**Tracked Resources**|620|Repository Scan|
+| Metric | Count | Source |
+| :--- | :--- | :--- |
+| **Architecture Decisions** | 162 | [ADR Index](../../adrs/01_adr_index.md) |
+| **Automation Scripts** | 52 | [Script Index](../../../scripts/index.md) |
+| **Certified Scripts (M3)** | 1/53 (2%) | [Certification Matrix](../SCRIPT_CERTIFICATION_MATRIX.md) |
+| **CI Workflows** | 60 | [Workflow Index](../../../ci-workflows/CI_WORKFLOWS.md) |
+| **Change Logs** | 146 | [Changelog Index](../../changelog/README.md) |
+| **Tracked Resources** | 671 | Repository Scan |
 
 ## Catalog Inventory
 
-|Catalog|Entity Count|
-|:---|:---|
-|Ecr Registry|1|
-|Ecr Repositories|11|
-|IDP Apis|9|
-|IDP Components|18|
-|IDP Domains|4|
-|IDP Resources|14|
-|IDP Systems|5|
+| Catalog | Entity Count |
+| :--- | :--- |
+| Ecr Registry | 1 |
+| Ecr Repositories | 11 |
+| Eks | 1 |
+| IDP Apis | 9 |
+| IDP Components | 18 |
+| IDP Domains | 4 |
+| IDP Resources | 14 |
+| IDP Systems | 5 |
+| Rds | 1 |
 
 ## AWS Inventory Snapshot
 
@@ -97,25 +95,25 @@ relates_to:
 
 ```mermaid
 pie title Production Impact distribution
-    "HIGH" : 50
-    "MEDIUM" : 33
-    "LOW" : 449
-    "NONE" : 86
+    "HIGH" : 53
+    "MEDIUM" : 39
+    "LOW" : 471
+    "NONE" : 106
 ```
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `100.0%`
+- **Metadata Compliance**: `99.6%`
 - **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
 
-- **Sidecar Coverage**: `100.0%` (35/35)
+- **Sidecar Coverage**: `97.2%` (35/36)
 
 ## Project Realized Value (Heartbeat)
 
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **133.4 hours**.
+> Total realized value reclaimed through automation heartbeats: **155.4 hours**.
 
 - **ROI Ledger**: [.goldenpath/value_ledger.json](../../../.goldenpath/value_ledger.json)
 

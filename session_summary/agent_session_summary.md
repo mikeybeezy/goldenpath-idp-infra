@@ -2177,3 +2177,93 @@ Kind Cluster (hello-goldenpath-idp running)
 
 **Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
 **Timestamp**: 2026-01-18T17:00:00Z
+
+---
+
+## 2026-01-18T22:30:00Z — GitOps: argocd-image-updater + E2E Pipeline Validation — env=local build_id=na
+
+Owner: platform-team
+Agent: Claude Opus 4.5 (claude-opus-4-5-20251101)
+Goal: Enable automatic image updates via argocd-image-updater and validate full GitOps pipeline.
+
+Date range: 2026-01-18
+Environment: local `Kind`
+Cluster: kind-goldenpath
+Region: local
+
+### In-Session Log (append as you go)
+- 20:00Z — Started: PR #258 CI fixes review, secrets lifecycle analysis
+- 20:30Z — Completed: adopt-or-create pattern for aws_secrets_manager module
+- 21:00Z — Completed: v4 teardown script with secrets cleanup stage
+- 21:15Z — Discovered: argocd-image-updater not deployed in local cluster
+- 21:30Z — Deployed: argocd-image-updater via direct manifest install
+- 21:45Z — Fixed: ECR registry authentication (pullsecret configuration)
+- 22:00Z — Fixed: Platform mismatch (added linux/amd64 annotation)
+- 22:10Z — Fixed: CI workflow PUSH_LATEST logic (null vs false)
+- 22:15Z — Fixed: ECR tag mutability (IMMUTABLE → MUTABLE)
+- 22:20Z — Validated: E2E pipeline with visible UI change (white/black/green buttons)
+- 22:30Z — Completed: Session documentation and close
+
+### Checkpoints
+- [x] PR #258 CI fixes (all 19 checks passing)
+- [x] Secrets lifecycle gap resolution (adopt-or-create + v4 teardown)
+- [x] Deploy argocd-image-updater for local Kind
+- [x] Configure digest-based update strategy
+- [x] Fix CI workflow PUSH_LATEST logic
+- [x] Set ECR tag mutability to MUTABLE
+- [x] Validate E2E: commit → build → push → detect → sync → rollout
+- [x] Update session capture and summary documentation
+
+### Edge cases observed
+- `inputs.push_latest != false` → evaluates incorrectly when null → use explicit `== true` check
+- Image-updater defaults to host architecture (arm64 on M1 Mac) → must specify `linux/amd64` for Kind
+- ECR IMMUTABLE tags block `:latest` overwrites → must set MUTABLE for digest strategy
+- Kustomize `newTag` overrides image-updater → must omit to allow dynamic control
+
+### Outputs produced
+- PRs: #258 (pending review)
+- Files created:
+  - `gitops/argocd/apps/local/argocd-image-updater.yaml`
+  - `gitops/helm/argocd-image-updater/values/local.yaml`
+- Files modified:
+  - `gitops/argocd/apps/local/hello-goldenpath-idp.yaml` (image-updater annotations)
+  - `hello-goldenpath-idp/.github/workflows/build-push.yml` (PUSH_LATEST fix)
+  - `hello-goldenpath-idp/deploy/overlays/local/kustomization.yaml` (removed newTag)
+  - `hello-goldenpath-idp/app.py` (UI with white/black/green buttons)
+
+### Feedback Pointer
+- Session capture: `session_capture/2026-01-18-secrets-lifecycle-analysis.md`
+- Status: closed
+
+### Next actions
+- [ ] Review and merge PR #258
+- [ ] Add argocd-image-updater to App-of-Apps pattern for auto-deployment
+- [ ] Test git write-back method (commits tag changes to repo)
+- [ ] Configure image-updater for staging/prod environments
+
+### Links
+- Session capture: `session_capture/2026-01-18-secrets-lifecycle-analysis.md`
+- Image updater docs: <https://argocd-image-updater.readthedocs.io/>
+
+### Session Report (end-of-session wrap-up)
+- Summary:
+  - Full GitOps pipeline now operational: commit → GitHub Actions → ECR → image-updater → Argo CD → cluster
+  - argocd-image-updater deployed with digest strategy for `:latest` tag detection
+  - E2E validated with visible UI changes (white/black/green background buttons)
+  - PR #258 CI fixes complete, ready for merge
+- Decisions:
+  - Digest strategy for `:latest` tag updates (vs semver)
+  - Platform filter `linux/amd64` for Kind nodes on ARM Mac
+  - `argocd` write-back method (in-cluster updates, not git commits)
+- Risks/Follow-ups:
+  - ECR MUTABLE tags required — document in runbook
+  - Image-updater not in App-of-Apps yet — add for auto-deployment
+  - Consider git write-back for audit trail in prod
+- Validation:
+  - Pipeline executed successfully 3 times (initial, black button, green button)
+  - Each change visible in browser within ~2 minutes of commit
+
+---
+
+**Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
+**Timestamp**: 2026-01-18T22:30:00Z

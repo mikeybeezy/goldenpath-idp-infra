@@ -9,6 +9,13 @@ metadata:
     goldenpath.idp/owner: platform-team
     goldenpath.idp/risk: low
     argocd.argoproj.io/sync-wave: "10"  # Deploy after infra
+    # Image Updater annotations - digest strategy detects when :latest changes
+    argocd-image-updater.argoproj.io/image-list: app=593517239005.dkr.ecr.eu-west-2.amazonaws.com/hello-goldenpath-idp:latest
+    argocd-image-updater.argoproj.io/app.update-strategy: digest
+    argocd-image-updater.argoproj.io/app.platforms: linux/amd64
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/app.force-update: "true"
   labels:
     app.kubernetes.io/part-of: goldenpath-idp
     environment: local
