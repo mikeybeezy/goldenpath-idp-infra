@@ -310,6 +310,32 @@ jobs:
           echo "TF_EXIT_CODE=${TF_EXIT}" >> "${GITHUB_ENV}"
           exit ${TF_EXIT}
 
+      - name: Setup Python for RDS provisioning
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install RDS provisioning dependencies
+        run: pip install boto3 psycopg2-binary
+
+      - name: Provision RDS Users/Databases
+        if: ${{ success() }}
+        env:
+          AWS_REGION: eu-west-2
+          BUILD_ID: ${{ steps.effective.outputs.build_id }}
+        run: |
+          echo "Provisioning RDS users and databases..."
+          python3 scripts/rds_provision.py \
+            --env dev \
+            --tfvars envs/dev-rds/terraform.tfvars \
+            --master-secret goldenpath/dev/rds/master \
+            --build-id ${BUILD_ID:-persistent} \
+            --run-id ${{ github.run_id }} \
+            --audit-output governance/dev/rds_provision_audit.csv || {
+              echo "::warning::RDS provisioning failed or skipped (may not have RDS deployed yet)"
+              exit 0
+            }
+
       - name: Setup EKS access for runner
         if: ${{ steps.effective.outputs.lifecycle == 'ephemeral' }}
         env:

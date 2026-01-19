@@ -20,6 +20,14 @@ on:
         options:
           - ephemeral
           - persistent
+      allow_db_provision:
+        description: "Set to 'true' to provision RDS users/databases (required for staging)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
       build_id:
         description: "Build ID (dd-mm-yy-NN)"
         required: false
@@ -148,6 +156,33 @@ jobs:
             var_args+=(-var "build_id=${{ inputs.build_id }}")
           fi
           terraform -chdir=envs/staging apply -auto-approve -input=false -no-color "${var_args[@]}"
+
+      - name: Setup Python for RDS provisioning
+        if: ${{ inputs.allow_db_provision == 'true' }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install RDS provisioning dependencies
+        if: ${{ inputs.allow_db_provision == 'true' }}
+        run: pip install boto3 psycopg2-binary
+
+      - name: Provision RDS Users/Databases
+        if: ${{ inputs.allow_db_provision == 'true' }}
+        env:
+          AWS_REGION: eu-west-2
+          ALLOW_DB_PROVISION: "true"
+        run: |
+          echo "Provisioning RDS users and databases for staging..."
+          python3 scripts/rds_provision.py \
+            --env staging \
+            --tfvars envs/staging-rds/terraform.tfvars \
+            --master-secret goldenpath/staging/rds/master \
+            --build-id ${{ inputs.build_id || 'persistent' }} \
+            --run-id ${{ github.run_id }} \
+            --require-approval \
+            --audit-output governance/staging/rds_provision_audit.csv
+
       - name: Runbook link
         if: always()
         run: |
