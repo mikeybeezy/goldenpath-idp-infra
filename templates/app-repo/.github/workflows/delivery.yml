@@ -1,0 +1,42 @@
+# GoldenPath IDP - App Delivery Workflow (Thin Caller)
+# GOV-0012: All app repos MUST use the canonical reusable workflow
+#
+# This is a thin caller (~15 lines) that invokes the canonical pipeline.
+# Do NOT add build logic here - all build steps are in _build-and-release.yml
+
+name: Delivery
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'catalog-info.yaml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: false
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - test
+          - staging
+          - prod
+
+jobs:
+  build:
+    name: Build and Release
+    uses: mikeybeezy/goldenpath-idp-infra/.github/workflows/_build-and-release.yml@main
+    with:
+      ecr_repository: hello-goldenpath-idp  # TODO: Replace with your app name
+      environment: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
+      skip_push: ${{ github.event_name == 'pull_request' }}
+    secrets:
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+      # Fallback for non-OIDC authentication:
+      # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
