@@ -371,6 +371,7 @@ relates_to:
   - ADR-0170
   - ADR-0171
   - ADR-0172
+  - ADR-0173
 <!-- ADR_RELATE_END -->
 ---
 
@@ -551,7 +552,9 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0169](ADR-0169-secret-request-system-generated-ids.md) | Platform | System-Generated SecretRequest IDs with CI Immutability Guard | Proposed | 2026-01-17 | SecretRequest identifiers are used for governance, auditability, and traceability across request files, generated tfvars, and Terraform targets. When IDs are manually entered, they are prone to col... |
 | [ADR-0170](ADR-0170-s3-self-service-request-system.md) | Platform | S3 Self-Service Request System | Proposed | 2026-01-17 | S3 buckets are the third pillar of the core infrastructure trio (RDS, ECR, S3). Currently, bucket provisioning requires direct Terraform access or manual requests, creating inconsistent configurati... |
 | [ADR-0171](ADR-0171-platform-application-packaging-strategy.md) | Platform | Application Packaging Strategy - Helm vs Kustomize | Active | 2026-01-0? | ADR-0020 established that we use a hybrid approach (Helm + Kustomize) but did not provide clear guidance on **when to choose each tool**. This led to inconsistent decisions and confusion about whet... |
-| [ADR-0172](ADR-0172-cd-promotion-strategy-with-approval-gates.md) | Platform | CD Promotion Strategy with Approval Gates | Active | 2026-01-0? | With CI pipelines building and pushing images to ECR, we need a clear strategy for how those images get promoted through environments. Key requirements: |
+| [ADR-0172](ADR-0172-cd-promotion-strategy-with-approval-gates.md) | Platform | CD Promotion Strategy with Approval Gates | Active | 2026-01-0? |
+| [ADR-0173](ADR-0173-governance-doc-naming-migration.md) | Platform | Governance Doc Naming Migration Strategy | Proposed | 2026-01-19 | A new GOV-xxxx naming standard improves clarity but a bulk rename risks breaking references; we need a phased migration with aliases and tooling. |
+ With CI pipelines building and pushing images to ECR, we need a clear strategy for how those images get promoted through environments. Key requirements: |
 <!-- ADR_TABLE_END -->
 
 ---
