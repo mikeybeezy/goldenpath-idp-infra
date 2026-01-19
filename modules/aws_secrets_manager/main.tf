@@ -16,13 +16,20 @@ data "external" "secret_check" {
     if [ -n "$secret" ]; then
       arn=$(echo "$secret" | jq -r '.ARN')
       deleted=$(echo "$secret" | jq -r '.DeletedDate // empty')
+      restore_failed="false"
       if [ -n "$deleted" ]; then
         # Secret is scheduled for deletion - restore it
-        aws secretsmanager restore-secret --secret-id "${var.name}" --region "${data.aws_region.current.name}" >/dev/null 2>&1 || true
+        if ! aws secretsmanager restore-secret --secret-id "${var.name}" --region "${data.aws_region.current.name}" >/dev/null 2>&1; then
+          restore_failed="true"
+        fi
       fi
-      echo "{\"exists\": \"true\", \"arn\": \"$arn\"}"
+      if [ "$restore_failed" = "true" ]; then
+        echo "{\"exists\": \"false\", \"arn\": \"\", \"restore_failed\": \"true\"}"
+      else
+        echo "{\"exists\": \"true\", \"arn\": \"$arn\", \"restore_failed\": \"false\"}"
+      fi
     else
-      echo "{\"exists\": \"false\", \"arn\": \"\"}"
+      echo "{\"exists\": \"false\", \"arn\": \"\", \"restore_failed\": \"false\"}"
     fi
   EOT
   ]
@@ -33,8 +40,9 @@ data "aws_region" "current" {}
 locals {
   # Check if we're adopting an existing secret
   secret_exists       = var.adopt_existing && length(data.external.secret_check) > 0 ? data.external.secret_check[0].result.exists == "true" : false
+  restore_failed      = var.adopt_existing && length(data.external.secret_check) > 0 ? try(data.external.secret_check[0].result.restore_failed, "false") == "true" : false
   existing_secret_arn = local.secret_exists ? data.external.secret_check[0].result.arn : null
-  should_create       = !local.secret_exists
+  should_create       = !local.secret_exists && !local.restore_failed
 
   # Compute the effective secret ARN (either created or existing)
   secret_arn = local.should_create ? (length(aws_secretsmanager_secret.this) > 0 ? aws_secretsmanager_secret.this[0].arn : null) : local.existing_secret_arn
@@ -49,6 +57,20 @@ locals {
       "goldenpath.idp/risk"  = var.metadata.risk
     } : {}
   )
+}
+
+# -----------------------------------------------------------------------------
+# Guard against scheduled-for-deletion secrets that could not be restored
+# -----------------------------------------------------------------------------
+resource "null_resource" "restore_guard" {
+  count = local.restore_failed ? 1 : 0
+
+  lifecycle {
+    precondition {
+      condition     = false
+      error_message = "Secret ${var.name} is scheduled for deletion and could not be restored. Ensure secretsmanager:RestoreSecret permissions or clear the deletion window before retrying."
+    }
+  }
 }
 
 # -----------------------------------------------------------------------------
