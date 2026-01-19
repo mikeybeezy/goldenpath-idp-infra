@@ -79,6 +79,39 @@ metrics:
       release: kube-prometheus-stack
 
 # -----------------------------------------------------------------------------
+# GitHub App Authentication for Git Write-back
+# See: RB-0036-github-app-image-updater.md
+# -----------------------------------------------------------------------------
+extraEnv:
+  - name: ARGOCD_IMAGE_UPDATER_GIT_WRITE_BACK_TARGET
+    value: "git"
+  - name: GIT_AUTH_METHOD
+    value: "github-app"
+  - name: GITHUB_APP_ID
+    valueFrom:
+      secretKeyRef:
+        name: github-app-image-updater
+        key: app-id
+        optional: true  # Set to false once secret exists
+  - name: GITHUB_APP_INSTALLATION_ID
+    valueFrom:
+      secretKeyRef:
+        name: github-app-image-updater
+        key: installation-id
+        optional: true  # Set to false once secret exists
+
+extraVolumes:
+  - name: github-app-creds
+    secret:
+      secretName: github-app-image-updater
+      optional: true  # Set to false once secret exists - allows cluster to deploy before pipeline enabled
+
+extraVolumeMounts:
+  - name: github-app-creds
+    mountPath: /app/config/github-app
+    readOnly: true
+
+# -----------------------------------------------------------------------------
 # Resources (production sizing)
 # -----------------------------------------------------------------------------
 resources:
