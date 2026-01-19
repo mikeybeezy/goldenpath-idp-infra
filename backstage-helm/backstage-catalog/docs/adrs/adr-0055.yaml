@@ -3,9 +3,11 @@ kind: Component
 metadata:
   name: adr-0055
   title: 'ADR-0055: Tempo as the standard tracing backend (V1.1)'
-  description: '- **Status:** Proposed
+  description: '- **Status:** Implementing
 
     - **Date:** 2025-12-31
+
+    - **Updated:** 2026-01-18
 
     - **Owners:** platform team
 
@@ -13,7 +15,7 @@ metadata:
 
     - **Decision type:** Observability
 
-    - **Related:** `docs/50-observability/05_OBSERVABILITY_DECISIONS.md`...'
+    - **Related:** `docs/50-observability/...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0055-platform-tempo-tracing-backend.md

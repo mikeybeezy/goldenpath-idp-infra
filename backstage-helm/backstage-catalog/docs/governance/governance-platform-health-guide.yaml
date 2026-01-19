@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: governance-platform-health-guide
-  title: Platform Health Dashboard Guide
+  title: PLATFORM_HEALTH_GUIDE
   description: The `PLATFORM_HEALTH.md` file at the repository root is the "Single
     Source of Truth" for the operational status, compliance, and governance reach
     of the GoldenPath IDP.

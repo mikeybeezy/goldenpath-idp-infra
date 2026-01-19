@@ -2,8 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0112
-  title: 'ADR-0112: Automated ADR Index Generation'
-  description: ''
+  title: ADR-0112-automated-adr-index-generation
+  description: As the number of Architecture Decision Records (ADRs) grows (currently
+    100+), keeping the `01_adr_index.md` in sync manually has become error-prone.
+    We frequently observe drift in statuses, dates, and...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0112-automated-adr-index-generation.md
@@ -18,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

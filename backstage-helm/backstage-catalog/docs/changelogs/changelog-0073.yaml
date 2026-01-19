@@ -2,8 +2,9 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0073
-  title: 'CL-0073: Conclusive Governance Routing & Compliance Engine'
-  description: ''
+  title: CL-0073-conclusive-governance-routing-architecture
+  description: Architected and implemented a repository-wide governance routing engine
+    that ensures 100% auditability for platform changes.
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0073-conclusive-governance-routing-architecture.md

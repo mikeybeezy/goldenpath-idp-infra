@@ -2,10 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0110
-  title: 'ADR-0110: IDP Knowledge Graph Node Architecture'
-  description: "```mermaid\ngraph TD\n    Registry[\"Registry (ECR)\"]\n    App[\"\
-    Application (Service)\"]\n    Infra[\"Infra (EKS/VPC)\"]\n    DF[\"Dockerfile\
-    \ (Source)\"]\n    Img[\"Image (Artifact)\"]\n    Workflow[\"Workflow (Autom..."
+  title: ADR-0110-idp-knowledge-graph-architecture
+  description: The GoldenPath IDP currently uses disconnected YAML sidecars (`metadata.yaml`)
+    to track component attributes. While metadata compliance is high (98.7%), we lacks
+    a structured way to understand **relat...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0110-idp-knowledge-graph-architecture.md
@@ -20,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

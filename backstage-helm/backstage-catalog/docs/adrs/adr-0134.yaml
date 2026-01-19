@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0134
-  title: 'ADR-0134: Metadata Inheritance, Active Governance, and Leak Protection'
+  title: ADR-0134-metadata-inheritance-active-governance-and-leak-protection
   description: 'id: ADR-0134-metadata-inheritance-active-governance-and-leak-protection
 
     title: ''ADR-0134: Metadata Inheritance, Active Governance, and Leak Protection''
@@ -24,6 +24,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

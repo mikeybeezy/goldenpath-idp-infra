@@ -2,8 +2,8 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0127
-  title: 'ADR-0127: Backstage Helm Deployment with ROI Telemetry'
-  description: ''
+  title: ADR-0127-backstage-deployment-roi-telemetry
+  description: Accepted
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0127-backstage-deployment-roi-telemetry.md
@@ -18,6 +18,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0135
-  title: 'CL-0135: Kong Ingress for Tooling Apps'
+  title: After ArgoCD sync, verify ingress created
   description: '**Type**: Feature
 
     **Component**: Backstage / Kong

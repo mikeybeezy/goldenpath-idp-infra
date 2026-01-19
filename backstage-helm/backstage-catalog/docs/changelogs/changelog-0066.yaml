@@ -3,7 +3,10 @@ kind: Component
 metadata:
   name: changelog-0066
   title: CL-0066-automate-script-docs
-  description: ''
+  description: '- **Documentation**: Implemented `scripts/generate_script_index.py`
+    to auto-generate the Platform Automation Scripts Index.
+
+    - **Governance**: Added [ADR-0104](../../adrs/ADR-0104-automated-script-docs...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0066-automate-script-docs.md

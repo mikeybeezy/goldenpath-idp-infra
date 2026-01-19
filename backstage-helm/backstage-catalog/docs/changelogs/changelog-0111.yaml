@@ -2,8 +2,9 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0111
-  title: 'CL-0111: Secret Request Pipeline Stabilization'
-  description: ''
+  title: CL-0111-secret-request-stabilization
+  description: Resolved pathing and lifecycle issues in the automated Secret Request
+    CI/CD pipeline, ensuring that Terraform plans are correctly surfaced in PR comments.
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0111-secret-request-stabilization.md

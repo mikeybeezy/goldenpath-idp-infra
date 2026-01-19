@@ -2,8 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0116
-  title: 'ADR-0116: Emoji Usage Policy & Automated Enforcement'
-  description: ''
+  title: ADR-0116-emoji-usage-policy-and-enforcement
+  description: Documentation quality and professional neutrality are core tenets of
+    the platform. Excessive or semi-random emoji usage in authoritative documents
+    (ADRs, Policies, Schemas) can obscure meaning and red...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0116-emoji-usage-policy-and-enforcement.md
@@ -18,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

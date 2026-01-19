@@ -2,10 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0102
-  title: 'ADR-0102: Layer 2 Terraform Validation (Fast Feedback Loop)'
-  description: Developers who make syntax errors (e.g., invalid attribute references)
-    or formatting mistakes often wait several minutes only to receive a failure that
-    could have been caught instantly offline. There ...
+  title: ADR-0102-terraform-fast-validation
+  description: Currently, Terraform validation primarily occurs during the `env=dev`
+    integration tests (`infra-terraform-apply-dev.yml`) or via `pr-terraform-plan.yml`.
+    These workflows require AWS credentials, backe...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0102-terraform-fast-validation.md
@@ -20,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

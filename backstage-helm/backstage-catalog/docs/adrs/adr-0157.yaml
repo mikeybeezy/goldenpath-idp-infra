@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0157
-  title: 'ADR-0157: Multi-Tenant RDS for Platform Tooling Applications'
+  title: ADR-0157-platform-multi-tenant-rds-architecture
   description: '- **Status:** Superseded (by ADR-0158)
 
     - **Date:** 2026-01-15

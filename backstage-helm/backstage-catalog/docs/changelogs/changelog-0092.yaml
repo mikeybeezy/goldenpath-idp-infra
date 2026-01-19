@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0092
-  title: 'CL-0092: ECR registry system boundary and sync updates'
+  title: CL-0092-ecr-registry-system-and-sync
   description: 'Date: 2026-01-09
 
     Owner: platform-team

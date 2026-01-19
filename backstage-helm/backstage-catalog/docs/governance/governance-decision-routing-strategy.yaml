@@ -2,13 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: governance-decision-routing-strategy
-  title: Decision Routing & Governance Strategy
-  description: '---
-
-    > [!IMPORTANT]
-
-    > This strategy ensures we are "Born Governed," where architectural rigor is baked
-    into the developer workflow rather than added as an after-thought.'
+  title: DECISION_ROUTING_STRATEGY
+  description: This document establishes the **Automated Decision Routing** framework.
+    It ensures that every platform change is governed by the correct domain experts
+    and backed by the required architectural evidenc...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/DECISION_ROUTING_STRATEGY.md

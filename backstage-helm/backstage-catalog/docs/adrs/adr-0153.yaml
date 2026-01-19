@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0153
-  title: Cluster Provisioning Identity and Script Resilience
+  title: ADR-0153-cluster-provisioning-identity
   description: 'During the implementation of the "Seamless Build Deployment" (ADR-0148),
     two significant operational blockers were identified that affected the reliability
     and portability of the build process:'
@@ -20,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

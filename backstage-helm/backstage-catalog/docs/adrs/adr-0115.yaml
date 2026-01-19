@@ -2,8 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0115
-  title: 'ADR-0115: Enhanced Enum Validation Engine'
-  description: ''
+  title: ADR-0115-enhanced-enum-validation-engine
+  description: ADR-0114 introduced the `validate_enums.py` script to enforce metadata
+    consistency. However, the initial implementation relied on flat field matching,
+    making it difficult to validate nested objects li...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0115-enhanced-enum-validation-engine.md
@@ -18,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records
