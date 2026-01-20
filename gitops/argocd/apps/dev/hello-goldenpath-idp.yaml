@@ -10,11 +10,12 @@ metadata:
     goldenpath.idp/owner: platform-team
     goldenpath.idp/risk: low
     argocd.argoproj.io/sync-wave: "10"
-    # Image Updater annotations - latest strategy for dev
+    # Image Updater annotations - latest strategy for dev (GOV-0012 allows :latest for dev)
     argocd-image-updater.argoproj.io/image-list: app=593517239005.dkr.ecr.eu-west-2.amazonaws.com/hello-goldenpath-idp
     argocd-image-updater.argoproj.io/app.update-strategy: latest
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/git-credentials: secret:argocd/github-app-image-updater
   labels:
     app.kubernetes.io/part-of: goldenpath-idp
     environment: dev

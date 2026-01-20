@@ -1,5 +1,5 @@
 # hello-goldenpath-idp - Staging Environment
-# Auto-sync enabled, Image Updater with semver strategy
+# Auto-sync enabled, Image Updater with env-sha tagging (GOV-0012)
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -10,12 +10,14 @@ metadata:
     goldenpath.idp/owner: platform-team
     goldenpath.idp/risk: low
     argocd.argoproj.io/sync-wave: "10"
-    # Image Updater annotations - semver strategy for staging
+    # Image Updater annotations - env-sha tagging for staging (GOV-0012)
+    # Only accepts tags matching: staging-<sha> pattern
     argocd-image-updater.argoproj.io/image-list: app=593517239005.dkr.ecr.eu-west-2.amazonaws.com/hello-goldenpath-idp
-    argocd-image-updater.argoproj.io/app.update-strategy: semver
-    argocd-image-updater.argoproj.io/app.allow-tags: regexp:^v\d+\.\d+\.\d+$
+    argocd-image-updater.argoproj.io/app.update-strategy: name
+    argocd-image-updater.argoproj.io/app.allow-tags: regexp:^staging-[a-f0-9]{7,40}$
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/git-credentials: secret:argocd/github-app-image-updater
   labels:
     app.kubernetes.io/part-of: goldenpath-idp
     environment: staging

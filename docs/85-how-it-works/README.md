@@ -21,6 +21,7 @@ This directory contains high-level, technical explanations of the platform's cor
 ## CI/CD & Terraform
 
 - [CI Terraform Workflows](ci-terraform/CI_TERRAFORM_WORKFLOWS.md): GitHub Actions workflow architecture for plan/apply operations
+- [Application Build Pipeline](ci-terraform/APP_BUILD_PIPELINE.md): End-to-end app build, promotion, and GitOps sync flow
 - [Seamless Build Bootstrap Deployment](ci-terraform/SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT.md): Ephemeral cluster deployment mechanics
 
 ## Governance

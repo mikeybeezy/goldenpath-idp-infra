@@ -59,6 +59,7 @@ what changed in each session for audit and traceability.
 
 For context-bounded efforts, create a session capture using
 `session_capture/session_capture_template.md` and keep it append-only.
+Each update must include a short **Outstanding** section for quick scanning.
 
 ## 1) Scope and authority
 

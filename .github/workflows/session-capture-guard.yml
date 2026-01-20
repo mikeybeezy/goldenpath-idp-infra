@@ -69,6 +69,7 @@ jobs:
 
           # Match "## Update - 2026-01-17T09:48:36Z" or "### Update — 2026-01-17T09:48:36Z"
           update_re = re.compile(r"^#{2,3} Update (?:-|—) \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z")
+          outstanding_re = re.compile(r"^(?:#{2,4} )?Outstanding\b|^\*\*Outstanding\b")
 
           for f in files:
               try:
@@ -94,6 +95,9 @@ jobs:
               if appended:
                   if not any(update_re.match(line) for line in appended):
                       print(f"🚫 {f} appended content must include a timestamped update header (e.g., '## Update - 2026-01-17T09:48:36Z').")
+                      sys.exit(1)
+                  if not any(outstanding_re.match(line) for line in appended):
+                      print(f"🚫 {f} appended content must include an Outstanding section.")
                       sys.exit(1)
 
           print("✅ Session capture files are append-only with timestamped updates.")

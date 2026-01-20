@@ -175,6 +175,11 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 |079|P1|**🔴 HV/HQ**|Governance|Infra Governance: Inherit "Born Governed" for Terraform Modules|platform|Open|M|Q1|Extend schema/validator to infra/modules/*|ADR-0146, CNT-001 - Prevent drift in infrastructure code quality|
 |080|P1|**🔴 HV/HQ**|Governance|Script Cert: Achieve 100% Maturity 3 (Certified) on P0 scripts|platform|Open|M|Q1|Backfill tests for critical path scripts|SCRIPT_CERTIFICATION_AUDIT.md - Eliminate "trust me" testing via cryptographic proofs|
 |081|P3|**🟡 HV/LQ**|Backstage|Kong Backstage Plugin: Build custom plugin for Kong API Gateway visibility|platform|Parked|L|Q3+|Create design spec when capacity available|Community contribution opportunity - no existing Kong plugin in Backstage marketplace. Pattern reusable for Traefik/Istio/NGINX. ~10-12 days effort for MVP.|
+|082|P1|**🔴 HV/HQ**|Security|Enforce mandatory security scans at promotion boundary|platform|Open|M|Q1|Design ADR for enforcement strategy|ADR-0170, GOV-0012 - Prevent code reaching prod without security scans. Options: Branch Protection, ArgoCD Admission Controller, OPA/Gatekeeper, ECR Policy.|
+|083|P1|**🔴 HV/HQ**|Governance|Require canonical build workflow for all app repos|platform|Open|M|Q1|Define org-wide workflow adoption policy|ADR-0174 - Ensure all repos use goldenpath-build.yml with security scans. Scaffolder enforces for new repos; existing repos require migration.|
+|084|P1|**🔴 HV/HQ**|Security|Create scheduled SAST/SCA scan workflow for all repos|platform|Open|M|Q1|Create periodic-security-scan.yml|GOV-0014 Phase 3 - Weekly Trivy/Semgrep scans across all app repos. Detect newly discovered CVEs in deployed code.|
+|085|P2|**🟡 HV/LQ**|Security|Org-wide IDE security tooling enforcement|platform|Open|S|Q1|Define IDE tooling policy + Day 1 verification|GOV-0014 - Mandate Gitleaks/Snyk IDE extensions. Verify via onboarding checklist. Currently "recommended" not enforced.|
+|086|P2|**🟡 HV/LQ**|Security|Historical repo secret scan (full git history)|platform|Open|M|Q1|Run TruffleHog/Gitleaks on all repos|ADR-0138 - One-time scan of full git history for all repos. Remediate any findings before enforcement.|
 
 ## Rules
 

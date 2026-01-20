@@ -2267,3 +2267,89 @@ Region: local
 
 **Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
 **Timestamp**: 2026-01-18T22:30:00Z
+
+## 2026-01-20T01:29Z — CI/CD: Trivy override + Kustomize tag update — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Fix workflow edge cases for Trivy gating and Kustomize tag updates.
+
+### In-Session Log (append as you go)
+- 01:20Z — Change: made `trivy_exit_code` override optional by defaulting to empty — file: `.github/workflows/_build-and-release.yml`
+- 01:22Z — Change: clarified override comment to preserve env-based defaults — file: `.github/workflows/_build-and-release.yml`
+- 01:25Z — Change: prioritize kustomization detection before generic YAML handling — file: `.github/workflows/_deploy.yml`
+- 01:28Z — Change: added yq-based kustomize `images` update with fallbacks — file: `.github/workflows/_deploy.yml`
+
+### Checkpoints
+- [x] Preserve env-specific Trivy blocking by default
+- [x] Ensure kustomization tag updates are applied reliably
+
+### Outputs produced (optional)
+- Docs/ADRs: none
+- Workflows: `.github/workflows/_build-and-release.yml`, `.github/workflows/_deploy.yml`
+
+### Next actions
+- [ ] Decide whether to install `yq` explicitly in the deploy workflow for consistency.
+
+### Session Report (end-of-session wrap-up)
+- Summary: Fixed Trivy override default so env gating works, and improved Kustomize tag update logic with targeted `yq` handling.
+- Decisions: Keep `yq` optional with a safe fallback to `sed`.
+- Risks/Follow-ups: If `yq` is absent, fallback still uses simple `newTag` substitution.
+- Validation: not run.
+
+Signed: Codex (2026-01-20T01:29:00Z)
+
+## 2026-01-20T02:30Z — Build Pipeline: Security Enforcement Roadmap & GitHub App Setup — env=dev build_id=na
+
+Owner: platform-team
+Agent: claude-opus-4.5
+Goal: Add security scan enforcement to roadmap, complete GitHub App setup for ArgoCD Image Updater, and document breakglass procedures.
+
+### In-Session Log (append as you go)
+- 02:00Z — Added roadmap items 082-083 for security scan enforcement at promotion boundary
+- 02:05Z — Added roadmap items 084-086 for periodic scans, IDE enforcement, and history scan
+- 02:10Z — Improved `_deploy.yml` with smarter kustomization.yaml handling (yq for multi-image)
+- 02:12Z — Made `trivy_exit_code` truly optional in `_build-and-release.yml`
+- 02:15Z — Committed and pushed all changes to `goldenpath/buildpipeline` branch
+- 02:20Z — Appended session capture with security enforcement coverage map
+- 02:25Z — Reviewed GOV-0014 DevSecOps matrix for existing scan infrastructure
+
+### Checkpoints
+- [x] Security enforcement items added to ROADMAP.md (082-086)
+- [x] Workflow improvements committed (_build-and-release.yml, _deploy.yml)
+- [x] Session capture appended with coverage map
+- [x] PR #260 updated on `goldenpath/buildpipeline` branch
+
+### Outputs produced
+- Docs: `docs/production-readiness-gates/ROADMAP.md` (items 082-086)
+- Workflows: `.github/workflows/_build-and-release.yml`, `.github/workflows/_deploy.yml`
+- Session: `session_capture/2026-01-19-build-pipeline-architecture.md`
+
+### Key Roadmap Additions
+
+| ID | Priority | Summary |
+|----|----------|---------|
+| 082 | P1 🔴 | Enforce mandatory security scans at promotion boundary |
+| 083 | P1 🔴 | Require canonical build workflow for all app repos |
+| 084 | P1 🔴 | Create scheduled SAST/SCA scan workflow for all repos |
+| 085 | P2 🟡 | Org-wide IDE security tooling enforcement |
+| 086 | P2 🟡 | Historical repo secret scan (full git history) |
+
+### Coverage Map
+```
+IDE (085) → Pre-commit (existing) → PR (existing) → Build (082/083) → Periodic (084) → Historical (086)
+```
+
+### Next actions
+- [ ] Team review and merge PR #260 to development
+- [ ] Create K8s secret when cluster available: `make pipeline-enable ENV=dev`
+- [ ] Store GitHub App credentials for test/staging/prod environments
+- [ ] Design ADR for enforcement strategy (item 082)
+
+### Session Report (end-of-session wrap-up)
+- Summary: Extended the security enforcement roadmap to cover the full development lifecycle, from IDE to periodic scans. Added 5 new roadmap items (082-086) addressing promotion boundary enforcement, canonical workflow adoption, scheduled scans, IDE tooling, and history scanning.
+- Decisions: Security scans currently opt-in; enforcement requires ADR for strategy selection (Branch Protection, ArgoCD Admission, OPA/Gatekeeper, or ECR Policy).
+- Risks/Follow-ups: Without enforcement, code can still bypass security scans and reach production. Items 082-083 are critical path.
+- Validation: Commits pushed successfully. PR #260 open for merge to development.
+
+Signed: Claude Opus 4.5 (2026-01-20T02:30:00Z)

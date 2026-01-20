@@ -143,6 +143,7 @@ Read and align on priorities before proposing work:
 - Append to `session_summary/agent_session_summary.md` using `session_summary/session_summary_template.md`.
 - For context-bounded work, create a session capture using `session_capture/session_capture_template.md`.
 - Session captures are append-only and must include validation evidence for any claims.
+- Each update must include a short **Outstanding** section for quick scanning (enforced by `session-capture-guard.yml`).
 
 ## 7) Standard interfaces
 

@@ -1,0 +1,113 @@
+# GoldenPath IDP - App Repo Pre-commit Configuration
+# GOV-0013: DevSecOps Security Standards
+# OB-0001: Developer Security Tooling Onboarding
+#
+# Installation:
+#   pip install pre-commit
+#   pre-commit install
+#
+# Usage:
+#   pre-commit run --all-files
+
+repos:
+  # ==========================================================================
+  # MANDATORY: Secret Detection (Gitleaks)
+  # GOV-0013 Section 3.1: MUST install
+  # ==========================================================================
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.2
+    hooks:
+      - id: gitleaks
+        args: ["--redact"]
+
+  # ==========================================================================
+  # MANDATORY: Basic Security Checks
+  # ==========================================================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      # Prevent large files from being committed
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      # Detect merge conflict markers
+      - id: check-merge-conflict
+      # Detect private keys
+      - id: detect-private-key
+      # Fix trailing whitespace
+      - id: trailing-whitespace
+      # Ensure files end with newline
+      - id: end-of-file-fixer
+      # Check YAML syntax
+      - id: check-yaml
+        args: ['--unsafe']
+      # Check JSON syntax
+      - id: check-json
+      # Check for case conflicts (important for case-insensitive filesystems)
+      - id: check-case-conflict
+
+  # ==========================================================================
+  # RECOMMENDED: YAML Linting
+  # ==========================================================================
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: ['-d', '{extends: relaxed, rules: {line-length: {max: 120}}}']
+
+  # ==========================================================================
+  # RECOMMENDED: Dockerfile Linting
+  # ==========================================================================
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint
+        args: ['--ignore', 'DL3008', '--ignore', 'DL3013']
+
+  # ==========================================================================
+  # Language-Specific Hooks (uncomment as needed)
+  # ==========================================================================
+
+  # Python
+  # - repo: https://github.com/psf/black
+  #   rev: 24.4.2
+  #   hooks:
+  #     - id: black
+  #
+  # - repo: https://github.com/pycqa/flake8
+  #   rev: 7.0.0
+  #   hooks:
+  #     - id: flake8
+  #       args: ['--max-line-length=120']
+  #
+  # - repo: https://github.com/pycqa/isort
+  #   rev: 5.13.2
+  #   hooks:
+  #     - id: isort
+
+  # JavaScript/TypeScript
+  # - repo: https://github.com/pre-commit/mirrors-eslint
+  #   rev: v9.2.0
+  #   hooks:
+  #     - id: eslint
+  #       additional_dependencies:
+  #         - eslint@9.2.0
+
+  # Go
+  # - repo: https://github.com/dnephin/pre-commit-golang
+  #   rev: v0.5.1
+  #   hooks:
+  #     - id: go-fmt
+  #     - id: go-vet
+
+  # Terraform (if app includes IaC)
+  # - repo: https://github.com/antonbabenko/pre-commit-terraform
+  #   rev: v1.91.0
+  #   hooks:
+  #     - id: terraform_fmt
+  #     - id: terraform_validate
+
+# ==========================================================================
+# Configuration
+# ==========================================================================
+default_stages: [pre-commit]
+fail_fast: false
