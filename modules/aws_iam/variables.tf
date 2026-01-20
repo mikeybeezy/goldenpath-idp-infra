@@ -1,7 +1,9 @@
-variable "cluster_role_name" {
-  type        = string
-  description = "Name for the EKS cluster IAM role."
-}
+################################################################################
+# NOTE: cluster_role_name and node_group_role_name removed.
+# EKS cluster and node group IAM roles are created by the EKS module
+# (modules/aws_eks/main.tf). This IAM module only manages IRSA roles.
+# See: session_capture/2026-01-20-persistent-cluster-deployment.md
+################################################################################
 
 variable "tags" {
   type        = map(string)
@@ -13,11 +15,6 @@ variable "environment" {
   type        = string
   description = "Environment name for tagging."
   default     = ""
-}
-
-variable "node_group_role_name" {
-  type        = string
-  description = "Name for the EKS node group IAM role."
 }
 
 variable "oidc_role_name" {

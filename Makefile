@@ -106,7 +106,7 @@ endef
 #   make drain-nodegroup NODEGROUP=dev-default
 #   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 
-.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help s3-validate s3-generate s3-apply rds-init rds-plan rds-apply rds-status rds-provision rds-provision-dry-run rds-provision-auto rds-provision-auto-dry-run apply-persistent bootstrap-persistent deploy-persistent teardown-persistent
+.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help s3-validate s3-generate s3-apply rds-init rds-plan rds-apply rds-deploy rds-status rds-provision rds-provision-dry-run rds-provision-auto rds-provision-auto-dry-run apply-persistent bootstrap-persistent deploy-persistent teardown-persistent
 
 init:
 	$(TF_BIN) -chdir=$(ENV_DIR) init
@@ -338,14 +338,15 @@ teardown:
 	@bash -c '\
 	build_id=$(BUILD_ID); \
 	script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh"; \
-	case "$${TEARDOWN_VERSION:-v3}" in \
+	case "$${TEARDOWN_VERSION:-v4}" in \
+	  v4) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh";; \
 	  v3) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh";; \
 	  v2) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh";; \
 	  *) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh";; \
 	esac; \
 	log="logs/build-timings/teardown-$(ENV)-$(CLUSTER)-$${build_id}-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Teardown output streaming; full log at $$log"; \
-	echo "Teardown script: $$script (version $${TEARDOWN_VERSION:-v3})"; \
+	echo "Teardown script: $$script (version $${TEARDOWN_VERSION:-v4})"; \
 	TEARDOWN_CONFIRM=true \
 	TF_DIR=$(TF_DIR) \
 	TF_AUTO_APPROVE=true \
@@ -361,14 +362,15 @@ teardown-resume:
 	@bash -c '\
 	build_id=$(BUILD_ID); \
 	script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh"; \
-	case "$${TEARDOWN_VERSION:-v3}" in \
+	case "$${TEARDOWN_VERSION:-v4}" in \
+	  v4) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh";; \
 	  v3) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh";; \
 	  v2) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh";; \
 	  *) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh";; \
 	esac; \
 	log="logs/build-timings/teardown-resume-$(ENV)-$(CLUSTER)-$${build_id}-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Teardown resume output streaming; full log at $$log"; \
-	echo "Teardown script: $$script (version $${TEARDOWN_VERSION:-v3})"; \
+	echo "Teardown script: $$script (version $${TEARDOWN_VERSION:-v4})"; \
 	TEARDOWN_CONFIRM=true \
 	TF_DIR=$(TF_DIR) \
 	TF_AUTO_APPROVE=true \
@@ -389,14 +391,15 @@ timed-teardown:
 	start_epoch=$$(date -u +%s); \
 	build_id=$(BUILD_ID); \
 	script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh"; \
-	case "$${TEARDOWN_VERSION:-v3}" in \
+	case "$${TEARDOWN_VERSION:-v4}" in \
+	  v4) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh";; \
 	  v3) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh";; \
 	  v2) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh";; \
 	  *) script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh";; \
 	esac; \
 	log="logs/build-timings/teardown-$(ENV)-$(CLUSTER)-$${build_id}-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Teardown output streaming; full log at $$log"; \
-	echo "Teardown script: $$script (version $${TEARDOWN_VERSION:-v3})"; \
+	echo "Teardown script: $$script (version $${TEARDOWN_VERSION:-v4})"; \
 	( time TEARDOWN_CONFIRM=true \
 	  TF_DIR=$(TF_DIR) \
 	  TF_AUTO_APPROVE=true \
@@ -500,9 +503,51 @@ rds-apply:
 	@bash -c '\
 	log="logs/build-timings/rds-apply-$(ENV)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "RDS apply output streaming; full log at $$log"; \
-	$(TF_BIN) -chdir=$(RDS_ENV_DIR) apply 2>&1 | tee "$$log"; \
+	$(TF_BIN) -chdir=$(RDS_ENV_DIR) apply $(TF_APPROVE_FLAG) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
+
+rds-deploy:
+	@echo "Deploying standalone RDS for $(ENV)..."
+	@bash -c '\
+	if [ "$(RESTORE_SECRETS)" = "true" ]; then \
+		if [ ! -d "$(RDS_ENV_DIR)" ]; then \
+			echo "RDS environment directory not found: $(RDS_ENV_DIR)"; \
+			echo "Available: $$(ls -d envs/*-rds 2>/dev/null || echo 'none')"; \
+			exit 1; \
+		fi; \
+		tfvars="$(RDS_ENV_DIR)/terraform.tfvars"; \
+		region=$$(awk -F"=" "/^[[:space:]]*aws_region[[:space:]]*=/{gsub(/\\\"|[[:space:]]/,\\\"\\\",$$2);print $$2;exit}" "$$tfvars"); \
+		if [ -z "$$region" ]; then \
+			echo "ERROR: aws_region not found in $$tfvars"; \
+			exit 1; \
+		fi; \
+		secrets="goldenpath/$(ENV)/rds/master"; \
+		app_keys=$$(awk '\
+			BEGIN{in=0} \
+			/^[[:space:]]*application_databases[[:space:]]*=/{in=1} \
+			in && /^[[:space:]]*}/ {in=0} \
+			in && /^[[:space:]]*[A-Za-z0-9_-]+[[:space:]]*=[[:space:]]*{/ { \
+				key=$$1; gsub(/[[:space:]]/, "", key); gsub(/=.*/, "", key); print key; \
+			} \
+		' "$$tfvars"); \
+		for key in $$app_keys; do \
+			secrets="$$secrets goldenpath/$(ENV)/$$key/postgres"; \
+		done; \
+		for secret in $$secrets; do \
+			deleted=$$(aws secretsmanager describe-secret --secret-id "$$secret" --region "$$region" --query "DeletedDate" --output text 2>/dev/null || true); \
+			if [ -n "$$deleted" ] && [ "$$deleted" != "None" ]; then \
+				echo "Restoring secret $$secret (scheduled for deletion)"; \
+				aws secretsmanager restore-secret --secret-id "$$secret" --region "$$region" >/dev/null; \
+			fi; \
+		done; \
+	else \
+		echo "Skipping secret restore preflight (RESTORE_SECRETS=$(RESTORE_SECRETS))."; \
+	fi; \
+	'
+	@$(MAKE) rds-init ENV=$(ENV)
+	@$(MAKE) rds-apply ENV=$(ENV)
+	@$(MAKE) rds-provision-auto ENV=$(ENV) RDS_MODE=standalone
 
 rds-status:
 	@echo "Platform RDS Status for $(ENV)"
@@ -833,6 +878,11 @@ pipeline-enable-dry-run:
 PERSISTENT_CLUSTER ?= $(shell awk -F'=' '/^[[:space:]]*cluster_name[[:space:]]*=/{gsub(/"/,"",$$2);gsub(/[[:space:]]/,"",$$2);print $$2;exit}' $(ENV_DIR)/terraform.tfvars 2>/dev/null)
 PERSISTENT_CLUSTER_EFFECTIVE ?= $(if $(PERSISTENT_CLUSTER),$(PERSISTENT_CLUSTER),goldenpath-$(ENV)-eks)
 
+TF_AUTO_APPROVE ?= true
+TF_APPROVE_FLAG := $(if $(filter true,$(TF_AUTO_APPROVE)),-auto-approve,)
+CREATE_RDS ?= true
+RESTORE_SECRETS ?= true
+
 apply-persistent:
 	@echo "Applying persistent infrastructure for $(ENV)..."
 	@echo "Cluster: $(PERSISTENT_CLUSTER_EFFECTIVE)"
@@ -842,6 +892,7 @@ apply-persistent:
 	log="logs/build-timings/apply-persistent-$(ENV)-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Terraform apply output streaming; full log at $$log"; \
 	$(TF_BIN) -chdir=$(ENV_DIR) apply \
+		$(TF_APPROVE_FLAG) \
 		-var="cluster_lifecycle=persistent" \
 		-var="enable_k8s_resources=true" \
 		-var="apply_kubernetes_addons=false" \
@@ -870,7 +921,11 @@ deploy-persistent:
 	@echo "Starting persistent deployment for $(ENV)"
 	@echo "Cluster: $(PERSISTENT_CLUSTER_EFFECTIVE)"
 	@$(MAKE) apply-persistent ENV=$(ENV) REGION=$(REGION)
-	@$(MAKE) rds-provision-auto ENV=$(ENV) RDS_MODE=auto
+	@if [ "$(CREATE_RDS)" = "true" ]; then \
+		$(MAKE) rds-deploy ENV=$(ENV); \
+	else \
+		echo "Skipping RDS deploy (CREATE_RDS=$(CREATE_RDS))."; \
+	fi
 	@$(MAKE) bootstrap-persistent ENV=$(ENV) REGION=$(REGION)
 	@$(MAKE) _phase3-verify ENV=$(ENV)
 	@echo "Persistent deployment complete!"
@@ -926,6 +981,8 @@ help:
 	@echo "  make rds-init ENV=dev          # Initialize RDS Terraform"
 	@echo "  make rds-plan ENV=dev          # Plan RDS changes"
 	@echo "  make rds-apply ENV=dev         # Apply RDS (deploy first!)"
+	@echo "  make rds-deploy ENV=dev        # Init + apply + provision (standalone)"
+	@echo "  make rds-deploy ENV=dev RESTORE_SECRETS=false  # Skip restore preflight"
 	@echo "  make rds-status ENV=dev        # Show RDS outputs"
 	@echo "  make rds-provision ENV=dev     # Provision DB users/databases"
 	@echo "  make rds-provision-dry-run ENV=dev  # Preview provisioning"
@@ -944,7 +1001,8 @@ help:
 	@echo "== Persistent Mode (no BUILD_ID) =="
 	@echo "  make apply-persistent ENV=dev REGION=eu-west-2"
 	@echo "  make bootstrap-persistent ENV=dev REGION=eu-west-2"
-	@echo "  make deploy-persistent ENV=dev REGION=eu-west-2  # apply + rds-provision + bootstrap"
+	@echo "  make deploy-persistent ENV=dev REGION=eu-west-2  # apply + rds-deploy + bootstrap"
+	@echo "  make deploy-persistent ENV=dev REGION=eu-west-2 CREATE_RDS=false  # skip RDS deploy"
 	@echo "  make teardown-persistent ENV=dev REGION=eu-west-2 CONFIRM_DESTROY=yes"
 	@echo "  NOTE: Persistent mode uses root state key (envs/<env>/terraform.tfstate)"
 	@echo "  NOTE: RDS allowed in persistent mode, blocked in ephemeral"

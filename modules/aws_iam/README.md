@@ -41,17 +41,15 @@ breaking_change: false
 
 ## Purpose
 
-Creates IAM roles for the EKS cluster and node group, plus optional IRSA roles
-for:
+Creates optional IRSA roles for:
 
 - Cluster Autoscaler
 - AWS Load Balancer Controller
 - OIDC assume-role (optional)
 
-## Inputs
+EKS cluster and node group IAM roles are created by the EKS module.
 
-- `cluster_role_name` (string)
-- `node_group_role_name` (string)
+## Inputs
 - `oidc_role_name` (string)
 - `enable_oidc_role` (bool)
 - `enable_autoscaler_role` (bool)
@@ -71,7 +69,6 @@ for:
 
 ## Outputs
 
-- Cluster and node role names/ARNs
 - Autoscaler role name/ARN
 - LB controller role name/ARN
 

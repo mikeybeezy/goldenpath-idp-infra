@@ -2319,6 +2319,134 @@ Goal: Default persistent teardown to v4 with safe RDS/Secrets behavior.
 
 Signed: Codex (2026-01-20T13:17:00Z)
 
+## 2026-01-20T13:27Z — Teardown v4 Default + Docs Sync — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Default teardown to v4 and align runbook + Backstage catalog.
+
+### In-Session Log (append as you go)
+- 13:26Z — Change: set teardown default to v4 across targets — file: `Makefile`
+- 13:26Z — Change: documented v4 safety flags in runbook — file: `docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md`
+- 13:26Z — Change: added Backstage changelog entry for CL-0151 — file: `backstage-helm/backstage-catalog/docs/changelogs/changelog-0151.yaml`
+
+### Checkpoints
+- [x] Default teardown to v4
+- [x] Runbook reflects safe defaults
+- [x] Backstage catalog entry added
+
+### Outputs produced (optional)
+- Docs/Runbooks: `docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md`
+- Backstage catalog: `backstage-helm/backstage-catalog/docs/changelogs/changelog-0151.yaml`
+
+### Next actions
+- [ ] Confirm whether to set safety flags for ephemeral teardown defaults as well.
+
+### Session Report (end-of-session wrap-up)
+- Summary: Teardown defaults now use v4, with documentation and Backstage catalog aligned.
+- Decisions: v4 is the default across teardown targets; runbook calls out explicit RDS/Secrets opt-in.
+- Risks/Follow-ups: Ephemeral defaults still inherit v4 behavior; review flag defaults if needed.
+- Validation: not run.
+
+Signed: Codex (2026-01-20T13:27:00Z)
+
+## 2026-01-20T13:31Z — CI Teardown Workflow Alignment — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Align CI teardown workflow with v4 defaults and persistent safety flags.
+
+### In-Session Log (append as you go)
+- 13:31Z — Change: make build_id optional for persistent lifecycle and enforce format only for ephemeral — file: `.github/workflows/ci-teardown.yml`
+- 13:31Z — Change: default safety flags for persistent lifecycle — file: `.github/workflows/ci-teardown.yml`
+
+### Checkpoints
+- [x] Persistent teardown defaults to safe flags
+- [x] Ephemeral build_id validation preserved
+
+### Outputs produced (optional)
+- Workflows: `.github/workflows/ci-teardown.yml`
+
+### Next actions
+- [ ] Confirm if apply workflows need any adjustments for persistent build_id conventions.
+
+### Session Report (end-of-session wrap-up)
+- Summary: CI teardown now reflects v4 safety defaults for persistent lifecycle and keeps strict build_id checks for ephemeral runs.
+- Decisions: build_id is optional for persistent lifecycle in CI teardown.
+- Risks/Follow-ups: None identified beyond potential apply workflow alignment.
+- Validation: not run.
+
+Signed: Codex (2026-01-20T13:31:00Z)
+
+## 2026-01-20T13:34Z — BUILD_ID Canonicalization Notes — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Clarify that workflow input `build_id` is normalized to Makefile `BUILD_ID`.
+
+### In-Session Log (append as you go)
+- 13:34Z — Change: added canonicalization note in teardown workflow — file: `.github/workflows/ci-teardown.yml`
+- 13:34Z — Change: documented canonical `BUILD_ID` in runbook and quick reference — files: `docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md`, `QUICK_REFERENCE.md`
+
+### Checkpoints
+- [x] Workflow note added
+- [x] Docs note added
+
+### Outputs produced (optional)
+- Docs: `docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md`, `QUICK_REFERENCE.md`
+
+### Session Report (end-of-session wrap-up)
+- Summary: Clarified input-to-env mapping so `build_id` is understood as canonical `BUILD_ID` in Makefile context.
+- Decisions: Documentation now standardizes on `BUILD_ID` as canonical.
+- Risks/Follow-ups: None.
+- Validation: not run.
+
+Signed: Codex (2026-01-20T13:34:00Z)
+
+## 2026-01-20T13:56Z — Terraform Validate Attempt — env=dev build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Validate Terraform configuration after persistent teardown updates.
+
+### In-Session Log (append as you go)
+- 13:55Z — Result: `terraform -chdir=envs/dev validate` failed due to provider schema load errors on local darwin_arm64 plugins — file: `envs/dev`
+
+### Checkpoints
+- [ ] Validate Terraform config cleanly (provider cache needs repair or run on CI)
+
+### Session Report (end-of-session wrap-up)
+- Summary: Validation did not complete due to local provider plugin errors, not config issues.
+- Decisions: None.
+- Risks/Follow-ups: Re-run validation on a clean Terraform provider cache or CI runner.
+- Validation: failed (provider schema load).
+
+Signed: Codex (2026-01-20T13:56:00Z)
+
+## 2026-01-20T14:02Z — Teardown v4 Dry-Run Mode — env=na build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Add a dry-run mode to teardown v4 to avoid destructive actions.
+
+### In-Session Log (append as you go)
+- 14:01Z — Change: added DRY_RUN flag and skip destructive stages — file: `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh`
+
+### Checkpoints
+- [x] DRY_RUN flag added
+- [x] Terraform destroy skipped in DRY_RUN
+
+### Outputs produced (optional)
+- Script: `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh`
+
+### Session Report (end-of-session wrap-up)
+- Summary: Teardown v4 now supports a DRY_RUN mode that disables destructive actions.
+- Decisions: DRY_RUN is opt-in and logs skipped steps.
+- Risks/Follow-ups: Consider adding documentation and examples for DRY_RUN usage.
+- Validation: `bash -n bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh`
+
+Signed: Codex (2026-01-20T14:02:00Z)
+
 ## 2026-01-20T01:29Z — CI/CD: Trivy override + Kustomize tag update — env=na build_id=na
 
 Owner: platform-team

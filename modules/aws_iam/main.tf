@@ -2,60 +2,17 @@ locals {
   environment_tags = var.environment != "" ? { Environment = var.environment } : {}
 }
 
-// EKS control-plane role (assumed by eks.amazonaws.com).
-resource "aws_iam_role" "eks_cluster" {
-  name = var.cluster_role_name
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "eks.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-
-  tags = merge(var.tags, local.environment_tags)
-}
-
-
-
-
-// Attach required EKS control-plane policies.
-resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
-  role       = aws_iam_role.eks_cluster.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-}
-
-resource "aws_iam_role_policy_attachment" "eks_vpc_resource_controller" {
-  role       = aws_iam_role.eks_cluster.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
-}
-
-// Node group role (assumed by EC2 instances).
-resource "aws_iam_role" "eks_node_group" {
-  name = var.node_group_role_name
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-
-  tags = merge(var.tags, local.environment_tags)
-}
-
+################################################################################
+# NOTE: EKS cluster and node group IAM roles are created by the EKS module
+# (modules/aws_eks/main.tf). This IAM module only manages IRSA roles:
+# - cluster_autoscaler
+# - lb_controller
+# - eso (External Secrets Operator)
+#
+# See: session_capture/2026-01-20-persistent-cluster-deployment.md
+# Root cause: Both modules were creating identical IAM roles, causing
+# EntityAlreadyExists errors on fresh deploys.
+################################################################################
 
 data "tls_certificate" "eks_oidc" {
   count = var.enable_oidc_role ? 1 : 0

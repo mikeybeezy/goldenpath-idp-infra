@@ -1,22 +1,8 @@
-output "eks_cluster_role_name" {
-  description = "Name of the EKS cluster IAM role."
-  value       = aws_iam_role.eks_cluster.name
-}
-
-output "eks_cluster_role_arn" {
-  description = "ARN of the EKS cluster IAM role."
-  value       = aws_iam_role.eks_cluster.arn
-}
-
-output "eks_node_group_role_name" {
-  description = "Name of the EKS node group IAM role."
-  value       = aws_iam_role.eks_node_group.name
-}
-
-output "eks_node_group_role_arn" {
-  description = "ARN of the EKS node group IAM role."
-  value       = aws_iam_role.eks_node_group.arn
-}
+################################################################################
+# NOTE: eks_cluster_role and eks_node_group_role outputs removed.
+# These roles are now created and output by the EKS module (modules/aws_eks).
+# See: session_capture/2026-01-20-persistent-cluster-deployment.md
+################################################################################
 
 output "cluster_autoscaler_role_name" {
   description = "Name of the cluster autoscaler IAM role."

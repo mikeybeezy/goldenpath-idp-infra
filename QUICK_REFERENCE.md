@@ -134,7 +134,44 @@ make teardown ENV=dev BUILD_ID=<build-id> \
 make deploy-persistent ENV=dev
 ```
 
-This runs: apply-persistent + RDS provision + bootstrap-persistent + verify
+This runs: apply-persistent + rds-deploy + bootstrap-persistent + verify
+
+To skip RDS creation:
+
+```bash
+make deploy-persistent ENV=dev CREATE_RDS=false
+```
+
+### Persistent RDS (Standalone State)
+
+Platform RDS can be managed in its own Terraform state (`envs/<env>-rds/`).
+This keeps RDS intact when the cluster is torn down.
+
+```bash
+make rds-init ENV=dev
+make rds-plan ENV=dev
+make rds-apply ENV=dev
+make rds-provision-auto ENV=dev
+```
+
+Single-command wrapper:
+
+```bash
+make rds-deploy ENV=dev
+```
+
+Skip the secret-restore preflight:
+
+```bash
+make rds-deploy ENV=dev RESTORE_SECRETS=false
+```
+
+Important:
+- If `rds_config.enabled=true` in `envs/<env>/terraform.tfvars`, RDS is coupled to the
+  cluster state and **will** be destroyed by `terraform destroy`, regardless of safety flags.
+- To preserve RDS across cluster rebuilds, set `rds_config.enabled=false` and use
+  `envs/<env>-rds/` for RDS instead.
+- There is no `rds-destroy` target; see `docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md`.
 
 ### Teardown
 
@@ -157,6 +194,10 @@ Via Makefile:
 make teardown ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2 TEARDOWN_VERSION=v4
 ```
 
+Note: If RDS is coupled in `envs/<env>` (via `rds_config.enabled=true`), it will be
+destroyed with the cluster. Safety flags only affect extra cleanup steps, not the
+core Terraform destroy.
+
 ### Ephemeral vs Persistent Comparison
 
 | Attribute       | Ephemeral                      | Persistent                        |
@@ -166,6 +207,7 @@ make teardown ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2 TEARDOWN_VERSI
 | Secrets cleanup | BuildId tag                    | Name pattern                      |
 | RDS cleanup     | BuildId tag                    | ClusterName tag / name pattern    |
 | Teardown method | By BuildId                     | By name pattern                   |
+| RDS state       | Coupled or standalone          | Prefer standalone (`envs/<env>-rds`) |
 
 ---
 
@@ -371,3 +413,12 @@ make deploy ENV=dev BUILD_ID=<build-id>
 ---
 
 Last updated: 2026-01-20
+
+
+Fixed. The correct commands are:
+
+Cluster Type	Deploy Command
+```
+Persistent	make deploy-persistent ENV=dev
+Ephemeral	make deploy ENV=dev BUILD_ID=20-01-26-01
+```

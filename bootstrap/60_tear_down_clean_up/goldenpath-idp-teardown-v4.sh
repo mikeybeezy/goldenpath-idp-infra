@@ -79,6 +79,7 @@ set -euo pipefail
 #   DELETE_SECRETS=true|false (default true)
 #   SECRETS_FORCE_DELETE=true|false (default true, skip recovery window)
 #   SECRETS_NAME_PATTERN=<pattern> (default goldenpath/${env}/, fallback when no BuildId)
+#   DRY_RUN=true|false (default false; skip destructive actions)
 #
 # =============================================================================
 
@@ -180,6 +181,9 @@ KUBECTL_REQUEST_TIMEOUT="${KUBECTL_REQUEST_TIMEOUT:-10s}"
 # Heartbeat interval
 HEARTBEAT_INTERVAL="${HEARTBEAT_INTERVAL:-30}"
 
+# Dry-run mode (skip destructive actions)
+DRY_RUN="${DRY_RUN:-false}"
+
 # =============================================================================
 # LOGGING HELPERS
 # =============================================================================
@@ -216,6 +220,31 @@ stage_banner() {
   echo "Started: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
   echo ""
 }
+
+if [[ "${DRY_RUN}" == "true" ]]; then
+  log_warn "DRY_RUN enabled: destructive actions will be skipped."
+  DELETE_ARGO_APP="false"
+  SUSPEND_ARGO_APP="false"
+  DELETE_KONG_RESOURCES="false"
+  DELETE_INGRESS_RESOURCES="false"
+  FORCE_DELETE_LBS="false"
+  FORCE_DELETE_LB_FINALIZERS="false"
+  DELETE_TARGET_GROUPS="false"
+  SCALE_DOWN_LB_CONTROLLER="false"
+  WAIT_FOR_LB_ENIS="false"
+  SKIP_DRAIN_NODEGROUPS="true"
+  DELETE_NODEGROUPS="false"
+  DELETE_FARGATE_PROFILES="false"
+  WAIT_FOR_NODEGROUP_DELETE="false"
+  WAIT_FOR_FARGATE_DELETE="false"
+  DELETE_CLUSTER="false"
+  DELETE_RDS_INSTANCES="false"
+  DELETE_SECRETS="false"
+  CLEANUP_ORPHANS="false"
+  ORPHAN_CLEANUP_MODE="none"
+  REMOVE_K8S_SA_FROM_STATE="false"
+  TF_DESTROY_RETRY_ON_LB_CLEANUP="false"
+fi
 
 stage_done() {
   local stage_num="$1"
@@ -889,6 +918,11 @@ delete_kong_resources() {
 # =============================================================================
 
 scale_down_lb_controller() {
+  if [[ "${DRY_RUN}" == "true" ]]; then
+    log_info "Skipping LB controller scale down (DRY_RUN=true)."
+    return 0
+  fi
+
   if [[ "${SCALE_DOWN_LB_CONTROLLER}" != "true" ]]; then
     log_info "Skipping LB controller scale down (SCALE_DOWN_LB_CONTROLLER=false)."
     return 0
@@ -915,6 +949,11 @@ scale_down_lb_controller() {
 # =============================================================================
 
 cleanup_loadbalancer_services() {
+  if [[ "${DRY_RUN}" == "true" ]]; then
+    log_info "Skipping LoadBalancer service cleanup (DRY_RUN=true)."
+    return 0
+  fi
+
   local attempt=1
   local max_attempts="${LB_CLEANUP_ATTEMPTS}"
 
@@ -1477,7 +1516,7 @@ wait_for_nodegroup_deletion() {
 # =============================================================================
 
 log_info "============================================================================="
-log_info "TEARDOWN V3 STARTING"
+log_info "TEARDOWN V4 STARTING"
 log_info "============================================================================="
 log_info "Cluster: ${cluster_name}"
 log_info "Region: ${region}"
@@ -1555,9 +1594,13 @@ else
   # Clean up Ingress resources before LoadBalancer services
   cleanup_ingress_resources
 
-  log_step "RUN_PRE_DESTROY_SCRIPT" "Running pre-destroy cleanup script..."
-  if [[ -f "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh" ]]; then
-    bash "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh" "${cluster_name}" "${region}" --yes || true
+  if [[ "${DRY_RUN}" == "true" ]]; then
+    log_info "Skipping pre-destroy cleanup script (DRY_RUN=true)."
+  else
+    log_step "RUN_PRE_DESTROY_SCRIPT" "Running pre-destroy cleanup script..."
+    if [[ -f "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh" ]]; then
+      bash "${repo_root}/bootstrap/60_tear_down_clean_up/pre-destroy-cleanup.sh" "${cluster_name}" "${region}" --yes || true
+    fi
   fi
 
   cleanup_loadbalancer_services || true
@@ -1784,7 +1827,9 @@ stage_done "6" "DELETE SECRETS"
 
 stage_banner "7" "TERRAFORM DESTROY"
 
-if [[ -n "${TF_DIR:-}" ]]; then
+if [[ "${DRY_RUN}" == "true" ]]; then
+  log_info "Skipping terraform destroy (DRY_RUN=true)."
+elif [[ -n "${TF_DIR:-}" ]]; then
   require_cmd terraform
   tf_failed=false
 
@@ -1902,7 +1947,7 @@ stage_done "8" "ORPHAN CLEANUP"
 stage_banner "9" "TEARDOWN COMPLETE"
 
 log_info "============================================================================="
-log_info "TEARDOWN V3 COMPLETED SUCCESSFULLY"
+log_info "TEARDOWN V4 COMPLETED SUCCESSFULLY"
 log_info "============================================================================="
 log_info "Cluster: ${cluster_name}"
 log_info "Region: ${region}"

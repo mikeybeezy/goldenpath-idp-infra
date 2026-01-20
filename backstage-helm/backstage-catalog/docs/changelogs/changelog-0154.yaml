@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0154
+  title: 'CL-0154: Persistent deploy auto-runs standalone RDS'
+  description: 'Date: 2026-01-20
+
+    Owner: platform-team
+
+    Scope: rds, persistent, deployment
+
+    Related: Makefile, envs/dev-rds/terraform.tfvars, ADR-0158'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0154-persistent-deploy-rds-automation.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0154-persistent-deploy-rds-automation.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+    - rds
+    - persistent
+    - deployment
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0154-persistent-deploy-rds-automation.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

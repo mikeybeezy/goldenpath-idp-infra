@@ -42,7 +42,7 @@ app_secrets = {
 # Platform RDS Configuration
 # Manage database size, engine, and application databases here.
 rds_config = {
-  enabled               = true # ENABLED for persistent cluster
+  enabled               = false # Use standalone RDS state (envs/dev-rds)
   identifier            = "goldenpath-platform-db"
   instance_class        = "db.t3.micro"
   engine_version        = "15.15"

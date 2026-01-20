@@ -23,8 +23,8 @@ on:
         required: false
         default: ""
       build_id:
-        description: "Build ID for teardown"
-        required: true
+        description: "Build ID for teardown (required for ephemeral; optional for persistent)"
+        required: false
         default: ""
       lifecycle:
         description: "Lifecycle (ephemeral or persistent)"
@@ -119,6 +119,9 @@ jobs:
       LB_CLEANUP_MAX_WAIT: ${{ inputs.lb_cleanup_max_wait }}
       FORCE_DELETE_LBS: ${{ inputs.force_delete_lbs }}
       FORCE_DELETE_LB_FINALIZERS: ${{ inputs.force_delete_lb_finalizers }}
+      DELETE_RDS_INSTANCES: ${{ inputs.lifecycle == 'persistent' && 'false' || 'true' }}
+      RDS_SKIP_FINAL_SNAPSHOT: ${{ inputs.lifecycle == 'persistent' && 'false' || 'true' }}
+      DELETE_SECRETS: ${{ inputs.lifecycle == 'persistent' && 'false' || 'true' }}
       REMOVE_K8S_SA_FROM_STATE: "true"
       TF_AUTO_APPROVE: "true"
     steps:
@@ -133,17 +136,27 @@ jobs:
 
       - name: Sanitize inputs
         run: |
+          # Canonicalize: workflow input build_id -> env BUILD_ID (used by Makefile)
           # Trim whitespace from build_id to prevent state key issues
           SANITIZED_BUILD_ID=$(echo "${{ inputs.build_id }}" | xargs)
           if [[ "$SANITIZED_BUILD_ID" != "${{ inputs.build_id }}" ]]; then
             echo "Warning: build_id had leading/trailing whitespace, sanitized to: ${SANITIZED_BUILD_ID}"
           fi
+          if [[ "${CLUSTER_LIFECYCLE}" == "persistent" && -z "${SANITIZED_BUILD_ID}" ]]; then
+            SANITIZED_BUILD_ID="persistent"
+          fi
           echo "BUILD_ID=${SANITIZED_BUILD_ID}" >> "${GITHUB_ENV}"
 
-          # Validate build_id format
-          if [[ -n "${SANITIZED_BUILD_ID}" ]] && ! [[ "${SANITIZED_BUILD_ID}" =~ ^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]; then
-            echo "Invalid build_id format: '${SANITIZED_BUILD_ID}' (expected dd-mm-yy-NN)" >&2
-            exit 1
+          # Validate build_id format (ephemeral only)
+          if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
+            if [[ -z "${SANITIZED_BUILD_ID}" ]]; then
+              echo "build_id is required when lifecycle=ephemeral" >&2
+              exit 1
+            fi
+            if ! [[ "${SANITIZED_BUILD_ID}" =~ ^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]; then
+              echo "Invalid build_id format: '${SANITIZED_BUILD_ID}' (expected dd-mm-yy-NN)" >&2
+              exit 1
+            fi
           fi
 
       - name: Resolve cluster name

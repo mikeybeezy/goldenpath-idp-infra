@@ -306,33 +306,45 @@ module "eks" {
 # Identity & Access Management (IAM)
 ################################################################################
 
+################################################################################
+# IAM Module - IRSA Roles Only
+# NOTE: EKS cluster and node group roles are created by the EKS module.
+# This module only manages IRSA roles (autoscaler, lb-controller, eso).
+# See: session_capture/2026-01-20-persistent-cluster-deployment.md
+################################################################################
 module "iam" {
   source = "../../modules/aws_iam"
   count  = var.iam_config.enabled ? 1 : 0
 
-  cluster_role_name                       = "${var.iam_config.cluster_role_name != "" ? var.iam_config.cluster_role_name : "${local.base_name_prefix}-eks-cluster-role"}${local.role_suffix}"
-  node_group_role_name                    = "${var.iam_config.node_group_role_name != "" ? var.iam_config.node_group_role_name : "${local.base_name_prefix}-eks-node-role"}${local.role_suffix}"
-  oidc_role_name                          = "${var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.base_name_prefix}-eks-oidc-role"}${local.role_suffix}"
-  oidc_issuer_url                         = module.eks[0].oidc_issuer_url
-  oidc_provider_arn                       = module.eks[0].oidc_provider_arn
-  oidc_audience                           = var.iam_config.oidc_audience
-  oidc_subject                            = var.iam_config.oidc_subject
-  enable_autoscaler_role                  = var.iam_config.enable_autoscaler_role
-  autoscaler_role_name                    = "${var.iam_config.autoscaler_role_name}${local.role_suffix}"
-  autoscaler_policy_arn                   = var.iam_config.autoscaler_policy_arn
-  autoscaler_service_account_namespace    = var.iam_config.autoscaler_service_account_namespace
-  autoscaler_service_account_name         = var.iam_config.autoscaler_service_account_name
+  # OIDC provider for IRSA
+  oidc_role_name    = "${var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.base_name_prefix}-eks-oidc-role"}${local.role_suffix}"
+  oidc_issuer_url   = module.eks[0].oidc_issuer_url
+  oidc_provider_arn = module.eks[0].oidc_provider_arn
+  oidc_audience     = var.iam_config.oidc_audience
+  oidc_subject      = var.iam_config.oidc_subject
+
+  # Cluster Autoscaler IRSA
+  enable_autoscaler_role               = var.iam_config.enable_autoscaler_role
+  autoscaler_role_name                 = "${var.iam_config.autoscaler_role_name}${local.role_suffix}"
+  autoscaler_policy_arn                = var.iam_config.autoscaler_policy_arn
+  autoscaler_service_account_namespace = var.iam_config.autoscaler_service_account_namespace
+  autoscaler_service_account_name      = var.iam_config.autoscaler_service_account_name
+
+  # AWS Load Balancer Controller IRSA
   enable_lb_controller_role               = var.iam_config.enable_lb_controller_role
   lb_controller_role_name                 = "${var.iam_config.lb_controller_role_name}${local.role_suffix}"
   lb_controller_policy_arn                = var.iam_config.lb_controller_policy_arn
   lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
   lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
-  enable_eso_role                         = var.iam_config.enable_eso_role
-  eso_role_name                           = "${var.iam_config.eso_role_name}${local.role_suffix}"
-  eso_service_account_namespace           = var.iam_config.eso_service_account_namespace
-  eso_service_account_name                = var.iam_config.eso_service_account_name
-  environment                             = local.environment
-  tags                                    = local.common_tags
+
+  # External Secrets Operator IRSA
+  enable_eso_role               = var.iam_config.enable_eso_role
+  eso_role_name                 = "${var.iam_config.eso_role_name}${local.role_suffix}"
+  eso_service_account_namespace = var.iam_config.eso_service_account_namespace
+  eso_service_account_name      = var.iam_config.eso_service_account_name
+
+  environment = local.environment
+  tags        = local.common_tags
 
   depends_on = [module.eks]
 }
@@ -655,16 +667,28 @@ module "platform_rds" {
   # Network - allow from VPC CIDR
   allowed_cidr_blocks = [var.vpc_cidr]
 
-  # Secrets
+  # Secrets - build_id scoped paths for ephemeral (bounded context isolation)
+  # Persistent: goldenpath/dev/rds/master
+  # Ephemeral:  goldenpath/dev/builds/20-01-26-01/rds/master
   create_master_secret = true
-  master_secret_name   = "goldenpath/${local.environment}/rds/master"
+  master_secret_name = var.cluster_lifecycle == "ephemeral" ? (
+    "goldenpath/${local.environment}/builds/${local.build_id}/rds/master"
+  ) : (
+    "goldenpath/${local.environment}/rds/master"
+  )
+  # 0-day recovery for ephemeral (immediate deletion), 7-day for persistent
+  secret_recovery_window_in_days = var.cluster_lifecycle == "ephemeral" ? 0 : 7
 
-  # Application databases with secrets
+  # Application databases with secrets - build_id scoped for ephemeral
   application_databases = {
     for k, v in var.rds_config.application_databases : k => {
       database_name = v.database_name
       username      = v.username
-      secret_name   = "goldenpath/${local.environment}/${k}/postgres"
+      secret_name = var.cluster_lifecycle == "ephemeral" ? (
+        "goldenpath/${local.environment}/builds/${local.build_id}/${k}/postgres"
+      ) : (
+        "goldenpath/${local.environment}/${k}/postgres"
+      )
     }
   }
 
