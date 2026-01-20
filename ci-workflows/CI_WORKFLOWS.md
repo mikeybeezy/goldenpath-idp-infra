@@ -113,6 +113,7 @@ CI Workflows (GitHub Actions)
     ├─ Script Certification Gate
     ├─ Secret Requests (PR)
     ├─ Security - Gitleaks
+    ├─ Session Log Requirement
     ├─ _build-and-release
     └─ _deploy
 ```
@@ -436,6 +437,11 @@ CI Workflows (GitHub Actions)
 ### Security - Gitleaks
 - **File**: `gitleaks.yml`
 - **Owner**: platform
+- **Triggers**:
+
+### Session Log Requirement
+- **File**: `session-log-required.yml`
+- **Owner**: platform-team
 - **Triggers**:
 
 ### _build-and-release
