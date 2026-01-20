@@ -106,12 +106,15 @@ CI Workflows (GitHub Actions)
     ├─ Governance Enforcement
     ├─ PR Gates
     ├─ PR Governance Gates
+    ├─ Promote Image
     ├─ Python Unit Tests
     ├─ Quality - Documentation Auto-Healing
     ├─ Request App Secret
     ├─ Script Certification Gate
     ├─ Secret Requests (PR)
-    └─ Security - Gitleaks
+    ├─ Security - Gitleaks
+    ├─ _build-and-release
+    └─ _deploy
 ```
 <!-- WORKFLOW_TREE_END -->
 
@@ -400,6 +403,11 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
+### Promote Image
+- **File**: `_promote.yml`
+- **Owner**: platform
+- **Triggers**:
+
 ### Python Unit Tests
 - **File**: `python-tests.yml`
 - **Owner**: platform
@@ -427,6 +435,16 @@ CI Workflows (GitHub Actions)
 
 ### Security - Gitleaks
 - **File**: `gitleaks.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### _build-and-release
+- **File**: `_build-and-release.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### _deploy
+- **File**: `_deploy.yml`
 - **Owner**: platform
 - **Triggers**:
 
