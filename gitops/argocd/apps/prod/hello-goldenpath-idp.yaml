@@ -10,12 +10,15 @@ metadata:
     goldenpath.idp/owner: platform-team
     goldenpath.idp/risk: medium
     argocd.argoproj.io/sync-wave: "10"
-    # Image Updater annotations - semver strategy, commits to git but NO auto-sync
+    # Image Updater annotations - env-sha tagging for prod (GOV-0012)
+    # Only accepts tags matching: prod-<sha> pattern
+    # NOTE: Commits to git but NO auto-sync (requires manual approval)
     argocd-image-updater.argoproj.io/image-list: app=593517239005.dkr.ecr.eu-west-2.amazonaws.com/hello-goldenpath-idp
-    argocd-image-updater.argoproj.io/app.update-strategy: semver
-    argocd-image-updater.argoproj.io/app.allow-tags: regexp:^v\d+\.\d+\.\d+$
+    argocd-image-updater.argoproj.io/app.update-strategy: name
+    argocd-image-updater.argoproj.io/app.allow-tags: regexp:^prod-[a-f0-9]{7,40}$
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/git-credentials: secret:argocd/github-app-image-updater
   labels:
     app.kubernetes.io/part-of: goldenpath-idp
     environment: prod

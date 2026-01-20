@@ -28,6 +28,7 @@ relates_to:
 - Add Updates during the session; do not wait until the end.
 - Validation entries must match the actual commands executed.
 - Consolidate multi-agent feedback into the Review/Validation Appendix to avoid conflicting status.
+- Each update should include a short Outstanding block for quick scanning.
 
 ## Session metadata
 
@@ -91,6 +92,9 @@ Signed: <name> (<timestamp>)
 - <command + result>
 
 **Next steps**
+- <bullet>
+
+**Outstanding**
 - <bullet>
 
 Signed: <name> (<timestamp>)

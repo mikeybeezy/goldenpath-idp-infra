@@ -1,0 +1,54 @@
+# GoldenPath IDP - Image Promotion Caller
+# GOV-0012: Build Pipeline Standards
+#
+# This workflow promotes images between environments.
+# Triggered manually or after successful deployment validation.
+#
+# IMPORTANT: source_tag is REQUIRED and must match the env-sha format:
+#   - For dev->test: Use "latest" or the git SHA
+#   - For test->staging: Use "test-<sha>" (e.g., test-a1b2c3d)
+#   - For staging->prod: Use "staging-<sha>" (e.g., staging-a1b2c3d)
+
+name: Promote
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_environment:
+        description: 'Source environment'
+        required: true
+        type: choice
+        options:
+          - dev
+          - test
+          - staging
+      target_environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - test
+          - staging
+          - prod
+      source_tag:
+        description: 'Source tag (REQUIRED) - e.g., "latest" for dev, "test-a1b2c3d" for test'
+        required: true
+        type: string
+      commit_sha:
+        description: 'Commit SHA for the image being promoted (required when source_tag=latest)'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  promote:
+    name: Promote Image
+    uses: mikeybeezy/goldenpath-idp-infra/.github/workflows/_promote.yml@main
+    with:
+      ecr_repository: hello-goldenpath-idp  # TODO: Replace with your app name
+      source_environment: ${{ inputs.source_environment }}
+      target_environment: ${{ inputs.target_environment }}
+      source_tag: ${{ inputs.source_tag }}
+      commit_sha: ${{ inputs.commit_sha != '' && inputs.commit_sha || github.sha }}
+    secrets:
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
