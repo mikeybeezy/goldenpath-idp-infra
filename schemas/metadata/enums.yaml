@@ -103,6 +103,7 @@ adr_categories:
   - runbooks
 
 risk_profile_coupling_risk:
+  - none
   - low
   - medium
   - high
