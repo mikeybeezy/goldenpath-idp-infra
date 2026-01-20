@@ -16,11 +16,18 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - 20_TOOLING_APPS_MATRIX
   - ADR-0012-platform-repo-decoupling-options
+  - ADR-0020-platform-helm-kustomize-hybrid
+  - ADR-0055-platform-tempo-tracing-backend
+  - ADR-0171-platform-application-packaging-strategy
+  - ADR-0172-cd-promotion-strategy-with-approval-gates
   - EC-0004-backstage-copilot-plugin
   - EC-0007-kpack-buildpacks-integration
+  - GITOPS_HELM_ARGOCD-IMAGE-UPDATER_README
+  - HELM_TEMPO
+  - V1_04_CAPABILITY_MATRIX
 ---
-
 # Session Capture: Local Development and Hello GoldenPath App Setup
 
 ## Session metadata

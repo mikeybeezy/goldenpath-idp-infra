@@ -12,8 +12,9 @@ schema_version: 1
 relates_to:
   - ADR-0170
   - GOV-0012
+  - GOV-0012-build-pipeline-standards
+  - session-2026-01-19-build-pipeline-architecture
 ---
-
 # CL-0149: Build Pipeline Architecture and Governance
 
 ## Summary

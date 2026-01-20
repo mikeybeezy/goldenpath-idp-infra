@@ -3,13 +3,14 @@ id: APP_BUILD_PIPELINE
 title: 'How It Works: Application Build Pipeline'
 type: documentation
 relates_to:
-  - ADR-0170-build-pipeline-architecture
+  - ADR-0170
   - GOV-0012-build-pipeline-standards
   - GOV-0013-devsecops-security-standards
   - GOV-0014-devsecops-implementation-matrix
   - GOV-0015-build-pipeline-testing-matrix
+  - RB-0037
+  - session-2026-01-19-build-pipeline-architecture
 ---
-
 This guide explains the end-to-end application build and promotion pipeline.
 It focuses on how CI, ECR, Argo CD Image Updater, Git write-back, and Argo CD
 work together to keep Git as the source of truth.

@@ -15,7 +15,10 @@ relates_to:
   - 01_adr_index
   - 38_EPHEMERAL_STACK_STRATEGY
   - ADR-0161
+  - ADR-0168
   - CL-0131
+  - EKS_REQUEST_FLOW
+  - RB-0033-persistent-cluster-teardown
 supersedes: []
 superseded_by: []
 tags:
@@ -34,7 +37,6 @@ date: 2026-01-15
 deciders:
   - platform-team
 ---
-
 ## ADR-0161: Standard Ephemeral Infrastructure Stack
 
 **Status**: Accepted

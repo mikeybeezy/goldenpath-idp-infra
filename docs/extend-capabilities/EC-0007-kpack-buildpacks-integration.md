@@ -6,16 +6,18 @@ status: proposed
 owner: platform-team
 domain: platform-core
 relates_to:
-  - EC-0006-competitor-analysis-tap
-  - EC-0005-kubernetes-operator-framework
   - ADR-0148-seamless-build-deployment-with-immutability
+  - CL-0148
+  - EC-0005-kubernetes-operator-framework
+  - EC-0006-competitor-analysis-tap
   - INDEX
+  - session-2026-01-18-secrets-lifecycle
+  - session-capture-2026-01-18-local-dev-hello-app
 priority: high
 vq_class: velocity
 estimated_roi: $20K/year
 effort_estimate: 4-6 weeks
 ---
-
 ## Executive Summary
 
 kpack is a Kubernetes-native build service that automatically creates OCI container images from source code using Cloud Native Buildpacks. This eliminates the need for developers to write Dockerfiles, enabling a `cf push`-style experience where developers simply push code and the platform handles containerization.

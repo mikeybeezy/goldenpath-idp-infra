@@ -18,6 +18,7 @@ relates_to:
   - 26_AI_AGENT_PROTOCOLS
   - CL-0141
   - SESSION_CAPTURE_2026_01_17_02
+  - agent_session_summary
   - session_capture_template
   - session_summary_template
 supersedes: []
@@ -37,7 +38,6 @@ date: 2026-01-17
 deciders:
   - platform-team
 ---
-
 ## Status
 
 Accepted

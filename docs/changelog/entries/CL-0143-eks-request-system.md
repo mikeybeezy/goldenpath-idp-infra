@@ -7,11 +7,12 @@ owner: platform-team
 status: active
 date: 2026-01-17
 relates_to:
-  - ADR-0165-rds-user-db-provisioning-automation
-  - CL-0142-eks-apply-scope-gate
+  - ADR-0165
+  - ADR-0168
+  - CL-0142
+  - EKS_REQUEST_FLOW
   - session-2026-01-17-eks-backstage-scaffolder
 ---
-
 # CL-0143: EKS Request System
 
 ## Summary

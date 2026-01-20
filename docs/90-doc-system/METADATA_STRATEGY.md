@@ -16,6 +16,7 @@ relates_to:
   - ADR-0050-platform-changelog-label-gate
   - ADR-0066-platform-dashboards-as-code
   - ADR-0140
+  - ADR-0173-governance-doc-naming-migration
   - CL-0005-teardown-finalizer-default-on
   - CL-0101
   - METADATA_BACKFILL_RUNBOOK
@@ -26,7 +27,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Platform Metadata Strategy
 
 ## Goal

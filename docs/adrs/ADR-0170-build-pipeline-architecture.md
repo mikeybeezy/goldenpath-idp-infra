@@ -16,10 +16,27 @@ risk_profile:
   security_risk: low
   coupling_risk: medium
 relates_to:
-  - session_capture/2026-01-19-build-pipeline-architecture.md
+  - 01_adr_index
+  - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
+  - APP_BUILD_PIPELINE
+  - CL-0146
+  - CL-0147
+  - CL-0149
   - GOV-0012
+  - GOV-0012-build-pipeline-standards
+  - GOV-0013-devsecops-security-standards
+  - GOV-0014-devsecops-implementation-matrix
+  - GOV-0015-build-pipeline-testing-matrix
+  - OB-0001-developer-security-tooling
+  - RB-0035-s3-request
+  - RB-0036
+  - RB-0037
+  - ROADMAP
+  - S3_REQUEST_FLOW
+  - s3-requests-index
+  - session-2026-01-17-s3-request-flow-planning
+  - session-2026-01-19-build-pipeline-architecture
 ---
-
 # ADR-0170: Build Pipeline Architecture and Multi-Repo Strategy
 
 ## Status

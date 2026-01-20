@@ -8,11 +8,13 @@ date: 2026-01-17
 author: platform-team
 category: runbooks
 relates_to:
-  - RB-0033-persistent-cluster-teardown
   - 32_TERRAFORM_STATE_AND_LOCKING
   - ADR-0040-platform-lifecycle-aware-state-keys
+  - DOCS_RUNBOOKS_README
+  - RB-0033-persistent-cluster-teardown
+  - agent_session_summary
+  - session-2026-01-17-eks-backstage-scaffolder
 ---
-
 # CL-0145: Persistent Cluster Teardown Runbook
 
 ## Summary

@@ -16,11 +16,12 @@ reliability:
   observability_tier: bronze
   maturity: 2
 relates_to:
+  - CL-0148
+  - EC-0007-kpack-buildpacks-integration
   - aws_secrets_manager_module
-  - teardown_scripts
   - pr_258
+  - teardown_scripts
 ---
-
 # Session Capture: Secrets Lifecycle Analysis and CI Fixes
 
 ## Session metadata

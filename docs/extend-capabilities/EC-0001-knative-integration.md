@@ -8,6 +8,7 @@ relates_to:
   - INDEX
   - RB-0030-rds-break-glass-deletion
   - ROADMAP
+  - agent_session_summary
 dependencies:
   - EKS cluster (ADR-0148)
   - ArgoCD (existing)
@@ -17,7 +18,6 @@ vq_class: efficiency
 estimated_roi: $13,000/year
 effort_estimate: 9 weeks
 ---
-
 ## Executive Summary
 
 Knative provides a Kubernetes-native serverless platform that could enhance Golden Path IDP by enabling:

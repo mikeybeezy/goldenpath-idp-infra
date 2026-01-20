@@ -17,6 +17,7 @@ relates_to:
   - ADR-0020-platform-helm-kustomize-hybrid
   - ADR-0171-platform-application-packaging-strategy
   - audit-20260103
+  - session-capture-2026-01-18-local-dev-hello-app
 supersedes: []
 superseded_by:
   - ADR-0171-platform-application-packaging-strategy
@@ -30,7 +31,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0020: Hybrid GitOps approach with Helm and Kustomize
 
 - **Status:** Superseded

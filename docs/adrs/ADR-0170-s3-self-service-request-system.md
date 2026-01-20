@@ -13,13 +13,31 @@ reliability:
 schema_version: 1
 relates_to:
   - 01_adr_index
-  - ADR-0143-secret-request-contract
-  - ADR-0144-intent-to-projection-parser
-  - ADR-0168-eks-request-parser-and-mode-aware-workflows
-  - ADR-0169-secret-request-system-generated-ids
-  - EC-0002-shared-parser-library
+  - ADR-0143
+  - ADR-0144
+  - ADR-0168
+  - ADR-0169
+  - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
+  - APP_BUILD_PIPELINE
   - CL-0146
+  - CL-0147
+  - CL-0149
+  - EC-0002-shared-parser-library
+  - EC-0005-kubernetes-operator-framework
+  - GOV-0012-build-pipeline-standards
+  - GOV-0013-devsecops-security-standards
+  - GOV-0014-devsecops-implementation-matrix
+  - GOV-0015-build-pipeline-testing-matrix
+  - OB-0001-developer-security-tooling
+  - RB-0035-s3-request
+  - RB-0036
+  - RB-0037
+  - ROADMAP
+  - S3_REQUEST_FLOW
   - SCRIPT-0037
+  - s3-requests-index
+  - session-2026-01-17-s3-request-flow-planning
+  - session-2026-01-19-build-pipeline-architecture
 supersedes: []
 superseded_by: []
 tags:
@@ -37,7 +55,6 @@ date: 2026-01-17
 deciders:
   - platform-team
 ---
-
 ## Status
 
 Accepted

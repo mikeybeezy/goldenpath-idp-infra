@@ -16,6 +16,7 @@ relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - CAPABILITY_LEDGER
   - DOCS_RUNBOOKS_README
+  - EC-0004-backstage-copilot-plugin
   - RB-0030-rds-break-glass-deletion
   - RB-0032
   - RDS_REQUEST_FLOW
@@ -28,7 +29,6 @@ dependencies:
   - module:postgresql
 breaking_change: false
 ---
-
 ## RDS Manual Secret Rotation (Runbook)
 
 This runbook documents the manual process for rotating platform RDS database credentials.

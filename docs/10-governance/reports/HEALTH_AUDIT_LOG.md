@@ -15,9 +15,13 @@ reliability:
   observability_tier: bronze
 schema_version: 1
 relates_to:
+  - 01_adr_index
+  - CAPABILITY_LEDGER
+  - CI_WORKFLOWS
+  - DOCS_CHANGELOG_README
+  - SCRIPT_CERTIFICATION_MATRIX
   - platform_health.py
 ---
-
 # Platform Health Audit Log
 
 Last updated: `2026-01-19 05:13:49`

@@ -3,10 +3,12 @@ id: RB-0037
 title: Pipeline Enablement for ArgoCD Image Updater
 type: runbook
 relates_to:
+  - ADR-0170
   - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
-  - ADR-0170-build-pipeline-architecture
+  - APP_BUILD_PIPELINE
   - GOV-0012-build-pipeline-standards
-  - RB-0036-github-app-image-updater
+  - RB-0036
+  - session-2026-01-19-build-pipeline-architecture
 tags:
   - pipeline
   - image-updater
@@ -14,7 +16,6 @@ tags:
   - post-bootstrap
 category: runbooks
 ---
-
 # RB-0037: Pipeline Enablement for ArgoCD Image Updater
 
 ## Purpose

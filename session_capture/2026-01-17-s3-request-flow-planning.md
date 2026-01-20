@@ -16,6 +16,14 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - ADR-0002-platform-Kong-as-ingress-API-gateway
+  - ADR-0170
+  - CL-0146
+  - EC-0002-shared-parser-library
+  - RB-0032
+  - RB-0035-s3-request
+  - S3_REQUEST_FLOW
+  - s3-requests-index
   - session_capture_template
 ---
 # S3 Request Flow Planning

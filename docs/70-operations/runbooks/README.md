@@ -12,6 +12,7 @@ reliability:
   maturity: 1
 relates_to:
   - CL-0041-argocd-app-readiness-runbook
+  - CL-0145
   - RB-0001-eks-access-recovery
   - RB-0002-grafana-access
   - RB-0003-iam-audit
@@ -47,12 +48,13 @@ relates_to:
   - RB-0031-idp-stack-deployment
   - RB-0033-persistent-cluster-teardown
   - RB-0034-persistent-cluster-deployment
+  - agent_session_summary
+  - session-2026-01-17-eks-backstage-scaffolder
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
-
 ## Runbooks
 
 ## Index

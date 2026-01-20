@@ -16,10 +16,13 @@ relates_to:
   - 01_adr_index
   - ADR-0002-platform-Kong-as-ingress-API-gateway
   - BOOTSTRAP_10_BOOTSTRAP_README
+  - EC-0003-kong-backstage-plugin
+  - EC-0005-kubernetes-operator-framework
   - HELM_KONG
   - IDP_TOOLING_KONG_CONFIG
   - audit-20260103
   - goldenpath-idp-bootstrap
+  - session-2026-01-17-s3-request-flow-planning
 supersedes: []
 superseded_by: []
 tags: []
@@ -32,7 +35,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0002: Use Kong as the primary ingress/API gateway behind an internal NLB
 
 - **Status:** Accepted

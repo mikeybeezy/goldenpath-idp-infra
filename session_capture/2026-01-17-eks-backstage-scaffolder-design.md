@@ -16,12 +16,21 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0165-rds-user-db-provisioning-automation
-  - CL-0142-eks-apply-scope-gate
-  - rds-request
+  - 30_PLATFORM_RDS_ARCHITECTURE
+  - 32_TERRAFORM_STATE_AND_LOCKING
+  - ADR-0165
+  - CATALOG_INDEX
+  - CL-0142
+  - CL-0145
+  - DOCS_RUNBOOKS_README
+  - ECR_REQUEST_FLOW
+  - EKS_REQUEST_FLOW
+  - RB-0033-persistent-cluster-teardown
+  - RDS_REQUEST_FLOW
+  - SCRIPT_CERTIFICATION_MATRIX
   - infra-terraform-apply-dev
+  - rds-request
 ---
-
 # EKS Backstage Scaffolder Design
 
 ## Session Metadata

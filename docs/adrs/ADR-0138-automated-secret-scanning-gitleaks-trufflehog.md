@@ -25,6 +25,7 @@ relates_to:
   - ADR-0019-platform-pre-commit-hooks
   - ADR-0135
   - ADR-0138
+  - ROADMAP
 supersedes: []
 superseded_by: []
 tags: []
@@ -36,7 +37,6 @@ value_quantification:
 supported_until: '2028-01-01'
 version: '1.0'
 ---
-
 # ADR-0138: Automated Secret Scanning with Gitleaks and TruffleHog
 
 - **Status:** Proposed

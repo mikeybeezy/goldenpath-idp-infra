@@ -15,15 +15,15 @@ relates_to:
   - 32_TERRAFORM_STATE_AND_LOCKING
   - 36_STATE_KEY_STRATEGY
   - ADR-0040-platform-lifecycle-aware-state-keys
+  - DOCS_RUNBOOKS_README
   - RB-0031-idp-stack-deployment
-  - RB-0032-rds-user-provision
+  - RB-0032
   - RB-0033-persistent-cluster-teardown
 category: runbooks
 supported_until: 2028-01-17
-version: "1.0"
+version: '1.0'
 breaking_change: false
 ---
-
 # Persistent Cluster Deployment Runbook
 
 This runbook covers deployment for **persistent** EKS clusters that use the root

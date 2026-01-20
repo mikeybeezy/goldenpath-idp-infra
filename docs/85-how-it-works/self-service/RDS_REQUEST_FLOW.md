@@ -17,8 +17,9 @@ relates_to:
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_USER_DB_PROVISIONING
   - SESSION_CAPTURE_2026_01_17_01
+  - agent_session_summary
+  - session-2026-01-17-eks-backstage-scaffolder
 ---
-
 ## How It Works: RDS Database Request Flow
 
 This document explains the technical lifecycle of an RDS database request, from the developer form in Backstage to credential availability in AWS Secrets Manager.

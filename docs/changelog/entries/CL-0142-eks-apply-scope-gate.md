@@ -9,10 +9,13 @@ author: platform-team
 category: infrastructure
 relates_to:
   - ADR-0028-platform-dev-branch-gate
-  - infra-terraform-apply-dev
+  - ADR-0168
+  - CL-0143
+  - EKS_REQUEST_FLOW
   - PR_GUARDRAILS_INDEX
+  - infra-terraform-apply-dev
+  - session-2026-01-17-eks-backstage-scaffolder
 ---
-
 # CL-0142: EKS Apply Scope Gate
 
 ## Summary

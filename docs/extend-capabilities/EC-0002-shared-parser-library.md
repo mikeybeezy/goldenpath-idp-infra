@@ -4,8 +4,13 @@ title: Shared Parser Library for Contract-Driven Requests
 type: extension_capability
 status: proposed
 relates_to:
+  - ADR-0170
+  - CL-0146
   - CONTRACT_DRIVEN_ARCHITECTURE
+  - EC-0005-kubernetes-operator-framework
   - INDEX
+  - agent_session_summary
+  - session-2026-01-17-s3-request-flow-planning
 dependencies:
   - 3+ parser scripts in production
   - RDS and Secret parsers stable
@@ -14,7 +19,6 @@ vq_class: efficiency
 estimated_roi: Reduced duplication, faster new parser development
 effort_estimate: 2-3 weeks
 ---
-
 ## Shared Parser Library for Contract-Driven Requests
 
 This document proposes extracting common functionality from parser scripts into a shared library to reduce duplication and accelerate new parser development.

@@ -23,6 +23,7 @@ relates_to:
   - ADR-0084-platform-enhanced-metadata-schema
   - ADR-0088-automated-metadata-remediation
   - ADR-0113-platform-queryable-intelligence-enums
+  - ADR-0173-governance-doc-naming-migration
   - CL-0042-metadata-backfill-batch-1
   - CL-0043-complete-metadata-backfill
   - METADATA_STRATEGY
@@ -42,7 +43,6 @@ supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
-
 # ADR-0084: Enhanced Metadata Schema for Knowledge Graph
 
 **Date:** 2026-01-04
