@@ -4,13 +4,16 @@ title: GitHub App Setup for ArgoCD Image Updater
 type: runbook
 relates_to:
   - ADR-0170-build-pipeline-architecture
+  - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
   - GOV-0012-build-pipeline-standards
+  - RB-0037-pipeline-enablement
   - argocd_image_updater
 tags:
   - github-app
   - image-updater
   - gitops
   - authentication
+  - breakglass
 category: runbooks
 ---
 
@@ -22,11 +25,25 @@ Configure a GitHub App for ArgoCD Image Updater to write back image tag changes
 to Git repositories. This replaces deploy keys with a more secure, org-wide
 authentication method with automatic token rotation.
 
+**This runbook is the breakglass procedure for platform team members.**
+
+## Quick Reference
+
+| Item | Value |
+|------|-------|
+| App Name | `goldenpath-image-updater` |
+| App ID | `2690765` |
+| Installation ID | `105100693` |
+| AWS Secret Path | `goldenpath/{env}/github-app/image-updater` |
+| K8s Secret Name | `github-app-image-updater` |
+| K8s Namespace | `argocd` |
+
 ## Prerequisites
 
-- GitHub organization admin access
-- AWS Secrets Manager access
-- kubectl access to target cluster
+- GitHub organization admin access (or personal account for mikeybeezy)
+- AWS CLI configured with Secrets Manager access
+- kubectl access to target cluster (for K8s secret creation)
+- jq installed locally
 
 ## Why GitHub App over Deploy Keys?
 
@@ -38,172 +55,247 @@ authentication method with automatic token rotation.
 | Setup effort | Low per repo | Medium once, then zero |
 | Multi-repo | One key per repo | One app covers all |
 
-## Step 1: Create GitHub App
+---
 
-1. Navigate to **GitHub Organization Settings** → **Developer Settings** → **GitHub Apps**
+## Part A: One-Time GitHub App Setup
+
+> **Note:** This only needs to be done once. If the GitHub App already exists,
+> skip to Part B.
+
+### Step A1: Create GitHub App
+
+1. Navigate to GitHub:
+   - **For personal account:** Settings → Developer settings → GitHub Apps
+   - **For organization:** Organization Settings → Developer settings → GitHub Apps
 
 2. Click **New GitHub App**
 
-3. Configure the app:
+3. Fill in the form:
 
-   **Basic Information:**
-   ```
-   App name: goldenpath-image-updater
-   Homepage URL: https://github.com/mikeybeezy/goldenpath-idp-infra
-   ```
+   | Field | Value |
+   |-------|-------|
+   | App name | `goldenpath-image-updater` |
+   | Homepage URL | `https://github.com/mikeybeezy/goldenpath-idp-infra` |
+   | Webhook | **Uncheck** "Active" |
 
-   **Webhook:**
-   - Uncheck "Active" (not needed for write-back)
+4. Set **Permissions**:
 
-   **Permissions:**
-   ```
-   Repository permissions:
-   - Contents: Read and write
-   - Metadata: Read-only
+   | Permission | Access |
+   |------------|--------|
+   | Repository: Contents | **Read and write** |
+   | Repository: Metadata | **Read-only** |
+   | Organization permissions | None required |
 
-   Organization permissions:
-   - None required
-   ```
+5. Under "Where can this GitHub App be installed?":
+   - Select **"Only on this account"**
 
-   **Where can this GitHub App be installed?**
-   - Select "Only on this account"
+6. Click **Create GitHub App**
 
-4. Click **Create GitHub App**
+7. **Record the App ID** displayed on the page (e.g., `2690765`)
 
-5. Note the **App ID** (displayed on the app page)
+### Step A2: Generate Private Key
 
-## Step 2: Generate Private Key
-
-1. On the GitHub App page, scroll to **Private keys**
+1. On the GitHub App page, scroll down to **Private keys** section
 
 2. Click **Generate a private key**
 
-3. A `.pem` file will download - save this securely
+3. A `.pem` file will automatically download (e.g., `goldenpath-image-updater.2026-01-19.private-key.pem`)
 
-## Step 3: Install the App
+4. **Save this file securely** - GitHub does not store it and cannot recover it
+
+> **Security:** Never commit `.pem` files to git. Add `*.pem` to `.gitignore`.
+
+### Step A3: Install the App on Repositories
 
 1. On the GitHub App page, click **Install App** (left sidebar)
 
-2. Select your organization
+2. Select your account/organization
 
-3. Choose repositories:
-   - **Selected repositories** (recommended)
-   - Add: `hello-goldenpath-idp` and any other app repos
+3. Choose **Selected repositories** (recommended)
 
-4. Click **Install**
+4. Add repositories that need image updates:
+   - `hello-goldenpath-idp`
+   - (Add more app repos as needed)
 
-5. Note the **Installation ID** from the URL:
+5. Click **Install**
+
+6. **Record the Installation ID** from the URL:
    ```
-   https://github.com/organizations/ORG/settings/installations/INSTALLATION_ID
+   https://github.com/settings/installations/105100693
+                                             ^^^^^^^^^
+                                             Installation ID
    ```
 
-## Step 4: Store Credentials in AWS Secrets Manager
+> **Tip:** You can add more repositories later by going to:
+> Settings → Applications → Installed GitHub Apps → Configure
 
-Store the GitHub App credentials for each environment:
+---
+
+## Part B: Store Credentials in AWS Secrets Manager
+
+This stores the GitHub App credentials for use by the pipeline and cluster.
+
+### Step B1: Prepare the Private Key
 
 ```bash
-# Create the secret
-aws secretsmanager create-secret \
-  --name "goldenpath/dev/github-app/image-updater" \
-  --secret-string '{
-    "appID": "YOUR_APP_ID",
-    "installationID": "YOUR_INSTALLATION_ID",
-    "privateKey": "-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"
-  }' \
-  --region eu-west-2
+# Set variables
+APP_ID="2690765"
+INSTALLATION_ID="105100693"
+PEM_FILE="/path/to/goldenpath-image-updater.YYYY-MM-DD.private-key.pem"
+ENV="dev"  # Change for each environment: dev, test, staging, prod
+REGION="eu-west-2"
 
-# For staging/prod, create separate secrets (may use same app with different installs)
-aws secretsmanager create-secret \
-  --name "goldenpath/staging/github-app/image-updater" \
-  --secret-string '...' \
-  --region eu-west-2
-
-aws secretsmanager create-secret \
-  --name "goldenpath/prod/github-app/image-updater" \
-  --secret-string '...' \
-  --region eu-west-2
+# Read private key
+PRIVATE_KEY=$(cat "$PEM_FILE")
 ```
 
-## Step 5: Create Kubernetes Secret
-
-Create the secret in the cluster for image-updater to use:
+### Step B2: Create AWS Secret
 
 ```bash
-# Fetch from Secrets Manager
-SECRET_JSON=$(aws secretsmanager get-secret-value \
-  --secret-id "goldenpath/dev/github-app/image-updater" \
-  --query SecretString --output text)
+# Create the secret with proper JSON escaping
+aws secretsmanager create-secret \
+  --name "goldenpath/${ENV}/github-app/image-updater" \
+  --secret-string "{\"appID\":\"${APP_ID}\",\"installationID\":\"${INSTALLATION_ID}\",\"privateKey\":$(echo "$PRIVATE_KEY" | jq -Rs .)}" \
+  --region "$REGION"
+```
 
+**Expected output:**
+```json
+{
+    "ARN": "arn:aws:secretsmanager:eu-west-2:593517239005:secret:goldenpath/dev/github-app/image-updater-XXXXXX",
+    "Name": "goldenpath/dev/github-app/image-updater",
+    "VersionId": "..."
+}
+```
+
+### Step B3: Verify the Secret
+
+```bash
+# Verify secret was created correctly
+aws secretsmanager get-secret-value \
+  --secret-id "goldenpath/${ENV}/github-app/image-updater" \
+  --query SecretString --output text \
+  --region "$REGION" | jq .
+```
+
+### Step B4: Repeat for Other Environments
+
+```bash
+# For test
+ENV="test" && aws secretsmanager create-secret \
+  --name "goldenpath/${ENV}/github-app/image-updater" \
+  --secret-string "{\"appID\":\"${APP_ID}\",\"installationID\":\"${INSTALLATION_ID}\",\"privateKey\":$(echo "$PRIVATE_KEY" | jq -Rs .)}" \
+  --region "$REGION"
+
+# For staging
+ENV="staging" && aws secretsmanager create-secret \
+  --name "goldenpath/${ENV}/github-app/image-updater" \
+  --secret-string "{\"appID\":\"${APP_ID}\",\"installationID\":\"${INSTALLATION_ID}\",\"privateKey\":$(echo "$PRIVATE_KEY" | jq -Rs .)}" \
+  --region "$REGION"
+
+# For prod
+ENV="prod" && aws secretsmanager create-secret \
+  --name "goldenpath/${ENV}/github-app/image-updater" \
+  --secret-string "{\"appID\":\"${APP_ID}\",\"installationID\":\"${INSTALLATION_ID}\",\"privateKey\":$(echo "$PRIVATE_KEY" | jq -Rs .)}" \
+  --region "$REGION"
+```
+
+### Step B5: Clean Up Local Private Key
+
+```bash
+# Delete the .pem file - it's now safely in AWS Secrets Manager
+rm "$PEM_FILE"
+
+# Ensure .pem files are in .gitignore
+echo "*.pem" >> .gitignore
+```
+
+---
+
+## Part C: Create Kubernetes Secret (Per Cluster)
+
+> **Preferred method:** Use `make pipeline-enable ENV=<env>` from RB-0037.
+> This section is the manual breakglass procedure.
+
+### Step C1: Fetch Credentials from AWS
+
+```bash
+ENV="dev"  # Change per environment
+REGION="eu-west-2"
+
+# Fetch the secret
+SECRET_JSON=$(aws secretsmanager get-secret-value \
+  --secret-id "goldenpath/${ENV}/github-app/image-updater" \
+  --query SecretString --output text \
+  --region "$REGION")
+
+# Extract values
 APP_ID=$(echo "$SECRET_JSON" | jq -r '.appID')
 INSTALLATION_ID=$(echo "$SECRET_JSON" | jq -r '.installationID')
 PRIVATE_KEY=$(echo "$SECRET_JSON" | jq -r '.privateKey')
 
-# Create Kubernetes secret
+# Verify extraction
+echo "App ID: $APP_ID"
+echo "Installation ID: $INSTALLATION_ID"
+echo "Private Key length: $(echo "$PRIVATE_KEY" | wc -c) bytes"
+```
+
+### Step C2: Create Kubernetes Secret
+
+```bash
+# Ensure correct kubectl context
+kubectl config current-context
+
+# Create the secret
 kubectl create secret generic github-app-image-updater \
   --namespace argocd \
-  --from-literal=github-app-id="$APP_ID" \
-  --from-literal=github-app-installation-id="$INSTALLATION_ID" \
-  --from-literal=github-app-private-key="$PRIVATE_KEY"
+  --from-literal=app-id="$APP_ID" \
+  --from-literal=installation-id="$INSTALLATION_ID" \
+  --from-literal=private-key="$PRIVATE_KEY" \
+  --dry-run=client -o yaml | kubectl apply -f -
 ```
 
-## Step 6: Update Image Updater Configuration
+### Step C3: Restart Image Updater
 
-Update the image-updater values to use GitHub App authentication:
+```bash
+# Restart to pick up the new secret
+kubectl rollout restart deployment/argocd-image-updater -n argocd
 
-**`gitops/helm/argocd-image-updater/values/dev.yaml`:**
-
-```yaml
-config:
-  # ... existing config ...
-
-  # GitHub App authentication for git write-back
-  gitCommitUser: goldenpath-image-updater[bot]
-  gitCommitMail: goldenpath-image-updater[bot]@users.noreply.github.com
-
-# Mount GitHub App credentials
-extraEnv:
-  - name: ARGOCD_IMAGE_UPDATER_GIT_WRITE_BACK_TARGET
-    value: "git"
-  - name: GIT_AUTH_METHOD
-    value: "github-app"
-
-extraVolumes:
-  - name: github-app-creds
-    secret:
-      secretName: github-app-image-updater
-
-extraVolumeMounts:
-  - name: github-app-creds
-    mountPath: /app/config/github-app
-    readOnly: true
+# Watch the rollout
+kubectl rollout status deployment/argocd-image-updater -n argocd
 ```
 
-## Step 7: Update Application Annotations
+### Step C4: Verify Secret Mounted
 
-Update ArgoCD Application manifests to use GitHub App:
+```bash
+# Check the pod has the secret mounted
+kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-image-updater -o yaml | grep -A5 "volumeMounts"
 
-```yaml
-metadata:
-  annotations:
-    # Write-back with GitHub App
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/git-branch: main
-    argocd-image-updater.argoproj.io/git-credentials: secret:argocd/github-app-image-updater
+# Check logs for authentication success
+kubectl logs -n argocd -l app.kubernetes.io/name=argocd-image-updater --tail=50
 ```
 
-## Step 8: Verify Configuration
+---
 
-1. Trigger an image update by pushing a new image:
+## Part D: Verification
+
+### Test the Full Flow
+
+1. **Push a new image:**
    ```bash
    docker push 593517239005.dkr.ecr.eu-west-2.amazonaws.com/hello-goldenpath-idp:latest
    ```
 
-2. Check image-updater logs:
+2. **Watch Image Updater logs:**
    ```bash
    kubectl logs -n argocd -l app.kubernetes.io/name=argocd-image-updater -f
    ```
 
-3. Verify git commit appears in the app repo
+3. **Verify git commit appears** in the app repo (e.g., `hello-goldenpath-idp`)
+
+4. **Check the commit author** should be `goldenpath-image-updater[bot]`
+
+---
 
 ## Troubleshooting
 
@@ -216,8 +308,14 @@ error authenticating to git repository: authentication required
 
 **Resolution:**
 1. Verify App ID and Installation ID are correct
-2. Check private key format (must include header/footer)
+2. Check private key format (must include `-----BEGIN RSA PRIVATE KEY-----` header)
 3. Verify app is installed on the target repository
+4. Check the secret has all three keys: `app-id`, `installation-id`, `private-key`
+
+```bash
+# Debug: Check secret contents
+kubectl get secret github-app-image-updater -n argocd -o jsonpath='{.data}' | jq -r 'to_entries[] | "\(.key): \(.value | @base64d | length) bytes"'
+```
 
 ### Issue: Permission Denied
 
@@ -229,6 +327,7 @@ error pushing to git repository: permission denied
 **Resolution:**
 1. Verify GitHub App has "Contents: Read and write" permission
 2. Re-install the app if permissions were changed after installation
+3. Check the app is installed on the specific repository
 
 ### Issue: Rate Limited
 
@@ -238,21 +337,84 @@ error: API rate limit exceeded
 ```
 
 **Resolution:**
-- GitHub App has higher rate limits than personal tokens
-- If hitting limits, reduce image-updater interval
+- GitHub App has higher rate limits than personal tokens (5000/hour)
+- If hitting limits, reduce image-updater check interval in values
+
+### Issue: Secret Not Found in AWS
+
+**Symptom:**
+```
+An error occurred (ResourceNotFoundException) when calling the GetSecretValue operation
+```
+
+**Resolution:**
+1. Verify the secret path matches: `goldenpath/{env}/github-app/image-updater`
+2. Check AWS region is correct (`eu-west-2`)
+3. Verify IAM permissions allow `secretsmanager:GetSecretValue`
+
+---
 
 ## Secret Rotation
 
 GitHub App private keys can be rotated without downtime:
 
-1. Generate new private key in GitHub App settings
-2. Update Secrets Manager
-3. Recreate Kubernetes secret
-4. Restart image-updater pod
-5. Delete old key from GitHub App settings
+1. **Generate new key** in GitHub App settings (Private keys section)
+2. **Update AWS Secrets Manager:**
+   ```bash
+   aws secretsmanager update-secret \
+     --secret-id "goldenpath/${ENV}/github-app/image-updater" \
+     --secret-string "{\"appID\":\"${APP_ID}\",\"installationID\":\"${INSTALLATION_ID}\",\"privateKey\":$(cat new-key.pem | jq -Rs .)}" \
+     --region eu-west-2
+   ```
+3. **Recreate K8s secret** (repeat Part C)
+4. **Restart image-updater pod**
+5. **Delete old key** from GitHub App settings (after verifying new key works)
+
+---
+
+## Architecture Reference
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         GitHub                                       │
+│  ┌─────────────────┐     ┌─────────────────┐                        │
+│  │ GitHub App      │     │ App Repo        │                        │
+│  │ (goldenpath-    │────▶│ (hello-         │                        │
+│  │  image-updater) │     │  goldenpath-idp)│                        │
+│  └─────────────────┘     └─────────────────┘                        │
+│         │                        ▲                                   │
+│         │ authenticates          │ git push                          │
+│         ▼                        │                                   │
+└─────────────────────────────────────────────────────────────────────┘
+                                   │
+                                   │
+┌─────────────────────────────────────────────────────────────────────┐
+│                      Kubernetes Cluster                              │
+│  ┌─────────────────┐     ┌─────────────────┐                        │
+│  │ Image Updater   │────▶│ K8s Secret      │                        │
+│  │ Pod             │     │ (github-app-    │                        │
+│  │                 │     │  image-updater) │                        │
+│  └─────────────────┘     └─────────────────┘                        │
+│                                  ▲                                   │
+│                                  │ created from                      │
+└─────────────────────────────────────────────────────────────────────┘
+                                   │
+                                   │
+┌─────────────────────────────────────────────────────────────────────┐
+│                    AWS Secrets Manager                               │
+│  ┌─────────────────────────────────────────┐                        │
+│  │ goldenpath/{env}/github-app/image-updater│                        │
+│  │ {appID, installationID, privateKey}     │                        │
+│  └─────────────────────────────────────────┘                        │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
 
 ## Related Documentation
 
+- [RB-0037: Pipeline Enablement](./RB-0037-pipeline-enablement.md) - Automated K8s secret creation
 - [ADR-0170: Build Pipeline Architecture](../../adrs/ADR-0170-build-pipeline-architecture.md)
+- [ADR-0174: Pipeline Decoupling](../../adrs/ADR-0174-pipeline-decoupling-from-cluster-bootstrap.md)
 - [GOV-0012: Build Pipeline Standards](../../10-governance/policies/GOV-0012-build-pipeline-standards.md)
 - [ArgoCD Image Updater Docs](https://argocd-image-updater.readthedocs.io/)
