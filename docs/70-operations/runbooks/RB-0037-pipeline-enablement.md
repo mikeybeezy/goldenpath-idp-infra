@@ -63,6 +63,49 @@ Execute this runbook when:
 | staging | Required | Deployment fails without secret |
 | prod | Required | Deployment fails without secret |
 
+## Local Infra-Like Toggle (Optional)
+
+By default, **local stays fast**: digest updates only, no git write-back.
+If you want a more infra-like experience locally, you can enable write-back
+explicitly using a sandbox repo or branch.
+
+### Option A: Minimal (fast default)
+
+- Keep `gitops/helm/argocd-image-updater/values/local.yaml` as-is.
+- No git credentials required.
+- Best for quick iteration.
+
+### Option B: Infra-Like (opt-in)
+
+**Goal:** simulate AWS dev behavior (git write-back) on kind/local.
+
+Steps:
+
+1. Create a GitHub token (or GitHub App) scoped to a **sandbox repo/branch**.
+2. Create a Kubernetes secret in `argocd` with the credentials.
+3. Update the local ArgoCD Application to use git write-back and credentials.
+
+Example (token-based for local only):
+
+```bash
+kubectl create secret generic github-app-image-updater \
+  --namespace argocd \
+  --from-literal=username="git" \
+  --from-literal=password="$GITHUB_TOKEN"
+```
+
+Then update `gitops/argocd/apps/local/hello-goldenpath-idp.yaml`:
+
+```yaml
+metadata:
+  annotations:
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/git-credentials: secret:argocd/github-app-image-updater
+```
+
+**Note:** Prefer using a sandbox repo/branch to avoid noisy commits in primary repos.
+
 ## Step-by-Step Instructions
 
 ### Step 1: Verify GitHub App Exists

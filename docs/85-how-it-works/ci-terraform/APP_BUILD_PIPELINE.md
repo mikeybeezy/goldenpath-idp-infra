@@ -151,6 +151,8 @@ derive the target tag.
 - Image Updater commits tag changes to Git.
 - GitHub App auth is required for AWS environments.
 - Argo CD syncs from Git to the cluster.
+- Local stays fast by default (digest-only, no write-back). To simulate infra-like
+  behavior locally, see RB-0037 for the optional write-back toggle.
 
 ## What This Gives You
 

@@ -90,19 +90,19 @@ extraEnv:
       secretKeyRef:
         name: github-app-image-updater
         key: app-id
-        optional: true  # Set to false once secret exists
+        optional: false  # Required for staging
   - name: GITHUB_APP_INSTALLATION_ID
     valueFrom:
       secretKeyRef:
         name: github-app-image-updater
         key: installation-id
-        optional: true  # Set to false once secret exists
+        optional: false  # Required for staging
 
 extraVolumes:
   - name: github-app-creds
     secret:
       secretName: github-app-image-updater
-      optional: true  # Set to false once secret exists - allows cluster to deploy before pipeline enabled
+      optional: false  # Required for staging - fail deployment if missing
 
 extraVolumeMounts:
   - name: github-app-creds

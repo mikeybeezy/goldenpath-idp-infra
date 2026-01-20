@@ -2358,3 +2358,86 @@ The testing matrix blocks in this session capture (including the "PROPOSAL: Buil
 - Confirm local write-back expectations (document advisory or add local credentials).
 
 Signed: Codex (GPT-5) (2026-01-20T00:25:00Z)
+
+---
+
+### Update - 2026-01-20T00:35:00Z
+
+**What changed**
+
+- Documented local fast-by-default behavior and added an infra-like toggle for git write-back.
+
+**Artifacts touched**
+
+- `docs/70-operations/runbooks/RB-0037-pipeline-enablement.md`
+- `session_capture/2026-01-19-build-pipeline-architecture.md`
+
+**Validation**
+
+- Documentation only - no validation commands required
+
+**Outstanding**
+
+- Decide on secret optionality for test/staging/prod and align values + GOV-0015.
+- Confirm local write-back expectations in app annotations if opting into infra-like mode.
+
+Signed: Codex (GPT-5) (2026-01-20T00:35:00Z)
+
+---
+
+### Update - 2026-01-20T00:45:00Z
+
+**What changed**
+
+- Linked GOV-0015 across related governance policies.
+- Aligned secret optionality for test/staging/prod to required in values files.
+- Clarified local write-back expectations in the build pipeline how-it-works doc.
+
+**Artifacts touched**
+
+- `docs/10-governance/policies/GOV-0012-build-pipeline-standards.md`
+- `docs/10-governance/policies/GOV-0013-devsecops-security-standards.md`
+- `docs/10-governance/policies/GOV-0014-devsecops-implementation-matrix.md`
+- `gitops/helm/argocd-image-updater/values/test.yaml`
+- `gitops/helm/argocd-image-updater/values/staging.yaml`
+- `gitops/helm/argocd-image-updater/values/prod.yaml`
+- `docs/85-how-it-works/ci-terraform/APP_BUILD_PIPELINE.md`
+- `session_capture/2026-01-19-build-pipeline-architecture.md`
+
+**Validation**
+
+- Not run (documentation/config alignment only)
+
+**Outstanding**
+
+- Deploy/sync argocd-image-updater in target clusters after secrets are in place.
+- Run end-to-end promotion test to capture evidence for GOV-0015 scoring.
+
+Signed: Codex (GPT-5) (2026-01-20T00:45:00Z)
+
+---
+
+### Update - 2026-01-20T01:05:00Z
+
+**What changed**
+
+- Enforced session capture + session summary updates on critical path changes.
+- Documented the new guardrail in the PR guardrails index.
+
+**Artifacts touched**
+
+- `.github/workflows/session-log-required.yml`
+- `docs/10-governance/PR_GUARDRAILS_INDEX.md`
+- `session_capture/2026-01-19-build-pipeline-architecture.md`
+
+**Validation**
+
+- Documentation only - no validation commands required
+
+**Outstanding**
+
+- Append `session_summary/agent_session_summary.md` entry for the new guardrail.
+- Decide on secret optionality for test/staging/prod and align values + GOV-0015 (if not already done).
+- Run end-to-end promotion test to capture evidence for GOV-0015 scoring.
+
+Signed: Codex (GPT-5) (2026-01-20T01:05:00Z)

@@ -17,6 +17,7 @@ related_adrs:
   - ADR-0170
 related_govs:
   - GOV-0013
+  - GOV-0015
 ---
 
 # GOV-0012: Build Pipeline Standards
@@ -259,6 +260,7 @@ Promote to prod       ←── concurrency: deploy-prod
 
 - ADR-0170: Build Pipeline Architecture and Multi-Repo Strategy
 - GOV-0013: DevSecOps Security Standards
+- GOV-0015: Build Pipeline Testing Matrix
 - CL-0149: Build Pipeline Architecture and Governance
 - OB-0001: Developer Security Tooling Onboarding
 - Session: `session_capture/2026-01-19-build-pipeline-architecture.md`

@@ -201,6 +201,25 @@ These guardrails enforce documentation and session capture standards.
 
 ---
 
+### Session Log Requirement
+
+| Property | Value |
+| -------- | ----- |
+| File | `.github/workflows/session-log-required.yml` |
+| Owner | platform-team |
+| Trigger | `pull_request` modifying critical paths (workflows, gitops, bootstrap, modules, scripts, governance, ADRs, runbooks) |
+| Enforcement | **Blocking** |
+
+**What it checks:**
+
+- Any change in critical paths requires:
+  - a session capture update (`session_capture/**/*.md`, append-only)
+  - a session summary update (`session_summary/agent_session_summary.md`)
+
+**Related:** [07_AI_AGENT_GOVERNANCE](07_AI_AGENT_GOVERNANCE.md), [26_AI_AGENT_PROTOCOLS](../80-onboarding/26_AI_AGENT_PROTOCOLS.md)
+
+---
+
 ## Scheduled Enforcement
 
 These workflows run on a schedule to detect and report policy violations.

@@ -16,6 +16,7 @@ risk_profile:
 related_govs:
   - GOV-0012
   - GOV-0013
+  - GOV-0015
 related_adrs:
   - ADR-0170
 ---
@@ -425,6 +426,7 @@ repos:
 
 - GOV-0012: Build Pipeline Standards
 - GOV-0013: DevSecOps Security Standards
+- GOV-0015: Build Pipeline Testing Matrix
 - OB-0001: Developer Security Tooling Onboarding
 - ADR-0170: Build Pipeline Architecture and Multi-Repo Strategy
 - Session: `session_capture/2026-01-19-build-pipeline-architecture.md`

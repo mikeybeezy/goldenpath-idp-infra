@@ -17,6 +17,7 @@ related_adrs:
   - ADR-0170
 related_govs:
   - GOV-0012
+  - GOV-0015
 ---
 
 # GOV-0013: DevSecOps Security Standards
@@ -351,6 +352,7 @@ Violations of this policy will:
 ## Related Documents
 
 - GOV-0012: Build Pipeline Standards
+- GOV-0015: Build Pipeline Testing Matrix
 - ADR-0170: Build Pipeline Architecture and Multi-Repo Strategy
 - OB-0001: Developer Security Tooling Onboarding
 - Session: `session_capture/2026-01-19-build-pipeline-architecture.md`
