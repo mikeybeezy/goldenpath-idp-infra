@@ -20,12 +20,14 @@ relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0165
   - CI_WORKFLOWS
+  - CL-0150
   - PR_GUARDRAILS
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
   - SESSION_CAPTURE_2026_01_17_02
+  - agent_session_summary
+  - session-2026-01-19-build-pipeline-architecture
 ---
-
 # PR Guardrails Index
 
 This document provides a comprehensive catalog of all PR guardrail workflows, their triggers, enforcement scope, and current status.

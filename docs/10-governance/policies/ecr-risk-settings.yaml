@@ -1,6 +1,6 @@
 id: ECR_RISK_SETTINGS
 title: ECR Risk-Based Security Settings
-type: policy-definition
+type: policy
 category: security
 status: active
 owner: platform-team

@@ -8,11 +8,13 @@ date: 2026-01-18
 author: platform-team
 category: infrastructure
 relates_to:
+  - ADR-0055-platform-tempo-tracing-backend
   - ADR-0171-platform-application-packaging-strategy
   - ADR-0172-cd-promotion-strategy-with-approval-gates
-  - ADR-0055-platform-tempo-tracing-backend
+  - EC-0006-competitor-analysis-tap
+  - EC-0007-kpack-buildpacks-integration
+  - session-2026-01-18-secrets-lifecycle
 ---
-
 # CL-0148: Local Kind Cluster with Argo CD GitOps
 
 ## Summary

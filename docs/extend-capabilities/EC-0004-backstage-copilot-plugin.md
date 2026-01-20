@@ -1,24 +1,32 @@
 ---
 id: EC-0004-backstage-copilot-plugin
 title: Backstage AI Copilot Plugin
-type: extension_capability
+type: extension-capability
 status: proposed
 relates_to:
+  - ADR-0110-idp-knowledge-graph-architecture
+  - CL-0102-backstage-docs-linkout
+  - FEDERATED_METADATA_STRATEGY
   - INDEX
+  - RB-0001-eks-access-recovery
+  - RB-0019-relationship-extraction-script
+  - RB-0029-rds-manual-secret-rotation
+  - RB-0031-idp-stack-deployment
+  - RB-0035-s3-request
   - ROADMAP
-  - RB-0001-platform-incident-response
+  - agent_session_summary
+  - session-capture-2026-01-18-local-dev-hello-app
 dependencies:
   - Backstage (existing)
   - Runbooks (35+ existing)
   - Makefile targets (existing)
   - YAML schemas (existing)
 priority: medium
-vq_class: velocity
+vq_class: 🟡 HV/LQ
 estimated_roi: $15,000/year (reduced MTTR + platform team toil)
 effort_estimate: 2-6 weeks (depending on approach)
 owner: platform-team
 ---
-
 ## Executive Summary
 
 Build an AI-powered copilot for GoldenPath IDP that assists operators with platform tasks using **Retrieval-Augmented Generation (RAG)** over existing runbooks, documentation, and operational knowledge. The copilot:

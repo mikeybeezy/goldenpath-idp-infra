@@ -43,6 +43,29 @@ cfg = MetadataConfig()
 OWNER = "platform-team"
 VERSION = "1.0"
 
+VQ_DEFAULTS_BY_TYPE = {
+    "policy": {
+        "vq_class": "🔴 HV/HQ",
+        "impact_tier": "tier-1",
+        "potential_savings_hours": 2.0,
+    },
+    "adr": {
+        "vq_class": "🔴 HV/HQ",
+        "impact_tier": "tier-2",
+        "potential_savings_hours": 1.0,
+    },
+    "runbook": {
+        "vq_class": "🔵 MV/HQ",
+        "impact_tier": "tier-2",
+        "potential_savings_hours": 0.5,
+    },
+    "automation-script": {
+        "vq_class": "🔴 HV/HQ",
+        "impact_tier": "tier-1",
+        "potential_savings_hours": 1.0,
+    },
+}
+
 def get_type_from_path(filepath):
     if 'adrs/' in filepath: return 'adr'
     if 'changelog/' in filepath: return 'changelog'
@@ -170,7 +193,21 @@ def standardize_file(filepath, dry_run=False):
         if not new_data.get('id'):
             new_data['id'] = filename_base
 
-    # 6. PRUNING (Dry Governance)
+    # 6. VQ defaults (only when missing)
+    vq_defaults = VQ_DEFAULTS_BY_TYPE.get(doc_type)
+    if vq_defaults:
+        vq_data = new_data.get('value_quantification')
+        if not isinstance(vq_data, dict):
+            vq_data = {}
+        for key, value in vq_defaults.items():
+            if key not in vq_data or vq_data[key] in [None, "", "unknown"]:
+                vq_data[key] = value
+        new_data['value_quantification'] = vq_data
+
+    if isinstance(new_data.get('value_quantification'), dict) and not new_data['value_quantification']:
+        del new_data['value_quantification']
+
+    # 7. PRUNING (Dry Governance)
     # Remove fields from local sidecar if they match the parent EXACTLY
     parent_data = cfg.find_parent_metadata(filepath)
     if parent_data:
@@ -181,12 +218,12 @@ def standardize_file(filepath, dry_run=False):
                 # print(f"DEBUG: Pruning redundant field: {k}")
                 del new_data[k]
 
-    # 7. Final Polish
+    # 8. Final Polish
     if 'reliability' in new_data and isinstance(new_data['reliability'], dict):
         if not new_data['reliability'].get('observability_tier'):
             new_data['reliability']['observability_tier'] = 'bronze'
 
-    # 8. Reconstruct and Save
+    # 9. Reconstruct and Save
     new_fm = platform_yaml_dump(new_data)
     if is_yaml:
         # Standard YAML sidecars should only have a leading marker, trailing marker signals a second document.

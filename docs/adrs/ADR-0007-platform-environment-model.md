@@ -23,6 +23,7 @@ relates_to:
   - ADR-0148-seamless-build-deployment-with-immutability
   - ADR-0157-platform-multi-tenant-rds-architecture
   - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
   - audit-20260103
 supersedes: []
 superseded_by: []
@@ -36,7 +37,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0007: Adopt an environment model that balances cost, iteration speed, and credible separation
 
 - **Status:** Accepted

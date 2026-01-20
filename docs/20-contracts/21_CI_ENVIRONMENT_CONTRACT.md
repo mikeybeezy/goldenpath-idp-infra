@@ -31,11 +31,11 @@ relates_to:
   - CI_TERRAFORM_WORKFLOWS
   - RB-0019-relationship-extraction-script
   - RELATIONSHIP_EXTRACTION_GUIDE
+  - agent_session_summary
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # CI Environment Contract
 
 Doc contract:

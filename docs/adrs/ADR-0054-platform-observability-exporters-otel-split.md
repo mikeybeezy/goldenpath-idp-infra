@@ -18,6 +18,7 @@ relates_to:
   - ADR-0052-platform-kube-prometheus-stack-bundle
   - ADR-0054-platform-observability-exporters-otel-split
   - ADR-0055-platform-tempo-tracing-backend
+  - HELM_TEMPO
   - audit-20260103
 supersedes: []
 superseded_by: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0054: Exporter vs OpenTelemetry split for platform observability
 
 - **Status:** Proposed

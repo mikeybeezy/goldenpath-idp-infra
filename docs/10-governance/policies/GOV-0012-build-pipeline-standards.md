@@ -13,7 +13,12 @@ risk_profile:
   security_risk: low
   coupling_risk: medium
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0170
+  - CL-0149
+  - RB-0036
+  - RB-0037
+  - session-2026-01-19-build-pipeline-architecture
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +36,6 @@ related_govs:
   - GOV-0013
   - GOV-0015
 ---
-
 # GOV-0012: Build Pipeline Standards
 
 ## Purpose

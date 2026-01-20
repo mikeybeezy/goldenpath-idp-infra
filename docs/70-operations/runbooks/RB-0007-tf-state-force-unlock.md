@@ -14,6 +14,8 @@ relates_to:
   - 32_TERRAFORM_STATE_AND_LOCKING
   - CI_WORKFLOWS
   - DOCS_RUNBOOKS_README
+  - RB-0033-persistent-cluster-teardown
+  - RB-0035-s3-request
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
@@ -22,7 +24,6 @@ dependencies:
   - module:dynamodb
 breaking_change: false
 ---
-
 # Terraform State Force Unlock (Runbook)
 
 Use this only when a Terraform run left a stale lock and no other Terraform

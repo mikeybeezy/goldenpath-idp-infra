@@ -26,6 +26,7 @@ relates_to:
   - 09_PLATFORM_DASHBOARD_CATALOG
   - 10_PLATFORM_REQUIREMENTS
   - 13_COLLABORATION_GUIDE
+  - 21_CI_ENVIRONMENT_CONTRACT
   - 23_NEW_JOINERS
   - 24_PR_GATES
   - 25_DAY_ONE_CHECKLIST
@@ -36,6 +37,9 @@ relates_to:
   - ADR-0163
   - ADR-0165
   - ADR-0166
+  - ADR-0167
+  - ADR-0171-platform-application-packaging-strategy
+  - ADR-0172-cd-promotion-strategy-with-approval-gates
   - AGENT_FIRST_BOOT
   - CATALOG_INDEX
   - CL-0132
@@ -46,14 +50,31 @@ relates_to:
   - CL-0137
   - CL-0138-tooling-apps-dashboards
   - CL-0140
+  - CL-0141
+  - CL-0145
+  - CL-0147
   - DOCS_20-CONTRACTS_RESOURCE-CATALOGS_README
+  - DOCS_RUNBOOKS_README
+  - EC-0001-knative-integration
+  - EC-0002-shared-parser-library
+  - EC-0003-kong-backstage-plugin
+  - EC-0004-backstage-copilot-plugin
+  - EC-0008-session-capture-ui
+  - EKS_REQUEST_FLOW
+  - INDEX
   - PLATFORM_SYSTEM_MAP
   - PR-156-STABILIZATION-CHECKLIST
   - PRD-0001-rds-user-db-provisioning
+  - PR_GUARDRAILS_INDEX
   - RB-0031-idp-stack-deployment
   - RB-0032
+  - RB-0033-persistent-cluster-teardown
   - RDS_DUAL_MODE_AUTOMATION
+  - RDS_REQUEST_FLOW
   - RDS_USER_DB_PROVISIONING
+  - ROADMAP
+  - S3_REQUEST_FLOW
+  - SCRIPT_CERTIFICATION_MATRIX
 supersedes: []
 superseded_by: []
 tags: []

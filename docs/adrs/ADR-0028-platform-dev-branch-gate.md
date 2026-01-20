@@ -19,6 +19,7 @@ relates_to:
   - 29_CD_DEPLOYMENT_CONTRACT
   - ADR-0028-platform-dev-branch-gate
   - ADR-0029-platform-dev-plan-gate
+  - CL-0142
   - RB-0010-dev-branch-apply
   - ROADMAP
   - audit-20260103
@@ -34,7 +35,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0028: Dev branch gate before main
 
 Filename: `ADR-0028-platform-dev-branch-gate.md`

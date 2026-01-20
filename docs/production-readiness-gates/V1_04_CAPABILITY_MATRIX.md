@@ -14,14 +14,15 @@ relates_to:
   - 00_DESIGN_PHILOSOPHY
   - 34_PLATFORM_SUCCESS_CHECKLIST
   - 37_V1_SCOPE_AND_TIMELINE
+  - ADR-0055-platform-tempo-tracing-backend
   - CL-0126-eks-end-to-end-milestone
   - IDP_PRODUCT_FEATURES
   - READINESS_CHECKLIST
+  - session-capture-2026-01-18-local-dev-hello-app
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Capability Matrix – Golden Path IDP Infra
 
 Last updated: 2026-01-18

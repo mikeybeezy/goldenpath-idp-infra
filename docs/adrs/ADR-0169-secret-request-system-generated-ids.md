@@ -13,12 +13,13 @@ reliability:
 schema_version: 1
 relates_to:
   - 01_adr_index
-  - ADR-0135-platform-secrets-manager-eso-foundation
-  - ADR-0143-secret-request-contract
-  - ADR-0144-intent-to-projection-parser
-  - CL-0111-secret-request-stabilization
-  - SECRET_REQUEST_FLOW
+  - ADR-0135
+  - ADR-0143
+  - ADR-0144
+  - ADR-0170
+  - CL-0111
   - SCRIPT-0033
+  - SECRET_REQUEST_FLOW
 supersedes: []
 superseded_by: []
 tags:
@@ -36,7 +37,6 @@ date: 2026-01-17
 deciders:
   - platform-team
 ---
-
 ## Status
 
 Accepted

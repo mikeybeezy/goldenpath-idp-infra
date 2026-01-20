@@ -14,9 +14,15 @@ reliability:
 schema_version: 1
 relates_to:
   - 01_adr_index
+  - 20_TOOLING_APPS_MATRIX
   - 42_APP_EXAMPLE_DEPLOYMENTS
   - ADR-0020-platform-helm-kustomize-hybrid
+  - ADR-0172-cd-promotion-strategy-with-approval-gates
+  - CL-0148
+  - EC-0005-kubernetes-operator-framework
+  - agent_session_summary
   - audit-20260103
+  - session-capture-2026-01-18-local-dev-hello-app
 supersedes:
   - ADR-0020-platform-helm-kustomize-hybrid
 superseded_by: []
@@ -27,14 +33,13 @@ tags:
   - gitops
 inheritance: {}
 value_quantification:
-  vq_class: HV/HQ
+  vq_class: 🔴 HV/HQ
   impact_tier: high
   potential_savings_hours: 4.0
 supported_until: 2028-01-18
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0171: Application Packaging Strategy - Helm vs Kustomize
 
 - **Status:** Active

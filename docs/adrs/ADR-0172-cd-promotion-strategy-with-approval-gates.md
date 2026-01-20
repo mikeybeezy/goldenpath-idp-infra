@@ -14,9 +14,13 @@ reliability:
 schema_version: 1
 relates_to:
   - 01_adr_index
+  - 20_TOOLING_APPS_MATRIX
   - 29_CD_DEPLOYMENT_CONTRACT
   - ADR-0171-platform-application-packaging-strategy
+  - CL-0148
+  - agent_session_summary
   - audit-20260103
+  - session-capture-2026-01-18-local-dev-hello-app
 supersedes: []
 superseded_by: []
 tags:
@@ -26,14 +30,13 @@ tags:
   - approval-gates
 inheritance: {}
 value_quantification:
-  vq_class: HV/HQ
+  vq_class: 🔴 HV/HQ
   impact_tier: high
   potential_savings_hours: 8.0
 supported_until: 2028-01-18
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0172: CD Promotion Strategy with Approval Gates
 
 - **Status:** Active

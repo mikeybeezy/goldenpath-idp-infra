@@ -14,16 +14,22 @@ relates_to:
   - 32_TERRAFORM_STATE_AND_LOCKING
   - 36_STATE_KEY_STRATEGY
   - ADR-0040-platform-lifecycle-aware-state-keys
-  - ADR-0161-ephemeral-infrastructure-stack
+  - ADR-0161
+  - CL-0145
+  - DOCS_RUNBOOKS_README
+  - EC-0009-goldenpath-cli
+  - RB-0007-tf-state-force-unlock
   - RB-0017-orphan-cleanup
   - RB-0030-rds-break-glass-deletion
   - RB-0031-idp-stack-deployment
+  - RB-0034-persistent-cluster-deployment
+  - agent_session_summary
+  - session-2026-01-17-eks-backstage-scaffolder
 category: runbooks
 supported_until: 2028-01-17
-version: "1.0"
+version: '1.0'
 breaking_change: false
 ---
-
 # Persistent Cluster Teardown Runbook
 
 This runbook covers teardown for **persistent** EKS clusters that use the root

@@ -18,6 +18,7 @@ relates_to:
   - ADR-0046-platform-pr-plan-validation-ownership
   - ADR-0063-platform-terraform-helm-bootstrap
   - ADR-0101-pr-metadata-auto-heal
+  - ADR-0173-governance-doc-naming-migration
   - CL-0002-bootstrap-refactor
   - CL-0063-pr-metadata-auto-heal
 category: governance
@@ -25,7 +26,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # PR Guardrails (GoldenPath IDP)
 
 Doc contract:

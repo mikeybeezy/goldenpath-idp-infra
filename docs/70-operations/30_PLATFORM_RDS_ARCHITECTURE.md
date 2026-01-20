@@ -11,14 +11,15 @@ relates_to:
   - RB-0030-rds-break-glass-deletion
   - RB-0031-idp-stack-deployment
   - RB-0032
+  - RB-0034-persistent-cluster-deployment
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
   - RDS_USER_DB_PROVISIONING
   - SESSION_CAPTURE_2026_01_17_01
   - agent_session_summary
+  - session-2026-01-17-eks-backstage-scaffolder
 category: compliance
 ---
-
 ## Platform RDS Architecture
 
 This living document describes the standalone RDS PostgreSQL bounded context for platform tooling applications.

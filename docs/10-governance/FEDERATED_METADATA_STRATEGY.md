@@ -12,6 +12,7 @@ reliability:
   maturity: 1
 relates_to:
   - CL-0045-federated-governance-onboarding
+  - EC-0004-backstage-copilot-plugin
 category: governance
 supported_until: 2028-12-31
 version: 1.0
@@ -19,7 +20,6 @@ dependencies:
   - module:governance-engine
 breaking_change: false
 ---
-
 # Federated Metadata Strategy
 
 ## Purpose

@@ -5,9 +5,9 @@ type: documentation
 relates_to:
   - ADR-0135
   - ADR-0143
+  - EC-0003-kong-backstage-plugin
   - RB-0026
 ---
-
 ## How It Works: Platform Secret Lifecycle
 
 This document explains the technical lifecycle of a platform secret, following the Golden Path "Intent vs. Projection" model. It emphasizes the philosophy that **Backstage is the front door for intent, while the platform owns creation, policy, and lifecycle.**

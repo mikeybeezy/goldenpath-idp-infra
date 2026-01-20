@@ -3,11 +3,14 @@ id: RB-0036
 title: GitHub App Setup for ArgoCD Image Updater
 type: runbook
 relates_to:
-  - ADR-0170-build-pipeline-architecture
+  - ADR-0170
   - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
+  - EC-0005-kubernetes-operator-framework
   - GOV-0012-build-pipeline-standards
-  - RB-0037-pipeline-enablement
+  - GOV-0015-build-pipeline-testing-matrix
+  - RB-0037
   - argocd_image_updater
+  - session-2026-01-19-build-pipeline-architecture
 tags:
   - github-app
   - image-updater
@@ -16,7 +19,6 @@ tags:
   - breakglass
 category: runbooks
 ---
-
 # RB-0036: GitHub App Setup for ArgoCD Image Updater
 
 ## Purpose

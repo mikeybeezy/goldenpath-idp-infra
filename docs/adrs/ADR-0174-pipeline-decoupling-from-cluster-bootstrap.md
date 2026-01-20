@@ -13,12 +13,15 @@ reliability:
   maturity: 2
 schema_version: 1
 relates_to:
-  - ADR-0170-build-pipeline-architecture
+  - 01_adr_index
   - ADR-0007-platform-environment-model
   - ADR-0026-platform-cd-deployment-contract
+  - ADR-0170
   - GOV-0012-build-pipeline-standards
-  - RB-0036-github-app-image-updater
-  - RB-0037-pipeline-enablement
+  - RB-0036
+  - RB-0037
+  - ROADMAP
+  - session-2026-01-19-build-pipeline-architecture
 supersedes: []
 superseded_by: []
 tags:
@@ -35,7 +38,6 @@ supported_until: 2027-01-19
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0174: Pipeline enablement intentionally decoupled from cluster bootstrap
 
 Filename: `ADR-0174-pipeline-decoupling-from-cluster-bootstrap.md`

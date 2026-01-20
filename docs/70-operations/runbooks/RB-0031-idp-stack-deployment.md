@@ -15,9 +15,12 @@ relates_to:
   - ADR-0160
   - CL-0133-idp-stack-deployment-runbook
   - DOCS_RUNBOOKS_README
+  - EC-0004-backstage-copilot-plugin
   - RB-0001-eks-access-recovery
   - RB-0012-argocd-app-readiness
   - RB-0032
+  - RB-0033-persistent-cluster-teardown
+  - RB-0034-persistent-cluster-deployment
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_USER_DB_PROVISIONING
   - SESSION_CAPTURE_2026_01_17_01
@@ -28,7 +31,6 @@ supported_until: 2028-01-15
 version: '1.0'
 breaking_change: false
 ---
-
 ## IDP Stack Deployment Runbook (Keycloak + Backstage)
 
 This runbook provides the complete sequence to deploy and verify the IDP core stack (Keycloak and Backstage) on a new or existing EKS cluster.

@@ -7,7 +7,7 @@ risk_profile:
   security_risk: medium
   coupling_risk: medium
 reliability:
-  rollback_strategy: dns-revert
+  rollback_strategy: manual
   observability_tier: silver
   maturity: 2
 relates_to:
@@ -22,7 +22,7 @@ tags:
   - operations
   - living-doc
 value_quantification:
-  vq_class: HV/HQ
+  vq_class: 🔴 HV/HQ
   impact_tier: high
   potential_savings_hours: 4.0
 category: compliance

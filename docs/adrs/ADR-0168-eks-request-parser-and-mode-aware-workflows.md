@@ -15,11 +15,14 @@ relates_to:
   - 01_adr_index
   - ADR-0032-platform-eks-access-model
   - ADR-0033-platform-ci-orchestrated-modes
-  - ADR-0144-intent-to-projection-parser
-  - ADR-0153-cluster-provisioning-identity
-  - ADR-0161-ephemeral-infrastructure-stack
-  - CL-0142-eks-apply-scope-gate
-  - CL-0143-eks-request-system
+  - ADR-0144
+  - ADR-0153
+  - ADR-0161
+  - ADR-0170
+  - CL-0142
+  - CL-0143
+  - CL-0147
+  - EKS_REQUEST_FLOW
   - SCRIPT-0043
   - session-2026-01-17-eks-backstage-scaffolder
 supersedes: []
@@ -40,7 +43,6 @@ date: 2026-01-17
 deciders:
   - platform-team
 ---
-
 ## Status
 
 Accepted

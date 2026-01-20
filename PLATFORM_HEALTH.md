@@ -7,9 +7,13 @@ status: active
 owner: platform-team
 version: '2026-01-19'
 relates_to:
+  - 01_adr_index
+  - CAPABILITY_LEDGER
+  - DOCS_CHANGELOG_README
+  - RB-0015-repo-health-and-hygiene
+  - SCRIPT_CERTIFICATION_MATRIX
   - platform_health.py
 ---
-
 ## 🏥 Platform Health Command Center
 
 **Generated**: `2026-01-19 05:13:49` | **V1 Readiness**: `91.2%` | **Mean Confidence**: `⭐ (1.3/5.0)`

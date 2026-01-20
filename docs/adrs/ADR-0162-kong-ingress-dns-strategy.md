@@ -19,6 +19,7 @@ relates_to:
   - CL-0135-kong-ingress-for-tooling-apps
   - CL-0136-tooling-apps-ingress-configuration
   - CL-0138-tooling-apps-dashboards
+  - EC-0003-kong-backstage-plugin
   - agent_session_summary
   - session_summary_template
 supersedes: []
@@ -38,7 +39,6 @@ date: 2026-01-16
 deciders:
   - platform-team
 ---
-
 ## Status
 
 Accepted

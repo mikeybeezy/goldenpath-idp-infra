@@ -17,6 +17,7 @@ relates_to:
   - 07_REPO_DECOUPLING_OPTIONS
   - ADR-0012-platform-repo-decoupling-options
   - audit-20260103
+  - session-capture-2026-01-18-local-dev-hello-app
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +30,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0012: Repo decoupling options for infra and platform tooling
 
 - **Status:** Accepted

@@ -29,7 +29,7 @@ tags:
   - self-service
 inheritance: {}
 value_quantification:
-  vq_class: HV/HQ
+  vq_class: 🔴 HV/HQ
   impact_tier: medium
   potential_savings_hours: 20.0
 supported_until: 2028-01-15

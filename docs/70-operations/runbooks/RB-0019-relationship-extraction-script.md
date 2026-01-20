@@ -25,13 +25,13 @@ relates_to:
   - CL-0042-metadata-backfill-batch-1
   - CL-0043-complete-metadata-backfill
   - DOCS_RUNBOOKS_README
+  - EC-0004-backstage-copilot-plugin
   - METADATA_STRATEGY
 category: runbooks
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## Relationship Extraction Script - Usage & Operations
 
 ## Overview

@@ -10,12 +10,15 @@ relates_to:
   - RB-0029-rds-manual-secret-rotation
   - RB-0030-rds-break-glass-deletion
   - RB-0031-idp-stack-deployment
+  - RB-0034-persistent-cluster-deployment
   - RDS_DUAL_MODE_AUTOMATION
   - RDS_REQUEST_FLOW
   - RDS_USER_DB_PROVISIONING
   - SCRIPT-0035
   - SESSION_CAPTURE_2026_01_17_01
   - agent_session_summary
+  - session-2026-01-17-s3-request-flow-planning
+  - session-2026-01-19-build-pipeline-architecture
 tags:
   - rds
   - provisioning
@@ -23,7 +26,6 @@ tags:
   - automation
 category: runbooks
 ---
-
 # RB-0032: RDS User and Database Provisioning
 
 ## Purpose

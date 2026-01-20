@@ -172,6 +172,11 @@ relates_to:
   - ADR-0167
   - ADR-0168
   - ADR-0169
+  - ADR-0170
+  - ADR-0171-platform-application-packaging-strategy
+  - ADR-0172-cd-promotion-strategy-with-approval-gates
+  - ADR-0173-governance-doc-naming-migration
+  - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
   - ADR_INDEX_AUTOMATION_SPEC
   - AUTO_HEALING_GUIDE
   - CL-0068-adr-index-automation
@@ -188,7 +193,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 id: 01_adr_index
 title: ADR Index (GoldenPath IDP)
 type: adr

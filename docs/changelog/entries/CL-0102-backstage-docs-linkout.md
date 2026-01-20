@@ -19,6 +19,7 @@ schema_version: 1
 relates_to:
   - ADR-0133
   - CL-0102-backstage-docs-linkout
+  - EC-0004-backstage-copilot-plugin
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +32,6 @@ supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # CL-0102: Backstage docs link-out (no TechDocs build)
 
 Date: 2026-01-10
