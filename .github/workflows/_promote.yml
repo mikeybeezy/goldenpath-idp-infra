@@ -199,7 +199,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Check dev pipeline status (advisory)
-        if: inputs.target_environment == 'dev'
+        if: inputs.source_environment == 'dev'
         run: |
           SECRET_NAME="goldenpath/dev/github-app/image-updater"
 

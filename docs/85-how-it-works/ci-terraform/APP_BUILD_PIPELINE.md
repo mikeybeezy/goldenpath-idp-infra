@@ -7,6 +7,7 @@ relates_to:
   - GOV-0012-build-pipeline-standards
   - GOV-0013-devsecops-security-standards
   - GOV-0014-devsecops-implementation-matrix
+  - GOV-0015-build-pipeline-testing-matrix
 ---
 
 This guide explains the end-to-end application build and promotion pipeline.
@@ -156,3 +157,7 @@ derive the target tag.
 - One canonical pipeline with consistent gates across apps.
 - Clear promotion path and immutable artifacts for higher environments.
 - Git remains the single source of truth for deployments.
+
+## Related Governance
+
+- [GOV-0015 Build Pipeline Testing Matrix](../../10-governance/policies/GOV-0015-build-pipeline-testing-matrix.md)

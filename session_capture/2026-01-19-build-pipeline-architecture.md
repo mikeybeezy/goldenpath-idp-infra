@@ -1948,3 +1948,413 @@ Signed: Claude Opus 4.5 (2026-01-19T20:45:00Z)
 | End-to-end promotion test | Platform Team | - |
 
 Signed: Claude Opus 4.5 (2026-01-19T21:00:00Z)
+
+---
+
+### Update - 2026-01-19T23:30:00Z
+
+**What changed**
+
+- Reviewed governance docs (07_AI_AGENT_GOVERNANCE.md, 26_AI_AGENT_PROTOCOLS.md) for Outstanding requirement
+- Confirmed enforcement mechanism: `session-capture-guard.yml` workflow
+- Verified session capture compliance with Outstanding requirement
+- RDS provisioning commit (12377647) confirmed as prior session work now committed on this branch
+- Branch confirmed as `goldenpath/buildpipeline` (not `development`)
+
+**Artifacts touched**
+
+- `session_capture/2026-01-19-build-pipeline-architecture.md` (this update)
+
+**Validation**
+
+- `git branch --show-current` → `goldenpath/buildpipeline`
+- `git log --oneline -12` → Confirmed 12 commits ahead of main
+
+**Outstanding**
+
+- [ ] Create GitHub App per RB-0036 (manual)
+- [ ] Store credentials in AWS Secrets Manager for each environment
+- [ ] Run `make pipeline-enable ENV=<env>` for dev/test/staging/prod
+- [ ] End-to-end promotion test after pipeline enabled
+- [ ] Fix dev advisory check to key off `source_environment` (unreachable condition)
+- [ ] Decide on `optional: true/false` alignment between RB-0037 and values files
+
+Signed: Claude Opus 4.5 (2026-01-19T23:30:00Z)
+
+---
+
+### Update - 2026-01-19T23:45:00Z
+
+**What changed**
+
+- Added Build Pipeline Testing Matrix proposal for team review
+- Defines objective scoring system for pipeline validation
+- Covers security, tagging, gates, GitOps, and developer experience
+
+**Artifacts touched**
+
+- `session_capture/2026-01-19-build-pipeline-architecture.md` (this update)
+
+**Validation**
+
+- Proposal only - pending team review and approval
+
+**Outstanding**
+
+- [ ] Team review of testing matrix proposal
+- [ ] Formalize as GOV-0015 after approval
+- [ ] Create GitHub App per RB-0036 (manual)
+- [ ] Store credentials in AWS Secrets Manager for each environment
+- [ ] Run `make pipeline-enable ENV=<env>` for dev/test/staging/prod
+- [ ] End-to-end promotion test after pipeline enabled
+
+Signed: Claude Opus 4.5 (2026-01-19T23:45:00Z)
+
+---
+
+### Update - 2026-01-19T23:55:00Z
+
+**What changed**
+
+- Revised the testing matrix to be human- and machine-friendly.
+- Removed base image enforcement from current scoring (moved to Phase 3+ optional).
+- Added Preconditions and Evidence columns for deterministic validation.
+
+**Revised Testing Matrix (Proposal)**
+
+**Scoring System**
+
+| Score | Meaning |
+|-------|---------|
+| 0 | Not implemented / Failing |
+| 1 | Partially implemented / Manual workaround |
+| 2 | Fully implemented / Passing |
+
+**Passing Threshold:** Minimum 80% of max score per category.
+
+**Must-Pass Tests (hard gates):** SEC-02, SEC-04, SEC-05, GATE-01, TAG-06, TAG-07.
+
+---
+
+### Category 1: Security Gates
+
+| Test ID | Test Case | Env | Preconditions | Evidence | Expected Behavior | Score |
+|---------|-----------|-----|---------------|----------|-------------------|-------|
+| SEC-01 | Gitleaks detects hardcoded secret | dev | Pipeline run | GH logs | Advisory warning only | /2 |
+| SEC-02 | Gitleaks detects hardcoded secret | test+ | Pipeline run | GH logs | Build fails | /2 |
+| SEC-03 | Trivy finds HIGH/CRITICAL CVE | dev | Image built | GH logs | Advisory warning only | /2 |
+| SEC-04 | Trivy finds HIGH/CRITICAL CVE | test+ | Image built | GH logs | Build fails | /2 |
+| SEC-05 | SARIF uploaded | test+ | Trivy run | GH Security tab | SARIF visible | /2 |
+| SEC-06 | SBOM generated (SPDX) | test+ | Image built | Build artifacts | SBOM downloadable | /2 |
+| SEC-07 | Clean image passes scans | all | Image built | GH logs | Build succeeds | /2 |
+
+---
+
+### Category 2: Tagging & Promotion
+
+| Test ID | Test Case | Env | Preconditions | Evidence | Expected Behavior | Score |
+|---------|-----------|-----|---------------|----------|-------------------|-------|
+| TAG-01 | Build produces `:latest` | dev | Build run | ECR tags | `:latest` present | /2 |
+| TAG-02 | Build produces `<sha>` tag | build | Build run | ECR tags | `<sha>` present | /2 |
+| TAG-03 | Promote dev->test | test | Source tag valid | ECR tags | `test-<sha>` exists | /2 |
+| TAG-04 | Promote test->staging | staging | Source tag valid | ECR tags | `staging-<sha>` exists | /2 |
+| TAG-05 | Promote staging->prod | prod | Source tag valid | ECR tags | `prod-<sha>` exists | /2 |
+| TAG-06 | Invalid promotion path rejected | all | Promotion run | GH logs | dev->prod fails | /2 |
+| TAG-07 | Invalid tag format rejected | test+ | Promotion run | GH logs | `:latest` rejected | /2 |
+
+---
+
+### Category 3: Pipeline Gates & Enforcement
+
+| Test ID | Test Case | Env | Preconditions | Evidence | Expected Behavior | Score |
+|---------|-----------|-----|---------------|----------|-------------------|-------|
+| GATE-01 | Pipeline-check blocks promotion | test+ | No secret | GH logs | Promotion fails with clear error | /2 |
+| GATE-02 | Dev advisory on promotion | dev->test | Secret missing | GH logs | Warning only, promotion proceeds | /2 |
+| GATE-03 | Concurrency queues deploys | all | Two deploys | GH logs | Second waits | /2 |
+| GATE-04 | Prod approval required | prod | Approval gate on | GH UI | Workflow waits | /2 |
+| GATE-05 | Tests run before build | all | `test_command` set | GH logs | Fail fast | /2 |
+| GATE-06 | Build summary generated | all | Build run | GH summary | Summary visible | /2 |
+
+---
+
+### Category 4: GitOps Integration
+
+| Test ID | Test Case | Env | Preconditions | Evidence | Expected Behavior | Score |
+|---------|-----------|-----|---------------|----------|-------------------|-------|
+| GIT-01 | Image Updater detects new tag | AWS | Pipeline enabled | Git commit in app repo | Commit created | /2 |
+| GIT-02 | Git write-back uses GitHub App | AWS | Pipeline enabled | Git commit author | `argocd-image-updater` | /2 |
+| GIT-03 | ArgoCD syncs after tag update | AWS | Auto-sync on | Argo UI | Pod runs new image | /2 |
+| GIT-04 | Digest strategy works | local | Local updater | Argo logs | `:latest` change triggers update | /2 |
+| GIT-05 | Name strategy works | test+ | Env-sha tags | Argo logs | `<env>-<sha>` updates | /2 |
+| GIT-06 | Prod sync is manual | prod | Auto-sync off | Argo UI | Manual sync required | /2 |
+
+---
+
+### Category 5: Developer Experience
+
+| Test ID | Test Case | Env | Preconditions | Evidence | Expected Behavior | Score |
+|---------|-----------|-----|---------------|----------|-------------------|-------|
+| DX-01 | Thin caller workflow works | all | App repo setup | GH logs | Build via canonical workflow | /2 |
+| DX-02 | Pre-commit hooks run | local | Hooks installed | Local logs | Gitleaks/yamllint pass | /2 |
+| DX-03 | `make pipeline-status` | all | Tools installed | CLI output | Correct status | /2 |
+| DX-04 | `make pipeline-enable` | AWS | Secret exists | CLI output | K8s secret created | /2 |
+| DX-05 | Errors are actionable | all | Failure case | GH logs | References RB-0036/0037 | /2 |
+
+---
+
+### Phase 3+ Optional Tests (Not Scored Now)
+
+| Test ID | Test Case | Phase |
+|---------|-----------|-------|
+| SEC-08 | Base image policy enforced | Phase 3 |
+| SEC-09 | Semgrep SAST detects vulnerability | Phase 3 |
+| SEC-10 | OWASP ZAP DAST scan passes | Phase 3 |
+| SEC-11 | Image signed with Cosign | Phase 4 |
+| SEC-12 | SLSA provenance attached | Phase 4 |
+
+**Artifacts touched**
+
+- `session_capture/2026-01-19-build-pipeline-architecture.md`
+
+**Validation**
+
+- Proposal only - pending team review and approval
+
+**Outstanding**
+
+- Align dev advisory check to `source_environment` in `_promote.yml` so GATE-02 is testable.
+- Decide on secret optionality for test/staging/prod and update matrix + values files accordingly.
+- Confirm local write-back expectations (document advisory or add local credentials).
+
+Signed: Codex (GPT-5) (2026-01-19T23:55:00Z)
+
+---
+
+## PROPOSAL: Build Pipeline Testing Matrix (Pending Review)
+
+> **Status:** Draft - Awaiting team approval before formalization as GOV-0015
+
+### Scoring System
+
+| Score | Meaning |
+|-------|---------|
+| 0 | Not implemented / Failing |
+| 1 | Partially implemented / Manual workaround |
+| 2 | Fully implemented / Passing |
+
+**Passing Threshold:** Minimum 80% of max score per category.
+
+**Must-Pass Tests (hard gates):** SEC-02, SEC-04, SEC-05, GATE-01, TAG-06, TAG-07 must score 2/2.
+
+---
+
+### Scoring Summary
+
+| Category | Max Score | Passing (80%) |
+|----------|-----------|---------------|
+| Security Gates | 14 | 11+ |
+| Tagging & Promotion | 14 | 11+ |
+| Pipeline Gates | 12 | 10+ |
+| GitOps Integration | 12 | 10+ |
+| Developer Experience | 10 | 8+ |
+| **Total** | **62** | **50+** |
+
+---
+
+### Maturity Levels
+
+| Level | Score Range | Status |
+|-------|-------------|--------|
+| **Bronze** | 50-52 (80-84%) | Minimum viable |
+| **Silver** | 53-57 (85-92%) | Production ready |
+| **Gold** | 58-62 (93-100%) | Fully hardened |
+
+---
+
+### Approval Checklist
+
+- [ ] Platform Team review
+- [ ] Codex (GPT-5) review
+- [ ] Scoring thresholds agreed
+- [ ] Maturity levels accepted
+- [ ] Formalize as GOV-0015
+
+Signed: Claude Opus 4.5 + Codex (GPT-5) (2026-01-20)
+
+---
+
+### Update - 2026-01-20T00:10:00Z
+
+**What changed**
+
+- Consolidated the testing matrix into a single authoritative version.
+- Updated GATE-02 to explicitly cover dev promotions.
+- Clarified evidence sources for GitOps tests and CI build tagging.
+- Marked earlier matrix blocks as superseded (kept for audit history).
+
+**Consolidated Testing Matrix (Authoritative)**
+
+> Note: The earlier matrix blocks above are superseded by this section and retained only for audit history.
+
+**Scoring System**
+
+| Score | Meaning |
+|-------|---------|
+| 0 | Not implemented / Failing |
+| 1 | Partially implemented / Manual workaround |
+| 2 | Fully implemented / Passing |
+
+**Passing Threshold:** Minimum 80% of max score per category.
+
+**Must-Pass Tests (hard gates):** SEC-02, SEC-04, SEC-05, GATE-01, TAG-06, TAG-07.
+
+---
+
+### Category 1: Security Gates
+
+| Test ID | Test Case | Env | Preconditions | Evidence | Expected Behavior | Score |
+|---------|-----------|-----|---------------|----------|-------------------|-------|
+| SEC-01 | Gitleaks detects hardcoded secret | dev | Pipeline run | GH logs | Advisory warning only | /2 |
+| SEC-02 | Gitleaks detects hardcoded secret | test+ | Pipeline run | GH logs | Build fails | /2 |
+| SEC-03 | Trivy finds HIGH/CRITICAL CVE | dev | Image built | GH logs | Advisory warning only | /2 |
+| SEC-04 | Trivy finds HIGH/CRITICAL CVE | test+ | Image built | GH logs | Build fails | /2 |
+| SEC-05 | SARIF uploaded | test+ | Trivy run | GH Security tab | SARIF visible | /2 |
+| SEC-06 | SBOM generated (SPDX) | test+ | Image built | Build artifacts | SBOM downloadable | /2 |
+| SEC-07 | Clean image passes scans | all | Image built | GH logs | Build succeeds | /2 |
+
+---
+
+### Category 2: Tagging & Promotion
+
+| Test ID | Test Case | Env | Preconditions | Evidence | Expected Behavior | Score |
+|---------|-----------|-----|---------------|----------|-------------------|-------|
+| TAG-01 | Build produces `:latest` | dev | Build run | ECR tags | `:latest` present | /2 |
+| TAG-02 | Build produces `<sha>` tag | CI/build | Build run | ECR tags | `<sha>` present | /2 |
+| TAG-03 | Promote dev->test | test | Source tag valid | ECR tags | `test-<sha>` exists | /2 |
+| TAG-04 | Promote test->staging | staging | Source tag valid | ECR tags | `staging-<sha>` exists | /2 |
+| TAG-05 | Promote staging->prod | prod | Source tag valid | ECR tags | `prod-<sha>` exists | /2 |
+| TAG-06 | Invalid promotion path rejected | all | Promotion run | GH logs | dev->prod fails | /2 |
+| TAG-07 | Invalid tag format rejected | test+ | Promotion run | GH logs | `:latest` rejected | /2 |
+
+---
+
+### Category 3: Pipeline Gates & Enforcement
+
+| Test ID | Test Case | Env | Preconditions | Evidence | Expected Behavior | Score |
+|---------|-----------|-----|---------------|----------|-------------------|-------|
+| GATE-01 | Pipeline-check blocks promotion | test+ | No secret | GH logs | Promotion fails with clear error | /2 |
+| GATE-02 | Dev advisory only | dev->test | Secret missing | GH logs | Warning only | /2 |
+| GATE-03 | Concurrency queues deploys | all | Two deploys | GH logs | Second waits | /2 |
+| GATE-04 | Prod approval required | prod | Approval gate on | GH UI | Workflow waits | /2 |
+| GATE-05 | Tests run before build | all | `test_command` set | GH logs | Fail fast | /2 |
+| GATE-06 | Build summary generated | all | Build run | GH summary | Summary visible | /2 |
+
+---
+
+### Category 4: GitOps Integration
+
+| Test ID | Test Case | Env | Preconditions | Evidence | Expected Behavior | Score |
+|---------|-----------|-----|---------------|----------|-------------------|-------|
+| GIT-01 | Image Updater detects new tag | AWS | Pipeline enabled | Git commit hash | Commit created | /2 |
+| GIT-02 | Git write-back uses GitHub App | AWS | Pipeline enabled | Git commit author | `argocd-image-updater` | /2 |
+| GIT-03 | ArgoCD syncs after tag update | AWS | Auto-sync on | Argo UI | Pod runs new image | /2 |
+| GIT-04 | Digest strategy works | local | Local updater | Argo logs | `:latest` change triggers update | /2 |
+| GIT-05 | Name strategy works | test+ | Env-sha tags | Argo logs | `<env>-<sha>` updates | /2 |
+| GIT-06 | Prod sync is manual | prod | Auto-sync off | Argo UI | Manual sync required | /2 |
+
+---
+
+### Category 5: Developer Experience
+
+| Test ID | Test Case | Env | Preconditions | Evidence | Expected Behavior | Score |
+|---------|-----------|-----|---------------|----------|-------------------|-------|
+| DX-01 | Thin caller workflow works | all | App repo setup | GH logs | Build via canonical workflow | /2 |
+| DX-02 | Pre-commit hooks run | local | Hooks installed | Local logs | Gitleaks/yamllint pass | /2 |
+| DX-03 | `make pipeline-status` | all | Tools installed | CLI output | Correct status | /2 |
+| DX-04 | `make pipeline-enable` | AWS | Secret exists | CLI output | K8s secret created | /2 |
+| DX-05 | Errors are actionable | all | Failure case | GH logs | References RB-0036/0037 | /2 |
+
+---
+
+### Phase 3+ Optional Tests (Not Scored Now)
+
+| Test ID | Test Case | Phase |
+|---------|-----------|-------|
+| SEC-08 | Base image policy enforced | Phase 3 |
+| SEC-09 | Semgrep SAST detects vulnerability | Phase 3 |
+| SEC-10 | OWASP ZAP DAST scan passes | Phase 3 |
+| SEC-11 | Image signed with Cosign | Phase 4 |
+| SEC-12 | SLSA provenance attached | Phase 4 |
+
+**Artifacts touched**
+
+- `session_capture/2026-01-19-build-pipeline-architecture.md`
+
+**Validation**
+
+- Proposal only - pending team review and approval
+
+**Outstanding**
+
+- Remove or annotate the superseded matrix blocks above if we want to reduce doc length.
+- Decide on secret optionality for test/staging/prod and update matrix + values files accordingly.
+- Confirm local write-back expectations (document advisory or add local credentials).
+
+Signed: Codex (GPT-5) (2026-01-20T00:10:00Z)
+
+---
+
+### Update - 2026-01-20T00:20:00Z
+
+**What changed**
+
+- Created GOV-0015 testing matrix policy.
+- Linked the testing matrix from the build pipeline how-it-works doc.
+
+**Artifacts touched**
+
+- `docs/10-governance/policies/GOV-0015-build-pipeline-testing-matrix.md`
+- `docs/85-how-it-works/ci-terraform/APP_BUILD_PIPELINE.md`
+- `session_capture/2026-01-19-build-pipeline-architecture.md`
+
+**Validation**
+
+- Documentation only - no validation commands required
+
+**Outstanding**
+
+- Decide on secret optionality for test/staging/prod and align values + matrix.
+- Confirm local write-back expectations (document advisory or add local credentials).
+- Consider tagging older matrix blocks as superseded to reduce confusion.
+
+Signed: Codex (GPT-5) (2026-01-20T00:20:00Z)
+
+---
+
+### Update - 2026-01-20T00:25:00Z
+
+**What changed**
+
+- Marked earlier testing matrix blocks as superseded (append-only note).
+- Declared GOV-0015 as the authoritative testing matrix.
+
+**Superseded Notice**
+
+The testing matrix blocks in this session capture (including the "PROPOSAL: Build Pipeline Testing Matrix" section) are **superseded**. Use the authoritative policy document:
+
+- `docs/10-governance/policies/GOV-0015-build-pipeline-testing-matrix.md`
+
+**Artifacts touched**
+
+- `session_capture/2026-01-19-build-pipeline-architecture.md`
+
+**Validation**
+
+- Documentation only - no validation commands required
+
+**Outstanding**
+
+- Decide on secret optionality for test/staging/prod and align values + GOV-0015.
+- Confirm local write-back expectations (document advisory or add local credentials).
+
+Signed: Codex (GPT-5) (2026-01-20T00:25:00Z)
