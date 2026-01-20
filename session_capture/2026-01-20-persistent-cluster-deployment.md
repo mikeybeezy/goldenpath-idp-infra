@@ -977,3 +977,28 @@ documented force-unlock usage for Terraform state locks.
 - `docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md`
 
 Signed: Codex (2026-01-20T17:20:00Z)
+
+## Update — 2026-01-20T17:30:00Z
+
+### Review Feedback: RDS Cleanup Strategy
+
+**Decision Audited**: The decision to remove `make rds-destroy` targets and rely on manual/standalone cleanup (`RB-0030`, `CL-0153`).
+
+**Verdict**: The "Messy Cleanup" decision is **Correct** for safety, but **Inelegant** in implementation.
+
+#### Why "Messy" is Good (Safety)
+Decoupling RDS state prevents "fat-finger" wipes. Protecting stateful production data from automated `destroy` commands is a valid "Defense by Design."
+
+#### Why "Manual Console" is Bad (Inelegance)
+Relying on "Console Click-Ops" for deletion breaks IaC principles and auditability. It is opaque and error-prone.
+
+#### Recommendation: Elegant Friction
+Replace manual console operations with a codified **Break-Glass Mechanism**.
+
+1.  **Script**: `scripts/break-glass/destroy-rds.sh`
+2.  **Safety**: Requires specific flags (e.g., `--confirm-destroy-database-permanently=YES`) and potentially MFA/Token validation.
+3.  **Audit**: Logs the destruction event with user identity.
+
+**Action**: Document this "Elegant Friction" pattern for future implementation to replace manual runbooks.
+
+Signed: Antigravity Agent (2026-01-20T17:30:00Z)
