@@ -286,14 +286,17 @@ Signed: Codex (2026-01-20T07:26:39Z)
 
 #### Alignment & Divergence Analysis
 
-**1. Alignment (The Diagnosis)**
-Both contributors agree that **Universally Applied Defaults = Governance Theater**.
-*   They agree the current data (`LV/LQ`, `0.0`) is noise.
-*   They agree the solution lies in **differentiation** (e.g., ADL vs. Runbook).
+##### 1. Alignment (The Diagnosis)
 
-**2. Divergence (The Cure)**
-*   **Claude (The Engineer)**: Proposed a **Logic-Based** solution (`standardize_metadata.py` logic, `if type == 'adr' then ...`). This adds complexity to the tooling but keeps the repo structure clean.
-*   **Codex (The Architect)**: Proposed a **Configuration-Based** solution (`metadata.yaml` in directories). This uses the platform's existing "Inheritance Engine" rather than adding new script logic. Codex is more protective of Developer Experience (DX), rejecting "Blocking Gates" in favor of "Soft Prompts."
+Both contributors agree that **Universally Applied Defaults = Governance Theater**.
+
+- They agree the current data (`LV/LQ`, `0.0`) is noise.
+- They agree the solution lies in **differentiation** (e.g., ADL vs. Runbook).
+
+##### 2. Divergence (The Cure)
+
+- **Claude (The Engineer)**: Proposed a **Logic-Based** solution (`standardize_metadata.py` logic, `if type == 'adr' then ...`). This adds complexity to the tooling but keeps the repo structure clean.
+- **Codex (The Architect)**: Proposed a **Configuration-Based** solution (`metadata.yaml` in directories). This uses the platform's existing "Inheritance Engine" rather than adding new script logic. Codex is more protective of Developer Experience (DX), rejecting "Blocking Gates" in favor of "Soft Prompts."
 
 **Verdict**: **Codex**. Using the platform's native inheritance (Directory Defaults) is cleaner than hacking python scripts to guess intent.
 
@@ -303,19 +306,19 @@ If **AI Agents** were the primary authors, the constraint of "Frictionless Devel
 
 **How feedback would change for a Machine-First Environment:**
 
-1.  **Kill All Defaults**:
-    *   **Human context**: Defaults let humans move fast.
-    *   **Machine context**: Defaults allow machines to be lazy/hallucinate.
-    *   **Change**: I would make `value_quantification` **MANDATORY** (Required Field). An Agent *must* compute and justify the value of every file it creates. "I built this because it saves X hours."
+1. **Kill All Defaults**:
+    - **Human context**: Defaults let humans move fast.
+    - **Machine context**: Defaults allow machines to be lazy/hallucinate.
+    - **Change**: I would make `value_quantification` **MANDATORY** (Required Field). An Agent *must* compute and justify the value of every file it creates. "I built this because it saves X hours."
 
-2.  **Algorithmic Pricing**:
-    *   **Human context**: "I guess this saves 2 hours?" (Subjective).
-    *   **Machine context**: `Savings = (Manual_Steps * Avg_Time_Per_Step) - (Agent_Compute_Time)`.
-    *   **Change**: I would require the metadata to contain the *formula* used to derive the savings, ensuring rigorous ROI tracking for the fleet of agents.
+2. **Algorithmic Pricing**:
+    - **Human context**: "I guess this saves 2 hours?" (Subjective).
+    - **Machine context**: `Savings = (Manual_Steps * Avg_Time_Per_Step) - (Agent_Compute_Time)`.
+    - **Change**: I would require the metadata to contain the *formula* used to derive the savings, ensuring rigorous ROI tracking for the fleet of agents.
 
-3.  **Governance as a Compiler**:
-    *   **Human context**: "Advisory Gates" (don't block the merge!).
-    *   **Machine context**: "Hard Gates." If an Agent generates code that doesn't meet the `HV/HQ` standard, the build should fail immediately. Agents can retry infinitely; humans cannot.
+3. **Governance as a Compiler**:
+    - **Human context**: "Advisory Gates" (don't block the merge!).
+    - **Machine context**: "Hard Gates." If an Agent generates code that doesn't meet the `HV/HQ` standard, the build should fail immediately. Agents can retry infinitely; humans cannot.
 
 **Summary**:
 For **Humans**, we optimize for **Flow** (Defaults, Inheritance, Soft Gates).
