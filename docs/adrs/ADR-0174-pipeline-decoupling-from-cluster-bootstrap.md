@@ -95,7 +95,7 @@ Bootstrap Phase (Cluster Creation):
 │ Terraform → EKS → ArgoCD → Apps (digest-based)     │
 │                                                     │
 │ Image Updater deployed with optional: true          │
-│ ✓ Cluster functional without pipeline secrets      │
+│ Cluster functional without pipeline secrets        │
 └─────────────────────────────────────────────────────┘
                          │
                          ▼
@@ -106,7 +106,7 @@ Pipeline Enablement Phase (Separate Event):
 │ 3. Create K8s secret (manual or ExternalSecret)     │
 │ 4. Verify write-back functionality                  │
 │                                                     │
-│ ✓ Image Updater now writes to Git                  │
+│ Image Updater now writes to Git                    │
 └─────────────────────────────────────────────────────┘
 ```
 

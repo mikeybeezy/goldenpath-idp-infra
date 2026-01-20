@@ -2316,7 +2316,7 @@ Goal: Add security scan enforcement to roadmap, complete GitHub App setup for Ar
 
 ### Checkpoints
 - [x] Security enforcement items added to ROADMAP.md (082-086)
-- [x] Workflow improvements committed (_build-and-release.yml, _deploy.yml)
+- [x] Workflow improvements committed (`_build-and-release.yml`, `_deploy.yml`)
 - [x] Session capture appended with coverage map
 - [x] PR #260 updated on `goldenpath/buildpipeline` branch
 

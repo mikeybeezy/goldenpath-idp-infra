@@ -1464,7 +1464,7 @@ jobs:
 | P1: Prerequisite checklist | ✅ In session capture + RB-0036 |
 | P2: Security scans blocking | ✅ Implemented in Phase 1 |
 | P2: Repo credential setup | ✅ Implemented (RB-0036) |
-| P3: Rollback playbook | ⏳ Phase 4 (Deferred) |
+| P3: Rollback playbook | Phase 4 (Deferred) |
 
 **Validation**
 
