@@ -27,7 +27,7 @@ tags:
   - observability
 inheritance: {}
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: medium
   potential_savings_hours: 2.0
 supported_until: 2028-01-15

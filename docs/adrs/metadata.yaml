@@ -10,3 +10,7 @@ risk_profile:
   security_risk: none
   coupling_risk: low
 category: architecture
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-2
+  potential_savings_hours: 1.0

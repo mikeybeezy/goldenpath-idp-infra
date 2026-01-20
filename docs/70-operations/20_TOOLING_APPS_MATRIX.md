@@ -23,7 +23,7 @@ tags:
   - operations
   - living-doc
 value_quantification:
-  vq_class: HV/HQ
+  vq_class: 🔴 HV/HQ
   impact_tier: high
   potential_savings_hours: 8.0
 category: compliance

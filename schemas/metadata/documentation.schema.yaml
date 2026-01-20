@@ -178,10 +178,6 @@ properties:
     type: object
     description: "Granular metrics used to justify technical work and support resource allocation."
     additionalProperties: false
-    default:
-      vq_class: ⚫ LV/LQ
-      impact_tier: low
-      potential_savings_hours: 0.0
     properties:
       vq_class:
         type: string

@@ -30,3 +30,20 @@ properties:
     default: ["infra"]
     items:
       enum_from: components
+
+  value_quantification:
+    type: object
+    additionalProperties: false
+    properties:
+      vq_class:
+        type: string
+        enum_from: vq_class
+      impact_tier:
+        type: string
+        enum:
+          - tier-1
+          - tier-2
+          - tier-3
+          - low
+      potential_savings_hours:
+        type: number

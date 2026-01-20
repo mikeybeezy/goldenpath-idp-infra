@@ -248,6 +248,38 @@ Our system is designed for human-machine collaboration. We should optimize for l
 
 Signed: Codex (2026-01-20T07:00:35Z)
 
+## Update — 2026-01-20T07:22:20Z
+
+### Decisions implemented
+- Canonical VQ format is emoji-based (e.g., `⚫ LV/LQ`).
+- VQ defaults removed from `docs/metadata.yaml`; defaults now live in type-aligned directory metadata.
+- Standardizer now injects VQ defaults only when missing and never overwrites explicit values.
+- Type-based defaults aligned to actual type mapping (`policy`, `adr`, `runbook`, `automation-script`).
+
+### Changes applied
+- Removed schema-level VQ defaults for documentation to avoid blanket stamping.
+- Added/updated directory-level VQ defaults:
+  - `docs/10-governance/policies/metadata.yaml` (policy)
+  - `docs/adrs/metadata.yaml` (adr)
+  - `docs/70-operations/runbooks/metadata.yaml` (runbook)
+  - `scripts/metadata.yaml` (automation-script)
+- Updated existing `vq_class` values to emoji format across impacted docs and examples.
+
+**Outstanding**
+- Decide whether to extend `value_quantification` into non-documentation schemas (e.g., ADR schema) or keep it limited to policy/runbook/script defaults.
+
+Signed: Codex (2026-01-20T07:22:20Z)
+
+## Update — 2026-01-20T07:26:39Z
+
+### Decision implemented
+- Added optional `value_quantification` to the ADR schema (no defaults, no gating).
+
+### Change applied
+- `schemas/metadata/adr.schema.yaml`
+
+Signed: Codex (2026-01-20T07:26:39Z)
+
 ## Update — 2026-01-20T06:45:00Z
 
 ### Review Feedback (Antigravity Agent)

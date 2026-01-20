@@ -105,7 +105,7 @@ reliability:
   maturity: 1
   rollback_strategy: git-revert
 value_quantification:
-  vq_class: LV/LQ
+        vq_class: ⚫ LV/LQ
   impact_tier: low
 schema_version: 1
 """)
