@@ -4,7 +4,7 @@ title: RDS Break-Glass Deletion Procedure (Runbook)
 type: runbook
 risk_profile:
   production_impact: critical
-  security_risk: data
+  security_risk: high
   coupling_risk: high
 reliability:
   rollback_strategy: not-applicable

@@ -17,6 +17,9 @@ relates_to:
   - 07_AI_AGENT_GOVERNANCE
   - 26_AI_AGENT_PROTOCOLS
   - CL-0141
+  - EC-0008-session-capture-ui
+  - EC-0009-goldenpath-cli
+  - EC-0010-agent-pairing-mode
   - SESSION_CAPTURE_2026_01_17_02
   - agent_session_summary
   - session_capture_template

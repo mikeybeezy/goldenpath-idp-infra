@@ -17,11 +17,17 @@ risk_profile:
   coupling_risk: medium
 relates_to:
   - 01_adr_index
+  - ADR-0143
+  - ADR-0144
+  - ADR-0168
+  - ADR-0169
   - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
   - APP_BUILD_PIPELINE
   - CL-0146
   - CL-0147
   - CL-0149
+  - EC-0002-shared-parser-library
+  - EC-0005-kubernetes-operator-framework
   - GOV-0012
   - GOV-0012-build-pipeline-standards
   - GOV-0013-devsecops-security-standards

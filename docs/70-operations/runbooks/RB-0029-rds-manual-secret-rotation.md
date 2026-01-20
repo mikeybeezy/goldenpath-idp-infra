@@ -4,10 +4,10 @@ title: RDS Manual Secret Rotation (Runbook)
 type: runbook
 risk_profile:
   production_impact: high
-  security_risk: data
+  security_risk: high
   coupling_risk: medium
 reliability:
-  rollback_strategy: rollback-procedure
+  rollback_strategy: manual
   observability_tier: gold
   maturity: 1
 relates_to:

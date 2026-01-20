@@ -1,7 +1,7 @@
 ---
 id: EC-0006-competitor-analysis-tap
 title: Competitor Analysis - VMware Tanzu Application Platform
-type: extension_capability
+type: extension-capability
 status: validated
 owner: platform-team
 domain: platform-core
@@ -12,7 +12,7 @@ relates_to:
   - EC-0007-kpack-buildpacks-integration
   - INDEX
 priority: medium
-vq_class: governance
+vq_class: ⚫ LV/LQ
 estimated_roi: Strategic positioning
 effort_estimate: N/A (analysis document)
 ---

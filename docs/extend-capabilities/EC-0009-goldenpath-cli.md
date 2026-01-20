@@ -1,13 +1,15 @@
 ---
 id: EC-0009-goldenpath-cli
 title: GoldenPath Platform CLI
-type: extension_capability
+type: extension-capability
 status: proposed
 owner: platform-team
 domain: platform-core
 relates_to:
+  - ADR-0167
   - EC-0008-session-capture-ui
-  - ADR-0167-session-capture-guardrail
+  - EC-0010-agent-pairing-mode
+  - RB-0033-persistent-cluster-teardown
   - SCRIPT_CERTIFICATION_MATRIX
 priority: medium
 vq_class: 🔴 HV/HQ

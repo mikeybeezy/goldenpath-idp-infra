@@ -1,7 +1,7 @@
 ---
 id: EC-0003-kong-backstage-plugin
 title: Kong Self-Service Backstage Plugin
-type: extension_capability
+type: extension-capability
 status: proposed
 relates_to:
   - ADR-0002-platform-Kong-as-ingress-API-gateway
@@ -16,7 +16,7 @@ dependencies:
   - Backstage (existing)
   - ArgoCD (existing)
 priority: medium
-vq_class: velocity
+vq_class: 🟡 HV/LQ
 estimated_roi: $8,000/year (reduced platform team tickets)
 effort_estimate: 4 weeks
 owner: platform-team

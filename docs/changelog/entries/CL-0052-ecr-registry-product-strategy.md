@@ -13,7 +13,7 @@ risk_profile:
   security_risk: low
   coupling_risk: medium
 reliability:
-  rollback_strategy: revert-adr
+  rollback_strategy: git-revert
   observability_tier: gold
 schema_version: 1
 relates_to:

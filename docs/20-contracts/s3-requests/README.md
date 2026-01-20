@@ -1,7 +1,7 @@
 ---
 id: s3-requests-index
 title: S3 Bucket Requests
-type: index
+type: documentation
 domain: platform-core
 owner: platform-team
 lifecycle: active

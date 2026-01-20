@@ -8,7 +8,7 @@ owner: platform-team
 lifecycle: active
 exempt: false
 reliability:
-  rollback_strategy: terraform-destroy-recreate
+  rollback_strategy: terraform-destroy
   observability_tier: silver
 schema_version: 1
 relates_to:

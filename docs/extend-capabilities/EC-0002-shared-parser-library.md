@@ -1,7 +1,7 @@
 ---
 id: EC-0002-shared-parser-library
 title: Shared Parser Library for Contract-Driven Requests
-type: extension_capability
+type: extension-capability
 status: proposed
 relates_to:
   - ADR-0170
@@ -15,7 +15,7 @@ dependencies:
   - 3+ parser scripts in production
   - RDS and Secret parsers stable
 priority: low
-vq_class: efficiency
+vq_class: 🟡 HV/LQ
 estimated_roi: Reduced duplication, faster new parser development
 effort_estimate: 2-3 weeks
 ---

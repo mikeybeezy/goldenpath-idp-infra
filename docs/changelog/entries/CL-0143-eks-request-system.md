@@ -1,7 +1,7 @@
 ---
 id: CL-0143
 title: EKS Request System
-type: feature
+type: changelog
 domain: platform-core
 owner: platform-team
 status: active

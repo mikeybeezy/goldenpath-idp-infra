@@ -1,19 +1,20 @@
 ---
 id: EC-0010-agent-pairing-mode
 title: Agent Pairing Mode - Human-Machine Collaboration Protocol
-type: extension_capability
+type: extension-capability
 status: proposed
 owner: platform-team
 domain: platform-core
 relates_to:
-  - ADR-0167-session-capture-guardrail
+  - ADR-0167
   - EC-0008-session-capture-ui
   - EC-0009-goldenpath-cli
   - session_capture_template
 priority: low
 vq_class: 🟡 HV/LQ
 estimated_roi: TBD (interaction model improvement)
-effort_estimate: Research phase only - implementation depends on Claude Code/Agent SDK
+effort_estimate: Research phase only - implementation depends on Claude Code/Agent
+  SDK
 ---
 ## Executive Summary
 

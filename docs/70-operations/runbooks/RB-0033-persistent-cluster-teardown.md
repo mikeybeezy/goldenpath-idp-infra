@@ -17,6 +17,7 @@ relates_to:
   - ADR-0161
   - CL-0145
   - DOCS_RUNBOOKS_README
+  - EC-0009-goldenpath-cli
   - RB-0007-tf-state-force-unlock
   - RB-0017-orphan-cleanup
   - RB-0030-rds-break-glass-deletion

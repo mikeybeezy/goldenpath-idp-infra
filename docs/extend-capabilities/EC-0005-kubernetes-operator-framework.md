@@ -1,7 +1,7 @@
 ---
 id: EC-0005-kubernetes-operator-framework
 title: Kubernetes Operator Framework for GoldenPath
-type: extension_capability
+type: extension-capability
 status: proposed
 relates_to:
   - ADR-0002-platform-Kong-as-ingress-API-gateway
@@ -21,7 +21,7 @@ dependencies:
   - Kong Ingress Controller (existing)
   - Python scripts (existing)
 priority: high
-vq_class: velocity
+vq_class: 🟡 HV/LQ
 estimated_roi: $25,000/year (reduced manual reconciliation + faster app onboarding)
 effort_estimate: 6-12 weeks (phased)
 owner: platform-team

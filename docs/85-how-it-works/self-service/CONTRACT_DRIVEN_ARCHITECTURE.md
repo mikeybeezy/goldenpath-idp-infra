@@ -1,7 +1,7 @@
 ---
 id: CONTRACT_DRIVEN_ARCHITECTURE
 title: Contract-Driven Architecture for Self-Service Requests
-type: how-it-works
+type: documentation
 relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - EC-0002-shared-parser-library
@@ -145,6 +145,7 @@ The codebase follows consistent case conventions:
 |Python internals|snake_case|`rds_id`, `database_name`|
 |Terraform|snake_case|`allocated_storage`, `multi_az`|
 |K8s labels|kebab-case|`platform.idp/service`, `goldenpath.idp/id`|
+|Enum values (enums.yaml)|kebab-case|`git-revert`, `terraform-destroy`, `not-applicable`|
 
 Use camelCase for new contract spec fields; keep top-level identifiers (`id`, `environment`, `owner`) lowercase for consistency with existing contracts.
 

@@ -1,7 +1,7 @@
 ---
 id: EC-0001-knative-integration
 title: Knative Integration for Serverless Workloads
-type: extension_capability
+type: extension-capability
 status: proposed
 relates_to:
   - ADR-0148-seamless-build-deployment-with-immutability
@@ -14,7 +14,7 @@ dependencies:
   - ArgoCD (existing)
   - Istio or Contour (new dependency)
 priority: medium
-vq_class: efficiency
+vq_class: 🟡 HV/LQ
 estimated_roi: $13,000/year
 effort_estimate: 9 weeks
 ---

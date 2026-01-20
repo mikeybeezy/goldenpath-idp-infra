@@ -1,12 +1,14 @@
 ---
 id: EC-0008-session-capture-ui
 title: Session Capture and Summary UI
-type: extension_capability
+type: extension-capability
 status: proposed
 owner: platform-team
 domain: catalog
 relates_to:
-  - ADR-0167-session-capture-guardrail
+  - ADR-0167
+  - EC-0009-goldenpath-cli
+  - EC-0010-agent-pairing-mode
   - agent_session_summary
   - session_capture_template
 priority: low

@@ -7,7 +7,7 @@ risk_profile:
   security_risk: medium
   coupling_risk: medium
 reliability:
-  rollback_strategy: dns-revert
+  rollback_strategy: manual
   observability_tier: silver
   maturity: 2
 relates_to:

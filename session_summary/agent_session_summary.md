@@ -59,6 +59,7 @@ relates_to:
   - EC-0002-shared-parser-library
   - EC-0003-kong-backstage-plugin
   - EC-0004-backstage-copilot-plugin
+  - EC-0008-session-capture-ui
   - EKS_REQUEST_FLOW
   - INDEX
   - PLATFORM_SYSTEM_MAP

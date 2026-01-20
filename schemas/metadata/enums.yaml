@@ -80,6 +80,8 @@ artifact_type:
   - runlog
   - operational-log
   - implementation-plan
+  - extension-capability
+  - onboarding
 
 adr_categories:
   - platform
@@ -106,9 +108,20 @@ risk_profile_coupling_risk:
   - high
 
 rollback_strategy:
-  - git-revert
-  - redeploy
-  - manual
+  # Core strategies
+  - git-revert           # Revert changes via git
+  - redeploy             # Redeploy previous version
+  - manual               # Manual intervention required
+  # Infrastructure strategies
+  - terraform-destroy    # Destroy and recreate via Terraform
+  - helm-rollback        # Rollback Helm release
+  - argocd-sync          # Re-sync via ArgoCD
+  # Operational strategies
+  - rerun-validation     # Re-run validation script
+  - rerun-teardown       # Re-run teardown procedure
+  # Special cases
+  - not-applicable       # No rollback needed (docs, analysis)
+  - none                 # Explicitly no rollback
 
 observability_tier:
   - bronze

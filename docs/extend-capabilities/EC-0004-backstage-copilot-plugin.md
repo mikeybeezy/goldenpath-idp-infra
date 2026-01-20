@@ -1,7 +1,7 @@
 ---
 id: EC-0004-backstage-copilot-plugin
 title: Backstage AI Copilot Plugin
-type: extension_capability
+type: extension-capability
 status: proposed
 relates_to:
   - ADR-0110-idp-knowledge-graph-architecture
@@ -22,7 +22,7 @@ dependencies:
   - Makefile targets (existing)
   - YAML schemas (existing)
 priority: medium
-vq_class: velocity
+vq_class: 🟡 HV/LQ
 estimated_roi: $15,000/year (reduced MTTR + platform team toil)
 effort_estimate: 2-6 weeks (depending on approach)
 owner: platform-team

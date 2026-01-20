@@ -16,26 +16,11 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0165
-  - ADR-0170
-  - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
-  - APP_BUILD_PIPELINE
-  - CL-0149
-  - GOV-0012-build-pipeline-standards
-  - GOV-0013-devsecops-security-standards
-  - GOV-0014-devsecops-implementation-matrix
-  - GOV-0015-build-pipeline-testing-matrix
-  - OB-0001-developer-security-tooling
-  - PRD-0001-rds-user-db-provisioning
-  - PR_GUARDRAILS_INDEX
-  - RB-0032
-  - RB-0036
-  - RB-0037
-  - ROADMAP
   - argocd_image_updater
-  - gitops_architecture
   - reusable_workflows
+  - gitops_architecture
 ---
+
 # Session Capture: Build Pipeline Architecture and Multi-Repo Strategy
 
 ## Session metadata

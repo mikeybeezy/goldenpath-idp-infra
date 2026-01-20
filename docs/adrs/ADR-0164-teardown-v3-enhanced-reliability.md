@@ -8,7 +8,7 @@ owner: platform-team
 lifecycle: active
 exempt: false
 reliability:
-  rollback_strategy: version-selector
+  rollback_strategy: manual
   observability_tier: gold
 schema_version: 1
 relates_to:

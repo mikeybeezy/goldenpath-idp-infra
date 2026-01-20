@@ -1,7 +1,7 @@
 ---
 id: EC-0007-kpack-buildpacks-integration
 title: kpack and Cloud Native Buildpacks Integration
-type: extension_capability
+type: extension-capability
 status: proposed
 owner: platform-team
 domain: platform-core
@@ -14,7 +14,7 @@ relates_to:
   - session-2026-01-18-secrets-lifecycle
   - session-capture-2026-01-18-local-dev-hello-app
 priority: high
-vq_class: velocity
+vq_class: 🟡 HV/LQ
 estimated_roi: $20K/year
 effort_estimate: 4-6 weeks
 ---

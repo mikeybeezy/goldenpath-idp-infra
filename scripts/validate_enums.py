@@ -132,6 +132,8 @@ def main() -> int:
     tier_list = enums.get("observability_tier", [])
     impact_list = enums.get("risk_profile_production_impact", [])
     sec_risk_list = enums.get("risk_profile_security_risk", [])
+    rollback_list = enums.get("rollback_strategy", [])
+    coupling_list = enums.get("risk_profile_coupling_risk", [])
 
     # (file_kind, field_path, allowed_list)
     checks = [
@@ -142,13 +144,18 @@ def main() -> int:
         ("mdfm", "category", cat_list),
         ("mdfm", "status", status_list),
         ("mdfm", "reliability.observability_tier", tier_list),
+        ("mdfm", "reliability.rollback_strategy", rollback_list),
         ("mdfm", "risk_profile.production_impact", impact_list),
         ("mdfm", "risk_profile.security_risk", sec_risk_list),
+        ("mdfm", "risk_profile.coupling_risk", coupling_list),
 
         ("yaml", "owner", owner_list),
         ("yaml", "domain", domain_list),
         ("yaml", "reliability.observability_tier", tier_list),
+        ("yaml", "reliability.rollback_strategy", rollback_list),
         ("yaml", "risk_profile.production_impact", impact_list),
+        ("yaml", "risk_profile.security_risk", sec_risk_list),
+        ("yaml", "risk_profile.coupling_risk", coupling_list),
     ]
 
     errors: List[str] = []
