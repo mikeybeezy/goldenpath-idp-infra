@@ -1,18 +1,30 @@
 ---
-id: GOV-0013
+id: GOV-0013-devsecops-security-standards
 title: DevSecOps Security Standards
 type: governance
-domain: platform-core
 owner: platform-team
-lifecycle: active
 status: active
-schema_version: 1
-effective_date: 2026-01-19
-review_date: 2026-07-19
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: high
   coupling_risk: medium
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+effective_date: 2026-01-19
+review_date: 2026-07-19
 related_adrs:
   - ADR-0170
 related_govs:

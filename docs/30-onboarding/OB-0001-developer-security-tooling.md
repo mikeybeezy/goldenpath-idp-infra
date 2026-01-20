@@ -1,12 +1,7 @@
 ---
-id: OB-0001
+id: OB-0001-developer-security-tooling
 title: Developer Security Tooling Onboarding
 type: onboarding
-domain: platform-core
-owner: platform-team
-lifecycle: active
-status: active
-schema_version: 1
 effective_date: 2026-01-19
 related_govs:
   - GOV-0012

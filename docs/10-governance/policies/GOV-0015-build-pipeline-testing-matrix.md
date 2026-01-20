@@ -1,18 +1,30 @@
 ---
-id: GOV-0015
+id: GOV-0015-build-pipeline-testing-matrix
 title: Build Pipeline Testing Matrix
 type: governance
-domain: platform-core
 owner: platform-team
-lifecycle: draft
 status: draft
-schema_version: 1
-effective_date: 2026-01-20
-review_date: 2026-07-20
+domain: platform-core
+applies_to: []
+lifecycle: draft
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: medium
   coupling_risk: medium
+schema_version: 1
+relates_to: []
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
+supported_until: '2028-01-01'
+effective_date: 2026-01-20
+review_date: 2026-07-20
 related_adrs:
   - ADR-0170
 related_govs:
