@@ -897,11 +897,14 @@ teardown-persistent:
 	@bash -c '\
 	log="logs/build-timings/teardown-persistent-$(ENV)-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Teardown output streaming; full log at $$log"; \
-	script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v3.sh"; \
+	script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh"; \
 	TEARDOWN_CONFIRM=true \
 	TF_DIR=$(TF_DIR) \
 	TF_AUTO_APPROVE=true \
 	REMOVE_K8S_SA_FROM_STATE=true \
+	DELETE_RDS_INSTANCES=false \
+	RDS_SKIP_FINAL_SNAPSHOT=false \
+	DELETE_SECRETS=false \
 	CLEANUP_ORPHANS=$(CLEANUP_ORPHANS) \
 	bash "$$script" $(PERSISTENT_CLUSTER_EFFECTIVE) $(REGION) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \

@@ -2289,6 +2289,36 @@ Region: local
 **Signed**: Claude Opus 4.5 (claude-opus-4-5-20251101)
 **Timestamp**: 2026-01-18T22:30:00Z
 
+## 2026-01-20T13:17Z — Persistent Teardown Safety Defaults — env=dev build_id=na
+
+Owner: platform-team
+Agent: codex
+Goal: Default persistent teardown to v4 with safe RDS/Secrets behavior.
+
+### In-Session Log (append as you go)
+- 13:16Z — Change: use v4 teardown for persistent mode with safety flags — file: `Makefile`
+- 13:16Z — Change: documented decision in session capture — file: `session_capture/2026-01-20-persistent-cluster-deployment.md`
+- 13:16Z — Change: added changelog entry — file: `docs/changelog/entries/CL-0151-persistent-teardown-v4-safety-defaults.md`
+
+### Checkpoints
+- [x] Set persistent teardown to v4
+- [x] Disable default RDS and Secrets deletion for persistent mode
+
+### Outputs produced (optional)
+- Docs/ADRs: `session_capture/2026-01-20-persistent-cluster-deployment.md`
+- Changelog: `docs/changelog/entries/CL-0151-persistent-teardown-v4-safety-defaults.md`
+
+### Next actions
+- [ ] Decide whether ephemeral teardown should default to v4 or remain v3.
+
+### Session Report (end-of-session wrap-up)
+- Summary: Persistent teardown now uses v4 with safety defaults to avoid accidental RDS/Secrets deletion.
+- Decisions: RDS/Secrets deletion requires explicit opt-in for persistent clusters.
+- Risks/Follow-ups: v4 remains optional for ephemeral teardown; review if consistent behavior is desired.
+- Validation: not run.
+
+Signed: Codex (2026-01-20T13:17:00Z)
+
 ## 2026-01-20T01:29Z — CI/CD: Trivy override + Kustomize tag update — env=na build_id=na
 
 Owner: platform-team

@@ -2,9 +2,10 @@ environment       = "dev"
 aws_region        = "eu-west-2"
 vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
-cluster_lifecycle = "ephemeral"
-# NEED TO UPDATE persistent or ephemeral
-build_id = "17-01-26-01"
+cluster_lifecycle = "persistent"
+# persistent = long-lived cluster, build_id = "persistent" (no teardown by ID)
+# ephemeral = short-lived, tagged with build_id for teardown
+build_id = "persistent"
 
 # -----------------------------------------------------------------------------
 # CRITICAL CONFIGURATION (Moved to Top)
@@ -41,7 +42,7 @@ app_secrets = {
 # Platform RDS Configuration
 # Manage database size, engine, and application databases here.
 rds_config = {
-  enabled               = false # DISABLED for ephemeral mode - use standalone RDS workflow
+  enabled               = true # ENABLED for persistent cluster
   identifier            = "goldenpath-platform-db"
   instance_class        = "db.t3.micro"
   engine_version        = "15.15"
