@@ -1,11 +1,11 @@
 ---
 id: 2026-01-07_1510_platform-governance-finalization
 title: Governance Finalization Walkthrough
-type: walkthrough
+type: documentation
 relates_to:
   - 00_START_HERE
   - PLATFORM_DASHBOARDS
-category: education
+category: governance
 ---
 
 ## Walkthrough: Institutionalizing Testing Predictability (Agent-First)

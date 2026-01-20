@@ -15,15 +15,19 @@ relates_to:
   - 70_OPERATIONS_README
   - ADR-0005-app-keycloak-as-identity-provider-for-human-sso
   - ADR-0006-platform-secrets-strategy
+  - ADR-0055-platform-tempo-tracing-backend
+  - ADR-0171-platform-application-packaging-strategy
+  - ADR-0172-cd-promotion-strategy-with-approval-gates
   - CL-0131
   - CL-0136-tooling-apps-ingress-configuration
+  - session-capture-2026-01-18-local-dev-hello-app
 tags:
   - tooling
   - configuration
   - operations
   - living-doc
 value_quantification:
-  vq_class: HV/HQ
+  vq_class: 🔴 HV/HQ
   impact_tier: high
   potential_savings_hours: 8.0
 category: compliance
@@ -31,7 +35,6 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
-
 ## Platform Tooling Apps Configuration Matrix
 
 This living document captures the configuration requirements, dependencies, and operational status of all platform tooling applications deployed via Argo CD.

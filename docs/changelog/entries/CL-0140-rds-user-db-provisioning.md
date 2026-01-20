@@ -32,7 +32,7 @@ tags:
   - automation
 inheritance: {}
 value_quantification:
-  vq_class: HV/HQ
+  vq_class: 🔴 HV/HQ
   impact_tier: high
   potential_savings_hours: 40.0
 supported_until: 2028-01-16

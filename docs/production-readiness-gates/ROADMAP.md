@@ -21,14 +21,18 @@ relates_to:
   - ADR-0063-platform-terraform-helm-bootstrap
   - ADR-0100-standardized-ecr-lifecycle-and-documentation
   - ADR-0136
+  - ADR-0138
   - ADR-0146
+  - ADR-0170
+  - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
   - AGENT_FIRST_BOOT
   - CL-0097
+  - agent_session_summary
+  - session-2026-01-19-build-pipeline-architecture
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 ## 🏥 Platform Health Command Center
 
 **Generated**: `2026-01-07 08:29:32` | **V1 Readiness**: `95.5%` | **Mean Confidence**: `⭐ (1.1/5.0)`

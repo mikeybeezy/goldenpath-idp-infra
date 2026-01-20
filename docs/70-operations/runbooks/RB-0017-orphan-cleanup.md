@@ -15,13 +15,13 @@ relates_to:
   - 15_TEARDOWN_AND_CLEANUP
   - ADR-0036-platform-orphan-cleanup-workflow
   - DOCS_RUNBOOKS_README
+  - RB-0033-persistent-cluster-teardown
   - TEARDOWN_README
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
-
 # Orphan Cleanup
 
 ## Purpose

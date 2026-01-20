@@ -14,10 +14,15 @@ schema_version: 1
 relates_to:
   - 01_adr_index
   - 05_OBSERVABILITY_DECISIONS
+  - 20_TOOLING_APPS_MATRIX
   - ADR-0049-platform-pragmatic-observability-baseline
   - ADR-0054-platform-observability-exporters-otel-split
   - ADR-0055-platform-tempo-tracing-backend
+  - CL-0148
+  - HELM_TEMPO
+  - V1_04_CAPABILITY_MATRIX
   - audit-20260103
+  - session-capture-2026-01-18-local-dev-hello-app
 supersedes: []
 superseded_by: []
 tags: []
@@ -30,7 +35,6 @@ supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0055: Tempo as the standard tracing backend (V1.1)
 
 - **Status:** Implementing

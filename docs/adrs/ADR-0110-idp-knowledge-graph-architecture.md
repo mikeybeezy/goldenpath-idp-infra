@@ -16,6 +16,7 @@ relates_to:
   - ADR-0097-domain-based-resource-catalogs
   - ADR-0110-idp-knowledge-graph-architecture
   - ADR-0112-automated-adr-index-generation
+  - EC-0004-backstage-copilot-plugin
 supersedes: []
 superseded_by: []
 tags: []
@@ -29,7 +30,6 @@ version: 1.0
 date: 2026-01-06
 breaking_change: false
 ---
-
 ## ADR-0110: IDP Knowledge Graph Node Architecture
 
 ## Context

@@ -1,17 +1,16 @@
 ---
 id: s3-requests-index
 title: S3 Bucket Requests
-type: index
+type: documentation
 domain: platform-core
 owner: platform-team
 lifecycle: active
 relates_to:
-  - ADR-0170-s3-self-service-request-system
-  - schemas/requests/s3.schema.yaml
-  - SCRIPT-0037
+  - ADR-0170
   - CL-0146
+  - SCRIPT-0037
+  - session-2026-01-17-s3-request-flow-planning
 ---
-
 # S3 Bucket Requests
 
 This directory contains S3 bucket request contracts organized by environment.

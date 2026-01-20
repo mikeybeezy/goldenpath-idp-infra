@@ -1,25 +1,31 @@
 ---
 id: EC-0005-kubernetes-operator-framework
 title: Kubernetes Operator Framework for GoldenPath
-type: extension_capability
+type: extension-capability
 status: proposed
 relates_to:
-  - INDEX
-  - ROADMAP
   - ADR-0002-platform-Kong-as-ingress-API-gateway
+  - ADR-0170
+  - ADR-0171-platform-application-packaging-strategy
+  - CL-0146
+  - CL-0147
   - EC-0002-shared-parser-library
+  - EC-0006-competitor-analysis-tap
+  - EC-0007-kpack-buildpacks-integration
+  - INDEX
+  - RB-0036
+  - ROADMAP
 dependencies:
   - EKS (existing)
   - ArgoCD (existing)
   - Kong Ingress Controller (existing)
   - Python scripts (existing)
 priority: high
-vq_class: velocity
+vq_class: 🟡 HV/LQ
 estimated_roi: $25,000/year (reduced manual reconciliation + faster app onboarding)
 effort_estimate: 6-12 weeks (phased)
 owner: platform-team
 ---
-
 ## Executive Summary
 
 Extend GoldenPath IDP by leveraging the Kubernetes API, controllers, and reconciliation loops to provide declarative, self-healing platform capabilities. Instead of CI-triggered scripts, platform resources are defined as Custom Resource Definitions (CRDs) that Kubernetes controllers continuously reconcile.

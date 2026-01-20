@@ -22,6 +22,7 @@ relates_to:
   - CL-0077-value-quantification-framework
   - CL-0082-value-heartbeat-roi-telemetry
   - CL-0120
+  - SESSION_CAPTURE_2026_01_20_VQ
   - VQ_TAGGING_GUIDE
 supersedes: []
 superseded_by: []
@@ -34,7 +35,6 @@ value_quantification:
 supported_until: '2028-01-01'
 date: 2026-01-07
 ---
-
 ## ADR-0121: Value Quantification (VQ) Framework
 
 ## Status

@@ -8,11 +8,15 @@ date: 2026-01-17
 author: platform-team
 category: platform
 relates_to:
-  - ADR-0170-s3-self-service-request-system
-  - SCRIPT-0037
+  - ADR-0170
   - EC-0002-shared-parser-library
+  - EC-0005-kubernetes-operator-framework
+  - RB-0035-s3-request
+  - S3_REQUEST_FLOW
+  - SCRIPT-0037
+  - s3-requests-index
+  - session-2026-01-17-s3-request-flow-planning
 ---
-
 # CL-0146: S3 Self-Service Request System
 
 ## Summary

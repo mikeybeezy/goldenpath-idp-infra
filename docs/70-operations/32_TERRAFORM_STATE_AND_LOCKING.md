@@ -18,12 +18,12 @@ relates_to:
   - 36_STATE_KEY_STRATEGY
   - 70_OPERATIONS_README
   - ADR-0040-platform-lifecycle-aware-state-keys
+  - session-2026-01-17-eks-backstage-scaffolder
 category: compliance
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # Terraform State and Locking (Living)
 
 Doc contract:

@@ -17,5 +17,6 @@ reliability:
 lifecycle: active
 supported_until: '2028-01-01'
 value_quantification:
+  vq_class: 🔴 HV/HQ
   impact_tier: tier-1
   potential_savings_hours: 1.0

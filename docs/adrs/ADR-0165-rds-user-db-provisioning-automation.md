@@ -20,6 +20,8 @@ relates_to:
   - ADR-0166
   - CATALOG_INDEX
   - CL-0140
+  - CL-0143
+  - CL-0147
   - PRD-0001-rds-user-db-provisioning
   - PR_GUARDRAILS_INDEX
   - RB-0032
@@ -30,6 +32,8 @@ relates_to:
   - SCRIPT-0035
   - SESSION_CAPTURE_2026_01_17_01
   - agent_session_summary
+  - session-2026-01-17-eks-backstage-scaffolder
+  - session-2026-01-19-build-pipeline-architecture
 supersedes: []
 superseded_by: []
 tags:
@@ -47,7 +51,6 @@ date: 2026-01-16
 deciders:
   - platform-team
 ---
-
 ## Status
 
 Accepted (Implemented 2026-01-16)

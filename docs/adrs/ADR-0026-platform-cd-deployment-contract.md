@@ -18,6 +18,7 @@ relates_to:
   - 44_DOC_TIGHTENING_PLAN
   - ADR-0026-platform-cd-deployment-contract
   - ADR-0145
+  - ADR-0174-pipeline-decoupling-from-cluster-bootstrap
   - RB-0019-relationship-extraction-script
   - RELATIONSHIP_EXTRACTION_GUIDE
   - audit-20260103
@@ -33,7 +34,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0026: CD deployment contract
 
 - **Status:** Proposed

@@ -15,11 +15,11 @@ relates_to:
   - 39_GOLDEN_PATH_VALIDATION
   - ADR-0026-platform-cd-deployment-contract
   - ADR-0028-platform-dev-branch-gate
+  - ADR-0172-cd-promotion-strategy-with-approval-gates
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # CD Deployment Contract
 
 Doc contract:

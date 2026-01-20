@@ -11,11 +11,15 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
-  - ADR-0170-s3-self-service-request-system
+  - ADR-0170
+  - CL-0146
+  - EC-0003-kong-backstage-plugin
+  - EC-0004-backstage-copilot-plugin
+  - RB-0007-tf-state-force-unlock
   - S3_REQUEST_FLOW
   - SCRIPT-0037
-  - CL-0146
   - s3-catalog
+  - session-2026-01-17-s3-request-flow-planning
 category: runbooks
 supported_until: 2028-01-01
 version: 1.0
@@ -24,7 +28,6 @@ dependencies:
   - script:s3_request_parser
 breaking_change: false
 ---
-
 ## S3 Bucket Request Operations (Runbook)
 
 This runbook covers operational procedures for the S3 self-service request system.

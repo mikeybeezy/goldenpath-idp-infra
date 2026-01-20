@@ -22,11 +22,11 @@ relates_to:
   - RDS_REQUEST_FLOW
   - RDS_USER_DB_PROVISIONING
   - agent_session_summary
+  - session-2026-01-19-build-pipeline-architecture
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
-
 # PRD-0001: Automated RDS User and Database Provisioning
 
 Status: implemented

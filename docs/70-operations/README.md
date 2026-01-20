@@ -21,7 +21,7 @@ tags:
   - operations
   - index
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.5
 category: compliance

@@ -1,7 +1,7 @@
 ---
 id: CL-0144
 title: Secrets Scaffolder Workflow Dispatch
-type: enhancement
+type: changelog
 domain: platform-core
 owner: platform-team
 status: active

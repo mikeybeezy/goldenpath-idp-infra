@@ -20,6 +20,9 @@ relates_to:
   - 36_STATE_KEY_STRATEGY
   - ADR-0040-platform-lifecycle-aware-state-keys
   - CL-0042-metadata-backfill-batch-1
+  - CL-0145
+  - RB-0033-persistent-cluster-teardown
+  - RB-0034-persistent-cluster-deployment
   - READINESS_CHECKLIST
   - audit-20260103
 supersedes: []
@@ -34,7 +37,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0040: Lifecycle-aware Terraform state keys for BuildId isolation
 
 Filename: `ADR-0040-platform-lifecycle-aware-state-keys.md`

@@ -3,15 +3,16 @@ id: S3_REQUEST_FLOW
 title: 'How It Works: S3 Bucket Request Flow'
 type: documentation
 relates_to:
-  - ADR-0170-s3-self-service-request-system
+  - ADR-0170
   - CATALOG_SYSTEMS
   - CL-0146
   - CONTRACT_DRIVEN_ARCHITECTURE
   - RB-0035-s3-request
-  - s3-catalog
   - SCRIPT-0037
+  - agent_session_summary
+  - s3-catalog
+  - session-2026-01-17-s3-request-flow-planning
 ---
-
 ## How It Works: S3 Bucket Request Flow
 
 This document explains the technical lifecycle of an S3 bucket request, from the developer form in Backstage to a fully provisioned, secured bucket in AWS.

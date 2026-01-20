@@ -1,24 +1,26 @@
 ---
 id: EC-0003-kong-backstage-plugin
 title: Kong Self-Service Backstage Plugin
-type: extension_capability
+type: extension-capability
 status: proposed
 relates_to:
   - ADR-0002-platform-Kong-as-ingress-API-gateway
-  - ADR-0162-kong-ingress-dns-strategy
+  - ADR-0162
   - INDEX
+  - RB-0035-s3-request
   - ROADMAP
+  - SECRET_REQUEST_FLOW
+  - agent_session_summary
 dependencies:
   - Kong Ingress Controller (existing)
   - Backstage (existing)
   - ArgoCD (existing)
 priority: medium
-vq_class: velocity
+vq_class: 🟡 HV/LQ
 estimated_roi: $8,000/year (reduced platform team tickets)
 effort_estimate: 4 weeks
 owner: platform-team
 ---
-
 ## Executive Summary
 
 Enable teams to self-service Kong ingress configuration through Backstage, following the established contract-driven pattern. This removes the platform team as a bottleneck for:

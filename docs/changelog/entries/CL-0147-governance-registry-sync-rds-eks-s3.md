@@ -8,13 +8,14 @@ date: 2026-01-18
 author: platform-team
 category: governance
 relates_to:
-  - ADR-0170-s3-self-service-request-system
-  - ADR-0168-eks-request-parser-and-mode-aware-workflows
-  - ADR-0165-rds-user-db-provisioning-automation
+  - ADR-0165
+  - ADR-0168
+  - ADR-0170
+  - EC-0005-kubernetes-operator-framework
   - SCRIPT-0037
   - SCRIPT-0043
+  - agent_session_summary
 ---
-
 # CL-0147: Governance Registry Sync for RDS/EKS/S3
 
 ## Summary

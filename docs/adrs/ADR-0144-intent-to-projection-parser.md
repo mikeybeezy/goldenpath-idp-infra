@@ -16,8 +16,12 @@ relates_to:
   - ADR-0142
   - ADR-0143
   - ADR-0144
+  - ADR-0168
+  - ADR-0169
+  - ADR-0170
   - CL-0105
   - CL-0106-workflow-driven-secret-provisioning
+  - EKS_REQUEST_FLOW
   - RB-0026
   - SECRET_REQUEST_FLOW
 supersedes: []
@@ -30,7 +34,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 ## ADR-0144: Architecture of the Intent-to-Projection Parser
 
 ## Status

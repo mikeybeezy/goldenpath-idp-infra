@@ -9,7 +9,7 @@ reliability:
 relates_to:
   - CL-0072-emoji-usage-policy-and-enforcement
 value_quantification:
-  vq_class: LV/LQ
+  vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
 category: governance

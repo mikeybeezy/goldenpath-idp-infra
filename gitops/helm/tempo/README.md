@@ -17,9 +17,11 @@ reliability:
   maturity: 1
 schema_version: 1
 relates_to:
+  - ADR-0054-platform-observability-exporters-otel-split
   - ADR-0055-platform-tempo-tracing-backend
   - HELM_KUBE_PROMETHEUS_STACK
   - HELM_LOKI
+  - session-capture-2026-01-18-local-dev-hello-app
 supersedes: []
 superseded_by: []
 tags:
@@ -40,7 +42,6 @@ dependencies:
 supported_until: 2028-01-01
 breaking_change: false
 ---
-
 # Tempo Helm Deployment
 
 Grafana Tempo is the distributed tracing backend for the GoldenPath IDP platform.

@@ -14,8 +14,8 @@ relates_to:
   - ADR-0121-value-quantification-framework
   - CL-0077-value-quantification-framework
   - PLATFORM_DASHBOARDS
+  - SESSION_CAPTURE_2026_01_20_VQ
 ---
-
 ## VQ Tagging Guide: Scripts & Workflows
 
 ## Metadata Enums Index

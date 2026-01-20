@@ -17,6 +17,8 @@ relates_to:
   - 06_IDENTITY_AND_ACCESS
   - ADR-0015-platform-aws-oidc-for-github-actions
   - ADR-0032-platform-eks-access-model
+  - ADR-0168
+  - EKS_REQUEST_FLOW
   - MODULES_AWS_EKS_README
   - RB-0019-relationship-extraction-script
   - audit-20260103
@@ -32,7 +34,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0032: EKS access model (bootstrap admin vs steady-state access)
 
 - **Status:** Accepted

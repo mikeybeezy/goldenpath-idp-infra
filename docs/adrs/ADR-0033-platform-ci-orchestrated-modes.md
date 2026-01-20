@@ -16,6 +16,7 @@ relates_to:
   - 01_adr_index
   - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0033-platform-ci-orchestrated-modes
+  - ADR-0168
   - HELM_DATREE
   - RB-0019-relationship-extraction-script
   - RELATIONSHIP_EXTRACTION_GUIDE
@@ -32,7 +33,6 @@ supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
-
 # ADR-0033: CI orchestrated modes for infra lifecycle
 
 - **Status:** Accepted

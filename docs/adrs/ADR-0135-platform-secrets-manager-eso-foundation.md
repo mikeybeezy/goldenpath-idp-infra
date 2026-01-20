@@ -19,8 +19,10 @@ relates_to:
   - ADR-0135
   - ADR-0138
   - ADR-0139
+  - ADR-0169
   - CL-0096
   - CL-0132
+  - CL-0144
   - SECRET_REQUEST_FLOW
 supersedes: []
 superseded_by: []
@@ -34,7 +36,6 @@ supported_until: 2028-01-09
 version: 1.0
 breaking_change: false
 ---
-
 # ADR-0135: Secrets Manager + External Secrets Operator foundation
 
 - **Status:** Proposed

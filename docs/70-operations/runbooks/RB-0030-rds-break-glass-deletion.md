@@ -4,7 +4,7 @@ title: RDS Break-Glass Deletion Procedure (Runbook)
 type: runbook
 risk_profile:
   production_impact: critical
-  security_risk: data
+  security_risk: high
   coupling_risk: high
 reliability:
   rollback_strategy: not-applicable
@@ -20,6 +20,7 @@ relates_to:
   - EC-0001-knative-integration
   - RB-0029-rds-manual-secret-rotation
   - RB-0032
+  - RB-0033-persistent-cluster-teardown
   - RDS_REQUEST_FLOW
 category: runbooks
 supported_until: 2028-01-01
@@ -29,7 +30,6 @@ dependencies:
   - module:terraform
 breaking_change: false
 ---
-
 ## RDS Break-Glass Deletion Procedure (Runbook)
 
 This runbook documents the intentionally difficult process for deleting platform RDS instances.

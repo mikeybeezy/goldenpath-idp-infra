@@ -26,6 +26,8 @@ relates_to:
   - CL-0125
   - CL-0126-ci-governance-registry-fetch
   - EC-0001-knative-integration
+  - EC-0006-competitor-analysis-tap
+  - EC-0007-kpack-buildpacks-integration
   - SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 supersedes: []
 superseded_by: []
@@ -37,7 +39,6 @@ value_quantification:
   potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
-
 ## ADR-0148: Seamless Build Deployment with Build ID Immutability
 
 **Status**: Accepted

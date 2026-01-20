@@ -13,7 +13,9 @@ risk_profile:
   security_risk: high
   coupling_risk: medium
 schema_version: 1
-relates_to: []
+relates_to:
+  - ADR-0170
+  - session-2026-01-19-build-pipeline-architecture
 supersedes: []
 superseded_by: []
 tags: []
@@ -31,7 +33,6 @@ related_govs:
   - GOV-0012
   - GOV-0015
 ---
-
 # GOV-0013: DevSecOps Security Standards
 
 ## Purpose

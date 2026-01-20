@@ -1,7 +1,7 @@
 ---
 id: INDEX
 title: Extension Capabilities Index
-type: index
+type: documentation
 relates_to:
   - EC-0001-knative-integration
   - EC-0002-shared-parser-library
@@ -10,8 +10,8 @@ relates_to:
   - EC-0005-kubernetes-operator-framework
   - EC-0006-competitor-analysis-tap
   - EC-0007-kpack-buildpacks-integration
+  - agent_session_summary
 ---
-
 This directory tracks proposed platform capabilities for Golden Path IDP evaluation. Each capability is assigned an EC-XXXX ID and follows a lightweight governance model.
 
 ## Purpose
@@ -63,7 +63,7 @@ id: EC-XXXX
 title: Short descriptive title
 status: proposed | validated | accepted | rejected | implemented
 priority: low | medium | high | critical
-vq_class: efficiency | resilience | velocity | governance
+vq_class: 🔴 HV/HQ | 🟡 HV/LQ | 🔵 MV/HQ | ⚫ LV/LQ
 estimated_roi: Dollar amount or qualitative value
 dependencies: [List of ADRs, existing capabilities]
 effort_estimate: Time estimate (weeks/months)
