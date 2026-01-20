@@ -2441,3 +2441,47 @@ Signed: Codex (GPT-5) (2026-01-20T00:45:00Z)
 - Run end-to-end promotion test to capture evidence for GOV-0015 scoring.
 
 Signed: Codex (GPT-5) (2026-01-20T01:05:00Z)
+
+---
+
+### Update - 2026-01-20T02:15:00Z
+
+**What changed**
+
+- Added security scan enforcement roadmap items (082-086) covering full lifecycle:
+  - 082: Enforce mandatory security scans at promotion boundary
+  - 083: Require canonical build workflow for all app repos
+  - 084: Create scheduled SAST/SCA scan workflow for all repos (periodic scans)
+  - 085: Org-wide IDE security tooling enforcement
+  - 086: Historical repo secret scan (full git history)
+- Improved deploy workflow with smarter kustomization.yaml handling (yq for multi-image files)
+- Made trivy_exit_code truly optional in build workflow (blank uses env-based default)
+- Committed GitHub App setup (RB-0036) and Image Updater values changes to PR #260
+
+**Coverage map**
+
+```
+IDE (085) → Pre-commit (existing) → PR (existing) → Build (082/083) → Periodic (084) → Historical (086)
+```
+
+**Artifacts touched**
+
+- `docs/production-readiness-gates/ROADMAP.md` - Added items 082-086
+- `.github/workflows/_build-and-release.yml` - Made trivy_exit_code optional
+- `.github/workflows/_deploy.yml` - Improved kustomization.yaml handling
+- `session_capture/2026-01-19-build-pipeline-architecture.md`
+
+**Validation**
+
+- Commits pushed to `goldenpath/buildpipeline` branch
+- PR #260 updated with changes
+
+**Outstanding**
+
+- Team review and approval of PR #260 for merge to development
+- Create K8s secret when dev cluster is available: `make pipeline-enable ENV=dev`
+- Store GitHub App credentials for test/staging/prod environments in AWS Secrets Manager
+- End-to-end promotion test after pipeline enabled
+- Work items 082-086 require ADR/implementation for enforcement strategy
+
+Signed: Claude Opus 4.5 (2026-01-20T02:15:00Z)
