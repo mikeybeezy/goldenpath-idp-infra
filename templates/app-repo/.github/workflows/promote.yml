@@ -34,6 +34,11 @@ on:
         description: 'Source tag (REQUIRED) - e.g., "latest" for dev, "test-a1b2c3d" for test'
         required: true
         type: string
+      commit_sha:
+        description: 'Commit SHA for the image being promoted (required when source_tag=latest)'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   promote:
@@ -44,6 +49,6 @@ jobs:
       source_environment: ${{ inputs.source_environment }}
       target_environment: ${{ inputs.target_environment }}
       source_tag: ${{ inputs.source_tag }}
-      commit_sha: ${{ github.sha }}
+      commit_sha: ${{ inputs.commit_sha != '' && inputs.commit_sha || github.sha }}
     secrets:
       AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
