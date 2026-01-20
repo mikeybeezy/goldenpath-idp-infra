@@ -47,9 +47,9 @@ on:
         default: true
         type: boolean
       trivy_exit_code:
-        description: 'Trivy exit code (0=advisory, 1=blocking)'
+        description: 'Trivy exit code override (0=advisory, 1=blocking; leave blank for env default)'
         required: false
-        default: '0'
+        default: ''
         type: string
       skip_push:
         description: 'Skip push to ECR (for PR builds)'
@@ -268,7 +268,7 @@ jobs:
             echo "allow_latest=false" >> $GITHUB_OUTPUT
           fi
 
-          # Use override if provided, otherwise use env-based logic
+          # Only override when explicitly provided; keep env-based default otherwise.
           if [[ -n "${{ inputs.trivy_exit_code }}" ]]; then
             echo "trivy_exit_code=${{ inputs.trivy_exit_code }}" >> $GITHUB_OUTPUT
           fi

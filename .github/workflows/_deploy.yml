@@ -93,16 +93,36 @@ jobs:
           # Determine file type and update accordingly
           FILE="${{ inputs.gitops_path }}"
 
-          if [[ "$FILE" == *.yaml || "$FILE" == *.yml ]]; then
+          if [[ "$FILE" == *kustomization* ]]; then
+            # Kustomize - update newTag for the matching image when possible
+            if command -v yq &> /dev/null; then
+              IMAGE="${{ inputs.image }}"
+              IMAGE_TAG="${{ inputs.image_tag }}"
+              IMAGE_NAME="${IMAGE%@*}"
+              IMAGE_NAME="${IMAGE_NAME%:*}"
+              export IMAGE_NAME IMAGE_TAG
+
+              MATCH_COUNT=$(yq e '.images // [] | map(select(type == "!!map" and ((.name == strenv(IMAGE_NAME)) or (.newName == strenv(IMAGE_NAME))))) | length' "$FILE")
+              if [[ "$MATCH_COUNT" -gt 0 ]]; then
+                yq -i '(.images[] | select(type == "!!map" and ((.name == strenv(IMAGE_NAME)) or (.newName == strenv(IMAGE_NAME)))).newTag) = strenv(IMAGE_TAG)' "$FILE"
+              else
+                SINGLE_COUNT=$(yq e '.images // [] | length' "$FILE")
+                if [[ "$SINGLE_COUNT" -eq 1 ]]; then
+                  yq -i '(.images[0].newTag) = strenv(IMAGE_TAG)' "$FILE"
+                else
+                  sed -i "s/newTag:.*/newTag: ${{ inputs.image_tag }}/" "$FILE"
+                fi
+              fi
+            else
+              sed -i "s/newTag:.*/newTag: ${{ inputs.image_tag }}/" "$FILE"
+            fi
+          elif [[ "$FILE" == *.yaml || "$FILE" == *.yml ]]; then
             # YAML file - use yq if available, otherwise sed
             if command -v yq &> /dev/null; then
               yq -i '.image.tag = "${{ inputs.image_tag }}"' "$FILE"
             else
               sed -i "s/tag:.*/tag: ${{ inputs.image_tag }}/" "$FILE"
             fi
-          elif [[ "$FILE" == *kustomization* ]]; then
-            # Kustomize - update newTag
-            sed -i "s/newTag:.*/newTag: ${{ inputs.image_tag }}/" "$FILE"
           fi
 
           echo "Updated contents:"
