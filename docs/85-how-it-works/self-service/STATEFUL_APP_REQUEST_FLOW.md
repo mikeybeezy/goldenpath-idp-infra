@@ -1,3 +1,25 @@
+---
+id: STATEFUL_APP_REQUEST_FLOW
+title: "How It Works: Stateful App Request Flow"
+type: documentation
+domain: platform-self-service
+owner: platform-team
+lifecycle: active
+status: active
+schema_version: 1
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
+relates_to:
+  - GOLDEN_PATH_OVERVIEW
+  - stateful-app-template
+---
+
 # How It Works: Stateful App Request Flow
 
 This document explains the "Golden Path" for provisioning a new **Stateful Application** using `StatefulSet` and Persistent Volumes.

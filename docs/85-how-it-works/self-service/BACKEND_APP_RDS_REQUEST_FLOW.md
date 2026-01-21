@@ -1,3 +1,26 @@
+---
+id: BACKEND_APP_RDS_REQUEST_FLOW
+title: "How It Works: Backend App + RDS Request Flow"
+type: documentation
+domain: platform-self-service
+owner: platform-team
+lifecycle: active
+status: active
+schema_version: 1
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
+relates_to:
+  - GOLDEN_PATH_OVERVIEW
+  - backend-app-rds-template
+  - RDS_REQUEST_FLOW
+---
+
 # How It Works: Backend App + RDS Request Flow
 
 This document explains the "Golden Path" for provisioning a **Backend Application** that connects to a **Managed RDS Database**. This is the most comprehensive self-service template, combining infrastructure provisioning with application scaffolding.

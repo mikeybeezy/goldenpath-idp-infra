@@ -10,6 +10,6 @@ spec:
     - port: 80
       targetPort: http
       name: http
-  clusterIP: None # Headless
+  clusterIP: None  # Headless
   selector:
     app: ${{ values.component_id }}

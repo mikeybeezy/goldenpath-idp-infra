@@ -1,3 +1,26 @@
+---
+id: GOLDEN_PATH_OVERVIEW
+title: "How It Works: Golden Path Templates Overview"
+type: documentation
+domain: platform-self-service
+owner: platform-team
+lifecycle: active
+status: active
+schema_version: 1
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
+relates_to:
+  - STATELESS_APP_REQUEST_FLOW
+  - STATEFUL_APP_REQUEST_FLOW
+  - BACKEND_APP_RDS_REQUEST_FLOW
+---
+
 # How It Works: Golden Path Templates Overview
 
 This document provides a comprehensive overview of the three Golden Path templates available in the GoldenPath IDP. Each path is optimized for different workload characteristics, particularly around **state preservation**.

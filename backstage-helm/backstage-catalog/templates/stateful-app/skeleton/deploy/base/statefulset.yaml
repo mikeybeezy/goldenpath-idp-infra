@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: stateful-workload
     app.kubernetes.io/part-of: goldenpath-idp
 spec:
-  serviceName: ${{ values.component_id }} # Headless service name
+  serviceName: ${{ values.component_id }}  # Headless service name
   replicas: 1
   selector:
     matchLabels:
@@ -55,8 +55,8 @@ spec:
     - metadata:
         name: data
       spec:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "gp3" # Standard EBS
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "gp3"  # Standard EBS
         resources:
           requests:
             storage: ${{ values.storage_size }}

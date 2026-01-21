@@ -350,13 +350,14 @@ Backstage Form → [STEP 1: trigger-rds] + [STEP 2: template] (parallel)
 #### Documentation Updated
 
 **Enhanced `BACKEND_APP_RDS_REQUEST_FLOW.md`**:
-- Added comprehensive E2E ASCII flow diagram
-- Documented the Composite Pattern (one form → two outcomes)
-- Added Secret Contract section with path conventions
-- Expanded parameter table with validation patterns
-- Added RDS Provisioning Automation section with script flow
-- Added Makefile targets reference
-- Added Golden Path comparison table
+
+* Added comprehensive E2E ASCII flow diagram
+* Documented the Composite Pattern (one form → two outcomes)
+* Added Secret Contract section with path conventions
+* Expanded parameter table with validation patterns
+* Added RDS Provisioning Automation section with script flow
+* Added Makefile targets reference
+* Added Golden Path comparison table
 
 **Key Sections Added**:
 

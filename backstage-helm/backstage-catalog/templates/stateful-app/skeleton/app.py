@@ -19,15 +19,15 @@ def read_root():
     try:
         with open(FILE_PATH, "a") as f:
             f.write(f"Accessed at {time.time()}\n")
-        
+
         # Read persistence count
         with open(FILE_PATH, "r") as f:
             count = len(f.readlines())
-            
+
         msg = f"Hello from Stateful App! I have been accessed {count} times (persisted)."
     except Exception as e:
         msg = f"Error accessing storage at {DATA_PATH}: {str(e)}"
-        
+
     return {"message": msg, "env": APP_ENV, "persistence_path": DATA_PATH}
 
 @app.get("/health")

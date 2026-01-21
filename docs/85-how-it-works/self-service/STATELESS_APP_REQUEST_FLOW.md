@@ -1,3 +1,25 @@
+---
+id: STATELESS_APP_REQUEST_FLOW
+title: "How It Works: Stateless App Request Flow"
+type: documentation
+domain: platform-self-service
+owner: platform-team
+lifecycle: active
+status: active
+schema_version: 1
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
+relates_to:
+  - GOLDEN_PATH_OVERVIEW
+  - stateless-app-template
+---
+
 # How It Works: Stateless App Request Flow
 
 This document explains the "Golden Path" for provisioning a new **Stateless Application**. This path is designed for standard web services, APIs, and microservices that do not require valid persistent storage.

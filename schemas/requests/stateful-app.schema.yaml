@@ -10,7 +10,7 @@ properties:
     type: string
     description: Unique identifier for the request
     pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
-  
+
   owner:
     type: string
     description: Team or user owning this application
