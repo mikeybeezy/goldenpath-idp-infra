@@ -22,7 +22,7 @@ registry: txt
 txtOwnerId: "goldenpath-dev"
 txtPrefix: "external-dns"
 domainFilters:
-  - dev.goldenpathidp.io
+  - goldenpathidp.io
 sources:
   - service
   - ingress
