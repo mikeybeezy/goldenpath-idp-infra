@@ -38,10 +38,10 @@ spec:
             allowedKinds:
               - Group
         repoOrg:
-            title: Repository Organization
-            type: string
-            description: The GitHub organization to create the repository in
-            default: mikeybeezy
+          title: Repository Organization
+          type: string
+          description: The GitHub organization to create the repository in
+          default: mikeybeezy
 
     - title: Stateful Configuration
       required:
@@ -56,6 +56,7 @@ spec:
           description: Target environment
           enum:
             - dev
+            - test
             - staging
             - prod
           default: dev
@@ -75,10 +76,10 @@ spec:
           description: Container path to mount volume
           default: "/data"
         port:
-            title: Service Port
-            type: number
-            description: Port the application listens on
-            default: 8080
+          title: Service Port
+          type: number
+          description: Port the application listens on
+          default: 8080
 
   steps:
     - id: template

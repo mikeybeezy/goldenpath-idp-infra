@@ -195,7 +195,7 @@ def validate_enums(req: RdsRequest, enums: Dict[str, List[str]], src_path: Path)
 
 def derive_secret_key(req: RdsRequest) -> str:
     """Derive AWS Secrets Manager key for RDS credentials."""
-    return f"goldenpath/{req.environment}/rds/{req.databaseName}"
+    return f"goldenpath/{req.environment}/{req.databaseName}/postgres"
 
 
 def tfvars_output_path(tfvars_out_root: Path, req: RdsRequest) -> Path:

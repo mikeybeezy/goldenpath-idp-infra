@@ -10,6 +10,7 @@ relates_to:
   - EC-0005-kubernetes-operator-framework
   - EC-0006-competitor-analysis-tap
   - EC-0007-kpack-buildpacks-integration
+  - EC-0012-backstage-plugin-scaffold
   - agent_session_summary
 ---
 
@@ -97,6 +98,7 @@ relates_to: [ADRs, roadmap items]
 |[EC-0005](EC-0005-kubernetes-operator-framework.md)|Kubernetes Operator Framework|proposed|high|$25K/year|platform-team|
 |[EC-0006](EC-0006-competitor-analysis-tap.md)|Competitor Analysis - VMware TAP|validated|medium|Strategic positioning|platform-team|
 |[EC-0007](EC-0007-kpack-buildpacks-integration.md)|kpack and Cloud Native Buildpacks|proposed|high|$20K/year|platform-team|
+|[EC-0012](EC-0012-backstage-plugin-scaffold.md)|Backstage Plugin Scaffold Template|proposed|medium|Time-to-demo acceleration|platform-team|
 
 ## Implemented Capabilities
 

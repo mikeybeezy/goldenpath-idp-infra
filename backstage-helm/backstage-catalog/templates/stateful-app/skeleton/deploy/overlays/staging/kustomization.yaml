@@ -6,12 +6,12 @@ namespace: apps
 resources:
   - ../../base
   - namespace.yaml
+  - service.yaml
   - ingress.yaml
 
 images:
   - name: ${{ values.component_id }}
     newName: 593517239005.dkr.ecr.eu-west-2.amazonaws.com/${{ values.component_id }}
-    # Tag managed by Argo CD Image Updater
     newTag: latest
 
 patches:
@@ -21,19 +21,18 @@ patches:
         value:
           - name: ecr-pull-secret
     target:
-      kind: Deployment
+      kind: StatefulSet
       name: ${{ values.component_id }}
-  # Dev: minimal replicas (or user defined)
   - patch: |-
       - op: replace
         path: /spec/replicas
         value: ${{ values.replicas }}
     target:
-      kind: Deployment
+      kind: StatefulSet
       name: ${{ values.component_id }}
 
 configMapGenerator:
   - name: ${{ values.component_id }}-config
     literals:
       - APP_ENV=${{ values.environment }}
-      - LOG_LEVEL=debug
+      - LOG_LEVEL=info

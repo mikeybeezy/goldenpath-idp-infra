@@ -11,7 +11,6 @@ resources:
 images:
   - name: ${{ values.component_id }}
     newName: 593517239005.dkr.ecr.eu-west-2.amazonaws.com/${{ values.component_id }}
-    # Tag managed by Argo CD Image Updater
     newTag: latest
 
 patches:
@@ -23,7 +22,6 @@ patches:
     target:
       kind: Deployment
       name: ${{ values.component_id }}
-  # Dev: minimal replicas (or user defined)
   - patch: |-
       - op: replace
         path: /spec/replicas
@@ -36,4 +34,4 @@ configMapGenerator:
   - name: ${{ values.component_id }}-config
     literals:
       - APP_ENV=${{ values.environment }}
-      - LOG_LEVEL=debug
+      - LOG_LEVEL=info

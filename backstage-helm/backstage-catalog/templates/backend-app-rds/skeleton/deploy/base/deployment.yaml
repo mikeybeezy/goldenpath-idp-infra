@@ -49,4 +49,4 @@ spec:
             periodSeconds: 5
           env:
             - name: APP_ENV
-              value: "local"
+              value: "${{ values.environment }}"

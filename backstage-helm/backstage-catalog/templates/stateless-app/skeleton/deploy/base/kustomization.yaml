@@ -10,6 +10,6 @@ commonLabels:
   app.kubernetes.io/part-of: goldenpath-idp
 
 images:
-  - name: hello-goldenpath-idp
+  - name: ${{ values.component_id }}
     newName: ${{ values.component_id }}
     newTag: latest

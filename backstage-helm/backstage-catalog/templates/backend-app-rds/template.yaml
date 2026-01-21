@@ -40,7 +40,7 @@ spec:
         environment:
           title: Environment
           type: string
-          enum: [dev, staging, prod]
+          enum: [dev, test, staging, prod]
           default: dev
         databaseName:
           title: Database Name
