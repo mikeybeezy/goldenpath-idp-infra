@@ -1165,3 +1165,61 @@ Signed: Codex (2026-01-20T18:45:00Z)
   `prevent_destroy = false` in `envs/*-rds/main.tf`.
 
 Signed: Codex (2026-01-20T19:10:00Z)
+
+## Update — 2026-01-20T19:25:00Z
+
+### Route53 + ExternalDNS Draft (Variables + Sequencing)
+
+**New variables (per env):**
+- `external_dns_enabled` (bool)
+- `route53_zone_id` (string)
+- `route53_zone_name` (string, optional validation aid)
+- `external_dns_domain_filters` (list)
+- `external_dns_txt_owner_id` (string)
+- `external_dns_txt_prefix` (string, optional)
+- `external_dns_policy` (`sync` or `upsert-only`)
+- `external_dns_registry` (`txt`)
+- `external_dns_role_arn` (string, IRSA role)
+
+**Bootstrap sequencing (persistent):**
+1. Create VPC/EKS/IAM (apply)
+2. Install ingress/LB controllers
+3. Deploy ExternalDNS (needs IAM + ingress)
+4. Sync platform apps (Backstage/Argo/Keycloak)
+
+**Teardown sequencing (persistent):**
+1. Remove ExternalDNS (or disable it) to clean records
+2. Remove ingress/services that own records
+3. Verify Route53 records removed
+4. Proceed with cluster teardown
+
+**PRD drafted:** `docs/20-contracts/prds/PRD-0002-route53-externaldns.md`
+
+Signed: Codex (2026-01-20T19:25:00Z)
+
+## Update — 2026-01-21T09:45:00Z
+
+### DNS Delegation + Wildcard Ownership
+
+- Delegation is now live: public resolvers return Route53 nameservers for `goldenpathidp.io`.
+- `dig @ns-1333... argocd.dev.goldenpathidp.io` resolves to the Kong NLB hostname.
+- No `*.dev.goldenpathidp.io` record exists in the hosted zone (Route53 query returned empty).
+- Direction: ExternalDNS should own the wildcard record so it follows the Kong LB on teardown/rebuild.
+- Action needed: deploy ExternalDNS with IRSA, annotate the Kong proxy Service with
+  `external-dns.alpha.kubernetes.io/hostname: "*.dev.goldenpathidp.io"`, and disable
+  Terraform-managed wildcard records to avoid conflicts.
+
+Signed: Codex (2026-01-21T09:45:00Z)
+
+## Update — 2026-01-21T10:30:00Z
+
+### ExternalDNS Implementation (Upstream Chart)
+
+- Added ExternalDNS Argo apps for dev/test/staging/prod.
+- Added `gitops/helm/external-dns` values (upstream chart, pinned image).
+- Annotated Kong proxy Services with wildcard hostnames per environment.
+- Added ExternalDNS IRSA role + service account wiring in Terraform.
+- Disabled Terraform wildcard record creation by default to avoid conflicts.
+- Added ADR-0175 + CL-0159 documenting the ownership change.
+
+Signed: Codex (2026-01-21T10:30:00Z)

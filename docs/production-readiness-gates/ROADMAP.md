@@ -184,6 +184,12 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 |084|P1|**🔴 HV/HQ**|Security|Create scheduled SAST/SCA scan workflow for all repos|platform|Open|M|Q1|Create periodic-security-scan.yml|GOV-0014 Phase 3 - Weekly Trivy/Semgrep scans across all app repos. Detect newly discovered CVEs in deployed code.|
 |085|P2|**🟡 HV/LQ**|Security|Org-wide IDE security tooling enforcement|platform|Open|S|Q1|Define IDE tooling policy + Day 1 verification|GOV-0014 - Mandate Gitleaks/Snyk IDE extensions. Verify via onboarding checklist. Currently "recommended" not enforced.|
 |086|P2|**🟡 HV/LQ**|Security|Historical repo secret scan (full git history)|platform|Open|M|Q1|Run TruffleHog/Gitleaks on all repos|ADR-0138 - One-time scan of full git history for all repos. Remediate any findings before enforcement.|
+|087|P1|**🔴 HV/HQ**|Security|TLS/cert-manager for HTTPS certificates|platform|Open|M|Q1|Deploy cert-manager + ClusterIssuer|Session 2026-01-21 - Services accessible via HTTP but need TLS termination for production-grade security.|
+|088|P2|**🔵 MV/HQ**|Governance|ADR-0176: ArgoCD targetRevision → environment mapping|platform|Open|S|Q1|Draft ADR extending ADR-0042|Session 2026-01-21 - Document branch-to-env strategy (dev→development, staging/prod→main).|
+|089|P3|**⚫ LV/LQ**|Teardown|Route53 TXT registry cleanup option in teardown v5|platform|Open|S|Q2|Add DELETE_EXTERNALDNS_TXT_RECORDS flag|Session 2026-01-21 - Orphaned TXT records may persist if ExternalDNS deleted abruptly.|
+|090|P2|**🟡 HV/LQ**|GitOps|Update test/staging/prod ArgoCD apps to targetRevision: main|platform|Open|S|Q1|Change from HEAD to main|Session 2026-01-21 - HEAD is ambiguous; explicit branch improves predictability.|
+|091|P3|**⚫ LV/LQ**|GitOps|Prod ArgoCD apps: pin to release tags/SHAs + manual sync|platform|Open|M|Q2|Implement release tagging automation|Session 2026-01-21 - Immutable, auditable production releases.|
+|092|P1|**🔴 HV/HQ**|DNS|Verify ExternalDNS wildcard + TXT registry in Route53|platform|Open|S|Q1|Run verification commands from session capture|Session 2026-01-21 - Confirm DNS ownership model working as designed.|
 
 ## Rules
 

@@ -16,12 +16,12 @@ spec:
   sources:
     # Source 1: Values files from repo root
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: feature/tooling-apps-config
+      targetRevision: development
       ref: values
     # Source 2: Helm chart with values reference
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
       path: backstage-helm/charts/backstage
-      targetRevision: feature/tooling-apps-config
+      targetRevision: development
       helm:
         valueFiles:
           - $values/gitops/helm/backstage/values/dev.yaml

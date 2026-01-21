@@ -259,6 +259,8 @@ data "aws_iam_policy_document" "lb_controller" {
       "elasticloadbalancing:ModifyCapacityReservation",
       "elasticloadbalancing:ModifyTargetGroupAttributes",
       "elasticloadbalancing:ModifyLoadBalancerAttributes",
+      "elasticloadbalancing:RegisterTargets",
+      "elasticloadbalancing:DeregisterTargets",
     ]
     resources = ["*"]
   }

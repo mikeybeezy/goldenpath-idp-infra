@@ -21,7 +21,7 @@ spec:
         valueFiles:
           - $values/gitops/helm/tempo/values/test.yaml
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
+      targetRevision: main
       ref: values
   syncPolicy:
     automated:

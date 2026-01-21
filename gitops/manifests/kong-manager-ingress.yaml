@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kong-manager
+  namespace: kong-system
+  labels:
+    app.kubernetes.io/name: kong-manager
+    app.kubernetes.io/part-of: kong
+spec:
+  ingressClassName: kong
+  rules:
+    - host: kong.dev.goldenpathidp.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dev-kong-kong-manager
+                port:
+                  number: 8002

@@ -156,6 +156,15 @@ Current: Route53 + ExternalDNS (wildcard ownership)
 
 ## Verification
 
+### Verification Checklist
+
+- Confirm `dev-external-dns` Application exists in Argo CD.
+- Confirm `external-dns` pod is running in `kube-system`.
+- Verify ExternalDNS logs show record creation for `*.dev.goldenpathidp.io`.
+- Verify Route53 wildcard record and TXT registry record exist.
+- Verify Kong proxy Service annotation is present.
+- Confirm DNS resolution for a tooling hostname (e.g., `argocd.dev.goldenpathidp.io`).
+
 ```bash
 # Verify via Route53 nameserver directly
 dig @ns-1333.awsdns-38.org argocd.dev.goldenpathidp.io +short
@@ -177,6 +186,7 @@ terraform plan -target=module.route53
 ## Files Created/Modified
 
 ### Created
+- `bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v5.sh`
 - `modules/aws_route53/main.tf`
 - `modules/aws_route53/variables.tf`
 - `modules/aws_route53/outputs.tf`
@@ -368,3 +378,295 @@ All files listed in the "Files Created" section have been verified:
 ---
 
 Verified by: Claude Opus 4.5 (2026-01-21)
+
+---
+
+## Issues Encountered and Resolution (2026-01-21)
+
+### Issue 1: ExternalDNS Not Creating Route53 Records
+
+**Symptom:** ExternalDNS logs showed `Applying provider record filter for domains: []` - empty domain list.
+
+**Root Cause:** The `domainFilters` was set to `dev.goldenpathidp.io`, but ExternalDNS looks for a hosted zone matching that exact domain. The hosted zone is `goldenpathidp.io` (parent domain).
+
+**Fix:** Changed `domainFilters` from `dev.goldenpathidp.io` to `goldenpathidp.io` in `gitops/helm/external-dns/values/dev.yaml`.
+
+```yaml
+# Before (broken)
+domainFilters:
+  - dev.goldenpathidp.io
+
+# After (working)
+domainFilters:
+  - goldenpathidp.io
+```
+
+**Lesson:** ExternalDNS `domainFilters` must match the Route53 hosted zone name, not the subdomain you want to create records in.
+
+---
+
+### Issue 2: ArgoCD Application Using Wrong Git Branch
+
+**Symptom:** ArgoCD Application status was `Unknown` with error `no such file or directory` for values file.
+
+**Root Cause:** `targetRevision: HEAD` resolves to the default branch (`main`), but the ExternalDNS and Kong values files with new annotations were only on `development` branch.
+
+**Fix:** Changed `targetRevision` from `HEAD` to `development` in ArgoCD Application manifests:
+- `gitops/argocd/apps/dev/external-dns.yaml`
+- `gitops/argocd/apps/dev/kong.yaml`
+
+```yaml
+# Before (broken)
+- repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+  targetRevision: HEAD
+  ref: values
+
+# After (working)
+- repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+  targetRevision: development
+  ref: values
+```
+
+**Recommendation:** After merging `development` → `main`, consider pointing staging/prod back to `main` (or pin to release tags/SHAs) for stability.
+
+---
+
+### Issue 3: AWS Load Balancer Controller Missing IAM Permissions
+
+**Symptom:** Services accessible via DNS but connections timing out. ELB targets showing as empty.
+
+**Root Cause:** AWS Load Balancer Controller IAM policy was missing `elasticloadbalancing:RegisterTargets` and `elasticloadbalancing:DeregisterTargets` permissions.
+
+**Error in logs:**
+```
+api error AccessDenied: User: arn:aws:sts::593517239005:assumed-role/goldenpath-idp-aws-load-balancer-controller/...
+is not authorized to perform: elasticloadbalancing:RegisterTargets
+```
+
+**Hotfix (applied immediately):**
+```bash
+# Added permissions via AWS CLI
+aws iam create-policy-version \
+  --policy-arn arn:aws:iam::593517239005:policy/goldenpath-load-balancer-controller-policy \
+  --policy-document file:///tmp/lb-policy-updated.json \
+  --set-as-default
+
+# Restarted controller to pick up new permissions
+kubectl -n kube-system rollout restart deployment aws-load-balancer-controller
+```
+
+**Permanent Fix:** Added permissions to Terraform IAM module at `modules/aws_iam/main.tf:262-263`:
+```hcl
+"elasticloadbalancing:RegisterTargets",
+"elasticloadbalancing:DeregisterTargets",
+```
+
+**Lesson:** AWS LB Controller requires `RegisterTargets`/`DeregisterTargets` for NLB target group management. Always verify IAM permissions match the official AWS LB Controller policy.
+
+---
+
+### Summary of Fixes
+
+| Issue | File Changed | Change |
+|-------|--------------|--------|
+| ExternalDNS domain filter | `gitops/helm/external-dns/values/dev.yaml` | `domainFilters: goldenpathidp.io` |
+| ArgoCD branch reference | `gitops/argocd/apps/dev/*.yaml` | `targetRevision: development` |
+| LB Controller IAM | `modules/aws_iam/main.tf` | Added RegisterTargets/DeregisterTargets |
+
+---
+
+Updated by: Claude Opus 4.5 (2026-01-21T05:20:00Z)
+
+---
+
+## Reviewer Feedback (Codex)
+
+- Consider updating the title/tags to mention ExternalDNS + wildcard ownership so the topic is discoverable at a glance.
+- Replace any "future enhancement" language with "implemented" (or "planned") to prevent doc drift as the repo changes.
+- Add a short preflight note above verification commands (AWS profile/region set, hosted zone id for the env, ExternalDNS app deployed).
+- Add an example "expected" ELB hostname format (or reference the Kong service command) so readers can validate quickly.
+- Clarify teardown v5 scope: persistent AWS clusters only, and ExternalDNS app deletion/suspension is included before Kong teardown.
+
+---
+
+## Branch Strategy Recommendation: ArgoCD `targetRevision` per Environment
+
+### Context
+
+During this session, we changed ArgoCD Applications from `targetRevision: HEAD` to `targetRevision: development` because:
+- `HEAD` resolves to the default branch (`main`)
+- New files/changes on `development` branch weren't visible to ArgoCD until merged
+
+This raises the question: **Should different environments track different branches?**
+
+### Recommended Pattern (Default)
+
+Avoid `HEAD` in ArgoCD manifests; it resolves to the default branch (currently `main`) and can change over time.
+
+| Environment | ArgoCD `targetRevision` | Sync Policy | Rationale |
+|-------------|------------------------|-------------|-----------|
+| **dev** | `development` | Automated | Immediate feedback on changes |
+| **test** | `main` | Automated | Validate merged code with lower blast radius |
+| **staging** | `main` | Automated | Pre-prod validation of merged code |
+| **prod** | Release tag or SHA | **Manual** | Immutable, auditable releases |
+
+### Benefits
+
+1. **Dev environment gets immediate feedback** - Changes visible without waiting for PR merge
+2. **Staging/prod stay stable** - Only see code that's been reviewed and merged
+3. **Clear promotion path** - Code flows: `development` → PR → `main` → staging → prod
+4. **Manual prod sync** - Extra safety layer for production deployments
+
+### Comparison with ADR-0042 (Platform Branching Strategy)
+
+**ADR-0042 establishes:**
+- Two-branch model: `development` → `main`
+- All work branches from `development`
+- Only `development` merges into `main`
+- CI guard to prevent direct-to-main merges
+
+**Gap identified:** ADR-0042 defines the Git branching model but does **not** specify:
+- How ArgoCD `targetRevision` should map to environments
+- Whether dev environments should track `development` vs `main`
+- Sync policy recommendations (automated vs manual) per environment
+
+**Recommendation:** Propose a follow-up ADR (e.g., ADR-0176) to document the ArgoCD `targetRevision` → environment mapping as a GitOps extension to ADR-0042.
+
+### Implementation Checklist
+
+If adopting environment-to-branch mapping:
+
+- [ ] Update `gitops/argocd/apps/dev/*.yaml` → `targetRevision: development`
+- [ ] Keep `gitops/argocd/apps/test/*.yaml` → `targetRevision: main`
+- [ ] Keep `gitops/argocd/apps/staging/*.yaml` → `targetRevision: main`
+- [ ] Pin `gitops/argocd/apps/prod/*.yaml` → release tag or SHA
+- [ ] Set `syncPolicy.automated: false` for prod apps (manual sync)
+- [ ] If using tags/SHAs, add automation to bump `targetRevision` per release
+- [ ] Document in ADR-0176 (proposed)
+
+### Verify Current State
+
+Run this before relying on the matrix below to avoid stale assumptions:
+
+```bash
+rg -n "targetRevision:" gitops/argocd/apps/{dev,test,staging,prod}/*.yaml
+```
+
+**Note:** After merging `development` → `main`, you can optionally repoint dev to `main` if you prefer stability over iteration speed.
+
+---
+
+Added by: Claude Opus 4.5 (2026-01-21T06:00:00Z)
+
+---
+
+## Teardown V5 Script Review
+
+### Overview
+
+The script (`bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v5.sh`) is a comprehensive EKS cluster teardown tool with 9 stages and ExternalDNS integration added in v5. It's well-structured with proper error handling and extensive configurability.
+
+### Strengths
+
+| Area | Details |
+|------|---------|
+| **Defensive coding** | `set -euo pipefail`, required command validation, proper exit traps |
+| **Idempotency** | Most operations check existence before acting, skip if already deleted |
+| **Observability** | Explicit `[STEP:]`, `[BREAK-GLASS]`, stage banners with timestamps |
+| **Fallback strategies** | RDS/secrets cleanup uses BuildId → cluster tag → name pattern |
+| **DRY_RUN mode** | All destructive flags disabled when `DRY_RUN=true` |
+| **Timeouts** | Configurable waits with heartbeat logging |
+| **Resource ordering** | ExternalDNS → Kong → Ingress → LB → nodegroups → cluster |
+
+### Issues and Recommendations
+
+#### 1. ExternalDNS Route53 Record Orphaning Risk (Medium)
+
+**Problem:** When ExternalDNS is deleted (Stage 2), its Route53 TXT registry records may be left behind if ExternalDNS doesn't have time to clean up before the pod terminates.
+
+**Current flow:**
+```
+delete_external_dns_application  # --wait=false
+delete_argo_application          # Kong, also --wait=false
+delete_kong_resources            # Deletes Kong LB Service
+```
+
+**Recommendation:** Add a brief wait or check for ExternalDNS pod termination before deleting Kong:
+```bash
+# After delete_external_dns_application
+sleep 10  # Allow ExternalDNS to process deletion
+```
+
+Or use `--wait=true` for ExternalDNS specifically since DNS cleanup is critical.
+
+#### 2. ARGO_APP_NAMESPACE Default Mismatch (Low)
+
+**Line 142:**
+```bash
+ARGO_APP_NAMESPACE="${ARGO_APP_NAMESPACE:-kong-system}"
+```
+
+This default assumes the Kong ArgoCD Application lives in `kong-system`, but ArgoCD Applications typically live in the `argocd` namespace. The script later uses this for Kong application deletion.
+
+**Recommendation:** Verify the default matches your deployment pattern or add a comment explaining the assumption.
+
+#### 3. Missing Validation for `drain-nodegroup.sh` (Low)
+
+**Line 1774:**
+```bash
+bash "${repo_root}/bootstrap/60_tear_down_clean_up/drain-nodegroup.sh" "${ng}" || \
+```
+
+The script doesn't check if `drain-nodegroup.sh` exists before calling it.
+
+**Recommendation:** Add existence check:
+```bash
+if [[ -f "${repo_root}/bootstrap/60_tear_down_clean_up/drain-nodegroup.sh" ]]; then
+```
+
+#### 4. Secret Name Pattern Stripping May Fail (Low)
+
+**Lines 1852, 1889:**
+```bash
+secret_name="${secret_name%%-[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]}"
+```
+
+This pattern assumes the AWS Secrets Manager version suffix is exactly 6 characters. AWS uses a 6-character suffix, but this is fragile if AWS changes the format.
+
+#### 5. No Route53 TXT Registry Cleanup Option (Feature Gap)
+
+The script deletes the ExternalDNS ArgoCD Application but doesn't provide an option to clean up orphaned TXT registry records in Route53. If ExternalDNS is deleted abruptly, records like `external-dns-*.dev.goldenpathidp.io` may persist.
+
+**Recommendation:** Add optional Route53 cleanup for TXT registry records:
+```bash
+# Optional: Clean up ExternalDNS TXT registry records
+DELETE_EXTERNALDNS_TXT_RECORDS="${DELETE_EXTERNALDNS_TXT_RECORDS:-false}"
+EXTERNALDNS_TXT_PREFIX="${EXTERNALDNS_TXT_PREFIX:-external-dns}"
+```
+
+### Security Considerations
+
+| Check | Status |
+|-------|--------|
+| No hardcoded credentials | ✓ |
+| Uses AWS CLI credential chain | ✓ |
+| TEARDOWN_CONFIRM gate required | ✓ |
+| No interactive prompts in dangerous paths | ✓ |
+| Proper quoting throughout | ✓ |
+
+### Summary
+
+**Overall:** Production-ready with good safety defaults. The ExternalDNS integration follows the established patterns.
+
+**Priority fixes:**
+1. Consider adding a brief wait after ExternalDNS deletion to allow DNS record cleanup
+2. Verify `ARGO_APP_NAMESPACE` default matches your deployment pattern
+3. Add existence check for `drain-nodegroup.sh`
+
+**Optional enhancements:**
+- Route53 TXT registry record cleanup option
+- ExternalDNS deletion with `--wait=true` to ensure clean DNS state
+
+---
+
+Reviewed by: Claude Opus 4.5 (2026-01-21T06:30:00Z)
