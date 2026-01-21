@@ -37,7 +37,7 @@ tags:
 inheritance: {}
 supported_until: 2028-01-21
 value_quantification:
-  vq_class: ⚪ HV/LQ
+  vq_class: HV/LQ
   impact_tier: high
   potential_savings_hours: 40.0
 date: 2026-01-21

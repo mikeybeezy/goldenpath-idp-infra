@@ -418,9 +418,9 @@ The `stateful-app` template overlays were missing `namespace.yaml` files, breaki
 
 | Template | dev | test | staging | prod |
 | -------- | --- | ---- | ------- | ---- |
-| stateless-app | namespace.yaml ✓ | namespace.yaml ✓ | namespace.yaml ✓ | namespace.yaml ✓ |
-| stateful-app | ❌ missing | ❌ missing | ❌ missing | ❌ missing |
-| backend-app-rds | namespace.yaml ✓ | namespace.yaml ✓ | namespace.yaml ✓ | namespace.yaml ✓ |
+| stateless-app | namespace.yaml (ok) | namespace.yaml (ok) | namespace.yaml (ok) | namespace.yaml (ok) |
+| stateful-app | MISSING | MISSING | MISSING | MISSING |
+| backend-app-rds | namespace.yaml (ok) | namespace.yaml (ok) | namespace.yaml (ok) | namespace.yaml (ok) |
 
 #### Fix Applied
 
@@ -445,10 +445,10 @@ All three templates now have consistent overlay structure:
 
 | File | stateless-app | stateful-app | backend-app-rds |
 | ---- | ------------- | ------------ | --------------- |
-| kustomization.yaml | ✓ | ✓ | ✓ |
-| namespace.yaml | ✓ | ✓ (fixed) | ✓ |
-| ingress.yaml | ✓ | ✓ | ✓ |
-| service.yaml | N/A | ✓ (LB service) | N/A |
+| kustomization.yaml | yes | yes | yes |
+| namespace.yaml | yes | yes (fixed) | yes |
+| ingress.yaml | yes | yes | yes |
+| service.yaml | N/A | yes (LB service) | N/A |
 
 **Note**: stateful-app additionally includes `service.yaml` in overlays for the load-balancer service pattern (the base has a headless service for pod-to-pod communication).
 
