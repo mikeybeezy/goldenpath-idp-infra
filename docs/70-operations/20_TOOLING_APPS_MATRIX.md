@@ -109,39 +109,115 @@ Wildcard DNS is managed by ExternalDNS from Kong Service annotations. Do not cre
 
 ---
 
-## Quick Reference
+## Component Categories
 
-|App|Namespace|Chart|Chart Version|Image Tag|Status|Priority|
-|---|---------|-----|-------------|---------|------|--------|
-|[external-secrets](#external-secrets)|external-secrets|external-secrets/external-secrets|0.9.13|v0.9.13|Configured|P0|
-|[external-dns](#external-dns)|kube-system|external-dns/external-dns|1.14.5|v0.14.0|Configured|P0|
-|[cert-manager](#cert-manager)|cert-manager|jetstack/cert-manager|v1.14.4|v1.14.4|Configured|P0|
-|[keycloak](#keycloak)|keycloak|bitnami/keycloak|25.2.0|26.3.3|Configured|P1|
-|[kong](#kong)|kong-system|konghq/kong|2.47.0|3.6.1|Configured|P1|
-|[backstage](#backstage)|backstage|backstage/backstage|2.6.3|1.29.0|Configured|P2|
-|[kube-prometheus-stack](#kube-prometheus-stack)|monitoring|prometheus-community/kube-prometheus-stack|45.7.1|v2.47.2|Configured|P3|
-|[loki](#loki)|monitoring|grafana/loki-stack|2.9.11|2.9.4|Configured|P3|
-|[tempo](#tempo)|monitoring|grafana/tempo|1.10.x|2.3.1|Configured|P3|
-|[fluent-bit](#fluent-bit)|monitoring|fluent/fluent-bit|0.47.0|3.0.3|Configured|P3|
-|[argocd-image-updater](#argocd-image-updater)|argocd|argoproj/argocd-image-updater|0.9.1|v0.12.2|Configured|P1|
-|[localstack](#localstack)|local-infra|localstack/localstack|3.0.0|3.0.0|Standard (Ephem)|P0|
-|[minio](#minio)|local-infra|minio/minio|5.0.0|RELEASE.2024-01|Standard (Ephem)|P0|
-|[postgresql](#postgresql)|local-infra|bitnami/postgresql|13.2.24|15.6.0|Standard (Ephem)|P0|
+The platform tooling is organized into four tiers based on deployment layer and user visibility:
+
+| Tier | Category | Description | Deploy Method |
+|------|----------|-------------|---------------|
+| **Tier 1** | EKS Managed Add-ons | AWS-managed components tied to cluster lifecycle | Terraform EKS |
+| **Tier 2** | Platform Infrastructure | Core infrastructure required before apps deploy | Argo CD / Helm |
+| **Tier 3** | Platform Services | Shared services (identity, secrets, observability) | Argo CD / Helm |
+| **Tier 4** | Developer-Facing Apps | End-user accessible portals and tools | Argo CD / Helm |
+
+---
+
+## Tier 1: EKS Managed Add-ons
+
+These components are managed by AWS EKS add-on system. Versions are tied to the EKS cluster version and managed via Terraform.
+
+| Add-on | Namespace | EKS Version | Add-on Version | Status | Terraform Resource |
+|--------|-----------|-------------|----------------|--------|-------------------|
+| coredns | kube-system | 1.29 | EKS-managed | Active | `aws_eks_addon.coredns` |
+| kube-proxy | kube-system | 1.29 | EKS-managed | Active | `aws_eks_addon.kube_proxy` |
+| vpc-cni | kube-system | 1.29 | EKS-managed | Active | `aws_eks_addon.vpc_cni` |
+| aws-ebs-csi-driver | kube-system | 1.29 | EKS-managed | Active | `aws_eks_addon.ebs_csi` |
+| aws-efs-csi-driver | kube-system | 1.29 | EKS-managed | Active | `aws_eks_addon.efs_csi` |
+| snapshot-controller | kube-system | 1.29 | EKS-managed | Active | `aws_eks_addon.snapshot_controller` |
+
+**Version Management**: EKS add-on versions are configured in `envs/{env}/terraform.tfvars` via `addon_versions` map. When not specified, AWS selects the recommended version for the cluster.
+
+**Terraform Reference**: `modules/aws_eks/main.tf` (lines 190-301)
+
+---
+
+## Tier 2: Platform Infrastructure
+
+Core infrastructure components that must be running before platform services or applications can deploy.
+
+| App | Namespace | Chart | Chart Version | Image Tag | Status | Sync-Wave |
+|-----|-----------|-------|---------------|-----------|--------|-----------|
+| [cluster-autoscaler](#cluster-autoscaler) | kube-system | kubernetes/autoscaler | 9.43.0 | v1.29.0 | Configured | -1 |
+| [aws-load-balancer-controller](#aws-load-balancer-controller) | kube-system | eks/aws-load-balancer-controller | 1.7.1 | v2.7.1 | Configured | -1 |
+| [metrics-server](#metrics-server) | kube-system | metrics-server/metrics-server | 3.12.0 | v0.7.0 | Bootstrap | N/A |
+
+---
+
+## Tier 3: Platform Services
+
+Shared services providing capabilities to applications. Ordered by sync-wave for dependency management.
+
+| App | Namespace | Chart | Chart Version | Image Tag | Status | Sync-Wave |
+|-----|-----------|-------|---------------|-----------|--------|-----------|
+| [external-secrets](#external-secrets) | external-secrets | external-secrets/external-secrets | 0.9.13 | v0.9.13 | Configured | 0 |
+| cluster-secret-store | external-secrets | Kustomize | N/A | N/A | Configured | 1 |
+| [external-dns](#external-dns) | kube-system | external-dns/external-dns | 1.14.5 | v0.14.0 | Configured | 0 |
+| [cert-manager](#cert-manager) | cert-manager | jetstack/cert-manager | v1.14.4 | v1.14.4 | Configured | 0 |
+| [argocd-image-updater](#argocd-image-updater) | argocd | argoproj/argocd-image-updater | 0.9.1 | v0.12.2 | Configured | 0 |
+| [kong](#kong) | kong-system | konghq/kong | 2.47.0 | 3.6.1 | Configured | 2 |
+| [keycloak](#keycloak) | keycloak | bitnami/keycloak | 25.2.0 | 26.3.3 | Configured | 3 |
+| [kube-prometheus-stack](#kube-prometheus-stack) | monitoring | prometheus-community/kube-prometheus-stack | 45.7.1 | v2.47.2 | Configured | 4 |
+| [loki](#loki) | monitoring | grafana/loki-stack | 2.9.11 | 2.9.4 | Configured | 4 |
+| [tempo](#tempo) | monitoring | grafana/tempo | 1.10.x | 2.3.1 | Configured | 4 |
+| [fluent-bit](#fluent-bit) | monitoring | fluent/fluent-bit | 0.47.0 | 3.0.3 | Configured | 4 |
+
+---
+
+## Tier 4: Developer-Facing Applications
+
+End-user accessible components including developer portals and sample applications.
+
+| App | Namespace | Chart | Chart Version | Image Tag | Status | Sync-Wave |
+|-----|-----------|-------|---------------|-----------|--------|-----------|
+| [backstage](#backstage) | backstage | backstage/backstage | 2.6.3 | 1.29.0 | Configured | 5 |
+| hello-goldenpath-idp | apps | Custom | N/A | latest | Sample App | 6 |
+
+---
+
+## Local Development Stack (Ephemeral Only)
+
+Components for local/ephemeral development environments. Not deployed to staging/prod.
+
+| App | Namespace | Chart | Chart Version | Image Tag | Status |
+|-----|-----------|-------|---------------|-----------|--------|
+| [localstack](#localstack) | local-infra | localstack/localstack | 3.0.0 | 3.0.0 | Standard |
+| [minio](#minio) | local-infra | minio/minio | 5.0.0 | RELEASE.2024-01 | Standard |
+| [postgresql](#postgresql) | local-infra | bitnami/postgresql | 13.2.24 | 15.6.0 | Standard |
+
+---
+
+## Status and Priority Keys
 
 **Status Key**:
 
+- **Active**: EKS-managed add-on, automatically updated
 - **Configured**: Values file has required configuration
-- **Standard (Ephem)**: Standard mock stack for Ephemeral/Local environments
+- **Bootstrap**: Installed via bootstrap script, not Argo CD
+- **Standard**: Standard mock stack for Ephemeral/Local environments
 - **Partial**: Has some config but missing critical pieces
 - **Minimal**: Basic config only (e.g., storage mode)
 - **Needs Config**: Only governance metadata, no actual values
 
-**Priority Key**:
+**Sync-Wave Key** (Argo CD deployment order):
 
-- **P0**: Foundation - must be configured first (other apps depend on it)
-- **P1**: Core Platform - identity and API gateway
-- **P2**: Developer Experience - portals and tooling
-- **P3**: Observability - monitoring and logging
+- **-1**: Pre-requisites (infrastructure controllers)
+- **0**: Foundation (secrets, DNS, certificates)
+- **1**: Secret stores
+- **2**: Ingress gateway
+- **3**: Identity provider
+- **4**: Observability stack
+- **5**: Developer portal
+- **6**: Sample applications
 
 ---
 
@@ -194,6 +270,187 @@ Wildcard DNS is managed by ExternalDNS from Kong Service annotations. Do not cre
 ---
 
 ## Application Details
+
+### Tier 1: EKS Managed Add-ons
+
+#### coredns
+
+**Purpose**: Provides DNS resolution within the Kubernetes cluster
+
+| Attribute | Value |
+|-----------|-------|
+| Type | EKS Managed Add-on |
+| Namespace | kube-system |
+| Version | EKS-managed (tied to cluster version) |
+| Terraform Resource | `aws_eks_addon.coredns` |
+| Terraform File | `modules/aws_eks/main.tf:254-270` |
+
+**Configuration**: Versions managed via `addon_versions` map in `envs/{env}/terraform.tfvars`. When not specified, AWS selects the recommended version.
+
+---
+
+#### kube-proxy
+
+**Purpose**: Network proxy that maintains network rules for pod communication
+
+| Attribute | Value |
+|-----------|-------|
+| Type | EKS Managed Add-on |
+| Namespace | kube-system |
+| Version | EKS-managed (tied to cluster version) |
+| Terraform Resource | `aws_eks_addon.kube_proxy` |
+| Terraform File | `modules/aws_eks/main.tf:272-288` |
+
+---
+
+#### vpc-cni
+
+**Purpose**: Amazon VPC CNI plugin for pod networking using VPC IP addresses
+
+| Attribute | Value |
+|-----------|-------|
+| Type | EKS Managed Add-on |
+| Namespace | kube-system |
+| Version | EKS-managed (tied to cluster version) |
+| Terraform Resource | `aws_eks_addon.vpc_cni` |
+| Terraform File | `modules/aws_eks/main.tf:290-306` |
+
+---
+
+#### aws-ebs-csi-driver
+
+**Purpose**: CSI driver for Amazon EBS volumes (persistent block storage)
+
+| Attribute | Value |
+|-----------|-------|
+| Type | EKS Managed Add-on |
+| Namespace | kube-system |
+| Version | EKS-managed |
+| Terraform Resource | `aws_eks_addon.ebs_csi` |
+| Terraform File | `modules/aws_eks/main.tf:188-212` |
+| IRSA | Required for EBS operations |
+
+**Dependencies**:
+- **Upstream**: IRSA role with EBS permissions
+- **Downstream**: StorageClass `gp3`, PVCs for stateful workloads
+
+---
+
+#### aws-efs-csi-driver
+
+**Purpose**: CSI driver for Amazon EFS (shared filesystem for ReadWriteMany)
+
+| Attribute | Value |
+|-----------|-------|
+| Type | EKS Managed Add-on |
+| Namespace | kube-system |
+| Version | EKS-managed |
+| Terraform Resource | `aws_eks_addon.efs_csi` |
+| Terraform File | `modules/aws_eks/main.tf:214-238` |
+| IRSA | Required for EFS operations |
+
+**Dependencies**:
+- **Upstream**: IRSA role with EFS permissions, EFS filesystem
+- **Downstream**: StorageClass `efs-sc`, PVCs requiring shared storage
+
+---
+
+#### snapshot-controller
+
+**Purpose**: Manages VolumeSnapshot CRDs for backup/restore operations
+
+| Attribute | Value |
+|-----------|-------|
+| Type | EKS Managed Add-on |
+| Namespace | kube-system |
+| Version | EKS-managed |
+| Terraform Resource | `aws_eks_addon.snapshot_controller` |
+| Terraform File | `modules/aws_eks/main.tf:239-252` |
+
+---
+
+### Tier 2: Platform Infrastructure
+
+#### cluster-autoscaler
+
+**Purpose**: Automatically adjusts node group size based on pod scheduling needs
+
+| Attribute | Value |
+|-----------|-------|
+| Chart | kubernetes/autoscaler |
+| Chart Version | 9.43.0 |
+| Image Tag | v1.29.0 |
+| Namespace | kube-system |
+| Argo App | `gitops/argocd/apps/dev/cluster-autoscaler.yaml` |
+| Values File | `gitops/helm/cluster-autoscaler/values/dev.yaml` |
+| Risk Level | Medium |
+
+#### cluster-autoscaler Required Configuration
+
+| Config Item | Description | Source | Status |
+|-------------|-------------|--------|--------|
+| ServiceAccount IRSA | IAM role for ASG operations | Terraform output | Configured |
+| cloudProvider | Set to `aws` | Values file | Configured |
+| autoDiscovery.clusterName | EKS cluster name | Values file | Configured |
+
+#### cluster-autoscaler Dependencies
+
+- **Upstream**: IRSA role with autoscaling permissions, EKS node groups with proper tags
+- **Downstream**: All workloads requiring dynamic scaling
+
+---
+
+#### aws-load-balancer-controller
+
+**Purpose**: Manages AWS ALB/NLB resources for Kubernetes Ingress and Service objects
+
+| Attribute | Value |
+|-----------|-------|
+| Chart | eks/aws-load-balancer-controller |
+| Chart Version | 1.7.1 |
+| Image Tag | v2.7.1 |
+| Namespace | kube-system |
+| Deploy Method | Bootstrap script |
+| Bootstrap File | `bootstrap/30_core-addons/10_aws_lb_controller.sh` |
+| Risk Level | High |
+
+#### aws-load-balancer-controller Required Configuration
+
+| Config Item | Description | Source | Status |
+|-------------|-------------|--------|--------|
+| ServiceAccount IRSA | IAM role for ALB/NLB operations | Terraform output | Configured |
+| clusterName | EKS cluster name | Values/CLI | Configured |
+| vpcId | VPC ID for load balancer placement | Terraform output | Configured |
+
+#### aws-load-balancer-controller Dependencies
+
+- **Upstream**: IRSA role (`goldenpath-idp-aws-load-balancer-controller`), VPC subnets with proper tags
+- **Downstream**: Kong (LoadBalancer Service), Ingress resources
+
+---
+
+#### metrics-server
+
+**Purpose**: Provides resource metrics (CPU/memory) for HPA and `kubectl top`
+
+| Attribute | Value |
+|-----------|-------|
+| Chart | metrics-server/metrics-server |
+| Chart Version | 3.12.0 |
+| Image Tag | v0.7.0 |
+| Namespace | kube-system |
+| Deploy Method | Bootstrap script |
+| Bootstrap File | `bootstrap/10_bootstrap/goldenpath-idp-bootstrap.sh` |
+| Risk Level | Low |
+
+#### metrics-server Dependencies
+
+- **Upstream**: None (standalone)
+- **Downstream**: HPA, `kubectl top nodes/pods`, Cluster Autoscaler decisions
+
+---
+
+### Tier 3: Platform Services
 
 ### external-secrets
 
@@ -977,6 +1234,10 @@ goldenpath/{env}/{app}/{secret-name}
 |2026-01-18|platform-team|Updated observability stack dependency graph to include Tempo|
 |2026-01-18|platform-team|Added Argo CD Image Updater for automated image tag updates (ADR-0172)|
 |2026-01-21|platform-team|Added Kong Manager UI and hello-goldenpath-idp to tooling access URLs|
+|2026-01-21|platform-team|Restructured matrix into 4-tier component categories (EKS Add-ons, Infrastructure, Services, Apps)|
+|2026-01-21|platform-team|Added EKS managed add-ons: coredns, kube-proxy, vpc-cni, ebs-csi, efs-csi, snapshot-controller|
+|2026-01-21|platform-team|Added infrastructure components: cluster-autoscaler, aws-load-balancer-controller, metrics-server|
+|2026-01-21|platform-team|Added sync-wave ordering to quick reference tables|
 
 ---
 

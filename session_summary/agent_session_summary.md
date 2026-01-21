@@ -2667,3 +2667,156 @@ Goal: Complete ExternalDNS integration with Route53 for wildcard DNS records, en
 - Validation: `curl -I https://argocd.dev.goldenpathidp.io` returns HTTP/2 200. Background color change committed and visible in browser confirms GitOps loop.
 
 Signed: Claude Opus 4.5 (2026-01-21T06:45:00Z)
+
+---
+
+## Session: 2026-01-21 Tooling Resolution and Grafana Dashboard
+
+### Context
+- Agent: Claude Opus 4.5
+- Branch: tooling/resolution
+- Session capture: `session_capture/2026-01-21-tooling-resolution.md`
+- PR: #265
+
+Goal: Fix dev environment tooling issues (Kong, Backstage, Keycloak, Grafana not working out-of-the-box), restructure tooling matrix, and add hello-goldenpath-idp Grafana dashboard.
+
+### In-Session Log (append as you go)
+- 10:00Z — Identified root causes: missing ClusterSecretStore ArgoCD app, no sync-wave ordering
+- 10:30Z — Created ClusterSecretStore ArgoCD app, added sync-wave annotations (0-5)
+- 11:00Z — Added Tempo datasource to Grafana with trace-to-logs correlation
+- 11:15Z — Restructured tooling matrix into 4 tiers (EKS Add-ons, Infrastructure, Services, Apps)
+- 11:30Z — Fixed prometheus-operator ImagePullBackOff (double registry prefix `quay.io/quay.io/...`)
+- 11:45Z — Applied same image registry/repository fix to local values
+- 12:00Z — Created Grafana Golden Signals dashboard for hello-goldenpath-idp
+- 12:30Z — Updated session capture, committed and pushed to remote
+- 12:35Z — Updated PR #265 body with proper template and checklists
+
+### Checkpoints
+- [x] ClusterSecretStore ArgoCD app created
+- [x] Sync-wave annotations added to all critical apps
+- [x] Prometheus-operator image fix applied (dev + local)
+- [x] Tooling matrix restructured into 4 tiers
+- [x] hello-goldenpath-idp Grafana dashboard created
+- [x] Session capture updated
+- [x] PR #265 updated with template
+
+### Key Achievements
+
+| Achievement | Impact |
+|-------------|--------|
+| **Sync-wave ordering** | Apps deploy in correct dependency order |
+| **ClusterSecretStore** | ExternalSecrets can fetch AWS credentials |
+| **Prometheus-operator fix** | Metrics collection and Grafana dashboards work |
+| **4-tier matrix** | Clear component categorization for operations |
+| **App dashboard** | hello-goldenpath-idp has observability parity with tooling |
+
+### Issues Diagnosed and Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| prometheus-operator ImagePullBackOff | Chart expects separate registry/repository fields | Split into `registry: quay.io` + `repository: prometheus-operator/...` |
+| ExternalSecrets not syncing | Missing ClusterSecretStore ArgoCD app | Created `cluster-secret-store.yaml` |
+| Tooling apps failing randomly | No deployment ordering | Added sync-wave annotations (0-5) |
+
+### Outputs produced
+- ArgoCD app: `gitops/argocd/apps/dev/cluster-secret-store.yaml`
+- Helm values: `gitops/helm/kube-prometheus-stack/values/{dev,local}.yaml`
+- Dashboard: `hello-goldenpath-idp/deploy/base/dashboards/hello-goldenpath-idp-dashboard.yaml`
+- Docs: `docs/70-operations/20_TOOLING_APPS_MATRIX.md` (restructured)
+- Session capture: `session_capture/2026-01-21-tooling-resolution.md`
+
+### Next actions
+- [ ] Merge PR #265 to development
+- [ ] Verify ArgoCD syncs apps in correct order
+- [ ] Verify prometheus-operator starts and metrics flow
+- [ ] Verify hello-goldenpath-idp dashboard appears in Grafana
+
+### Session Report (end-of-session wrap-up)
+- Summary: Fixed dev environment tooling issues by adding sync-wave ordering, creating ClusterSecretStore ArgoCD app, and fixing prometheus-operator image configuration. Restructured tooling matrix into 4 tiers for better operational clarity. Added Grafana Golden Signals dashboard to hello-goldenpath-idp.
+- Decisions: Use ArgoCD sync-waves for deployment ordering. Separate registry and repository fields for kube-prometheus-stack images.
+- Risks/Follow-ups: Verify all fixes work after ArgoCD sync. May need additional sync-waves for observability stack components.
+- Validation: PR #265 ready for merge. All CI checks pending re-run after template fix.
+
+Signed: Claude Opus 4.5 (2026-01-21T12:40:00Z)
+
+---
+
+## Session: 2026-01-21 Golden Path Templates Completion
+
+### Context
+- Agent: Claude Opus 4.5
+- Branch: feature/golden-path-scaffold-templates → merged to development
+- Session capture: `session_capture/2026-01-21-scaffold-golden-paths.md`
+- PR: #266
+
+Goal: Complete Golden Path scaffold templates (stateless-app, stateful-app, backend-app-rds) with full environment overlay support and comprehensive documentation.
+
+### In-Session Log (append as you go)
+- 14:00Z — Investigated RDS integration with app creation flow
+- 14:30Z — Verified `scripts/rds_provision.py` already exists (962 lines) with Makefile targets
+- 15:00Z — Rewrote BACKEND_APP_RDS_REQUEST_FLOW.md with comprehensive E2E ASCII diagrams
+- 15:30Z — Audited stateless-app and stateful-app templates for missing/outstanding issues
+- 15:45Z — Discovered stateful-app overlays missing namespace.yaml in all 4 environments
+- 16:00Z — Created namespace.yaml for dev/test/staging/prod overlays in stateful-app
+- 16:15Z — Updated all 4 kustomization.yaml files to include namespace.yaml in resources
+- 16:30Z — Added milestone summary to session capture with complete artifact tree
+- 16:45Z — Ran test_script_0034.py — all 16 tests passed
+- 17:00Z — Created PR #266, merged to development branch
+- 17:15Z — Created session summary entry
+
+### Checkpoints
+- [x] RDS integration flow documented with ASCII diagrams
+- [x] stateless-app template complete (all overlays)
+- [x] stateful-app template fixed (namespace.yaml added to all overlays)
+- [x] backend-app-rds template complete (all overlays)
+- [x] E2E request flow documentation updated
+- [x] Test suite passed (16/16)
+- [x] PR #266 created and merged to development
+
+### Key Achievements
+
+| Achievement | Impact |
+|-------------|--------|
+| **Complete overlay structure** | All 3 templates have dev/test/staging/prod overlays |
+| **RDS E2E documentation** | Full ASCII flow from Backstage form to running app |
+| **Namespace.yaml fix** | stateful-app now creates namespace consistently |
+| **Template parity** | All templates follow identical patterns |
+| **Thin Caller CI pattern** | Apps call canonical workflow (GOV-0012 compliant) |
+
+### Issues Diagnosed and Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| stateful-app missing namespace | Incomplete template scaffolding | Created namespace.yaml in 4 overlays |
+| kustomization.yaml incomplete | namespace.yaml not in resources | Added to all 4 kustomization.yaml files |
+
+### Artifacts touched (required)
+- `docs/85-how-it-works/self-service/BACKEND_APP_RDS_REQUEST_FLOW.md` (complete rewrite)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/dev/namespace.yaml` (created)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/test/namespace.yaml` (created)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/staging/namespace.yaml` (created)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/prod/namespace.yaml` (created)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/dev/kustomization.yaml` (modified)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/test/kustomization.yaml` (modified)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/staging/kustomization.yaml` (modified)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/prod/kustomization.yaml` (modified)
+- `session_capture/2026-01-21-scaffold-golden-paths.md` (updated)
+
+### Outputs produced
+- PRs: #266 (merged)
+- Docs: BACKEND_APP_RDS_REQUEST_FLOW.md, GOLDEN_PATH_OVERVIEW.md, CL-0162
+- Templates: 3 complete Golden Path templates with full overlays
+
+### Next actions
+- [ ] Test template scaffolding end-to-end via Backstage UI
+- [ ] Verify ArgoCD syncs scaffolded apps correctly
+- [ ] Deploy hello-goldenpath-idp using stateless-app template
+- [ ] Deploy sample stateful app (e.g., Redis) using stateful-app template
+
+### Session Report (end-of-session wrap-up)
+- Summary: Completed all three Golden Path scaffold templates with full environment overlay support. Fixed missing namespace.yaml in stateful-app overlays. Rewrote RDS request flow documentation with comprehensive ASCII diagrams showing the composite pattern (one form → two outcomes). All tests passing, PR #266 merged to development.
+- Decisions: Templates use identical patterns for consistency. Namespace created in overlays (not base) for environment isolation. RDS provisioning runs post-Terraform via CI workflow.
+- Risks/Follow-ups: Templates not yet tested end-to-end via Backstage UI. May need adjustments based on real scaffolding runs.
+- Validation: test_script_0034.py — 16/16 tests passed. Git operations successful.
+
+Signed: Claude Opus 4.5 (2026-01-21T17:30:00Z)

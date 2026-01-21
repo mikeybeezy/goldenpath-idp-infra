@@ -48,6 +48,13 @@ Use this as a living checklist to validate the dev environment after bootstrap.
 - `aws-ebs-csi-driver`, `aws-efs-csi-driver`, `snapshot-controller` are `Active`.
 - Argo CD Applications include `cert-manager` and it is `Healthy` / `Synced`.
 
+## External Secrets (Sync-wave 0-1)
+
+- External Secrets Operator is `Healthy` / `Synced`.
+- ClusterSecretStore `aws-secretsmanager` exists and is `Valid`.
+- `kubectl get clustersecretstores` shows `Ready` status.
+- ServiceAccount `external-secrets` has IRSA annotation.
+
 ## Metrics
 
 - Metrics Server installed.
@@ -69,11 +76,34 @@ Use this as a living checklist to validate the dev environment after bootstrap.
 - Stateful app deploys successfully.
 - PVC bound and data persists across pod restart.
 
-## Ingress / Load balancer
+## Ingress / Load balancer (Sync-wave 2)
 
 - AWS Load Balancer Controller is running.
 - Kong is installed and has a LoadBalancer address.
+- `kubectl get svc -n kong-system` shows `EXTERNAL-IP` assigned.
 - Ingress routes traffic to the stateless app.
+- External DNS is creating Route53 records for `*.dev.goldenpathidp.io`.
+
+## Identity (Sync-wave 3)
+
+- Keycloak is `Healthy` / `Synced`.
+- Keycloak ExternalSecrets (`keycloak-admin-secret`, `keycloak-postgres-secret`) are `SecretSynced`.
+- Keycloak admin UI accessible at `https://keycloak.dev.goldenpathidp.io`.
+
+## Developer Portal (Sync-wave 5)
+
+- Backstage is `Healthy` / `Synced`.
+- Backstage ExternalSecret for postgres credentials is `SecretSynced`.
+- Backstage UI accessible at `https://backstage.dev.goldenpathidp.io`.
+- Catalog shows components from governance-registry branch.
+
+## Observability
+
+- kube-prometheus-stack is `Healthy` / `Synced`.
+- Grafana accessible at `https://grafana.dev.goldenpathidp.io`.
+- Grafana datasources include: Prometheus, Loki, Tempo.
+- Loki is receiving logs (`kubectl logs` equivalent data visible).
+- Tempo is receiving traces (if apps instrumented with OTEL).
 
 ## GitOps sync
 

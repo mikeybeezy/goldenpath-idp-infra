@@ -1,0 +1,117 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: backend-app-rds-template
+  title: Backend App + RDS (Golden Path)
+  description: Create a Backend Service connected to a Managed RDS Database.
+  tags:
+    - golden-path
+    - backend
+    - rds
+    - database
+spec:
+  owner: platform-team
+  type: service
+
+  parameters:
+    - title: Application & Database Details
+      required:
+        - component_id
+        - description
+        - owner
+        - databaseName
+        - username
+        - environment
+      properties:
+        component_id:
+          title: App Name
+          type: string
+          description: Unique name of the service
+          ui:field: EntityNamePicker
+        description:
+          title: Description
+          type: string
+        owner:
+          title: Owner
+          type: string
+          ui:field: OwnerPicker
+          ui:options:
+            allowedKinds: [Group]
+        environment:
+          title: Environment
+          type: string
+          enum: [dev, test, staging, prod]
+          default: dev
+        databaseName:
+          title: Database Name
+          type: string
+          description: Postgres DB Name
+        username:
+          title: Database User
+          type: string
+          description: Postgres Username
+        repoOrg:
+          title: Repository Organization
+          type: string
+          default: mikeybeezy
+
+  steps:
+    # Action 1: Provision Infrastructure (RDS)
+    - id: trigger-rds
+      name: Provision RDS Database
+      action: github:actions:dispatch
+      input:
+        repoUrl: github.com?owner=mikeybeezy&repo=goldenpath-idp-infra
+        workflowId: create-rds-database.yml
+        branchOrTagName: main
+        workflowInputs:
+          base_branch: development
+          database_name: ${{ parameters.databaseName }}
+          username: ${{ parameters.username }}
+          owner: ${{ parameters.owner }}
+          environment: ${{ parameters.environment }}
+          risk: medium
+          size: small
+          initial_schema: none
+
+    # Action 2: Scaffold Application (Code + ExternalSecret)
+    - id: template
+      name: Scaffold Application
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          environment: ${{ parameters.environment }}
+          databaseName: ${{ parameters.databaseName }}  # For ExternalSecret naming
+          repoOrg: ${{ parameters.repoOrg }}
+          destination: ${{ parameters.repoOrg }}/${{ parameters.component_id }}
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: ${{ parameters.description }}
+        repoUrl: github.com?owner=${{ parameters.repoOrg }}&repo=${{ parameters.component_id }}
+        defaultBranch: main
+        access: public
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
+      - title: Monitor Database
+        url: https://github.com/mikeybeezy/goldenpath-idp-infra/actions/workflows/create-rds-database.yml

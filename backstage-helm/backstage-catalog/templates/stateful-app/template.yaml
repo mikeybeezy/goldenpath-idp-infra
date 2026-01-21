@@ -1,0 +1,124 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: stateful-app-template
+  title: Stateful Application (Golden Path)
+  description: Create a new Stateful Application (StatefulSet + PVC). Ideal for caches (Redis), queues (RabbitMQ), or document stores.
+  tags:
+    - golden-path
+    - recommended
+    - stateful
+    - persistent
+spec:
+  owner: platform-team
+  type: service
+
+  parameters:
+    - title: Application Details
+      required:
+        - component_id
+        - description
+        - owner
+      properties:
+        component_id:
+          title: Name
+          type: string
+          description: Unique name of the component
+          ui:field: EntityNamePicker
+        description:
+          title: Description
+          type: string
+          description: Purpose of this stateful workload.
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            allowedKinds:
+              - Group
+        repoOrg:
+          title: Repository Organization
+          type: string
+          description: The GitHub organization to create the repository in
+          default: mikeybeezy
+
+    - title: Stateful Configuration
+      required:
+        - environment
+        - replicas
+        - storage_size
+        - mount_path
+      properties:
+        environment:
+          title: Environment
+          type: string
+          description: Target environment
+          enum:
+            - dev
+            - test
+            - staging
+            - prod
+          default: dev
+        replicas:
+          title: Replicas
+          type: number
+          description: Number of pods (StatefulSet)
+          default: 1
+        storage_size:
+          title: Storage Size
+          type: string
+          description: Size of each Persistent Volume (e.g., 10Gi)
+          default: "1Gi"
+        mount_path:
+          title: Mount Path
+          type: string
+          description: Container path to mount volume
+          default: "/data"
+        port:
+          title: Service Port
+          type: number
+          description: Port the application listens on
+          default: 8080
+
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          environment: ${{ parameters.environment }}
+          replicas: ${{ parameters.replicas }}
+          storage_size: ${{ parameters.storage_size }}
+          mount_path: ${{ parameters.mount_path }}
+          port: ${{ parameters.port }}
+          destination: ${{ parameters.repoOrg }}/${{ parameters.component_id }}
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: ${{ parameters.description }}
+        repoUrl: github.com?owner=${{ parameters.repoOrg }}&repo=${{ parameters.component_id }}
+        defaultBranch: main
+        access: public
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
