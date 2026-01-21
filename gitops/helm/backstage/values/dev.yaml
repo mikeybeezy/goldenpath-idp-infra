@@ -7,13 +7,13 @@ governance:
   reliability: null
 
 # -----------------------------------------------------------------------------
-# Image Configuration - Using official Backstage image temporarily
-# TODO: Build custom image with plugins and push to ECR
+# Image Configuration - Platformers Community Backstage
+# Source: https://github.com/PlatformersCommunity/backstage-helm-chart
 # -----------------------------------------------------------------------------
 image:
-  repository: ghcr.io/backstage/
-  name: backstage
-  tag: latest
+  repository: "ghcr.io/guymenahem/"
+  name: "backstage-platformers"
+  tag: "0.0.1"
   pullPolicy: Always
 
 # -----------------------------------------------------------------------------
