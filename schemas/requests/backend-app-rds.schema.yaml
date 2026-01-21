@@ -39,6 +39,7 @@ properties:
     description: Target environment
     enum:
       - dev
+      - test
       - staging
       - prod
     default: dev

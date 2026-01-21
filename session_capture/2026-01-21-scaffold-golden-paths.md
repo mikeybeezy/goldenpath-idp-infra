@@ -167,3 +167,28 @@ grep -E "(stateless|stateful|backend-app-rds)" backstage-helm/backstage-catalog/
 ```
 
 Signed: claude-opus-4.5 (2026-01-21T14:00:00Z)
+
+### Remediation Log (Antigravity - 2026-01-21)
+
+**Actioned Fixes:**
+
+1.  **Fixed P0 (Kustomization Image Name)**:
+    *   Updated `stateless-app` overlays to use `newName: ${{ values.component_id }}`.
+    *   Propagated fix to `dev`, `test`, `staging`, `prod` directories.
+
+2.  **Fixed P1 (Missing Overlays)**:
+    *   Created `test`, `staging`, `prod` overlays for `stateless-app`.
+    *   (Note: `stateful-app` and `backend-app-rds` overlays were already generated correctly or covered by `dev` logic).
+
+3.  **Fixed P1 (StatefulSet Probes)**:
+    *   Added `livenessProbe` and `readinessProbe` to `statefulset.yaml` skeleton.
+    *   Probes check `/health` and `/ready` endpoints verified in `app.py`.
+
+4.  **Fixed P2 (Missing Test Env)**:
+    *   Added `test` to enum in `stateless-app.schema.yaml`, `stateful-app.schema.yaml`, and `backend-app-rds.schema.yaml`.
+
+**Verification**:
+*   `grep` confirmed all patches applied correctly.
+*   `ls` confirmed all overlay directories exist.
+
+Signed: Antigravity (2026-01-21)

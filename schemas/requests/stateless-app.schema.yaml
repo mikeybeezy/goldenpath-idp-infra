@@ -47,6 +47,7 @@ properties:
     description: Target environment for initial deployment
     enum:
       - dev
+      - test
       - staging
       - prod
     default: dev
