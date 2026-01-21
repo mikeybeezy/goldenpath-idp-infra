@@ -253,6 +253,42 @@ Wave 6: Sample Applications
 
 ---
 
+### Update - 2026-01-21T14:30:00Z
+
+**What changed**
+- Fixed prometheus-operator ImagePullBackOff (double registry prefix `quay.io/quay.io/...`)
+- Separated registry and repository fields in kube-prometheus-stack values
+- Applied fix to both dev.yaml and local.yaml
+- Created Grafana dashboard ConfigMap for hello-goldenpath-idp following tooling dashboard pattern
+
+**Root Cause**
+- kube-prometheus-stack chart expects separate `registry` and `repository` fields
+- When full path provided in `repository`, chart prepended default registry
+- Result: `quay.io/quay.io/prometheus-operator/prometheus-operator:v0.68.0`
+- Without prometheus-operator, no Prometheus/Alertmanager StatefulSets created
+
+**Artifacts touched**
+- `gitops/helm/kube-prometheus-stack/values/dev.yaml` - Fixed image configuration for all components
+- `gitops/helm/kube-prometheus-stack/values/local.yaml` - Applied same fix
+- `hello-goldenpath-idp/deploy/base/dashboards/hello-goldenpath-idp-dashboard.yaml` (new)
+- `hello-goldenpath-idp/deploy/base/kustomization.yaml` - Added dashboard resource
+
+**Validation**
+- Verified image paths no longer have double registry prefix
+- Dashboard ConfigMap follows tooling dashboard pattern with grafana_dashboard label
+
+**Next steps**
+- Push hello-goldenpath-idp changes
+- Verify Grafana sidecar picks up dashboard after ArgoCD sync
+- Verify Prometheus metrics flow to Grafana dashboards
+
+**Outstanding**
+- Verify fixes after ArgoCD sync
+
+Signed: Claude Opus 4.5 (2026-01-21T14:30:00Z)
+
+---
+
 ## Review/Validation Appendix
 
 *To be completed after deployment verification*

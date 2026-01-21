@@ -172,18 +172,12 @@ Disable RDS deletion protection (break-glass):
 make rds-allow-delete ENV=dev CONFIRM_RDS_DELETE=yes
 ```
 
-Break-glass destroy (confirmation-gated):
-
-```bash
-make rds-destroy-break-glass ENV=dev CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES
-```
-
 Important:
 - If `rds_config.enabled=true` in `envs/<env>/terraform.tfvars`, RDS is coupled to the
   cluster state and **will** be destroyed by `terraform destroy`, regardless of safety flags.
 - To preserve RDS across cluster rebuilds, set `rds_config.enabled=false` and use
   `envs/<env>-rds/` for RDS instead.
-- There is no standard `rds-destroy` target; use `rds-destroy-break-glass` (see `docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md`).
+- There is no `rds-destroy` target; see `docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md`.
 
 ### Teardown
 
@@ -203,7 +197,7 @@ bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh \
 Via Makefile:
 
 ```bash
-make teardown ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2 TEARDOWN_VERSION=v5
+make teardown ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2 TEARDOWN_VERSION=v4
 ```
 
 Note: If RDS is coupled in `envs/<env>` (via `rds_config.enabled=true`), it will be
@@ -429,7 +423,8 @@ Last updated: 2026-01-20
 
 Fixed. The correct commands are:
 
-| Cluster Type | Deploy Command |
-|--------------|----------------|
-| Persistent | `make deploy-persistent ENV=dev` |
-| Ephemeral | `make deploy ENV=dev BUILD_ID=20-01-26-01` |
+Cluster Type	Deploy Command
+```
+Persistent	make deploy-persistent ENV=dev
+Ephemeral	make deploy ENV=dev BUILD_ID=20-01-26-01
+```
