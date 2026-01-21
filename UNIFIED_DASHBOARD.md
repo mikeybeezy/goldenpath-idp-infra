@@ -1,2 +1,2 @@
 # Unified Governance Dashboard
-Generated: 2026-01-21T05:02:30Z
+Generated: 2026-01-21T06:11:57Z
