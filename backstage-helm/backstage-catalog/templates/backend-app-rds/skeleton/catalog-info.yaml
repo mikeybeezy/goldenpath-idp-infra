@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.component_id }}
+  title: ${{ values.component_id }}
+  description: ${{ values.description }}
+  annotations:
+    github.com/project-slug: ${{ values.repoOrg }}/${{ values.component_id }}
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - python
+    - backend
+    - rds-connected
+    - goldenpath
+  links:
+    - url: https://github.com/${{ values.repoOrg }}/${{ values.component_id }}
+      title: GitHub Repository
+      icon: github
+spec:
+  type: service
+  lifecycle: experimental
+  owner: ${{ values.owner }}
+  system: goldenpath-idp
+  providesApis: []
+  consumesApis: []
+  dependsOn:
+    - resource:rds-${{ values.environment }}-${{ values.databaseName }}

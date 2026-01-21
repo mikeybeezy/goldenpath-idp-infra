@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ${{ values.component_id }}
+  labels:
+    app: ${{ values.component_id }}
+    app.kubernetes.io/name: ${{ values.component_id }}
+    app.kubernetes.io/component: stateful-workload
+    app.kubernetes.io/part-of: goldenpath-idp
+spec:
+  serviceName: ${{ values.component_id }} # Headless service name
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ${{ values.component_id }}
+  template:
+    metadata:
+      labels:
+        app: ${{ values.component_id }}
+        app.kubernetes.io/name: ${{ values.component_id }}
+    spec:
+      containers:
+        - name: ${{ values.component_id }}
+          image: ${{ values.component_id }}:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - name: data
+              mountPath: ${{ values.mount_path }}
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          env:
+            - name: DATA_PATH
+              value: ${{ values.mount_path }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "gp3" # Standard EBS
+        resources:
+          requests:
+            storage: ${{ values.storage_size }}
