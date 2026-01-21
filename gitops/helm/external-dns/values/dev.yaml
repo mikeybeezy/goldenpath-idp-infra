@@ -28,8 +28,12 @@ sources:
   - ingress
 logLevel: info
 
-aws:
-  region: eu-west-2
+extraArgs:
+  - --aws-zone-type=public
+
+env:
+  - name: AWS_DEFAULT_REGION
+    value: eu-west-2
 
 rbac:
   create: true
