@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ${{ values.component_id }}
+  namespace: apps
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+  labels:
+    app: ${{ values.component_id }}
+    app.kubernetes.io/name: ${{ values.component_id }}
+    app.kubernetes.io/part-of: goldenpath-idp
+spec:
+  ingressClassName: kong
+  rules:
+    - host: ${{ values.component_id }}.${{ values.environment }}.goldenpathidp.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ${{ values.component_id }}-lb
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - ${{ values.component_id }}.${{ values.environment }}.goldenpathidp.io
+      secretName: ${{ values.component_id }}-tls

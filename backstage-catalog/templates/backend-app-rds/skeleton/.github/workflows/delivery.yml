@@ -1,0 +1,45 @@
+name: Delivery
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'catalog-info.yaml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: false
+        default: 'dev'
+        type: choice
+        options:
+          - local
+          - dev
+          - test
+          - staging
+          - prod
+      image_tag:
+        description: 'Image tag override (defaults to git SHA)'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  build:
+    name: Build and Release
+    uses: mikeybeezy/goldenpath-idp-infra/.github/workflows/_build-and-release.yml@main
+    with:
+      ecr_repository: ${{ values.component_id }}
+      environment: $\{{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
+      image_tag: $\{{ inputs.image_tag || '' }}
+      skip_push: $\{{ github.event_name == 'pull_request' }}
+      push_latest: true
+      # Test configuration
+      test_enabled: true
+      test_command: 'python -m pytest test_app.py -v --tb=short'
+      python_version: '3.11'
+    secrets:
+      AWS_ROLE_ARN: $\{{ secrets.AWS_ROLE_ARN }}
