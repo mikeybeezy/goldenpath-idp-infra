@@ -88,6 +88,29 @@ grafana:
       type: loki
       access: proxy
       url: http://loki-gateway.monitoring.svc:3100
+      jsonData:
+        maxLines: 1000
+    - name: Tempo
+      type: tempo
+      access: proxy
+      url: http://tempo.monitoring.svc.cluster.local:3100
+      jsonData:
+        httpMethod: GET
+        tracesToLogs:
+          datasourceUid: loki
+          tags: ['job', 'instance', 'pod', 'namespace']
+          mappedTags: [{ key: 'service.name', value: 'service' }]
+          mapTagNamesEnabled: false
+          spanStartTimeShift: '1h'
+          spanEndTimeShift: '1h'
+          filterByTraceID: true
+          filterBySpanID: false
+        serviceMap:
+          datasourceUid: prometheus
+        nodeGraph:
+          enabled: true
+        lokiSearch:
+          datasourceUid: loki
   sidecar:
     dashboards:
       enabled: true
