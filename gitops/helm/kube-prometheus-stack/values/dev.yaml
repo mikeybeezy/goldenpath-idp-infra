@@ -13,7 +13,8 @@ governance:
 prometheus:
   prometheusSpec:
     image:
-      repository: quay.io/prometheus/prometheus
+      registry: quay.io
+      repository: prometheus/prometheus
       tag: v2.47.2
     retention: 7d
     storageSpec:
@@ -38,7 +39,8 @@ prometheus:
 alertmanager:
   alertmanagerSpec:
     image:
-      repository: quay.io/prometheus/alertmanager
+      registry: quay.io
+      repository: prometheus/alertmanager
       tag: v0.26.0
     storage:
       volumeClaimTemplate:
@@ -133,7 +135,8 @@ grafana:
 # -----------------------------------------------------------------------------
 prometheusOperator:
   image:
-    repository: quay.io/prometheus-operator/prometheus-operator
+    registry: quay.io
+    repository: prometheus-operator/prometheus-operator
     tag: v0.68.0
   resources:
     requests:
@@ -148,7 +151,8 @@ prometheusOperator:
 # -----------------------------------------------------------------------------
 nodeExporter:
   image:
-    repository: quay.io/prometheus/node-exporter
+    registry: quay.io
+    repository: prometheus/node-exporter
     tag: v1.6.1
   resources:
     requests:
