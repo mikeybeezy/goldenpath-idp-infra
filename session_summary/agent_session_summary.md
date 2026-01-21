@@ -2667,3 +2667,74 @@ Goal: Complete ExternalDNS integration with Route53 for wildcard DNS records, en
 - Validation: `curl -I https://argocd.dev.goldenpathidp.io` returns HTTP/2 200. Background color change committed and visible in browser confirms GitOps loop.
 
 Signed: Claude Opus 4.5 (2026-01-21T06:45:00Z)
+
+---
+
+## Session: 2026-01-21 Tooling Resolution and Grafana Dashboard
+
+### Context
+- Agent: Claude Opus 4.5
+- Branch: tooling/resolution
+- Session capture: `session_capture/2026-01-21-tooling-resolution.md`
+- PR: #265
+
+Goal: Fix dev environment tooling issues (Kong, Backstage, Keycloak, Grafana not working out-of-the-box), restructure tooling matrix, and add hello-goldenpath-idp Grafana dashboard.
+
+### In-Session Log (append as you go)
+- 10:00Z — Identified root causes: missing ClusterSecretStore ArgoCD app, no sync-wave ordering
+- 10:30Z — Created ClusterSecretStore ArgoCD app, added sync-wave annotations (0-5)
+- 11:00Z — Added Tempo datasource to Grafana with trace-to-logs correlation
+- 11:15Z — Restructured tooling matrix into 4 tiers (EKS Add-ons, Infrastructure, Services, Apps)
+- 11:30Z — Fixed prometheus-operator ImagePullBackOff (double registry prefix `quay.io/quay.io/...`)
+- 11:45Z — Applied same image registry/repository fix to local values
+- 12:00Z — Created Grafana Golden Signals dashboard for hello-goldenpath-idp
+- 12:30Z — Updated session capture, committed and pushed to remote
+- 12:35Z — Updated PR #265 body with proper template and checklists
+
+### Checkpoints
+- [x] ClusterSecretStore ArgoCD app created
+- [x] Sync-wave annotations added to all critical apps
+- [x] Prometheus-operator image fix applied (dev + local)
+- [x] Tooling matrix restructured into 4 tiers
+- [x] hello-goldenpath-idp Grafana dashboard created
+- [x] Session capture updated
+- [x] PR #265 updated with template
+
+### Key Achievements
+
+| Achievement | Impact |
+|-------------|--------|
+| **Sync-wave ordering** | Apps deploy in correct dependency order |
+| **ClusterSecretStore** | ExternalSecrets can fetch AWS credentials |
+| **Prometheus-operator fix** | Metrics collection and Grafana dashboards work |
+| **4-tier matrix** | Clear component categorization for operations |
+| **App dashboard** | hello-goldenpath-idp has observability parity with tooling |
+
+### Issues Diagnosed and Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| prometheus-operator ImagePullBackOff | Chart expects separate registry/repository fields | Split into `registry: quay.io` + `repository: prometheus-operator/...` |
+| ExternalSecrets not syncing | Missing ClusterSecretStore ArgoCD app | Created `cluster-secret-store.yaml` |
+| Tooling apps failing randomly | No deployment ordering | Added sync-wave annotations (0-5) |
+
+### Outputs produced
+- ArgoCD app: `gitops/argocd/apps/dev/cluster-secret-store.yaml`
+- Helm values: `gitops/helm/kube-prometheus-stack/values/{dev,local}.yaml`
+- Dashboard: `hello-goldenpath-idp/deploy/base/dashboards/hello-goldenpath-idp-dashboard.yaml`
+- Docs: `docs/70-operations/20_TOOLING_APPS_MATRIX.md` (restructured)
+- Session capture: `session_capture/2026-01-21-tooling-resolution.md`
+
+### Next actions
+- [ ] Merge PR #265 to development
+- [ ] Verify ArgoCD syncs apps in correct order
+- [ ] Verify prometheus-operator starts and metrics flow
+- [ ] Verify hello-goldenpath-idp dashboard appears in Grafana
+
+### Session Report (end-of-session wrap-up)
+- Summary: Fixed dev environment tooling issues by adding sync-wave ordering, creating ClusterSecretStore ArgoCD app, and fixing prometheus-operator image configuration. Restructured tooling matrix into 4 tiers for better operational clarity. Added Grafana Golden Signals dashboard to hello-goldenpath-idp.
+- Decisions: Use ArgoCD sync-waves for deployment ordering. Separate registry and repository fields for kube-prometheus-stack images.
+- Risks/Follow-ups: Verify all fixes work after ArgoCD sync. May need additional sync-waves for observability stack components.
+- Validation: PR #265 ready for merge. All CI checks pending re-run after template fix.
+
+Signed: Claude Opus 4.5 (2026-01-21T12:40:00Z)

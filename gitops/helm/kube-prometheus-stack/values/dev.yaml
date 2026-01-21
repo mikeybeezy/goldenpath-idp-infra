@@ -13,7 +13,8 @@ governance:
 prometheus:
   prometheusSpec:
     image:
-      repository: quay.io/prometheus/prometheus
+      registry: quay.io
+      repository: prometheus/prometheus
       tag: v2.47.2
     retention: 7d
     storageSpec:
@@ -38,7 +39,8 @@ prometheus:
 alertmanager:
   alertmanagerSpec:
     image:
-      repository: quay.io/prometheus/alertmanager
+      registry: quay.io
+      repository: prometheus/alertmanager
       tag: v0.26.0
     storage:
       volumeClaimTemplate:
@@ -88,6 +90,29 @@ grafana:
       type: loki
       access: proxy
       url: http://loki-gateway.monitoring.svc:3100
+      jsonData:
+        maxLines: 1000
+    - name: Tempo
+      type: tempo
+      access: proxy
+      url: http://tempo.monitoring.svc.cluster.local:3100
+      jsonData:
+        httpMethod: GET
+        tracesToLogs:
+          datasourceUid: loki
+          tags: ['job', 'instance', 'pod', 'namespace']
+          mappedTags: [{ key: 'service.name', value: 'service' }]
+          mapTagNamesEnabled: false
+          spanStartTimeShift: '1h'
+          spanEndTimeShift: '1h'
+          filterByTraceID: true
+          filterBySpanID: false
+        serviceMap:
+          datasourceUid: prometheus
+        nodeGraph:
+          enabled: true
+        lokiSearch:
+          datasourceUid: loki
   sidecar:
     dashboards:
       enabled: true
@@ -110,7 +135,8 @@ grafana:
 # -----------------------------------------------------------------------------
 prometheusOperator:
   image:
-    repository: quay.io/prometheus-operator/prometheus-operator
+    registry: quay.io
+    repository: prometheus-operator/prometheus-operator
     tag: v0.68.0
   resources:
     requests:
@@ -125,7 +151,8 @@ prometheusOperator:
 # -----------------------------------------------------------------------------
 nodeExporter:
   image:
-    repository: quay.io/prometheus/node-exporter
+    registry: quay.io
+    repository: prometheus/node-exporter
     tag: v1.6.1
   resources:
     requests:

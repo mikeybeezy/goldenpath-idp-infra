@@ -1,13 +1,19 @@
 # Managed by scripts/standardize_metadata.py
+# Keycloak Identity Provider
+# Sync-wave 3: Requires ClusterSecretStore (wave 1) for admin and database credentials
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: dev-keycloak
   namespace: argocd
   annotations:
-    goldenpath.idp/id: APPS_DEV_METADATA
-    goldenpath.idp/owner: None
+    goldenpath.idp/id: APPS_DEV_KEYCLOAK
+    goldenpath.idp/owner: platform-team
     goldenpath.idp/risk: high
+    argocd.argoproj.io/sync-wave: "3"
+  labels:
+    app.kubernetes.io/part-of: goldenpath-idp
+    environment: dev
 spec:
   project: default
   destination:

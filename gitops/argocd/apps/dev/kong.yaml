@@ -1,13 +1,19 @@
 # Managed by scripts/standardize_metadata.py
+# Kong API Gateway and Ingress Controller
+# Sync-wave 2: Deploy early, before apps that need ingress
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: dev-kong
   namespace: argocd
   annotations:
-    goldenpath.idp/id: APPS_KONG_METADATA
-    goldenpath.idp/owner: None
+    goldenpath.idp/id: APPS_DEV_KONG
+    goldenpath.idp/owner: platform-team
     goldenpath.idp/risk: high
+    argocd.argoproj.io/sync-wave: "2"
+  labels:
+    app.kubernetes.io/part-of: goldenpath-idp
+    environment: dev
 spec:
   project: default
   destination:

@@ -1,13 +1,19 @@
 # Managed by scripts/standardize_metadata.py
+# Backstage Developer Portal
+# Sync-wave 5: Requires ClusterSecretStore (wave 1) for database credentials
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: dev-backstage
   namespace: argocd
   annotations:
-    goldenpath.idp/id: APPS_DEV_METADATA
-    goldenpath.idp/owner: None
+    goldenpath.idp/id: APPS_DEV_BACKSTAGE
+    goldenpath.idp/owner: platform-team
     goldenpath.idp/risk: medium
+    argocd.argoproj.io/sync-wave: "5"
+  labels:
+    app.kubernetes.io/part-of: goldenpath-idp
+    environment: dev
 spec:
   project: default
   destination:
