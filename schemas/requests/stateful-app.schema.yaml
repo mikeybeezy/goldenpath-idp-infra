@@ -28,7 +28,7 @@ properties:
 
   replicas:
     type: integer
-    description: Number of replicas (default: 1)
+    description: "Number of replicas (default: 1)"
     default: 1
     minimum: 1
     maximum: 5

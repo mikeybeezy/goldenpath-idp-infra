@@ -398,7 +398,7 @@ The CI workflow (`infra-terraform-apply-dev.yml:313-337`) includes:
 
 #### Files Modified
 
-- `docs/85-how-it-works/self-service/BACKEND_APP_RDS_REQUEST_FLOW.md` (complete rewrite with ASCII diagrams)
+* `docs/85-how-it-works/self-service/BACKEND_APP_RDS_REQUEST_FLOW.md` (complete rewrite with ASCII diagrams)
 
 #### PVC Question Answered
 

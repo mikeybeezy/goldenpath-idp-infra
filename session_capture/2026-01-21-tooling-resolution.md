@@ -136,7 +136,7 @@ Implemented 4-tier categorization:
 - [ ] Verify ExternalSecrets for Keycloak and Backstage sync successfully
 - [ ] Verify Kong LoadBalancer gets EXTERNAL-IP
 - [ ] Verify Grafana can query Prometheus, Loki, and Tempo
-- [ ] Verify Backstage UI loads at https://backstage.dev.goldenpathidp.io
+- [ ] Verify Backstage UI loads at `https://backstage.dev.goldenpathidp.io`
 
 ### Future Enhancements
 - Consider adding health checks to sync-waves (ArgoCD resource hooks)
