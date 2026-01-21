@@ -50,9 +50,9 @@ variable "build_id" {
   validation {
     condition = (
       var.cluster_lifecycle == "persistent" && var.build_id == "persistent"
-    ) || (
+      ) || (
       can(regex("^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$", var.build_id))
-    ) || (
+      ) || (
       var.build_id == ""
     )
     error_message = "build_id must match format: DD-MM-YY-NN (e.g., 13-01-26-01) for ephemeral clusters, or 'persistent' for persistent clusters."
@@ -461,7 +461,7 @@ variable "route53_config" {
     })), {})
   })
   default = {
-    enabled    = false
+    enabled     = false
     domain_name = ""
   }
 }

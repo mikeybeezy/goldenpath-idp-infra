@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
+# ---
+# id: SCRIPT-0052
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 2
+# dry_run:
+#   supported: false
+#   command_hint: N/A
+# test:
+#   runner: shellcheck
+#   command: shellcheck scripts/rds_secrets_preflight.sh
+#   evidence: declared
+# risk_profile:
+#   production_impact: medium
+#   security_risk: low
+#   coupling_risk: low
+# ---
 set -euo pipefail
 
 env="${1:-}"

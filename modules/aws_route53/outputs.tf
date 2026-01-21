@@ -14,7 +14,7 @@ output "zone_name" {
 
 output "name_servers" {
   description = "List of name servers for the hosted zone (use these in your domain registrar)"
-  value       = var.create_hosted_zone ? aws_route53_zone.main[0].name_servers : (
+  value = var.create_hosted_zone ? aws_route53_zone.main[0].name_servers : (
     var.zone_id != "" ? data.aws_route53_zone.by_id[0].name_servers : data.aws_route53_zone.existing[0].name_servers
   )
 }

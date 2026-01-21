@@ -699,7 +699,7 @@ module "platform_rds" {
   create_master_secret = true
   master_secret_name = var.cluster_lifecycle == "ephemeral" ? (
     "goldenpath/${local.environment}/builds/${local.build_id}/rds/master"
-  ) : (
+    ) : (
     "goldenpath/${local.environment}/rds/master"
   )
   # 0-day recovery for ephemeral (immediate deletion), 7-day for persistent
@@ -712,7 +712,7 @@ module "platform_rds" {
       username      = v.username
       secret_name = var.cluster_lifecycle == "ephemeral" ? (
         "goldenpath/${local.environment}/builds/${local.build_id}/${k}/postgres"
-      ) : (
+        ) : (
         "goldenpath/${local.environment}/${k}/postgres"
       )
     }
