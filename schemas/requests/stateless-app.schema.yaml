@@ -9,7 +9,7 @@ properties:
   id:
     type: string
     description: Unique identifier for the request (e.g., app-001)
-    pattern: "^[a-z0-9]+(-[a-z0-9]+)*$
+    pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
 
   owner:
     type: string
@@ -24,7 +24,7 @@ properties:
   component_id:
     type: string
     description: The ID of the component in Backstage (e.g., my-service)
-    pattern: "^[a-z0-9]+(-[a-z0-9]+)*$
+    pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
 
   image_repository:
     type: string
