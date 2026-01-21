@@ -43,12 +43,14 @@ author: platform-team
 ## Summary
 
 `rds-deploy` now restores any Secrets Manager entries that are scheduled for
-deletion before attempting a create. This removes the seven-day recovery
-window blocker for persistent RDS demos.
+deletion and adopts existing secrets into state before attempting a create.
+This removes the seven-day recovery window blocker and avoids
+`ResourceExistsException` when secrets already exist.
 
 ## Changes
 
 - Added `RESTORE_SECRETS` preflight to `make rds-deploy` (default: true).
+- Preflight also imports existing secrets into Terraform state when needed.
 - Added `RESTORE_SECRETS=false` override for cases where restore is undesired.
 - Documented the behavior in quick reference and runbook guidance.
 

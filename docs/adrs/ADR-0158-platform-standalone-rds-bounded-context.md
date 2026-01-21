@@ -97,7 +97,7 @@ We will extract Platform RDS into a **standalone Terraform root** with its own s
 
 1. **Bounded Context** - RDS has its own Terraform root, state, and lifecycle
 2. **Persistence by Default** - RDS is never suffixed with build_id, never ephemeral
-3. **Deletion Protection** - Intentionally difficult to delete; requires console intervention
+3. **Deletion Protection** - Intentionally difficult to delete; break-glass target only
 4. **Deploy First** - Must be deployed before any cluster that depends on it
 5. **Region Agnostic** - Configuration supports any AWS region
 6. **Optional Bolt-On** - Clusters can run without RDS (using bundled PostgreSQL)
@@ -120,7 +120,7 @@ We will extract Platform RDS into a **standalone Terraform root** with its own s
   State: s3://.../envs/dev-rds/tfstate       State: s3://.../envs/dev/builds/{id}/tfstate
 
   Lifecycle: PERSISTENT                      Lifecycle: EPHEMERAL
-  Deletion: CONSOLE ONLY                     Deletion: terraform destroy
+  Deletion: BREAK-GLASS MAKE                Deletion: terraform destroy
 
   ┌─────────────────────────┐                ┌─────────────────────────┐
   │   Platform RDS          │                │   EKS Cluster           │
@@ -138,18 +138,17 @@ RDS deletion is **intentionally difficult** via multiple layers:
 
 |Protection Layer|Mechanism|Bypass Method|
 |------------------|-----------|---------------|
-|Terraform `deletion_protection`|RDS API refuses delete|Console disable required|
-|Terraform `prevent_destroy`|Lifecycle meta-argument|Manual state removal|
+|Terraform `deletion_protection`|RDS API refuses delete|`make rds-allow-delete` or console|
+|Terraform `prevent_destroy`|Lifecycle meta-argument|Temporary edit or break-glass target|
 |S3 State Lock|DynamoDB locking|Manual unlock|
-|No CI Destroy Workflow|No automated teardown|Manual only|
+|No CI Destroy Workflow|No automated teardown|Manual break-glass target only|
 |AWS Console MFA|IAM policy|Physical MFA required|
 
 ### To delete RDS, an operator must
 
-1. Log into AWS Console (not CLI/Terraform)
-2. Disable deletion protection on RDS instance
-3. Confirm deletion with MFA
-4. Manually remove from Terraform state (if needed)
+1. Disable deletion protection (`make rds-allow-delete ENV=<env> CONFIRM_RDS_DELETE=yes`)
+2. Bypass `prevent_destroy` (temporary edit or `rds-destroy-break-glass`)
+3. Run destroy via Terraform (`make rds-destroy-break-glass ENV=<env> CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES`)
 
 This is intentional friction to prevent accidental data loss.
 
@@ -332,8 +331,10 @@ rds-plan:
 rds-apply:
     terraform -chdir=envs/$(ENV)-rds apply
 
-# No rds-destroy target - intentional!
-# Deletion requires console intervention
+# No standard rds-destroy target - intentional!
+# Break-glass deletion requires confirmation gating
+rds-destroy-break-glass:
+    terraform -chdir=envs/$(ENV)-rds destroy -auto-approve
 
 # Combined workflow
 platform-up: rds-apply apply bootstrap
@@ -371,7 +372,7 @@ aws_region = "eu-west-2"  # London
 |CloudWatch alarms|CPU, memory, storage, connections|Planned|
 |Encryption at rest|KMS-managed key|Planned|
 |SSL/TLS required|`rds.force_ssl` parameter|Planned|
-|Makefile targets|`rds-init`, `rds-plan`, `rds-apply` (no destroy)|Planned|
+|Makefile targets|`rds-init`, `rds-plan`, `rds-apply`, `rds-destroy-break-glass`|Planned|
 |Deployment documentation|Sequence, runbooks|Planned|
 |Performance Insights|Query analysis enabled|Planned|
 |Operational runbooks|Backup, restore, rotation, scaling|Planned|
@@ -544,7 +545,7 @@ Apps using connection pools may need pod restart to pick up new credentials.
 4. Verify app connectivity post-scale
 5. Update Terraform state to match
 
-### RB-0016: RDS Deletion (Break-Glass)
+### RB-0030: RDS Break-Glass Deletion
 
 **Purpose:** Permanently delete RDS instance (irreversible).
 
@@ -554,16 +555,11 @@ Apps using connection pools may need pod restart to pick up new credentials.
 - Final snapshot taken and verified
 - All dependent apps migrated or decommissioned
 
-### Steps (RB-0016: RDS Deletion (Break-Glass))
+### Steps (RB-0030: RDS Break-Glass Deletion)
 
-1. Log into AWS Console (not CLI)
-2. Navigate to RDS > Databases
-3. Select instance, click Modify
-4. Disable deletion protection, Apply immediately
-5. Select instance, click Delete
-6. Confirm by typing instance name
-7. Choose whether to create final snapshot
-8. Remove from Terraform state: `terraform state rm module.platform_rds`
+1. Disable deletion protection: `make rds-allow-delete ENV=<env> CONFIRM_RDS_DELETE=yes`
+2. Bypass `prevent_destroy` (temporary edit or `rds-destroy-break-glass`)
+3. Run: `make rds-destroy-break-glass ENV=<env> CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES`
 
 ---
 

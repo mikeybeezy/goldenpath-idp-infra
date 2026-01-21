@@ -68,7 +68,33 @@ terraform -chdir=envs/dev init \
   -backend-config="dynamodb_table=goldenpath-idp-dev-locks"
 ```
 
-## Step 2: Run Persistent Teardown
+## Step 2 (Optional): Break-Glass Standalone RDS Teardown
+
+If RDS is deployed in its own state (`envs/<env>-rds/`) and must be deleted,
+complete this **before** cluster teardown. This preserves VPC and subnet
+dependencies until the database is gone.
+
+You have two supported options:
+
+**Option A: Manual toggle (main.tf)**
+1. Edit `envs/<env>-rds/main.tf` and set `prevent_destroy = false` (temporary).
+2. Run: `terraform -chdir=envs/<env>-rds destroy -auto-approve`
+3. Restore `prevent_destroy = true` after completion.
+
+**Option B: Break-glass target (recommended)**
+```bash
+make rds-destroy-break-glass ENV=dev CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES
+```
+
+The break-glass target:
+- Disables AWS deletion protection first.
+- Temporarily flips `prevent_destroy` in `envs/<env>-rds/main.tf`.
+- Requires explicit confirmation.
+
+If you want to reuse existing Secrets Manager entries, **do not** force-delete
+the secrets after destroy.
+
+## Step 3: Run Persistent Teardown
 
 ```bash
 make teardown-persistent ENV=dev REGION=eu-west-2 CONFIRM_DESTROY=yes
@@ -95,7 +121,7 @@ If you need RDS to survive cluster rebuilds, use the standalone RDS state
 (`envs/<env>-rds/`) and set `rds_config.enabled=false` in the cluster tfvars
 before teardown.
 
-## Step 3: Verify Deletion
+## Step 4: Verify Deletion
 
 ```bash
 aws eks list-clusters --region eu-west-2
@@ -106,56 +132,8 @@ aws secretsmanager list-secrets --region eu-west-2
 ## Troubleshooting
 
 - **State lock error**: See `docs/70-operations/runbooks/RB-0007-tf-state-force-unlock.md`.
-- **RDS deletion protection**: Disable in the AWS Console before teardown, and set `DELETE_RDS_INSTANCES=true`.
+- **RDS deletion protection**: Run `make rds-allow-delete ENV=<env> CONFIRM_RDS_DELETE=yes` before destroy.
 - **Leftover resources**: Use `RB-0017-orphan-cleanup.md` to remove orphans.
-
-## Notes
-
-- Persistent teardown is destructive and should be used sparingly.
-- RDS and Secrets deletion require explicit opt-in flags.
-- Ephemeral builds must use `make teardown` with `BUILD_ID`.
-
-## Break-Glass Manual Teardown (Persistent Only)
-
-Persistent clusters should not normally be torn down. If teardown is required
-and standalone RDS dependencies block VPC deletion, use this ordered list as a
-last resort.
-
-**Manual removals (ordered):**
-1. `module.eks[0].aws_iam_role_policy_attachment.cluster["arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"]`
-2. `module.eks[0].aws_iam_role_policy_attachment.cluster["arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"]`
-3. `module.eks[0].aws_iam_role.cluster`
-4. `module.eks[0].aws_security_group.cluster`
-5. `module.public_route_table.aws_route_table_association.this["0"]`
-6. `module.public_route_table.aws_route_table_association.this["1"]`
-7. `module.public_route_table.aws_route_table.this`
-8. `module.subnets.aws_subnet.private["goldenpath-dev-private-a"]`
-9. `module.subnets.aws_subnet.private["goldenpath-dev-private-b"]`
-10. `module.subnets.aws_subnet.public["goldenpath-dev-public-a"]`
-11. `module.subnets.aws_subnet.public["goldenpath-dev-public-b"]`
-12. `module.vpc.aws_internet_gateway.this[0]`
-13. `module.vpc.aws_vpc.main`
-
-### Break-Glass Commands (State Removal)
-
-Use these commands to remove the listed resources from Terraform state. This
-does not delete the AWS resources; it only unblocks state-based teardown.
-
-```bash
-terraform -chdir=envs/dev state rm 'module.eks[0].aws_iam_role_policy_attachment.cluster["arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"]'
-terraform -chdir=envs/dev state rm 'module.eks[0].aws_iam_role_policy_attachment.cluster["arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"]'
-terraform -chdir=envs/dev state rm 'module.eks[0].aws_iam_role.cluster'
-terraform -chdir=envs/dev state rm 'module.eks[0].aws_security_group.cluster'
-terraform -chdir=envs/dev state rm 'module.public_route_table.aws_route_table_association.this["0"]'
-terraform -chdir=envs/dev state rm 'module.public_route_table.aws_route_table_association.this["1"]'
-terraform -chdir=envs/dev state rm 'module.public_route_table.aws_route_table.this'
-terraform -chdir=envs/dev state rm 'module.subnets.aws_subnet.private["goldenpath-dev-private-a"]'
-terraform -chdir=envs/dev state rm 'module.subnets.aws_subnet.private["goldenpath-dev-private-b"]'
-terraform -chdir=envs/dev state rm 'module.subnets.aws_subnet.public["goldenpath-dev-public-a"]'
-terraform -chdir=envs/dev state rm 'module.subnets.aws_subnet.public["goldenpath-dev-public-b"]'
-terraform -chdir=envs/dev state rm 'module.vpc.aws_internet_gateway.this[0]'
-terraform -chdir=envs/dev state rm 'module.vpc.aws_vpc.main'
-```
 
 ### State Lock Recovery
 
@@ -171,3 +149,9 @@ Example:
 ```bash
 terraform -chdir=envs/dev force-unlock -force eeed8a4d-ade1-19cd-1b0d-6fc93a4b18cc
 ```
+
+## Notes
+
+- Persistent teardown is destructive and should be used sparingly.
+- RDS and Secrets deletion require explicit opt-in flags.
+- Ephemeral builds must use `make teardown` with `BUILD_ID`.

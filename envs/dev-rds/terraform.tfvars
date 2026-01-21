@@ -9,7 +9,7 @@ vpc_name = "goldenpath-dev-vpc"
 # RDS Instance Configuration
 # Using t3.micro for cost efficiency in dev
 instance_class        = "db.t3.micro"
-engine_version        = "15.4"
+engine_version        = "15.15"
 allocated_storage     = 20
 max_allocated_storage = 50 # Autoscaling up to 50GB
 

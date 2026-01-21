@@ -1,0 +1,34 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0157
+  title: 'CL-0157: RDS break-glass destroy target'
+  description: 'Date: 2026-01-20
+
+    Owner: platform-team
+
+    Scope: rds, teardown, break-glass, terraform
+
+    Related: Makefile, RB-0030, RB-0033'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0157-rds-break-glass-destroy.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0157-rds-break-glass-destroy.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+    - rds
+    - teardown
+    - break-glass
+    - terraform
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0157-rds-break-glass-destroy.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

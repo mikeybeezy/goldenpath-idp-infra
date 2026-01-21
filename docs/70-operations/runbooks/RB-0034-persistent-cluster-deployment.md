@@ -144,8 +144,8 @@ make rds-deploy ENV=dev
 This initializes, applies, and provisions the standalone RDS state from
 `envs/dev-rds/terraform.tfvars`.
 
-By default, `rds-deploy` restores any scheduled-for-deletion secrets before
-apply. To skip this preflight:
+By default, `rds-deploy` restores any scheduled-for-deletion secrets and adopts
+existing secrets into state before apply. To skip this preflight:
 
 ```bash
 make rds-deploy ENV=dev RESTORE_SECRETS=false

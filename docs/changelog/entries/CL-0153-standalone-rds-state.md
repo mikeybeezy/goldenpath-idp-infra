@@ -63,7 +63,8 @@ and prevents unintended deletion.
 
 - To build persistent clusters: run `make deploy-persistent ENV=dev`, then
   `make rds-apply ENV=dev` + `make rds-provision-auto ENV=dev` as needed.
-- To delete RDS: follow `RB-0030-rds-break-glass-deletion.md` (no `rds-destroy` target).
+- To delete RDS: follow `RB-0030-rds-break-glass-deletion.md` and use
+  `make rds-destroy-break-glass ENV=<env> CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES`.
 
 ## Files Changed
 

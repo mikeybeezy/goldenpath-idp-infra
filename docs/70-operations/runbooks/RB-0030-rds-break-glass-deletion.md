@@ -34,7 +34,8 @@ breaking_change: false
 
 This runbook documents the intentionally difficult process for deleting platform RDS instances.
 
-**IMPORTANT:** RDS deletion is intentionally NOT automated. This is a break-glass procedure requiring manual console intervention.
+**IMPORTANT:** RDS deletion is intentionally difficult and confirmation-gated. Use the
+break-glass steps below when deletion is required.
 
 ## Why Manual Deletion?
 
@@ -48,7 +49,7 @@ Per ADR-0158, platform RDS is designed to be:
 
 1. **Terraform `deletion_protection = true`**: AWS-level protection
 2. **Terraform `prevent_destroy` lifecycle**: Terraform refuses to destroy
-3. **No Makefile target**: `make rds-destroy` does not exist
+3. **No standard destroy target**: Only `rds-destroy-break-glass` exists and requires explicit approval
 4. **No CI workflow**: No automated destroy pipeline
 
 ## Pre-Deletion Checklist
@@ -67,7 +68,8 @@ Before proceeding, verify ALL of the following:
 
 ```bash
 ENVIRONMENT=dev
-IDENTIFIER="goldenpath-platform-db-${ENVIRONMENT}"
+make rds-init ENV=${ENVIRONMENT}
+IDENTIFIER="$(terraform -chdir=envs/${ENVIRONMENT}-rds output -raw db_instance_identifier)"
 SNAPSHOT_NAME="${IDENTIFIER}-final-$(date +%Y%m%d-%H%M%S)"
 
 aws rds create-db-snapshot \
@@ -83,9 +85,15 @@ aws rds wait db-snapshot-available \
 echo "Final snapshot created: ${SNAPSHOT_NAME}"
 ```
 
-## Step 2: Disable Deletion Protection (AWS Console)
+## Step 2: Disable Deletion Protection (CLI or Console)
 
-This step MUST be done via AWS Console, not CLI:
+Preferred CLI path:
+
+```bash
+make rds-allow-delete ENV=dev CONFIRM_RDS_DELETE=yes
+```
+
+Console fallback:
 
 1. Navigate to AWS Console > RDS > Databases
 2. Select the database instance
@@ -96,34 +104,34 @@ This step MUST be done via AWS Console, not CLI:
 7. Click "Modify DB instance"
 8. Wait for modification to complete
 
-## Step 3: Remove Terraform State (If Needed)
+## Step 3: Allow Terraform Destroy (Prevent Destroy Toggle)
 
-If you plan to manage state cleanup via Terraform:
+You can either toggle `prevent_destroy` temporarily or use the break-glass target.
+
+**Option A: Manual toggle (main.tf)**
 
 ```bash
-# Navigate to RDS terraform root
-cd envs/dev-rds
-
-# Remove prevent_destroy temporarily (do NOT commit this change)
-# Edit main.tf and comment out the lifecycle block
-
-# Remove from state
-terraform state rm aws_db_instance.platform
-
-# Note: This only removes from state, does not delete the actual resource
+# Edit envs/dev-rds/main.tf
+prevent_destroy = false
 ```
 
-## Step 4: Delete RDS Instance (AWS Console)
+Restore `prevent_destroy = true` after the destroy completes.
 
-This step MUST be done via AWS Console:
+**Option B: Use break-glass target (recommended)**
 
-1. Navigate to AWS Console > RDS > Databases
-2. Select the database instance
-3. Click "Actions" > "Delete"
-4. Review deletion warnings carefully
-5. Select/deselect final snapshot option (already created in Step 1)
-6. Type the confirmation phrase exactly as shown
-7. Click "Delete"
+```bash
+make rds-destroy-break-glass ENV=dev CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES
+```
+
+## Step 4: Destroy RDS Instance (Terraform)
+
+If you toggled in `main.tf`:
+
+```bash
+terraform -chdir=envs/dev-rds destroy -auto-approve
+```
+
+If you used the break-glass target, the destroy is already executed.
 
 ## Step 5: Clean Up Related Resources
 

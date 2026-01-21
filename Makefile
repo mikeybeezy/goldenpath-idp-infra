@@ -106,7 +106,7 @@ endef
 #   make drain-nodegroup NODEGROUP=dev-default
 #   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 
-.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help s3-validate s3-generate s3-apply rds-init rds-plan rds-apply rds-deploy rds-status rds-provision rds-provision-dry-run rds-provision-auto rds-provision-auto-dry-run apply-persistent bootstrap-persistent deploy-persistent teardown-persistent
+.PHONY: init plan apply destroy build timed-apply timed-build timed-bootstrap timed-teardown reliability-metrics fmt validate deploy _phase1-infrastructure _phase2-bootstrap _phase3-verify bootstrap bootstrap-only pre-destroy-cleanup cleanup-orphans cleanup-iam drain-nodegroup teardown teardown-resume set-cluster-name help s3-validate s3-generate s3-apply rds-init rds-plan rds-apply rds-allow-delete rds-destroy-break-glass rds-deploy rds-status rds-provision rds-provision-dry-run rds-provision-auto rds-provision-auto-dry-run apply-persistent bootstrap-persistent deploy-persistent teardown-persistent
 
 init:
 	$(TF_BIN) -chdir=$(ENV_DIR) init
@@ -465,8 +465,8 @@ set-cluster-name:
 # Platform RDS - Standalone Bounded Context
 #
 # RDS is persistent infrastructure that survives cluster rebuilds.
-# IMPORTANT: There is NO rds-destroy target. RDS deletion requires console
-# intervention per ADR-0158. See runbook RB-0016 for break-glass procedure.
+# IMPORTANT: No standard rds-destroy target exists. Use the confirmation-gated
+# rds-destroy-break-glass path in RB-0030 when deletion is required.
 #
 # Deployment order:
 #   1. make rds-apply ENV=dev           # Deploy RDS first
@@ -498,7 +498,7 @@ rds-apply:
 	fi
 	@echo "Applying Platform RDS for $(ENV)..."
 	@echo "NOTE: RDS has deletion_protection=true and prevent_destroy lifecycle."
-	@echo "      There is NO rds-destroy target. See RB-0016 for deletion procedure."
+	@echo "      Use rds-destroy-break-glass only when deletion is required (RB-0030)."
 	@mkdir -p logs/build-timings
 	@bash -c '\
 	log="logs/build-timings/rds-apply-$(ENV)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
@@ -507,45 +507,91 @@ rds-apply:
 	exit $${PIPESTATUS[0]}; \
 	'
 
+rds-allow-delete:
+	@if [ "$(CONFIRM_RDS_DELETE)" != "yes" ]; then \
+		echo ""; \
+		echo "WARNING: This will disable deletion protection for the standalone RDS instance."; \
+		echo "         Use only for break-glass teardown."; \
+		echo ""; \
+		echo "To proceed, run:"; \
+		echo "  make rds-allow-delete ENV=$(ENV) CONFIRM_RDS_DELETE=yes"; \
+		echo ""; \
+		exit 1; \
+	fi
+	@bash -c '\
+	set -e; \
+	if [ ! -d "$(RDS_ENV_DIR)" ]; then \
+		echo "RDS environment directory not found: $(RDS_ENV_DIR)"; \
+		echo "Available: $$(ls -d envs/*-rds 2>/dev/null || echo none)"; \
+		exit 1; \
+	fi; \
+	tfvars="$(RDS_ENV_DIR)/terraform.tfvars"; \
+	region=$$(grep -E "^[[:space:]]*aws_region[[:space:]]*=" "$$tfvars" | head -1 | cut -d= -f2- | tr -d "\\\"[:space:]"); \
+	if [ -z "$$region" ]; then \
+		echo "ERROR: aws_region not found in $$tfvars"; \
+		exit 1; \
+	fi; \
+	identifier="$(RDS_IDENTIFIER)"; \
+	if [ -z "$$identifier" ]; then \
+		identifier=$$(terraform -chdir=$(RDS_ENV_DIR) output -raw db_instance_identifier 2>/dev/null || true); \
+	fi; \
+	if [ -z "$$identifier" ]; then \
+		prefix=$$(grep -E "^[[:space:]]*identifier_prefix[[:space:]]*=" "$$tfvars" | head -1 | cut -d= -f2- | tr -d "\\\"[:space:]"); \
+		envname=$$(grep -E "^[[:space:]]*environment[[:space:]]*=" "$$tfvars" | head -1 | cut -d= -f2- | tr -d "\\\"[:space:]"); \
+		if [ -n "$$prefix" ] && [ -n "$$envname" ]; then \
+			identifier="$$prefix-$$envname"; \
+		fi; \
+	fi; \
+	if [ -z "$$identifier" ]; then \
+		echo "ERROR: Unable to resolve RDS identifier. Set RDS_IDENTIFIER explicitly."; \
+		exit 1; \
+	fi; \
+	echo "Disabling deletion protection for $$identifier (region $$region)"; \
+	aws rds modify-db-instance \
+		--db-instance-identifier "$$identifier" \
+		--no-deletion-protection \
+		--apply-immediately \
+		--region "$$region" >/dev/null; \
+	'
+
+rds-destroy-break-glass:
+	@if [ "$(CONFIRM_DESTROY_DATABASE_PERMANENTLY)" != "YES" ]; then \
+		echo "ERROR: This permanently destroys the RDS database for $(ENV)."; \
+		echo "       To proceed:"; \
+		echo "         make rds-destroy-break-glass ENV=$(ENV) CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES"; \
+		exit 1; \
+	fi
+	@$(MAKE) rds-init ENV=$(ENV)
+	@$(MAKE) rds-allow-delete ENV=$(ENV) CONFIRM_RDS_DELETE=yes
+	@mkdir -p logs/build-timings
+	@bash -c '\
+	set -euo pipefail; \
+	tf_file="$(RDS_ENV_DIR)/main.tf"; \
+	backup=$$(mktemp); \
+	cp "$$tf_file" "$$backup"; \
+	trap "mv $$backup $$tf_file" EXIT; \
+	if grep -q "prevent_destroy = true" "$$tf_file"; then \
+		perl -0pi -e "s/prevent_destroy = true/prevent_destroy = false/" "$$tf_file"; \
+	elif grep -q "prevent_destroy = false" "$$tf_file"; then \
+		echo "NOTE: prevent_destroy already false in $$tf_file"; \
+	else \
+		echo "ERROR: Could not find prevent_destroy flag in $$tf_file"; \
+		exit 1; \
+	fi; \
+	log="logs/build-timings/rds-destroy-break-glass-$(ENV)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	echo "RDS destroy output streaming; full log at $$log"; \
+	$(TF_BIN) -chdir=$(RDS_ENV_DIR) destroy -auto-approve 2>&1 | tee "$$log"; \
+	exit $${PIPESTATUS[0]}; \
+	'
+
 rds-deploy:
 	@echo "Deploying standalone RDS for $(ENV)..."
-	@bash -c '\
-	if [ "$(RESTORE_SECRETS)" = "true" ]; then \
-		if [ ! -d "$(RDS_ENV_DIR)" ]; then \
-			echo "RDS environment directory not found: $(RDS_ENV_DIR)"; \
-			echo "Available: $$(ls -d envs/*-rds 2>/dev/null || echo 'none')"; \
-			exit 1; \
-		fi; \
-		tfvars="$(RDS_ENV_DIR)/terraform.tfvars"; \
-		region=$$(awk -F"=" "/^[[:space:]]*aws_region[[:space:]]*=/{gsub(/\\\"|[[:space:]]/,\\\"\\\",$$2);print $$2;exit}" "$$tfvars"); \
-		if [ -z "$$region" ]; then \
-			echo "ERROR: aws_region not found in $$tfvars"; \
-			exit 1; \
-		fi; \
-		secrets="goldenpath/$(ENV)/rds/master"; \
-		app_keys=$$(awk '\
-			BEGIN{in=0} \
-			/^[[:space:]]*application_databases[[:space:]]*=/{in=1} \
-			in && /^[[:space:]]*}/ {in=0} \
-			in && /^[[:space:]]*[A-Za-z0-9_-]+[[:space:]]*=[[:space:]]*{/ { \
-				key=$$1; gsub(/[[:space:]]/, "", key); gsub(/=.*/, "", key); print key; \
-			} \
-		' "$$tfvars"); \
-		for key in $$app_keys; do \
-			secrets="$$secrets goldenpath/$(ENV)/$$key/postgres"; \
-		done; \
-		for secret in $$secrets; do \
-			deleted=$$(aws secretsmanager describe-secret --secret-id "$$secret" --region "$$region" --query "DeletedDate" --output text 2>/dev/null || true); \
-			if [ -n "$$deleted" ] && [ "$$deleted" != "None" ]; then \
-				echo "Restoring secret $$secret (scheduled for deletion)"; \
-				aws secretsmanager restore-secret --secret-id "$$secret" --region "$$region" >/dev/null; \
-			fi; \
-		done; \
-	else \
-		echo "Skipping secret restore preflight (RESTORE_SECRETS=$(RESTORE_SECRETS))."; \
-	fi; \
-	'
 	@$(MAKE) rds-init ENV=$(ENV)
+	@if [ "$(RESTORE_SECRETS)" = "true" ]; then \
+		bash scripts/rds_secrets_preflight.sh $(ENV); \
+	else \
+		echo "Skipping secrets preflight (RESTORE_SECRETS=$(RESTORE_SECRETS))."; \
+	fi
 	@$(MAKE) rds-apply ENV=$(ENV)
 	@$(MAKE) rds-provision-auto ENV=$(ENV) RDS_MODE=standalone
 
@@ -558,8 +604,8 @@ rds-status:
 	fi
 	@$(TF_BIN) -chdir=$(RDS_ENV_DIR) output -json 2>/dev/null | jq -r '. | to_entries[] | "\(.key): \(.value.value)"' 2>/dev/null || echo "Run 'make rds-init ENV=$(ENV)' first"
 
-# Note: NO rds-destroy target exists by design.
-# RDS deletion requires manual console intervention.
+# Note: No standard rds-destroy target exists by design.
+# Use rds-destroy-break-glass (confirmation-gated) when deletion is required.
 # See: docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md
 
 ################################################################################
@@ -611,13 +657,13 @@ rds-provision-auto:
 	coupled_enabled="false"; \
 	if [ -f "$$coupled_tfvars" ]; then \
 		coupled_enabled=$$(awk '\
-			BEGIN{in=0} \
-			/^[[:space:]]*rds_config[[:space:]]*=/ {in=1} \
-			in && /^[[:space:]]*enabled[[:space:]]*=/ { \
+			BEGIN{inside=0} \
+			/^[[:space:]]*rds_config[[:space:]]*=/ {inside=1} \
+			inside && /^[[:space:]]*enabled[[:space:]]*=/ { \
 				line=$$0; sub(/#.*/, "", line); split(line, a, "="); \
 				gsub(/[[:space:]]/, "", a[2]); print a[2]; exit \
 			} \
-			in && /^[[:space:]]*}/ {in=0} \
+			inside && /^[[:space:]]*}/ {inside=0} \
 		' "$$coupled_tfvars"); \
 	fi; \
 	if [ -z "$$mode" ] || [ "$$mode" = "auto" ]; then \
@@ -672,13 +718,13 @@ rds-provision-auto-dry-run:
 	coupled_enabled="false"; \
 	if [ -f "$$coupled_tfvars" ]; then \
 		coupled_enabled=$$(awk '\
-			BEGIN{in=0} \
-			/^[[:space:]]*rds_config[[:space:]]*=/ {in=1} \
-			in && /^[[:space:]]*enabled[[:space:]]*=/ { \
+			BEGIN{inside=0} \
+			/^[[:space:]]*rds_config[[:space:]]*=/ {inside=1} \
+			inside && /^[[:space:]]*enabled[[:space:]]*=/ { \
 				line=$$0; sub(/#.*/, "", line); split(line, a, "="); \
 				gsub(/[[:space:]]/, "", a[2]); print a[2]; exit \
 			} \
-			in && /^[[:space:]]*}/ {in=0} \
+			inside && /^[[:space:]]*}/ {inside=0} \
 		' "$$coupled_tfvars"); \
 	fi; \
 	if [ -z "$$mode" ] || [ "$$mode" = "auto" ]; then \
@@ -981,6 +1027,8 @@ help:
 	@echo "  make rds-init ENV=dev          # Initialize RDS Terraform"
 	@echo "  make rds-plan ENV=dev          # Plan RDS changes"
 	@echo "  make rds-apply ENV=dev         # Apply RDS (deploy first!)"
+	@echo "  make rds-allow-delete ENV=dev CONFIRM_RDS_DELETE=yes  # Disable deletion protection"
+	@echo "  make rds-destroy-break-glass ENV=dev CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES  # Destroy RDS"
 	@echo "  make rds-deploy ENV=dev        # Init + apply + provision (standalone)"
 	@echo "  make rds-deploy ENV=dev RESTORE_SECRETS=false  # Skip restore preflight"
 	@echo "  make rds-status ENV=dev        # Show RDS outputs"
@@ -988,7 +1036,7 @@ help:
 	@echo "  make rds-provision-dry-run ENV=dev  # Preview provisioning"
 	@echo "  make rds-provision-auto ENV=dev     # Provision with mode detection"
 	@echo "  make rds-provision-auto-dry-run ENV=dev  # Preview with mode detection"
-	@echo "  NOTE: No rds-destroy target. See RB-0030 for deletion."
+	@echo "  NOTE: No standard rds-destroy target; use rds-destroy-break-glass (RB-0030)."
 	@echo "  NOTE: Non-dev requires ALLOW_DB_PROVISION=true"
 	@echo ""
 	@echo "== Pipeline Enablement (ArgoCD Image Updater) =="

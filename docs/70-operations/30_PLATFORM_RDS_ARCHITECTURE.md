@@ -366,7 +366,12 @@ cd envs/dev-rds && terraform output
 
 ## Deletion Procedure
 
-RDS cannot be destroyed via Terraform or Makefile. Deletion requires manual console intervention.
+RDS destruction is break-glass only and requires explicit confirmation via the
+`rds-destroy-break-glass` target (see runbook).
+
+```bash
+make rds-destroy-break-glass ENV=dev CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES
+```
 
 **Runbook:** [RB-0030 RDS Break-Glass Deletion](runbooks/RB-0030-rds-break-glass-deletion.md)
 

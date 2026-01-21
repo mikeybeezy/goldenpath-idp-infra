@@ -160,10 +160,22 @@ Single-command wrapper:
 make rds-deploy ENV=dev
 ```
 
-Skip the secret-restore preflight:
+Skip the secrets preflight (restore + adopt):
 
 ```bash
 make rds-deploy ENV=dev RESTORE_SECRETS=false
+```
+
+Disable RDS deletion protection (break-glass):
+
+```bash
+make rds-allow-delete ENV=dev CONFIRM_RDS_DELETE=yes
+```
+
+Break-glass destroy (confirmation-gated):
+
+```bash
+make rds-destroy-break-glass ENV=dev CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES
 ```
 
 Important:
@@ -171,7 +183,7 @@ Important:
   cluster state and **will** be destroyed by `terraform destroy`, regardless of safety flags.
 - To preserve RDS across cluster rebuilds, set `rds_config.enabled=false` and use
   `envs/<env>-rds/` for RDS instead.
-- There is no `rds-destroy` target; see `docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md`.
+- There is no standard `rds-destroy` target; use `rds-destroy-break-glass` (see `docs/70-operations/runbooks/RB-0030-rds-break-glass-deletion.md`).
 
 ### Teardown
 

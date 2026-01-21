@@ -978,6 +978,69 @@ documented force-unlock usage for Terraform state locks.
 
 Signed: Codex (2026-01-20T17:20:00Z)
 
+---
+
+## Update — 2026-01-20T17:35:00Z
+
+### RDS preflight script + engine version fix
+
+Replaced the inline `rds-deploy` preflight with a script to avoid shell quoting
+failures. The preflight now restores scheduled-for-deletion secrets and imports
+existing secrets into state. Also aligned the standalone RDS engine version to
+`15.15` for eu-west-2 support.
+
+**Files**
+- `scripts/rds_secrets_preflight.sh`
+- `Makefile`
+- `envs/dev-rds/terraform.tfvars`
+- `QUICK_REFERENCE.md`
+- `docs/70-operations/runbooks/RB-0034-persistent-cluster-deployment.md`
+- `docs/changelog/entries/CL-0155-rds-secret-restore-preflight.md`
+
+Signed: Codex (2026-01-20T17:35:00Z)
+
+---
+
+## Update — 2026-01-20T17:40:00Z
+
+### Persistent deploy behavior clarified
+
+Documented that `make deploy-persistent ENV=dev` runs apply-persistent, rds-deploy
+standalone RDS, bootstrap-persistent, and verification. Added the `CREATE_RDS=false`
+override for cases where the database should not be created.
+
+Signed: Codex (2026-01-20T17:40:00Z)
+
+---
+
+## Update — 2026-01-20T17:45:00Z
+
+### Readiness note
+
+Confirmed that the core deployment flow is consistent and reproducible; the
+remaining work is hardening and UX polish rather than foundational architecture.
+
+Signed: Codex (2026-01-20T17:45:00Z)
+
+---
+
+## Update — 2026-01-20T17:50:00Z
+
+### RDS deletion-protection toggle
+
+Added `make rds-allow-delete` to disable RDS deletion protection during
+break-glass teardown, with confirmation gating and identifier auto-resolution.
+
+**Files**
+- `Makefile`
+- `docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md`
+- `QUICK_REFERENCE.md`
+- `chat_fil.txt`
+- `docs/changelog/entries/CL-0156-rds-allow-delete-target.md`
+- `backstage-helm/backstage-catalog/docs/changelogs/changelog-0156.yaml`
+
+Signed: Codex (2026-01-20T17:50:00Z)
+
 ## Update — 2026-01-20T17:30:00Z
 
 ### Review Feedback: RDS Cleanup Strategy
@@ -1002,3 +1065,103 @@ Replace manual console operations with a codified **Break-Glass Mechanism**.
 **Action**: Document this "Elegant Friction" pattern for future implementation to replace manual runbooks.
 
 Signed: Antigravity Agent (2026-01-20T17:30:00Z)
+
+## Update — 2026-01-20T17:50:00Z
+
+### EC-0011 Break-Glass RDS Destroy Added to Roadmap
+
+Created extension capability document implementing the "Elegant Friction" recommendation:
+
+- **File**: `docs/extend-capabilities/EC-0011-break-glass-rds-destroy.md`
+- **VQ Class**: 🟢 HV/HQ (High Value / High Quantifiability)
+- **Impact Tier**: High
+- **Potential Savings**: 8 hours/incident
+- **Effort Estimate**: 4-8 hours
+
+**Key Design**:
+- Script at `scripts/break-glass/destroy-rds.sh`
+- Requires `CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES` environment variable
+- Full audit logging with timestamp, user identity, and AWS identity
+- Optional Makefile target `rds-destroy-break-glass`
+
+Signed: Codex (2026-01-20T17:50:00Z)
+
+## Update — 2026-01-20T18:00:00Z
+
+### AWS Environment Clean - Ready for Fresh Deployment
+
+ENI check completed. Verified AWS environment is fully clean:
+
+| Resource | Status |
+|----------|--------|
+| VPC `vpc-0ac974c581e5c9e4f` | **Deleted** (no longer exists) |
+| Goldenpath VPCs | None |
+| EKS Clusters | None |
+| RDS Instances | None |
+| ENIs | None lingering |
+
+**Conclusion**: Environment is ready for fresh `make deploy-persistent ENV=dev` deployment.
+
+Signed: Codex (2026-01-20T18:00:00Z)
+
+## Update — 2026-01-20T18:15:00Z
+
+### Industry Benchmark: Staged Bootstrap is Standard
+
+Research on IDP bootstrap patterns confirms our phased approach aligns with industry standards.
+
+**Key Findings:**
+
+| Pattern | Industry Adoption | Our Implementation |
+|---------|-------------------|-------------------|
+| **Phased deploy** (infra → platform → apps) | Standard | ✅ `apply-persistent` → `rds-deploy` → `bootstrap-persistent` |
+| **App of Apps** (ArgoCD parent bootstraps children) | Most common GitOps pattern | ✅ Planned for bootstrap |
+| **Single-command seamless** | V2+/Enterprise goal | V1.1 roadmap |
+
+**Industry Phases (typical):**
+1. **Phase 1**: Infrastructure (VPC, EKS, IAM) - must exist first
+2. **Phase 2**: Platform services (ArgoCD, ESO, Ingress) - needs cluster API
+3. **Phase 3**: App onboarding (GitOps sync) - needs platform services
+
+**V1 vs V2 Expectations:**
+
+| Version | Capability |
+|---------|------------|
+| **V1** | Sequential phases, may need manual intervention on failures |
+| **V1.1** | Health gates between phases, resume from failure |
+| **V2** | Fully declarative - push to Git, cluster appears |
+
+**Conclusion:** Our staged approach with explicit phases is industry-standard. Seamless single-command bootstrap with zero intervention is an 8-week MVP → Production Readiness journey, not day one.
+
+**Sources:**
+- [Argo CD Cluster Bootstrapping](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/)
+- [Platform Engineering IDP Setup Guide](https://platformengineering.org/blog/how-to-set-up-an-internal-developer-platform)
+- [Cluster API GitOps Integration](https://cluster-api.sigs.k8s.io/tasks/workload-bootstrap-gitops)
+
+Signed: Claude Opus 4.5 (2026-01-20T18:15:00Z)
+
+## Update — 2026-01-20T18:45:00Z
+
+### Break-Glass RDS Destroy
+
+- Added `make rds-destroy-break-glass` (confirmation-gated) to disable deletion
+  protection and destroy via Terraform.
+- Break-glass flow temporarily flips `prevent_destroy` in `envs/<env>-rds/main.tf`.
+- Updated RB-0030, RB-0033, QUICK_REFERENCE, ADR-0158, CAPABILITY_LEDGER, and EC-0011
+  to reflect the break-glass flow.
+- Removed state-only teardown steps from the persistent teardown runbook.
+
+Signed: Codex (2026-01-20T18:45:00Z)
+
+## Update — 2026-01-20T19:10:00Z
+
+### Prevent-Destroy Regression + Guardrail
+
+- Regression surfaced: Terraform init failed when `prevent_destroy` was driven by a variable.
+- Fix: restored literal `prevent_destroy = true` in `envs/<env>-rds/main.tf`.
+- Break-glass destroy now temporarily flips `prevent_destroy` in `main.tf` during
+  `make rds-destroy-break-glass`, then restores it.
+- Added a GitHub Actions guard to block any PR/push to `main` that contains
+  `prevent_destroy = false` in `envs/*-rds/main.tf`.
+
+Signed: Codex (2026-01-20T19:10:00Z)
