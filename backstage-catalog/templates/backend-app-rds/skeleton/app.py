@@ -33,7 +33,7 @@ def read_root():
         conn.close()
     else:
         status = "Database Connection Failed (Check Secrets)"
-        
+
     return {"message": f"Hello from ${{ values.component_id }}!", "env": APP_ENV, "db_status": status}
 
 @app.get("/health")

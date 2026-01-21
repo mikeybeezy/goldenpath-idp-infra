@@ -85,7 +85,7 @@ spec:
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
           environment: ${{ parameters.environment }}
-          databaseName: ${{ parameters.databaseName }} # For ExternalSecret naming
+          databaseName: ${{ parameters.databaseName }}  # For ExternalSecret naming
           repoOrg: ${{ parameters.repoOrg }}
           destination: ${{ parameters.repoOrg }}/${{ parameters.component_id }}
 
