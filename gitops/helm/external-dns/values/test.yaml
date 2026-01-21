@@ -1,0 +1,39 @@
+# Managed by scripts/standardize_metadata.py
+governance:
+  id: HELM_EXTERNAL_DNS_METADATA
+  owner: platform-team
+  risk_profile: low
+  reliability: bronze
+
+# -----------------------------------------------------------------------------
+# Image Configuration - Pinned Version
+# -----------------------------------------------------------------------------
+image:
+  repository: registry.k8s.io/external-dns/external-dns
+  tag: "v0.14.0"
+  pullPolicy: IfNotPresent
+
+# -----------------------------------------------------------------------------
+# Provider + Registry
+# -----------------------------------------------------------------------------
+provider: aws
+policy: sync
+registry: txt
+txtOwnerId: "goldenpath-test"
+txtPrefix: "external-dns"
+domainFilters:
+  - test.goldenpathidp.io
+sources:
+  - service
+  - ingress
+logLevel: info
+
+aws:
+  region: eu-west-2
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: false
+  name: external-dns

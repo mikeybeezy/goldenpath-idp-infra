@@ -139,6 +139,12 @@ iam_config = {
   eso_role_name                 = "goldenpath-idp-eso-role"
   eso_service_account_namespace = "external-secrets"
   eso_service_account_name      = "external-secrets"
+  # ExternalDNS IRSA
+  enable_external_dns_role               = true
+  external_dns_role_name                 = "goldenpath-idp-external-dns"
+  external_dns_policy_arn                = ""
+  external_dns_service_account_namespace = "kube-system"
+  external_dns_service_account_name      = "external-dns"
 }
 
 
@@ -190,3 +196,24 @@ bootstrap_node_group = {
 # They should be managed separately, not recreated per cluster.
 # Uncomment only for initial account setup or when adding new repositories.
 ecr_repositories = {}
+
+# -----------------------------------------------------------------------------
+# Route53 DNS Configuration
+# -----------------------------------------------------------------------------
+# Hosted zone Z0032802NEMSL43VHH4E was created manually.
+# Nameservers configured in Namecheap:
+#   ns-1333.awsdns-38.org
+#   ns-583.awsdns-08.net
+#   ns-127.awsdns-15.com
+#   ns-1998.awsdns-57.co.uk
+route53_config = {
+  enabled                = true
+  domain_name            = "goldenpathidp.io"
+  zone_id                = "Z0032802NEMSL43VHH4E"
+  create_hosted_zone     = false # Use existing zone via data source
+  create_wildcard_record = false # ExternalDNS owns the wildcard
+  record_ttl             = 300
+  kong_service_name      = "dev-kong-kong-proxy"
+  kong_service_namespace = "kong-system"
+  cname_records          = {}
+}

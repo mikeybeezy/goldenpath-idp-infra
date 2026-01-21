@@ -33,3 +33,13 @@ output "eso_role_arn" {
   description = "ARN of the External Secrets Operator IAM role."
   value       = try(aws_iam_role.eso[0].arn, null)
 }
+
+output "external_dns_role_name" {
+  description = "Name of the ExternalDNS IAM role."
+  value       = try(aws_iam_role.external_dns[0].name, null)
+}
+
+output "external_dns_role_arn" {
+  description = "ARN of the ExternalDNS IAM role."
+  value       = try(aws_iam_role.external_dns[0].arn, null)
+}

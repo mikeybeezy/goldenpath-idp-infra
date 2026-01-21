@@ -343,6 +343,14 @@ module "iam" {
   eso_service_account_namespace = var.iam_config.eso_service_account_namespace
   eso_service_account_name      = var.iam_config.eso_service_account_name
 
+  # ExternalDNS IRSA
+  enable_external_dns_role               = var.iam_config.enable_external_dns_role
+  external_dns_role_name                 = "${var.iam_config.external_dns_role_name}${local.role_suffix}"
+  external_dns_policy_arn                = var.iam_config.external_dns_policy_arn
+  external_dns_service_account_namespace = var.iam_config.external_dns_service_account_namespace
+  external_dns_service_account_name      = var.iam_config.external_dns_service_account_name
+  external_dns_zone_id                   = var.route53_config.zone_id
+
   environment = local.environment
   tags        = local.common_tags
 
@@ -452,6 +460,23 @@ resource "kubernetes_service_account_v1" "external_secrets" {
   ]
 }
 
+resource "kubernetes_service_account_v1" "external_dns" {
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_external_dns_role ? 1 : 0
+
+  metadata {
+    name      = var.iam_config.external_dns_service_account_name
+    namespace = var.iam_config.external_dns_service_account_namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].external_dns_role_arn
+    }
+  }
+
+  depends_on = [
+    module.eks,
+    module.iam,
+  ]
+}
+
 provider "kubectl" {
   host                   = module.eks[0].cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
@@ -492,7 +517,8 @@ module "kubernetes_addons" {
 
   depends_on = [
     module.eks,
-    kubernetes_service_account_v1.aws_load_balancer_controller
+    kubernetes_service_account_v1.aws_load_balancer_controller,
+    kubernetes_service_account_v1.external_dns
   ]
 }
 
@@ -714,4 +740,60 @@ module "platform_rds" {
   )
 
   depends_on = [module.vpc, module.subnets]
+}
+
+################################################################################
+# Route53 DNS Management
+################################################################################
+#
+# Manages the goldenpathidp.io domain DNS records.
+# The hosted zone was created manually and should be imported:
+#   terraform import 'module.route53[0].aws_route53_zone.main[0]' Z0032802NEMSL43VHH4E
+#
+# Or set create_hosted_zone = false to use the existing zone via data source.
+#
+# ExternalDNS (deployed via ArgoCD) will manage dynamic DNS records for
+# services with the external-dns.alpha.kubernetes.io/hostname annotation.
+################################################################################
+
+# Data source to get Kong LoadBalancer hostname for wildcard CNAME
+data "kubernetes_service_v1" "kong_proxy" {
+  count = var.route53_config.enabled && var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
+
+  metadata {
+    name      = var.route53_config.kong_service_name
+    namespace = var.route53_config.kong_service_namespace
+  }
+
+  depends_on = [module.kubernetes_addons]
+}
+
+locals {
+  # Kong LoadBalancer hostname (e.g., k8s-kongsyst-devkongk-xxx.elb.eu-west-2.amazonaws.com)
+  kong_lb_hostname = try(
+    data.kubernetes_service_v1.kong_proxy[0].status[0].load_balancer[0].ingress[0].hostname,
+    ""
+  )
+}
+
+module "route53" {
+  source = "../../modules/aws_route53"
+  count  = var.route53_config.enabled ? 1 : 0
+
+  domain_name        = var.route53_config.domain_name
+  zone_id            = var.route53_config.zone_id
+  environment        = local.environment
+  create_hosted_zone = var.route53_config.create_hosted_zone
+  zone_comment       = "Golden Path IDP - ${local.environment} environment"
+
+  # Wildcard CNAME for *.dev.goldenpathidp.io -> Kong LoadBalancer
+  create_wildcard_record = var.route53_config.create_wildcard_record
+  wildcard_target        = local.kong_lb_hostname
+
+  record_ttl    = var.route53_config.record_ttl
+  cname_records = var.route53_config.cname_records
+
+  tags = local.common_tags
+
+  depends_on = [module.kubernetes_addons]
 }

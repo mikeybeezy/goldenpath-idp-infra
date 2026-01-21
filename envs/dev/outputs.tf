@@ -69,3 +69,27 @@ output "rds_app_secret_arns" {
   description = "Map of application database secret ARNs"
   value       = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? module.platform_rds[0].app_secret_arns : {}
 }
+
+# -----------------------------------------------------------------------------
+# Route53 DNS
+# -----------------------------------------------------------------------------
+
+output "route53_zone_id" {
+  description = "The Route53 hosted zone ID"
+  value       = var.route53_config.enabled ? module.route53[0].zone_id : null
+}
+
+output "route53_name_servers" {
+  description = "Name servers for the Route53 hosted zone (configure in domain registrar)"
+  value       = var.route53_config.enabled ? module.route53[0].name_servers : null
+}
+
+output "route53_wildcard_fqdn" {
+  description = "The wildcard FQDN for the environment (e.g., *.dev.goldenpathidp.io)"
+  value       = var.route53_config.enabled ? module.route53[0].wildcard_fqdn : null
+}
+
+output "kong_lb_hostname" {
+  description = "The Kong LoadBalancer hostname (target for DNS records)"
+  value       = local.kong_lb_hostname
+}

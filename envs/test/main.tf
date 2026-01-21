@@ -93,6 +93,12 @@ module "iam" {
   eso_role_name                           = "${var.iam_config.eso_role_name}${local.role_suffix}"
   eso_service_account_namespace           = var.iam_config.eso_service_account_namespace
   eso_service_account_name                = var.iam_config.eso_service_account_name
+  enable_external_dns_role                = var.iam_config.enable_external_dns_role
+  external_dns_role_name                  = "${var.iam_config.external_dns_role_name}${local.role_suffix}"
+  external_dns_policy_arn                 = var.iam_config.external_dns_policy_arn
+  external_dns_service_account_namespace  = var.iam_config.external_dns_service_account_namespace
+  external_dns_service_account_name       = var.iam_config.external_dns_service_account_name
+  external_dns_zone_id                    = var.route53_config.zone_id
   environment                             = local.environment
   tags                                    = local.common_tags
 }
@@ -159,6 +165,22 @@ resource "kubernetes_service_account_v1" "external_secrets" {
   ]
 }
 
+resource "kubernetes_service_account_v1" "external_dns" {
+  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_external_dns_role ? 1 : 0
+
+  metadata {
+    name      = var.iam_config.external_dns_service_account_name
+    namespace = var.iam_config.external_dns_service_account_namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].external_dns_role_arn
+    }
+  }
+
+  depends_on = [
+    module.iam
+  ]
+}
+
 module "app_secrets" {
   source = "../../modules/aws_secrets_manager"
 
@@ -212,6 +234,10 @@ module "kubernetes_addons" {
 
   # Since EKS is commented out in this tier, we don't add it to depends_on for now
   # but we keep the logic ready.
+  depends_on = [
+    kubernetes_service_account_v1.external_secrets,
+    kubernetes_service_account_v1.external_dns,
+  ]
 }
 
 resource "kubernetes_manifest" "cluster_secret_store" {

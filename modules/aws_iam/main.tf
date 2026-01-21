@@ -364,3 +364,73 @@ resource "aws_iam_role_policy_attachment" "eso" {
   role       = aws_iam_role.eso[0].name
   policy_arn = aws_iam_policy.eso[0].arn
 }
+
+data "aws_iam_policy_document" "external_dns_assume" {
+  count = var.enable_external_dns_role ? 1 : 0
+
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:aud"
+      values   = [var.oidc_audience]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:${var.external_dns_service_account_namespace}:${var.external_dns_service_account_name}"]
+    }
+
+    principals {
+      type        = "Federated"
+      identifiers = [var.oidc_provider_arn]
+    }
+  }
+}
+
+resource "aws_iam_role" "external_dns" {
+  count              = var.enable_external_dns_role ? 1 : 0
+  name               = var.external_dns_role_name
+  assume_role_policy = data.aws_iam_policy_document.external_dns_assume[0].json
+  tags               = merge(var.tags, local.environment_tags)
+}
+
+data "aws_iam_policy_document" "external_dns" {
+  count = var.enable_external_dns_role && var.external_dns_policy_arn == "" ? 1 : 0
+
+  statement {
+    effect    = "Allow"
+    actions   = ["route53:ChangeResourceRecordSets"]
+    resources = ["arn:aws:route53:::hostedzone/${var.external_dns_zone_id}"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "route53:GetChange",
+      "route53:ListHostedZones",
+      "route53:ListHostedZonesByName",
+      "route53:ListResourceRecordSets",
+      "route53:ListTagsForResource",
+      "route53:ListTagsForResources",
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "external_dns" {
+  count       = var.enable_external_dns_role && var.external_dns_policy_arn == "" ? 1 : 0
+  name        = "${var.external_dns_role_name}-policy"
+  description = "IAM policy for ExternalDNS Route53 access."
+  policy      = data.aws_iam_policy_document.external_dns[0].json
+  tags        = merge(var.tags, local.environment_tags)
+}
+
+resource "aws_iam_role_policy_attachment" "external_dns" {
+  count      = var.enable_external_dns_role ? 1 : 0
+  role       = aws_iam_role.external_dns[0].name
+  policy_arn = var.external_dns_policy_arn != "" ? var.external_dns_policy_arn : aws_iam_policy.external_dns[0].arn
+}
