@@ -374,10 +374,12 @@ relates_to:
   - ADR-0169
   - ADR-0170
   - ADR-0170
+  - ADR-0170
   - ADR-0171
   - ADR-0172
   - ADR-0173
   - ADR-0174
+  - ADR-0175
 <!-- ADR_RELATE_END -->
 ---
 
@@ -557,11 +559,13 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0168](ADR-0168-eks-request-parser-and-mode-aware-workflows.md) | Platform | EKS Request Parser and Mode-Aware Workflows | Proposed | 2026-01-17 | EKS provisioning needed the same contract-driven, parser-first path used for RDS and Secrets, but EKS requests were either implicit (Terraform edits) or blocked by the scope gate. This created drif... |
 | [ADR-0169](ADR-0169-secret-request-system-generated-ids.md) | Platform | System-Generated SecretRequest IDs with CI Immutability Guard | Proposed | 2026-01-17 | SecretRequest identifiers are used for governance, auditability, and traceability across request files, generated tfvars, and Terraform targets. When IDs are manually entered, they are prone to col... |
 | [ADR-0170](ADR-0170-build-pipeline-architecture.md) | Platform | Build Pipeline Architecture and Multi-Repo Strategy | Accepted | 2026-01-19 | GoldenPath IDP needs a standardized build pipeline that: |
+| [ADR-0170](ADR-0170-route53-terraform-module.md) | Platform | Route53 DNS Management via Terraform Module | Proposed | 2026-01-21 | The Golden Path IDP platform requires DNS management for developer access to tooling services (ArgoCD, Keycloak, Backstage, Grafana). The domain`goldenpathidp.io`is registered with Namecheap, and s... |
 | [ADR-0170](ADR-0170-s3-self-service-request-system.md) | Platform | S3 Self-Service Request System | Proposed | 2026-01-17 | S3 buckets are the third pillar of the core infrastructure trio (RDS, ECR, S3). Currently, bucket provisioning requires direct Terraform access or manual requests, creating inconsistent configurati... |
 | [ADR-0171](ADR-0171-platform-application-packaging-strategy.md) | Platform | Application Packaging Strategy - Helm vs Kustomize | Active | 2026-01-0? | ADR-0020 established that we use a hybrid approach (Helm + Kustomize) but did not provide clear guidance on **when to choose each tool**. This led to inconsistent decisions and confusion about whet... |
 | [ADR-0172](ADR-0172-cd-promotion-strategy-with-approval-gates.md) | Platform | CD Promotion Strategy with Approval Gates | Active | 2026-01-0? | With CI pipelines building and pushing images to ECR, we need a clear strategy for how those images get promoted through environments. Key requirements: |
 | [ADR-0173](ADR-0173-governance-doc-naming-migration.md) | Platform | Governance Doc Naming Migration Strategy | Proposed | 2026-01-0? | A new naming convention for governance docs has been proposed:`GOV-xxxx-description-of-file.md`. The current repository uses a mix of numerical prefixes (for example`04_PR_GUARDRAILS.md`) and domai... |
 | [ADR-0174](ADR-0174-pipeline-decoupling-from-cluster-bootstrap.md) | Platform | Pipeline enablement intentionally decoupled from cluster bootstrap | Active | 2026-01-0? | GoldenPath IDP clusters are bootstrapped through a multi-stage process that provisions EKS, ArgoCD, monitoring, and foundational workloads. A separate concern is enabling the CI/CD pipeline that al... |
+| [ADR-0175](ADR-0175-externaldns-wildcard-ownership.md) | Platform | ExternalDNS owns wildcard records for env subdomains | Active | 2026-01-21 | The wildcard DNS record for`*.{env}.goldenpathidp.io`is tied to the Kong LoadBalancer hostname. Terraform can set this value during apply, but when the LoadBalancer changes (teardown/rebuild), DNS ... |
 <!-- ADR_TABLE_END -->
 
 ---

@@ -89,6 +89,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [migrate_partial_metadata.py](migrate_partial_metadata.py) | --- |
 | [rds_provision.py](rds_provision.py) | --- |
 | [rds_request_parser.py](rds_request_parser.py) | --- |
+| [rds_secrets_preflight.sh](rds_secrets_preflight.sh) | Shell script utility. |
 | [record-build-timing.sh](record-build-timing.sh) | Record build timing to governance-registry branch |
 | [refresh-ecr-secret.sh](refresh-ecr-secret.sh) | --- |
 | [reliability-metrics.sh](reliability-metrics.sh) | --- |

@@ -74,6 +74,7 @@ CI Workflows (GitHub Actions)
 │   ├─ Quality - S3 Request Validation
 │   ├─ Quality - Terraform Lint
 │   ├─ Quality - YAML Lint
+│   ├─ RDS Prevent Destroy Guard
 │   ├─ RDS Size Approval Guard
 │   ├─ RDS tfvars Drift Guard
 │   ├─ S3 Approval Guard
@@ -274,6 +275,11 @@ CI Workflows (GitHub Actions)
 ### Quality - YAML Lint
 - **File**: `yamllint.yml`
 - **Owner**: platform
+- **Triggers**:
+
+### RDS Prevent Destroy Guard
+- **File**: `rds-prevent-destroy-guard.yml`
+- **Owner**: platform-team
 - **Triggers**:
 
 ### RDS Size Approval Guard
