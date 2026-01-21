@@ -1,5 +1,5 @@
 ---
-id: SESSION-2026-01-21-route53
+id: 2026-01-21-route53-dns-terraform
 title: Route53 DNS Management in Terraform
 type: session-capture
 status: completed
