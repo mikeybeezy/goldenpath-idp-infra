@@ -12,6 +12,7 @@ applies_to:
   - schemas/requests/stateless-app.schema.yaml
   - schemas/requests/stateful-app.schema.yaml
   - schemas/requests/backend-app-rds.schema.yaml
+  - scripts/rds_request_parser.py
 lifecycle: active
 exempt: false
 risk_profile:
