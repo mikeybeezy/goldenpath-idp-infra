@@ -1,0 +1,64 @@
+version: 1
+id: stateful-app
+title: Stateful Application Request (StatefulSet)
+description: Contract for provisioning a new Stateful Application (StatefulSet + PVC + Headless Service)
+type: object
+additionalProperties: false
+
+properties:
+  id:
+    type: string
+    description: Unique identifier for the request
+    pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
+  
+  owner:
+    type: string
+    description: Team or user owning this application
+    enum_from: owners
+    default: platform-team
+
+  description:
+    type: string
+    description: Human-readable description of the application
+
+  component_id:
+    type: string
+    description: The ID of the component in Backstage (e.g., my-redis)
+    pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
+
+  replicas:
+    type: integer
+    description: Number of replicas (default: 1)
+    default: 1
+    minimum: 1
+    maximum: 5
+
+  storage_size:
+    type: string
+    description: "Size of the Persistent Volume Claim (e.g., 10Gi)"
+    pattern: "^[0-9]+(Gi|Mi)$"
+    default: "1Gi"
+
+  mount_path:
+    type: string
+    description: "Path to mount the persistent volume inside the container"
+    pattern: "^/.*"
+    default: "/data"
+
+  environment:
+    type: string
+    description: Target environment
+    enum:
+      - dev
+      - test
+      - staging
+      - prod
+    default: dev
+
+required:
+  - id
+  - owner
+  - description
+  - component_id
+  - storage_size
+  - mount_path

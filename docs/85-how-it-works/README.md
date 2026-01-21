@@ -33,6 +33,15 @@ This directory contains high-level, technical explanations of the platform's cor
 
 ## Self-Service
 
+### Golden Path Templates
+
+- [Golden Path Overview](self-service/GOLDEN_PATH_OVERVIEW.md): Comprehensive comparison of the three Golden Paths and their state preservation characteristics
+- [Stateless App Request Flow](self-service/STATELESS_APP_REQUEST_FLOW.md): Standard web services and APIs (Deployment)
+- [Stateful App Request Flow](self-service/STATEFUL_APP_REQUEST_FLOW.md): Caches, queues, and local storage (StatefulSet + PVC)
+- [Backend App + RDS Request Flow](self-service/BACKEND_APP_RDS_REQUEST_FLOW.md): Applications with managed database (Deployment + RDS)
+
+### Infrastructure Provisioning
+
 - [ECR Request Flow](self-service/ECR_REQUEST_FLOW.md): The self-service lifecycle of container registry provisioning
 - [RDS Request Flow](self-service/RDS_REQUEST_FLOW.md): How RDS database requests flow from Backstage to Terraform
 - [RDS Dual-Mode Automation](self-service/RDS_DUAL_MODE_AUTOMATION.md): Coupled vs standalone RDS automation mechanics

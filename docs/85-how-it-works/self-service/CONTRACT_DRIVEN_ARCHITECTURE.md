@@ -227,7 +227,7 @@ spec:
     creationPolicy: Owner
   dataFrom:
     - extract:
-        key: goldenpath/dev/rds/backstage_db
+        key: goldenpath/dev/backstage_db/postgres
 ```
 
 ## References

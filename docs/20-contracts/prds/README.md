@@ -15,6 +15,7 @@ relates_to:
   - PRD-0000-template
   - PRD-0001-rds-user-db-provisioning
   - PRD-0002-route53-externaldns
+  - PRD-0003-backstage-plugin-scaffold
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

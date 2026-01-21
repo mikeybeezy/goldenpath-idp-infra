@@ -216,13 +216,13 @@ class TestGenerateExternalSecret:
         assert spec["refreshInterval"] == "1h"
         assert spec["secretStoreRef"]["name"] == "aws-secretsmanager"
         assert spec["target"]["name"] == "test_db-db-credentials"
-        assert spec["dataFrom"][0]["extract"]["key"] == "goldenpath/dev/rds/test_db"
+        assert spec["dataFrom"][0]["extract"]["key"] == "goldenpath/dev/test_db/postgres"
 
 
 class TestDeriveSecretKey:
     def test_derives_correct_path(self, valid_request):
         key = derive_secret_key(valid_request)
-        assert key == "goldenpath/dev/rds/test_db"
+        assert key == "goldenpath/dev/test_db/postgres"
 
 
 # --- Integration Test ---
@@ -257,4 +257,4 @@ class TestIntegration:
         yaml.safe_dump(es)
 
         assert tfvars["rds_databases"]["integration_db"]["identifier"] == "dev-integration_db"
-        assert es["spec"]["dataFrom"][0]["extract"]["key"] == "goldenpath/dev/rds/integration_db"
+        assert es["spec"]["dataFrom"][0]["extract"]["key"] == "goldenpath/dev/integration_db/postgres"

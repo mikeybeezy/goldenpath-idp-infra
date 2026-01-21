@@ -1,0 +1,38 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: apps
+
+resources:
+  - ../../base
+  - namespace.yaml
+  - service.yaml
+  - ingress.yaml
+
+images:
+  - name: ${{ values.component_id }}
+    newName: 593517239005.dkr.ecr.eu-west-2.amazonaws.com/${{ values.component_id }}
+    newTag: latest
+
+patches:
+  - patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value:
+          - name: ecr-pull-secret
+    target:
+      kind: StatefulSet
+      name: ${{ values.component_id }}
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: ${{ values.replicas }}
+    target:
+      kind: StatefulSet
+      name: ${{ values.component_id }}
+
+configMapGenerator:
+  - name: ${{ values.component_id }}-config
+    literals:
+      - APP_ENV=${{ values.environment }}
+      - LOG_LEVEL=warn

@@ -21,3 +21,6 @@ spec:
     - ./templates/secret-request.yaml
     - ./templates/app-template/template.yaml
     - ./templates/ci-apply-dev/template.yaml
+    - ./templates/stateless-app/template.yaml
+    - ./templates/stateful-app/template.yaml
+    - ./templates/backend-app-rds/template.yaml
