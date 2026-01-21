@@ -20,6 +20,10 @@ relates_to:
   - ADR-0039-platform-tag-scoped-iam-policy-template
   - ADR-0051-platform-reliability-metrics-contract-minimums
   - METADATA_STRATEGY
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: governance
 supported_until: 2027-01-03
 version: '1.0'

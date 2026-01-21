@@ -42,6 +42,10 @@ relates_to:
   - ADR-0101-pr-metadata-auto-heal
   - DOCS_ADRS_README
   - agent_session_summary
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: governance
 supported_until: 2027-01-03
 version: '1.0'

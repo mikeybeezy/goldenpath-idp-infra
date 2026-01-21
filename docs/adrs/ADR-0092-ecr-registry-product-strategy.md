@@ -4,6 +4,10 @@ title: 'ADR-0092: ECR Registry Product-Based Strategy & Shared Responsibility Mo
 type: adr
 status: active
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -39,10 +43,6 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 version: '1.0'
 breaking_change: false

@@ -3,8 +3,6 @@ id: EC-0007-kpack-buildpacks-integration
 title: kpack and Cloud Native Buildpacks Integration
 type: extension-capability
 status: proposed
-owner: platform-team
-domain: platform-core
 relates_to:
   - ADR-0148-seamless-build-deployment-with-immutability
   - CL-0148
@@ -18,6 +16,7 @@ vq_class: 🟡 HV/LQ
 estimated_roi: $20K/year
 effort_estimate: 4-6 weeks
 ---
+
 ## Executive Summary
 
 kpack is a Kubernetes-native build service that automatically creates OCI container images from source code using Cloud Native Buildpacks. This eliminates the need for developers to write Dockerfiles, enabling a `cf push`-style experience where developers simply push code and the platform handles containerization.

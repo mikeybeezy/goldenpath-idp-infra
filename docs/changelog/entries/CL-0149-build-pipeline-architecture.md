@@ -2,19 +2,32 @@
 id: CL-0149
 title: Build Pipeline Architecture and Governance
 type: changelog
-date: 2026-01-19
-author: platform-team
-breaking_change: false
-domain: platform-core
+status: active
 owner: platform-team
+domain: platform-core
+applies_to: []
 lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
 relates_to:
   - ADR-0170
   - GOV-0012
   - GOV-0012-build-pipeline-standards
   - session-2026-01-19-build-pipeline-architecture
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-19
+author: platform-team
+breaking_change: false
 ---
+
 # CL-0149: Build Pipeline Architecture and Governance
 
 ## Summary

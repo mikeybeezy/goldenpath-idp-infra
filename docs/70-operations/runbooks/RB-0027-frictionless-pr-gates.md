@@ -2,14 +2,16 @@
 id: RB-0027
 title: Frictionless PR Gates (Heal-First Workflow)
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: none
   security_risk: none
   coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-  maturity: 1
+schema_version: 1
 relates_to:
   - 00_START_HERE
   - 24_PR_GATES
@@ -17,7 +19,12 @@ relates_to:
   - DOCS_RUNBOOKS_README
   - GOLDENPATH_IDP_ROOT_README
   - PR_GUARDRAILS
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
+supported_until: '2028-01-01'
 ---
 
 # RB-0027: Frictionless PR Gates (Heal-First Workflow)

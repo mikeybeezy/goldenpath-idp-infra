@@ -4,6 +4,10 @@ title: Networking Decisions
 type: adr
 applies_to:
   - infra
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-2
+  potential_savings_hours: 1.0
 risk_profile:
   production_impact: low
   security_risk: none

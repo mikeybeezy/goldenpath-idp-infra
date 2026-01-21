@@ -24,8 +24,8 @@ priority: high
 vq_class: 🟡 HV/LQ
 estimated_roi: $25,000/year (reduced manual reconciliation + faster app onboarding)
 effort_estimate: 6-12 weeks (phased)
-owner: platform-team
 ---
+
 ## Executive Summary
 
 Extend GoldenPath IDP by leveraging the Kubernetes API, controllers, and reconciliation loops to provide declarative, self-healing platform capabilities. Instead of CI-triggered scripts, platform resources are defined as Custom Resource Definitions (CRDs) that Kubernetes controllers continuously reconcile.
@@ -413,7 +413,6 @@ def sync_app():
         }
     })
 
-
 def generate_deployment(name, namespace, spec, labels):
     """Generate Deployment from GoldenPathApp spec."""
     return {
@@ -456,7 +455,6 @@ def generate_deployment(name, namespace, spec, labels):
         }
     }
 
-
 def generate_service(name, namespace, spec, labels):
     """Generate Service from GoldenPathApp spec."""
     return {
@@ -472,7 +470,6 @@ def generate_service(name, namespace, spec, labels):
             'ports': [{'port': 8080, 'targetPort': 8080}]
         }
     }
-
 
 def generate_ingress(name, namespace, spec, labels):
     """Generate Ingress and KongPlugins from GoldenPathApp spec."""
@@ -529,7 +526,6 @@ def generate_ingress(name, namespace, spec, labels):
 
     return ingress, plugins
 
-
 def generate_hpa(name, namespace, spec):
     """Generate HorizontalPodAutoscaler from GoldenPathApp spec."""
     scaling = spec['scaling']
@@ -558,7 +554,6 @@ def generate_hpa(name, namespace, spec):
         }
     }
 
-
 def generate_service_monitor(name, namespace, spec, labels):
     """Generate ServiceMonitor for Prometheus from GoldenPathApp spec."""
     return {
@@ -575,11 +570,9 @@ def generate_service_monitor(name, namespace, spec, labels):
         }
     }
 
-
 def generate_env_from(secrets):
     """Generate envFrom for secrets."""
     return [{'secretRef': {'name': s['name']}} for s in secrets]
-
 
 @app.route('/finalize/app', methods=['POST'])
 def finalize_app():
@@ -587,7 +580,6 @@ def finalize_app():
     req = request.get_json()
     # Cleanup logic here (e.g., delete RDS, cleanup secrets)
     return jsonify({'finalized': True})
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
@@ -784,7 +776,6 @@ if __name__ == '__main__':
 - **Observability contract**: emit controller metrics (reconcile duration, error rate), and include `reason` in Kubernetes Events for auditability.
 - **Bootstrap safety**: add a canary namespace and feature flags to roll out controllers gradually.
 - **Naming conventions**: use CamelCase for CRD kinds and snake_case for controller Python modules to align with repo standards.
-
 
 # Harnessing the K8s API: Moving Beyond Scripts
 

@@ -42,12 +42,15 @@ or a manual teardown gets stuck.
 
 ## Teardown runner versions
 
-We keep a stable teardown runner and a v2 iteration track:
+We keep a stable teardown runner and versioned tracks:
 
-- `goldenpath-idp-teardown.sh` (v1, default)
-- `goldenpath-idp-teardown-v2.sh` (v2, iteration track)
+- `goldenpath-idp-teardown-v5.sh` (v5, default)
+- `goldenpath-idp-teardown-v4.sh` (v4)
+- `goldenpath-idp-teardown-v3.sh` (v3)
+- `goldenpath-idp-teardown-v2.sh` (v2)
+- `goldenpath-idp-teardown.sh` (v1, legacy)
 
-The Makefile selects the script via `TEARDOWN_VERSION` (`v1` or `v2`).
+The Makefile selects the script via `TEARDOWN_VERSION` (`v1` through `v5`).
 CI exposes the same choice as a workflow input.
 
 ## goldenpath-idp-teardown.sh (v1)
@@ -72,17 +75,17 @@ TEARDOWN_CONFIRM=true \
   bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
 ```
 
-Run the v2 runner directly:
+Run the v5 runner directly (default):
 
 ```bash
 TEARDOWN_CONFIRM=true \
-  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v2.sh <cluster> <region>
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v5.sh <cluster> <region>
 ```
 
-Select v2 via Makefile:
+Select v5 via Makefile (default):
 
 ```bash
-TEARDOWN_VERSION=v2 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
+TEARDOWN_VERSION=v5 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
 ```
 
 PDB-safe drain (default behavior):
@@ -123,10 +126,10 @@ LoadBalancer cleanup retries:
 - `LB_CLEANUP_INTERVAL` controls the delay between loops (default `20` seconds).
 - `LB_CLEANUP_MAX_WAIT` caps the LoadBalancer wait loop in Stage 2
   to avoid hanging (default `900` seconds).
-- v2 defaults to break-glass finalizer removal with
+- v5 defaults to break-glass finalizer removal with
   `FORCE_DELETE_LB_FINALIZERS=true` when Services are stuck in `Terminating`.
   This default prevents teardown hangs when the LB controller is not available.
-- If Kubernetes access is unavailable, v2 skips Kubernetes cleanup and performs
+- If Kubernetes access is unavailable, v5 skips Kubernetes cleanup and performs
   AWS-only LoadBalancer cleanup before destroy.
 
 LoadBalancer ENI wait (prevents stuck subnet deletes):
@@ -143,7 +146,7 @@ Example:
 
 ```bash
 TEARDOWN_CONFIRM=true LB_CLEANUP_ATTEMPTS=8 LB_CLEANUP_INTERVAL=30 \
-  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v5.sh <cluster> <region>
 ```
 
 Force delete remaining cluster LBs (optional override):

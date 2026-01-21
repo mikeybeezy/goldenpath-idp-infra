@@ -2,14 +2,16 @@
 id: RB-0024-request-registry
 title: 'App Team Runbook: Request ECR Registry'
 type: runbook
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: not-applicable
   observability_tier: bronze
   maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0092-ecr-registry-product-strategy
   - ADR-0096-risk-based-ecr-controls
@@ -17,7 +19,11 @@ relates_to:
   - CL-0055-self-service-registry-creation
   - CL-0061-ecr-workflow-optimizations
   - DOCS_RUNBOOKS_README
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-05
 version: '1.0'
 dependencies:

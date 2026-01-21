@@ -2,6 +2,11 @@
 id: RB-0029-rds-manual-secret-rotation
 title: RDS Manual Secret Rotation (Runbook)
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: high
@@ -10,6 +15,7 @@ reliability:
   rollback_strategy: manual
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - 30_PLATFORM_RDS_ARCHITECTURE
   - 35_TOOLING_SECRETS_LIFECYCLE
@@ -20,7 +26,11 @@ relates_to:
   - RB-0030-rds-break-glass-deletion
   - RB-0032
   - RDS_REQUEST_FLOW
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 1.0
 dependencies:
@@ -29,6 +39,7 @@ dependencies:
   - module:postgresql
 breaking_change: false
 ---
+
 ## RDS Manual Secret Rotation (Runbook)
 
 This runbook documents the manual process for rotating platform RDS database credentials.

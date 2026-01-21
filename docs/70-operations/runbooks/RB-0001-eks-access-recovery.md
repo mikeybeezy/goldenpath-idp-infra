@@ -2,6 +2,11 @@
 id: RB-0001-eks-access-recovery
 title: EKS Access Recovery (Runbook)
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -10,16 +15,22 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: silver
   maturity: 1
+schema_version: 1
 relates_to:
   - 31_EKS_ACCESS_MODEL
   - DOCS_RUNBOOKS_README
   - EC-0004-backstage-copilot-plugin
   - RB-0031-idp-stack-deployment
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 # EKS Access Recovery (Runbook)
 
 This runbook provides the step-by-step procedure to restore access to an EKS

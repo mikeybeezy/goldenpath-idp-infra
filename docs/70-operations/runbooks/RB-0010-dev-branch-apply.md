@@ -2,6 +2,11 @@
 id: RB-0010-dev-branch-apply
 title: 'Runbook: Dev Branch Infra Apply'
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -10,12 +15,17 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: silver
   maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0028-platform-dev-branch-gate
   - ADR-0029-platform-dev-plan-gate
   - CI_WORKFLOWS
   - DOCS_RUNBOOKS_README
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 1.0
 dependencies:

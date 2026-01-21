@@ -2,6 +2,11 @@
 id: RB-0034-persistent-cluster-deployment
 title: Persistent Cluster Deployment
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,6 +15,7 @@ reliability:
   rollback_strategy: terraform-destroy
   observability_tier: silver
   maturity: 1
+schema_version: 1
 relates_to:
   - 30_PLATFORM_RDS_ARCHITECTURE
   - 32_TERRAFORM_STATE_AND_LOCKING
@@ -19,21 +25,26 @@ relates_to:
   - RB-0031-idp-stack-deployment
   - RB-0032
   - RB-0033-persistent-cluster-teardown
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-17
 version: '1.0'
 breaking_change: false
 ---
+
 # Persistent Cluster Deployment Runbook
 
 This runbook covers deployment for **persistent** EKS clusters that use the root
-state key (`envs/<env>/terraform.tfstate`). Persistent mode is required when
-coupled RDS is enabled.
+state key (`envs/<env>/terraform.tfstate`). Platform RDS is managed in a
+standalone state (`envs/<env>-rds/`) to prevent accidental deletion.
 
 ## When to Use
 
 - Deploying a new cluster with `cluster_lifecycle=persistent`
-- Deploying infrastructure with coupled RDS (`rds_config.enabled=true`)
+- Deploying the platform RDS in standalone state (`envs/<env>-rds/`)
 - Re-deploying a persistent cluster after teardown
 
 ## Persistent vs Ephemeral Mode
@@ -42,7 +53,7 @@ coupled RDS is enabled.
 |--------|-----------|------------|
 | State key | `envs/dev/builds/{build_id}/terraform.tfstate` | `envs/dev/terraform.tfstate` |
 | BUILD_ID | Required | Not used |
-| RDS coupled | Blocked (fail-fast guard) | Allowed |
+| Platform RDS | Not created | Standalone (`envs/<env>-rds/`) |
 | Teardown | By BuildId tag | By ClusterName tag |
 
 ## Preconditions
@@ -50,7 +61,7 @@ coupled RDS is enabled.
 1. AWS credentials with EKS/RDS create permissions
 2. Terraform state bucket and lock table exist
 3. VPC with private subnets tagged appropriately
-4. If RDS enabled: standalone RDS NOT already deployed (or disable coupled mode)
+4. Standalone RDS tfvars configured in `envs/<env>-rds/terraform.tfvars`
 
 ## Inputs
 
@@ -60,7 +71,7 @@ coupled RDS is enabled.
 ## Quick Start
 
 ```bash
-# Full deployment (apply + rds-provision + bootstrap)
+# Full deployment (apply + rds-deploy + bootstrap)
 make deploy-persistent ENV=dev REGION=eu-west-2
 ```
 
@@ -84,12 +95,13 @@ aws s3 ls s3://goldenpath-idp-dev-bucket/envs/dev/ 2>/dev/null || echo "Bucket r
 Ensure `envs/dev/terraform.tfvars` has:
 
 ```hcl
-cluster_lifecycle = "persistent"  # Required for RDS
+cluster_lifecycle = "persistent"  # Required for persistent clusters
 rds_config = {
-  enabled = true  # Only allowed in persistent mode
-  # ... other RDS settings
+  enabled = false  # Standalone RDS is managed in envs/<env>-rds/
 }
 ```
+
+RDS settings live in `envs/dev-rds/terraform.tfvars`.
 
 ### Step 3: Initialize Terraform
 
@@ -116,7 +128,6 @@ make plan ENV=dev
 
 Review the plan to confirm:
 - EKS cluster will be created
-- RDS instance will be created (if enabled)
 - No unexpected deletions
 
 ### Step 5: Apply Infrastructure
@@ -135,13 +146,21 @@ terraform apply \
 
 Expected duration: 15-25 minutes
 
-### Step 6: Provision RDS Users (if RDS enabled)
+### Step 6: Deploy Standalone RDS + Provision Users
 
 ```bash
-make rds-provision-auto ENV=dev RDS_MODE=auto
+make rds-deploy ENV=dev
 ```
 
-This creates PostgreSQL users and databases from `application_databases` in tfvars.
+This initializes, applies, and provisions the standalone RDS state from
+`envs/dev-rds/terraform.tfvars`.
+
+By default, `rds-deploy` restores any scheduled-for-deletion secrets and adopts
+existing secrets into state before apply. To skip this preflight:
+
+```bash
+make rds-deploy ENV=dev RESTORE_SECRETS=false
+```
 
 ### Step 7: Bootstrap Platform
 
@@ -180,9 +199,15 @@ make deploy-persistent ENV=dev REGION=eu-west-2
 
 This runs steps 5-8 in sequence:
 1. `apply-persistent` - Terraform apply
-2. `rds-provision-auto` - Database provisioning
+2. `rds-deploy` - Standalone RDS apply + provisioning
 3. `bootstrap-persistent` - Platform bootstrap
 4. `_phase3-verify` - Verification
+
+To skip RDS creation:
+
+```bash
+make deploy-persistent ENV=dev REGION=eu-west-2 CREATE_RDS=false
+```
 
 ## Troubleshooting
 

@@ -26,11 +26,11 @@ tags:
   - scaling
   - architecture
 inheritance: {}
+supported_until: '2028-01-01'
 value_quantification:
   vq_class: 🔵 MV/HQ
   impact_tier: high
   potential_savings_hours: 5.0
-supported_until: '2028-01-01'
 ---
 
 # CL-0113: Governance-Registry Implementation

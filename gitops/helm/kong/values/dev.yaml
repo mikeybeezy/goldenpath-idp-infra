@@ -24,6 +24,7 @@ proxy:
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-type: nlb
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    external-dns.alpha.kubernetes.io/hostname: "*.dev.goldenpathidp.io"
   http:
     enabled: true
     containerPort: 8000
@@ -43,6 +44,20 @@ admin:
     enabled: true
     containerPort: 8001
     servicePort: 8001
+
+# -----------------------------------------------------------------------------
+# Kong Manager (UI) - Dev Only
+# -----------------------------------------------------------------------------
+manager:
+  enabled: true
+  type: NodePort
+  http:
+    enabled: true
+    containerPort: 8002
+    servicePort: 8002
+    nodePort: 32002
+  tls:
+    enabled: false
 
 # -----------------------------------------------------------------------------
 # Ingress Controller
@@ -71,6 +86,9 @@ env:
   admin_access_log: /dev/stdout
   proxy_error_log: /dev/stderr
   admin_error_log: /dev/stderr
+  # Kong Manager needs to know where Admin API is
+  admin_gui_url: "http://localhost:8002"
+  admin_gui_api_url: "http://localhost:8001"
 
 # -----------------------------------------------------------------------------
 # Resource Limits for Dev

@@ -35,12 +35,14 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
+
 ## Platform Tooling Apps Configuration Matrix
 
 This living document captures the configuration requirements, dependencies, and operational status of all platform tooling applications deployed via Argo CD.
 
-**Last Updated**: 2026-01-18
+**Last Updated**: 2026-01-21
 **Maintainer**: platform-team
+**Signed**: platform-team (2026-01-21)
 
 ---
 
@@ -56,6 +58,8 @@ All platform tooling applications are accessible via Kong Ingress with TLS termi
 |**Keycloak**|`https://keycloak.dev.goldenpathidp.io`|`kubectl port-forward svc/dev-keycloak -n keycloak 8080:8080`|keycloak|
 |**ArgoCD**|`https://argocd.dev.goldenpathidp.io`|`kubectl port-forward svc/argocd-server -n argocd 8080:443`|argocd|
 |**Grafana**|`https://grafana.dev.goldenpathidp.io`|`kubectl port-forward svc/kube-prometheus-stack-grafana -n monitoring 3000:80`|monitoring|
+|**Kong Manager**|`https://kong.dev.goldenpathidp.io`|`kubectl port-forward svc/dev-kong-kong-manager -n kong-system 8002:8002`|kong-system|
+|**hello-goldenpath-idp**|`https://hello-goldenpath-idp.dev.goldenpathidp.io`|`kubectl port-forward svc/hello-goldenpath-idp -n apps 8080:80`|apps|
 |**Prometheus**|Internal only|`kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090`|monitoring|
 |**Alertmanager**|Internal only|`kubectl port-forward svc/kube-prometheus-stack-alertmanager -n monitoring 9093:9093`|monitoring|
 
@@ -67,6 +71,8 @@ All platform tooling applications are accessible via Kong Ingress with TLS termi
 |**Keycloak**|`https://keycloak.staging.goldenpathidp.io`|
 |**ArgoCD**|`https://argocd.staging.goldenpathidp.io`|
 |**Grafana**|`https://grafana.staging.goldenpathidp.io`|
+|**Kong Manager**|`https://kong.staging.goldenpathidp.io`|
+|**hello-goldenpath-idp**|`https://hello-goldenpath-idp.staging.goldenpathidp.io`|
 
 ### Production Environment
 
@@ -76,6 +82,8 @@ All platform tooling applications are accessible via Kong Ingress with TLS termi
 |**Keycloak**|`https://keycloak.goldenpathidp.io`|
 |**ArgoCD**|`https://argocd.goldenpathidp.io`|
 |**Grafana**|`https://grafana.goldenpathidp.io`|
+|**Kong Manager**|`https://kong.goldenpathidp.io`|
+|**hello-goldenpath-idp**|`https://hello-goldenpath-idp.goldenpathidp.io`|
 
 ### DNS Requirements
 
@@ -89,7 +97,7 @@ kubectl get svc -n kong-system kong-kong-proxy -o jsonpath='{.status.loadBalance
 kubectl get ingress -A
 ```
 
-For wildcard DNS, configure `*.dev.goldenpathidp.io`, `*.staging.goldenpathidp.io`, and `*.goldenpathidp.io` to point to the respective Kong LoadBalancer addresses.
+Wildcard DNS is managed by ExternalDNS from Kong Service annotations. Do not create manual wildcard records in Route53 for env subdomains.
 
 ### Certificate Issuers
 
@@ -106,6 +114,7 @@ For wildcard DNS, configure `*.dev.goldenpathidp.io`, `*.staging.goldenpathidp.i
 |App|Namespace|Chart|Chart Version|Image Tag|Status|Priority|
 |---|---------|-----|-------------|---------|------|--------|
 |[external-secrets](#external-secrets)|external-secrets|external-secrets/external-secrets|0.9.13|v0.9.13|Configured|P0|
+|[external-dns](#external-dns)|kube-system|external-dns/external-dns|1.14.5|v0.14.0|Configured|P0|
 |[cert-manager](#cert-manager)|cert-manager|jetstack/cert-manager|v1.14.4|v1.14.4|Configured|P0|
 |[keycloak](#keycloak)|keycloak|bitnami/keycloak|25.2.0|26.3.3|Configured|P1|
 |[kong](#kong)|kong-system|konghq/kong|2.47.0|3.6.1|Configured|P1|
@@ -142,6 +151,11 @@ For wildcard DNS, configure `*.dev.goldenpathidp.io`, `*.staging.goldenpathidp.i
                     ┌─────────────────┐
                     │ external-secrets│  P0 - Foundation
                     │  (AWS Secrets)  │
+                    └────────┬────────┘
+                             │
+                    ┌────────▼────────┐
+                    │  external-dns   │  P0 - Foundation
+                    │ (Route53 DNS)   │
                     └────────┬────────┘
                              │
                     ┌────────▼────────┐
@@ -221,6 +235,36 @@ spec:
             name: external-secrets
             namespace: external-secrets
 ```
+
+---
+
+### external-dns
+
+**Purpose**: Manages Route53 records from Kubernetes Services and Ingresses
+
+|Attribute|Value|
+|---------|-----|
+|Chart|external-dns/external-dns|
+|Chart Version|1.14.5|
+|Image Tag|v0.14.0|
+|Namespace|kube-system|
+|Argo App|`gitops/argocd/apps/dev/external-dns.yaml`|
+|Values File|`gitops/helm/external-dns/values/dev.yaml`|
+|Risk Level|Low (DNS-critical dependency)|
+
+#### external-dns Required Configuration
+
+|Config Item|Description|Source|Status|
+|-----------|-----------|------|------|
+|ServiceAccount IRSA|IAM role scoped to Route53 hosted zone|Terraform output|Configured|
+|Domain Filters|Limit records to env subdomain|Values file|Configured|
+|TXT Registry|Ownership/lock for records|Values file|Configured|
+|Wildcard Annotation|Kong Service annotation `*.{env}.goldenpathidp.io`|Kong values|Configured|
+
+#### external-dns Dependencies
+
+- **Upstream**: EKS OIDC provider (IRSA)
+- **Downstream**: Kong proxy Service, Ingress resources for tooling apps
 
 #### external-secrets Dependencies
 
@@ -932,6 +976,7 @@ goldenpath/{env}/{app}/{secret-name}
 |2026-01-18|platform-team|Added Tempo datasource to kube-prometheus-stack Grafana config|
 |2026-01-18|platform-team|Updated observability stack dependency graph to include Tempo|
 |2026-01-18|platform-team|Added Argo CD Image Updater for automated image tag updates (ADR-0172)|
+|2026-01-21|platform-team|Added Kong Manager UI and hello-goldenpath-idp to tooling access URLs|
 
 ---
 

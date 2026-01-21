@@ -1,0 +1,31 @@
+# Managed by scripts/standardize_metadata.py
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-external-dns
+  namespace: argocd
+  annotations:
+    goldenpath.idp/id: APPS_PROD_METADATA
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: low
+spec:
+  project: default
+  destination:
+    namespace: kube-system
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://kubernetes-sigs.github.io/external-dns/
+      chart: external-dns
+      targetRevision: 1.14.5
+      helm:
+        valueFiles:
+          - $values/gitops/helm/external-dns/values/prod.yaml
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: main
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

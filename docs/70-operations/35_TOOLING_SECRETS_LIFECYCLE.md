@@ -7,6 +7,10 @@ relates_to:
   - ADR-0006-platform-secrets-strategy
   - ADR-0157-platform-multi-tenant-rds-architecture
   - RB-0029-rds-manual-secret-rotation
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: compliance
 ---
 

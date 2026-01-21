@@ -4,6 +4,10 @@ title: 'ADR-0044: Configurable ref for infra checks dispatch'
 type: adr
 status: superseded
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -23,10 +27,6 @@ supersedes: []
 superseded_by: ADR-0046
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: 2028-01-04
 version: '1.0'
 breaking_change: false

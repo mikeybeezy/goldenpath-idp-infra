@@ -24,11 +24,11 @@ tags:
   - infrastructure
   - self-service
 inheritance: {}
+supported_until: '2028-01-01'
 value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
-supported_until: '2028-01-01'
 date: 2026-01-15
 adr_ref: ADR-0160
 ---

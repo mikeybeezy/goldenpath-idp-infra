@@ -3,6 +3,10 @@ id: ADR-0162
 title: Kong Ingress DNS Strategy for Platform Tooling
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -30,15 +34,12 @@ tags:
   - dns
   - tooling
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 date: 2026-01-16
 deciders:
   - platform-team
 ---
+
 ## Status
 
 Accepted

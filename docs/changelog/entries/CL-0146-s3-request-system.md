@@ -4,9 +4,15 @@ title: S3 Self-Service Request System
 type: changelog
 status: active
 owner: platform-team
-date: 2026-01-17
-author: platform-team
-category: platform
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
 relates_to:
   - ADR-0170
   - EC-0002-shared-parser-library
@@ -16,7 +22,15 @@ relates_to:
   - SCRIPT-0037
   - s3-requests-index
   - session-2026-01-17-s3-request-flow-planning
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-17
+author: platform-team
 ---
+
 # CL-0146: S3 Self-Service Request System
 
 ## Summary

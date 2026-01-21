@@ -4,6 +4,10 @@ title: 'ADR-0171: Application Packaging Strategy - Helm vs Kustomize'
 type: adr
 status: active
 domain: platform-core
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: high
+  potential_savings_hours: 4.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -32,14 +36,11 @@ tags:
   - kustomize
   - gitops
 inheritance: {}
-value_quantification:
-  vq_class: 🔴 HV/HQ
-  impact_tier: high
-  potential_savings_hours: 4.0
 supported_until: 2028-01-18
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0171: Application Packaging Strategy - Helm vs Kustomize
 
 - **Status:** Active

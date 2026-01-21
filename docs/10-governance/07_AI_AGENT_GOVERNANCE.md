@@ -21,6 +21,10 @@ relates_to:
   - CL-0141
   - SESSION_CAPTURE_2026_01_17_02
   - agent_session_summary
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: governance
 supported_until: 2027-01-03
 version: '1.0'

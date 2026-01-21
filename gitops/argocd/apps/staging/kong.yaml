@@ -21,7 +21,7 @@ spec:
         valueFiles:
           - $values/gitops/helm/kong/values/staging.yaml
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
+      targetRevision: main
       ref: values
   ignoreDifferences:
     - group: admissionregistration.k8s.io

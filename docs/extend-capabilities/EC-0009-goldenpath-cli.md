@@ -3,8 +3,6 @@ id: EC-0009-goldenpath-cli
 title: GoldenPath Platform CLI
 type: extension-capability
 status: proposed
-owner: platform-team
-domain: platform-core
 relates_to:
   - ADR-0167
   - EC-0008-session-capture-ui
@@ -16,6 +14,7 @@ vq_class: 🔴 HV/HQ
 estimated_roi: $15K/year
 effort_estimate: 1-3 days (shell wrapper) to 1 week (full CLI)
 ---
+
 ## Executive Summary
 
 A unified command-line interface (`gp`) for GoldenPath IDP that wraps existing scripts, Makefile targets, bootstrap sequences, and troubleshooting workflows. Designed for **platform team operations first**, with developer self-service as a secondary concern.

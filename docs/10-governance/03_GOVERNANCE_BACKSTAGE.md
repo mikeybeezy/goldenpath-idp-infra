@@ -14,6 +14,10 @@ relates_to:
   - 01_GOVERNANCE
   - 18_BACKSTAGE_MVP
   - ADR-0008-app-backstage-portal
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 status: deprecated
 category: governance
 supported_until: 2027-01-03

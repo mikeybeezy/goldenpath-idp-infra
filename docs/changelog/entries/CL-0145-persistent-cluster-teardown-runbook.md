@@ -4,9 +4,15 @@ title: Persistent Cluster Teardown Runbook
 type: changelog
 status: active
 owner: platform-team
-date: 2026-01-17
-author: platform-team
-category: runbooks
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
 relates_to:
   - 32_TERRAFORM_STATE_AND_LOCKING
   - ADR-0040-platform-lifecycle-aware-state-keys
@@ -14,7 +20,15 @@ relates_to:
   - RB-0033-persistent-cluster-teardown
   - agent_session_summary
   - session-2026-01-17-eks-backstage-scaffolder
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-17
+author: platform-team
 ---
+
 # CL-0145: Persistent Cluster Teardown Runbook
 
 ## Summary

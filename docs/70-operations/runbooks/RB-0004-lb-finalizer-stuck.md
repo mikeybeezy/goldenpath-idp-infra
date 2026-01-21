@@ -2,6 +2,11 @@
 id: RB-0004-lb-finalizer-stuck
 title: LoadBalancer Service Stuck on Finalizer
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -10,12 +15,17 @@ reliability:
   rollback_strategy: rerun-teardown
   observability_tier: silver
   maturity: 1
+schema_version: 1
 relates_to:
   - 08_MANAGED_LB_CLEANUP
   - 15_TEARDOWN_AND_CLEANUP
   - DOCS_RUNBOOKS_README
   - TEARDOWN_README
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 1.0
 dependencies:
@@ -75,16 +85,16 @@ kubectl -n kong-system patch svc dev-kong-kong-proxy \
   -p '{"metadata":{"finalizers":[]}}' --type=merge
 ```
 
-If using the v2 teardown runner, the break-glass flag defaults to on to prevent
+If using the v5 teardown runner, the break-glass flag defaults to on to prevent
 teardown hangs when the LB controller is unavailable, but you can also set it
 explicitly:
 
 ```bash
 FORCE_DELETE_LB_FINALIZERS=true \
-  TEARDOWN_VERSION=v2 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
+  TEARDOWN_VERSION=v5 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
 ```
 
-If Kubernetes access is unavailable, v2 skips Kubernetes cleanup and attempts
+If Kubernetes access is unavailable, v5 skips Kubernetes cleanup and attempts
 AWS-only LoadBalancer cleanup. This will not remove Service finalizers; restore
 access to remove them if the Service still exists.
 

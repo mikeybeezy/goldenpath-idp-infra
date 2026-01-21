@@ -2,6 +2,11 @@
 id: RB-0021-backstage-helm-catalog-visibility
 title: Backstage Helm Catalog Visibility (Runbook)
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: low
@@ -10,19 +15,23 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: silver
   maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0127
   - ADR-0128
+supersedes: []
+superseded_by: []
 tags:
   - backstage
   - helm
   - catalog
   - troubleshooting
+inheritance: {}
 value_quantification:
   vq_class: 🟡 MV/HQ
   impact_tier: medium
   potential_savings_hours: 2.0
-category: runbooks
+status: active
 supported_until: 2028-01-01
 version: '1.0'
 dependencies:

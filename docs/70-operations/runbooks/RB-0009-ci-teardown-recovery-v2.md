@@ -2,6 +2,11 @@
 id: RB-0009-ci-teardown-recovery-v2
 title: CI Teardown Recovery (v2)
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,13 +15,18 @@ reliability:
   rollback_strategy: rerun-teardown
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - 07_TF_STATE_FORCE_UNLOCK
   - 08_MANAGED_LB_CLEANUP
   - CI_WORKFLOWS
   - DOCS_RUNBOOKS_README
   - TEARDOWN_README
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 2.0
 dependencies:

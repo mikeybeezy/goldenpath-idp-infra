@@ -14,6 +14,10 @@ relates_to:
   - 01_GOVERNANCE
   - 10_REPO_DECOMMISSIONING
   - ADR-0078-platform-governed-repo-scaffolder
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: governance
 supported_until: 2027-01-03
 version: '1.0'

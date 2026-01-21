@@ -3,6 +3,10 @@ id: ADR-0098-standardized-pr-gates
 title: 'ADR-0098: Standardized PR Gates for ECR Pipeline'
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -24,10 +28,6 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: 2028-12-31
 version: 1.0
 breaking_change: false

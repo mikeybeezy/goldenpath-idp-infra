@@ -41,15 +41,21 @@ variable "cluster_lifecycle" {
 
 variable "build_id" {
   type        = string
-  description = "Build ID used to suffix ephemeral resources. Must be unique and immutable. Format: DD-MM-YY-NN (e.g., 13-01-26-01)."
+  description = "Build ID used to suffix ephemeral resources. Must be unique and immutable. Format: DD-MM-YY-NN (e.g., 13-01-26-01). Use 'persistent' for persistent clusters."
   default     = ""
   validation {
     condition     = var.cluster_lifecycle == "persistent" || trimspace(var.build_id) != ""
     error_message = "build_id must be set when cluster_lifecycle is ephemeral."
   }
   validation {
-    condition     = can(regex("^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$", var.build_id)) || var.build_id == ""
-    error_message = "build_id must match format: DD-MM-YY-NN (e.g., 13-01-26-01). Day-Month-Year-Sequence."
+    condition = (
+      var.cluster_lifecycle == "persistent" && var.build_id == "persistent"
+      ) || (
+      can(regex("^[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$", var.build_id))
+      ) || (
+      var.build_id == ""
+    )
+    error_message = "build_id must match format: DD-MM-YY-NN (e.g., 13-01-26-01) for ephemeral clusters, or 'persistent' for persistent clusters."
   }
 }
 
@@ -271,6 +277,11 @@ variable "iam_config" {
     eso_role_name                           = optional(string, "goldenpath-idp-eso-role")
     eso_service_account_namespace           = optional(string, "external-secrets")
     eso_service_account_name                = optional(string, "external-secrets")
+    enable_external_dns_role                = optional(bool, false)
+    external_dns_role_name                  = optional(string, "goldenpath-idp-external-dns")
+    external_dns_policy_arn                 = optional(string, "")
+    external_dns_service_account_namespace  = optional(string, "kube-system")
+    external_dns_service_account_name       = optional(string, "external-dns")
   })
   validation {
     condition     = var.iam_config.enabled == false || var.eks_config.enabled == true
@@ -299,6 +310,11 @@ variable "iam_config" {
     eso_role_name                           = "goldenpath-idp-eso-role"
     eso_service_account_namespace           = "external-secrets"
     eso_service_account_name                = "external-secrets"
+    enable_external_dns_role                = false
+    external_dns_role_name                  = "goldenpath-idp-external-dns"
+    external_dns_policy_arn                 = ""
+    external_dns_service_account_namespace  = "kube-system"
+    external_dns_service_account_name       = "external-dns"
   }
 }
 
@@ -420,5 +436,32 @@ variable "rds_config" {
   })
   default = {
     enabled = false
+  }
+}
+
+################################################################################
+# Route53 DNS Configuration
+################################################################################
+
+variable "route53_config" {
+  description = "Configuration for Route53 DNS management."
+  type = object({
+    enabled                = bool
+    domain_name            = string
+    zone_id                = optional(string, "")
+    create_hosted_zone     = optional(bool, false) # false = import existing zone
+    create_wildcard_record = optional(bool, false)
+    record_ttl             = optional(number, 300)
+    kong_service_name      = optional(string, "dev-kong-kong-proxy")
+    kong_service_namespace = optional(string, "kong-system")
+    # Additional CNAME records beyond the wildcard
+    cname_records = optional(map(object({
+      target = string
+      ttl    = optional(number)
+    })), {})
+  })
+  default = {
+    enabled     = false
+    domain_name = ""
   }
 }

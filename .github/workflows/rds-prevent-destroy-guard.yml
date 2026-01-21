@@ -1,0 +1,43 @@
+# Owner: platform-team
+# Relates-To: ADR-0158, RB-0030
+name: RDS Prevent Destroy Guard
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "envs/*-rds/main.tf"
+  push:
+    branches:
+      - main
+    paths:
+      - "envs/*-rds/main.tf"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard-prevent-destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fail if prevent_destroy is false
+        shell: bash
+        run: |
+          set -euo pipefail
+          found=false
+          for file in envs/*-rds/main.tf; do
+            [ -e "$file" ] || continue
+            if grep -nE "prevent_destroy[[:space:]]*=[[:space:]]*false" "$file"; then
+              found=true
+            fi
+          done
+          if [ "$found" = "true" ]; then
+            echo "ERROR: prevent_destroy=false found in envs/*-rds/main.tf. This cannot land on main."
+            exit 1
+          fi
+          echo "OK: prevent_destroy is not set to false in envs/*-rds/main.tf."

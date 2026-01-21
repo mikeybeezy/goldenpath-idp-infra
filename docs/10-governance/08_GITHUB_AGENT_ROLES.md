@@ -15,6 +15,10 @@ relates_to:
   - 07_AI_AGENT_GOVERNANCE
   - 26_AI_AGENT_PROTOCOLS
   - ADR-0101-pr-metadata-auto-heal
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: governance
 supported_until: 2027-01-03
 version: '1.0'

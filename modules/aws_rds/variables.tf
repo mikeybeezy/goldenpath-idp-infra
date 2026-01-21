@@ -279,6 +279,17 @@ variable "master_secret_name" {
   default     = null
 }
 
+variable "secret_recovery_window_in_days" {
+  description = "Number of days to retain a deleted secret before permanent deletion. Use 0 for immediate deletion (recommended for ephemeral clusters)."
+  type        = number
+  default     = 0
+
+  validation {
+    condition     = var.secret_recovery_window_in_days >= 0 && var.secret_recovery_window_in_days <= 30
+    error_message = "secret_recovery_window_in_days must be between 0 and 30."
+  }
+}
+
 variable "application_databases" {
   description = "Map of application databases to create secrets for"
   type = map(object({

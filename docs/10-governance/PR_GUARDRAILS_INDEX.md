@@ -28,6 +28,7 @@ relates_to:
   - agent_session_summary
   - session-2026-01-19-build-pipeline-architecture
 ---
+
 # PR Guardrails Index
 
 This document provides a comprehensive catalog of all PR guardrail workflows, their triggers, enforcement scope, and current status.

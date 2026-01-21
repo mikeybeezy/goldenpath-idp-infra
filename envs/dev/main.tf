@@ -306,33 +306,53 @@ module "eks" {
 # Identity & Access Management (IAM)
 ################################################################################
 
+################################################################################
+# IAM Module - IRSA Roles Only
+# NOTE: EKS cluster and node group roles are created by the EKS module.
+# This module only manages IRSA roles (autoscaler, lb-controller, eso).
+# See: session_capture/2026-01-20-persistent-cluster-deployment.md
+################################################################################
 module "iam" {
   source = "../../modules/aws_iam"
   count  = var.iam_config.enabled ? 1 : 0
 
-  cluster_role_name                       = "${var.iam_config.cluster_role_name != "" ? var.iam_config.cluster_role_name : "${local.base_name_prefix}-eks-cluster-role"}${local.role_suffix}"
-  node_group_role_name                    = "${var.iam_config.node_group_role_name != "" ? var.iam_config.node_group_role_name : "${local.base_name_prefix}-eks-node-role"}${local.role_suffix}"
-  oidc_role_name                          = "${var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.base_name_prefix}-eks-oidc-role"}${local.role_suffix}"
-  oidc_issuer_url                         = module.eks[0].oidc_issuer_url
-  oidc_provider_arn                       = module.eks[0].oidc_provider_arn
-  oidc_audience                           = var.iam_config.oidc_audience
-  oidc_subject                            = var.iam_config.oidc_subject
-  enable_autoscaler_role                  = var.iam_config.enable_autoscaler_role
-  autoscaler_role_name                    = "${var.iam_config.autoscaler_role_name}${local.role_suffix}"
-  autoscaler_policy_arn                   = var.iam_config.autoscaler_policy_arn
-  autoscaler_service_account_namespace    = var.iam_config.autoscaler_service_account_namespace
-  autoscaler_service_account_name         = var.iam_config.autoscaler_service_account_name
+  # OIDC provider for IRSA
+  oidc_role_name    = "${var.iam_config.oidc_role_name != "" ? var.iam_config.oidc_role_name : "${local.base_name_prefix}-eks-oidc-role"}${local.role_suffix}"
+  oidc_issuer_url   = module.eks[0].oidc_issuer_url
+  oidc_provider_arn = module.eks[0].oidc_provider_arn
+  oidc_audience     = var.iam_config.oidc_audience
+  oidc_subject      = var.iam_config.oidc_subject
+
+  # Cluster Autoscaler IRSA
+  enable_autoscaler_role               = var.iam_config.enable_autoscaler_role
+  autoscaler_role_name                 = "${var.iam_config.autoscaler_role_name}${local.role_suffix}"
+  autoscaler_policy_arn                = var.iam_config.autoscaler_policy_arn
+  autoscaler_service_account_namespace = var.iam_config.autoscaler_service_account_namespace
+  autoscaler_service_account_name      = var.iam_config.autoscaler_service_account_name
+
+  # AWS Load Balancer Controller IRSA
   enable_lb_controller_role               = var.iam_config.enable_lb_controller_role
   lb_controller_role_name                 = "${var.iam_config.lb_controller_role_name}${local.role_suffix}"
   lb_controller_policy_arn                = var.iam_config.lb_controller_policy_arn
   lb_controller_service_account_namespace = var.iam_config.lb_controller_service_account_namespace
   lb_controller_service_account_name      = var.iam_config.lb_controller_service_account_name
-  enable_eso_role                         = var.iam_config.enable_eso_role
-  eso_role_name                           = "${var.iam_config.eso_role_name}${local.role_suffix}"
-  eso_service_account_namespace           = var.iam_config.eso_service_account_namespace
-  eso_service_account_name                = var.iam_config.eso_service_account_name
-  environment                             = local.environment
-  tags                                    = local.common_tags
+
+  # External Secrets Operator IRSA
+  enable_eso_role               = var.iam_config.enable_eso_role
+  eso_role_name                 = "${var.iam_config.eso_role_name}${local.role_suffix}"
+  eso_service_account_namespace = var.iam_config.eso_service_account_namespace
+  eso_service_account_name      = var.iam_config.eso_service_account_name
+
+  # ExternalDNS IRSA
+  enable_external_dns_role               = var.iam_config.enable_external_dns_role
+  external_dns_role_name                 = "${var.iam_config.external_dns_role_name}${local.role_suffix}"
+  external_dns_policy_arn                = var.iam_config.external_dns_policy_arn
+  external_dns_service_account_namespace = var.iam_config.external_dns_service_account_namespace
+  external_dns_service_account_name      = var.iam_config.external_dns_service_account_name
+  external_dns_zone_id                   = var.route53_config.zone_id
+
+  environment = local.environment
+  tags        = local.common_tags
 
   depends_on = [module.eks]
 }
@@ -440,6 +460,23 @@ resource "kubernetes_service_account_v1" "external_secrets" {
   ]
 }
 
+resource "kubernetes_service_account_v1" "external_dns" {
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_external_dns_role ? 1 : 0
+
+  metadata {
+    name      = var.iam_config.external_dns_service_account_name
+    namespace = var.iam_config.external_dns_service_account_namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].external_dns_role_arn
+    }
+  }
+
+  depends_on = [
+    module.eks,
+    module.iam,
+  ]
+}
+
 provider "kubectl" {
   host                   = module.eks[0].cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
@@ -480,7 +517,8 @@ module "kubernetes_addons" {
 
   depends_on = [
     module.eks,
-    kubernetes_service_account_v1.aws_load_balancer_controller
+    kubernetes_service_account_v1.aws_load_balancer_controller,
+    kubernetes_service_account_v1.external_dns
   ]
 }
 
@@ -655,16 +693,28 @@ module "platform_rds" {
   # Network - allow from VPC CIDR
   allowed_cidr_blocks = [var.vpc_cidr]
 
-  # Secrets
+  # Secrets - build_id scoped paths for ephemeral (bounded context isolation)
+  # Persistent: goldenpath/dev/rds/master
+  # Ephemeral:  goldenpath/dev/builds/20-01-26-01/rds/master
   create_master_secret = true
-  master_secret_name   = "goldenpath/${local.environment}/rds/master"
+  master_secret_name = var.cluster_lifecycle == "ephemeral" ? (
+    "goldenpath/${local.environment}/builds/${local.build_id}/rds/master"
+    ) : (
+    "goldenpath/${local.environment}/rds/master"
+  )
+  # 0-day recovery for ephemeral (immediate deletion), 7-day for persistent
+  secret_recovery_window_in_days = var.cluster_lifecycle == "ephemeral" ? 0 : 7
 
-  # Application databases with secrets
+  # Application databases with secrets - build_id scoped for ephemeral
   application_databases = {
     for k, v in var.rds_config.application_databases : k => {
       database_name = v.database_name
       username      = v.username
-      secret_name   = "goldenpath/${local.environment}/${k}/postgres"
+      secret_name = var.cluster_lifecycle == "ephemeral" ? (
+        "goldenpath/${local.environment}/builds/${local.build_id}/${k}/postgres"
+        ) : (
+        "goldenpath/${local.environment}/${k}/postgres"
+      )
     }
   }
 
@@ -690,4 +740,60 @@ module "platform_rds" {
   )
 
   depends_on = [module.vpc, module.subnets]
+}
+
+################################################################################
+# Route53 DNS Management
+################################################################################
+#
+# Manages the goldenpathidp.io domain DNS records.
+# The hosted zone was created manually and should be imported:
+#   terraform import 'module.route53[0].aws_route53_zone.main[0]' Z0032802NEMSL43VHH4E
+#
+# Or set create_hosted_zone = false to use the existing zone via data source.
+#
+# ExternalDNS (deployed via ArgoCD) will manage dynamic DNS records for
+# services with the external-dns.alpha.kubernetes.io/hostname annotation.
+################################################################################
+
+# Data source to get Kong LoadBalancer hostname for wildcard CNAME
+data "kubernetes_service_v1" "kong_proxy" {
+  count = var.route53_config.enabled && var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
+
+  metadata {
+    name      = var.route53_config.kong_service_name
+    namespace = var.route53_config.kong_service_namespace
+  }
+
+  depends_on = [module.kubernetes_addons]
+}
+
+locals {
+  # Kong LoadBalancer hostname (e.g., k8s-kongsyst-devkongk-xxx.elb.eu-west-2.amazonaws.com)
+  kong_lb_hostname = try(
+    data.kubernetes_service_v1.kong_proxy[0].status[0].load_balancer[0].ingress[0].hostname,
+    ""
+  )
+}
+
+module "route53" {
+  source = "../../modules/aws_route53"
+  count  = var.route53_config.enabled ? 1 : 0
+
+  domain_name        = var.route53_config.domain_name
+  zone_id            = var.route53_config.zone_id
+  environment        = local.environment
+  create_hosted_zone = var.route53_config.create_hosted_zone
+  zone_comment       = "Golden Path IDP - ${local.environment} environment"
+
+  # Wildcard CNAME for *.dev.goldenpathidp.io -> Kong LoadBalancer
+  create_wildcard_record = var.route53_config.create_wildcard_record
+  wildcard_target        = local.kong_lb_hostname
+
+  record_ttl    = var.route53_config.record_ttl
+  cname_records = var.route53_config.cname_records
+
+  tags = local.common_tags
+
+  depends_on = [module.kubernetes_addons]
 }

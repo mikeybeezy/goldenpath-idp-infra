@@ -4,9 +4,15 @@ title: Governance Registry Sync for RDS/EKS/S3
 type: changelog
 status: active
 owner: platform-team
-date: 2026-01-18
-author: platform-team
-category: governance
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
 relates_to:
   - ADR-0165
   - ADR-0168
@@ -15,7 +21,15 @@ relates_to:
   - SCRIPT-0037
   - SCRIPT-0043
   - agent_session_summary
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-18
+author: platform-team
 ---
+
 # CL-0147: Governance Registry Sync for RDS/EKS/S3
 
 ## Summary

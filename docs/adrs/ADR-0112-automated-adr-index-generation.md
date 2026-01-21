@@ -3,6 +3,10 @@ id: ADR-0112-automated-adr-index-generation
 title: 'ADR-0112: Automated ADR Index Generation'
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -26,10 +30,6 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: 2027-01-06
 version: 1.0
 date: 2026-01-06

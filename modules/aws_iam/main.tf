@@ -2,60 +2,17 @@ locals {
   environment_tags = var.environment != "" ? { Environment = var.environment } : {}
 }
 
-// EKS control-plane role (assumed by eks.amazonaws.com).
-resource "aws_iam_role" "eks_cluster" {
-  name = var.cluster_role_name
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "eks.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-
-  tags = merge(var.tags, local.environment_tags)
-}
-
-
-
-
-// Attach required EKS control-plane policies.
-resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
-  role       = aws_iam_role.eks_cluster.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-}
-
-resource "aws_iam_role_policy_attachment" "eks_vpc_resource_controller" {
-  role       = aws_iam_role.eks_cluster.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
-}
-
-// Node group role (assumed by EC2 instances).
-resource "aws_iam_role" "eks_node_group" {
-  name = var.node_group_role_name
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-
-  tags = merge(var.tags, local.environment_tags)
-}
-
+################################################################################
+# NOTE: EKS cluster and node group IAM roles are created by the EKS module
+# (modules/aws_eks/main.tf). This IAM module only manages IRSA roles:
+# - cluster_autoscaler
+# - lb_controller
+# - eso (External Secrets Operator)
+#
+# See: session_capture/2026-01-20-persistent-cluster-deployment.md
+# Root cause: Both modules were creating identical IAM roles, causing
+# EntityAlreadyExists errors on fresh deploys.
+################################################################################
 
 data "tls_certificate" "eks_oidc" {
   count = var.enable_oidc_role ? 1 : 0
@@ -302,6 +259,8 @@ data "aws_iam_policy_document" "lb_controller" {
       "elasticloadbalancing:ModifyCapacityReservation",
       "elasticloadbalancing:ModifyTargetGroupAttributes",
       "elasticloadbalancing:ModifyLoadBalancerAttributes",
+      "elasticloadbalancing:RegisterTargets",
+      "elasticloadbalancing:DeregisterTargets",
     ]
     resources = ["*"]
   }
@@ -406,4 +365,74 @@ resource "aws_iam_role_policy_attachment" "eso" {
   count      = var.enable_eso_role ? 1 : 0
   role       = aws_iam_role.eso[0].name
   policy_arn = aws_iam_policy.eso[0].arn
+}
+
+data "aws_iam_policy_document" "external_dns_assume" {
+  count = var.enable_external_dns_role ? 1 : 0
+
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:aud"
+      values   = [var.oidc_audience]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:${var.external_dns_service_account_namespace}:${var.external_dns_service_account_name}"]
+    }
+
+    principals {
+      type        = "Federated"
+      identifiers = [var.oidc_provider_arn]
+    }
+  }
+}
+
+resource "aws_iam_role" "external_dns" {
+  count              = var.enable_external_dns_role ? 1 : 0
+  name               = var.external_dns_role_name
+  assume_role_policy = data.aws_iam_policy_document.external_dns_assume[0].json
+  tags               = merge(var.tags, local.environment_tags)
+}
+
+data "aws_iam_policy_document" "external_dns" {
+  count = var.enable_external_dns_role && var.external_dns_policy_arn == "" ? 1 : 0
+
+  statement {
+    effect    = "Allow"
+    actions   = ["route53:ChangeResourceRecordSets"]
+    resources = ["arn:aws:route53:::hostedzone/${var.external_dns_zone_id}"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "route53:GetChange",
+      "route53:ListHostedZones",
+      "route53:ListHostedZonesByName",
+      "route53:ListResourceRecordSets",
+      "route53:ListTagsForResource",
+      "route53:ListTagsForResources",
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "external_dns" {
+  count       = var.enable_external_dns_role && var.external_dns_policy_arn == "" ? 1 : 0
+  name        = "${var.external_dns_role_name}-policy"
+  description = "IAM policy for ExternalDNS Route53 access."
+  policy      = data.aws_iam_policy_document.external_dns[0].json
+  tags        = merge(var.tags, local.environment_tags)
+}
+
+resource "aws_iam_role_policy_attachment" "external_dns" {
+  count      = var.enable_external_dns_role ? 1 : 0
+  role       = aws_iam_role.external_dns[0].name
+  policy_arn = var.external_dns_policy_arn != "" ? var.external_dns_policy_arn : aws_iam_policy.external_dns[0].arn
 }

@@ -10,8 +10,9 @@
 resource "aws_secretsmanager_secret" "master" {
   count = var.create_master_secret ? 1 : 0
 
-  name        = var.master_secret_name
-  description = "Master credentials for ${var.identifier} RDS instance"
+  name                    = var.master_secret_name
+  description             = "Master credentials for ${var.identifier} RDS instance"
+  recovery_window_in_days = var.secret_recovery_window_in_days
 
   tags = var.tags
 }
@@ -45,8 +46,9 @@ resource "random_password" "app" {
 resource "aws_secretsmanager_secret" "app" {
   for_each = var.application_databases
 
-  name        = each.value.secret_name
-  description = "Database credentials for ${each.key} application"
+  name                    = each.value.secret_name
+  description             = "Database credentials for ${each.key} application"
+  recovery_window_in_days = var.secret_recovery_window_in_days
 
   tags = var.tags
 }

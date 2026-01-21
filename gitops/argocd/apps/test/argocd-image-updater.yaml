@@ -25,7 +25,7 @@ spec:
         valueFiles:
           - $values/gitops/helm/argocd-image-updater/values/test.yaml
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
+      targetRevision: main
       ref: values
   syncPolicy:
     automated:

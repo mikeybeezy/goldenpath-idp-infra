@@ -31,11 +31,11 @@ tags:
   - database
   - automation
 inheritance: {}
+supported_until: 2028-01-16
 value_quantification:
   vq_class: 🔴 HV/HQ
   impact_tier: high
   potential_savings_hours: 40.0
-supported_until: 2028-01-16
 date: 2026-01-16
 author: platform-team
 breaking_change: false

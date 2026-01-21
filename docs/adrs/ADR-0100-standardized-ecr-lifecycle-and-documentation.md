@@ -3,6 +3,10 @@ id: ADR-0100-standardized-ecr-lifecycle-and-documentation
 title: Standardized ECR Lifecycle and Documentation
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -27,10 +31,6 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

@@ -3,8 +3,6 @@ id: EC-0006-competitor-analysis-tap
 title: Competitor Analysis - VMware Tanzu Application Platform
 type: extension-capability
 status: validated
-owner: platform-team
-domain: platform-core
 relates_to:
   - ADR-0148-seamless-build-deployment-with-immutability
   - CL-0148
@@ -16,6 +14,7 @@ vq_class: ⚫ LV/LQ
 estimated_roi: Strategic positioning
 effort_estimate: N/A (analysis document)
 ---
+
 ## Executive Summary
 
 This document provides a competitive analysis between GoldenPath IDP and VMware Tanzu Application Platform (TAP). The analysis reveals that GoldenPath IDP has achieved approximately 70% feature parity with TAP while maintaining a simpler operational model and avoiding licensing costs.

@@ -17,6 +17,10 @@ relates_to:
   - METADATA_BACKFILL_SCRIPT
   - METADATA_STRATEGY
   - RELATIONSHIP_EXTRACTION_SCRIPT
+value_quantification:
+  vq_class: 🔵 MV/HQ
+  impact_tier: tier-2
+  potential_savings_hours: 0.5
 category: governance
 supported_until: 2028-01-01
 version: 1.0

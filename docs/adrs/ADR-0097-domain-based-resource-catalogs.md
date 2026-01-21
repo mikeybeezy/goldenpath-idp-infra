@@ -3,6 +3,10 @@ id: ADR-0097-domain-based-resource-catalogs
 title: 'ADR-0097: Domain-Based Resource Catalogs'
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -32,10 +36,6 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: 2028-01-05
 version: '1.0'
 dependencies:

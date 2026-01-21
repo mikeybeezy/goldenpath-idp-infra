@@ -134,6 +134,11 @@ breaking_change: false
 **Purpose:** PR validation checks
 **Trigger:** Pull requests
 
+### rds-prevent-destroy-guard.yml
+**Purpose:** Block `prevent_destroy = false` from landing on main
+**Trigger:** Pull requests to main, push to main
+**What it does:** Fails if any `envs/*-rds/main.tf` contains `prevent_destroy = false`
+
 ### pr-labeler.yml
 **Purpose:** Auto-label PRs based on changed files
 **Trigger:** Pull requests

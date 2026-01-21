@@ -21,11 +21,16 @@ relates_to:
   - ADR-0173-governance-doc-naming-migration
   - CL-0002-bootstrap-refactor
   - CL-0063-pr-metadata-auto-heal
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: governance
 supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # PR Guardrails (GoldenPath IDP)
 
 Doc contract:

@@ -13,6 +13,7 @@ relates_to:
   - s3-catalog
   - session-2026-01-17-s3-request-flow-planning
 ---
+
 ## How It Works: S3 Bucket Request Flow
 
 This document explains the technical lifecycle of an S3 bucket request, from the developer form in Backstage to a fully provisioned, secured bucket in AWS.

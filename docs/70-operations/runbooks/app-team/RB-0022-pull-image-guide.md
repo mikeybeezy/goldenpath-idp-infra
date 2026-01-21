@@ -2,18 +2,23 @@
 id: RB-0022-pull-image-guide
 title: 'App Team Runbook: Pull Image Guide'
 type: runbook
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 reliability:
   rollback_strategy: not-applicable
   observability_tier: bronze
   maturity: 1
+schema_version: 1
 relates_to:
   - RUNBOOK_REQUEST_ECR_REGISTRY
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
 status: draft
-category: runbooks
 supported_until: 2028-01-05
 version: '1.0'
 dependencies:

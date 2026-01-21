@@ -3,6 +3,10 @@ id: ADR-0161
 title: 'ADR-0161: Standard Ephemeral Infrastructure Stack'
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -28,15 +32,12 @@ tags:
   - postgres
   - simulation
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 date: 2026-01-15
 deciders:
   - platform-team
 ---
+
 ## ADR-0161: Standard Ephemeral Infrastructure Stack
 
 **Status**: Accepted

@@ -4,6 +4,10 @@ title: 'ADR-0172: CD Promotion Strategy with Approval Gates'
 type: adr
 status: active
 domain: platform-core
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: high
+  potential_savings_hours: 8.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -29,14 +33,11 @@ tags:
   - promotion
   - approval-gates
 inheritance: {}
-value_quantification:
-  vq_class: 🔴 HV/HQ
-  impact_tier: high
-  potential_savings_hours: 8.0
 supported_until: 2028-01-18
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0172: CD Promotion Strategy with Approval Gates
 
 - **Status:** Active

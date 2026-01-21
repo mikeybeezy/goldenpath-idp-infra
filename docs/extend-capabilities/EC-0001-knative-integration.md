@@ -18,6 +18,7 @@ vq_class: 🟡 HV/LQ
 estimated_roi: $13,000/year
 effort_estimate: 9 weeks
 ---
+
 ## Executive Summary
 
 Knative provides a Kubernetes-native serverless platform that could enhance Golden Path IDP by enabling:

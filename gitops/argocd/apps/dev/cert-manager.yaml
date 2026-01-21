@@ -21,7 +21,7 @@ spec:
         valueFiles:
           - $values/gitops/helm/cert-manager/values/dev.yaml
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      targetRevision: HEAD
+      targetRevision: development
       ref: values
   ignoreDifferences:
     - group: admissionregistration.k8s.io

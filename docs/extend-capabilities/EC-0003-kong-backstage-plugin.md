@@ -19,8 +19,8 @@ priority: high
 vq_class: 🔴 HV/HQ
 estimated_roi: $110K/year (license avoidance + productivity + toil reduction)
 effort_estimate: 4 weeks
-owner: platform-team
 ---
+
 ## Executive Summary
 
 Enable teams to self-service Kong ingress configuration through Backstage, following the established contract-driven pattern. This removes the platform team as a bottleneck for:

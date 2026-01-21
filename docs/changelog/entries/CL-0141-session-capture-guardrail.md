@@ -37,11 +37,11 @@ tags:
   - guardrail
   - ci
 inheritance: {}
+supported_until: 2028-01-17
 value_quantification:
   vq_class: 🔵 MV/HQ
   impact_tier: low
   potential_savings_hours: 4.0
-supported_until: 2028-01-17
 date: 2026-01-17
 author: platform-team
 ---

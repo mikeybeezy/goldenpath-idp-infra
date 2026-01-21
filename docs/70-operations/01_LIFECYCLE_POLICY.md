@@ -15,6 +15,10 @@ relates_to:
   - 70_OPERATIONS_README
   - ADR-0007-platform-environment-model
   - CL-0021-doc-taxonomy-refactor
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: compliance
 supported_until: 2028-01-01
 version: 1.0

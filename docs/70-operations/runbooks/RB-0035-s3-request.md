@@ -2,6 +2,11 @@
 id: RB-0035-s3-request
 title: S3 Bucket Request Operations (Runbook)
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: medium
@@ -10,6 +15,7 @@ reliability:
   rollback_strategy: terraform-destroy
   observability_tier: bronze
   maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0170
   - CL-0146
@@ -20,7 +26,11 @@ relates_to:
   - SCRIPT-0037
   - s3-catalog
   - session-2026-01-17-s3-request-flow-planning
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 1.0
 dependencies:
@@ -28,6 +38,7 @@ dependencies:
   - script:s3_request_parser
 breaking_change: false
 ---
+
 ## S3 Bucket Request Operations (Runbook)
 
 This runbook covers operational procedures for the S3 self-service request system.

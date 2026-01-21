@@ -2,6 +2,11 @@
 id: RB-0005-golden-path-validation
 title: 'Runbook: Golden Path Validation'
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: access
@@ -10,13 +15,18 @@ reliability:
   rollback_strategy: rerun-validation
   observability_tier: silver
   maturity: 1
+schema_version: 1
 relates_to:
   - 39_GOLDEN_PATH_VALIDATION
   - BOOTSTRAP_README
   - CI_WORKFLOWS
   - DOCS_RUNBOOKS_README
   - TEARDOWN_README
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 1.0
 dependencies:

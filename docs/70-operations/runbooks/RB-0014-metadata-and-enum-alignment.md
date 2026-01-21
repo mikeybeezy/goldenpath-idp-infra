@@ -2,21 +2,28 @@
 id: RB-0014-metadata-and-enum-alignment
 title: Metadata & Enum Alignment
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: low
   coupling_risk: high
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-  maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - DOCS_RUNBOOKS_README
   - GOVERNANCE_VOCABULARY
   - RB-0013-leak-protection-management
   - RB-0015-repo-health-and-hygiene
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
+supported_until: '2028-01-01'
 ---
 
 ## RB-0013: Metadata & Enum Alignment
