@@ -2,6 +2,11 @@
 id: RB-0031-idp-stack-deployment
 title: IDP Stack Deployment (Keycloak + Backstage)
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,6 +15,7 @@ reliability:
   rollback_strategy: argocd-sync
   observability_tier: silver
   maturity: 2
+schema_version: 1
 relates_to:
   - 30_PLATFORM_RDS_ARCHITECTURE
   - ADR-0160
@@ -26,11 +32,16 @@ relates_to:
   - SESSION_CAPTURE_2026_01_17_01
   - agent_session_summary
   - session_summary_template
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-15
 version: '1.0'
 breaking_change: false
 ---
+
 ## IDP Stack Deployment Runbook (Keycloak + Backstage)
 
 This runbook provides the complete sequence to deploy and verify the IDP core stack (Keycloak and Backstage) on a new or existing EKS cluster.

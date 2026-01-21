@@ -121,8 +121,8 @@ variable "build_id" {
 |-------------------|----------|--------|
 | `persistent` | `"persistent"` | ✅ Yes |
 | `ephemeral` | `"20-01-26-01"` | ✅ Yes |
-| `ephemeral` | `""` | ❌ No (must be set) |
-| `ephemeral` | `"persistent"` | ❌ No (must match DD-MM-YY-NN) |
+| `ephemeral` | `""` |  No (must be set) |
+| `ephemeral` | `"persistent"` |  No (must match DD-MM-YY-NN) |
 | `persistent` | `""` | ✅ Yes (default) |
 
 ## Validation
@@ -166,7 +166,7 @@ Verified that the Terraform validation fix introduces **no breaking changes**.
 
 | Scenario | Before Fix | After Fix |
 |----------|-----------|-----------|
-| `make deploy-persistent ENV=dev` with `build_id="persistent"` | ❌ TF validation fails | ✅ Works |
+| `make deploy-persistent ENV=dev` with `build_id="persistent"` |  TF validation fails | ✅ Works |
 | `make deploy ENV=dev BUILD_ID=20-01-26-01` | ✅ Works | ✅ Works |
 | CI with `TF_VAR_build_id=20-01-26-01` | ✅ Works | ✅ Works |
 

@@ -18,6 +18,10 @@ relates_to:
   - CL-XXXX
   - METADATA_STRATEGY
   - METADATA_VALIDATION_GUIDE
+value_quantification:
+  vq_class: 🔵 MV/HQ
+  impact_tier: tier-2
+  potential_savings_hours: 0.5
 supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false

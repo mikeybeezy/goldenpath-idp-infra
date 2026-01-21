@@ -2,13 +2,24 @@
 id: RB-0026
 title: Local Secret Generation & Targeting
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
 relates_to:
   - ADR-0143
   - ADR-0144
   - CL-0106-workflow-driven-secret-provisioning
   - DOCS_RUNBOOKS_README
   - SECRET_REQUEST_FLOW
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
+supported_until: '2028-01-01'
 version: '1.2'
 ---
 

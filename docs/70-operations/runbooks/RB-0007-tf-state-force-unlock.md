@@ -2,6 +2,11 @@
 id: RB-0007-tf-state-force-unlock
 title: Terraform State Force Unlock (Runbook)
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,13 +15,18 @@ reliability:
   rollback_strategy: not-applicable
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - 32_TERRAFORM_STATE_AND_LOCKING
   - CI_WORKFLOWS
   - DOCS_RUNBOOKS_README
   - RB-0033-persistent-cluster-teardown
   - RB-0035-s3-request
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 1.0
 dependencies:
@@ -24,6 +34,7 @@ dependencies:
   - module:dynamodb
 breaking_change: false
 ---
+
 # Terraform State Force Unlock (Runbook)
 
 Use this only when a Terraform run left a stale lock and no other Terraform

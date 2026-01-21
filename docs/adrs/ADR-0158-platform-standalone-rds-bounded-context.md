@@ -3,6 +3,10 @@ id: ADR-0158-platform-standalone-rds-bounded-context
 title: 'ADR-0158: Standalone RDS as Bounded Context with Deletion Protection'
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: 🟢 HV/HQ
+  impact_tier: high
+  potential_savings_hours: 80.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -50,10 +54,6 @@ tags:
   - persistence
   - deletion-protection
 inheritance: {}
-value_quantification:
-  vq_class: 🟢 HV/HQ
-  impact_tier: high
-  potential_savings_hours: 80.0
 supported_until: 2028-01-15
 version: 1.0
 breaking_change: true

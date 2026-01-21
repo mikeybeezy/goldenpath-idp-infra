@@ -25,8 +25,8 @@ priority: medium
 vq_class: 🟡 HV/LQ
 estimated_roi: $15,000/year (reduced MTTR + platform team toil)
 effort_estimate: 2-6 weeks (depending on approach)
-owner: platform-team
 ---
+
 ## Executive Summary
 
 Build an AI-powered copilot for GoldenPath IDP that assists operators with platform tasks using **Retrieval-Augmented Generation (RAG)** over existing runbooks, documentation, and operational knowledge. The copilot:

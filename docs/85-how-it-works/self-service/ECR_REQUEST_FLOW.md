@@ -8,6 +8,7 @@ relates_to:
   - CATALOG_SYSTEMS
   - session-2026-01-17-eks-backstage-scaffolder
 ---
+
 ## How It Works: ECR Request Flow
 
 This document explains the technical lifecycle of an ECR (Elastic Container Registry) request, from the developer "Wizard" in Backstage to the automated provisioning in AWS.

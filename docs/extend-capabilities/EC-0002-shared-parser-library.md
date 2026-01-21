@@ -19,6 +19,7 @@ vq_class: 🟡 HV/LQ
 estimated_roi: Reduced duplication, faster new parser development
 effort_estimate: 2-3 weeks
 ---
+
 ## Shared Parser Library for Contract-Driven Requests
 
 This document proposes extracting common functionality from parser scripts into a shared library to reduce duplication and accelerate new parser development.

@@ -3,6 +3,10 @@ id: ADR-0159-backstage-catalog-registry-sync
 title: 'ADR-0159: Backstage Catalog Sync to Governance Registry'
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: 🟢 HV/HQ
+  impact_tier: medium
+  potential_savings_hours: 20.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -29,10 +33,6 @@ tags:
   - catalog
   - self-service
 inheritance: {}
-value_quantification:
-  vq_class: 🟢 HV/HQ
-  impact_tier: medium
-  potential_savings_hours: 20.0
 supported_until: 2028-01-15
 version: 1.0
 breaking_change: false

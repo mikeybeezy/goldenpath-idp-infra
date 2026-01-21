@@ -429,8 +429,7 @@ Last updated: 2026-01-20
 
 Fixed. The correct commands are:
 
-Cluster Type	Deploy Command
-```
-Persistent	make deploy-persistent ENV=dev
-Ephemeral	make deploy ENV=dev BUILD_ID=20-01-26-01
-```
+| Cluster Type | Deploy Command |
+|--------------|----------------|
+| Persistent | `make deploy-persistent ENV=dev` |
+| Ephemeral | `make deploy ENV=dev BUILD_ID=20-01-26-01` |

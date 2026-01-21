@@ -3,6 +3,10 @@ id: 01_adr_index
 title: metadata
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -187,12 +191,9 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: '2028-01-01'
 ---
+
 id: 01_adr_index
 title: ADR Index (GoldenPath IDP)
 type: adr
@@ -558,7 +559,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0167](ADR-0167-session-capture-guardrail.md) | Platform | Session Capture Append-Only Guardrail | Proposed | 2026-01-17 | Session captures are intended to preserve context for AI and human collaboration, but without enforcement they can drift, be overwritten, or lose traceability. We need a standardized, append-only f... |
 | [ADR-0168](ADR-0168-eks-request-parser-and-mode-aware-workflows.md) | Platform | EKS Request Parser and Mode-Aware Workflows | Proposed | 2026-01-17 | EKS provisioning needed the same contract-driven, parser-first path used for RDS and Secrets, but EKS requests were either implicit (Terraform edits) or blocked by the scope gate. This created drif... |
 | [ADR-0169](ADR-0169-secret-request-system-generated-ids.md) | Platform | System-Generated SecretRequest IDs with CI Immutability Guard | Proposed | 2026-01-17 | SecretRequest identifiers are used for governance, auditability, and traceability across request files, generated tfvars, and Terraform targets. When IDs are manually entered, they are prone to col... |
-| [ADR-0170](ADR-0170-build-pipeline-architecture.md) | Platform | Build Pipeline Architecture and Multi-Repo Strategy | Accepted | 2026-01-19 | GoldenPath IDP needs a standardized build pipeline that: |
+| [ADR-0170](ADR-0170-build-pipeline-architecture.md) | Platform | Build Pipeline Architecture and Multi-Repo Strategy | Proposed | 2026-01-19 | GoldenPath IDP needs a standardized build pipeline that: |
 | [ADR-0170](ADR-0170-route53-terraform-module.md) | Platform | Route53 DNS Management via Terraform Module | Proposed | 2026-01-21 | The Golden Path IDP platform requires DNS management for developer access to tooling services (ArgoCD, Keycloak, Backstage, Grafana). The domain`goldenpathidp.io`is registered with Namecheap, and s... |
 | [ADR-0170](ADR-0170-s3-self-service-request-system.md) | Platform | S3 Self-Service Request System | Proposed | 2026-01-17 | S3 buckets are the third pillar of the core infrastructure trio (RDS, ECR, S3). Currently, bucket provisioning requires direct Terraform access or manual requests, creating inconsistent configurati... |
 | [ADR-0171](ADR-0171-platform-application-packaging-strategy.md) | Platform | Application Packaging Strategy - Helm vs Kustomize | Active | 2026-01-0? | ADR-0020 established that we use a hybrid approach (Helm + Kustomize) but did not provide clear guidance on **when to choose each tool**. This led to inconsistent decisions and confusion about whet... |

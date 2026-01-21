@@ -4,6 +4,10 @@ title: 'ADR-0136: Tooling config identity sidecars'
 type: adr
 status: proposed
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: proposed
 exempt: false
@@ -25,10 +29,6 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: 2028-01-09
 version: 1.0
 breaking_change: false

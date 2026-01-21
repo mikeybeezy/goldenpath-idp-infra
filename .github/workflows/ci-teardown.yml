@@ -35,11 +35,12 @@ on:
           - ephemeral
           - persistent
       teardown_version:
-        description: "Teardown script version (v4 recommended - includes secrets cleanup)"
+        description: "Teardown script version (v5 recommended - includes ExternalDNS sequencing)"
         required: true
-        default: "v4"
+        default: "v5"
         type: choice
         options:
+          - v5
           - v4
           - v3
           - v2
@@ -103,11 +104,12 @@ jobs:
     outputs:
       duration: ${{ steps.timed_teardown.outputs.duration }}
       error_message: ${{ steps.timed_teardown.outputs.error_message }}
+      build_id: ${{ steps.sanitize.outputs.build_id }}
     env:
       ENV: ${{ inputs.env }}
       AWS_REGION: ${{ inputs.region }}
       CLUSTER_NAME: ${{ inputs.cluster_name }}
-      BUILD_ID: ${{ inputs.build_id }}
+      BUILD_ID: ${{ needs.teardown.outputs.build_id }}
       CLUSTER_LIFECYCLE: ${{ inputs.lifecycle }}
       TEARDOWN_VERSION: ${{ inputs.teardown_version }}
       TF_DIR: envs/${{ inputs.env }}
@@ -135,6 +137,7 @@ jobs:
           fi
 
       - name: Sanitize inputs
+        id: sanitize
         run: |
           # Canonicalize: workflow input build_id -> env BUILD_ID (used by Makefile)
           # Trim whitespace from build_id to prevent state key issues
@@ -143,9 +146,10 @@ jobs:
             echo "Warning: build_id had leading/trailing whitespace, sanitized to: ${SANITIZED_BUILD_ID}"
           fi
           if [[ "${CLUSTER_LIFECYCLE}" == "persistent" && -z "${SANITIZED_BUILD_ID}" ]]; then
-            SANITIZED_BUILD_ID="persistent"
+            SANITIZED_BUILD_ID="$(date -u +%d-%m-%y)-00"
           fi
           echo "BUILD_ID=${SANITIZED_BUILD_ID}" >> "${GITHUB_ENV}"
+          echo "build_id=${SANITIZED_BUILD_ID}" >> "${GITHUB_OUTPUT}"
 
           # Validate build_id format (ephemeral only)
           if [[ "${CLUSTER_LIFECYCLE}" == "ephemeral" ]]; then
@@ -305,7 +309,7 @@ jobs:
         id: generate
         run: |
           ./scripts/generate-teardown-log.sh \
-            "${{ inputs.build_id }}" \
+            "${{ needs.teardown.outputs.build_id }}" \
             "${{ needs.teardown.outputs.duration }}" \
             "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
             "${{ steps.outcome.outputs.outcome }}" \
@@ -317,7 +321,7 @@ jobs:
         continue-on-error: true
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "docs: auto-generate teardown log for build ${{ inputs.build_id }}"
+          commit_message: "docs: auto-generate teardown log for build ${{ needs.teardown.outputs.build_id }}"
           file_pattern: "docs/build-run-logs/TD-*.md"
 
       - name: Record teardown timing to governance-registry
@@ -353,11 +357,11 @@ jobs:
           START_TIME=$(date -u -d "@${START_EPOCH}" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u +%Y-%m-%dT%H:%M:%SZ)
 
           # Append teardown record (resources_destroyed captured from Destroy complete line would need log parsing)
-          echo "${START_TIME},${END_TIME},teardown,${{ inputs.env }},${{ inputs.build_id }},${DURATION:-0},${EXIT_CODE},0,0,0,${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> "$CSV_FILE"
+          echo "${START_TIME},${END_TIME},teardown,${{ inputs.env }},${{ needs.teardown.outputs.build_id }},${DURATION:-0},${EXIT_CODE},0,0,0,${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> "$CSV_FILE"
 
           # Commit and push
           git add "$CSV_FILE"
-          git commit -m "chore(registry): record teardown for ${{ inputs.env }} build ${{ inputs.build_id }}
+          git commit -m "chore(registry): record teardown for ${{ inputs.env }} build ${{ needs.teardown.outputs.build_id }}
 
           Duration: ${DURATION:-0}s
           Outcome: ${OUTCOME}

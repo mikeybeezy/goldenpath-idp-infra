@@ -2,14 +2,15 @@
 id: OB-0001-developer-security-tooling
 title: Developer Security Tooling Onboarding
 type: onboarding
+relates_to:
+  - ADR-0170
+  - session-2026-01-19-build-pipeline-architecture
 effective_date: 2026-01-19
 related_govs:
   - GOV-0012
   - GOV-0013
-relates_to:
-  - ADR-0170
-  - session-2026-01-19-build-pipeline-architecture
 ---
+
 # OB-0001: Developer Security Tooling Onboarding
 
 ## Purpose

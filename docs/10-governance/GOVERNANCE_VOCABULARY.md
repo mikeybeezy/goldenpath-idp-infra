@@ -17,6 +17,10 @@ relates_to:
   - PLATFORM_DASHBOARDS
   - RB-0014-metadata-and-enum-alignment
   - RB-0016-extending-governance-vocabulary
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 ---
 
 # Governance Vocabulary & Allowed Values

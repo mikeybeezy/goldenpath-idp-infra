@@ -4,6 +4,10 @@ title: 'ADR-0084: Enhanced Metadata Schema for Knowledge Graph'
 type: adr
 status: active
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -35,14 +39,11 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
+
 # ADR-0084: Enhanced Metadata Schema for Knowledge Graph
 
 **Date:** 2026-01-04

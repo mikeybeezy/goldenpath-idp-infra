@@ -3,6 +3,10 @@ id: ADR-0145
 title: 'ADR-0145: Governance Registry Mirror Pattern'
 type: adr
 domain: platform-governance
+value_quantification:
+  vq_class: 🔵 MV/HQ
+  impact_tier: high
+  potential_savings_hours: 5.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -28,10 +32,6 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: 🔵 MV/HQ
-  impact_tier: high
-  potential_savings_hours: 5.0
 supported_until: '2028-01-12'
 ---
 

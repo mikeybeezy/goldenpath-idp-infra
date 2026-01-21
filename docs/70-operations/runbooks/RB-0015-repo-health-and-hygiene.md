@@ -2,6 +2,11 @@
 id: RB-0015-repo-health-and-hygiene
 title: Repo Health & Hygiene
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: low
@@ -10,6 +15,7 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - CAPABILITY_LEDGER
@@ -19,7 +25,12 @@ relates_to:
   - RB-0013-leak-protection-management
   - RB-0014-metadata-and-enum-alignment
   - RB-0016-extending-governance-vocabulary
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
+supported_until: '2028-01-01'
 ---
 
 ## RB-0014: Repo Health & Hygiene

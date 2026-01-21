@@ -2,6 +2,11 @@
 id: RB-0033-persistent-cluster-teardown
 title: Persistent Cluster Teardown
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,6 +15,7 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: silver
   maturity: 1
+schema_version: 1
 relates_to:
   - 32_TERRAFORM_STATE_AND_LOCKING
   - 36_STATE_KEY_STRATEGY
@@ -25,11 +31,16 @@ relates_to:
   - RB-0034-persistent-cluster-deployment
   - agent_session_summary
   - session-2026-01-17-eks-backstage-scaffolder
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-17
 version: '1.0'
 breaking_change: false
 ---
+
 # Persistent Cluster Teardown Runbook
 
 This runbook covers teardown for **persistent** EKS clusters that use the root

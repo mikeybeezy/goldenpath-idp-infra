@@ -23,11 +23,11 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
+supported_until: 2028-01-11
 value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
-supported_until: 2028-01-11
 version: '1.0'
 breaking_change: false
 ---

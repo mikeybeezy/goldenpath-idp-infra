@@ -25,11 +25,11 @@ tags:
   - persistent
   - safety
 inheritance: {}
+supported_until: 2028-01-20
 value_quantification:
   vq_class: 🔵 MV/HQ
   impact_tier: low
   potential_savings_hours: 1.0
-supported_until: 2028-01-20
 date: 2026-01-20
 author: platform-team
 ---

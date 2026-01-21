@@ -13,6 +13,10 @@ reliability:
 relates_to:
   - ADR-0111-platform-documentation-auto-healing
   - ADR_INDEX_AUTOMATION_SPEC
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: governance
 supported_until: 2028-01-01
 version: '1.0'

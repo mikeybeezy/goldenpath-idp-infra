@@ -4,6 +4,10 @@ title: 'ADR-0020: Hybrid GitOps approach with Helm and Kustomize'
 type: adr
 status: superseded
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: superseded
 exempt: false
@@ -23,14 +27,11 @@ superseded_by:
   - ADR-0171-platform-application-packaging-strategy
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0020: Hybrid GitOps approach with Helm and Kustomize
 
 - **Status:** Superseded

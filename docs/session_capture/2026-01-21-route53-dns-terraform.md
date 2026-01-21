@@ -3,10 +3,6 @@ id: 2026-01-21-route53-dns-terraform
 title: Route53 DNS Management in Terraform
 type: session-capture
 status: completed
-owner: platform-team
-domain: platform-core
-date: 2026-01-21
-agent: Claude Opus 4.5
 relates_to:
   - ADR-0162-kong-ingress-dns-strategy
   - ADR-0170-route53-terraform-module
@@ -16,6 +12,8 @@ tags:
   - dns
   - terraform
   - kong
+date: 2026-01-21
+agent: Claude Opus 4.5
 ---
 
 # Session Capture: Route53 DNS Management in Terraform
@@ -333,31 +331,31 @@ All files listed in the "Files Created" section have been verified:
 
 | File | Status |
 |------|--------|
-| `docs/adrs/ADR-0175-externaldns-wildcard-ownership.md` | ✓ Exists |
-| `docs/changelog/entries/CL-0159-externaldns-wildcard-ownership.md` | ✓ Exists |
-| `gitops/argocd/apps/dev/external-dns.yaml` | ✓ Exists |
-| `gitops/argocd/apps/test/external-dns.yaml` | ✓ Exists |
-| `gitops/argocd/apps/staging/external-dns.yaml` | ✓ Exists |
-| `gitops/argocd/apps/prod/external-dns.yaml` | ✓ Exists |
-| `gitops/helm/external-dns/values/dev.yaml` | ✓ Exists |
-| `gitops/helm/external-dns/values/test.yaml` | ✓ Exists |
-| `gitops/helm/external-dns/values/staging.yaml` | ✓ Exists |
-| `gitops/helm/external-dns/values/prod.yaml` | ✓ Exists |
-| `modules/aws_route53/main.tf` | ✓ Exists |
-| `modules/aws_route53/variables.tf` | ✓ Exists |
-| `modules/aws_route53/outputs.tf` | ✓ Exists |
-| `backstage-helm/backstage-catalog/docs/changelogs/changelog-0159.yaml` | ✓ Exists |
+| `docs/adrs/ADR-0175-externaldns-wildcard-ownership.md` |  Exists |
+| `docs/changelog/entries/CL-0159-externaldns-wildcard-ownership.md` |  Exists |
+| `gitops/argocd/apps/dev/external-dns.yaml` |  Exists |
+| `gitops/argocd/apps/test/external-dns.yaml` |  Exists |
+| `gitops/argocd/apps/staging/external-dns.yaml` |  Exists |
+| `gitops/argocd/apps/prod/external-dns.yaml` |  Exists |
+| `gitops/helm/external-dns/values/dev.yaml` |  Exists |
+| `gitops/helm/external-dns/values/test.yaml` |  Exists |
+| `gitops/helm/external-dns/values/staging.yaml` |  Exists |
+| `gitops/helm/external-dns/values/prod.yaml` |  Exists |
+| `modules/aws_route53/main.tf` |  Exists |
+| `modules/aws_route53/variables.tf` |  Exists |
+| `modules/aws_route53/outputs.tf` |  Exists |
+| `backstage-helm/backstage-catalog/docs/changelogs/changelog-0159.yaml` |  Exists |
 
 ### Key Claims Verified
 
 | Claim | Status | Evidence |
 |-------|--------|----------|
-| ExternalDNS owns wildcard records | ✓ Accurate | `create_wildcard_record = false` in Terraform |
-| Kong proxy has ExternalDNS annotation | ✓ Accurate | `gitops/helm/kong/values/dev.yaml:27`: `external-dns.alpha.kubernetes.io/hostname: "*.dev.goldenpathidp.io"` |
-| ArgoCD app owner is `platform-team` | ✓ Accurate | `gitops/argocd/apps/dev/external-dns.yaml:9` |
-| ExternalDNS policy is `sync` | ✓ Accurate | `gitops/helm/external-dns/values/dev.yaml:20` |
-| ServiceAccount `create: false` (IRSA) | ✓ Accurate | `gitops/helm/external-dns/values/dev.yaml:38-39` |
-| ExternalDNS IRSA outputs exist | ✓ Accurate | `modules/aws_iam/outputs.tf:37-44` |
+| ExternalDNS owns wildcard records |  Accurate | `create_wildcard_record = false` in Terraform |
+| Kong proxy has ExternalDNS annotation |  Accurate | `gitops/helm/kong/values/dev.yaml:27`: `external-dns.alpha.kubernetes.io/hostname: "*.dev.goldenpathidp.io"` |
+| ArgoCD app owner is `platform-team` |  Accurate | `gitops/argocd/apps/dev/external-dns.yaml:9` |
+| ExternalDNS policy is `sync` |  Accurate | `gitops/helm/external-dns/values/dev.yaml:20` |
+| ServiceAccount `create: false` (IRSA) |  Accurate | `gitops/helm/external-dns/values/dev.yaml:38-39` |
+| ExternalDNS IRSA outputs exist |  Accurate | `modules/aws_iam/outputs.tf:37-44` |
 
 ### Outstanding Items Requiring Live Cluster Verification
 
@@ -648,11 +646,11 @@ EXTERNALDNS_TXT_PREFIX="${EXTERNALDNS_TXT_PREFIX:-external-dns}"
 
 | Check | Status |
 |-------|--------|
-| No hardcoded credentials | ✓ |
-| Uses AWS CLI credential chain | ✓ |
-| TEARDOWN_CONFIRM gate required | ✓ |
-| No interactive prompts in dangerous paths | ✓ |
-| Proper quoting throughout | ✓ |
+| No hardcoded credentials |  |
+| Uses AWS CLI credential chain |  |
+| TEARDOWN_CONFIRM gate required |  |
+| No interactive prompts in dangerous paths |  |
+| Proper quoting throughout |  |
 
 ### Summary
 

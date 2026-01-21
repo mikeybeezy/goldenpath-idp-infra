@@ -2,6 +2,11 @@
 id: RB-0008-managed-lb-cleanup
 title: Managed LB Resource Cleanup (Runbook)
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,13 +15,18 @@ reliability:
   rollback_strategy: not-applicable
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - 04_LB_FINALIZER_STUCK
   - 15_TEARDOWN_AND_CLEANUP
   - CI_WORKFLOWS
   - DOCS_RUNBOOKS_README
   - TEARDOWN_README
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 1.0
 dependencies:

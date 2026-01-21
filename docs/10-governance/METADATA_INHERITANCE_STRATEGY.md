@@ -13,6 +13,10 @@ reliability:
 relates_to:
   - CL-0076-metadata-inheritance-active-governance-and-leak-protection
   - CL-0076-metadata-inheritance-and-active-governance
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 ---
 
 # Metadata Inheritance & Active Governance Strategy

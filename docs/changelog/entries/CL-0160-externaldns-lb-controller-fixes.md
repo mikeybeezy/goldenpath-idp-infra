@@ -31,11 +31,11 @@ tags:
   - iam
   - bugfix
 inheritance: {}
+supported_until: 2028-01-21
 value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: high
   potential_savings_hours: 4.0
-supported_until: 2028-01-21
 date: 2026-01-21
 author: platform-team
 ---

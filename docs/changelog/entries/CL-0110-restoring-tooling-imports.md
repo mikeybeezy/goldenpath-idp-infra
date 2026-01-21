@@ -24,11 +24,11 @@ tags:
   - tooling
   - python
 inheritance: {}
+supported_until: '2028-01-01'
 value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 1.0
-supported_until: '2028-01-01'
 ---
 
 # CL-0110: Restoring Python Tooling Imports

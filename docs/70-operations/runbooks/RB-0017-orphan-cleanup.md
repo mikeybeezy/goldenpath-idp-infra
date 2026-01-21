@@ -2,6 +2,11 @@
 id: RB-0017-orphan-cleanup
 title: Orphan Cleanup
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,6 +15,7 @@ reliability:
   rollback_strategy: not-applicable
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - 10_REPO_DECOMMISSIONING
   - 15_TEARDOWN_AND_CLEANUP
@@ -17,11 +23,16 @@ relates_to:
   - DOCS_RUNBOOKS_README
   - RB-0033-persistent-cluster-teardown
   - TEARDOWN_README
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false
 ---
+
 # Orphan Cleanup
 
 ## Purpose

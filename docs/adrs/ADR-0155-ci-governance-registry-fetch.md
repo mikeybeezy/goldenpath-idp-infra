@@ -3,6 +3,10 @@ id: ADR-0155-ci-governance-registry-fetch
 title: 'ADR-0155: CI Governance Registry Fetch for Build ID Validation'
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.5
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -25,10 +29,6 @@ tags:
   - governance
   - build-id
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.5
 supported_until: '2028-01-14'
 ---
 

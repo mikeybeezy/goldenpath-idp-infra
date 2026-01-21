@@ -20,6 +20,7 @@ dependencies:
   - module:governance-engine
 breaking_change: false
 ---
+
 # Federated Metadata Strategy
 
 ## Purpose

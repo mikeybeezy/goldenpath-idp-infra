@@ -3,6 +3,10 @@ id: ADR-0170
 title: Route53 DNS Management via Terraform Module
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: 🟢 HV/HQ
+  impact_tier: high
+  potential_savings_hours: 4.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -23,10 +27,6 @@ tags:
   - terraform
   - infrastructure
 inheritance: {}
-value_quantification:
-  vq_class: 🟢 HV/HQ
-  impact_tier: high
-  potential_savings_hours: 4.0
 supported_until: '2028-01-21'
 date: 2026-01-21
 deciders:

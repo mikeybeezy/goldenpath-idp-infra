@@ -13,6 +13,10 @@ reliability:
 relates_to:
   - 07_AI_AGENT_GOVERNANCE
   - ADR-0133
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: governance
 supported_until: 2028-01-09
 version: '1.0'

@@ -2,17 +2,31 @@
 id: CL-0143
 title: EKS Request System
 type: changelog
-domain: platform-core
-owner: platform-team
 status: active
-date: 2026-01-17
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
 relates_to:
   - ADR-0165
   - ADR-0168
   - CL-0142
   - EKS_REQUEST_FLOW
   - session-2026-01-17-eks-backstage-scaffolder
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-17
 ---
+
 # CL-0143: EKS Request System
 
 ## Summary

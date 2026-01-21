@@ -4,6 +4,10 @@ title: 'ADR-0164: Teardown V3 with Enhanced Reliability and RDS Support'
 type: adr
 status: active
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: high
+  potential_savings_hours: 4.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -30,10 +34,6 @@ tags:
   - rds
   - reliability
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: high
-  potential_savings_hours: 4.0
 supported_until: 2028-01-16
 version: '1.0'
 breaking_change: false

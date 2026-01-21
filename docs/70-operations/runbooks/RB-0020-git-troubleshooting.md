@@ -2,17 +2,20 @@
 id: RB-0020-git-troubleshooting
 title: 'Runbook: Resolving Git Rebase Conflicts (Uncommitted Changes)'
 type: runbook
-risk_profile:
-  production_impact: low
-  security_risk: none
-  coupling_risk: low
-reliability:
-  rollback_strategy: git-revert
-  observability_tier: bronze
-  maturity: 1
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
+schema_version: 1
 relates_to:
   - DOCS_RUNBOOKS_README
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
+supported_until: '2028-01-01'
 ---
 
 # Runbook: Resolving Git Rebase Conflicts (Uncommitted Changes)

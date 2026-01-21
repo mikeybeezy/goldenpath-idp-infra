@@ -26,11 +26,11 @@ tags:
   - yaml
   - automation
 inheritance: {}
+supported_until: '2028-01-01'
 value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: medium
   potential_savings_hours: 2.0
-supported_until: '2028-01-01'
 ---
 
 # CL-0109: Multi-Document YAML Logic and De-conflicted Ownership

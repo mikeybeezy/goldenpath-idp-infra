@@ -2,15 +2,14 @@
 id: IMPLEMENTATION_SEQUENCE
 title: Golden Path IDP - Implementation Sequence
 type: implementation-plan
-status: proposed
-owner: platform-team
-priority: critical
-vq_class: 🔴 HV/HQ
 relates_to:
   - ROADMAP
   - EC-0003-kong-backstage-plugin
   - EC-0007-kpack-buildpacks-integration
   - ADR-0162-kong-ingress-dns-strategy
+status: proposed
+priority: critical
+vq_class: 🔴 HV/HQ
 ---
 
 # Golden Path IDP - Implementation Sequence

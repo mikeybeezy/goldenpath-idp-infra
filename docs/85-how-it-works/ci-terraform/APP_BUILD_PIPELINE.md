@@ -11,6 +11,7 @@ relates_to:
   - RB-0037
   - session-2026-01-19-build-pipeline-architecture
 ---
+
 This guide explains the end-to-end application build and promotion pipeline.
 It focuses on how CI, ECR, Argo CD Image Updater, Git write-back, and Argo CD
 work together to keep Git as the source of truth.

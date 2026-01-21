@@ -2,6 +2,10 @@
 id: 25_LOCAL_DEVELOPMENT
 title: Local Development Environment
 type: policy
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: compliance
 ---
 

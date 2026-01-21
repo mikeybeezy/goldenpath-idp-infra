@@ -2,6 +2,11 @@
 id: RB-0030-rds-break-glass-deletion
 title: RDS Break-Glass Deletion Procedure (Runbook)
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: critical
   security_risk: high
@@ -10,6 +15,7 @@ reliability:
   rollback_strategy: not-applicable
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - 30_PLATFORM_RDS_ARCHITECTURE
   - ADR-0158-platform-standalone-rds-bounded-context
@@ -22,7 +28,11 @@ relates_to:
   - RB-0032
   - RB-0033-persistent-cluster-teardown
   - RDS_REQUEST_FLOW
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 1.0
 dependencies:
@@ -30,6 +40,7 @@ dependencies:
   - module:terraform
 breaking_change: false
 ---
+
 ## RDS Break-Glass Deletion Procedure (Runbook)
 
 This runbook documents the intentionally difficult process for deleting platform RDS instances.

@@ -28,11 +28,11 @@ tags:
   - catalog
   - self-service
 inheritance: {}
+supported_until: 2028-01-15
 value_quantification:
   vq_class: 🔴 HV/HQ
   impact_tier: medium
   potential_savings_hours: 20.0
-supported_until: 2028-01-15
 date: 2026-01-15
 author: platform-team
 breaking_change: false

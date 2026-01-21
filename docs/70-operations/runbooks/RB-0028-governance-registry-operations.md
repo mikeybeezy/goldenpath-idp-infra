@@ -3,6 +3,10 @@ id: RB-0028
 title: Governance Registry Branch Operations
 type: runbook
 domain: operations
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: low
@@ -11,12 +15,18 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: silver
   maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0145
   - CAPABILITY_LEDGER
   - CL-0114
   - DOCS_RUNBOOKS_README
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
+supported_until: '2028-01-01'
 date: 2026-01-12
 ---
 

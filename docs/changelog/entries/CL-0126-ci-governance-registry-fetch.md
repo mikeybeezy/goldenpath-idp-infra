@@ -31,11 +31,11 @@ tags:
   - governance
   - security
 inheritance: {}
+supported_until: '2028-01-14'
 value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.5
-supported_until: '2028-01-14'
 date: 2026-01-14
 author: Michael Nouriel
 description: Adds explicit governance-registry branch fetch to CI workflows to ensure

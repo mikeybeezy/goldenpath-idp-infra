@@ -4,9 +4,15 @@ title: Local Kind Cluster with Argo CD GitOps
 type: changelog
 status: active
 owner: platform-team
-date: 2026-01-18
-author: platform-team
-category: infrastructure
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
 relates_to:
   - ADR-0055-platform-tempo-tracing-backend
   - ADR-0171-platform-application-packaging-strategy
@@ -14,7 +20,15 @@ relates_to:
   - EC-0006-competitor-analysis-tap
   - EC-0007-kpack-buildpacks-integration
   - session-2026-01-18-secrets-lifecycle
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-18
+author: platform-team
 ---
+
 # CL-0148: Local Kind Cluster with Argo CD GitOps
 
 ## Summary

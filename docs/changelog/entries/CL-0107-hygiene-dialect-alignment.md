@@ -24,11 +24,11 @@ tags:
   - automation
   - ci
 inheritance: {}
+supported_until: '2028-01-01'
 value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.5
-supported_until: '2028-01-01'
 ---
 
 # CL-0107: Hygiene Dialect Alignment and Script Idempotency

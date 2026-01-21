@@ -1,20 +1,20 @@
 ---
 id: ADR-0170
 title: Build Pipeline Architecture and Multi-Repo Strategy
-status: accepted
-date: 2026-01-19
-deciders: platform-team
-consulted: Claude Opus 4.5, Codex (GPT-5)
-informed: dev-teams
 type: adr
 domain: platform-core
 owner: platform-team
 lifecycle: active
-schema_version: 1
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: low
   coupling_risk: medium
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
+schema_version: 1
 relates_to:
   - 01_adr_index
   - ADR-0143
@@ -42,7 +42,17 @@ relates_to:
   - s3-requests-index
   - session-2026-01-17-s3-request-flow-planning
   - session-2026-01-19-build-pipeline-architecture
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-19
+deciders: platform-team
+consulted: Claude Opus 4.5, Codex (GPT-5)
+informed: dev-teams
 ---
+
 # ADR-0170: Build Pipeline Architecture and Multi-Repo Strategy
 
 ## Status

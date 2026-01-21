@@ -13,6 +13,7 @@ relates_to:
   - agent_session_summary
   - session-2026-01-17-eks-backstage-scaffolder
 ---
+
 ## How It Works: EKS Request Flow
 
 This document explains how EKS cluster requests move from Backstage to a

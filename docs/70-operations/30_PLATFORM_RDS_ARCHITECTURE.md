@@ -18,8 +18,13 @@ relates_to:
   - SESSION_CAPTURE_2026_01_17_01
   - agent_session_summary
   - session-2026-01-17-eks-backstage-scaffolder
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: compliance
 ---
+
 ## Platform RDS Architecture
 
 This living document describes the standalone RDS PostgreSQL bounded context for platform tooling applications.

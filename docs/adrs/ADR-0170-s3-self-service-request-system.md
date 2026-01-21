@@ -3,6 +3,10 @@ id: ADR-0170
 title: S3 Self-Service Request System
 type: adr
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: medium
+  potential_savings_hours: 4.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -46,15 +50,12 @@ tags:
   - governance
   - contracts
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: medium
-  potential_savings_hours: 4.0
 supported_until: '2028-01-01'
 date: 2026-01-17
 deciders:
   - platform-team
 ---
+
 ## Status
 
 Accepted

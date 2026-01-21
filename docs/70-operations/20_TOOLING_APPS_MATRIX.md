@@ -35,6 +35,7 @@ supported_until: 2028-01-15
 version: 1.0
 breaking_change: false
 ---
+
 ## Platform Tooling Apps Configuration Matrix
 
 This living document captures the configuration requirements, dependencies, and operational status of all platform tooling applications deployed via Argo CD.

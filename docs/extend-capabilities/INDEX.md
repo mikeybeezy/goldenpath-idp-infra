@@ -12,6 +12,7 @@ relates_to:
   - EC-0007-kpack-buildpacks-integration
   - agent_session_summary
 ---
+
 This directory tracks proposed platform capabilities for Golden Path IDP evaluation. Each capability is assigned an EC-XXXX ID and follows a lightweight governance model.
 
 ## Purpose

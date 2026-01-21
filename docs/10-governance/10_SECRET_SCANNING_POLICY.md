@@ -19,6 +19,10 @@ tags:
   - security
   - secrets
   - gitleaks
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: governance
 supported_until: 2028-01-10
 version: '1.0'

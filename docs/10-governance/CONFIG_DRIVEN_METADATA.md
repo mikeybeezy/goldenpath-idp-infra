@@ -12,6 +12,10 @@ reliability:
   maturity: 1
 relates_to:
   - CL-0074-config-driven-metadata-governance
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: governance
 ---
 

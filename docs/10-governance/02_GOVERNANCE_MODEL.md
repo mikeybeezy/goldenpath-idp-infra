@@ -15,6 +15,10 @@ relates_to:
   - 05_OBSERVABILITY_DECISIONS
   - 28_SECURITY_FLOOR_V1
   - 29_CD_DEPLOYMENT_CONTRACT
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 status: deprecated
 category: governance
 supported_until: 2027-01-03

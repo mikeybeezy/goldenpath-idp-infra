@@ -25,11 +25,11 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
+supported_until: 2027-01-04
 value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
-supported_until: 2027-01-04
 version: '1.0'
 breaking_change: false
 ---

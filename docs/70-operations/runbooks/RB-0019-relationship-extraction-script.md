@@ -2,6 +2,11 @@
 id: RB-0019-relationship-extraction-script
 title: Relationship Extraction Script - Usage & Operations
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,6 +15,7 @@ reliability:
   rollback_strategy: rerun-teardown
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - ADR-0026-platform-cd-deployment-contract
@@ -27,11 +33,16 @@ relates_to:
   - DOCS_RUNBOOKS_README
   - EC-0004-backstage-copilot-plugin
   - METADATA_STRATEGY
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
+
 ## Relationship Extraction Script - Usage & Operations
 
 ## Overview

@@ -1,41 +1,6 @@
 {
-  "total_reclaimed_hours": 13.1,
+  "total_reclaimed_hours": 20.1,
   "history": [
-    {
-      "timestamp": "2026-01-12T06:31:09Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 0.1
-    },
-    {
-      "timestamp": "2026-01-12T06:41:50Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 0.1
-    },
-    {
-      "timestamp": "2026-01-12T06:42:47Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 0.1
-    },
-    {
-      "timestamp": "2026-01-12T06:42:47Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 0.1
-    },
-    {
-      "timestamp": "2026-01-12T06:42:47Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 0.1
-    },
-    {
-      "timestamp": "2026-01-12T06:42:47Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 0.1
-    },
-    {
-      "timestamp": "2026-01-12T06:42:47Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 0.1
-    },
     {
       "timestamp": "2026-01-12T06:42:47Z",
       "script": "standardize_metadata.py",
@@ -499,6 +464,41 @@
     {
       "timestamp": "2026-01-20T11:13:06Z",
       "script": "validate_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-21T06:54:58Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-21T06:54:58Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-21T06:54:58Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-21T06:54:58Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-21T06:54:58Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-21T06:54:58Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-21T06:54:58Z",
+      "script": "standardize_metadata.py",
       "reclaimed_hours": 1.0
     }
   ]

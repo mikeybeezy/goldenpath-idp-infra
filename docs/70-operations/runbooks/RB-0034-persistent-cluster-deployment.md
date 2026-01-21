@@ -2,6 +2,11 @@
 id: RB-0034-persistent-cluster-deployment
 title: Persistent Cluster Deployment
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,6 +15,7 @@ reliability:
   rollback_strategy: terraform-destroy
   observability_tier: silver
   maturity: 1
+schema_version: 1
 relates_to:
   - 30_PLATFORM_RDS_ARCHITECTURE
   - 32_TERRAFORM_STATE_AND_LOCKING
@@ -19,11 +25,16 @@ relates_to:
   - RB-0031-idp-stack-deployment
   - RB-0032
   - RB-0033-persistent-cluster-teardown
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-17
 version: '1.0'
 breaking_change: false
 ---
+
 # Persistent Cluster Deployment Runbook
 
 This runbook covers deployment for **persistent** EKS clusters that use the root

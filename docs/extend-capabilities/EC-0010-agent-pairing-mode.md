@@ -3,8 +3,6 @@ id: EC-0010-agent-pairing-mode
 title: Agent Pairing Mode - Human-Machine Collaboration Protocol
 type: extension-capability
 status: proposed
-owner: platform-team
-domain: platform-core
 relates_to:
   - ADR-0167
   - EC-0008-session-capture-ui
@@ -16,6 +14,7 @@ estimated_roi: TBD (interaction model improvement)
 effort_estimate: Research phase only - implementation depends on Claude Code/Agent
   SDK
 ---
+
 ## Executive Summary
 
 A collaborative interaction protocol where human and agent can fluidly switch between "driver" and "supporter" roles during a work session. Rather than strict request-response cycles, pairing mode enables exploratory collaboration where either party can lead, propose, or observe.

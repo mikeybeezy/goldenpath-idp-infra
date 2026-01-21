@@ -2,13 +2,26 @@
 id: CL-0144
 title: Secrets Scaffolder Workflow Dispatch
 type: changelog
-domain: platform-core
-owner: platform-team
 status: active
-date: 2026-01-17
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
 relates_to:
   - SECRET_REQUEST_FLOW
   - ADR-0135
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-17
 ---
 
 # CL-0144: Secrets Scaffolder Workflow Dispatch

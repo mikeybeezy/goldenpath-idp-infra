@@ -2,6 +2,11 @@
 id: RB-0016-extending-governance-vocabulary
 title: Extending Governance Vocabulary
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: low
   security_risk: low
@@ -10,12 +15,18 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - DOCS_RUNBOOKS_README
   - GOVERNANCE_VOCABULARY
   - RB-0015-repo-health-and-hygiene
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
+supported_until: '2028-01-01'
 ---
 
 ## RB-0015: Extending Governance Vocabulary

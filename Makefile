@@ -536,7 +536,7 @@ rds-allow-delete:
 	fi; \
 	identifier="$(RDS_IDENTIFIER)"; \
 	if [ -z "$$identifier" ]; then \
-		identifier=$$(terraform -chdir=$(RDS_ENV_DIR) output -raw db_instance_identifier 2>/dev/null || true); \
+		identifier=$$($(TF_BIN) -chdir=$(RDS_ENV_DIR) output -raw db_instance_identifier 2>/dev/null || true); \
 	fi; \
 	if [ -z "$$identifier" ]; then \
 		prefix=$$(grep -E "^[[:space:]]*identifier_prefix[[:space:]]*=" "$$tfvars" | head -1 | cut -d= -f2- | tr -d "\\\"[:space:]"); \

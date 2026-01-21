@@ -4,6 +4,10 @@ title: 'ADR-0175: ExternalDNS owns wildcard records for env subdomains'
 type: adr
 status: active
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: medium
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -25,10 +29,6 @@ tags:
   - kong
   - gitops
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: medium
-  potential_savings_hours: 0.0
 supported_until: 2028-01-21
 date: 2026-01-21
 deciders:

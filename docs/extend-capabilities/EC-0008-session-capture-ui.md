@@ -3,7 +3,6 @@ id: EC-0008-session-capture-ui
 title: Session Capture and Summary UI
 type: extension-capability
 status: proposed
-owner: platform-team
 domain: catalog
 relates_to:
   - ADR-0167
@@ -16,6 +15,7 @@ vq_class: 🟡 HV/LQ
 estimated_roi: $5K/year
 effort_estimate: 2-8 hours (depending on approach)
 ---
+
 ## Executive Summary
 
 A lightweight UI layer to browse, search, and visualize session captures and agent summaries. Session captures document multi-agent collaboration, decisions made, and artifacts touched - currently stored as markdown files with YAML frontmatter.

@@ -4,6 +4,10 @@ title: 'ADR-0174: Pipeline enablement intentionally decoupled from cluster boots
 type: adr
 status: active
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: medium
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -30,14 +34,11 @@ tags:
   - decoupling
   - gitops
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: medium
-  potential_savings_hours: 0.0
 supported_until: 2027-01-19
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0174: Pipeline enablement intentionally decoupled from cluster bootstrap
 
 Filename: `ADR-0174-pipeline-decoupling-from-cluster-bootstrap.md`

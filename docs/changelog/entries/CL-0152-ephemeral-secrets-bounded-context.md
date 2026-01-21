@@ -27,11 +27,11 @@ tags:
   - bounded-context
   - rds
 inheritance: {}
+supported_until: 2028-01-20
 value_quantification:
   vq_class: 🟢 HV/HQ
   impact_tier: medium
   potential_savings_hours: 4.0
-supported_until: 2028-01-20
 date: 2026-01-20
 author: platform-team
 ---

@@ -29,6 +29,10 @@ relates_to:
   - ADR-0164-teardown-v3-enhanced-reliability
   - BOOTSTRAP_10_BOOTSTRAP_README
   - RB-0006-lb-eni-orphans
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
 category: compliance
 supported_until: 2028-01-01
 version: '1.0'

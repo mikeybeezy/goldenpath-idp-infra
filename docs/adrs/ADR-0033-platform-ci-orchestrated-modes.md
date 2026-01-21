@@ -4,6 +4,10 @@ title: 'ADR-0033: CI orchestrated modes for infra lifecycle'
 type: adr
 status: active
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -25,14 +29,11 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: 2027-01-03
 version: '1.0'
 breaking_change: false
 ---
+
 # ADR-0033: CI orchestrated modes for infra lifecycle
 
 - **Status:** Accepted

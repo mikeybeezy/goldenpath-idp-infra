@@ -2,6 +2,11 @@
 id: RB-0011-repo-decommissioning
 title: Repo Decommissioning Runbook
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,13 +15,18 @@ reliability:
   rollback_strategy: not-applicable
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - 00_DOC_INDEX
   - 01_LIFECYCLE_POLICY
   - DOCS_RUNBOOKS_README
   - ORPHAN_CLEANUP
   - TEARDOWN_README
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: 1.0
 breaking_change: false

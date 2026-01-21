@@ -4,9 +4,15 @@ title: EKS Apply Scope Gate
 type: changelog
 status: active
 owner: platform-team
-date: 2026-01-17
-author: platform-team
-category: infrastructure
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
 relates_to:
   - ADR-0028-platform-dev-branch-gate
   - ADR-0168
@@ -15,7 +21,15 @@ relates_to:
   - PR_GUARDRAILS_INDEX
   - infra-terraform-apply-dev
   - session-2026-01-17-eks-backstage-scaffolder
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-17
+author: platform-team
 ---
+
 # CL-0142: EKS Apply Scope Gate
 
 ## Summary

@@ -3,8 +3,6 @@ id: EC-0011-break-glass-rds-destroy
 title: Break-Glass RDS Destroy - Elegant Friction for Database Teardown
 type: extension-capability
 status: implemented
-owner: platform-team
-domain: platform-core
 relates_to:
   - CL-0153-standalone-rds-state
   - RB-0033-persistent-cluster-teardown
@@ -15,10 +13,13 @@ value_quantification:
   impact_tier: high
   potential_savings_hours: 8.0
   confidence: high
-  rationale: |
-    Replaces manual AWS Console click-ops with auditable, break-glass destruction.
+  rationale: 'Replaces manual AWS Console click-ops with auditable, break-glass destruction.
+
     Prevents fat-finger mistakes while maintaining IaC principles.
+
     8 hours = time saved per incident from clear audit trail and reduced confusion.
+
+    '
 effort_estimate: 4-6 hours (Makefile + documentation + testing)
 ---
 

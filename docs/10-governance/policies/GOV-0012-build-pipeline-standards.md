@@ -23,11 +23,11 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
+supported_until: '2028-01-01'
 value_quantification:
   vq_class: ⚫ LV/LQ
   impact_tier: low
   potential_savings_hours: 0.0
-supported_until: '2028-01-01'
 effective_date: 2026-01-19
 review_date: 2026-07-19
 related_adrs:
@@ -36,6 +36,7 @@ related_govs:
   - GOV-0013
   - GOV-0015
 ---
+
 # GOV-0012: Build Pipeline Standards
 
 ## Purpose

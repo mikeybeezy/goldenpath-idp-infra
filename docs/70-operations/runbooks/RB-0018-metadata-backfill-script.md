@@ -2,6 +2,11 @@
 id: RB-0018-metadata-backfill-script
 title: Metadata Backfill Script - Usage & Operations
 type: runbook
+domain: platform-core
+applies_to: []
+owner: platform-team
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: high
   security_risk: access
@@ -10,12 +15,17 @@ reliability:
   rollback_strategy: not-applicable
   observability_tier: gold
   maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0084-platform-enhanced-metadata-schema
   - CL-0043-complete-metadata-backfill
   - DOCS_RUNBOOKS_README
   - METADATA_STRATEGY
-category: runbooks
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+status: active
 supported_until: 2028-01-01
 version: '1.0'
 dependencies:

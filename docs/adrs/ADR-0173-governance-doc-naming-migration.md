@@ -4,6 +4,10 @@ title: 'ADR-0173: Governance Doc Naming Migration Strategy'
 type: adr
 status: proposed
 domain: platform-core
+value_quantification:
+  vq_class: ⚫ LV/LQ
+  impact_tier: low
+  potential_savings_hours: 0.0
 owner: platform-team
 lifecycle: active
 exempt: false
@@ -24,10 +28,6 @@ tags:
   - naming
   - docs
 inheritance: {}
-value_quantification:
-  vq_class: ⚫ LV/LQ
-  impact_tier: low
-  potential_savings_hours: 0.0
 supported_until: 2028-01-19
 version: '1.0'
 breaking_change: false
