@@ -2,7 +2,7 @@
 id: GOLDEN_PATH_OVERVIEW
 title: "How It Works: Golden Path Templates Overview"
 type: documentation
-domain: platform-self-service
+domain: platform-core
 owner: platform-team
 lifecycle: active
 status: active

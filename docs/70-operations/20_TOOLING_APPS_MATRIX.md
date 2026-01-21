@@ -160,7 +160,7 @@ Shared services providing capabilities to applications. Ordered by sync-wave for
 | App | Namespace | Chart | Chart Version | Image Tag | Status | Sync-Wave |
 |-----|-----------|-------|---------------|-----------|--------|-----------|
 | [external-secrets](#external-secrets) | external-secrets | external-secrets/external-secrets | 0.9.13 | v0.9.13 | Configured | 0 |
-| [cluster-secret-store](#cluster-secret-store) | external-secrets | Kustomize | N/A | N/A | Configured | 1 |
+| cluster-secret-store | external-secrets | Kustomize | N/A | N/A | Configured | 1 |
 | [external-dns](#external-dns) | kube-system | external-dns/external-dns | 1.14.5 | v0.14.0 | Configured | 0 |
 | [cert-manager](#cert-manager) | cert-manager | jetstack/cert-manager | v1.14.4 | v1.14.4 | Configured | 0 |
 | [argocd-image-updater](#argocd-image-updater) | argocd | argoproj/argocd-image-updater | 0.9.1 | v0.12.2 | Configured | 0 |
@@ -180,7 +180,7 @@ End-user accessible components including developer portals and sample applicatio
 | App | Namespace | Chart | Chart Version | Image Tag | Status | Sync-Wave |
 |-----|-----------|-------|---------------|-----------|--------|-----------|
 | [backstage](#backstage) | backstage | backstage/backstage | 2.6.3 | 1.29.0 | Configured | 5 |
-| [hello-goldenpath-idp](#hello-goldenpath-idp) | apps | Custom | N/A | latest | Sample App | 6 |
+| hello-goldenpath-idp | apps | Custom | N/A | latest | Sample App | 6 |
 
 ---
 

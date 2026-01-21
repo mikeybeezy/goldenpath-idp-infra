@@ -2,7 +2,7 @@
 id: STATELESS_APP_REQUEST_FLOW
 title: "How It Works: Stateless App Request Flow"
 type: documentation
-domain: platform-self-service
+domain: platform-core
 owner: platform-team
 lifecycle: active
 status: active

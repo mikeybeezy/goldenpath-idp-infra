@@ -114,5 +114,3 @@ engineering time to design the template and maintain it.
 - Scaffold to deployed plugin in <30 minutes.
 - One-click demo success rate >90%.
 - At least 2 internal teams adopt the template within the first month.
-
-

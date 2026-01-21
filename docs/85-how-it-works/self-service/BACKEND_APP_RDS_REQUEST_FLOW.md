@@ -2,7 +2,7 @@
 id: BACKEND_APP_RDS_REQUEST_FLOW
 title: "How It Works: Backend App + RDS Request Flow"
 type: documentation
-domain: platform-self-service
+domain: platform-core
 owner: platform-team
 lifecycle: active
 status: active
