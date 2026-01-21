@@ -203,7 +203,7 @@ bash bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh \
 Via Makefile:
 
 ```bash
-make teardown ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2 TEARDOWN_VERSION=v4
+make teardown ENV=dev CLUSTER=goldenpath-dev-eks REGION=eu-west-2 TEARDOWN_VERSION=v5
 ```
 
 Note: If RDS is coupled in `envs/<env>` (via `rds_config.enabled=true`), it will be

@@ -45,7 +45,7 @@ Doc contract:
 - Review cadence: as needed
 - Related: docs/70-operations/10_INFRA_FAILURE_MODES.md, docs/70-operations/runbooks/09_CI_TEARDOWN_RECOVERY_V2.md, docs/70-operations/runbooks/06_LB_ENI_ORPHANS.md, docs/70-operations/runbooks/04_LB_FINALIZER_STUCK.md, docs/adrs/ADR-0043-platform-teardown-lb-eni-wait.md
 
-Last updated: 2025-12-29
+Last updated: 2026-01-21
 
 This page lists manual AWS CLI commands to find and remove lingering
 resources that block teardown. Use the teardown runner and cleanup scripts
@@ -58,9 +58,12 @@ destroys the cluster.
 
 Teardown runner versions:
 
-- `goldenpath-idp-teardown.sh` (v1, default)
-- `goldenpath-idp-teardown-v2.sh` (v2, iteration track)
-- Makefile selection: set `TEARDOWN_VERSION=v1|v2` (CI exposes the same input).
+- `goldenpath-idp-teardown-v5.sh` (v5, default)
+- `goldenpath-idp-teardown-v4.sh` (v4)
+- `goldenpath-idp-teardown-v3.sh` (v3)
+- `goldenpath-idp-teardown-v2.sh` (v2)
+- `goldenpath-idp-teardown.sh` (v1, legacy)
+- Makefile selection: set `TEARDOWN_VERSION=v1|v2|v3|v4|v5` (CI exposes the same input).
 
 Why this order matters:
 
@@ -99,15 +102,15 @@ Tradeoffs:
 ```bash
 
 TEARDOWN_CONFIRM=true \
-  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v5.sh <cluster> <region>
 
 ```text
 
-Select v2 via Makefile (optional):
+Select v5 via Makefile (default):
 
 ```bash
 
-TEARDOWN_VERSION=v2 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
+TEARDOWN_VERSION=v5 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
 
 ```text
 
@@ -116,7 +119,7 @@ If drains are blocked by PodDisruptionBudgets, enable PDB relaxation:
 ```bash
 
 TEARDOWN_CONFIRM=true RELAX_PDB=true \
-  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v5.sh <cluster> <region>
 
 ```text
 
@@ -128,7 +131,7 @@ Drain timeout behavior:
 ```bash
 
 TEARDOWN_CONFIRM=true RELAX_PDB=true DRAIN_TIMEOUT=300s \
-  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v5.sh <cluster> <region>
 
 ```text
 
@@ -153,11 +156,11 @@ LoadBalancer cleanup retries:
 - `LB_CLEANUP_ATTEMPTS` controls how many retry loops run (default `5`).
 - `LB_CLEANUP_INTERVAL` controls the delay between loops (default `20` seconds).
 - `LB_CLEANUP_MAX_WAIT` caps the LoadBalancer wait loop (default `900` seconds).
-- If Services remain after the wait, v2 removes stuck finalizers by default
+- If Services remain after the wait, v5 removes stuck finalizers by default
   (`FORCE_DELETE_LB_FINALIZERS=true`) to avoid teardown hangs when the LB
   controller is not available. This is safe only for teardown runs where the
   Service should be deleted.
-- If Kubernetes access is unavailable, v2 skips Kubernetes cleanup and performs
+- If Kubernetes access is unavailable, v5 skips Kubernetes cleanup and performs
   AWS-only LoadBalancer cleanup before continuing to destroy.
 
 LoadBalancer ENI wait (prevents stuck subnet deletes):
@@ -188,7 +191,7 @@ Runbook: `docs/70-operations/runbooks/06_LB_ENI_ORPHANS.md`
 ```bash
 
 TEARDOWN_CONFIRM=true LB_CLEANUP_ATTEMPTS=8 LB_CLEANUP_INTERVAL=30 \
-  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v5.sh <cluster> <region>
 
 ```text
 
@@ -197,7 +200,7 @@ Force delete remaining cluster LBs (optional override):
 ```bash
 
 TEARDOWN_CONFIRM=true FORCE_DELETE_LBS=true \
-  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v5.sh <cluster> <region>
 
 ```text
 
@@ -326,7 +329,7 @@ Terraform destroy instead of `aws eks delete-cluster`:
 ```bash
 
 TEARDOWN_CONFIRM=true TF_DIR=envs/dev \
-  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown.sh <cluster> <region>
+  bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v5.sh <cluster> <region>
 
 ```text
 

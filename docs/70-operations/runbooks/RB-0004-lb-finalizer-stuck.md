@@ -75,16 +75,16 @@ kubectl -n kong-system patch svc dev-kong-kong-proxy \
   -p '{"metadata":{"finalizers":[]}}' --type=merge
 ```
 
-If using the v2 teardown runner, the break-glass flag defaults to on to prevent
+If using the v5 teardown runner, the break-glass flag defaults to on to prevent
 teardown hangs when the LB controller is unavailable, but you can also set it
 explicitly:
 
 ```bash
 FORCE_DELETE_LB_FINALIZERS=true \
-  TEARDOWN_VERSION=v2 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
+  TEARDOWN_VERSION=v5 make teardown ENV=dev BUILD_ID=<build_id> CLUSTER=<cluster> REGION=<region>
 ```
 
-If Kubernetes access is unavailable, v2 skips Kubernetes cleanup and attempts
+If Kubernetes access is unavailable, v5 skips Kubernetes cleanup and attempts
 AWS-only LoadBalancer cleanup. This will not remove Service finalizers; restore
 access to remove them if the Service still exists.
 
