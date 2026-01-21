@@ -2738,3 +2738,85 @@ Goal: Fix dev environment tooling issues (Kong, Backstage, Keycloak, Grafana not
 - Validation: PR #265 ready for merge. All CI checks pending re-run after template fix.
 
 Signed: Claude Opus 4.5 (2026-01-21T12:40:00Z)
+
+---
+
+## Session: 2026-01-21 Golden Path Templates Completion
+
+### Context
+- Agent: Claude Opus 4.5
+- Branch: feature/golden-path-scaffold-templates → merged to development
+- Session capture: `session_capture/2026-01-21-scaffold-golden-paths.md`
+- PR: #266
+
+Goal: Complete Golden Path scaffold templates (stateless-app, stateful-app, backend-app-rds) with full environment overlay support and comprehensive documentation.
+
+### In-Session Log (append as you go)
+- 14:00Z — Investigated RDS integration with app creation flow
+- 14:30Z — Verified `scripts/rds_provision.py` already exists (962 lines) with Makefile targets
+- 15:00Z — Rewrote BACKEND_APP_RDS_REQUEST_FLOW.md with comprehensive E2E ASCII diagrams
+- 15:30Z — Audited stateless-app and stateful-app templates for missing/outstanding issues
+- 15:45Z — Discovered stateful-app overlays missing namespace.yaml in all 4 environments
+- 16:00Z — Created namespace.yaml for dev/test/staging/prod overlays in stateful-app
+- 16:15Z — Updated all 4 kustomization.yaml files to include namespace.yaml in resources
+- 16:30Z — Added milestone summary to session capture with complete artifact tree
+- 16:45Z — Ran test_script_0034.py — all 16 tests passed
+- 17:00Z — Created PR #266, merged to development branch
+- 17:15Z — Created session summary entry
+
+### Checkpoints
+- [x] RDS integration flow documented with ASCII diagrams
+- [x] stateless-app template complete (all overlays)
+- [x] stateful-app template fixed (namespace.yaml added to all overlays)
+- [x] backend-app-rds template complete (all overlays)
+- [x] E2E request flow documentation updated
+- [x] Test suite passed (16/16)
+- [x] PR #266 created and merged to development
+
+### Key Achievements
+
+| Achievement | Impact |
+|-------------|--------|
+| **Complete overlay structure** | All 3 templates have dev/test/staging/prod overlays |
+| **RDS E2E documentation** | Full ASCII flow from Backstage form to running app |
+| **Namespace.yaml fix** | stateful-app now creates namespace consistently |
+| **Template parity** | All templates follow identical patterns |
+| **Thin Caller CI pattern** | Apps call canonical workflow (GOV-0012 compliant) |
+
+### Issues Diagnosed and Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| stateful-app missing namespace | Incomplete template scaffolding | Created namespace.yaml in 4 overlays |
+| kustomization.yaml incomplete | namespace.yaml not in resources | Added to all 4 kustomization.yaml files |
+
+### Artifacts touched (required)
+- `docs/85-how-it-works/self-service/BACKEND_APP_RDS_REQUEST_FLOW.md` (complete rewrite)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/dev/namespace.yaml` (created)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/test/namespace.yaml` (created)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/staging/namespace.yaml` (created)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/prod/namespace.yaml` (created)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/dev/kustomization.yaml` (modified)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/test/kustomization.yaml` (modified)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/staging/kustomization.yaml` (modified)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/deploy/overlays/prod/kustomization.yaml` (modified)
+- `session_capture/2026-01-21-scaffold-golden-paths.md` (updated)
+
+### Outputs produced
+- PRs: #266 (merged)
+- Docs: BACKEND_APP_RDS_REQUEST_FLOW.md, GOLDEN_PATH_OVERVIEW.md, CL-0162
+- Templates: 3 complete Golden Path templates with full overlays
+
+### Next actions
+- [ ] Test template scaffolding end-to-end via Backstage UI
+- [ ] Verify ArgoCD syncs scaffolded apps correctly
+- [ ] Deploy hello-goldenpath-idp using stateless-app template
+- [ ] Deploy sample stateful app (e.g., Redis) using stateful-app template
+
+### Session Report (end-of-session wrap-up)
+- Summary: Completed all three Golden Path scaffold templates with full environment overlay support. Fixed missing namespace.yaml in stateful-app overlays. Rewrote RDS request flow documentation with comprehensive ASCII diagrams showing the composite pattern (one form → two outcomes). All tests passing, PR #266 merged to development.
+- Decisions: Templates use identical patterns for consistency. Namespace created in overlays (not base) for environment isolation. RDS provisioning runs post-Terraform via CI workflow.
+- Risks/Follow-ups: Templates not yet tested end-to-end via Backstage UI. May need adjustments based on real scaffolding runs.
+- Validation: test_script_0034.py — 16/16 tests passed. Git operations successful.
+
+Signed: Claude Opus 4.5 (2026-01-21T17:30:00Z)
