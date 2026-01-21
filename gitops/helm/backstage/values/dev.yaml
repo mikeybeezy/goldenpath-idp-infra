@@ -44,7 +44,7 @@ externalSecret:
 # Credentials injected via ExternalSecret -> backstage-secrets
 # -----------------------------------------------------------------------------
 postgres:
-  host: goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com
+  host: goldenpath-dev-platform-dev.cxmcacaams2q.eu-west-2.rds.amazonaws.com
   port: "5432"
   user: backstage_app
   password: "placeholder"  # Not used when externalSecret.enabled=true
