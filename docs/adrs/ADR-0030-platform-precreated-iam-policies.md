@@ -2,7 +2,7 @@
 id: ADR-0030-platform-precreated-iam-policies
 title: 'ADR-0030: Pre-create IAM policies for IRSA controllers in V1'
 type: adr
-status: active
+status: superseded
 domain: platform-core
 value_quantification:
   vq_class: ⚫ LV/LQ
@@ -24,7 +24,8 @@ relates_to:
   - RB-0019-relationship-extraction-script
   - audit-20260103
 supersedes: []
-superseded_by: []
+superseded_by:
+  - ADR-0177-ci-iam-comprehensive-permissions
 tags: []
 inheritance: {}
 supported_until: 2027-01-03
@@ -34,8 +35,9 @@ breaking_change: false
 
 # ADR-0030: Pre-create IAM policies for IRSA controllers in V1
 
-- **Status:** Accepted
+- **Status:** Superseded by ADR-0177
 - **Date:** 2025-12-28
+- **Superseded:** 2026-01-22
 - **Owners:** Platform (GoldenPath IDP)
 - **Domain:** Platform
 - **Decision type:** Security | Operations

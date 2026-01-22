@@ -382,6 +382,7 @@ relates_to:
   - ADR-0174
   - ADR-0175
   - ADR-0176
+  - ADR-0177
 <!-- ADR_RELATE_END -->
 ---
 
@@ -430,7 +431,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0027](ADR-0027-platform-design-philosophy.md) | Platform | Platform design philosophy and reference implementation | Active | 2026-01-0? | GoldenPath is intended to be operable without a single maintainer and usable by humans and machines. That requires durable, explicit documentation and a clear statement of the platform’s founding p... |
 | [ADR-0028](ADR-0028-platform-dev-branch-gate.md) | Platform | Dev branch gate before main | Active | 2026-01-0? | We want quality gates that prove changes run in a real environment before they reach`main`. Relying solely on plans or post-merge applies weakens the value of the dev environment as a gate. A simpl... |
 | [ADR-0029](ADR-0029-platform-dev-plan-gate.md) | Platform | Dev plan gate before dev apply | Active | 2026-01-0? | The dev apply workflow currently checks for any successful plan on the same SHA. Because the plan workflow supports multiple environments, a non-dev plan can unlock a dev apply. This weakens the de... |
-| [ADR-0030](ADR-0030-platform-precreated-iam-policies.md) | Platform | Pre-create IAM policies for IRSA controllers in V1 | Active | 2026-01-0? | The Terraform apply role used by GitHub Actions is intentionally scoped and cannot create IAM policies. Some IRSA controller roles (Cluster Autoscaler, AWS Load Balancer Controller) require custom ... |
+| [ADR-0030](ADR-0030-platform-precreated-iam-policies.md) | Platform | Pre-create IAM policies for IRSA controllers in V1 | Superseded | 2026-01-0? | The Terraform apply role used by GitHub Actions is intentionally scoped and cannot create IAM policies. Some IRSA controller roles (Cluster Autoscaler, AWS Load Balancer Controller) require custom ... |
 | [ADR-0031](ADR-0031-platform-bootstrap-irsa-service-accounts.md) | Platform | Create IRSA service accounts during bootstrap | Active | 2026-01-0? | The AWS Load Balancer Controller and Cluster Autoscaler require IRSA-backed service accounts to exist before the controllers are installed. Early runs failed when the controllers were installed fir... |
 | [ADR-0032](ADR-0032-platform-eks-access-model.md) | Platform | EKS access model (bootstrap admin vs steady-state access) | Active | 2026-01-0? | EKS grants cluster-admin access to the IAM principal that creates the cluster. In our case, that is the GitHub Actions bootstrap role. This is useful for initial provisioning, but it is a risk if l... |
 | [ADR-0033](ADR-0033-platform-ci-orchestrated-modes.md) | Platform | CI orchestrated modes for infra lifecycle | Active | 2026-01-0? | The infra lifecycle requires multiple phases (apply, bootstrap, teardown). When operators must manually toggle flags, the workflow becomes brittle and error-prone. We saw repeated failures caused b... |
@@ -569,6 +570,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0174](ADR-0174-pipeline-decoupling-from-cluster-bootstrap.md) | Platform | Pipeline enablement intentionally decoupled from cluster bootstrap | Active | 2026-01-0? | GoldenPath IDP clusters are bootstrapped through a multi-stage process that provisions EKS, ArgoCD, monitoring, and foundational workloads. A separate concern is enabling the CI/CD pipeline that al... |
 | [ADR-0175](ADR-0175-externaldns-wildcard-ownership.md) | Platform | ExternalDNS owns wildcard records for env subdomains | Active | 2026-01-21 | The wildcard DNS record for`*.{env}.goldenpathidp.io`is tied to the Kong LoadBalancer hostname. Terraform can set this value during apply, but when the LoadBalancer changes (teardown/rebuild), DNS ... |
 | [ADR-0176](ADR-0176-session-memory-management.md) | Platform | Session Memory Management for Human-Machine Collaboration | Proposed | 2026-01-22 | This platform is designed to facilitate human-machine collaboration. AI agents work alongside humans across sessions, but face a fundamental constraint: context windows are finite while project kno... |
+| [ADR-0177](ADR-0177-ci-iam-comprehensive-permissions.md) | Platform | Grant CI role comprehensive IAM permissions with resource scoping | Active | 2026-01-0? | ADR-0030 established that the CI apply role should NOT have`iam:CreatePolicy`permissions, requiring IAM policies for IRSA controllers (Cluster Autoscaler, AWS Load Balancer Controller) to be pre-cr... |
 <!-- ADR_TABLE_END -->
 
 ---
