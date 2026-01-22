@@ -191,6 +191,7 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 |090|P2|**🟡 HV/LQ**|GitOps|Update test/staging/prod ArgoCD apps to targetRevision: main|platform|Open|S|Q1|Change from HEAD to main|Session 2026-01-21 - HEAD is ambiguous; explicit branch improves predictability.|
 |091|P3|**⚫ LV/LQ**|GitOps|Prod ArgoCD apps: pin to release tags/SHAs + manual sync|platform|Open|M|Q2|Implement release tagging automation|Session 2026-01-21 - Immutable, auditable production releases.|
 |092|P1|**🔴 HV/HQ**|DNS|Verify ExternalDNS wildcard + TXT registry in Route53|platform|Open|S|Q1|Run verification commands from session capture|Session 2026-01-21 - Confirm DNS ownership model working as designed.|
+|093|P2|**🔵 MV/HQ**|Backstage|Align Backstage repo structure to Spotify-style layout|platform|Open|M|Q1|Approve PRD-0004 and plan refactor branch|Reduce onboarding friction and align tooling paths.|
 
 ## Rules
 

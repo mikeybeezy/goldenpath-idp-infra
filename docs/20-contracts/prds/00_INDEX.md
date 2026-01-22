@@ -17,6 +17,7 @@ relates_to:
   - PRD-0001-rds-user-db-provisioning
   - PRD-0002-route53-externaldns
   - PRD-0003-backstage-plugin-scaffold
+  - PRD-0004-backstage-repo-structure-alignment
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
@@ -30,3 +31,4 @@ breaking_change: false
 | PRD-0001 | Automated RDS user and database provisioning | draft | 2026-01-16 | docs/20-contracts/prds/PRD-0001-rds-user-db-provisioning.md |
 | PRD-0002 | Route53 + ExternalDNS management | draft | 2026-01-20 | docs/20-contracts/prds/PRD-0002-route53-externaldns.md |
 | PRD-0003 | Backstage Plugin Scaffold (Vanilla Template) | draft | 2026-01-21 | docs/20-contracts/prds/PRD-0003-backstage-plugin-scaffold.md |
+| PRD-0004 | Backstage Repo Structure Alignment (Spotify-style) | draft | 2026-01-22 | docs/20-contracts/prds/PRD-0004-backstage-repo-structure-alignment.md |

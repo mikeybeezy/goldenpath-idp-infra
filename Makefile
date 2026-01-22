@@ -536,15 +536,19 @@ rds-allow-delete:
 	fi; \
 	identifier="$(RDS_IDENTIFIER)"; \
 	if [ -z "$$identifier" ]; then \
-		identifier=$$($(TF_BIN) -chdir=$(RDS_ENV_DIR) output -raw db_instance_identifier 2>/dev/null || true); \
-	fi; \
-	if [ -z "$$identifier" ]; then \
 		prefix=$$(grep -E "^[[:space:]]*identifier_prefix[[:space:]]*=" "$$tfvars" | head -1 | cut -d= -f2- | tr -d "\\\"[:space:]"); \
 		envname=$$(grep -E "^[[:space:]]*environment[[:space:]]*=" "$$tfvars" | head -1 | cut -d= -f2- | tr -d "\\\"[:space:]"); \
 		if [ -n "$$prefix" ] && [ -n "$$envname" ]; then \
 			identifier="$$prefix-$$envname"; \
 		fi; \
 	fi; \
+	if [ -z "$$identifier" ]; then \
+		identifier=$$($(TF_BIN) -chdir=$(RDS_ENV_DIR) output -raw db_instance_identifier 2>/dev/null | head -1 | tr -d "\\r" || true); \
+		if echo "$$identifier" | grep -qi "warning"; then \
+			identifier=""; \
+		fi; \
+	fi; \
+	identifier=$$(printf "%s" "$$identifier" | tr -d "\\r\\n"); \
 	if [ -z "$$identifier" ]; then \
 		echo "ERROR: Unable to resolve RDS identifier. Set RDS_IDENTIFIER explicitly."; \
 		exit 1; \
@@ -573,13 +577,20 @@ rds-destroy-break-glass:
 	backup=$$(mktemp); \
 	cp "$$tf_file" "$$backup"; \
 	trap "mv $$backup $$tf_file" EXIT; \
-	if grep -q "prevent_destroy = true" "$$tf_file"; then \
-		perl -0pi -e "s/prevent_destroy = true/prevent_destroy = false/" "$$tf_file"; \
-	elif grep -q "prevent_destroy = false" "$$tf_file"; then \
+	if grep -Eq "prevent_destroy[[:space:]]*=[[:space:]]*true" "$$tf_file"; then \
+		perl -0pi -e "s/prevent_destroy\\s*=\\s*true/prevent_destroy = false/" "$$tf_file"; \
+	elif grep -Eq "prevent_destroy[[:space:]]*=[[:space:]]*false" "$$tf_file"; then \
 		echo "NOTE: prevent_destroy already false in $$tf_file"; \
 	else \
 		echo "ERROR: Could not find prevent_destroy flag in $$tf_file"; \
 		exit 1; \
+	fi; \
+	if grep -Eq "skip_final_snapshot[[:space:]]*=[[:space:]]*false" "$$tf_file"; then \
+		perl -0pi -e "s/skip_final_snapshot\\s*=\\s*false/skip_final_snapshot = true/" "$$tf_file"; \
+	elif grep -Eq "skip_final_snapshot[[:space:]]*=[[:space:]]*true" "$$tf_file"; then \
+		echo "NOTE: skip_final_snapshot already true in $$tf_file"; \
+	else \
+		echo "WARNING: Could not find skip_final_snapshot flag in $$tf_file"; \
 	fi; \
 	log="logs/build-timings/rds-destroy-break-glass-$(ENV)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "RDS destroy output streaming; full log at $$log"; \

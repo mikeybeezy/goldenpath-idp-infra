@@ -80,8 +80,12 @@ Before proceeding, verify ALL of the following:
 ```bash
 ENVIRONMENT=dev
 make rds-init ENV=${ENVIRONMENT}
-IDENTIFIER="$(terraform -chdir=envs/${ENVIRONMENT}-rds output -raw db_instance_identifier)"
-SNAPSHOT_NAME="${IDENTIFIER}-final-$(date +%Y%m%d-%H%M%S)"
+IDENTIFIER="$(aws rds describe-db-instances \
+  --region eu-west-2 \
+  --query 'DBInstances[].DBInstanceIdentifier' \
+  --output text | awk '{print $1}' | tr -cd '[:alnum:]-')"
+
+SNAPSHOT_NAME="$(printf '%s-final-%s' "${IDENTIFIER}" "$(date +%Y%m%d-%H%M%S)" | tr -cd '[:alnum:]-')"
 
 aws rds create-db-snapshot \
   --db-instance-identifier "${IDENTIFIER}" \
@@ -132,6 +136,24 @@ Restore `prevent_destroy = true` after the destroy completes.
 
 ```bash
 make rds-destroy-break-glass ENV=dev CONFIRM_DESTROY_DATABASE_PERMANENTLY=YES
+```
+
+Note: The break-glass target temporarily sets `skip_final_snapshot = true` to
+avoid snapshot identifier collisions. Use Step 1 to create the final snapshot.
+
+If destroy fails with `DBSnapshotAlreadyExists`, it usually means an older
+snapshot with the default identifier still exists and Terraform is reusing it
+because `final_snapshot_identifier` is in `ignore_changes`. Delete the stale
+snapshot and retry:
+
+```bash
+aws rds delete-db-snapshot \
+  --db-snapshot-identifier goldenpath-dev-platform-dev-final-snapshot \
+  --region eu-west-2
+
+aws rds wait db-snapshot-deleted \
+  --db-snapshot-identifier goldenpath-dev-platform-dev-final-snapshot \
+  --region eu-west-2
 ```
 
 ## Step 4: Destroy RDS Instance (Terraform)
