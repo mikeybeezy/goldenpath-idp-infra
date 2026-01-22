@@ -3,7 +3,6 @@ id: EC-0005-k8s-extensibility-strategy
 title: Harnessing the K8s API (Controllers & Reconciliation)
 type: capability-extension
 status: proposed
-owner: platform-team
 relates_to:
   - EC-0001
   - EC-0002

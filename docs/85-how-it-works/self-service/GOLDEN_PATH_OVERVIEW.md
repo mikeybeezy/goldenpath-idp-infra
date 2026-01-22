@@ -1,12 +1,7 @@
 ---
 id: GOLDEN_PATH_OVERVIEW
-title: "How It Works: Golden Path Templates Overview"
+title: 'How It Works: Golden Path Templates Overview'
 type: documentation
-domain: platform-core
-owner: platform-team
-lifecycle: active
-status: active
-schema_version: 1
 risk_profile:
   production_impact: none
   security_risk: none
