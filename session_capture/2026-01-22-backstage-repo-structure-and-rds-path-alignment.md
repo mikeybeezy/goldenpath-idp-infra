@@ -261,3 +261,159 @@ Signed: Claude (2026-01-22T14:30:00Z)
 - Dev cluster deployment verification
 
 Signed: Claude (2026-01-22T07:25:00Z)
+
+### Update - 2026-01-22T11:05:00Z
+
+**What changed**
+
+- Fixed 401 Unauthorized error by adding guest SignInPage with auto sign-in
+- Added `@backstage-community/plugin-github-actions` for CI/CD visibility
+- Implemented TechDocs with local MkDocs generation (`runIn: 'local'`)
+- Created PRD-0005 documenting TechDocs implementation path (Phase 1-3)
+- Designed and created custom Goldenpath IDP branding:
+  - Convergent path logo concept (branches → merge → rising path → goal)
+  - 4 logo variants: dark, light, dark-transparent, light-transparent
+  - Icon-only version for favicons
+- Replaced all Backstage default branding with Goldenpath IDP:
+  - LogoFull.tsx (sidebar expanded)
+  - LogoIcon.tsx (sidebar collapsed)
+  - index.html (title, meta, theme color)
+  - manifest.json (PWA name/colors)
+  - safari-pinned-tab.svg
+  - All favicon PNGs generated from custom icon
+- Updated app-config.yaml with Goldenpath IDP title and organization
+- Created PR #1 for backstage repo changes
+
+**Artifacts touched**
+
+*goldenpath-idp-backstage:*
+
+- `packages/app/src/App.tsx` (guest SignInPage)
+- `packages/app/src/components/catalog/EntityPage.tsx` (GitHub Actions)
+- `packages/app/src/components/Root/LogoFull.tsx` (custom logo)
+- `packages/app/src/components/Root/LogoIcon.tsx` (custom icon)
+- `packages/backend/Dockerfile` (MkDocs installation)
+- `packages/app/public/index.html` (branding)
+- `packages/app/public/manifest.json` (branding)
+- `packages/app/public/safari-pinned-tab.svg` (custom icon)
+- `packages/app/public/favicon*.png` (generated)
+- `packages/app/public/favicon.ico` (generated)
+- `app-config.yaml` (title, techdocs config)
+- `app-config.production.yaml` (guest auth for prod)
+- `examples/entities.yaml` (techdocs annotation)
+- `examples/mkdocs.yml` (new)
+- `examples/docs/index.md` (new)
+- `examples/docs/getting-started.md` (new)
+
+*goldenpath-idp-infra:*
+
+- `docs/20-contracts/prds/PRD-0005-techdocs-implementation.md` (new)
+- `backstage-helm/img/goldenpath-idp-logo-dark.svg` (new)
+- `backstage-helm/img/goldenpath-idp-logo-light.svg` (new)
+- `backstage-helm/img/goldenpath-idp-logo-dark-transparent.svg` (new)
+- `backstage-helm/img/goldenpath-idp-logo-light-transparent.svg` (new)
+- `backstage-helm/img/goldenpath-idp-icon-convergent.svg` (new)
+- Removed: experimental logo variants (v1, v2, v3, lockups, etc.)
+
+**Validation**
+
+- Backstage starts with custom branding visible in sidebar
+- TechDocs configuration in place (local generation mode)
+- GitHub Actions plugin renders on entity pages
+- Favicons generated at all required sizes (16, 32, 180, 192, ico)
+
+**Next steps**
+
+- Test TechDocs rendering in Backstage UI
+- Build and push custom Docker image with MkDocs
+- Deploy to dev cluster with new branding
+- Phase 2: S3 publisher for TechDocs (per PRD-0005)
+
+**Outstanding**
+
+- Custom Docker image build/push to ECR
+- Dev cluster deployment verification
+- TechDocs end-to-end test
+
+Signed: Claude (2026-01-22T11:05:00Z)
+
+---
+
+## Session Summary
+
+**Session Date:** 2026-01-22
+**Duration:** Full day session
+**Status:** Closed
+
+### Key Accomplishments
+
+1. **PRD-0004 Implementation Complete**
+   - Backstage repo restructured to Spotify-style layout
+   - Node 22 tooling validated
+   - CI lint guard added
+   - PR created and ready for merge
+
+2. **Backstage Authentication Fixed**
+   - Resolved 401 Unauthorized errors
+   - Guest authentication with auto sign-in implemented
+   - Production config updated for guest auth
+
+3. **GitHub Actions Plugin Integrated**
+   - `@backstage-community/plugin-github-actions` installed
+   - CI/CD visibility on entity pages
+
+4. **TechDocs Enabled (Phase 1)**
+   - MkDocs + techdocs-core installed in Dockerfile
+   - Local generation mode configured (`runIn: 'local'`)
+   - Example entity with TechDocs annotation created
+   - PRD-0005 documents full implementation path
+
+5. **Custom Branding Completed**
+   - Designed "Convergent Path" logo concept
+   - Created 4 logo variants (dark/light, solid/transparent)
+   - Replaced all Backstage default branding
+   - Generated all favicon sizes from custom icon
+   - Updated app title, meta tags, PWA manifest
+
+### Artifacts Created
+
+| Type | Count | Key Items |
+|------|-------|-----------|
+| PRDs | 2 | PRD-0004 (repo structure), PRD-0005 (TechDocs) |
+| Logo SVGs | 5 | dark, light, dark-transparent, light-transparent, icon |
+| Favicons | 5 | 16px, 32px, 180px, 192px, .ico |
+| Components | 2 | LogoFull.tsx, LogoIcon.tsx |
+
+### Open Items for Next Session
+
+- [ ] Build and push custom Docker image to ECR
+- [ ] Deploy to dev cluster with new branding
+- [ ] Test TechDocs rendering end-to-end
+- [ ] Merge PR #1 after review
+- [ ] Begin Phase 2: S3 publisher for TechDocs
+
+### Design Decisions Made
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Logo concept | Convergent Path (v3 rising) | Upward trajectory communicates enablement/growth |
+| Light mode gold | `#B8960C` | Better contrast on white than `#F5C542` |
+| TechDocs mode | Local (Phase 1) | Quick win, defer S3 to Phase 2 |
+| Auth provider | Guest with auto sign-in | Simplest for dev/demo environments |
+
+### Commits This Session
+
+*goldenpath-idp-backstage:*
+- `8dbdb39` - fix: add guest SignInPage with auto sign-in
+- `2fc8b02` - feat: add GitHub Actions plugin
+- `32ca6b7` - feat: add TechDocs support with local MkDocs
+- (pending) - feat: replace Backstage branding with Goldenpath IDP
+
+*goldenpath-idp-infra:*
+- `8c467c15` - docs: add PRD-0005 TechDocs implementation
+- (pending) - feat: add Goldenpath IDP logo assets
+
+---
+
+Session closed: 2026-01-22T11:10:00Z
+Signed: Claude
