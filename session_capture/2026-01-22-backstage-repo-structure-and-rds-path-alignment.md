@@ -25,7 +25,13 @@ relates_to:
 **Agent:** Codex
 **Date:** 2026-01-22
 **Timestamp:** 2026-01-22T05:06:54Z
-**Branch:** development
+
+**Repositories & Branches:**
+
+| Repo                       | Branch                              | Notes                          |
+|----------------------------|-------------------------------------|--------------------------------|
+| `goldenpath-idp-infra`     | `development`                       | Primary working repo           |
+| `goldenpath-idp-backstage` | `refactor/backstage-repo-alignment` | PRD-0004 implementation branch |
 
 ## Scope
 
@@ -135,6 +141,40 @@ Signed: Codex (2026-01-22T05:06:54Z)
 
 Signed: Codex (2026-01-22T05:51:14Z)
 
+### Update - 2026-01-22T07:08:32Z
+
+**What changed**
+
+- In `goldenpath-idp-backstage` (branch `refactor/backstage-repo-alignment`), finalized Yarn/tooling alignment for the Spotify-style layout (node-modules linker, yarn path), removed tracked PnP files, expanded `.gitignore`, and hardened the CI lint guard for tracked artifacts.
+- Recorded the changes in commit `2b3318c` ("chore: finalize Backstage repo alignment tooling").
+
+**Artifacts touched**
+
+- `goldenpath-idp-backstage/.yarnrc.yml`
+- `goldenpath-idp-backstage/.yarn/releases/yarn-4.4.1.cjs`
+- `goldenpath-idp-backstage/.gitignore`
+- `goldenpath-idp-backstage/.github/workflows/lint.yml`
+- `goldenpath-idp-backstage/docs/usefull-commands.md`
+- Removed: `goldenpath-idp-backstage/.pnp.cjs`, `goldenpath-idp-backstage/.pnp.loader.mjs`
+
+**Validation**
+
+- `yarn install` failed locally due to native deps (`isolated-vm`, `cpu-features`); logs under `/private/var/folders/_w/.../build.log`.
+- Smoke `yarn start` not run (blocked on install).
+
+**Next steps**
+
+- Resolve native build prerequisites and rerun `yarn install`.
+- Run a 10-second smoke `yarn start` to confirm the refactor build path works.
+- Re-run the PRD-0004 verification checklist and capture CI results.
+
+**Outstanding**
+
+- Confirm pipeline passes on the refactor branch post-install.
+- Confirm no `goldenpath/` path references remain in infra integrations.
+
+Signed: Codex (2026-01-22T07:08:32Z)
+
 ### Update - 2026-01-22T14:30:00Z
 
 **What changed**
@@ -173,3 +213,51 @@ Signed: Codex (2026-01-22T05:51:14Z)
 - Custom Backstage image build (future work)
 
 Signed: Claude (2026-01-22T14:30:00Z)
+
+### Update - 2026-01-22T07:25:00Z
+
+**What changed**
+
+- Validated PRD-0004 implementation in `goldenpath-idp-backstage` on branch `refactor/backstage-repo-alignment`
+- Fixed Node.js version issue: package requires Node 22+, was running Node 18
+- Ran `yarn install` successfully with Node 22.21.1
+- Verified `yarn start` launches Backstage (frontend HTTP 200 on port 3000, backend on 7007)
+- Squashed 2 commits into 1 for clean PR (`87144e1`)
+- Verified no breaking cross-repo paths in `goldenpath-idp-infra`
+
+**Validation Results**
+
+| Check                                     | Status                   |
+|-------------------------------------------|--------------------------|
+| `packages/`, `plugins/`, configs at root  | ✅ Done                  |
+| No `goldenpath/` subdirectory             | ✅ Removed               |
+| `docs/` contains how-to content           | ✅ Done                  |
+| `.gitignore` covers artifacts             | ✅ Complete              |
+| No tracked node_modules/dist-types        | ✅ Clean                 |
+| CI guard workflow                         | ✅ Added                 |
+| `yarn install` (Node 22)                  | ✅ Passed                |
+| `yarn start`                              | ✅ Running               |
+| Cross-repo paths                          | ✅ No breaking refs      |
+| Commits squashed                          | ✅ Single commit         |
+
+**Known Issues**
+
+- Rspack `node:` scheme warnings in frontend build (cosmetic, doesn't block operation)
+- Kubernetes plugin warning: "valid kubernetes config is missing" (expected in local dev)
+
+**Artifacts touched**
+
+- `goldenpath-idp-backstage` - Squashed commits, force-pushed to remote
+
+**Next steps**
+
+- Create PR for `refactor/backstage-repo-alignment` branch
+- Deploy to dev cluster and verify templates register
+- Update PRD-0004 status to complete after merge
+
+**Outstanding**
+
+- PR review and merge pending
+- Dev cluster deployment verification
+
+Signed: Claude (2026-01-22T07:25:00Z)
