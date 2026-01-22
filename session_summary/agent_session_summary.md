@@ -3060,26 +3060,26 @@ Signed: Claude Opus 4.5 (2026-01-22T15:30:00Z)
 User requested V1 readiness review and assessment. During investigation, discovered terraform validation errors in test/staging/prod environments caused by IAM module refactor that only updated dev.
 
 ### Timeline
-* 16:00Z — Started V1 readiness review
-* 16:30Z — Assessed readiness at 65-70% (vs claimed 95.5%)
-* 17:00Z — Diagnosed terraform validation errors in test/staging/prod
-* 17:15Z — Traced root cause to commit 7e26b734 (2026-01-20)
-* 17:30Z — Found ci-terraform-lint failures not blocking PRs
-* 17:45Z — Updated PROMPT-0002 with terraform validation guidance
-* 18:00Z — Fixed test/staging/prod main.tf files
-* 18:15Z — Validated all environments pass terraform validate
-* 18:30Z — Created changelog CL-0165 and session capture
+- 16:00Z — Started V1 readiness review
+- 16:30Z — Assessed readiness at 65-70% (vs claimed 95.5%)
+- 17:00Z — Diagnosed terraform validation errors in test/staging/prod
+- 17:15Z — Traced root cause to commit 7e26b734 (2026-01-20)
+- 17:30Z — Found ci-terraform-lint failures not blocking PRs
+- 17:45Z — Updated PROMPT-0002 with terraform validation guidance
+- 18:00Z — Fixed test/staging/prod main.tf files
+- 18:15Z — Validated all environments pass terraform validate
+- 18:30Z — Created changelog CL-0165 and session capture
 
 ### Checkpoints
-* [x] Review V1 readiness documentation
-* [x] Assess current V1 readiness state
-* [x] Diagnose terraform validation errors
-* [x] Trace root cause of module/env drift
-* [x] Update PROMPT-0002 with terraform validation
-* [x] Fix test/staging/prod environments
-* [x] Validate all environments
-* [x] Create changelog and session capture
-* [x] Clean up stale branches
+- [x] Review V1 readiness documentation
+- [x] Assess current V1 readiness state
+- [x] Diagnose terraform validation errors
+- [x] Trace root cause of module/env drift
+- [x] Update PROMPT-0002 with terraform validation
+- [x] Fix test/staging/prod environments
+- [x] Validate all environments
+- [x] Create changelog and session capture
+- [x] Clean up stale branches
 
 ### Key Achievements
 
@@ -3109,29 +3109,29 @@ User requested V1 readiness review and assessment. During investigation, discove
 ### Artifacts touched (required)
 
 *Modified:*
-* `envs/test/main.tf` — Removed deprecated IAM args
-* `envs/staging/main.tf` — Removed deprecated IAM args
-* `envs/prod/main.tf` — Removed deprecated IAM args
-* `prompt-templates/PROMPT-0002-pre-commit-pre-merge-checks.txt` — Added terraform validation
+- `envs/test/main.tf` — Removed deprecated IAM args
+- `envs/staging/main.tf` — Removed deprecated IAM args
+- `envs/prod/main.tf` — Removed deprecated IAM args
+- `prompt-templates/PROMPT-0002-pre-commit-pre-merge-checks.txt` — Added terraform validation
 
 *Added:*
-* `docs/changelog/entries/CL-0165-terraform-validation-fix.md`
-* `session_capture/2026-01-22-v1-readiness-review-terraform-fix.md`
+- `docs/changelog/entries/CL-0165-terraform-validation-fix.md`
+- `session_capture/2026-01-22-v1-readiness-review-terraform-fix.md`
 
 ### Outputs produced
-* Changelog: CL-0165 (terraform validation fix)
-* Session capture: 2026-01-22-v1-readiness-review-terraform-fix.md
-* V1 readiness assessment: 65-70% actual vs 95.5% claimed
+- Changelog: CL-0165 (terraform validation fix)
+- Session capture: 2026-01-22-v1-readiness-review-terraform-fix.md
+- V1 readiness assessment: 65-70% actual vs 95.5% claimed
 
 ### Next actions
-* [ ] Add ci-terraform-lint as required status check in GitHub
-* [ ] Address V1 gaps: multi-env EKS, teardown reliability, RED dashboards, TLS
-* [ ] Merge development to main when ready
+- [ ] Add ci-terraform-lint as required status check in GitHub
+- [ ] Address V1 gaps: multi-env EKS, teardown reliability, RED dashboards, TLS
+- [ ] Merge development to main when ready
 
 ### Session Report (end-of-session wrap-up)
-* Summary: Reviewed V1 readiness (65-70% actual). Fixed terraform validation errors in test/staging/prod caused by IAM module refactor that forgot non-dev envs. Updated PROMPT-0002 with terraform validation guidance. Cleaned up stale branches.
-* Decisions: Minimal fix (remove broken args, leave EKS commented). Add terraform validate to agent prompts.
-* Risks/Follow-ups: ci-terraform-lint should be made a required check. V1 has significant gaps in multi-env, observability, TLS.
-* Validation: All 4 environments pass terraform validate. Changes pushed to development.
+- Summary: Reviewed V1 readiness (65-70% actual). Fixed terraform validation errors in test/staging/prod caused by IAM module refactor that forgot non-dev envs. Updated PROMPT-0002 with terraform validation guidance. Cleaned up stale branches.
+- Decisions: Minimal fix (remove broken args, leave EKS commented). Add terraform validate to agent prompts.
+- Risks/Follow-ups: ci-terraform-lint should be made a required check. V1 has significant gaps in multi-env, observability, TLS.
+- Validation: All 4 environments pass terraform validate. Changes pushed to development.
 
 Signed: Claude Opus 4.5 (2026-01-22T18:30:00Z)
