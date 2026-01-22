@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="100" viewBox="0 0 440 100" role="img" aria-labelledby="title">
+  <title id="title">Goldenpath IDP Logo - Light Mode</title>
+
+  <!-- Background -->
+  <rect width="440" height="100" fill="#FFFFFF"/>
+
+  <!-- Branching paths that converge -->
+  <!-- Lower branch -->
+  <path d="M10 75 Q30 75 38 58" stroke="#B8960C" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.35"/>
+  <!-- Upper branch -->
+  <path d="M10 25 Q30 25 38 42" stroke="#B8960C" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.35"/>
+  <!-- Middle entry -->
+  <path d="M10 50 L38 50" stroke="#B8960C" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.35"/>
+
+  <!-- First merge point -->
+  <circle cx="38" cy="50" r="4" fill="#B8960C" opacity="0.55"/>
+
+  <!-- Merged path continuing -->
+  <path d="M38 50 L62 50" stroke="#B8960C" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Second decision node -->
+  <circle cx="62" cy="50" r="5" fill="#B8960C" opacity="0.75"/>
+
+  <!-- Final golden path - rising -->
+  <path d="M62 50 L95 25" stroke="#B8960C" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Destination node (hollow ring) -->
+  <circle cx="95" cy="25" r="9" fill="none" stroke="#B8960C" stroke-width="3"/>
+
+  <!-- Goldenpath IDP text -->
+  <text x="118" y="58" font-family="Space Grotesk, Inter, Arial, sans-serif" font-size="34" font-weight="700" fill="#B8960C" letter-spacing="1">Goldenpath IDP</text>
+</svg>
