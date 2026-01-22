@@ -810,3 +810,15 @@ f0d70950 fix: use Platformers community Backstage image (reverted)
 * [ ] Implement PRD-0001 for automated RDS user provisioning
 
 Signed: claude-opus-4.5 (2026-01-21T17:45:00Z)
+
+## Update - 2026-01-22T13:30:00Z
+
+### Progress
+- Backstage custom image built and pushed to ECR (v0.1.0)
+- TechDocs local generation configured
+- Golden Path IDP branding applied
+
+### Outstanding
+- [ ] Deploy to dev cluster with updated image
+- [ ] Verify TechDocs rendering in live environment
+- [ ] Test scaffold templates end-to-end
