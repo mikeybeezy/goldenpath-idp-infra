@@ -37,15 +37,40 @@
       "Resource": "arn:aws:iam::593517239005:policy/goldenpath-*"
     },
     {
+      "Sid": "IAMServiceLinkedRoles",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "iam:AWSServiceName": [
+            "eks.amazonaws.com",
+            "eks-nodegroup.amazonaws.com",
+            "elasticloadbalancing.amazonaws.com",
+            "autoscaling.amazonaws.com"
+          ]
+        }
+      }
+    },
+    {
       "Sid": "IAMOIDCProvider",
       "Effect": "Allow",
       "Action": [
         "iam:CreateOpenIDConnectProvider",
         "iam:DeleteOpenIDConnectProvider",
         "iam:GetOpenIDConnectProvider",
-        "iam:ListOpenIDConnectProviders",
         "iam:TagOpenIDConnectProvider",
         "iam:UpdateOpenIDConnectProviderThumbprint"
+      ],
+      "Resource": "arn:aws:iam::593517239005:oidc-provider/*"
+    },
+    {
+      "Sid": "IAMOIDCProviderList",
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListOpenIDConnectProviders"
       ],
       "Resource": "*"
     },
@@ -66,16 +91,68 @@
         "secretsmanager:PutResourcePolicy",
         "secretsmanager:GetResourcePolicy",
         "secretsmanager:DeleteResourcePolicy",
-        "secretsmanager:ListSecrets",
         "secretsmanager:ListSecretVersionIds"
       ],
       "Resource": "arn:aws:secretsmanager:eu-west-2:593517239005:secret:goldenpath/*"
     },
     {
-      "Sid": "EC2Full",
+      "Sid": "SecretsManagerList",
       "Effect": "Allow",
       "Action": [
-        "ec2:*"
+        "secretsmanager:ListSecrets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:Describe*",
+        "ec2:GetLaunchTemplateData"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2CreateTaggedResources",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVpc",
+        "ec2:CreateSubnet",
+        "ec2:CreateSecurityGroup",
+        "ec2:CreateInternetGateway",
+        "ec2:CreateNatGateway",
+        "ec2:CreateRouteTable",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateLaunchTemplate",
+        "ec2:AllocateAddress",
+        "ec2:RunInstances"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "eu-west-2"
+        },
+        "StringLike": {
+          "aws:RequestTag/Name": "goldenpath-*"
+        }
+      }
+    },
+    {
+      "Sid": "EC2CreateWithoutNameTag",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateRoute",
+        "ec2:CreateTags",
+        "ec2:AssociateRouteTable",
+        "ec2:AttachInternetGateway",
+        "ec2:ModifyVpcAttribute",
+        "ec2:ModifySubnetAttribute",
+        "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:AuthorizeSecurityGroupEgress",
+        "ec2:RevokeSecurityGroupIngress",
+        "ec2:RevokeSecurityGroupEgress",
+        "ec2:AssociateAddress",
+        "ec2:DisassociateAddress"
       ],
       "Resource": "*",
       "Condition": {
@@ -85,31 +162,205 @@
       }
     },
     {
-      "Sid": "EKSFull",
+      "Sid": "EC2ModifyDeleteTaggedResources",
       "Effect": "Allow",
       "Action": [
-        "eks:*"
+        "ec2:DeleteVpc",
+        "ec2:DeleteSubnet",
+        "ec2:DeleteSecurityGroup",
+        "ec2:DeleteInternetGateway",
+        "ec2:DeleteNatGateway",
+        "ec2:DeleteRouteTable",
+        "ec2:DeleteRoute",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteLaunchTemplate",
+        "ec2:ReleaseAddress",
+        "ec2:TerminateInstances",
+        "ec2:DetachInternetGateway",
+        "ec2:DisassociateRouteTable",
+        "ec2:DeleteTags"
       ],
-      "Resource": "*"
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "ec2:ResourceTag/Name": "goldenpath-*"
+        }
+      }
     },
     {
-      "Sid": "RDSFull",
+      "Sid": "EKSClusterManagement",
       "Effect": "Allow",
       "Action": [
-        "rds:*"
+        "eks:CreateCluster",
+        "eks:DeleteCluster",
+        "eks:DescribeCluster",
+        "eks:UpdateClusterConfig",
+        "eks:UpdateClusterVersion",
+        "eks:TagResource",
+        "eks:UntagResource",
+        "eks:ListTagsForResource"
       ],
-      "Resource": "*"
+      "Resource": "arn:aws:eks:eu-west-2:593517239005:cluster/goldenpath-*"
     },
     {
-      "Sid": "S3Full",
+      "Sid": "EKSNodeGroupManagement",
       "Effect": "Allow",
       "Action": [
-        "s3:*"
+        "eks:CreateNodegroup",
+        "eks:DeleteNodegroup",
+        "eks:DescribeNodegroup",
+        "eks:UpdateNodegroupConfig",
+        "eks:UpdateNodegroupVersion"
       ],
       "Resource": [
-        "arn:aws:s3:::goldenpath-*",
-        "arn:aws:s3:::goldenpath-*/*"
+        "arn:aws:eks:eu-west-2:593517239005:cluster/goldenpath-*",
+        "arn:aws:eks:eu-west-2:593517239005:nodegroup/goldenpath-*/*/*"
       ]
+    },
+    {
+      "Sid": "EKSAddonManagement",
+      "Effect": "Allow",
+      "Action": [
+        "eks:CreateAddon",
+        "eks:DeleteAddon",
+        "eks:DescribeAddon",
+        "eks:DescribeAddonVersions",
+        "eks:UpdateAddon"
+      ],
+      "Resource": [
+        "arn:aws:eks:eu-west-2:593517239005:cluster/goldenpath-*",
+        "arn:aws:eks:eu-west-2:593517239005:addon/goldenpath-*/*/*"
+      ]
+    },
+    {
+      "Sid": "EKSAccessManagement",
+      "Effect": "Allow",
+      "Action": [
+        "eks:CreateAccessEntry",
+        "eks:DeleteAccessEntry",
+        "eks:DescribeAccessEntry",
+        "eks:AssociateAccessPolicy",
+        "eks:DisassociateAccessPolicy",
+        "eks:ListAssociatedAccessPolicies"
+      ],
+      "Resource": [
+        "arn:aws:eks:eu-west-2:593517239005:cluster/goldenpath-*",
+        "arn:aws:eks:eu-west-2:593517239005:access-entry/goldenpath-*/*/*"
+      ]
+    },
+    {
+      "Sid": "EKSReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "eks:ListClusters",
+        "eks:ListNodegroups",
+        "eks:ListAddons",
+        "eks:ListAccessEntries",
+        "eks:DescribeAddonConfiguration",
+        "eks:ListAccessPolicies"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSInstanceManagement",
+      "Effect": "Allow",
+      "Action": [
+        "rds:CreateDBInstance",
+        "rds:DeleteDBInstance",
+        "rds:ModifyDBInstance",
+        "rds:RebootDBInstance",
+        "rds:StartDBInstance",
+        "rds:StopDBInstance"
+      ],
+      "Resource": "arn:aws:rds:eu-west-2:593517239005:db:goldenpath-*"
+    },
+    {
+      "Sid": "RDSSubnetGroupManagement",
+      "Effect": "Allow",
+      "Action": [
+        "rds:CreateDBSubnetGroup",
+        "rds:DeleteDBSubnetGroup",
+        "rds:ModifyDBSubnetGroup"
+      ],
+      "Resource": "arn:aws:rds:eu-west-2:593517239005:subgrp:goldenpath-*"
+    },
+    {
+      "Sid": "RDSParameterGroupManagement",
+      "Effect": "Allow",
+      "Action": [
+        "rds:CreateDBParameterGroup",
+        "rds:DeleteDBParameterGroup",
+        "rds:ModifyDBParameterGroup"
+      ],
+      "Resource": "arn:aws:rds:eu-west-2:593517239005:pg:goldenpath-*"
+    },
+    {
+      "Sid": "RDSSecurityGroupManagement",
+      "Effect": "Allow",
+      "Action": [
+        "rds:CreateDBSecurityGroup",
+        "rds:DeleteDBSecurityGroup",
+        "rds:AuthorizeDBSecurityGroupIngress",
+        "rds:RevokeDBSecurityGroupIngress"
+      ],
+      "Resource": "arn:aws:rds:eu-west-2:593517239005:secgrp:goldenpath-*"
+    },
+    {
+      "Sid": "RDSTagging",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:RemoveTagsFromResource",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "arn:aws:rds:eu-west-2:593517239005:*:goldenpath-*"
+    },
+    {
+      "Sid": "RDSReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeDBInstances",
+        "rds:DescribeDBSubnetGroups",
+        "rds:DescribeDBParameterGroups",
+        "rds:DescribeDBParameters",
+        "rds:DescribeDBSecurityGroups",
+        "rds:DescribeDBEngineVersions",
+        "rds:DescribeOrderableDBInstanceOptions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3BucketManagement",
+      "Effect": "Allow",
+      "Action": [
+        "s3:CreateBucket",
+        "s3:DeleteBucket",
+        "s3:PutBucketVersioning",
+        "s3:GetBucketVersioning",
+        "s3:PutEncryptionConfiguration",
+        "s3:GetEncryptionConfiguration",
+        "s3:PutBucketPublicAccessBlock",
+        "s3:GetBucketPublicAccessBlock",
+        "s3:PutLifecycleConfiguration",
+        "s3:GetLifecycleConfiguration",
+        "s3:PutBucketLogging",
+        "s3:GetBucketLogging",
+        "s3:PutBucketTagging",
+        "s3:GetBucketTagging",
+        "s3:GetBucketLocation",
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::goldenpath-*"
+    },
+    {
+      "Sid": "S3ObjectManagement",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": "arn:aws:s3:::goldenpath-*/*"
     },
     {
       "Sid": "S3TerraformState",
@@ -136,10 +387,21 @@
       "Resource": "arn:aws:dynamodb:eu-west-2:593517239005:table/terraform-lock"
     },
     {
-      "Sid": "ECRFull",
+      "Sid": "ECRRepositoryManagement",
       "Effect": "Allow",
       "Action": [
-        "ecr:*"
+        "ecr:CreateRepository",
+        "ecr:DeleteRepository",
+        "ecr:DescribeRepositories",
+        "ecr:PutLifecyclePolicy",
+        "ecr:GetLifecyclePolicy",
+        "ecr:DeleteLifecyclePolicy",
+        "ecr:TagResource",
+        "ecr:UntagResource",
+        "ecr:ListTagsForResource",
+        "ecr:SetRepositoryPolicy",
+        "ecr:GetRepositoryPolicy",
+        "ecr:DeleteRepositoryPolicy"
       ],
       "Resource": "arn:aws:ecr:eu-west-2:593517239005:repository/goldenpath-*"
     },
@@ -152,10 +414,30 @@
       "Resource": "*"
     },
     {
-      "Sid": "Route53Full",
+      "Sid": "Route53HostedZoneManagement",
       "Effect": "Allow",
       "Action": [
-        "route53:*"
+        "route53:CreateHostedZone",
+        "route53:DeleteHostedZone",
+        "route53:GetHostedZone",
+        "route53:ChangeResourceRecordSets",
+        "route53:GetChange",
+        "route53:ListResourceRecordSets",
+        "route53:ChangeTagsForResource",
+        "route53:ListTagsForResource"
+      ],
+      "Resource": [
+        "arn:aws:route53:::hostedzone/*",
+        "arn:aws:route53:::change/*"
+      ]
+    },
+    {
+      "Sid": "Route53ReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "route53:ListHostedZones",
+        "route53:ListHostedZonesByName",
+        "route53:GetHostedZoneCount"
       ],
       "Resource": "*"
     },
@@ -167,7 +449,7 @@
         "cloudwatch:DeleteAlarms",
         "cloudwatch:DescribeAlarms"
       ],
-      "Resource": "*"
+      "Resource": "arn:aws:cloudwatch:eu-west-2:593517239005:alarm:goldenpath-*"
     },
     {
       "Sid": "CloudWatchLogs",
@@ -177,20 +459,38 @@
         "logs:DeleteLogGroup",
         "logs:DescribeLogGroups",
         "logs:TagLogGroup",
+        "logs:UntagLogGroup",
         "logs:PutRetentionPolicy"
       ],
-      "Resource": "*"
+      "Resource": "arn:aws:logs:eu-west-2:593517239005:log-group:/aws/eks/goldenpath-*"
     },
     {
-      "Sid": "KMS",
+      "Sid": "KMSUsage",
       "Effect": "Allow",
       "Action": [
         "kms:Decrypt",
         "kms:Encrypt",
         "kms:GenerateDataKey",
         "kms:DescribeKey",
-        "kms:ListAliases",
         "kms:CreateGrant"
+      ],
+      "Resource": "arn:aws:kms:eu-west-2:593517239005:key/*",
+      "Condition": {
+        "StringLike": {
+          "kms:ViaService": [
+            "secretsmanager.eu-west-2.amazonaws.com",
+            "rds.eu-west-2.amazonaws.com",
+            "s3.eu-west-2.amazonaws.com"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "KMSList",
+      "Effect": "Allow",
+      "Action": [
+        "kms:ListAliases",
+        "kms:ListKeys"
       ],
       "Resource": "*"
     },
@@ -217,6 +517,7 @@
         "lambda:CreateFunction",
         "lambda:DeleteFunction",
         "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
         "lambda:UpdateFunctionCode",
         "lambda:UpdateFunctionConfiguration",
         "lambda:InvokeFunction",
@@ -224,23 +525,71 @@
         "lambda:RemovePermission",
         "lambda:GetPolicy",
         "lambda:TagResource",
-        "lambda:UntagResource"
+        "lambda:UntagResource",
+        "lambda:ListTags"
       ],
       "Resource": "arn:aws:lambda:eu-west-2:593517239005:function:goldenpath-*"
     },
     {
-      "Sid": "ElasticLoadBalancing",
+      "Sid": "ELBReadOnly",
       "Effect": "Allow",
       "Action": [
-        "elasticloadbalancing:*"
+        "elasticloadbalancing:Describe*"
       ],
       "Resource": "*"
     },
     {
-      "Sid": "AutoScaling",
+      "Sid": "ELBTaggedResources",
       "Effect": "Allow",
       "Action": [
-        "autoscaling:*"
+        "elasticloadbalancing:CreateLoadBalancer",
+        "elasticloadbalancing:DeleteLoadBalancer",
+        "elasticloadbalancing:ModifyLoadBalancerAttributes",
+        "elasticloadbalancing:CreateTargetGroup",
+        "elasticloadbalancing:DeleteTargetGroup",
+        "elasticloadbalancing:ModifyTargetGroup",
+        "elasticloadbalancing:CreateListener",
+        "elasticloadbalancing:DeleteListener",
+        "elasticloadbalancing:ModifyListener",
+        "elasticloadbalancing:RegisterTargets",
+        "elasticloadbalancing:DeregisterTargets",
+        "elasticloadbalancing:AddTags",
+        "elasticloadbalancing:RemoveTags",
+        "elasticloadbalancing:SetSecurityGroups",
+        "elasticloadbalancing:SetSubnets"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "aws:ResourceTag/kubernetes.io/cluster/goldenpath-*": "*"
+        }
+      }
+    },
+    {
+      "Sid": "AutoScalingTaggedResources",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:CreateAutoScalingGroup",
+        "autoscaling:DeleteAutoScalingGroup",
+        "autoscaling:UpdateAutoScalingGroup",
+        "autoscaling:SetDesiredCapacity",
+        "autoscaling:CreateLaunchConfiguration",
+        "autoscaling:DeleteLaunchConfiguration",
+        "autoscaling:CreateOrUpdateTags",
+        "autoscaling:DeleteTags"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "autoscaling:ResourceTag/kubernetes.io/cluster/goldenpath-*": "*"
+        }
+      }
+    },
+    {
+      "Sid": "AutoScalingReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:Describe*"
       ],
       "Resource": "*"
     }
