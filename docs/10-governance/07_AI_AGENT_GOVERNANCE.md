@@ -65,6 +65,25 @@ For context-bounded efforts, create a session capture using
 `session_capture/session_capture_template.md` and keep it append-only.
 Each update must include a short **Outstanding** section for quick scanning.
 
+### Session start protocol
+
+At the start of each agent session, run:
+
+```bash
+make session-start
+```
+
+This command:
+
+1. Checks if `agent_session_summary.md` exceeds 1000 lines
+2. If so, archives entries older than 30 days to `session_summary/archive/YYYY-MM.md`
+3. Keeps the main file bounded for efficient context loading
+
+Archived entries remain searchable via grep. The archive is organized by month
+for historical reference.
+
+To preview without changes: `make session-archive-dry-run`
+
 ## 1) Scope and authority
 
 - AI agents are contributors, not owners.

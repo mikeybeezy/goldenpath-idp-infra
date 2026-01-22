@@ -1026,6 +1026,22 @@ teardown-persistent:
 	'
 
 ################################################################################
+# Agent Session Management
+################################################################################
+
+# Called by agents at session start - archives old entries if file exceeds threshold
+session-start:
+	@python3 scripts/archive_sessions.py
+
+# Preview what would be archived without making changes
+session-archive-dry-run:
+	@python3 scripts/archive_sessions.py --dry-run
+
+# Force archive regardless of line threshold
+session-archive-force:
+	@python3 scripts/archive_sessions.py --force
+
+################################################################################
 
 help:
 	@echo "Targets:"
@@ -1092,6 +1108,11 @@ help:
 	@echo "  make timed-teardown ENV=dev BUILD_ID=20250115-02 CLUSTER=goldenpath-dev-eks REGION=eu-west-2"
 	@echo "  (teardown targets set TF_AUTO_APPROVE=true by default)"
 	@echo "  make set-cluster-name ENV=dev"
+	@echo ""
+	@echo "== Agent Session Management =="
+	@echo "  make session-start             # Archive old entries if needed (run at session start)"
+	@echo "  make session-archive-dry-run   # Preview what would be archived"
+	@echo "  make session-archive-force     # Force archive regardless of size"
 	@echo ""
 	@echo "Bootstrap flags:"
 	@echo "  NODE_INSTANCE_TYPE, ENV_NAME, SKIP_CERT_MANAGER_VALIDATION, SKIP_ARGO_SYNC_WAIT,"

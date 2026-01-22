@@ -47,6 +47,18 @@ relates_to:
 - <bullet>
 - <bullet>
 
+## Issues Diagnosed and Fixed
+
+| Issue     | Root Cause        | Fix             |
+|-----------|-------------------|-----------------|
+| <symptom> | <why it happened> | <what was done> |
+
+## Design Decisions Made
+
+| Decision               | Choice          | Rationale |
+|------------------------|-----------------|-----------|
+| <what needed deciding> | <option chosen> | <why>     |
+
 ## Artifacts Touched (links)
 
 ### Modified
@@ -85,6 +97,12 @@ Signed: <name> (<timestamp>)
 **What changed**
 - <bullet>
 
+**Issues fixed** (if any)
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+|       |            |     |
+
 **Artifacts touched**
 - `<path>`
 
@@ -115,9 +133,9 @@ Signed: <name> (<timestamp>)
 
 #### Recommendations
 
-| Priority | Action | Effort | Status |
-| --- | --- | --- | --- |
-| P0 | <action> | <effort> | <status> |
+| Priority | Action   | Effort   | Status   |
+|----------|----------|----------|----------|
+| P0       | <action> | <effort> | <status> |
 
 Signed: <reviewer> (<timestamp>)
 

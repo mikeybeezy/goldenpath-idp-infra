@@ -11,6 +11,7 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - ADR-0176
   - CAPABILITY_LEDGER
   - SESSION_CAPTURE_2026_01_17_01
 ---
@@ -67,3 +68,4 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Schema-First Control Plane**: Decoupling governance logic from code using high-fidelity YAML schemas.
 - **Validation Engines**: High-performance metadata and structural integrity checkers.
 - **Injection Coverage**: Metrics-driven tracking of how well metadata propagates into live cluster resources.
+- **Session Memory Architecture**: Three-tier memory system (working/long-term/archive) for preserving institutional knowledge across AI agent sessions while keeping context windows bounded.

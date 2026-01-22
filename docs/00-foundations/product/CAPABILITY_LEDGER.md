@@ -255,6 +255,20 @@ The platform delivers "Zero-Config Observability," ensuring that every deployed 
 - **Logs RED Integration**: Real-time application logs are correlated directly with metrics, allowing engineers to instantly jump from a "Spike in Errors" (Metric) to the "Stack Trace" (Log) in a single view.
 - **Auto-Discovery Engine**: The Grafana sidecar automatically detects and imports dashboard ConfigMaps from any namespace, enabling a decentralized, self-service observability model where dashboards live alongside application code.
 
+## 24. Session Memory Architecture (Human-Machine Collaboration)
+
+The platform implements a **Three-Tier Memory System** for preserving institutional knowledge across AI agent sessions, addressing the fundamental constraint that context windows are finite while project knowledge accumulates indefinitely.
+
+- **Working Memory (Session Capture)**: Topic-scoped files (`session_capture/YYYY-MM-DD-<topic>.md`) serve as active working memory during sessions, with structured tables for Issues Diagnosed/Fixed and Design Decisions Made—enabling pattern recognition and preventing repeated mistakes.
+- **Long-Term Memory (Session Summary)**: An append-only ledger (`session_summary/agent_session_summary.md`) provides cross-session continuity, preserving the "what happened and why" across agent handoffs.
+- **Historical Memory (Archive)**: Auto-archive mechanism (`make session-start`) moves entries older than 30 days to monthly files (`session_summary/archive/YYYY-MM.md`) when the main file exceeds 1000 lines, keeping active memory bounded for efficient context loading while preserving searchable history.
+
+**Honest Assessment**: This is **foundational infrastructure**, not an immediate solution. The archive mechanism is preventive (won't activate until entries age beyond 30 days). The structured tables only add value if populated with discipline. The real benefit is forward-looking: enabling institutional memory to scale without context window overflow.
+
+- **Relates-To**: [ADR-0176](/docs/adrs/ADR-0176-session-memory-management.md), [ADR-0163](/docs/adrs/ADR-0163-agent-collaboration-governance.md)
+
+---
+
 ## Technical Foundation
 
 - **Platform Core**: AWS EKS (Ubuntu/Bottlerocket)
