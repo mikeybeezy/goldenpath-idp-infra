@@ -10,8 +10,8 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
-category: runbooks
 value_quantification:
   vq_class: 🔵 MV/HQ
   impact_tier: tier-2
   potential_savings_hours: 0.5
+category: runbooks

@@ -1,12 +1,7 @@
 ---
 id: BACKEND_APP_RDS_REQUEST_FLOW
-title: "How It Works: Backend App + RDS Request Flow"
+title: 'How It Works: Backend App + RDS Request Flow'
 type: documentation
-domain: platform-core
-owner: platform-team
-lifecycle: active
-status: active
-schema_version: 1
 risk_profile:
   production_impact: none
   security_risk: none

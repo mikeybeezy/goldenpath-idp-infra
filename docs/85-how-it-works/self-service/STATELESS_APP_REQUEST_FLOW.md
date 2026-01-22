@@ -1,12 +1,7 @@
 ---
 id: STATELESS_APP_REQUEST_FLOW
-title: "How It Works: Stateless App Request Flow"
+title: 'How It Works: Stateless App Request Flow'
 type: documentation
-domain: platform-core
-owner: platform-team
-lifecycle: active
-status: active
-schema_version: 1
 risk_profile:
   production_impact: none
   security_risk: none
