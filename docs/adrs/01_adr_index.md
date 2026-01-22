@@ -381,6 +381,7 @@ relates_to:
   - ADR-0173
   - ADR-0174
   - ADR-0175
+  - ADR-0176
 <!-- ADR_RELATE_END -->
 ---
 
@@ -567,6 +568,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0173](ADR-0173-governance-doc-naming-migration.md) | Platform | Governance Doc Naming Migration Strategy | Proposed | 2026-01-0? | A new naming convention for governance docs has been proposed:`GOV-xxxx-description-of-file.md`. The current repository uses a mix of numerical prefixes (for example`04_PR_GUARDRAILS.md`) and domai... |
 | [ADR-0174](ADR-0174-pipeline-decoupling-from-cluster-bootstrap.md) | Platform | Pipeline enablement intentionally decoupled from cluster bootstrap | Active | 2026-01-0? | GoldenPath IDP clusters are bootstrapped through a multi-stage process that provisions EKS, ArgoCD, monitoring, and foundational workloads. A separate concern is enabling the CI/CD pipeline that al... |
 | [ADR-0175](ADR-0175-externaldns-wildcard-ownership.md) | Platform | ExternalDNS owns wildcard records for env subdomains | Active | 2026-01-21 | The wildcard DNS record for`*.{env}.goldenpathidp.io`is tied to the Kong LoadBalancer hostname. Terraform can set this value during apply, but when the LoadBalancer changes (teardown/rebuild), DNS ... |
+| [ADR-0176](ADR-0176-session-memory-management.md) | Platform | Session Memory Management for Human-Machine Collaboration | Proposed | 2026-01-22 | This platform is designed to facilitate human-machine collaboration. AI agents work alongside humans across sessions, but face a fundamental constraint: context windows are finite while project kno... |
 <!-- ADR_TABLE_END -->
 
 ---

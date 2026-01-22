@@ -7,12 +7,14 @@ governance:
   reliability: null
 
 # -----------------------------------------------------------------------------
-# Image Configuration - ECR
+# Image Configuration
+# TODO: Build custom Backstage image with required plugins and push to ECR
+# Current: Using official Backstage image (may have UI incompatibilities)
 # -----------------------------------------------------------------------------
 image:
-  repository: 593517239005.dkr.ecr.eu-west-2.amazonaws.com/
-  name: backstage
-  tag: 0.0.1
+  repository: "ghcr.io/backstage/"
+  name: "backstage"
+  tag: "latest"
   pullPolicy: Always
 
 # -----------------------------------------------------------------------------
@@ -43,7 +45,7 @@ externalSecret:
 # Credentials injected via ExternalSecret -> backstage-secrets
 # -----------------------------------------------------------------------------
 postgres:
-  host: goldenpath-dev-goldenpath-platform-db.cxmcacaams2q.eu-west-2.rds.amazonaws.com
+  host: goldenpath-dev-platform-dev.cxmcacaams2q.eu-west-2.rds.amazonaws.com
   port: "5432"
   user: backstage_app
   password: "placeholder"  # Not used when externalSecret.enabled=true

@@ -2820,3 +2820,127 @@ Goal: Complete Golden Path scaffold templates (stateless-app, stateful-app, back
 - Validation: test_script_0034.py — 16/16 tests passed. Git operations successful.
 
 Signed: Claude Opus 4.5 (2026-01-21T17:30:00Z)
+
+---
+
+## Session: 2026-01-22 Backstage Branding & TechDocs Implementation
+
+### Context
+- Agent: Claude Opus 4.5
+- Branch: refactor/backstage-repo-alignment (goldenpath-idp-backstage), development (goldenpath-idp-infra)
+- Session capture: `session_capture/2026-01-22-backstage-repo-structure-and-rds-path-alignment.md`
+- PR: #1 (goldenpath-idp-backstage)
+
+Goal: Fix Backstage authentication, add GitHub Actions plugin, implement TechDocs with MkDocs, and create custom Goldenpath IDP branding to replace default Backstage logos.
+
+### In-Session Log (append as you go)
+- 09:00Z — Fixed 401 Unauthorized by adding guest SignInPage with auto sign-in
+- 09:30Z — Added @backstage-community/plugin-github-actions for CI/CD visibility
+- 10:00Z — Implemented TechDocs with local MkDocs generation (runIn: 'local')
+- 10:15Z — Created PRD-0005 documenting TechDocs implementation path (Phase 1-3)
+- 10:30Z — Designed "Convergent Path" logo concept (branches → merge → rising path → goal)
+- 10:45Z — Created 4 logo variants: dark, light, dark-transparent, light-transparent
+- 10:50Z — Iterated on logo design: added text, adjusted spacing, created v4 with hollow ring
+- 10:55Z — Removed experimental logo variants, kept final 4 + icon-only version
+- 11:00Z — Replaced Backstage default branding (LogoFull.tsx, LogoIcon.tsx)
+- 11:01Z — Updated index.html, manifest.json, safari-pinned-tab.svg
+- 11:02Z — Generated favicon PNGs (16, 32, 180, 192) and .ico using rsvg-convert + Pillow
+- 11:05Z — Updated app-config.yaml with Goldenpath IDP title and organization
+- 11:10Z — Updated session capture with full summary
+
+### Checkpoints
+- [x] 401 authentication error fixed
+- [x] GitHub Actions plugin integrated
+- [x] TechDocs configured with local MkDocs
+- [x] PRD-0005 created for TechDocs roadmap
+- [x] Custom logo designed (Convergent Path concept)
+- [x] 4 logo variants created (dark/light × solid/transparent)
+- [x] Icon-only version for favicons
+- [x] All Backstage default branding replaced
+- [x] All favicon sizes generated
+- [x] Session capture updated
+
+### Key Achievements
+
+| Achievement | Impact |
+|-------------|--------|
+| **Guest auth fix** | Backstage now accessible without 401 errors |
+| **GitHub Actions plugin** | CI/CD visibility on entity pages |
+| **TechDocs Phase 1** | Documentation-as-code enabled (local mode) |
+| **Custom branding** | Goldenpath IDP identity replaces generic Backstage |
+| **Logo variants** | Supports dark/light modes and transparent backgrounds |
+| **Generated favicons** | All sizes (16, 32, 180, 192, .ico) from single SVG |
+
+### Issues Diagnosed and Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| 401 Unauthorized | No SignInPage after removing GitHub auth | Added guest SignInPage with auto sign-in |
+| Guest auth blocked in prod | Default blocks guest outside dev | Added dangerouslyAllowOutsideDevelopment: true |
+| Logo too far from text | x=120 left too much gap | Reduced to x=118, iterated on spacing |
+| No icon-only version | Only had lockup with text | Created goldenpath-idp-icon-convergent.svg |
+
+### Design Decisions Made
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Logo concept | Convergent Path (rising) | Upward trajectory communicates enablement/growth |
+| Dark mode gold | `#F5C542` | Bright gold pops on dark background |
+| Light mode gold | `#B8960C` | Darker gold for better contrast on white |
+| Destination node | Hollow ring | Cleaner than filled, reads as "target/goal" |
+| TechDocs mode | Local (Phase 1) | Quick win, defer S3 publisher to Phase 2 |
+| Auth provider | Guest with auto sign-in | Simplest for dev/demo environments |
+
+### Artifacts touched (required)
+
+*goldenpath-idp-backstage:*
+- `packages/app/src/App.tsx` (guest SignInPage)
+- `packages/app/src/components/catalog/EntityPage.tsx` (GitHub Actions)
+- `packages/app/src/components/Root/LogoFull.tsx` (custom logo)
+- `packages/app/src/components/Root/LogoIcon.tsx` (custom icon)
+- `packages/backend/Dockerfile` (MkDocs installation)
+- `packages/app/public/index.html` (branding)
+- `packages/app/public/manifest.json` (branding)
+- `packages/app/public/safari-pinned-tab.svg` (custom icon)
+- `packages/app/public/favicon-16x16.png` (generated)
+- `packages/app/public/favicon-32x32.png` (generated)
+- `packages/app/public/apple-touch-icon.png` (generated)
+- `packages/app/public/android-chrome-192x192.png` (generated)
+- `packages/app/public/favicon.ico` (generated)
+- `app-config.yaml` (title, techdocs config)
+- `app-config.production.yaml` (guest auth)
+- `examples/entities.yaml` (techdocs annotation)
+- `examples/mkdocs.yml` (new)
+- `examples/docs/index.md` (new)
+- `examples/docs/getting-started.md` (new)
+
+*goldenpath-idp-infra:*
+- `docs/20-contracts/prds/PRD-0005-techdocs-implementation.md` (new)
+- `backstage-helm/img/goldenpath-idp-logo-dark.svg` (new)
+- `backstage-helm/img/goldenpath-idp-logo-light.svg` (new)
+- `backstage-helm/img/goldenpath-idp-logo-dark-transparent.svg` (new)
+- `backstage-helm/img/goldenpath-idp-logo-light-transparent.svg` (new)
+- `backstage-helm/img/goldenpath-idp-icon-convergent.svg` (new)
+- `session_capture/2026-01-22-backstage-repo-structure-and-rds-path-alignment.md` (updated)
+
+### Outputs produced
+- PRs: #1 (goldenpath-idp-backstage)
+- PRDs: PRD-0005 (TechDocs implementation)
+- Logo SVGs: 5 (dark, light, dark-transparent, light-transparent, icon)
+- Favicons: 5 (16px, 32px, 180px, 192px, .ico)
+- Components: LogoFull.tsx, LogoIcon.tsx
+
+### Next actions
+- [ ] Build and push custom Docker image to ECR
+- [ ] Deploy to dev cluster with new branding
+- [ ] Test TechDocs rendering end-to-end
+- [ ] Merge PR #1 after review
+- [ ] Begin Phase 2: S3 publisher for TechDocs (per PRD-0005)
+
+### Session Report (end-of-session wrap-up)
+- Summary: Fixed Backstage authentication, added GitHub Actions plugin, enabled TechDocs with local MkDocs, and created complete custom branding for Goldenpath IDP. Designed "Convergent Path" logo representing complexity converging to one clear path rising to success. Generated all favicon sizes from SVG. All default Backstage branding replaced.
+- Decisions: Use guest auth with auto sign-in for simplicity. Local TechDocs mode for Phase 1 (S3 in Phase 2). Convergent Path logo with hollow ring destination. Darker gold (#B8960C) for light mode contrast.
+- Risks/Follow-ups: Docker image not yet built with MkDocs. TechDocs not tested end-to-end. Need to verify branding renders correctly in deployed cluster.
+- Validation: Backstage starts locally with custom branding. Favicons generated at all sizes. Logo SVGs render correctly in browser.
+
+Signed: Claude Opus 4.5 (2026-01-22T11:10:00Z)

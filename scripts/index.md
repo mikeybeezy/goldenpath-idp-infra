@@ -70,6 +70,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 
 | Script | Description |
 | :--- | :--- |
+| [archive_sessions.py](archive_sessions.py) | --- |
 | [audit_metadata.py](audit_metadata.py) | --- |
 | [aws_inventory.py](aws_inventory.py) | --- |
 | [backfill_metadata.py](backfill_metadata.py) | --- |

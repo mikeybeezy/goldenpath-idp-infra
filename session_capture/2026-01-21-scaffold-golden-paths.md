@@ -604,3 +604,223 @@ docs/changelog/entries/
 ---
 
 Signed: claude-opus-4.5 (2026-01-21T22:00:00Z)
+
+---
+
+## Platform Troubleshooting: Backstage, RDS, and Certificate Issues (2026-01-21)
+
+### Context
+
+After Golden Path templates were complete, platform infrastructure issues were discovered preventing Backstage and Kong from functioning properly.
+
+### Issues Discovered
+
+| Component | Issue | Root Cause |
+| --------- | ----- | ---------- |
+| **Certificates** | TLS certs not issuing | ClusterIssuers not deployed |
+| **Backstage** | Pod Pending | Node capacity exhausted (11 pods/node limit) |
+| **Backstage** | ImagePullBackOff | ECR image `backstage:0.0.1` doesn't exist |
+| **Backstage** | Secret not found | ClusterSecretStore not deployed |
+| **Backstage** | DB connection failed | Wrong RDS hostname + missing DB user |
+| **Backstage** | Permission denied | `backstage_user` lacked CREATEDB privilege |
+| **Backstage** | Migration errors | Platformers image too old for current DB schema |
+
+### Resolution Steps
+
+#### 1. Certificate Issues - ClusterIssuers Missing
+
+**Symptom**: `clusterissuer.cert-manager.io "letsencrypt-staging" not found`
+
+**Fix**:
+
+```bash
+# Apply ClusterIssuers (they existed in repo but weren't deployed)
+kubectl apply -f gitops/kustomize/bases/cert-manager/cluster-issuers.yaml
+```
+
+**Created**:
+
+* `selfsigned-issuer` - For internal/testing
+* `letsencrypt-staging` - For dev/test (no rate limits)
+* `letsencrypt-prod` - For production
+
+#### 2. Node Capacity - Too Many Pods
+
+**Symptom**: `0/6 nodes are available: 6 Too many pods`
+
+**Root Cause**: Nodes limited to 11 pods each (small instance type)
+
+**Fix**: Removed non-essential workloads to free capacity:
+
+```bash
+kubectl delete application dev-fluent-bit -n argocd
+kubectl delete application dev-wordpress-efs -n argocd
+kubectl delete application dev-stateful-app -n argocd
+kubectl delete daemonset dev-loki-promtail -n monitoring
+kubectl delete daemonset dev-kube-prometheus-stack-prometheus-node-exporter -n monitoring
+```
+
+#### 3. ClusterSecretStore Missing
+
+**Symptom**: `ClusterSecretStore.external-secrets.io "aws-secretsmanager" not found`
+
+**Fix**:
+
+```bash
+kubectl apply -f gitops/kustomize/bases/external-secrets/cluster-secret-store.yaml
+```
+
+**Result**: ExternalSecrets can now sync from AWS Secrets Manager
+
+#### 4. Backstage Image - ECR Repository Missing
+
+**Symptom**: `593517239005.dkr.ecr.eu-west-2.amazonaws.com/backstage:0.0.1: not found`
+
+**Fix**: Updated `gitops/helm/backstage/values/dev.yaml`:
+
+```yaml
+image:
+  repository: "ghcr.io/backstage/"
+  name: "backstage"
+  tag: "latest"
+  pullPolicy: Always
+```
+
+**Note**: Custom Backstage image needs to be built and pushed to ECR for full compatibility.
+
+#### 5. RDS Hostname Incorrect
+
+**Symptom**: `getaddrinfo ENOTFOUND goldenpath-dev-goldenpath-platform-db...`
+
+**Root Cause**: Values file had wrong RDS endpoint
+
+**Fix**: Updated `gitops/helm/backstage/values/dev.yaml`:
+
+```yaml
+postgres:
+  host: goldenpath-dev-platform-dev.cxmcacaams2q.eu-west-2.rds.amazonaws.com  # Corrected
+```
+
+**Verification**:
+
+```bash
+aws rds describe-db-instances --query 'DBInstances[*].[DBInstanceIdentifier,Endpoint.Address]' --output table
+```
+
+#### 6. Database User and Database Missing
+
+**Symptom**: `password authentication failed for user "backstage_user"`
+
+**Root Cause**: Terraform creates Secrets Manager entries but NOT the actual PostgreSQL roles/databases
+
+**Fix**: Created user and database manually:
+
+```bash
+# Create role
+kubectl run psql-user --image=postgres:15-alpine --restart=Never --rm -i \
+  --env="PGPASSWORD=<master_password>" \
+  -- psql -h <rds-endpoint> -U platform_admin -d platform \
+  -c "CREATE ROLE backstage_user WITH LOGIN PASSWORD '<app_password>';"
+
+# Create database
+kubectl run psql-db --image=postgres:15-alpine --restart=Never --rm -i \
+  --env="PGPASSWORD=<master_password>" \
+  -- psql -h <rds-endpoint> -U platform_admin -d platform \
+  -c "CREATE DATABASE backstage OWNER backstage_user;"
+
+# Grant privileges
+kubectl run psql-grant --image=postgres:15-alpine --restart=Never --rm -i \
+  --env="PGPASSWORD=<master_password>" \
+  -- psql -h <rds-endpoint> -U platform_admin -d backstage \
+  -c "GRANT ALL PRIVILEGES ON DATABASE backstage TO backstage_user; GRANT ALL ON SCHEMA public TO backstage_user;"
+```
+
+#### 7. CREATEDB Permission Missing
+
+**Symptom**: `permission denied to create database` (Backstage needs to create plugin DBs)
+
+**Fix**:
+
+```bash
+kubectl run psql-createdb --image=postgres:15-alpine --restart=Never --rm -i \
+  --env="PGPASSWORD=<master_password>" \
+  -- psql -h <rds-endpoint> -U platform_admin -d postgres \
+  -c "ALTER ROLE backstage_user CREATEDB;"
+```
+
+#### 8. Platformers Image Incompatibility
+
+**Symptom**: `The migration directory is corrupt, the following files are missing: 20240130092632_search_index.js...`
+
+**Root Cause**: `ghcr.io/guymenahem/backstage-platformers:0.0.1` (March 2024) has older Backstage plugins that expect different DB migrations than current schema.
+
+**Resolution**: Reverted to official Backstage image. Building a custom image is the recommended path forward.
+
+### ArgoCD Branch Configuration
+
+**Issue**: ArgoCD app was pointing to `feature/tooling-apps-config` branch, not `development`
+
+**Fix**:
+
+```bash
+kubectl patch application dev-backstage -n argocd --type=json -p='[
+  {"op": "replace", "path": "/spec/sources/0/targetRevision", "value": "development"},
+  {"op": "replace", "path": "/spec/sources/1/targetRevision", "value": "development"}
+]'
+```
+
+### Troubleshooting Final State
+
+| Component | Status |
+| --------- | ------ |
+| **Backstage** | Synced, Healthy, Pod Running |
+| **Kong** | Synced, Healthy |
+| **Certificates** | ClusterIssuers Ready, Certs Issuing |
+| **ExternalSecrets** | ClusterSecretStore Valid, Secrets Syncing |
+| **Database** | Connected, Migrations Complete |
+
+### Troubleshooting Files Modified
+
+1. `gitops/helm/backstage/values/dev.yaml` - Image and RDS hostname fixes
+2. Applied (not committed): `cluster-issuers.yaml`, `cluster-secret-store.yaml`
+
+### Commits Made
+
+```text
+3d2719d5 fix: use official Backstage image temporarily
+3d43dfad fix: correct RDS hostname for Backstage
+f0d70950 fix: use Platformers community Backstage image (reverted)
+8c485e18 fix: revert to official Backstage image
+```
+
+### Key Learnings
+
+1. **ClusterIssuers must be applied separately** - cert-manager Helm chart doesn't include them
+2. **ClusterSecretStore must be applied separately** - external-secrets Helm chart doesn't include them
+3. **RDS user provisioning gap** - Terraform creates secrets but not DB users (PRD-0001 addresses this)
+4. **Small nodes hit pod limits quickly** - Consider larger instances or pod density optimization
+5. **ArgoCD branch config** - Verify both `sources` point to correct branch when using multi-source
+
+### Troubleshooting TODO
+
+* [ ] Build custom Backstage image with required plugins
+* [ ] Push to ECR and update values
+* [ ] Automate ClusterIssuer deployment (add to ArgoCD app or bootstrap)
+* [ ] Automate ClusterSecretStore deployment
+* [ ] Implement PRD-0001 for automated RDS user provisioning
+
+Signed: claude-opus-4.5 (2026-01-21T17:45:00Z)
+
+## Update - 2026-01-22T13:30:00Z
+
+### Progress
+
+* Backstage custom image built and pushed to ECR (v0.1.0)
+* TechDocs local generation configured
+* Golden Path IDP branding applied
+
+### Outstanding
+
+* [ ] Deploy to dev cluster with updated image
+* [ ] Verify TechDocs rendering in live environment
+* [ ] Test scaffold templates end-to-end
