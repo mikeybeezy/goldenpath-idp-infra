@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0138
-  title: 'CL-0138: RED/Golden Signals Dashboards for Tooling Applications'
+  title: Check ConfigMaps are deployed
   description: '**Type**: Feature
 
     **Component**: Observability / Grafana Dashboards

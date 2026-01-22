@@ -2,8 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0118
-  title: 'ADR-0118: Config-Driven Metadata Governance Architecture'
-  description: ''
+  title: ADR-0118-config-driven-metadata-governance
+  description: The platform's metadata standardization and validation logic was previously
+    hardcoded in monolithic Python scripts. This created a maintenance bottleneck
+    where architectural changes required code depl...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0118-config-driven-metadata-governance.md
@@ -18,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

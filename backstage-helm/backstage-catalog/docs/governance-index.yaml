@@ -14,6 +14,7 @@ spec:
     - ./governance/governance-07-1-ai-collaboration-protocol.yaml
     - ./governance/governance-07-ai-agent-governance.yaml
     - ./governance/governance-08-github-agent-roles.yaml
+    - ./governance/governance-09-agent-collaboration-matrix.yaml
     - ./governance/governance-09-governance-testing.yaml
     - ./governance/governance-10-secret-scanning-policy.yaml
     - ./governance/governance-11-secrets-catalog-policy.yaml
@@ -32,9 +33,14 @@ spec:
     - ./governance/governance-metadata-maintenance-guide.yaml
     - ./governance/governance-platform-health-guide.yaml
     - ./governance/governance-pr-156-stabilization-checklist.yaml
+    - ./governance/governance-pr-guardrails-index.yaml
     - ./governance/governance-script-certification-audit.yaml
     - ./governance/governance-script-certification-matrix.yaml
     - ./governance/governance-policies-01-tag-scoped-policy-template.yaml
+    - ./governance/governance-policies-gov-0012-build-pipeline-standards.yaml
+    - ./governance/governance-policies-gov-0013-devsecops-security-standards.yaml
+    - ./governance/governance-policies-gov-0014-devsecops-implementation-matrix.yaml
+    - ./governance/governance-policies-gov-0015-build-pipeline-testing-matrix.yaml
     - ./governance/governance-policies-readme.yaml
     - ./governance/governance-policies-datree-readme.yaml
     - ./governance/governance-policies-iam-variable-mapping-index.yaml

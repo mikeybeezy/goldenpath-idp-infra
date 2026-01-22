@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-09-agent-collaboration-matrix
+  title: Agent Collaboration Registry & Responsibility Matrix
+  description: '- Purpose: Maintain a living roster of AI agents, their models, responsibilities,
+    and permissions.
+
+    - Owner: platform
+
+    - Status: living
+
+    - Review cadence: 30d or on any agent access change
+
+    - Source of tr...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/09_AGENT_COLLABORATION_MATRIX.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/09_AGENT_COLLABORATION_MATRIX.md
+  tags:
+    - gove
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/09_AGENT_COLLABORATION_MATRIX.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

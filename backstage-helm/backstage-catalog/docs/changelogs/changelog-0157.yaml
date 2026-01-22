@@ -2,14 +2,11 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0157
-  title: 'CL-0157: RDS break-glass destroy target'
-  description: 'Date: 2026-01-20
+  title: RDS Break-Glass Destroy Target
+  description: 'Added a confirmation-gated `rds-destroy-break-glass` target that disables
+    deletion
 
-    Owner: platform-team
-
-    Scope: rds, teardown, break-glass, terraform
-
-    Related: Makefile, RB-0030, RB-0033'
+    protection and destroys standalone RDS via Terraform.'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0157-rds-break-glass-destroy.md
@@ -19,10 +16,6 @@ metadata:
     - changelog
     - release-notes
     - documentation
-    - rds
-    - teardown
-    - break-glass
-    - terraform
   links:
     - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0157-rds-break-glass-destroy.md
       title: View on GitHub
