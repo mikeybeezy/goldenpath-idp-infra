@@ -2,15 +2,8 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0143
-  title: 'ADR-0143: Secret Request Contract (V1)'
-  description: '| risk.tier | Approval Required | rotationClass Requirement | Action
-    on Violation |
-
-    | :--- | :---: | :---: | :--- |
-
-    | **high** | Yes | != `none` | **Block** provisioning/PR |
-
-    | **medium** | Yes | Reco...'
+  title: ADR-0143-secret-request-contract
+  description: Accepted
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0143-secret-request-contract.md

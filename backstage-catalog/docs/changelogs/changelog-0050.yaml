@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0050
-  title: 'CL-0050: Activated Infracost Cost Visibility'
+  title: CL-0050-infracost-activation
   description: '**Date:** 2026-01-04
 
     **Owner:** Platform Team

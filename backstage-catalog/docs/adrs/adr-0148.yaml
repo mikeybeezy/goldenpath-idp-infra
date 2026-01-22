@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0148
-  title: 'ADR-0148: Seamless Build Deployment with Build ID Immutability'
+  title: Manual two-phase with no protection
   description: '**Status**: Accepted
 
     **Date**: 2026-01-13
@@ -23,6 +23,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

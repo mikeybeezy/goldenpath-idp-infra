@@ -2,14 +2,13 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0153
-  title: 'CL-0153: Standalone RDS state for persistent clusters'
-  description: 'Date: 2026-01-20
+  title: Standalone RDS State for Persistent Clusters
+  description: 'Persistent clusters now rely on the standalone RDS state (`envs/<env>-rds/`)
+    to
 
-    Owner: platform-team
+    avoid accidental RDS deletion during `terraform destroy`. The platform state
 
-    Scope: rds, persistent, teardown
-
-    Related: envs/dev/terraform.tfvars, ADR-0158'
+    (`envs/<env>/`) no longer creates RDS by de...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0153-standalone-rds-state.md
@@ -19,9 +18,6 @@ metadata:
     - changelog
     - release-notes
     - documentation
-    - rds
-    - persistent
-    - teardown
   links:
     - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0153-standalone-rds-state.md
       title: View on GitHub

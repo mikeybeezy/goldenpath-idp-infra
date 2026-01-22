@@ -2,14 +2,13 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0152
-  title: 'CL-0152: Ephemeral secrets bounded context isolation'
-  description: 'Date: 2026-01-20
+  title: Ephemeral Secrets Bounded Context Isolation
+  description: 'Ephemeral cluster secrets are now scoped by `build_id` to prevent
+    name collisions
 
-    Owner: platform-team
+    when rebuilding clusters. This implements the bounded context philosophy where
 
-    Scope: secrets, rds, ephemeral
-
-    Related: envs/dev/main.tf, modules/aws_rds/secrets.tf, ADR-0006'
+    each ephemeral build is fully isolated.'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0152-ephemeral-secrets-bounded-context.md
@@ -19,9 +18,6 @@ metadata:
     - changelog
     - release-notes
     - documentation
-    - secrets
-    - ephemeral
-    - bounded-context
   links:
     - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0152-ephemeral-secrets-bounded-context.md
       title: View on GitHub

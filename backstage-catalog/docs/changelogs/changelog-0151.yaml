@@ -2,14 +2,11 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0151
-  title: 'CL-0151: Persistent teardown v4 safety defaults'
-  description: 'Date: 2026-01-20
+  title: Persistent Teardown V4 Safety Defaults
+  description: 'Persistent teardown now uses the v4 teardown script with safety defaults
+    that
 
-    Owner: platform-team
-
-    Scope: teardown
-
-    Related: Makefile, bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh'
+    prevent accidental deletion of RDS instances and Secrets Manager data.'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0151-persistent-teardown-v4-safety-defaults.md

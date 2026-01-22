@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0098
-  title: 'ADR-0098: Standardized PR Gates for ECR Pipeline'
+  title: ADR-0098-standardized-pr-gates
   description: The ECR pipeline PRs were experiencing repeated CI failures due to
     inconsistent guardrail checks, YAML linting errors, and missing metadata. Multiple
     workflows needed to trigger on both `main` and `de...
@@ -20,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

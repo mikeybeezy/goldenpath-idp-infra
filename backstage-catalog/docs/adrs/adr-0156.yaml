@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0156
-  title: 'ADR-0156: CI Build Timing Capture at Source'
+  title: ADR-0156-platform-ci-build-timing-capture
   description: '**Status**: Accepted
 
     **Date**: 2026-01-15
@@ -23,6 +23,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

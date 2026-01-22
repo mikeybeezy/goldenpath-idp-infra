@@ -2,10 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: governance-config-driven-metadata
-  title: Config-Driven Metadata Governance
-  description: "1. **Schema Discovery**: When a script runs, it identifies the \"\
-    Kind\" of a file (e.g., `adr`).\n2. **Schema Loading**: It loads the corresponding\
-    \ `adr.schema.yaml`.\n3. **Dynamic Enforcement**:\n   - **V..."
+  title: CONFIG_DRIVEN_METADATA
+  description: This document defines the strategy for **Config-Driven Metadata Governance**.
+    Historically, platform rules (standardization and validation) were hardcoded in
+    Python scripts. This strategy moves those ...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/CONFIG_DRIVEN_METADATA.md
