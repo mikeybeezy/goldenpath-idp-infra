@@ -103,7 +103,7 @@ relates_to:
 
 * `docker-compose up -d` (backstage-app running on localhost:7007)
 * `git push` (both repos pushed successfully)
-* `gh pr create` (PR #3 created: https://github.com/mikeybeezy/goldenpath-idp-backstage/pull/3)
+* `gh pr create` (PR #3 created: <https://github.com/mikeybeezy/goldenpath-idp-backstage/pull/3>)
 
 ## Current State / Follow-ups
 
