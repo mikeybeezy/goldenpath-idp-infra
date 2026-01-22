@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0120
-  title: 'ADR-0120: Metadata Inheritance, Versioning, and Active Governance Loop'
+  title: ADR-0120-metadata-inheritance-and-active-governance
   description: 'id: ADR-0120-metadata-inheritance-and-active-governance
 
     title: ''ADR-0120: Metadata Inheritance, Versioning, and Active Governance Loop''
@@ -24,6 +24,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0132
-  title: 'ADR-0132: Model ECR Registry as a Dedicated Backstage System'
+  title: ADR-0132-platform-container-registry-system
   description: '- **Status:** Accepted
 
     - **Date:** 2026-01-09
@@ -24,6 +24,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

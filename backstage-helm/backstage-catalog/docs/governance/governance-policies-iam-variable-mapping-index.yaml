@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: governance-policies-iam-variable-mapping-index
-  title: IAM Policy-to-Variable Mapping Index
+  title: VARIABLE_MAPPING_INDEX
   description: This index provides the definitive mapping between raw JSON policy
     fragments and the Terraform variables used to deploy them.
   annotations:

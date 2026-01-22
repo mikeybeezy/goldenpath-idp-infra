@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0142
+  title: 'CL-0142: EKS Apply Scope Gate'
+  description: Added scope-based gating to the `infra-terraform-apply-dev.yml` workflow
+    to prevent accidental EKS cluster rebuilds when merging PRs that contain terraform
+    changes.
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0142-eks-apply-scope-gate.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0142-eks-apply-scope-gate.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0142-eks-apply-scope-gate.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

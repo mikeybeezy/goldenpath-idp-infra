@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0137
-  title: 'Feature: Out-of-the-Box Observability (Golden Signals & RED)'
+  title: CL-0137-ootb-observability-dashboards
   description: The platform now provides **Zero-Configuration Observability** for
     all applications. By enabling the Grafana dashboard sidecar and standardizing
     dashboard ConfigMaps, every service deployed via the Go...

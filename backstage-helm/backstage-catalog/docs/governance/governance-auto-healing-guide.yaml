@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: governance-auto-healing-guide
-  title: 'Governance: Documentation Auto-Healing Guide'
+  title: AUTO_HEALING_GUIDE
   description: '**Status**: Active | **Owner**: Platform-Team | **Last Updated**:
     2026-01-06'
   annotations:

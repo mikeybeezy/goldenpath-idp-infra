@@ -2,8 +2,9 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0074
-  title: 'CL-0074: Transition to Config-Driven Metadata Governance'
-  description: ''
+  title: CL-0074-config-driven-metadata-governance
+  description: Decoupled metadata standardization and validation logic from hardcoded
+    Python scripts, moving the source of truth to YAML schemas and enums.
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0074-config-driven-metadata-governance.md
