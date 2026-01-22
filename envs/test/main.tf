@@ -71,8 +71,8 @@ module "iam" {
   source = "../../modules/aws_iam"
   count  = var.iam_config.enabled ? 1 : 0
 
-  cluster_role_name                       = "${var.iam_config.cluster_role_name}${local.role_suffix}"
-  node_group_role_name                    = "${var.iam_config.node_group_role_name}${local.role_suffix}"
+  # NOTE: cluster_role_name and node_group_role_name removed.
+  # EKS cluster and node group IAM roles are created by the EKS module.
   enable_oidc_role                        = true
   oidc_role_name                          = "${var.iam_config.oidc_role_name}${local.role_suffix}"
   oidc_issuer_url                         = var.iam_config.oidc_issuer_url
