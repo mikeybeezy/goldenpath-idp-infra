@@ -2944,3 +2944,104 @@ Goal: Fix Backstage authentication, add GitHub Actions plugin, implement TechDoc
 - Validation: Backstage starts locally with custom branding. Favicons generated at all sizes. Logo SVGs render correctly in browser.
 
 Signed: Claude Opus 4.5 (2026-01-22T11:10:00Z)
+
+---
+
+## Session: 2026-01-22 ArgoCD Backstage Plugin Integration
+
+### Context
+- Agent: Claude Opus 4.5
+- Branch: refactor/backstage-repo-alignment (goldenpath-idp-backstage), development (goldenpath-idp-infra)
+- Session capture: `session_capture/2026-01-22-argocd-plugin-integration.md`
+- PR: #3 (goldenpath-idp-backstage)
+
+Goal: Research ArgoCD Backstage plugins, integrate Roadie plugin with Backstage, and update scaffold templates with DRY annotations for automatic plugin visibility.
+
+### In-Session Log (append as you go)
+- 14:00Z — Researched ArgoCD plugin options (Roadie, Red Hat, Janus IDP)
+- 14:15Z — Selected Roadie for standalone architecture and maturity
+- 14:30Z — Installed frontend plugin @roadiehq/backstage-plugin-argo-cd
+- 14:35Z — Installed backend plugin @roadiehq/backstage-plugin-argo-cd-backend
+- 14:45Z — Updated EntityPage.tsx with ArgoCD overview card and history tab
+- 14:50Z — Added backend plugin to index.ts
+- 14:55Z — Configured app-config.yaml and app-config.production.yaml
+- 15:00Z — Fixed startup crash by adding ARGOCD_URL env var to docker-compose
+- 15:10Z — Updated all 3 scaffold templates with DRY annotations
+- 15:20Z — Created CL-0164 changelog with Roadie rationale
+- 15:25Z — Committed and pushed both repos
+- 15:30Z — Created PR #3
+
+### Checkpoints
+- [x] Research ArgoCD plugin options
+- [x] Select plugin (Roadie chosen)
+- [x] Install frontend and backend plugins
+- [x] Update EntityPage.tsx with components
+- [x] Configure ArgoCD connection settings
+- [x] Fix environment variable issues
+- [x] Update scaffold templates with DRY annotations
+- [x] Create changelog with rationale
+- [x] Commit and push changes
+- [x] Create PR #3
+
+### Key Achievements
+
+| Achievement | Impact |
+|-------------|--------|
+| **Roadie plugin integrated** | ArgoCD deployment visibility in Backstage |
+| **DRY annotations in templates** | New services auto-inherit ArgoCD/K8s visibility |
+| **Changelog CL-0164** | Decision rationale documented for future reference |
+| **PR #3 created** | Changes ready for review and merge |
+
+### Issues Diagnosed and Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| Backend crash on startup | Missing ARGOCD_URL env var | Added placeholder env vars to docker-compose.yml |
+| Plugin not visible on entities | Missing annotations | Updated scaffold templates with DRY annotations |
+
+### Design Decisions Made
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| ArgoCD plugin | Roadie | Standalone (no K8s dependency), 3+ years maturity, ~15k weekly downloads |
+| Annotation strategy | DRY via templates | Auto-inherit without manual config |
+| Auth method | Token-based | More secure for production |
+
+### Artifacts touched (required)
+
+*goldenpath-idp-backstage:*
+- `packages/app/src/components/catalog/EntityPage.tsx` (ArgoCD components)
+- `packages/backend/src/index.ts` (backend plugin)
+- `packages/app/package.json` (frontend dependency)
+- `packages/backend/package.json` (backend dependency)
+- `yarn.lock` (dependencies)
+- `app-config.yaml` (ArgoCD config)
+- `app-config.production.yaml` (production config)
+- `docker-compose.yml` (env vars)
+
+*goldenpath-idp-infra:*
+- `backstage-helm/backstage-catalog/templates/stateless-app/skeleton/catalog-info.yaml` (annotations)
+- `backstage-helm/backstage-catalog/templates/stateful-app/skeleton/catalog-info.yaml` (annotations)
+- `backstage-helm/backstage-catalog/templates/backend-app-rds/skeleton/catalog-info.yaml` (annotations)
+- `docs/changelog/entries/CL-0164-argocd-backstage-plugin.md` (new)
+- `session_capture/2026-01-22-argocd-plugin-integration.md` (new)
+
+### Outputs produced
+- PRs: #3 (goldenpath-idp-backstage)
+- Changelog: CL-0164 (ArgoCD plugin integration)
+- Session capture: 2026-01-22-argocd-plugin-integration.md
+
+### Next actions
+- [ ] Merge PR #3 after CI passes
+- [ ] Build new Docker image with ArgoCD plugin
+- [ ] Deploy updated Backstage to dev cluster
+- [ ] Test ArgoCD integration with real instance
+- [ ] Verify plugin visibility for annotated components
+
+### Session Report (end-of-session wrap-up)
+- Summary: Integrated Roadie ArgoCD plugin with Backstage for deployment visibility. Updated all Golden Path scaffold templates with DRY annotations (argocd/app-name, backstage.io/kubernetes-id) so new services auto-inherit plugin visibility. Created PR #3 for backstage repo changes.
+- Decisions: Roadie over Red Hat for standalone architecture and maturity. DRY annotations in templates for "set and forget" configuration. Token-based auth for production.
+- Risks/Follow-ups: Plugin not tested with real ArgoCD instance. Docker image needs rebuild. PR #3 needs merge.
+- Validation: Local docker-compose runs successfully. Both repos pushed. PR #3 created.
+
+Signed: Claude Opus 4.5 (2026-01-22T15:30:00Z)
