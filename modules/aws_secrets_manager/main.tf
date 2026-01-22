@@ -44,6 +44,10 @@ locals {
   existing_secret_arn = local.secret_exists ? data.external.secret_check[0].result.arn : null
   should_create       = !local.secret_exists && !local.restore_failed
 
+  # Plan-time determinable: will we have a secret ARN after apply?
+  # Used for count expressions that can't depend on computed values
+  will_have_secret = local.should_create || local.secret_exists
+
   # Compute the effective secret ARN (either created or existing)
   secret_arn = local.should_create ? (length(aws_secretsmanager_secret.this) > 0 ? aws_secretsmanager_secret.this[0].arn : null) : local.existing_secret_arn
   secret_id  = local.should_create ? (length(aws_secretsmanager_secret.this) > 0 ? aws_secretsmanager_secret.this[0].id : null) : local.existing_secret_arn
@@ -117,7 +121,8 @@ locals {
 }
 
 resource "aws_secretsmanager_secret_policy" "this" {
-  count      = local.should_create_policy && local.secret_arn != null ? 1 : 0
+  # Use will_have_secret (plan-time determinable) instead of secret_arn != null (apply-time)
+  count      = local.should_create_policy && local.will_have_secret ? 1 : 0
   secret_arn = local.secret_arn
   policy     = data.aws_iam_policy_document.this[0].json
 }
