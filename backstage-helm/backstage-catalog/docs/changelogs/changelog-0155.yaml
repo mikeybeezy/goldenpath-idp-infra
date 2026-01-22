@@ -2,14 +2,13 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0155
-  title: 'CL-0155: RDS secret restore preflight'
-  description: 'Date: 2026-01-20
+  title: RDS Secret Restore Preflight
+  description: '`rds-deploy` now restores any Secrets Manager entries that are scheduled
+    for
 
-    Owner: platform-team
+    deletion and adopts existing secrets into state before attempting a create.
 
-    Scope: rds, secrets, automation
-
-    Related: Makefile, QUICK_REFERENCE.md'
+    This removes the seven-day recovery window bloc...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0155-rds-secret-restore-preflight.md
@@ -19,9 +18,6 @@ metadata:
     - changelog
     - release-notes
     - documentation
-    - rds
-    - secrets
-    - automation
   links:
     - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0155-rds-secret-restore-preflight.md
       title: View on GitHub

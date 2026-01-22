@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0136
-  title: 'CL-0136: Platform Tooling Apps Ingress Configuration'
+  title: Get Kong LoadBalancer address
   description: '**Type**: Feature
 
     **Component**: Platform Tooling / Kong Ingress

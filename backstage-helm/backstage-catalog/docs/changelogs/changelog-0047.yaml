@@ -2,8 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0047
-  title: 'CL-0047: Closed-Loop Governance & Metadata Injection'
-  description: ''
+  title: CL-0047-closed-loop-governance
+  description: 'Implemented "Phase 2: Closed-Loop Governance," enabling the automatic
+    propagation of governance metadata from static sidecars into live Kubernetes deployment
+    resources.'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0047-closed-loop-governance.md

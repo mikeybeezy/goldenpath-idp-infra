@@ -59,11 +59,40 @@ python3 scripts/generate_workflow_index.py
 python3 scripts/generate_script_matrix.py
 ```
 
+## TERRAFORM VALIDATION (Required for .tf changes)
+
+Before committing Terraform changes, validate ALL environments - not just dev.
+The CI will validate all envs, so catch errors locally first.
+
+```bash
+# Validate all environments (must pass before PR)
+for env in dev test staging prod; do
+  echo "Validating envs/$env..."
+  terraform -chdir=envs/$env init -backend=false -input=false
+  terraform -chdir=envs/$env validate
+done
+
+# Also validate all modules
+for mod in modules/*/; do
+  echo "Validating $mod..."
+  terraform -chdir=$mod init -backend=false -input=false
+  terraform -chdir=$mod validate
+done
+```
+
+Common terraform validate errors:
+| Error | Cause | Fix |
+|-------|-------|-----|
+| Unsupported argument | Module interface changed | Remove/update the argument in env main.tf |
+| Missing required argument | Module added new required var | Add the argument to env main.tf |
+| Reference to undeclared resource | Resource removed/renamed | Update references in env main.tf |
+
 ## PR GUARDRAILS (CI Checks)
 
 ### Blocking Checks (Must Pass)
 | Workflow                      | Trigger              | Validates                        |
 |-------------------------------|----------------------|----------------------------------|
+| ci-terraform-lint.yml         | PRs to main w/ .tf   | ALL envs + modules syntax        |
 | pr-guardrails.yml             | All PRs              | Checklist, template, traceability|
 | branch-policy.yml             | PRs to main          | dev/build/hotfix branches only   |
 | adr-policy.yml                | adr-required label   | ADR file present                 |
@@ -136,6 +165,12 @@ python3 scripts/generate_script_index.py && \
 python3 scripts/generate_workflow_index.py && \
 python3 scripts/generate_script_matrix.py
 
+# Terraform validate ALL environments (required for .tf changes)
+for env in dev test staging prod; do
+  terraform -chdir=envs/$env init -backend=false -input=false && \
+  terraform -chdir=envs/$env validate
+done
+
 # Check for secrets
 gitleaks detect --redact
 
@@ -150,7 +185,10 @@ git status --short
 | markdownlint fails       | MD004 (list style)     | Use * not - for lists            |
 | doc-metadata-autofix     | Missing fields         | Let hook fix or run standardize  |
 | gitleaks fails           | Potential secret       | Remove credential, use env var   |
-| terraform_fmt fails      | Formatting             | Run terraform fmt                |
+| terraform_fmt fails      | Formatting             | Run terraform fmt -recursive     |
+| terraform validate fails | Module interface changed | Update env main.tf to match module |
+| Unsupported argument     | Arg removed from module | Remove arg from env main.tf      |
+| ci-terraform-lint fails  | Env out of sync w/ module | Validate ALL envs, fix each one |
 | PR Guardrails fail       | Missing checklist      | Complete PR template             |
 | Changelog policy fail    | Missing entry          | Create docs/changelog/entries/CL-XXXX-*.md |
 | Session log required     | Critical path change   | Update session_capture + session_summary |

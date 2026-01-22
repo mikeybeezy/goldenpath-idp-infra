@@ -3,7 +3,9 @@ kind: Component
 metadata:
   name: adr-0020
   title: 'ADR-0020: Hybrid GitOps approach with Helm and Kustomize'
-  description: '- **Status:** Proposed
+  description: '- **Status:** Superseded
+
+    - **Superseded by:** [ADR-0171](ADR-0171-platform-application-packaging-strategy.md)
 
     - **Date:** 2025-12-27
 
@@ -11,9 +13,7 @@ metadata:
 
     - **Domain:** Platform
 
-    - **Decision type:** Architecture | Operations
-
-    - **Related:** docs/30-architecture/09_ARCHI...'
+    - **...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0020-platform-helm-kustomize-hybrid.md
@@ -28,6 +28,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: active
+  lifecycle: superseded
   owner: platform-team
   subcomponentOf: architecture-decision-records

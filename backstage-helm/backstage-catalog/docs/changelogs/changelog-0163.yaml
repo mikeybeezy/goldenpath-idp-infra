@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0163
+  title: Custom Backstage ECR Image and Session Memory Architecture
+  description: Created custom Backstage Docker image with Golden Path IDP branding
+    and pushed to ECR. Added session memory architecture for AI agent context management
+    to preserve institutional knowledge across sess...
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0163-backstage-ecr-branding-session-memory.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0163-backstage-ecr-branding-session-memory.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0163-backstage-ecr-branding-session-memory.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

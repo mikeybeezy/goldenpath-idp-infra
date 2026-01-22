@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0147
+  title: 'CL-0147: Governance Registry Sync for RDS/EKS/S3'
+  description: 'Aligned S3, EKS, and RDS request flows to persist governance outputs
+    in-repo,
+
+    closing the loop between apply workflows and catalog/audit artifacts.'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0147-governance-registry-sync-rds-eks-s3.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0147-governance-registry-sync-rds-eks-s3.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0147-governance-registry-sync-rds-eks-s3.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation

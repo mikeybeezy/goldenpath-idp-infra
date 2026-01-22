@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-policies-gov-0015-build-pipeline-testing-matrix
+  title: 'GOV-0015: Build Pipeline Testing Matrix'
+  description: 'Provide a consistent, auditable testing matrix for the GoldenPath
+    application
+
+    build and promotion pipeline. This matrix is designed to be readable by humans
+
+    and verifiable by machines.'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/GOV-0015-build-pipeline-testing-matrix.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/policies/GOV-0015-build-pipeline-testing-matrix.md
+  tags:
+    - gove
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/GOV-0015-build-pipeline-testing-matrix.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: draft
+  owner: platform-team
+  subcomponentOf: governance-documentation

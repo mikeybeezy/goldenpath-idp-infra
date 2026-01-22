@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0123
-  title: 'ADR-0123: Delivery Automation Suite (ECR & Logs)'
+  title: ADR-0123-delivery-automation-suite
   description: Accepted (Backfill)
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
@@ -18,6 +18,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

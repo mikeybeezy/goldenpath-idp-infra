@@ -2,8 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0113
-  title: 'ADR-0113: Platform Queryable Intelligence Enums'
-  description: ''
+  title: ADR-0113-platform-queryable-intelligence-enums
+  description: The GoldenPath IDP relies on metadata sidecars to drive automated governance,
+    health reporting, and Knowledge Graph traversal. However, drift has been identified
+    in the values used for key fields (Sta...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0113-platform-queryable-intelligence-enums.md
@@ -18,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

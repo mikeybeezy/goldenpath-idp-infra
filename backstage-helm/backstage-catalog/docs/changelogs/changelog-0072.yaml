@@ -2,8 +2,9 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0072
-  title: 'CL-0072: Emoji Usage Policy & Automated Enforcement'
-  description: ''
+  title: CL-0072-emoji-usage-policy-and-enforcement
+  description: Formalized the platform's emoji usage standards and implemented automated
+    enforcement guardrails.
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0072-emoji-usage-policy-and-enforcement.md

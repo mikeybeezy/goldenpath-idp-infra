@@ -2,10 +2,8 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0092
-  title: 'ADR-0092: ECR Registry Product-Based Strategy & Shared Responsibility Model'
-  description: We need a clear strategy for ECR registry management that aligns with
-    Domain-Driven Design principles and establishes clear ownership boundaries between
-    platform and application teams.
+  title: ADR-0092-ecr-registry-product-strategy
+  description: Accepted
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0092-ecr-registry-product-strategy.md

@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-policies-gov-0014-devsecops-implementation-matrix
+  title: 'GOV-0014: DevSecOps Implementation Matrix'
+  description: Provide a comprehensive reference matrix of all DevSecOps principles,
+    tools, integration points, and implementation phases for GoldenPath IDP.
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/GOV-0014-devsecops-implementation-matrix.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/policies/GOV-0014-devsecops-implementation-matrix.md
+  tags:
+    - gove
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/GOV-0014-devsecops-implementation-matrix.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation
