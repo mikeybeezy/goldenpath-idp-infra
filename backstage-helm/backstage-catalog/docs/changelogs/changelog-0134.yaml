@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0134
-  title: 'CL-0134: Backstage Catalog Synced to Governance Registry'
+  title: Verify catalog is accessible
   description: '**Type**: Configuration
 
     **Component**: Backstage / Catalog

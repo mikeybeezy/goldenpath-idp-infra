@@ -2,14 +2,11 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0156
-  title: 'CL-0156: RDS deletion protection toggle target'
-  description: 'Date: 2026-01-20
+  title: RDS Deletion Protection Toggle Target
+  description: 'Added a `make rds-allow-delete` target to disable deletion protection
+    on the
 
-    Owner: platform-team
-
-    Scope: rds, teardown, break-glass
-
-    Related: Makefile, RB-0033'
+    standalone RDS instance during break-glass teardown.'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0156-rds-allow-delete-target.md
@@ -19,9 +16,6 @@ metadata:
     - changelog
     - release-notes
     - documentation
-    - rds
-    - teardown
-    - break-glass
   links:
     - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0156-rds-allow-delete-target.md
       title: View on GitHub

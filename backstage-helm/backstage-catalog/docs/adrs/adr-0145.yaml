@@ -2,16 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0145
-  title: 'ADR-0145: Governance Registry Mirror Pattern'
-  description: 'We require a mechanism that:
-
-    - Preserves high-integrity audit trails.
-
-    - Avoids branch mutation during active development.
-
-    - Scales across multiple environments without state collision.
-
-    - Remains repro...'
+  title: ADR-0145-governance-registry-mirror
+  description: High-velocity interaction between humans and machine agents creates
+    a "Commit Tug-of-War" when automated scripts attempt to mutate active development
+    branches. Specifically, scripts updating `PLATFORM...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0145-governance-registry-mirror.md
@@ -26,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

@@ -2,8 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0117
-  title: 'ADR-0117: Conclusive Governance Routing & Compliance Engine'
-  description: ''
+  title: ADR-0117-conclusive-governance-routing-architecture
+  description: As the platform grows, managing which teams review which changes (and
+    what documentation is required) has become a manual overhead. Architectural rigor
+    for high-risk areas like AI Agents and Security ...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0117-conclusive-governance-routing-architecture.md
@@ -18,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

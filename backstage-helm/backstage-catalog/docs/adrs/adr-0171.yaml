@@ -1,0 +1,35 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0171
+  title: 'ADR-0171: Application Packaging Strategy - Helm vs Kustomize'
+  description: '- **Status:** Active
+
+    - **Date:** 2026-01-18
+
+    - **Owners:** platform-team
+
+    - **Domain:** Platform
+
+    - **Decision type:** Architecture
+
+    - **Supersedes:** ADR-0020-platform-helm-kustomize-hybrid
+
+    - **Related:*...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0171-platform-application-packaging-strategy.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0171-platform-application-packaging-strategy.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0171-platform-application-packaging-strategy.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records

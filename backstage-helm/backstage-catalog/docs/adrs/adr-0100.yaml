@@ -2,8 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: adr-0100
-  title: 'ADR-0100: Standardized ECR Lifecycle and Documentation'
-  description: ''
+  title: ADR-0100-standardized-ecr-lifecycle-and-documentation
+  description: The previous ECR registry creation process required manual input for
+    multiple redundant fields (name and ID) and suffered from a "drift gap" where
+    the human-readable [REGISTRY_CATALOG.md](../REGISTRY_...
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0100-standardized-ecr-lifecycle-and-documentation.md
@@ -18,6 +20,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: accepted
+  lifecycle: active
   owner: platform-team
   subcomponentOf: architecture-decision-records

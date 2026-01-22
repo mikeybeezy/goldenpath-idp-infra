@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0133
-  title: 'CL-0133: IDP Stack Deployment Runbook'
+  title: CL-0133-idp-stack-deployment-runbook
   description: '**Type**: Documentation
 
     **Component**: Operations / Runbooks

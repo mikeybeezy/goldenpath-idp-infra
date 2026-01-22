@@ -2,9 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: governance-metadata-maintenance-guide
-  title: Metadata Maintenance & Evolution Guide
-  description: 'When the governance schema needs to change (e.g., adding a `cost_center`
-    field or changing an owner), follow these steps:'
+  title: METADATA_MAINTENANCE_GUIDE
+  description: This guide outlines the protocol for updating the global metadata schema
+    across all repository resources (300+ files). Our strategy relies on **Automated
+    Remediation** rather than manual entry.
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/METADATA_MAINTENANCE_GUIDE.md

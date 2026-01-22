@@ -2,12 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: changelog-0159
-  title: 'CL-0159: ExternalDNS wildcard ownership'
-  description: 'Date: 2026-01-21
+  title: ExternalDNS ownership for wildcard DNS records
+  description: 'ExternalDNS now owns wildcard DNS records per environment so `*.{env}.goldenpathidp.io`
 
-    Owner: platform-team
-
-    Scope: dns, route53, external-dns, kong, gitops'
+    tracks Kong LoadBalancer changes without manual Terraform re-applies.'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0159-externaldns-wildcard-ownership.md
@@ -17,10 +15,6 @@ metadata:
     - changelog
     - release-notes
     - documentation
-    - dns
-    - route53
-    - external-dns
-    - kong
   links:
     - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0159-externaldns-wildcard-ownership.md
       title: View on GitHub
