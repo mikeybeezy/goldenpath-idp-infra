@@ -1,6 +1,6 @@
 ---
 id: 2026-01-23-v1-milestone-ephemeral-deploy-success
-title: V1 Milestone - Ephemeral Deploy Success and RDS Architecture Clarification
+title: V1 Milestone - Ephemeral Deploy, DNS Architecture, and Governance Registry Fix
 type: documentation
 domain: platform-core
 owner: platform-team
@@ -18,6 +18,8 @@ reliability:
 relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0177-ci-iam-comprehensive-permissions
+  - ADR-0178-ephemeral-persistent-dns-and-bootstrap-contract
+  - ADR-0179-dynamic-hostname-generation-ephemeral-clusters
   - RDS_USER_DB_PROVISIONING
   - 2026-01-23-ci-iam-permissions-fix
 ---
@@ -129,6 +131,117 @@ This will:
 - Full platform stack operational
 
 **PR #275 status:** Ready for human merge
-- URL: https://github.com/mikeybeezy/goldenpath-idp-infra/pull/275
 
-Signed: Claude Opus 4.5 (2026-01-23T07:00:00Z)
+- URL: [PR #275](https://github.com/mikeybeezy/goldenpath-idp-infra/pull/275)
+
+---
+
+## Session Part 2: DNS Architecture and Governance Registry Fix
+
+**Timestamp:** 2026-01-23T10:00:00Z
+
+### ADR-0178 and ADR-0179 Created
+
+Documented the DNS ownership contract for ephemeral vs persistent clusters:
+
+| ADR      | Purpose                                                           | Status   |
+|----------|-------------------------------------------------------------------|----------|
+| ADR-0178 | Policy - DNS ownership contract and bootstrap mode differentiation | Proposed |
+| ADR-0179 | Implementation - BuildId propagation chain for dynamic hostnames   | Proposed |
+
+**Key architecture decision:**
+
+- Persistent clusters own `*.{env}.goldenpathidp.io`
+- Ephemeral clusters own `*.b-{buildId}.{env}.goldenpathidp.io`
+
+**BuildId propagation chain (ADR-0179):**
+```
+CI workflow input → Terraform variable → Helm values → Ingress annotation → ExternalDNS
+```
+
+Roadmap items 094-097 added to track implementation.
+
+### PR #276 Gate Fixes
+
+Fixed CI gate failures on hotfix/rds-workflow-backend-config merge to main:
+
+| Issue                                    | Fix                                             |
+|------------------------------------------|-------------------------------------------------|
+| markdownlint MD034 (bare URL)            | Wrapped URL in markdown link                    |
+| emoji-enforcer (non-compliant checkmark) | Replaced checkmark with "DONE" text             |
+| require-session-logs                     | Added session entry to agent_session_summary.md |
+
+All 15 checks passed after fixes.
+
+### Governance Registry Bug Investigation and Fix
+
+**Problem:** User reported today's teardowns not appearing in governance-registry logs.
+
+**Investigation findings:**
+
+| Check | Result |
+|-------|--------|
+| GitHub Actions teardown runs | 4 runs today, 2 successful |
+| Teardown logging step | Executed successfully, committed and pushed |
+| governance-registry CSV | Only has data up to 2026-01-01 |
+
+**Root cause identified:**
+
+The `governance-registry-writer.yml` workflow was overwriting teardown timing records:
+
+1. Teardown workflow appends row to `environments/development/latest/build_timings.csv`
+2. Push to main/development triggers governance-registry-writer
+3. Writer copies stale `docs/build-timings.csv` from source branch
+4. Fresh teardown data overwritten with stale December 2025 data
+
+**Fix applied (commit d0fcfc11):**
+
+```yaml
+# New step added before "Write latest + history"
+- name: Preserve existing build_timings.csv
+  run: |
+    if [ -f "$LATEST_DIR/build_timings.csv" ]; then
+      cp "$LATEST_DIR/build_timings.csv" /tmp/preserved_build_timings.csv
+    fi
+
+# After copying artifacts, restore preserved file
+if [ -f /tmp/preserved_build_timings.csv ]; then
+  cp /tmp/preserved_build_timings.csv "$LATEST_DIR/build_timings.csv"
+  cp /tmp/preserved_build_timings.csv "$HIST_DIR/build_timings.csv"
+fi
+```
+
+Also removed the stale copy from source branch that was causing the overwrite.
+
+### Kyverno vs Datree Assessment
+
+Evaluated policy enforcement options:
+
+| Tool | Current State | Recommendation |
+|------|---------------|----------------|
+| Datree | Deployed as admission webhook but unconfigured (empty values) | Keep for now |
+| Kyverno | Not deployed | V1.1/V2 candidate |
+
+**Decision:** Defer Kyverno adoption to V1.1. Admission webhooks can brick clusters if misconfigured - not worth the risk for V1 stability.
+
+## Artifacts Modified (Part 2)
+
+| File | Change |
+|------|--------|
+| `docs/adrs/ADR-0178-ephemeral-persistent-dns-and-bootstrap-contract.md` | Created |
+| `docs/adrs/ADR-0179-dynamic-hostname-generation-ephemeral-clusters.md` | Created |
+| `docs/adrs/01_adr_index.md` | Added ADR-0178, ADR-0179 |
+| `docs/production-readiness-gates/ROADMAP.md` | Added items 094-097 |
+| `.github/workflows/governance-registry-writer.yml` | Fixed CSV preservation bug |
+| `session_summary/agent_session_summary.md` | Added session entry |
+
+## Current State
+
+| Item | Status |
+|------|--------|
+| PR #275 | Ready for human merge |
+| PR #276 | Ready for human merge |
+| Governance registry fix | Pushed to development |
+| Next teardown | Will properly log to CSV |
+
+Signed: Claude Opus 4.5 (2026-01-23T10:30:00Z)
