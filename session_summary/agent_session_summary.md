@@ -3235,3 +3235,50 @@ Signed: Claude Opus 4.5 (2026-01-22T21:20:00Z)
 - Validation: All 4 environments pass terraform validate. Pre-commit passes.
 
 Signed: Claude Opus 4.5 (2026-01-23T06:00:00Z)
+
+---
+
+## 2026-01-23: RDS Workflow Backend Config Hotfix
+
+- **Agent:** Claude Opus 4.5
+- **Timestamp:** 2026-01-23T08:00:00Z
+- **Branch:** hotfix/rds-workflow-backend-config
+- **Status:** Completed
+
+### Issues Diagnosed and Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| RDS workflow stuck on terraform init | Missing `-backend-config` flags | Added backend config matching infra workflow pattern |
+| Session capture lint failures | Bare URL and non-compliant emoji | Wrapped URL in markdown link, replaced emoji |
+
+### Design Decisions Made
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Backend config pattern | Match infra-terraform-apply-dev.yml | Consistency across workflows |
+| Hotfix branch | Direct to main | Critical workflow fix |
+
+### Artifacts touched (required)
+
+*Modified:*
+- `.github/workflows/rds-database-apply.yml` — Added backend-config flags to terraform init
+- `session_capture/2026-01-23-v1-milestone-ephemeral-deploy-success.md` — Fixed lint issues
+
+### Outputs produced
+
+- PR #276: Hotfix for RDS workflow backend config
+
+### Next actions
+
+- [ ] Merge PR #276 to main
+- [ ] Run `gh workflow run rds-database-apply.yml -f environment=dev`
+
+### Session Report (end-of-session wrap-up)
+
+- Summary: Fixed RDS workflow terraform init by adding backend-config flags. Fixed session capture lint issues.
+- Decisions: Used same backend config pattern as other Terraform workflows.
+- Risks/Follow-ups: None - straightforward configuration fix.
+- Validation: Pre-commit and lint checks should now pass.
+
+Signed: Claude Opus 4.5 (2026-01-23T08:00:00Z)

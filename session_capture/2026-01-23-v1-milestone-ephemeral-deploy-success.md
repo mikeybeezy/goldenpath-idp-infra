@@ -67,7 +67,7 @@ Confirmed ephemeral cluster deployment as **success** because:
 
 **Dependency chain:**
 ```
-1. Persistent VPC (exists) ✓
+1. Persistent VPC (exists) - DONE
 2. Standalone RDS (envs/dev-rds/) - NEEDS DEPLOYMENT
 3. Ephemeral clusters connect to existing RDS
 ```
@@ -129,6 +129,7 @@ This will:
 - Full platform stack operational
 
 **PR #275 status:** Ready for human merge
-- URL: https://github.com/mikeybeezy/goldenpath-idp-infra/pull/275
+
+- URL: [PR #275](https://github.com/mikeybeezy/goldenpath-idp-infra/pull/275)
 
 Signed: Claude Opus 4.5 (2026-01-23T07:00:00Z)
