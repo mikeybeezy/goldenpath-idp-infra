@@ -40,3 +40,4 @@ start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,
 2026-01-22T22:08:02Z,2026-01-22T22:48:48Z,terraform-apply,dev,22-01-26-03,2446,1,0,0,0,https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/21266627045
 2026-01-23T05:39:01Z,2026-01-23T05:39:01Z,teardown,dev,persistent,0,1,0,0,0,https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/21275904128
 2026-01-23T05:37:37Z,2026-01-23T05:42:49Z,teardown,dev,22-01-26-03,312,0,0,0,0,https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/21275874451
+2026-01-23T05:37:05Z,2026-01-23T05:43:56Z,teardown,dev,22-01-26-01,411,0,0,0,0,https://github.com/mikeybeezy/goldenpath-idp-infra/actions/runs/21275861642
