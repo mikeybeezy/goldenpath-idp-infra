@@ -3135,3 +3135,61 @@ User requested V1 readiness review and assessment. During investigation, discove
 - Validation: All 4 environments pass terraform validate. Changes pushed to development.
 
 Signed: Claude Opus 4.5 (2026-01-22T18:30:00Z)
+
+---
+
+## Session: CI IAM Permissions Fix (2026-01-22 to 2026-01-23)
+
+### Session Metadata
+- **ID:** 2026-01-23-ci-iam-permissions-fix
+- **Agent:** Claude Opus 4.5
+- **Branch:** development
+- **Status:** Completed
+
+### Issues Diagnosed and Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| Terraform count dependency error | `secret_arn` computed at apply time | Added `will_have_secret` plan-time local |
+| CI AccessDenied for iam:CreatePolicy | ADR-0030 restricted permissions | ADR-0177 grants scoped permissions |
+| CI AccessDenied for secretsmanager:CreateSecret | Missing Secrets Manager perms | Added to policy with `goldenpath/*` scope |
+| Overly permissive IAM policy | Initial policy used `*` for many services | Tightened with tag/ARN conditions |
+
+### Design Decisions Made
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Fix count dependency | Add `will_have_secret` local | Plan-time determinable |
+| IAM policy approach | Comprehensive with scoping | Balance least-privilege and CI reliability |
+| Supersede ADR-0030 | Create ADR-0177 | ADR-0030's approach unsustainable |
+| Resource scoping | `goldenpath-*` prefix + tags | Limits blast radius |
+
+### Artifacts touched (required)
+
+*Modified:*
+- `modules/aws_secrets_manager/main.tf` — Added `will_have_secret` local, fixed count
+- `docs/adrs/ADR-0030-platform-precreated-iam-policies.md` — Marked as superseded
+- `docs/60-security/33_IAM_ROLES_AND_POLICIES.md` — Updated with new policy reference
+
+*Added:*
+- `docs/10-governance/policies/iam/github-actions-terraform-full.json` — Comprehensive CI policy
+- `docs/adrs/ADR-0177-ci-iam-comprehensive-permissions.md` — New ADR
+- `session_capture/2026-01-23-ci-iam-permissions-fix.md`
+
+### Outputs produced
+- ADR-0177: CI IAM comprehensive permissions
+- IAM policy JSON with resource scoping
+- PR #275: development to main
+
+### Next actions
+- [ ] Apply IAM policy in AWS console
+- [ ] Trigger new ephemeral build with build_id 22-01-26-02
+- [ ] V1.1: Create bootstrap Terraform for CI permissions
+
+### Session Report (end-of-session wrap-up)
+- Summary: Fixed Terraform count dependency blocking ephemeral builds. Created comprehensive CI IAM policy with proper resource scoping. Superseded ADR-0030 with ADR-0177. Tightened policy after user feedback.
+- Decisions: Plan-time `will_have_secret` local. Scoped permissions with `goldenpath-*` prefix and tag conditions.
+- Risks/Follow-ups: Policy needs to be applied in AWS console. Consider bootstrap Terraform for CI perms.
+- Validation: All 4 environments pass terraform validate. Pre-commit passes.
+
+Signed: Claude Opus 4.5 (2026-01-23T06:00:00Z)
