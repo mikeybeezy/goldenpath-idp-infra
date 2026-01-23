@@ -192,6 +192,9 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 |091|P3|**⚫ LV/LQ**|GitOps|Prod ArgoCD apps: pin to release tags/SHAs + manual sync|platform|Open|M|Q2|Implement release tagging automation|Session 2026-01-21 - Immutable, auditable production releases.|
 |092|P1|**🔴 HV/HQ**|DNS|Verify ExternalDNS wildcard + TXT registry in Route53|platform|Open|S|Q1|Run verification commands from session capture|Session 2026-01-21 - Confirm DNS ownership model working as designed.|
 |093|P2|**🔵 MV/HQ**|Backstage|Align Backstage repo structure to Spotify-style layout|platform|Open|M|Q1|Approve PRD-0004 and plan refactor branch|Reduce onboarding friction and align tooling paths.|
+|094|P1|**🔴 HV/HQ**|DNS|ADR-0178: Ephemeral vs Persistent DNS Ownership Contract|platform|Open|M|Q2|Implement hostSuffix injection for ephemeral clusters|Prevent DNS collisions when multiple ephemeral clusters exist.|
+|095|P2|**🔴 HV/HQ**|Bootstrap|ADR-0178: Bootstrap mode differentiation (ephemeral vs persistent)|platform|Open|M|Q2|Add bootstrap.mode to cluster config and conditional app deployment|Keycloak stays persistent, ephemeral clusters skip deployment.|
+|096|P2|**🔵 MV/HQ**|ExternalDNS|ADR-0178: Scope ExternalDNS per cluster type|platform|Open|S|Q2|Configure txt-owner-id and domain-filter per lifecycle|Guardrail to prevent ephemeral clusters writing to base DNS namespace.|
 
 ## Rules
 
