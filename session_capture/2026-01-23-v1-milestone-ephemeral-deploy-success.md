@@ -69,7 +69,7 @@ Confirmed ephemeral cluster deployment as **success** because:
 
 **Dependency chain:**
 ```
-1. Persistent VPC (exists)
+1. Persistent VPC (exists) - DONE
 2. Standalone RDS (envs/dev-rds/) - NEEDS DEPLOYMENT
 3. Ephemeral clusters connect to existing RDS
 ```
