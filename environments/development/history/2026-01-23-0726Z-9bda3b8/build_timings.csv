@@ -1,0 +1,39 @@
+start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,log_path
+2025-12-25T12:22:06Z,2025-12-25T12:35:06Z,dev,20250115-03,780,0,logs/build-timings/dev-20250115-03-20251225T122206Z.log
+2025-12-25T13:29:35Z,2025-12-25T13:29:35Z,bootstrap,dev,20250115-02,0,255,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-20250115-02-20251225T132935Z.log
+2025-12-25T13:36:49Z,2025-12-25T13:36:50Z,bootstrap,dev,20250115-03,1,255,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-20250115-03-20251225T133649Z.log
+2025-12-25T13:37:56Z,2025-12-25T13:37:56Z,bootstrap,dev,20250115-04,0,255,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-20250115-04-20251225T133756Z.log
+2025-12-25T13:38:37Z,2025-12-25T13:40:52Z,bootstrap,dev,20250115-04,135,1,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-20250115-04-20251225T133837Z.log
+2025-12-25T14:02:22Z,2025-12-25T14:02:34Z,bootstrap,dev,20250115-04,12,1,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-20250115-04-20251225T140222Z.log
+2025-12-25T14:41:39Z,2025-12-25T14:49:29Z,teardown,dev,20250115-04,470,0,,logs/build-timings/teardown-dev-20250115-04-20251225T144139Z.log
+2025-12-25T14:49:41Z,2025-12-25T14:50:15Z,teardown,dev,20250115-04,34,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-20250115-04-20250115-04-20251225T144941Z.log
+2025-12-25T14:58:58Z,2025-12-25T14:59:32Z,teardown,dev,20250115-04,34,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-20250115-04-20250115-04-20251225T145858Z.log
+2025-12-25T15:11:45Z,2025-12-25T15:12:19Z,teardown,dev,20250115-04,34,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-20250115-04-20250115-04-20251225T151145Z.log
+2025-12-25T15:22:12Z,2025-12-25T15:22:47Z,teardown,dev,20250115-04,35,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-20250115-04-20250115-04-20251225T152212Z.log
+2025-12-25T15:22:59Z,2025-12-25T15:23:34Z,teardown,dev,20250115-04,35,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-20250115-04-20250115-04-20251225T152259Z.log
+2025-12-25T15:28:56Z,2025-12-25T15:29:00Z,teardown,dev,20250115-04,4,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-20250115-04-20250115-04-20251225T152856Z.log
+2025-12-25T15:31:12Z,2025-12-25T15:31:52Z,teardown,dev,20250115-04,40,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-20250115-04-20250115-04-20251225T153112Z.log
+2025-12-25T15:48:42Z,2025-12-25T15:50:53Z,teardown,dev,20250115-04,131,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-20250115-04-20250115-04-20251225T154842Z.log
+2025-12-25T16:15:09Z,2025-12-25T16:30:29Z,terraform-apply,dev,20250115-06,920,0,,logs/build-timings/dev-goldenpath-dev-eks-dec-20250115-06-20251225T161509Z.log
+2025-12-25T16:34:47Z,2025-12-25T16:34:53Z,terraform-apply,dev,20250115-06,6,0,,logs/build-timings/dev-goldenpath-dev-eks-dec-20250115-06-20251225T163447Z.log
+2025-12-25T18:24:15Z,2025-12-25T18:24:16Z,bootstrap,dev,20250115-07,1,255,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false ENABLE_TF_K8S_RESOURCES=true SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-goldenpath-dev-eks-20250115-07-20250115-07-20251225T182415Z.log
+2025-12-25T18:26:33Z,2025-12-25T18:26:34Z,bootstrap,dev,20250115-06,1,255,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false ENABLE_TF_K8S_RESOURCES=true SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-goldenpath-dev-eks-20250115-06-20250115-06-20251225T182633Z.log
+2025-12-25T19:02:13Z,2025-12-25T19:02:14Z,bootstrap,dev,20250115-06,1,255,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false ENABLE_TF_K8S_RESOURCES=true SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-goldenpath-dev-eks-20250115-06-20250115-06-20251225T190213Z.log
+2025-12-25T19:04:22Z,2025-12-25T19:22:50Z,bootstrap,dev,20250115-06,1108,1,"ENV_NAME=dev NODE_INSTANCE_TYPE=t3.small SKIP_ARGO_SYNC_WAIT=true SKIP_CERT_MANAGER_VALIDATION=true COMPACT_OUTPUT=false ENABLE_TF_K8S_RESOURCES=true SCALE_DOWN_AFTER_BOOTSTRAP=true",logs/build-timings/bootstrap-dev-goldenpath-dev-eks-20250115-067-20250115-06-20251225T190422Z.log
+2025-12-25T20:58:33Z,2025-12-25T20:58:34Z,teardown,dev,20250115-067,1,255,,logs/build-timings/teardown-dev-goldenpath-dev--20250115-067-20251225T205833Z.log
+2025-12-25T20:59:03Z,2025-12-25T20:59:03Z,teardown,dev,20250115-067,0,255,,logs/build-timings/teardown-dev-goldenpath-dev-eks-dec-20250115-067-20251225T205903Z.log
+2025-12-25T22:30:18Z,2025-12-25T22:46:31Z,terraform-apply,dev,20250115-06#####NEEDTOUPDATE###,973,0,,logs/build-timings/dev-goldenpath-dev-eks-dec-20250115-06#####NEEDTOUPDATE###-20251225T223018Z.log
+2025-12-26T03:27:46Z,2025-12-26T03:27:53Z,terraform-apply,dev,26-12-25-01,7,0,,logs/build-timings/dev-goldenpath-dev-eks-26-12-25-01-20251226T032746Z.log
+2025-12-26T04:09:46Z,2025-12-26T04:09:47Z,teardown,dev,20250115-04,1,255,,logs/build-timings/teardown-dev-goldenpath-dev-eks-20250115-04-20250115-04-20251226T040946Z.log
+2025-12-26T04:21:39Z,2025-12-26T04:21:40Z,terraform-apply,dev,26-12-25-02,1,1,,logs/build-timings/dev-goldenpath-dev-eks-26-12-25-02-20251226T042139Z.log
+2025-12-26T04:40:53Z,2025-12-26T04:41:08Z,terraform-apply,dev,26-12-25-02,15,1,,logs/build-timings/dev-goldenpath-dev-eks-26-12-25-02-20251226T044053Z.log
+2025-12-26T04:47:38Z,2025-12-26T05:02:34Z,terraform-apply,dev,26-12-25-03,896,0,,logs/build-timings/dev-goldenpath-dev-eks-26-12-25-03-20251226T044738Z.log
+2025-12-26T07:42:03Z,2025-12-26T07:51:12Z,teardown,dev,26-12-25-03,549,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251226T074203Z.log
+2025-12-26T13:02:48Z,2025-12-26T13:18:53Z,terraform-apply,dev,26-12-25-03,965,0,,logs/build-timings/dev-goldenpath-dev-eks-26-12-25-03-20251226T130248Z.log
+2025-12-26T13:33:01Z,2025-12-26T13:42:18Z,teardown,dev,26-12-25-03,557,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251226T133301Z.log
+2025-12-26T18:13:13Z,2025-12-26T18:30:37Z,terraform-apply,dev,26-12-25-03,1044,0,,logs/build-timings/dev-goldenpath-dev-eks-26-12-25-03-20251226T181313Z.log
+2025-12-28T07:02:53Z,2025-12-28T07:02:56Z,teardown,dev,26-12-25-03,3,1,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251228T070253Z.log
+2025-12-28T07:05:53Z,2025-12-28T07:05:56Z,teardown,dev,26-12-25-03,3,1,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251228T070553Z.log
+2025-12-28T07:08:31Z,2025-12-28T07:08:34Z,teardown,dev,26-12-25-03,3,1,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251228T070831Z.log
+2025-12-28T07:08:44Z,2025-12-28T07:08:47Z,teardown,dev,26-12-25-03,3,1,,logs/build-timings/teardown-dev-goldenpath-dev-eks-26-12-25-03-26-12-25-03-20251228T070844Z.log
+2026-01-01T04:01:57Z,2026-01-01T04:13:37Z,teardown,dev,31-12-25-04,700,0,,logs/build-timings/teardown-dev-goldenpath-dev-eks-31-12-25-04-31-12-25-04-20260101T040157Z.log
