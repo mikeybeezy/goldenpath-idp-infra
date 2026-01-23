@@ -20,6 +20,7 @@ relates_to:
   - 01_adr_index
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0175-externaldns-wildcard-ownership
+  - ADR-0179-dynamic-hostname-generation-ephemeral-clusters
   - 21_CI_ENVIRONMENT_CONTRACT
 supersedes: []
 superseded_by: []
@@ -44,6 +45,7 @@ breaking_change: true
 - **Domain:** Platform
 - **Decision type:** Architecture | Operations
 - **Related:** ADR-0158 (Standalone RDS), ADR-0175 (ExternalDNS Ownership)
+- **Implemented by:** ADR-0179 (Dynamic Hostname Generation)
 
 ---
 
@@ -199,4 +201,5 @@ Alternative: Use `*.builds.dev.goldenpathidp.io` zone so ephemeral can use a sin
 
 - ADR-0158: Standalone RDS as Bounded Context
 - ADR-0175: ExternalDNS Wildcard Ownership
+- ADR-0179: Dynamic Hostname Generation (implements this contract)
 - DNS Ownership Contract discussion (2026-01-23)

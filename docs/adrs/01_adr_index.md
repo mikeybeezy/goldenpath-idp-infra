@@ -383,6 +383,8 @@ relates_to:
   - ADR-0175
   - ADR-0176
   - ADR-0177
+  - ADR-0178
+  - ADR-0179
 <!-- ADR_RELATE_END -->
 ---
 
@@ -571,6 +573,8 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0175](ADR-0175-externaldns-wildcard-ownership.md) | Platform | ExternalDNS owns wildcard records for env subdomains | Active | 2026-01-21 | The wildcard DNS record for`*.{env}.goldenpathidp.io`is tied to the Kong LoadBalancer hostname. Terraform can set this value during apply, but when the LoadBalancer changes (teardown/rebuild), DNS ... |
 | [ADR-0176](ADR-0176-session-memory-management.md) | Platform | Session Memory Management for Human-Machine Collaboration | Proposed | 2026-01-22 | This platform is designed to facilitate human-machine collaboration. AI agents work alongside humans across sessions, but face a fundamental constraint: context windows are finite while project kno... |
 | [ADR-0177](ADR-0177-ci-iam-comprehensive-permissions.md) | Platform | Grant CI role comprehensive IAM permissions with resource scoping | Active | 2026-01-0? | ADR-0030 established that the CI apply role should NOT have`iam:CreatePolicy`permissions, requiring IAM policies for IRSA controllers (Cluster Autoscaler, AWS Load Balancer Controller) to be pre-cr... |
+| [ADR-0178](ADR-0178-ephemeral-persistent-dns-and-bootstrap-contract.md) | Platform | Ephemeral vs Persistent DNS Ownership and Bootstrap Contract | Proposed | 2026-01-23 | V1 treats ephemeral and persistent clusters identically during bootstrap. This creates DNS collisions and resource duplication. Establishes DNS ownership contract and bootstrap mode differentiation. |
+| [ADR-0179](ADR-0179-dynamic-hostname-generation-ephemeral-clusters.md) | Platform | Dynamic Hostname Generation for Ephemeral Clusters | Proposed | 2026-01-23 | Implements ADR-0178 by defining how buildId flows through CI → Terraform → Helm → Ingress to generate unique hostnames for ephemeral clusters. |
 <!-- ADR_TABLE_END -->
 
 ---

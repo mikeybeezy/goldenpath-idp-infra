@@ -195,6 +195,7 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 |094|P1|**🔴 HV/HQ**|DNS|ADR-0178: Ephemeral vs Persistent DNS Ownership Contract|platform|Open|M|Q2|Implement hostSuffix injection for ephemeral clusters|Prevent DNS collisions when multiple ephemeral clusters exist.|
 |095|P2|**🔴 HV/HQ**|Bootstrap|ADR-0178: Bootstrap mode differentiation (ephemeral vs persistent)|platform|Open|M|Q2|Add bootstrap.mode to cluster config and conditional app deployment|Keycloak stays persistent, ephemeral clusters skip deployment.|
 |096|P2|**🔵 MV/HQ**|ExternalDNS|ADR-0178: Scope ExternalDNS per cluster type|platform|Open|S|Q2|Configure txt-owner-id and domain-filter per lifecycle|Guardrail to prevent ephemeral clusters writing to base DNS namespace.|
+|097|P1|**🔴 HV/HQ**|DNS|ADR-0179: Dynamic hostname generation for ephemeral clusters|platform|Open|M|Q2|Implement buildId propagation chain (CI→TF→Helm→Ingress)|Implements ADR-0178. Unique hostnames per build via hostSuffix injection.|
 
 ## Rules
 
