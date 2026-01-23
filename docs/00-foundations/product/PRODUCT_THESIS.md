@@ -2,8 +2,8 @@
 id: PRODUCT_THESIS
 title: Product Thesis - Honest Assessment
 type: documentation
-domain: product
-lifecycle: draft
+domain: platform-core
+lifecycle: active
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
@@ -12,7 +12,7 @@ relates_to:
   - 00_DESIGN_PHILOSOPHY
   - ADR-0176-session-memory-management
   - 37_V1_SCOPE_AND_TIMELINE
-status: draft
+status: proposed
 ---
 
 # Product Thesis: Honest Assessment
