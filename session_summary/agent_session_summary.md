@@ -3138,6 +3138,48 @@ Signed: Claude Opus 4.5 (2026-01-22T18:30:00Z)
 
 ---
 
+## Session: 2026-01-22T21:20:00Z — Secrets Manager Count Dependency Hotfix
+
+**Agent:** Claude Opus 4.5
+**Branch:** hotfix/secrets-manager-count-fix
+**Relates to:** modules/aws_secrets_manager
+
+### Context
+
+Ephemeral builds failing with "Invalid count argument" error in aws_secrets_manager module.
+
+### Timeline
+- 21:15Z — Diagnosed count dependency on apply-time secret_arn
+- 21:17Z — Implemented fix using plan-time will_have_secret local
+- 21:20Z — Created hotfix branch and PR #273
+
+### Checkpoints
+- [x] Identify root cause
+- [x] Implement fix
+- [x] Validate with terraform validate
+- [x] Create hotfix PR
+
+### Key Achievements
+
+| Achievement | Impact |
+|-------------|--------|
+| **Fixed count dependency** | Ephemeral builds can proceed |
+
+### Artifacts touched (required)
+
+*Modified:*
+- `modules/aws_secrets_manager/main.tf` — Added will_have_secret, updated count
+
+### Session Report (end-of-session wrap-up)
+- Summary: Fixed Terraform count dependency error blocking ephemeral builds
+- Decisions: Use plan-time determinable local instead of apply-time ARN check
+- Risks/Follow-ups: None - backwards compatible fix
+- Validation: terraform validate passes
+
+Signed: Claude Opus 4.5 (2026-01-22T21:20:00Z)
+
+---
+
 ## Session: CI IAM Permissions Fix (2026-01-22 to 2026-01-23)
 
 ### Session Metadata
