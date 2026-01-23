@@ -64,10 +64,10 @@ jobs:
           cp docs/REGISTRY_CATALOG.md _govreg_out/registry_catalog.md
           cp docs/10-governance/GOVERNANCE_VOCABULARY.md _govreg_out/governance_vocabulary.md
 
-          # Copy build timings if exists
-          if [ -f docs/build-timings.csv ]; then
-            cp docs/build-timings.csv _govreg_out/build_timings.csv
-          fi
+          # NOTE: Do NOT copy docs/build-timings.csv from source branch.
+          # The authoritative build_timings.csv lives only on governance-registry
+          # and is appended to by teardown/bootstrap/apply workflows.
+          # Copying from source would overwrite newer data with stale data.
 
           # Copy AWS inventory reports (latest snapshots)
           if [ -d reports/aws-inventory ]; then
@@ -125,6 +125,16 @@ jobs:
           echo "HIST_DIR=_govreg_repo/environments/$ENV_NAME/history/${TS}-${SHA:0:7}" >> $GITHUB_ENV
           echo "LATEST_DIR=_govreg_repo/environments/$ENV_NAME/latest" >> $GITHUB_ENV
 
+      - name: Preserve existing build_timings.csv
+        run: |
+          # Preserve build_timings.csv from governance-registry - this file is
+          # appended to by teardown/bootstrap/apply workflows and must NOT be
+          # overwritten by the sync. The source branches don't have this file.
+          if [ -f "$LATEST_DIR/build_timings.csv" ]; then
+            echo "Preserving existing build_timings.csv with $(wc -l < "$LATEST_DIR/build_timings.csv") entries"
+            cp "$LATEST_DIR/build_timings.csv" /tmp/preserved_build_timings.csv
+          fi
+
       - name: Write latest + history (atomic)
         run: |
           mkdir -p "$LATEST_DIR" "$HIST_DIR"
@@ -134,6 +144,14 @@ jobs:
 
           # Copy generated artifacts to history snapshot
           cp -R _govreg_out/* "$HIST_DIR/"
+
+          # Restore preserved build_timings.csv (this was accumulated from
+          # teardown/bootstrap/apply workflows and shouldn't be overwritten)
+          if [ -f /tmp/preserved_build_timings.csv ]; then
+            echo "Restoring preserved build_timings.csv"
+            cp /tmp/preserved_build_timings.csv "$LATEST_DIR/build_timings.csv"
+            cp /tmp/preserved_build_timings.csv "$HIST_DIR/build_timings.csv"
+          fi
 
       - name: Sync Backstage catalog to registry
         run: |
