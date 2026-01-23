@@ -10,7 +10,10 @@ server:
     enabled: true
     ingressClassName: kong
     hostname: argocd.goldenpathidp.io
-    tls: true
+    tls:
+      - hosts:
+          - argocd.goldenpathidp.io
+        secretName: argocd-server-tls
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
   extraArgs:

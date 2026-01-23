@@ -20,6 +20,7 @@ relates_to:
   - 01_adr_index
   - ADR-0178-ephemeral-persistent-dns-and-bootstrap-contract
   - ADR-0175-externaldns-wildcard-ownership
+  - ADR-0180-argocd-orchestrator-contract
   - 21_CI_ENVIRONMENT_CONTRACT
 supersedes: []
 superseded_by: []

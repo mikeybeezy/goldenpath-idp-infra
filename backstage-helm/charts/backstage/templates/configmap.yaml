@@ -1,3 +1,11 @@
+{{- /*
+  ADR-0179: Dynamic hostname generation
+  BASE_URL computed from global.hostSuffix when available
+*/ -}}
+{{- $baseURL := .Values.backstage.baseURL -}}
+{{- if and .Values.global .Values.global.hostSuffix (ne .Values.global.hostSuffix "") -}}
+{{- $baseURL = printf "https://backstage.%s" .Values.global.hostSuffix -}}
+{{- end -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,4 +15,4 @@ data:
   POSTGRES_HOST: {{ .Values.postgres.host }}
   CATALOG_LOCATION: {{ default .Values.catalog.demoCatalogLocation .Values.catalog.catalogLocation }}
   CUSTOM_CATALOG_LOCATION: {{ .Values.catalog.customCatalogLocation }}
-  BASE_URL: {{ .Values.backstage.baseURL }}
+  BASE_URL: {{ $baseURL }}

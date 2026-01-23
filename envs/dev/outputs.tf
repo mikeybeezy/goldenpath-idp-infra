@@ -93,3 +93,43 @@ output "kong_lb_hostname" {
   description = "The Kong LoadBalancer hostname (target for DNS records)"
   value       = local.kong_lb_hostname
 }
+
+# -----------------------------------------------------------------------------
+# Bootstrap Values (ADR-0178, ADR-0179, ADR-0180)
+# These values are consumed by ArgoCD to configure platform apps
+# -----------------------------------------------------------------------------
+
+output "host_suffix" {
+  description = "DNS suffix for all hostnames (e.g., dev.goldenpathidp.io or b-23-01-26-01.dev.goldenpathidp.io)"
+  value       = local.host_suffix
+}
+
+output "dns_owner_id" {
+  description = "ExternalDNS txt-owner-id for DNS record ownership"
+  value       = local.dns_owner_id
+}
+
+output "bootstrap_mode" {
+  description = "Cluster lifecycle mode: ephemeral or persistent"
+  value       = var.cluster_lifecycle
+}
+
+output "bootstrap_build_id" {
+  description = "Build ID for ephemeral clusters (empty for persistent)"
+  value       = var.build_id
+}
+
+output "bootstrap_values" {
+  description = "Consolidated bootstrap values for ArgoCD ConfigMap (Phase 4)"
+  value = {
+    mode       = var.cluster_lifecycle
+    buildId    = var.build_id
+    maxTier    = var.cluster_lifecycle == "ephemeral" ? "1.5" : "3"
+    hostSuffix = local.host_suffix
+    dnsOwnerId = local.dns_owner_id
+    platform = {
+      rdsAvailable = var.rds_config.enabled && var.cluster_lifecycle == "persistent"
+      rdsEndpoint  = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? module.platform_rds[0].db_instance_address : ""
+    }
+  }
+}

@@ -45,6 +45,21 @@ locals {
   cluster_name_effective = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "${local.cluster_name}-${local.build_id}" : local.cluster_name
   role_suffix            = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? "-${local.build_id}" : ""
 
+  # ADR-0179: Dynamic hostname generation for ephemeral clusters
+  # Persistent: {env}.goldenpathidp.io (e.g., dev.goldenpathidp.io)
+  # Ephemeral:  b-{buildId}.{env}.goldenpathidp.io (e.g., b-23-01-26-01.dev.goldenpathidp.io)
+  base_domain = var.route53_config.enabled ? var.route53_config.domain_name : "goldenpathidp.io"
+  host_suffix = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? (
+    "b-${local.build_id}.${local.environment}.${local.base_domain}"
+  ) : "${local.environment}.${local.base_domain}"
+
+  # ADR-0178: DNS ownership ID for ExternalDNS txt records
+  # Persistent: goldenpath-{env}
+  # Ephemeral:  goldenpath-{env}-{buildId}
+  dns_owner_id = local.cluster_lifecycle == "ephemeral" && local.build_id != "" ? (
+    "goldenpath-${local.environment}-${local.build_id}"
+  ) : "goldenpath-${local.environment}"
+
   public_subnets  = var.public_subnets
   private_subnets = var.private_subnets
 
@@ -388,14 +403,40 @@ data "aws_caller_identity" "current" {}
 # Managed Kubernetes Resources (ESO / Add-ons)
 ################################################################################
 
+# -----------------------------------------------------------------------------
+# Data source to fetch EKS cluster info for provider configuration
+# -----------------------------------------------------------------------------
+# IMPORTANT: No depends_on here! Data sources must read directly from AWS so that
+# providers can be configured immediately. If the cluster doesn't exist (fresh
+# deployment), use bootstrap v4's two-pass approach which creates EKS first with
+# enable_k8s_resources=false, then runs again with k8s resources enabled.
+#
+# The try() fallbacks in locals below handle the case where data source fails.
+# -----------------------------------------------------------------------------
+data "aws_eks_cluster" "this" {
+  count = var.eks_config.enabled ? 1 : 0
+  name  = local.cluster_name_effective
+}
+
+data "aws_eks_cluster_auth" "this" {
+  count = var.eks_config.enabled ? 1 : 0
+  name  = local.cluster_name_effective
+}
+
+locals {
+  # Provider configuration with fallbacks for bootstrap scenario
+  # When EKS doesn't exist, use dummy values that will prevent provider errors
+  # The resources using these providers have count=0 when enable_k8s_resources=false
+  k8s_host    = try(data.aws_eks_cluster.this[0].endpoint, "https://localhost")
+  k8s_ca_cert = try(base64decode(data.aws_eks_cluster.this[0].certificate_authority[0].data), "")
+  k8s_token   = try(data.aws_eks_cluster_auth.this[0].token, "")
+  k8s_cluster = try(data.aws_eks_cluster.this[0].name, "placeholder")
+}
+
 provider "kubernetes" {
-  host                   = module.eks[0].cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    args        = ["eks", "get-token", "--cluster-name", module.eks[0].cluster_name, "--region", var.aws_region]
-    command     = "aws"
-  }
+  host                   = local.k8s_host
+  cluster_ca_certificate = local.k8s_ca_cert
+  token                  = local.k8s_token
 }
 
 resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
@@ -478,27 +519,32 @@ resource "kubernetes_service_account_v1" "external_dns" {
 }
 
 provider "kubectl" {
-  host                   = module.eks[0].cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
+  host                   = local.k8s_host
+  cluster_ca_certificate = local.k8s_ca_cert
+  token                  = local.k8s_token
   load_config_file       = false
-
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    args        = ["eks", "get-token", "--cluster-name", local.cluster_name_effective, "--region", var.aws_region]
-    command     = "aws"
-  }
 }
 
 provider "helm" {
   kubernetes {
-    host                   = module.eks[0].cluster_endpoint
-    cluster_ca_certificate = base64decode(module.eks[0].cluster_ca)
-    exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["eks", "get-token", "--cluster-name", module.eks[0].cluster_name, "--region", var.aws_region]
-      command     = "aws"
-    }
+    host                   = local.k8s_host
+    cluster_ca_certificate = local.k8s_ca_cert
+    token                  = local.k8s_token
   }
+}
+
+resource "kubernetes_ingress_class_v1" "kong" {
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.apply_kubernetes_addons ? 1 : 0
+
+  metadata {
+    name = "kong"
+  }
+
+  spec {
+    controller = "ingress-controllers.konghq.com/kong"
+  }
+
+  depends_on = [module.eks]
 }
 
 module "kubernetes_addons" {
@@ -513,48 +559,70 @@ module "kubernetes_addons" {
   cluster_name = local.cluster_name_effective
   aws_region   = var.aws_region
 
+  # ADR-0178, ADR-0179: Bootstrap values for dynamic hostname generation
+  bootstrap_values = {
+    host_suffix  = local.host_suffix
+    dns_owner_id = local.dns_owner_id
+    lifecycle    = local.cluster_lifecycle
+    build_id     = local.build_id
+    max_tier     = local.cluster_lifecycle == "ephemeral" ? "1.5" : "3"
+  }
+
   tags = local.common_tags
 
   depends_on = [
     module.eks,
     kubernetes_service_account_v1.aws_load_balancer_controller,
-    kubernetes_service_account_v1.external_dns
+    kubernetes_service_account_v1.external_dns,
+    kubernetes_ingress_class_v1.kong
   ]
 }
 
-# Trust store for workload secret synchronization via ESO
-resource "kubectl_manifest" "cluster_secret_store" {
-  # Fix: Only create this if we are applying K8s addons (like ESO Helm chart), otherwise CRDs are missing.
-  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role && var.apply_kubernetes_addons ? 1 : 0
+################################################################################
+# ArgoCD Bootstrap ConfigMap (ADR-0178, ADR-0179, ADR-0180)
+################################################################################
+#
+# This ConfigMap provides bootstrap values for ArgoCD app-of-apps to configure
+# platform applications. Values are computed by Terraform and consumed by Helm.
+#
+# See: IMPL-0001-tiered-bootstrap-and-hostname-generation.md Phase 4
+################################################################################
 
-  yaml_body = yamlencode({
-    apiVersion = "external-secrets.io/v1beta1"
-    kind       = "ClusterSecretStore"
-    metadata = {
-      name = "aws-secretsmanager"
-    }
-    spec = {
-      provider = {
-        aws = {
-          service = "SecretsManager"
-          region  = var.aws_region
-          auth = {
-            jwt = {
-              serviceAccountRef = {
-                name      = var.iam_config.eso_service_account_name
-                namespace = var.iam_config.eso_service_account_namespace
-              }
-            }
-          }
-        }
-      }
-    }
-  })
+resource "kubernetes_config_map_v1" "argocd_bootstrap" {
+  count = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
 
-  depends_on = [
-    kubernetes_service_account_v1.external_secrets,
-    module.kubernetes_addons # Ensure ESO CRDs are present
-  ]
+  metadata {
+    name      = "argocd-bootstrap-config"
+    namespace = "argocd"
+    labels = {
+      "app.kubernetes.io/part-of"  = "goldenpath-idp"
+      "goldenpath.idp/managed-by"  = "terraform"
+      "goldenpath.idp/config-type" = "bootstrap"
+    }
+  }
+
+  data = {
+    # Bootstrap mode and build identification
+    "bootstrap.mode"    = var.cluster_lifecycle
+    "bootstrap.buildId" = var.build_id
+    "bootstrap.maxTier" = var.cluster_lifecycle == "ephemeral" ? "1.5" : "3"
+
+    # DNS configuration (ADR-0179)
+    "dns.hostSuffix" = local.host_suffix
+    "dns.ownerId"    = local.dns_owner_id
+    "dns.baseDomain" = local.base_domain
+
+    # Platform availability flags (ADR-0178)
+    "platform.rdsAvailable" = tostring(var.rds_config.enabled && var.cluster_lifecycle == "persistent")
+    "platform.rdsEndpoint"  = var.rds_config.enabled && var.cluster_lifecycle == "persistent" ? module.platform_rds[0].db_instance_address : ""
+
+    # Environment metadata
+    "environment.name"   = local.environment
+    "environment.region" = var.aws_region
+    "cluster.name"       = local.cluster_name_effective
+  }
+
+  depends_on = [module.eks]
 }
 
 ################################################################################

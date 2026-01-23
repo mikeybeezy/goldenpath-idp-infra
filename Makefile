@@ -42,8 +42,10 @@ else ifeq ($(BOOTSTRAP_VERSION),v2)
 BOOTSTRAP_SCRIPT := bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v2.sh
 else ifeq ($(BOOTSTRAP_VERSION),v3)
 BOOTSTRAP_SCRIPT := bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v3.sh
+else ifeq ($(BOOTSTRAP_VERSION),v4)
+BOOTSTRAP_SCRIPT := bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v4.sh
 else
-$(error BOOTSTRAP_VERSION must be v1, v2, or v3)
+$(error BOOTSTRAP_VERSION must be v1, v2, v3, or v4)
 endif
 
 define require_build_id
@@ -977,6 +979,40 @@ bootstrap-persistent:
 	exit $${PIPESTATUS[0]}; \
 	'
 
+# v4 bootstrap requires env vars, not positional args
+# Creates dedicated target that passes TF_DIR, REGION, LIFECYCLE as env vars
+bootstrap-persistent-v4:
+	@echo "Bootstrapping persistent cluster $(PERSISTENT_CLUSTER_EFFECTIVE) using v4 (ArgoCD-first)..."
+	@mkdir -p logs/build-timings
+	@bash -c '\
+	log="logs/build-timings/bootstrap-v4-$(ENV)-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	echo "Bootstrap v4 output streaming; full log at $$log"; \
+	TF_DIR=$(ENV_DIR) \
+	REGION=$(REGION) \
+	LIFECYCLE=persistent \
+	TF_AUTO_APPROVE=true \
+	SKIP_ARGO_SYNC_WAIT=$(SKIP_ARGO_SYNC_WAIT) \
+	bash $(BOOTSTRAP_SCRIPT) 2>&1 | tee "$$log"; \
+	exit $${PIPESTATUS[0]}; \
+	'
+
+# deploy-persistent: Conditional logic based on BOOTSTRAP_VERSION
+# - v4: Skip apply-persistent (v4 runs its own terraform with apply_kubernetes_addons=true)
+# - v1-v3: Use apply-persistent + shell-based bootstrap
+ifeq ($(BOOTSTRAP_VERSION),v4)
+deploy-persistent:
+	@echo "Starting persistent deployment for $(ENV) using Bootstrap v4 (ArgoCD-first)"
+	@echo "Cluster: $(PERSISTENT_CLUSTER_EFFECTIVE)"
+	@echo "Note: v4 runs terraform internally with apply_kubernetes_addons=true"
+	@if [ "$(CREATE_RDS)" = "true" ]; then \
+		$(MAKE) rds-deploy ENV=$(ENV); \
+	else \
+		echo "Skipping RDS deploy (CREATE_RDS=$(CREATE_RDS))."; \
+	fi
+	@$(MAKE) bootstrap-persistent-v4 ENV=$(ENV) REGION=$(REGION)
+	@$(MAKE) _phase3-verify ENV=$(ENV)
+	@echo "Persistent deployment complete!"
+else
 deploy-persistent:
 	@echo "Starting persistent deployment for $(ENV)"
 	@echo "Cluster: $(PERSISTENT_CLUSTER_EFFECTIVE)"
@@ -989,6 +1025,7 @@ deploy-persistent:
 	@$(MAKE) bootstrap-persistent ENV=$(ENV) REGION=$(REGION)
 	@$(MAKE) _phase3-verify ENV=$(ENV)
 	@echo "Persistent deployment complete!"
+endif
 
 teardown-persistent:
 	@if [ -z "$(ENV)" ]; then echo "ERROR: ENV required"; exit 1; fi

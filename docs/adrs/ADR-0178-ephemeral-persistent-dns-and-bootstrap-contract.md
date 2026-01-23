@@ -21,6 +21,7 @@ relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0175-externaldns-wildcard-ownership
   - ADR-0179-dynamic-hostname-generation-ephemeral-clusters
+  - ADR-0180-argocd-orchestrator-contract
   - 21_CI_ENVIRONMENT_CONTRACT
 supersedes: []
 superseded_by: []
@@ -69,7 +70,36 @@ Ephemeral Cluster B creates: backstage.dev.goldenpathidp.io → ALB-B
 
 ## Decision
 
-We will establish a **DNS Ownership Contract** and **Bootstrap Mode Differentiation**:
+We will establish a **Plane Architecture**, **DNS Ownership Contract**, and **Bootstrap Mode Differentiation**.
+
+### Foundational vs Disposable Planes
+
+**Core constraint: Ephemeral cannot exist without Persistent.**
+
+| Plane | Also Known As | What It Contains | Lifecycle |
+| ----- | ------------- | ---------------- | --------- |
+| Foundational | Persistent | VPC, RDS, Route53, Secrets Manager, ECR, IAM | Long-lived, rarely destroyed |
+| Disposable | Ephemeral | EKS cluster, ArgoCD, Kong, workloads | Short-lived, frequently destroyed |
+
+**Dependency Rules:**
+
+1. Foundational plane MUST be deployed before any ephemeral cluster
+2. Ephemeral clusters CONSUME foundational resources, never CREATE them
+3. Destroying ephemeral does NOT affect foundational state
+4. Foundational teardown requires explicit confirmation (destructive)
+
+```text
+Foundational (deploy once)     Disposable (deploy many)
+─────────────────────────────  ─────────────────────────────
+VPC + Subnets          ──────► EKS cluster uses VPC
+Route53 Zone           ──────► ExternalDNS creates child records
+RDS PostgreSQL         ──────► Backstage/Keycloak connect
+Secrets Manager        ──────► ESO pulls credentials
+ECR Repositories       ──────► Pods pull images
+IAM Roles              ──────► IRSA assumes roles
+```
+
+**Why this matters:** Without this constraint, ephemeral clusters would create competing resources (VPCs, databases), teardown would orphan state, and there would be no shared services for Tier 2/3.
 
 ### DNS Ownership Contract
 
@@ -95,24 +125,135 @@ bootstrap:
 | ExternalDNS | Manages `*.{env}.` | Manages `*.b-{buildid}.{env}.` only |
 | RDS | Create (if standalone not exists) | Use standalone RDS |
 
+### Deployment Tiers
+
+**Key insight:** The shipping pipeline (CI/CD) and production topology (full-stack services) are different concerns. Not every environment needs every service.
+
+| Tier | Name | Components | RDS Required | Environment |
+| ---- | ---- | ---------- | ------------ | ----------- |
+| 0 | Cluster Viability | EKS control plane, nodes, CNI, CoreDNS | No | All |
+| 1 | Delivery Plane | ArgoCD, Kong, ExternalDNS, ESO, Cluster Autoscaler | No | All |
+| 1.5 | Core Observability | Prometheus, Grafana (SQLite), Alertmanager | No | All |
+| 2 | Platform Experience | Backstage, Loki (long-term), Grafana (PostgreSQL) | Yes | Dev+, optional ephemeral |
+| 3 | Production Identity | Keycloak, OIDC federation, RBAC policies | Yes | Prod only |
+
+**Tier Rationale:**
+
+- **Tier 0-1**: Required for the cluster to function and deploy workloads. The "shipping pipeline".
+- **Tier 1.5**: Core observability for debugging. No RDS required (Grafana uses SQLite, Prometheus uses local PV).
+- **Tier 2**: Developer experience services. Backstage needs RDS, observability gets long-term storage.
+- **Tier 3**: Production authentication. Keycloak is complex and adds friction to ephemeral testing.
+
+**Tier Acceptance Criteria (Pass/Fail):**
+
+| Tier | Pass Criteria | Fail Indicators |
+| ---- | ------------- | --------------- |
+| 0 | EKS API responds, nodes Ready, CoreDNS resolving | Node NotReady, CNI failures, API timeout |
+| 1 | ArgoCD healthy, Kong accepting traffic, ESO syncing secrets | App-of-apps degraded, ingress 502/503, secrets missing |
+| 1.5 | Prometheus scraping, Grafana UI loads, Alertmanager running | Metrics missing, dashboards 500, no alerts |
+| 2 | Backstage UI loads, Grafana dashboards render, DB connections established | Pod CrashLoopBackOff, DB connection refused, UI 500 errors |
+| 3 | Keycloak login works, OIDC tokens issued, RBAC policies enforced | Auth redirect loop, token validation failure, 403 on valid user |
+
+**CI Validation by Tier:**
+
+- **Ephemeral (Tier 0-1.5):** `kubectl get nodes` Ready, ArgoCD Healthy, Prometheus targets up
+- **Nightly/On-demand (Tier 2-3):** Backstage health 200, Keycloak realm accessible
+
+**V1 Rule:** Non-prod environments (dev, staging, ephemeral) can use simplified auth:
+
+- **GitHub OAuth**: For Backstage developer login (already supported)
+- **Static admin credentials**: For ArgoCD/Grafana in dev/test
+- **No Keycloak**: Removes a heavy dependency from the fast feedback loop
+
+**Why this matters:**
+
+```text
+Without tiers:
+  Ephemeral cluster → needs RDS → needs Keycloak → takes 20 minutes → defeats purpose
+
+With tiers:
+  Ephemeral cluster → Tier 0-1.5 → deploys in 8 minutes → validates code + has observability
+  Production cluster → Tier 0-3 → full identity federation
+```
+
+### ArgoCD as Tier Controller
+
+**Simplified bootstrap:** Terraform only deploys EKS + ArgoCD. ArgoCD handles everything else.
+
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│  TERRAFORM (minimal)                                            │
+│    1. Create EKS cluster                                        │
+│    2. Deploy ArgoCD bootstrap app                               │
+│    3. Pass context: { env, mode, maxTier, rdsAvailable }        │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  ARGOCD APP-OF-APPS (tier controller)                           │
+│    Reads bootstrap values and deploys apps up to maxTier        │
+│    Each app has label: goldenpath.idp/tier: "1.5"               │
+│    Apps with tier > maxTier are skipped                         │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Bootstrap values passed to ArgoCD:**
+
+```yaml
+bootstrap:
+  mode: ephemeral        # or persistent
+  maxTier: "1.5"         # highest tier to deploy
+  env: dev
+  buildId: "26-01-23-01"
+
+platform:
+  rdsAvailable: false    # can Tier 2+ apps connect to RDS?
+```
+
+**App-of-apps tier selection logic:**
+
+```yaml
+{{- range .Values.apps }}
+{{- if le (float64 .tier) (float64 $.Values.bootstrap.maxTier) }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  labels:
+    goldenpath.idp/tier: "{{ .tier }}"
+# ... app spec
+{{- end }}
+{{- end }}
+```
+
+**Why this simplifies everything:**
+
+- No tier-specific bootstrap scripts
+- No shell logic for conditional deployment
+- ArgoCD is the single orchestrator
+- Tier changes = just update Helm values
+- GitOps-native: desired state in Git, ArgoCD reconciles
+
 ### Shared Services Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
-│                    PERSISTENT SERVICES                          │
-│                    (Standalone State)                           │
+│                    FOUNDATIONAL PLANE                           │
+│                    (Persistent - long-lived)                    │
 ├─────────────────────────────────────────────────────────────────┤
-│  Keycloak (keycloak.dev.goldenpathidp.io)                      │
-│  RDS PostgreSQL (goldenpath-dev-platform-db)                   │
-│  Route53 Zone (dev.goldenpathidp.io)                           │
+│  RDS PostgreSQL (goldenpath-dev-platform-db) [Tier 2+]         │
+│  Route53 Zone (dev.goldenpathidp.io) [Tier 1]                  │
+│  Keycloak (keycloak.prod.goldenpathidp.io) [Tier 3 - Prod]     │
 └─────────────────────────────────────────────────────────────────┘
          ▲                    ▲                    ▲
-         │ Auth               │ Database           │ DNS parent
+         │ Database           │ DNS parent         │ Auth (prod)
     ┌────┴────┐          ┌────┴────┐          ┌────┴────┐
     │Persistent│          │Ephemeral│          │Ephemeral│
     │ Cluster  │          │Cluster A│          │Cluster B│
+    │(Tier 0-3)│          │(Tier 0-1.5)│       │(Tier 0-1.5)│
+    │          │          │+ Observ. │         │+ Observ. │
     └──────────┘          └──────────┘         └──────────┘
-    backstage.dev.        backstage.b-01.      backstage.b-02.
+    backstage.dev.        grafana.b-01.        grafana.b-02.
     goldenpathidp.io      dev.goldenpathidp.io dev.goldenpathidp.io
 ```
 

@@ -8,6 +8,15 @@ governance:
   reliability: null
 
 # -----------------------------------------------------------------------------
+# Global Values (ADR-0179: Dynamic Hostname Generation)
+# NOTE: Kong chart is upstream and doesn't template annotations from values.
+# For ephemeral deployments, override proxy.annotations via ArgoCD helm.values
+# or update external-dns to use --domain-filter for build-scoped DNS.
+# -----------------------------------------------------------------------------
+global:
+  hostSuffix: dev.goldenpathidp.io
+
+# -----------------------------------------------------------------------------
 # Image Configuration - Pinned Version
 # -----------------------------------------------------------------------------
 image:

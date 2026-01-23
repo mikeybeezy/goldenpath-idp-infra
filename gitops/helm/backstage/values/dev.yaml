@@ -7,6 +7,15 @@ governance:
   reliability: null
 
 # -----------------------------------------------------------------------------
+# Global Values (ADR-0179: Dynamic Hostname Generation)
+# hostSuffix is overridden by ArgoCD bootstrap config for ephemeral clusters
+# Persistent: dev.goldenpathidp.io
+# Ephemeral:  b-{buildId}.dev.goldenpathidp.io
+# -----------------------------------------------------------------------------
+global:
+  hostSuffix: dev.goldenpathidp.io
+
+# -----------------------------------------------------------------------------
 # Image Configuration
 # TODO: Build custom Backstage image with required plugins and push to ECR
 # Current: Using official Backstage image (may have UI incompatibilities)
