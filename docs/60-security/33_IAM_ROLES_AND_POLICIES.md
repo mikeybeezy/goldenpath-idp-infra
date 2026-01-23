@@ -43,11 +43,13 @@ Use this to understand **who assumes what**, **where it is used**, and **why**.
 - **Assumed by:** GitHub Actions (OIDC).
 - **Used in:** `infra-terraform-apply-dev.yml`, `ci-teardown.yml`.
 - **Scope:** S3/DynamoDB state + AWS infra create/update.
-- **Teardown/orphan cleanup policy:** `docs/10-governance/policies/ci-teardown-orphan-cleanup.json`
+- **Full permissions policy:** `docs/10-governance/policies/iam/github-actions-terraform-full.json`
+  (comprehensive policy with resource scoping to `goldenpath-*` prefix).
+- **Teardown/orphan cleanup policy:** `docs/10-governance/policies/iam/ci-teardown-orphan-cleanup.json`
   (delete actions require `BuildId` + `Environment` tags; read actions are unscoped).
-- **Instance profile read policy:** `docs/10-governance/policies/ci-apply-iam-instance-profile-read.json`
+- **Instance profile read policy:** `docs/10-governance/policies/iam/ci-apply-iam-instance-profile-read.json`
   (required for Terraform to list IAM instance profiles when deleting roles).
-- **Note:** IAM policies are excluded from orphan cleanup by design.
+- **ADR:** ADR-0177 (supersedes ADR-0030).
 
 ## Cluster roles (IRSA)
 
