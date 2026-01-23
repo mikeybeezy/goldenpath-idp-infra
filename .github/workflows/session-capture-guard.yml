@@ -12,6 +12,9 @@ on:
 jobs:
   enforce-append-only:
     runs-on: ubuntu-latest
+    # Skip append-only check for release PRs (development→main)
+    # These are merge commits where content may have diverged between branches
+    if: ${{ !(github.base_ref == 'main' && github.head_ref == 'development') }}
     steps:
       - name: Checkout PR
         uses: actions/checkout@v4
