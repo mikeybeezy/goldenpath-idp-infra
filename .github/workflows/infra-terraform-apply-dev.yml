@@ -1,5 +1,8 @@
 # Owner: platform
-# Relates-To: CL-0142, ADR-0028-platform-dev-branch-gate
+# Relates-To: CL-0142, ADR-0028-platform-dev-branch-gate, ROADMAP-102
+# Pattern: Outcome-driven CI - workflows call Make targets
+#   CI says WHAT (inputs/outcomes), Make says HOW (terraform/kubectl)
+#   See: docs/production-readiness-gates/ROADMAP.md item 102
 name: Apply - Infra Terraform Apply (dev)
 
 on:
@@ -37,6 +40,14 @@ on:
         required: true
         default: false
         type: boolean
+      bootstrap_version:
+        description: "Bootstrap version (v3=shell orchestration, v4=ArgoCD-first)"
+        required: false
+        default: "v4"
+        type: choice
+        options:
+          - v4
+          - v3
 
 jobs:
   # Gate: Check if EKS-related files changed (requires manual apply)
@@ -137,10 +148,13 @@ jobs:
             else
               echo "new_build=false" >> "${GITHUB_OUTPUT}"
             fi
+            # Default to v4 for push events
+            echo "bootstrap_version=v4" >> "${GITHUB_OUTPUT}"
           else
             echo "lifecycle=${{ inputs.lifecycle }}" >> "${GITHUB_OUTPUT}"
             echo "build_id=${{ inputs.build_id }}" >> "${GITHUB_OUTPUT}"
             echo "new_build=${{ inputs.new_build }}" >> "${GITHUB_OUTPUT}"
+            echo "bootstrap_version=${{ inputs.bootstrap_version || 'v4' }}" >> "${GITHUB_OUTPUT}"
           fi
 
       - name: Validate lifecycle and build ID
@@ -271,6 +285,7 @@ jobs:
           echo "Lifecycle=${{ steps.effective.outputs.lifecycle }}"
           echo "BuildId=${{ steps.effective.outputs.build_id }}"
           echo "NewBuild=${{ steps.effective.outputs.new_build }}"
+          echo "BootstrapVersion=${{ steps.effective.outputs.bootstrap_version }}"
           echo "StateKey=${STATE_KEY}"
 
       - name: Terraform init (backend)
@@ -282,108 +297,60 @@ jobs:
             -backend-config="dynamodb_table=goldenpath-idp-dev-db-key" \
             -backend-config="encrypt=true"
 
-      - name: Terraform apply (dev)
-        id: tf_apply
+      # ==========================================================================
+      # Outcome-Driven Deployment: CI says WHAT, Make says HOW
+      # Pattern: ROADMAP-102 - workflows call Make targets
+      # ==========================================================================
+      - name: Deploy (Make target)
+        id: deploy
         env:
           LIFECYCLE: ${{ steps.effective.outputs.lifecycle }}
           BUILD_ID: ${{ steps.effective.outputs.build_id }}
+          BOOTSTRAP_VERSION: ${{ steps.effective.outputs.bootstrap_version }}
+          AWS_REGION: eu-west-2
         run: |
           echo "TF_APPLY_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "${GITHUB_ENV}"
-          var_args=(-var "cluster_lifecycle=${LIFECYCLE}")
-          if [[ "${LIFECYCLE}" == "ephemeral" ]]; then
-            var_args+=(-var "build_id=${BUILD_ID}")
+
+          # Outcome-driven: CI specifies WHAT (inputs), Make handles HOW (implementation)
+          if [[ "${LIFECYCLE}" == "persistent" ]]; then
+            echo "Deploying persistent cluster via Make..."
+            make deploy-persistent \
+              ENV=dev \
+              REGION=eu-west-2 \
+              BOOTSTRAP_VERSION=${BOOTSTRAP_VERSION} \
+              CREATE_RDS=true \
+              TF_AUTO_APPROVE=true \
+              2>&1 | tee deploy.log
+          else
+            echo "Deploying ephemeral cluster via Make..."
+            # For ephemeral, need to setup EKS access first (CI runner-specific)
+            # Then call the deploy target
+            make deploy \
+              ENV=dev \
+              BUILD_ID=${BUILD_ID} \
+              REGION=eu-west-2 \
+              BOOTSTRAP_VERSION=${BOOTSTRAP_VERSION} \
+              ALLOW_REUSE_BUILD_ID=true \
+              2>&1 | tee deploy.log
           fi
-          terraform -chdir=envs/dev apply -auto-approve -input=false -no-color "${var_args[@]}" 2>&1 | tee tf_apply.log
-          TF_EXIT=${PIPESTATUS[0]}
+          DEPLOY_EXIT=${PIPESTATUS[0]}
+
           echo "TF_APPLY_END=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "${GITHUB_ENV}"
-          # Extract resource counts from Apply complete line
-          if grep -q "Apply complete!" tf_apply.log; then
-            ADDED=$(grep "Apply complete!" tf_apply.log | sed -E 's/.*Resources: ([0-9]+) added.*/\1/')
-            CHANGED=$(grep "Apply complete!" tf_apply.log | sed -E 's/.*, ([0-9]+) changed.*/\1/')
-            DESTROYED=$(grep "Apply complete!" tf_apply.log | sed -E 's/.*, ([0-9]+) destroyed.*/\1/')
+
+          # Extract resource counts from terraform output in log
+          if grep -q "Apply complete!" deploy.log; then
+            ADDED=$(grep "Apply complete!" deploy.log | tail -1 | sed -E 's/.*Resources: ([0-9]+) added.*/\1/' || echo 0)
+            CHANGED=$(grep "Apply complete!" deploy.log | tail -1 | sed -E 's/.*, ([0-9]+) changed.*/\1/' || echo 0)
+            DESTROYED=$(grep "Apply complete!" deploy.log | tail -1 | sed -E 's/.*, ([0-9]+) destroyed.*/\1/' || echo 0)
           else
             ADDED=0; CHANGED=0; DESTROYED=0
           fi
           echo "TF_RESOURCES_ADDED=${ADDED}" >> "${GITHUB_ENV}"
           echo "TF_RESOURCES_CHANGED=${CHANGED}" >> "${GITHUB_ENV}"
           echo "TF_RESOURCES_DESTROYED=${DESTROYED}" >> "${GITHUB_ENV}"
-          echo "TF_EXIT_CODE=${TF_EXIT}" >> "${GITHUB_ENV}"
-          exit ${TF_EXIT}
+          echo "TF_EXIT_CODE=${DEPLOY_EXIT}" >> "${GITHUB_ENV}"
 
-      - name: Setup Python for RDS provisioning
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install RDS provisioning dependencies
-        run: pip install boto3 psycopg2-binary
-
-      - name: Provision RDS Users/Databases
-        if: ${{ success() }}
-        env:
-          AWS_REGION: eu-west-2
-          BUILD_ID: ${{ steps.effective.outputs.build_id }}
-        run: |
-          echo "Provisioning RDS users and databases..."
-          python3 scripts/rds_provision.py \
-            --env dev \
-            --tfvars envs/dev-rds/terraform.tfvars \
-            --master-secret goldenpath/dev/rds/master \
-            --build-id ${BUILD_ID:-persistent} \
-            --run-id ${{ github.run_id }} \
-            --audit-output governance/dev/rds_provision_audit.csv || {
-              echo "::warning::RDS provisioning failed or skipped (may not have RDS deployed yet)"
-              exit 0
-            }
-
-      - name: Setup EKS access for runner
-        if: ${{ steps.effective.outputs.lifecycle == 'ephemeral' }}
-        env:
-          BUILD_ID: ${{ steps.effective.outputs.build_id }}
-        run: |
-          CLUSTER_NAME="goldenpath-dev-eks-${BUILD_ID}"
-
-          # Get runner's IAM role ARN (convert STS assumed-role ARN to IAM role ARN)
-          STS_ARN=$(aws sts get-caller-identity --query Arn --output text)
-          echo "STS ARN: $STS_ARN"
-          # Convert: arn:aws:sts::ACCOUNT:assumed-role/ROLE/SESSION -> arn:aws:iam::ACCOUNT:role/ROLE
-          ACCOUNT_ID=$(echo "$STS_ARN" | cut -d: -f5)
-          ROLE_NAME=$(echo "$STS_ARN" | cut -d/ -f2)
-          RUNNER_ARN="arn:aws:iam::${ACCOUNT_ID}:role/${ROLE_NAME}"
-          echo "IAM Role ARN: $RUNNER_ARN"
-
-          # Create access entry for runner
-          echo "Creating EKS access entry..."
-          aws eks create-access-entry \
-            --cluster-name "${CLUSTER_NAME}" \
-            --principal-arn "$RUNNER_ARN" \
-            --region eu-west-2 || true
-
-          # Associate admin policy
-          echo "Associating admin policy..."
-          aws eks associate-access-policy \
-            --cluster-name "${CLUSTER_NAME}" \
-            --principal-arn "$RUNNER_ARN" \
-            --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
-            --access-scope type=cluster \
-            --region eu-west-2 || true
-
-          # Update kubeconfig
-          echo "Updating kubeconfig..."
-          aws eks update-kubeconfig --name "${CLUSTER_NAME}" --region eu-west-2
-
-          # Verify connectivity
-          echo "Verifying cluster connectivity..."
-          kubectl get ns
-
-      - name: Run bootstrap
-        if: ${{ steps.effective.outputs.lifecycle == 'ephemeral' }}
-        env:
-          BUILD_ID: ${{ steps.effective.outputs.build_id }}
-          AWS_REGION: eu-west-2
-        run: |
-          echo "Running bootstrap for build ${BUILD_ID}..."
-          make bootstrap ENV=dev BUILD_ID=${BUILD_ID} ALLOW_REUSE_BUILD_ID=true
+          exit ${DEPLOY_EXIT}
 
       - name: Record build timing to governance-registry
         if: always()

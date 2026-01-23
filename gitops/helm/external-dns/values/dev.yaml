@@ -6,6 +6,12 @@ governance:
   reliability: bronze
 
 # -----------------------------------------------------------------------------
+# Global Values (ADR-0179: Dynamic Hostname Generation)
+# -----------------------------------------------------------------------------
+global:
+  hostSuffix: dev.goldenpathidp.io
+
+# -----------------------------------------------------------------------------
 # Image Configuration - Pinned Version
 # -----------------------------------------------------------------------------
 image:
@@ -14,15 +20,30 @@ image:
   pullPolicy: IfNotPresent
 
 # -----------------------------------------------------------------------------
-# Provider + Registry
+# Provider + Registry (ADR-0178: DNS Ownership Contract)
+# -----------------------------------------------------------------------------
+# CRITICAL: domainFilters MUST match the Route53 hosted zone name (goldenpathidp.io)
+# not a subdomain (dev.goldenpathidp.io). ExternalDNS uses domainFilters to find
+# which hosted zone to use. If the filter is a subdomain, it won't find a matching zone.
+#
+# The txt-owner-id scopes record ownership per environment:
+#   - Persistent: txtOwnerId=goldenpath-dev
+#   - Ephemeral:  txtOwnerId=goldenpath-dev-{buildId}
 # -----------------------------------------------------------------------------
 provider: aws
 policy: sync
 registry: txt
 txtOwnerId: "goldenpath-dev"
 txtPrefix: "external-dns"
+
+# Domain filter MUST match the hosted zone name, NOT a subdomain
 domainFilters:
   - goldenpathidp.io
+
+# Explicit zone ID filter ensures ExternalDNS targets the correct hosted zone
+zoneIdFilters:
+  - Z0032802NEMSL43VHH4E
+
 sources:
   - service
   - ingress

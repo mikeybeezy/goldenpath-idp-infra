@@ -149,6 +149,40 @@ module "compute" {
   depends_on = [module.public_route_table]
 }*/
 
+################################################################################
+# Managed Kubernetes Resources (ESO / Add-ons)
+################################################################################
+
+data "aws_eks_cluster" "this" {
+  count = var.eks_config.enabled ? 1 : 0
+  name  = local.cluster_name_effective
+}
+
+data "aws_eks_cluster_auth" "this" {
+  count = var.eks_config.enabled ? 1 : 0
+  name  = local.cluster_name_effective
+}
+
+locals {
+  k8s_host    = try(data.aws_eks_cluster.this[0].endpoint, "https://localhost")
+  k8s_ca_cert = try(base64decode(data.aws_eks_cluster.this[0].certificate_authority[0].data), "")
+  k8s_token   = try(data.aws_eks_cluster_auth.this[0].token, "")
+}
+
+provider "kubernetes" {
+  host                   = local.k8s_host
+  cluster_ca_certificate = local.k8s_ca_cert
+  token                  = local.k8s_token
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = local.k8s_host
+    cluster_ca_certificate = local.k8s_ca_cert
+    token                  = local.k8s_token
+  }
+}
+
 resource "kubernetes_service_account_v1" "external_secrets" {
   count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
 
@@ -179,6 +213,18 @@ resource "kubernetes_service_account_v1" "external_dns" {
   depends_on = [
     module.iam
   ]
+}
+
+resource "kubernetes_ingress_class_v1" "kong" {
+  count = var.enable_k8s_resources ? 1 : 0
+
+  metadata {
+    name = "kong"
+  }
+
+  spec {
+    controller = "ingress-controllers.konghq.com/kong"
+  }
 }
 
 module "app_secrets" {
@@ -237,38 +283,6 @@ module "kubernetes_addons" {
   depends_on = [
     kubernetes_service_account_v1.external_secrets,
     kubernetes_service_account_v1.external_dns,
-  ]
-}
-
-resource "kubernetes_manifest" "cluster_secret_store" {
-  count = var.enable_k8s_resources && var.iam_config.enabled && var.iam_config.enable_eso_role ? 1 : 0
-
-  manifest = {
-    apiVersion = "external-secrets.io/v1beta1"
-    kind       = "ClusterSecretStore"
-    metadata = {
-      name = "aws-secretsmanager"
-    }
-    spec = {
-      provider = {
-        aws = {
-          service = "SecretsManager"
-          region  = var.aws_region
-          auth = {
-            jwt = {
-              serviceAccountRef = {
-                name      = var.iam_config.eso_service_account_name
-                namespace = var.iam_config.eso_service_account_namespace
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  depends_on = [
-    kubernetes_service_account_v1.external_secrets,
-    module.kubernetes_addons
+    kubernetes_ingress_class_v1.kong,
   ]
 }

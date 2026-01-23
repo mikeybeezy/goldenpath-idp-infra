@@ -42,3 +42,22 @@ variable "service_account_name" {
   type        = string
   default     = "aws-load-balancer-controller"
 }
+
+# ADR-0179, ADR-0180: Bootstrap values for dynamic hostname generation
+variable "bootstrap_values" {
+  description = "Bootstrap values to inject into ArgoCD applications (global.hostSuffix, etc.)"
+  type = object({
+    host_suffix  = string
+    dns_owner_id = string
+    lifecycle    = string
+    build_id     = string
+    max_tier     = string
+  })
+  default = {
+    host_suffix  = ""
+    dns_owner_id = ""
+    lifecycle    = "persistent"
+    build_id     = ""
+    max_tier     = "3"
+  }
+}

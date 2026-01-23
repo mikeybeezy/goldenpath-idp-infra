@@ -19,6 +19,10 @@ on:
 jobs:
   terraform-plan:
     runs-on: ubuntu-latest
+    # Skip terraform plan for release PRs (development→main)
+    # No active cluster exists during release; plan would fail on stale build_id
+    # Code validation is covered by Terraform Lint & Validate workflow
+    if: ${{ !(github.event_name == 'pull_request' && github.base_ref == 'main' && github.head_ref == 'development') }}
     env:
       ENABLE_TF_K8S_RESOURCES: "false"
       TF_VAR_enable_k8s_resources: "false"

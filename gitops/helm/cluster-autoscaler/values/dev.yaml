@@ -1,6 +1,9 @@
 # Managed by scripts/standardize_metadata.py
+# NOTE: autoDiscovery.clusterName is injected by Terraform via ArgoCD Application parameters.
+# The value below is a fallback for local development only.
+# See: modules/kubernetes_addons/main.tf (cluster-autoscaler injection)
 autoDiscovery:
-  clusterName: goldenpath-dev-eks-31-12-25-04
+  clusterName: "INJECTED_BY_TERRAFORM"
 awsRegion: eu-west-2
 rbac:
   serviceAccount:

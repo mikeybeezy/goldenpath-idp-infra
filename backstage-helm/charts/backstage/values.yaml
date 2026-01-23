@@ -2,6 +2,16 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# -----------------------------------------------------------------------------
+# Global Values (Inherited from ArgoCD/Terraform)
+# ADR-0179: Dynamic hostname generation for ephemeral clusters
+# -----------------------------------------------------------------------------
+global:
+  # hostSuffix is computed by Terraform and passed via ArgoCD bootstrap config:
+  # - Persistent: {env}.goldenpathidp.io (e.g., dev.goldenpathidp.io)
+  # - Ephemeral:  b-{buildId}.{env}.goldenpathidp.io (e.g., b-23-01-26-01.dev.goldenpathidp.io)
+  hostSuffix: ""
+
 replicaCount: 1
 
 image:

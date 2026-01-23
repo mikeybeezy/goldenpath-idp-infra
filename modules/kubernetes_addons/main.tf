@@ -77,19 +77,37 @@ resource "helm_release" "bootstrap_apps" {
   # Logic:
   # 1. Recursive discovery (**/*.{yaml,yml})
   # 2. Inject cluster name into cluster-autoscaler.yaml
+  # 3. Inject global.hostSuffix into backstage.yaml (ADR-0179)
+  # 4. Inject domainFilters override into external-dns.yaml (ADR-0178)
   values = [
     yamlencode({
       manifests = [
         for f in(var.path_to_app_manifests != "" ? fileset(var.path_to_app_manifests, "**/*.{yaml,yml}") : []) :
         (
+          # cluster-autoscaler: inject clusterName (multi-source format uses 8-space indent)
           basename(f) == "cluster-autoscaler.yaml" ?
           replace(
             file("${var.path_to_app_manifests}/${f}"),
-            "          valueFiles:",
-            "          parameters:\n            - name: autoDiscovery.clusterName\n              value: ${var.cluster_name}\n          valueFiles:"
+            "      helm:\n        valueFiles:",
+            "      helm:\n        parameters:\n          - name: autoDiscovery.clusterName\n            value: ${var.cluster_name}\n        valueFiles:"
+          ) :
+          # backstage: inject global.hostSuffix for dynamic hostname (ADR-0179)
+          basename(f) == "backstage.yaml" && var.bootstrap_values.host_suffix != "" ?
+          replace(
+            file("${var.path_to_app_manifests}/${f}"),
+            "      helm:\n        valueFiles:",
+            "      helm:\n        parameters:\n          - name: global.hostSuffix\n            value: ${var.bootstrap_values.host_suffix}\n        valueFiles:"
+          ) :
+          # external-dns: inject domainFilters and txtOwnerId for DNS scoping (ADR-0178)
+          basename(f) == "external-dns.yaml" && var.bootstrap_values.host_suffix != "" ?
+          replace(
+            file("${var.path_to_app_manifests}/${f}"),
+            "        valueFiles:",
+            "        parameters:\n          - name: domainFilters[0]\n            value: ${var.bootstrap_values.host_suffix}\n          - name: txtOwnerId\n            value: ${var.bootstrap_values.dns_owner_id}\n        valueFiles:"
           ) :
           file("${var.path_to_app_manifests}/${f}")
         )
+        if basename(f) != "metadata.yaml"
       ]
     })
   ]

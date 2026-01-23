@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# =============================================================================
+# GoldenPath IDP Bootstrap v3 - Shell Script Orchestration
+# =============================================================================
+# SUPERSEDED BY: v4 (goldenpath-idp-bootstrap-v4.sh)
+# Supersession Reason: v4 implements ADR-0180 (ArgoCD Orchestrator Contract)
+#   v3: Terraform → Shell script orchestration → kubectl apply per app
+#   v4: Terraform → ArgoCD orchestrates everything
+#
+# This script is retained for backward compatibility and rollback scenarios.
+# For new deployments, use BOOTSTRAP_VERSION=v4 or goldenpath-idp-bootstrap-v4.sh
+# =============================================================================
+#
 # Full bootstrap runner for a new EKS cluster.
 # This orchestrates the repo bootstrap scripts in a safe, deterministic order.
 # Usage:

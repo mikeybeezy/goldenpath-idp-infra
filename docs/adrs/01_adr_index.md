@@ -383,6 +383,9 @@ relates_to:
   - ADR-0175
   - ADR-0176
   - ADR-0177
+  - ADR-0178
+  - ADR-0179
+  - ADR-0180
 <!-- ADR_RELATE_END -->
 ---
 
@@ -571,6 +574,9 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0175](ADR-0175-externaldns-wildcard-ownership.md) | Platform | ExternalDNS owns wildcard records for env subdomains | Active | 2026-01-21 | The wildcard DNS record for`*.{env}.goldenpathidp.io`is tied to the Kong LoadBalancer hostname. Terraform can set this value during apply, but when the LoadBalancer changes (teardown/rebuild), DNS ... |
 | [ADR-0176](ADR-0176-session-memory-management.md) | Platform | Session Memory Management for Human-Machine Collaboration | Proposed | 2026-01-22 | This platform is designed to facilitate human-machine collaboration. AI agents work alongside humans across sessions, but face a fundamental constraint: context windows are finite while project kno... |
 | [ADR-0177](ADR-0177-ci-iam-comprehensive-permissions.md) | Platform | Grant CI role comprehensive IAM permissions with resource scoping | Active | 2026-01-0? | ADR-0030 established that the CI apply role should NOT have`iam:CreatePolicy`permissions, requiring IAM policies for IRSA controllers (Cluster Autoscaler, AWS Load Balancer Controller) to be pre-cr... |
+| [ADR-0178](ADR-0178-ephemeral-persistent-dns-and-bootstrap-contract.md) | Platform | Ephemeral vs Persistent DNS Ownership and Bootstrap Contract | Proposed | 2026-01-0? | V1 treats ephemeral and persistent clusters identically during bootstrap. This creates several collision risks: |
+| [ADR-0179](ADR-0179-dynamic-hostname-generation-ephemeral-clusters.md) | Platform | Dynamic Hostname Generation for Ephemeral Clusters | Proposed | 2026-01-0? | ADR-0178 establishes that ephemeral clusters must use the`*.b-{buildid}.{env}.goldenpathidp.io`namespace to prevent DNS collisions. This ADR defines **how** the`buildId`flows through the system to ... |
+| [ADR-0180](ADR-0180-argocd-orchestrator-contract.md) | Platform | ArgoCD Orchestrator Contract | Proposed | 2026-01-0? | V1 bootstrap uses shell scripts with conditional logic to deploy platform components. This approach has several problems: |
 <!-- ADR_TABLE_END -->
 
 ---
