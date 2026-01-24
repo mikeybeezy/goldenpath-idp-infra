@@ -1,6 +1,6 @@
 ---
 id: CL-0177
-title: Prometheus CRD Installation Fix
+title: Prometheus CRD and ArgoCD Sync Fixes
 type: changelog
 date: 2026-01-24
 author: platform-team
@@ -12,11 +12,11 @@ relates_to:
 
 ## Summary
 
-Fixed missing Prometheus CRD that prevented Prometheus server from deploying, causing all Grafana dashboards to show no data.
+Fixed multiple issues preventing Prometheus server from deploying, causing all Grafana dashboards to show no data.
 
 ## Problem
 
-After cluster deployment, Grafana dashboards showed no data. Investigation revealed:
+After cluster deployment, Grafana dashboards showed no data. Investigation revealed a cascade of issues:
 
 1. **Prometheus server pod was missing** - only Alertmanager, Grafana, and exporters were running
 2. **Prometheus Operator was crash-looping** (16 restarts) with error:
@@ -25,37 +25,52 @@ After cluster deployment, Grafana dashboards showed no data. Investigation revea
    (get prometheuses.monitoring.coreos.com)
    ```
 3. **Root cause**: The `prometheuses.monitoring.coreos.com` CRD was not installed
+4. **Secondary issues**: ArgoCD sync conflicts with admission webhooks and PVC spec fields
 
 ### CRDs Present vs Missing
 
-```bash
-kubectl get crd | grep monitoring.coreos.com
-```
-
 | CRD | Status |
 |-----|--------|
-| alertmanagerconfigs.monitoring.coreos.com | ✅ Present |
-| alertmanagers.monitoring.coreos.com | ✅ Present |
-| podmonitors.monitoring.coreos.com | ✅ Present |
-| probes.monitoring.coreos.com | ✅ Present |
-| prometheusrules.monitoring.coreos.com | ✅ Present |
-| servicemonitors.monitoring.coreos.com | ✅ Present |
-| thanosrulers.monitoring.coreos.com | ✅ Present |
-| **prometheuses.monitoring.coreos.com** | ❌ **MISSING** |
+| alertmanagerconfigs.monitoring.coreos.com | Present |
+| alertmanagers.monitoring.coreos.com | Present |
+| podmonitors.monitoring.coreos.com | Present |
+| probes.monitoring.coreos.com | Present |
+| prometheusrules.monitoring.coreos.com | Present |
+| servicemonitors.monitoring.coreos.com | Present |
+| thanosrulers.monitoring.coreos.com | Present |
+| **prometheuses.monitoring.coreos.com** | **MISSING** |
 
-## Root Cause
+## Root Causes
 
-ArgoCD was not applying the Prometheus CRD because:
+### 1. CRD Not Applied
 
-1. **Large CRDs require `ServerSideApply=true`** - The Prometheus CRD is large and ArgoCD's default client-side apply can fail silently
-2. **Missing sync options** - `Replace=true` helps with CRD updates
-3. **CRDs not explicitly enabled** - Though enabled by default, explicit configuration ensures they're included
+ArgoCD's default client-side apply fails silently on large CRDs like `prometheuses.monitoring.coreos.com`.
+
+### 2. Admission Webhook Conflicts
+
+The Prometheus Operator's admission webhooks create ClusterRole/ClusterRoleBinding resources that cause "already exists" errors when ArgoCD retries sync:
+
+```text
+hookPhase: Failed
+message: clusterroles.rbac.authorization.k8s.io "dev-kube-prometheus-stack-admission" already exists
+```
+
+### 3. PVC Spec Immutability
+
+The `Replace=true` sync option caused conflicts with existing PVCs:
+
+```text
+PersistentVolumeClaim "dev-kube-prometheus-stack-grafana" is invalid:
+spec: Forbidden: spec is immutable after creation
+```
+
+The cluster populates `volumeName` and `storageClassName` after creation, causing drift detection.
 
 ## Changes
 
 ### ArgoCD Application (`gitops/argocd/apps/dev/kube-prometheus-stack.yaml`)
 
-Added sync options for CRD handling:
+**Sync options:**
 
 ```yaml
 syncPolicy:
@@ -65,19 +80,39 @@ syncPolicy:
   syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true  # Required for large CRDs
-    - Replace=true          # Enables CRD replacement on updates
+    # NOTE: Replace=true removed - causes PVC conflicts
+```
+
+**Ignore differences for cluster-managed fields:**
+
+```yaml
+ignoreDifferences:
+  - group: ""
+    kind: PersistentVolumeClaim
+    jsonPointers:
+      - /spec/volumeName
+      - /spec/storageClassName
+      - /spec/volumeMode
 ```
 
 ### Helm Values (`gitops/helm/kube-prometheus-stack/values/dev.yaml`)
 
-Explicitly enabled CRD management:
+**CRD management:**
+
+```yaml
+crds:
+  enabled: true
+
+prometheusOperator:
+  manageCrds: true
+```
+
+**Disable admission webhooks (prevents sync conflicts):**
 
 ```yaml
 prometheusOperator:
-  manageCrds: true  # Ensure CRDs are managed by the operator
-
-crds:
-  enabled: true     # Explicitly enable CRD installation
+  admissionWebhooks:
+    enabled: false
 ```
 
 ## Files Changed
@@ -87,63 +122,52 @@ crds:
 
 ## Manual Remediation (Existing Clusters)
 
-For clusters already deployed without the CRD, apply manually:
+For clusters where ArgoCD sync is stuck:
 
 ```bash
-# 1. Install the missing Prometheus CRD
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.68.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
+# 1. Clean up admission webhook resources
+kubectl delete clusterrole dev-kube-prometheus-stack-admission --ignore-not-found
+kubectl delete clusterrolebinding dev-kube-prometheus-stack-admission --ignore-not-found
+kubectl delete role dev-kube-prometheus-stack-admission -n monitoring --ignore-not-found
+kubectl delete rolebinding dev-kube-prometheus-stack-admission -n monitoring --ignore-not-found
+kubectl delete validatingwebhookconfiguration dev-kube-prometheus-stack-admission --ignore-not-found
+kubectl delete mutatingwebhookconfiguration dev-kube-prometheus-stack-admission --ignore-not-found
 
-# 2. Verify CRD is installed
-kubectl get crd prometheuses.monitoring.coreos.com
-
-# 3. Re-apply the ArgoCD app with new sync options
+# 2. Delete and recreate the ArgoCD application
+kubectl delete application dev-kube-prometheus-stack -n argocd --wait
 kubectl apply -f gitops/argocd/apps/dev/kube-prometheus-stack.yaml
 
-# 4. Restart the operator to pick up the CRD
-kubectl rollout restart deployment dev-kube-prometheus-stack-operator -n monitoring
-
-# 5. Watch for Prometheus pod to come up
-kubectl get pods -n monitoring -w | grep prometheus
+# 3. Verify Prometheus is running
+kubectl get prometheus -n monitoring
+kubectl get pods -n monitoring -l app.kubernetes.io/name=prometheus
 ```
 
 ## Verification
 
 ```bash
-# Check Prometheus CRD exists
-kubectl get crd prometheuses.monitoring.coreos.com
-
-# Check Prometheus CR is created
+# Check Prometheus CR exists
 kubectl get prometheus -n monitoring
-
-# Check Prometheus StatefulSet exists
-kubectl get statefulset -n monitoring | grep prometheus
 
 # Check Prometheus pod is running
 kubectl get pods -n monitoring -l app.kubernetes.io/name=prometheus
 
-# Test Prometheus is scraping
-kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090
-# Open http://localhost:9090/targets
+# Verify metrics are being scraped
+kubectl exec -n monitoring prometheus-dev-kube-prometheus-stack-prometheus-0 \
+  -c prometheus -- wget -qO- "http://localhost:9090/api/v1/query?query=up"
 ```
-
-## Prevention
-
-This fix ensures future deployments will:
-1. Use `ServerSideApply=true` for reliable CRD installation
-2. Explicitly enable CRDs in Helm values
-3. Include all required Prometheus Operator CRDs
 
 ## Impact
 
 - **Breaking**: No (fix only)
 - **Downtime**: None for new deployments
 - **Data Loss**: No
-- Prometheus server will now deploy correctly
-- All Grafana dashboards will show metrics data
+- Prometheus server deploys correctly
+- All Grafana dashboards show metrics data
 
 ## Lessons Learned
 
-1. Always use `ServerSideApply=true` for Helm charts that include CRDs
-2. Explicitly enable CRDs even when they're "default enabled"
-3. When dashboards show no data, check if Prometheus itself is running first
-4. Prometheus Operator crash-looping is often a sign of missing CRDs
+1. **ServerSideApply=true** is required for Helm charts with large CRDs
+2. **Replace=true** should NOT be used with stateful resources (PVCs)
+3. **Admission webhooks** can cause sync conflicts - disable when not needed
+4. **ignoreDifferences** is essential for fields populated by the cluster
+5. When dashboards show no data, verify Prometheus itself is running
