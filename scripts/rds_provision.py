@@ -329,6 +329,10 @@ def provision_role(
     """
     Create or update PostgreSQL role idempotently.
 
+    Roles are created with LOGIN and CREATEDB privileges. CREATEDB is required
+    because applications like Backstage dynamically create plugin databases
+    at startup (e.g., backstage_plugin_app, backstage_plugin_catalog).
+
     Args:
         conn: Database connection (can be None if dry_run=True)
         username: Role name
@@ -342,7 +346,7 @@ def provision_role(
     action = "create_role"
 
     if dry_run:
-        message = f"[DRY-RUN] Would create/update role: {username}"
+        message = f"[DRY-RUN] Would create/update role: {username} (with LOGIN CREATEDB)"
         logger.info(message)
         return ProvisionResult(
             database="",
@@ -361,18 +365,19 @@ def provision_role(
     try:
         with conn.cursor() as cur:
             if role_exists:
-                # Update password for existing role
+                # Update password and ensure CREATEDB for existing role
                 cur.execute(
-                    "ALTER ROLE %s WITH PASSWORD %%s" % username, (password,)
+                    "ALTER ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username, (password,)
                 )
-                message = f"Password updated for existing role: {username}"
+                message = f"Updated role with CREATEDB: {username}"
                 status = "no_change"
             else:
-                # Create new role with LOGIN
+                # Create new role with LOGIN and CREATEDB
+                # CREATEDB required for apps that create plugin databases (e.g., Backstage)
                 cur.execute(
-                    "CREATE ROLE %s WITH LOGIN PASSWORD %%s" % username, (password,)
+                    "CREATE ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username, (password,)
                 )
-                message = f"Created role: {username}"
+                message = f"Created role with CREATEDB: {username}"
                 status = "success"
 
         logger.info(f"[{status.upper()}] {message}")
