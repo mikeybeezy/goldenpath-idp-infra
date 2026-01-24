@@ -58,3 +58,13 @@ gateway:
     limits:
       cpu: 100m
       memory: 64Mi
+
+# -----------------------------------------------------------------------------
+# Grafana Datasource Sidecar Configuration
+# Prometheus is the default datasource (from kube-prometheus-stack)
+# Setting isDefault: false prevents conflict
+# -----------------------------------------------------------------------------
+grafana:
+  sidecar:
+    datasources:
+      isDefaultDatasource: false
