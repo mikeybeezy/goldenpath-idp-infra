@@ -61,10 +61,11 @@ gateway:
 
 # -----------------------------------------------------------------------------
 # Grafana Datasource Sidecar Configuration
-# Prometheus is the default datasource (from kube-prometheus-stack)
-# Setting isDefault: false prevents conflict
+# Disable datasource creation here - Loki is already configured in
+# kube-prometheus-stack's additionalDataSources with correct settings.
+# This prevents "Only one datasource per organization can be marked as default" error
 # -----------------------------------------------------------------------------
 grafana:
   sidecar:
     datasources:
-      isDefaultDatasource: false
+      enabled: false
