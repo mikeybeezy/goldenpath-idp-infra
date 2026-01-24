@@ -35,7 +35,7 @@ This creates an observability gap:
 - Cannot correlate build time with infrastructure costs
 - Cannot identify performance regressions over time
 
-**Evidence**: The last entry in `docs/build-timings.csv` is from 2026-01-01. The persistent cluster deployed on 2026-01-24 was not recorded.
+**Evidence**: The governance-registry branch stores timing data in `environments/<env>/latest/build_timings.csv`. The persistent cluster deployed on 2026-01-24 was not recorded because the `record-build-timing.sh` script was not called by persistent cluster targets.
 
 ## Goals
 
@@ -68,11 +68,12 @@ This creates an observability gap:
 
 ### Functional
 
-- FR-1: Each `deploy-persistent` invocation MUST record an entry in `docs/build-timings.csv`
-- FR-2: Each `teardown-persistent` invocation MUST record an entry in `docs/build-timings.csv`
-- FR-3: Timing entries MUST include: start_time, end_time, phase, env, build_id, duration_seconds, exit_code
-- FR-4: Build ID for persistent clusters MUST be "persistent" or the actual cluster name
+- FR-1: Each `deploy-persistent` invocation MUST record an entry in `environments/<env>/latest/build_timings.csv` on the governance-registry branch
+- FR-2: Each `teardown-persistent` invocation MUST record an entry in the same CSV
+- FR-3: Timing entries MUST include: start_time_utc, end_time_utc, phase, env, build_id, duration_seconds, exit_code, flags, resources_added, resources_changed, resources_destroyed, log_path
+- FR-4: Build ID for persistent clusters MUST be "persistent" to distinguish from ephemeral DD-MM-YY-NN format
 - FR-5: Failed builds MUST still record timing with appropriate exit_code
+- FR-6: Log filenames MUST match pattern `*<phase>*<build_id>*.log` for timing capture to work
 
 ### Non-Functional
 
@@ -83,11 +84,12 @@ This creates an observability gap:
 
 ## Proposed Approach (High-Level)
 
-1. Add `record-build-timing.sh` call to `bootstrap-persistent-v4` Makefile target after bootstrap completion
-2. Add `record-build-timing.sh` call to `teardown-persistent` Makefile target after teardown completion
-3. Add `record-build-timing.sh` call to `apply-persistent` Makefile target after terraform apply
-4. Use phase identifiers: `persistent-bootstrap`, `persistent-teardown`, `persistent-apply`
-5. Set BUILD_ID to "persistent" or derive from cluster name
+1. Update log naming in Makefile to include canonical `build_id` and `phase` matching the pattern `*<phase>*<build_id>*.log`
+2. Add `record-build-timing.sh` call to `bootstrap-persistent-v4` Makefile target after bootstrap completion
+3. Add `record-build-timing.sh` call to `teardown-persistent` Makefile target after teardown completion
+4. Add `record-build-timing.sh` call to `apply-persistent` Makefile target after terraform apply
+5. Use phase identifiers: `bootstrap-persistent`, `teardown-persistent`, `apply-persistent`
+6. Set BUILD_ID to "persistent" to distinguish from ephemeral builds
 
 ## Guardrails
 
@@ -97,17 +99,18 @@ This creates an observability gap:
 
 ## Observability / Audit
 
-- All timing entries stored in `docs/build-timings.csv` (append-only)
-- Log files stored in `logs/build-timings/` directory
-- Governance-registry sync via `governance-registry-writer.yml` workflow
+- All timing entries stored in `environments/<env>/latest/build_timings.csv` on governance-registry branch (append-only)
+- Log files stored in `logs/build-timings/` directory with naming pattern `*<phase>*<build_id>*.log`
+- Script commits directly to governance-registry branch
 - Can query CSV for metrics: average duration, success rate, trend over time
 
 ## Acceptance Criteria
 
-- [ ] AC-1: Running `make deploy-persistent ENV=dev` creates a new entry in `docs/build-timings.csv`
-- [ ] AC-2: Running `make teardown-persistent ENV=dev` creates a new entry in `docs/build-timings.csv`
+- [ ] AC-1: Running `make deploy-persistent ENV=dev` creates a new entry in `environments/development/latest/build_timings.csv` on governance-registry branch
+- [ ] AC-2: Running `make teardown-persistent ENV=dev` creates a new entry in same CSV
 - [ ] AC-3: Entry includes accurate start_time_utc, end_time_utc, and duration_seconds
-- [ ] AC-4: Entry includes correct phase identifier (persistent-bootstrap, persistent-teardown)
+- [ ] AC-4: Entry includes correct phase identifier (bootstrap-persistent, teardown-persistent)
+- [ ] AC-4a: Log filename matches pattern `*<phase>*<build_id>*.log` (required for script pattern matching)
 - [ ] AC-5: Entry includes correct env and build_id
 - [ ] AC-6: Failed operations still record timing with non-zero exit_code
 - [ ] AC-7: Timing capture failure does not block the main operation
@@ -130,8 +133,8 @@ This creates an observability gap:
 
 - ADR-0156: Platform CI Build Timing Capture
 - CL-0128: CI Build Timing Capture changelog
-- `scripts/record-build-timing.sh` - Existing timing capture script
-- `docs/build-timings.csv` - Timing data store
+- `scripts/record-build-timing.sh` - Existing timing capture script (line 47 shows pattern matching)
+- `environments/<env>/latest/build_timings.csv` on governance-registry branch - Timing data store
 - Session Capture: 2026-01-24-build-timing-capture-gap.md
 
 ---

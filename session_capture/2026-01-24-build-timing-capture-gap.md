@@ -7,19 +7,26 @@
 
 ## Problem Statement
 
-Build and teardown timings for persistent cluster deployments are **not being captured** in the governance registry CSV (`docs/build-timings.csv`).
+Build and teardown timings for persistent cluster deployments are **not being captured** in the governance registry.
 
-The last recorded entry is from `2026-01-01`. The persistent cluster deployment on `2026-01-24` using Bootstrap v4 was not recorded.
+The `record-build-timing.sh` script writes to `environments/<env>/latest/build_timings.csv` on the `governance-registry` branch. The persistent cluster deployment on `2026-01-24` using Bootstrap v4 was not recorded.
 
 ## Root Cause Analysis
 
 ### Current State
 
-The `scripts/record-build-timing.sh` script captures build timings to `docs/build-timings.csv` with the following schema:
+The `scripts/record-build-timing.sh` script captures build timings with the following schema:
 
 ```csv
-start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,log_path
+start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,resources_added,resources_changed,resources_destroyed,log_path
 ```
+
+**Critical Implementation Detail**: The script finds logs by pattern matching:
+```bash
+find "$REPO_ROOT/$LOG_DIR" -name "*$PHASE*$BUILD_ID*.log"
+```
+
+This means both `phase` AND `build_id` must appear in the log filename for timing to be captured.
 
 ### Where Timing IS Captured
 
@@ -33,7 +40,7 @@ start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,
 | Makefile Target | Calls `record-build-timing.sh` | Build Type |
 |-----------------|-------------------------------|------------|
 | `apply-persistent` | ❌ No | Persistent |
-| `bootstrap-persistent-v4` | ❌ No | Persistent |
+| `bootstrap-persistent-v4` (line 995) | ❌ No | Persistent |
 | `deploy-persistent` | ❌ No | Persistent |
 | `teardown-persistent` | ❌ No | Persistent |
 
@@ -50,59 +57,64 @@ The `record-build-timing.sh` script was implemented as part of ADR-0156 for CI b
 
 ## Proposed Fix
 
-Add `record-build-timing.sh` calls to persistent cluster targets in the Makefile:
+### Decision Required: Log Naming Alignment
 
-### Option A: Add to Makefile Targets (Recommended)
+The script requires log filenames to match pattern `*<phase>*<build_id>*.log`. Current persistent logs don't follow this pattern.
 
-```makefile
-# bootstrap-persistent-v4 target (line 995)
-bootstrap-persistent-v4:
-	@echo "Bootstrapping persistent cluster..."
-	@START_TIME=$$(date -u +%Y-%m-%dT%H:%M:%SZ); \
-	# ... existing bootstrap logic ...
-	@bash scripts/record-build-timing.sh $(ENV) persistent bootstrap
-
-# teardown-persistent target (line 1042)
-teardown-persistent:
-	@echo "Tearing down persistent cluster..."
-	@START_TIME=$$(date -u +%Y-%m-%dT%H:%M:%SZ); \
-	# ... existing teardown logic ...
-	@bash scripts/record-build-timing.sh $(ENV) persistent teardown
+**Current log naming**:
+```
+bootstrap-v4-dev-goldenpath-dev-eks-20260124T080000Z.log
 ```
 
-### Option B: Instrument Bootstrap v4 Script
+**Required for `build_id=persistent` and `phase=bootstrap-persistent`**:
+```
+bootstrap-persistent-dev-persistent-20260124T080000Z.log
+```
 
-Add timing capture directly in `bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v4.sh`:
+### Option A: Align Log Naming + Add Script Calls (Recommended)
 
+1. **Change log naming** in Makefile to include canonical `build_id` and `phase`:
+   ```bash
+   log="logs/build-timings/bootstrap-persistent-$(ENV)-persistent-$$(date -u +%Y%m%dT%H%M%SZ).log"
+   ```
+
+2. **Add script calls** after each target:
+   ```makefile
+   @bash scripts/record-build-timing.sh $(ENV) persistent bootstrap-persistent
+   ```
+
+### Option B: Add Explicit Log Path to Script (Cleaner, More Work)
+
+Modify `record-build-timing.sh` to accept `--log-path` argument, bypassing pattern matching:
 ```bash
-# At script start
-START_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-
-# At script end
-"${REPO_ROOT}/scripts/record-build-timing.sh" "${ENV}" "${BUILD_ID}" "bootstrap-v4"
+# New usage:
+record-build-timing.sh <env> <build_id> <phase> [--log-path <path>]
 ```
+
+This decouples timing capture from log filename conventions.
 
 ## Files to Modify
 
 | File | Change |
 |------|--------|
-| `Makefile` | Add `record-build-timing.sh` calls to persistent targets |
-| `bootstrap/10_bootstrap/goldenpath-idp-bootstrap-v4.sh` | (Optional) Add timing capture |
+| `Makefile` | Update log naming in persistent targets, add `record-build-timing.sh` calls |
+| `scripts/record-build-timing.sh` | (Option B only) Add `--log-path` argument support |
 
 ## Acceptance Criteria
 
-1. [ ] Persistent cluster builds are recorded in `docs/build-timings.csv`
-2. [ ] Persistent cluster teardowns are recorded in `docs/build-timings.csv`
-3. [ ] Build ID is correctly captured (e.g., "persistent" or actual build ID)
+1. [ ] Persistent cluster builds are recorded in `environments/<env>/latest/build_timings.csv` on `governance-registry` branch
+2. [ ] Persistent cluster teardowns are recorded in same CSV
+3. [ ] Build ID is correctly captured as `persistent`
 4. [ ] Duration is accurately calculated
 5. [ ] Exit code is captured for success/failure tracking
+6. [ ] Log filename matches pattern `*<phase>*<build_id>*.log`
 
 ## Related Documentation
 
 - ADR-0156: Platform CI Build Timing Capture
 - CL-0128: CI Build Timing Capture
-- `scripts/record-build-timing.sh` - The timing capture script
-- `docs/build-timings.csv` - The timing data store
+- `scripts/record-build-timing.sh` - The timing capture script (line 47 shows pattern matching)
+- PRD-0006: Persistent Cluster Build Timing Capture
 
 ## Verification Commands
 
@@ -112,17 +124,30 @@ After implementation:
 # Deploy persistent cluster
 make deploy-persistent ENV=dev REGION=eu-west-2 BOOTSTRAP_VERSION=v4
 
-# Check if timing was recorded
-tail -5 docs/build-timings.csv
+# Verify log was created with correct naming
+ls logs/build-timings/ | grep "bootstrap-persistent.*persistent"
 
-# Expected output should include recent entry with phase=bootstrap-v4 or similar
+# Check governance-registry branch for timing entry
+git fetch origin governance-registry
+git show origin/governance-registry:environments/development/latest/build_timings.csv | tail -5
+
+# Expected: entry with phase=bootstrap-persistent, build_id=persistent
 ```
 
 ## Priority
 
 **Medium** - Not blocking production, but creates observability gap for platform reliability metrics.
 
+## Design Decisions
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Canonical `build_id` | `persistent` | Distinguishes from ephemeral DD-MM-YY-NN format |
+| Phase naming | `bootstrap-persistent`, `teardown-persistent` | Aligns with existing pattern, enables log matching |
+| Implementation approach | Option A (align log naming) | Minimal script changes, works with existing infrastructure |
+
 ## Notes
 
-- The governance registry sync workflow (`governance-registry-writer.yml`) should already handle pushing CSV updates to the governance-registry branch
-- Consider whether to backfill historical data or start fresh from implementation date
+- The governance-registry branch stores timing data, not `docs/build-timings.csv`
+- Log filename must contain both `phase` and `build_id` for pattern matching
+- Consider Option B (explicit log path) for future flexibility
