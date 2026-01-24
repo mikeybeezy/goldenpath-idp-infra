@@ -131,6 +131,20 @@ extraEnvVars:
     value: "true"
 
 # -----------------------------------------------------------------------------
+# ServiceMonitor for Prometheus Operator
+# Enables automatic metrics scraping by kube-prometheus-stack
+# NOTE: KC_METRICS_ENABLED=true is already set in extraEnvVars above
+# -----------------------------------------------------------------------------
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: keycloak
+    labels:
+      release: dev-kube-prometheus-stack
+    interval: 30s
+
+# -----------------------------------------------------------------------------
 # Extra Manifests (External Secrets)
 # -----------------------------------------------------------------------------
 extraDeploy:

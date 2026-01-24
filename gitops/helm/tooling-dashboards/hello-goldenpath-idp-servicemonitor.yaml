@@ -1,0 +1,45 @@
+# hello-goldenpath-idp ServiceMonitor
+# Demonstrates custom app monitoring pattern for Golden Path applications
+#
+# NOTE: This ServiceMonitor will only scrape metrics if the application
+# exposes a /metrics endpoint (e.g., using prom-client for Node.js).
+# Container metrics (CPU/memory) and ingress metrics (via Kong) are
+# collected automatically without this ServiceMonitor.
+#
+# This serves as a template for teams onboarding their own applications.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: hello-goldenpath-idp
+  namespace: apps
+  labels:
+    # CRITICAL: This label is required for Prometheus to discover this ServiceMonitor
+    release: dev-kube-prometheus-stack
+    app: hello-goldenpath-idp
+    app.kubernetes.io/part-of: goldenpath-idp
+  annotations:
+    goldenpath.idp/id: SERVICEMONITOR_HELLO_GOLDENPATH_IDP
+    goldenpath.idp/owner: platform-team
+    description: |
+      Example ServiceMonitor for custom application metrics.
+      Works when app exposes /metrics endpoint with Prometheus-format metrics.
+spec:
+  # Selector: Which services to scrape
+  # Matches services with label app=hello-goldenpath-idp
+  selector:
+    matchLabels:
+      app: hello-goldenpath-idp
+  # Namespace where the target service lives
+  namespaceSelector:
+    matchNames:
+      - apps
+  # Endpoints: How to scrape
+  endpoints:
+    - port: http           # Service port name (must match service spec)
+      path: /metrics       # Metrics endpoint path
+      interval: 30s        # Scrape interval
+      scrapeTimeout: 10s   # Timeout for scrape requests
+      # Optional: Add relabeling to enrich metrics with additional labels
+      # relabelings:
+      #   - sourceLabels: [__meta_kubernetes_pod_label_version]
+      #     targetLabel: app_version

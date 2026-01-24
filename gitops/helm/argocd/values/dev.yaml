@@ -3,9 +3,28 @@
 # Chart: argo/argo-cd
 
 # -----------------------------------------------------------------------------
+# Controller (Application Controller)
+# -----------------------------------------------------------------------------
+controller:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: argocd
+      additionalLabels:
+        release: dev-kube-prometheus-stack
+
+# -----------------------------------------------------------------------------
 # Server Ingress Configuration - Kong
 # -----------------------------------------------------------------------------
 server:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: argocd
+      additionalLabels:
+        release: dev-kube-prometheus-stack
   ingress:
     enabled: true
     ingressClassName: kong
@@ -56,6 +75,57 @@ configs:
       \ hs\nconfiguration.konghq.com/KongClusterPlugin:\n  health.lua: |\n    hs =\
       \ {}\n    hs.status = \"Healthy\"\n    hs.message = \"Assumed healthy\"\n  \
       \  return hs\n"
+# -----------------------------------------------------------------------------
+# Redis (used for caching)
+# -----------------------------------------------------------------------------
+redis:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: argocd
+      additionalLabels:
+        release: dev-kube-prometheus-stack
+
+# -----------------------------------------------------------------------------
+# Repo Server
+# -----------------------------------------------------------------------------
+repoServer:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: argocd
+      additionalLabels:
+        release: dev-kube-prometheus-stack
+
+# -----------------------------------------------------------------------------
+# ApplicationSet Controller
+# -----------------------------------------------------------------------------
+applicationSet:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: argocd
+      additionalLabels:
+        release: dev-kube-prometheus-stack
+
+# -----------------------------------------------------------------------------
+# Notifications Controller
+# -----------------------------------------------------------------------------
+notifications:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: argocd
+      additionalLabels:
+        release: dev-kube-prometheus-stack
+
+# -----------------------------------------------------------------------------
+# Governance Metadata
+# -----------------------------------------------------------------------------
 governance:
   id: HELM_ARGOCD_METADATA
   owner: null

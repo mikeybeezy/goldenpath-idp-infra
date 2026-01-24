@@ -44,6 +44,19 @@ service:
   port: 7007
 
 # -----------------------------------------------------------------------------
+# ServiceMonitor for Prometheus Operator
+# Note: Backstage requires @backstage/plugin-scaffolder-backend-module-prometheus
+# or custom prom-client integration to expose /metrics endpoint
+# -----------------------------------------------------------------------------
+serviceMonitor:
+  enabled: false
+  namespace: ""
+  interval: 30s
+  scrapeTimeout: 10s
+  path: /metrics
+  labels: {}
+
+# -----------------------------------------------------------------------------
 # Ingress Configuration
 # -----------------------------------------------------------------------------
 ingress:
