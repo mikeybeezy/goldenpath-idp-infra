@@ -54,6 +54,8 @@ admin:
     enabled: true
     containerPort: 8001
     servicePort: 8001
+  tls:
+    enabled: false  # Disable TLS on Admin API, ingress handles TLS termination
   ingress:
     enabled: true
     ingressClassName: kong
@@ -61,7 +63,9 @@ admin:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       konghq.com/strip-path: "false"
+      konghq.com/protocols: "https"
     tls: kong-admin-tls
+    path: /
 
 # -----------------------------------------------------------------------------
 # Kong Manager (UI) - Dev Only
