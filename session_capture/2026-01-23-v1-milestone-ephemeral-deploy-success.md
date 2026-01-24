@@ -1275,3 +1275,23 @@ Error: aws-secretsmanager failed to create kubernetes rest client for update of 
   on main.tf line 582, in resource "kubectl_manifest" "cluster_secret_store":
   582: resource "kubectl_manifest" "cluster_secret_store" {
 ```
+
+## Session Part 6: ArgoCD Namespace Race Fix (2026-01-24)
+
+- Symptom: `kubernetes_namespace_v1.argocd` failed with "namespace argocd already exists" during `make deploy-persistent ENV=dev REGION=eu-west-2 BOOTSTRAP_VERSION=v4 CREATE_RDS=false SKIP_ARGO_SYNC_WAIT=true`.
+- Root cause: Terraform and Helm both attempted to create the `argocd` namespace without dependency ordering.
+- Fix: `envs/dev/main.tf` now makes `module.kubernetes_addons` depend on `kubernetes_namespace_v1.argocd` so the namespace is created before Helm.
+- Prevention: dependency ordering is codified to avoid namespace creation races.
+- Follow-up: rerun the deploy command and confirm the namespace remains stable across re-runs.
+
+## Session Part 7: Teardown State Cleanup Verification (2026-01-24)
+
+- Command reviewed: `make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2 DRY_RUN=false DELETE_VPC=true CLEAN_TF_STATE=true`.
+- Verification: `cleanup-orphans-persistent.sh` conditionally removes a defined set of Terraform state patterns when `CLEAN_TF_STATE=true`; it does not wipe state wholesale and skips cleanup if state is inaccessible.
+- Key note: state cleanup depends on backend access and `TF_DIR` (defaults to `envs/<env>` derived from cluster name).
+
+## Session Part 8: ExternalDNS Wildcard Verification (2026-01-24)
+
+- Observation: ExternalDNS logs show successful UPSERT of `*.dev.goldenpathidp.io` and specific app records.
+- Root cause: Route53 API represents wildcard records as `\052`, so queries for `*.dev.goldenpathidp.io.` return empty even when the record exists.
+- Prevention: Added `scripts/verify_dns_records.sh` and documented the correct Route53 query in `docs/70-operations/45_DNS_MANAGEMENT.md`.

@@ -344,6 +344,7 @@ max_tier = var.max_tier_override != "" ? var.max_tier_override : (
 
 ### Phase 3: Bootstrap ConfigMap
 
+0. Terraform ensures the `argocd` namespace exists before ArgoCD Helm install (dependency ordering to avoid namespace races).
 1. Terraform generates `argocd-bootstrap-config` ConfigMap
 2. ArgoCD ApplicationSet or app-of-apps reads ConfigMap
 3. Values control tier ceiling and feature flags

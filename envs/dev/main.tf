@@ -603,9 +603,9 @@ resource "kubernetes_namespace_v1" "argocd" {
   metadata {
     name = "argocd"
     labels = {
-      "app.kubernetes.io/part-of"  = "goldenpath-idp"
-      "goldenpath.idp/managed-by"  = "terraform"
-      "goldenpath.idp/component"   = "gitops"
+      "app.kubernetes.io/part-of" = "goldenpath-idp"
+      "goldenpath.idp/managed-by" = "terraform"
+      "goldenpath.idp/component"  = "gitops"
     }
   }
 }
