@@ -8,9 +8,10 @@ governance:
   reliability: null
 
 # -----------------------------------------------------------------------------
-# Image Configuration - Pinned Versions
+# Prometheus Server
 # -----------------------------------------------------------------------------
 prometheus:
+  enabled: true
   prometheusSpec:
     image:
       registry: quay.io
