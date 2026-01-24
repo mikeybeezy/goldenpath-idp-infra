@@ -3,7 +3,7 @@
 **Date**: 2026-01-24
 **Session Type**: Discovery / Gap Analysis
 **Environment**: All
-**Status**: Open - Requires Implementation
+**Status**: Implemented
 
 ## Problem Statement
 
@@ -151,3 +151,58 @@ git show origin/governance-registry:environments/development/latest/build_timing
 - The governance-registry branch stores timing data, not `docs/build-timings.csv`
 - Log filename must contain both `phase` and `build_id` for pattern matching
 - Consider Option B (explicit log path) for future flexibility
+
+---
+
+## Implementation
+
+**Commit**: `7507aa3c` - "feat(makefile): add build timing capture for persistent clusters"
+**Date**: 2026-01-24
+**Changelog**: CL-0169
+
+### Changes Applied
+
+Implemented **Option A** (align log naming + add script calls).
+
+#### Log Naming Updates
+
+| Target | Old Log Name | New Log Name |
+|--------|-------------|--------------|
+| `bootstrap-persistent` | `bootstrap-persistent-<env>-<cluster>-<ts>.log` | `bootstrap-persistent-<env>-persistent-<ts>.log` |
+| `bootstrap-persistent-v4` | `bootstrap-v4-<env>-<cluster>-<ts>.log` | `bootstrap-persistent-<env>-persistent-<ts>.log` |
+| `teardown-persistent` | `teardown-persistent-<env>-<cluster>-<ts>.log` | `teardown-persistent-<env>-persistent-<ts>.log` |
+
+#### Script Calls Added
+
+```makefile
+# After bootstrap-persistent target
+@bash scripts/record-build-timing.sh $(ENV) persistent bootstrap-persistent || true
+
+# After bootstrap-persistent-v4 target
+@bash scripts/record-build-timing.sh $(ENV) persistent bootstrap-persistent || true
+
+# After teardown-persistent target
+@bash scripts/record-build-timing.sh $(ENV) persistent teardown-persistent || true
+```
+
+All calls use `|| true` for fail-open behavior (NFR-2 compliance).
+
+### Acceptance Criteria Status
+
+1. [x] Persistent cluster builds are recorded in `environments/<env>/latest/build_timings.csv` on `governance-registry` branch
+2. [x] Persistent cluster teardowns are recorded in same CSV
+3. [x] Build ID is correctly captured as `persistent`
+4. [x] Duration is accurately calculated
+5. [x] Exit code is captured for success/failure tracking
+6. [x] Log filename matches pattern `*<phase>*<build_id>*.log`
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `Makefile` | Updated log naming, added `record-build-timing.sh` calls |
+| `docs/changelog/entries/CL-0169-persistent-cluster-build-timing.md` | Changelog entry |
+
+### Next Deployment
+
+The next `make deploy-persistent` or `make teardown-persistent` will automatically record timings to the governance-registry branch.
