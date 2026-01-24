@@ -27,6 +27,7 @@ relates_to:
   - CL-0140
   - CL-0143
   - CL-0147
+  - CL-0183-preflight-secrets-check-metadata
   - PRD-0001-rds-user-db-provisioning
   - PR_GUARDRAILS_INDEX
   - RB-0032
@@ -35,8 +36,10 @@ relates_to:
   - RDS_SESSION_FEEDBACK
   - RDS_USER_DB_PROVISIONING
   - SCRIPT-0035
+  - SCRIPT-0053
   - SESSION_CAPTURE_2026_01_17_01
   - agent_session_summary
+  - preflight_secrets_check.sh
   - session-2026-01-17-eks-backstage-scaffolder
   - session-2026-01-19-build-pipeline-architecture
 supersedes: []
@@ -120,7 +123,10 @@ prod environments.
 
 ## Implementation Details (2026-01-16)
 
-**Script**: `scripts/rds_provision.py` (SCRIPT-0035)
+**Scripts**:
+
+- `scripts/rds_provision.py` (SCRIPT-0035) - Main provisioning script
+- `scripts/preflight_secrets_check.sh` (SCRIPT-0053) - Validates secrets before provisioning
 
 **Trigger**: Makefile targets `rds-provision` and `rds-provision-dry-run`
 
