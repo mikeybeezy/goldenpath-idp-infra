@@ -657,11 +657,11 @@ Both CREATE and ALTER statements now include CREATEDB to ensure:
 ### Outstanding (Update 9)
 
 - [x] Update `rds_provision.py` to include CREATEDB in role creation SQL
-- [ ] Verify https://backstage.dev.goldenpathidp.io/ loads in browser
+- [ ] Verify <https://backstage.dev.goldenpathidp.io/> loads in browser
 - [ ] Commit changes to development branch
 
 ### Site Status (Update 9)
 
-**Backstage:** https://backstage.dev.goldenpathidp.io/ — Should be accessible now
+**Backstage:** <https://backstage.dev.goldenpathidp.io/> — Should be accessible now
 
 Signed: Claude Opus 4.5 (2026-01-24T16:45:00Z)

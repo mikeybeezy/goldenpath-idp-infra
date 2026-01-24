@@ -48,7 +48,7 @@ Kong Manager runs in the browser and makes requests to the Admin API. For this t
 - Created TLS secret: `kong-admin-tls`
 
 ### Environment Variables
-- Updated `admin_gui_api_url` from internal K8s DNS to `https://kong-admin.dev.goldenpathidp.io`
+- Updated `admin_gui_api_url` from internal K8s DNS to `<https://kong-admin.dev.goldenpathidp.io`>
 
 ### Security Warning
 Added comment warning that Admin API should be protected with authentication in production environments.
@@ -67,10 +67,10 @@ kubectl get ingress -n kong-system dev-kong-kong-admin
 kubectl get certificate -n kong-system kong-admin-tls
 
 # Test Admin API access
-curl -s https://kong-admin.dev.goldenpathidp.io/routes | head -5
+curl -s <https://kong-admin.dev.goldenpathidp.io/routes> | head -5
 
 # Verify CORS header for Kong Manager
-curl -sI https://kong-admin.dev.goldenpathidp.io/ | grep access-control
+curl -sI <https://kong-admin.dev.goldenpathidp.io/> | grep access-control
 ```
 
 ## Security Considerations
@@ -86,5 +86,5 @@ curl -sI https://kong-admin.dev.goldenpathidp.io/ | grep access-control
 
 - Non-breaking change
 - Kong Manager UI now displays route, service, and plugin data
-- Admin API accessible at https://kong-admin.dev.goldenpathidp.io
+- Admin API accessible at <https://kong-admin.dev.goldenpathidp.io>
 - CORS headers configured for Kong Manager origin

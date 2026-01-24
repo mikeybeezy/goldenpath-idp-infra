@@ -28,11 +28,11 @@ sources:
   - repoURL: https://charts.jetstack.io
     chart: cert-manager
     ...
-  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+  - repoURL: <https://github.com/mikeybeezy/goldenpath-idp-infra.git>
     targetRevision: development
     ref: values
   # NEW: ClusterIssuers for TLS certificate issuance
-  - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+  - repoURL: <https://github.com/mikeybeezy/goldenpath-idp-infra.git>
     targetRevision: development
     path: gitops/kustomize/bases/cert-manager
 ```
@@ -93,7 +93,7 @@ Success! The configuration is valid.
 
 ## CI/PR Status
 
-**PR #278**: https://github.com/mikeybeezy/goldenpath-idp-infra/pull/278
+**PR #278**: <https://github.com/mikeybeezy/goldenpath-idp-infra/pull/278>
 
 | Check | Status |
 |-------|--------|

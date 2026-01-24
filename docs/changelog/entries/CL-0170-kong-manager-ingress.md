@@ -48,7 +48,7 @@ Kong Manager was configured as `NodePort` service type without ingress. Users co
 - Created TLS secret: `kong-manager-tls`
 
 ### Environment Variables
-- Updated `admin_gui_url` to `https://kong-manager.dev.goldenpathidp.io`
+- Updated `admin_gui_url` to `<https://kong-manager.dev.goldenpathidp.io`>
 
 ## Files Changed
 
@@ -64,11 +64,11 @@ kubectl get ingress -n kong-system dev-kong-kong-manager
 kubectl get certificate -n kong-system kong-manager-tls
 
 # Test access
-curl -sI https://kong-manager.dev.goldenpathidp.io/ | head -3
+curl -sI <https://kong-manager.dev.goldenpathidp.io/> | head -3
 ```
 
 ## Impact
 
 - Non-breaking change
-- Kong Manager UI now accessible at https://kong-manager.dev.goldenpathidp.io
+- Kong Manager UI now accessible at <https://kong-manager.dev.goldenpathidp.io>
 - TLS termination handled by cert-manager with Let's Encrypt
