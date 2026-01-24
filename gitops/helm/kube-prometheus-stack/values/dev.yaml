@@ -90,7 +90,7 @@ grafana:
     - name: Loki
       type: loki
       access: proxy
-      url: http://loki-gateway.monitoring.svc:3100
+      url: http://dev-loki.monitoring.svc:3100
       jsonData:
         maxLines: 1000
     - name: Tempo
