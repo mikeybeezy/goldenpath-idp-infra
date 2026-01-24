@@ -22,6 +22,7 @@ relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0165
   - ADR-0166
+  - ADR-0181-rds-createdb-privilege-for-applications
   - CATALOG_INDEX
   - CL-0140
   - CL-0143
