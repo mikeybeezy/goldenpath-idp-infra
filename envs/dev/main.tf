@@ -694,7 +694,8 @@ module "app_secrets" {
   write_principals       = each.value.write_principals
   break_glass_principals = each.value.break_glass_principals
 
-  metadata = each.value.metadata
+  metadata      = each.value.metadata
+  initial_value = each.value.initial_value
 }
 
 ################################################################################

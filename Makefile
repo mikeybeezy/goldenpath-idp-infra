@@ -302,6 +302,11 @@ _phase3-verify:
 	@kubectl get nodes || echo "⚠️  Warning: Could not verify nodes"
 	@kubectl -n argocd get applications || echo "⚠️  Warning: Could not verify ArgoCD applications"
 	@echo "✅ All systems operational"
+	@bash scripts/preflight_secrets_check.sh $(ENV) || true
+
+# Preflight check for secrets - use --fail-on-placeholder in CI
+preflight-secrets:
+	@bash scripts/preflight_secrets_check.sh $(ENV) $(PREFLIGHT_SECRETS_FLAGS)
 
 bootstrap:
 	$(call require_build_id_allow_reuse)

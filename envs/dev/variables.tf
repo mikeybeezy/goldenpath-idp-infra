@@ -355,6 +355,7 @@ variable "app_secrets" {
       risk  = optional(string, "medium")
     })
     description            = optional(string, "Managed application secret")
+    initial_value          = optional(string, null)
     read_principals        = optional(list(string), [])
     write_principals       = optional(list(string), [])
     break_glass_principals = optional(list(string), [])

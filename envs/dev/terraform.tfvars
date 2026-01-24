@@ -12,7 +12,8 @@ build_id = "persistent"
 # -----------------------------------------------------------------------------
 
 # Secret Catalog
-# These secrets are created (empty) by Terraform. You must populate values in AWS Console.
+# These secrets are created with PLACEHOLDER values by Terraform.
+# UPDATE VALUES IN AWS CONSOLE after deploy completes.
 app_secrets = {
   "goldenpath/dev/keycloak/admin" = {
     description = "Keycloak initial admin credentials"
@@ -21,6 +22,8 @@ app_secrets = {
       owner = "platform-team"
       risk  = "low"
     }
+    # Placeholder values - UPDATE IN AWS CONSOLE after deploy
+    initial_value          = "{\"username\":\"admin\",\"password\":\"PLACEHOLDER_UPDATE_IN_AWS_CONSOLE\"}"
     read_principals        = []
     write_principals       = []
     break_glass_principals = []
@@ -33,6 +36,8 @@ app_secrets = {
       owner = "platform-team"
       risk  = "high"
     }
+    # Placeholder values - UPDATE IN AWS CONSOLE after deploy
+    initial_value          = "{\"GITHUB_TOKEN\":\"PLACEHOLDER_UPDATE_IN_AWS_CONSOLE\"}"
     read_principals        = []
     write_principals       = []
     break_glass_principals = []
