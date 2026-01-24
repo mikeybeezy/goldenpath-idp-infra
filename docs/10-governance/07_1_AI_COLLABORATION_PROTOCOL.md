@@ -191,6 +191,24 @@ AI output is never merged or applied without passing this loop.
 
 ---
 
+## Solution Quality Gate
+
+Before proposing any fix, AI must verify it passes this checklist:
+
+* [ ] Does this fix the immediate problem?
+* [ ] Have I identified the root cause?
+* [ ] Does my proposal include prevention?
+* [ ] If I encounter this again, will the prevention have worked?
+* [ ] Is the prevention documented/codified (not just verbal)?
+
+**If any answer is "No", revise the proposal before presenting it.**
+
+Hot fixes without prevention are considered incomplete work and may be rejected.
+
+See `docs/10-governance/07_AI_AGENT_GOVERNANCE.md` Section 10 for full mandate.
+
+---
+
 ## Explicit Non-Goals
 
 The platform explicitly rejects the following patterns:

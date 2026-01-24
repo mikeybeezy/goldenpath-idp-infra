@@ -407,19 +407,23 @@ data "aws_caller_identity" "current" {}
 # Data source to fetch EKS cluster info for provider configuration
 # -----------------------------------------------------------------------------
 # IMPORTANT: No depends_on here! Data sources must read directly from AWS so that
-# providers can be configured immediately. If the cluster doesn't exist (fresh
-# deployment), use bootstrap v4's two-pass approach which creates EKS first with
-# enable_k8s_resources=false, then runs again with k8s resources enabled.
+# providers can be configured immediately.
 #
-# The try() fallbacks in locals below handle the case where data source fails.
+# The count condition includes enable_k8s_resources so that:
+# - Pass 1 (enable_k8s_resources=false): Data source count=0, no AWS read attempted
+# - Pass 2 (enable_k8s_resources=true): Data source count=1, reads existing cluster
+#
+# Bootstrap v4 creates EKS in Pass 1 without k8s resources, then Pass 2 enables
+# them after the cluster exists. The try() fallbacks in locals provide dummy
+# values when data sources have count=0.
 # -----------------------------------------------------------------------------
 data "aws_eks_cluster" "this" {
-  count = var.eks_config.enabled ? 1 : 0
+  count = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
   name  = local.cluster_name_effective
 }
 
 data "aws_eks_cluster_auth" "this" {
-  count = var.eks_config.enabled ? 1 : 0
+  count = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
   name  = local.cluster_name_effective
 }
 
@@ -574,8 +578,36 @@ module "kubernetes_addons" {
     module.eks,
     kubernetes_service_account_v1.aws_load_balancer_controller,
     kubernetes_service_account_v1.external_dns,
-    kubernetes_ingress_class_v1.kong
+    kubernetes_ingress_class_v1.kong,
+    kubernetes_namespace_v1.argocd
   ]
+}
+
+################################################################################
+# ArgoCD Namespace (Prerequisite for ArgoCD Bootstrap ConfigMap)
+################################################################################
+#
+# Creates the argocd namespace BEFORE the bootstrap ConfigMap or ArgoCD Helm
+# installation. This prevents "namespace not found" errors during v4 bootstrap.
+#
+# Root Cause Prevention: ArgoCD is installed via Helm AFTER Terraform, but the
+# bootstrap ConfigMap needs the namespace to exist during Terraform's apply.
+# Without this, every fresh cluster build fails with "namespaces argocd not found".
+#
+# See: session_capture/2026-01-24-persistent-cluster-teardown-and-deploy-fix.md
+################################################################################
+
+resource "kubernetes_namespace_v1" "argocd" {
+  count = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
+
+  metadata {
+    name = "argocd"
+    labels = {
+      "app.kubernetes.io/part-of"  = "goldenpath-idp"
+      "goldenpath.idp/managed-by"  = "terraform"
+      "goldenpath.idp/component"   = "gitops"
+    }
+  }
 }
 
 ################################################################################
@@ -593,7 +625,7 @@ resource "kubernetes_config_map_v1" "argocd_bootstrap" {
 
   metadata {
     name      = "argocd-bootstrap-config"
-    namespace = "argocd"
+    namespace = kubernetes_namespace_v1.argocd[0].metadata[0].name
     labels = {
       "app.kubernetes.io/part-of"  = "goldenpath-idp"
       "goldenpath.idp/managed-by"  = "terraform"
@@ -622,7 +654,10 @@ resource "kubernetes_config_map_v1" "argocd_bootstrap" {
     "cluster.name"       = local.cluster_name_effective
   }
 
-  depends_on = [module.eks]
+  depends_on = [
+    module.eks,
+    kubernetes_namespace_v1.argocd
+  ]
 }
 
 ################################################################################

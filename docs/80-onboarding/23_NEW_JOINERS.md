@@ -76,6 +76,23 @@ We don't just "commit code" here; we **reclaim time**.
 - **CI remains the source of truth**; hooks are the fast preflight gate.
 - **Merge Path**: PRs merge into `development` first; `main` only accepts merges from `development`.
 
+## The Prevention Mindset
+
+At GoldenPath, we don't just fix problems - we prevent them from recurring.
+
+**When you encounter an issue:**
+
+1. Fix it (unblock yourself)
+2. Ask "Why did this happen?"
+3. Ask "How do I ensure this never happens again?"
+4. Implement the prevention
+5. Document both
+
+**Hot fixes without prevention are considered incomplete work.**
+
+This applies to both humans and AI agents. See
+`docs/10-governance/07_AI_AGENT_GOVERNANCE.md` Section 10 for the full mandate.
+
 ## Branching and PR flow
 
 - Create branches from `development`.

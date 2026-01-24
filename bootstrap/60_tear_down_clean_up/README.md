@@ -248,6 +248,67 @@ bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
 DRY_RUN=false bootstrap/60_tear_down_clean_up/cleanup-orphans.sh <build-id> <region>
 ```
 
+## cleanup-orphans-persistent.sh
+
+What it does:
+
+- Deletes AWS resources for **persistent clusters** that don't have BuildId tags.
+- Searches by cluster name patterns and tags:
+  - `kubernetes.io/cluster/<cluster-name>=owned`
+  - `elbv2.k8s.aws/cluster=<cluster-name>`
+  - `Lifecycle=persistent` + `Environment=<env>`
+  - Name patterns like `*<cluster-name>*`
+  - IAM pattern: `goldenpath-idp-*` with `Environment=<env>` tag (IRSA roles)
+
+Key differences from cleanup-orphans.sh:
+
+- Uses cluster name instead of BuildId for discovery.
+- VPC resources (NAT gateways, subnets, EIPs, IGWs) are **NOT deleted by default**
+  since persistent infrastructure is meant to survive cluster rebuilds.
+- RDS instances are **NOT deleted by default** (set `DELETE_RDS=true` to include).
+
+Safety:
+
+- Runs in **dry-run** mode by default.
+- VPC deletion requires explicit `DELETE_VPC=true` flag.
+- RDS deletion requires explicit `DELETE_RDS=true` flag.
+- Terraform state cleanup requires explicit `CLEAN_TF_STATE=true` flag.
+
+Examples:
+
+```bash
+# Dry run (default) - see what would be deleted
+bootstrap/60_tear_down_clean_up/cleanup-orphans-persistent.sh goldenpath-dev-eks eu-west-2
+
+# Actually delete orphaned resources (cluster, nodegroups, LBs, SGs, IAM)
+DRY_RUN=false bootstrap/60_tear_down_clean_up/cleanup-orphans-persistent.sh goldenpath-dev-eks eu-west-2
+
+# Include VPC resources (dangerous - destroys persistent infrastructure)
+DRY_RUN=false DELETE_VPC=true bootstrap/60_tear_down_clean_up/cleanup-orphans-persistent.sh goldenpath-dev-eks eu-west-2
+
+# Include RDS instances
+DRY_RUN=false DELETE_RDS=true bootstrap/60_tear_down_clean_up/cleanup-orphans-persistent.sh goldenpath-dev-eks eu-west-2
+
+# Also clean up Terraform state (prevents state drift after orphan cleanup)
+DRY_RUN=false DELETE_VPC=true CLEAN_TF_STATE=true bootstrap/60_tear_down_clean_up/cleanup-orphans-persistent.sh goldenpath-dev-eks eu-west-2
+```
+
+Makefile target:
+
+```bash
+# Dry run (default)
+make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2
+
+# Actually delete
+make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2 DRY_RUN=false
+
+# Include VPC
+make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2 DRY_RUN=false DELETE_VPC=true
+
+# Include VPC + clean Terraform state (recommended for full cleanup)
+make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2 DRY_RUN=false DELETE_VPC=true CLEAN_TF_STATE=true
+```
+
 ## cleanup-managed-lb-resources.sh
 
 What it does:

@@ -104,6 +104,7 @@ endef
 #   make bootstrap CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 #   make pre-destroy-cleanup CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 #   make cleanup-orphans BUILD_ID=<id> REGION=eu-west-2
+#   make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2
 #   make cleanup-iam
 #   make drain-nodegroup NODEGROUP=dev-default
 #   make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2
@@ -327,6 +328,16 @@ pre-destroy-cleanup:
 
 cleanup-orphans:
 	DRY_RUN=false bash bootstrap/60_tear_down_clean_up/cleanup-orphans.sh $(BUILD_ID) $(REGION)
+
+cleanup-orphans-persistent:
+	@if [ -z "$(CLUSTER)" ]; then echo "ERROR: CLUSTER required (e.g., goldenpath-dev-eks)"; exit 1; fi
+	@if [ -z "$(REGION)" ]; then echo "ERROR: REGION required"; exit 1; fi
+	DRY_RUN=$(if $(DRY_RUN),$(DRY_RUN),true) \
+	DELETE_VPC=$(if $(DELETE_VPC),$(DELETE_VPC),false) \
+	DELETE_RDS=$(if $(DELETE_RDS),$(DELETE_RDS),false) \
+	CLEAN_TF_STATE=$(if $(CLEAN_TF_STATE),$(CLEAN_TF_STATE),false) \
+	TF_DIR=$(if $(TF_DIR),$(TF_DIR),) \
+	bash bootstrap/60_tear_down_clean_up/cleanup-orphans-persistent.sh $(CLUSTER) $(REGION)
 
 cleanup-iam:
 	bash bootstrap/60_tear_down_clean_up/cleanup-iam.sh --yes
@@ -990,6 +1001,7 @@ bootstrap-persistent-v4:
 	TF_DIR=$(ENV_DIR) \
 	REGION=$(REGION) \
 	LIFECYCLE=persistent \
+	BUILD_ID=persistent \
 	TF_AUTO_APPROVE=true \
 	SKIP_ARGO_SYNC_WAIT=$(SKIP_ARGO_SYNC_WAIT) \
 	bash $(BOOTSTRAP_SCRIPT) 2>&1 | tee "$$log"; \
@@ -1139,6 +1151,7 @@ help:
 	@echo "  make bootstrap-only CLUSTER=goldenpath-dev-eks REGION=eu-west-2"
 	@echo "  make pre-destroy-cleanup CLUSTER=goldenpath-dev-eks REGION=eu-west-2"
 	@echo "  make cleanup-orphans BUILD_ID=<id> REGION=eu-west-2"
+	@echo "  make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2 DRY_RUN=true"
 	@echo "  make cleanup-iam"
 	@echo "  make drain-nodegroup NODEGROUP=dev-default"
 	@echo "  make teardown CLUSTER=goldenpath-dev-eks REGION=eu-west-2"
