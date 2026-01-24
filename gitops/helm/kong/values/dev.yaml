@@ -44,7 +44,8 @@ proxy:
     servicePort: 443
 
 # -----------------------------------------------------------------------------
-# Admin API (Internal Only)
+# Admin API (Exposed for Kong Manager - Dev Only)
+# WARNING: In production, protect Admin API with authentication
 # -----------------------------------------------------------------------------
 admin:
   enabled: true
@@ -53,6 +54,14 @@ admin:
     enabled: true
     containerPort: 8001
     servicePort: 8001
+  ingress:
+    enabled: true
+    ingressClassName: kong
+    hostname: kong-admin.dev.goldenpathidp.io
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      konghq.com/strip-path: "false"
+    tls: kong-admin-tls
 
 # -----------------------------------------------------------------------------
 # Kong Manager (UI) - Dev Only
@@ -102,9 +111,9 @@ env:
   admin_access_log: /dev/stdout
   proxy_error_log: /dev/stderr
   admin_error_log: /dev/stderr
-  # Kong Manager needs to know where Admin API is
+  # Kong Manager needs to know where Admin API is (browser-accessible URL)
   admin_gui_url: "https://kong-manager.dev.goldenpathidp.io"
-  admin_gui_api_url: "http://dev-kong-kong-admin.kong-system.svc.cluster.local:8001"
+  admin_gui_api_url: "https://kong-admin.dev.goldenpathidp.io"
 
 # -----------------------------------------------------------------------------
 # Resource Limits for Dev
