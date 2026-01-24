@@ -36,8 +36,10 @@ app_secrets = {
       owner = "platform-team"
       risk  = "high"
     }
-    # Placeholder values - UPDATE IN AWS CONSOLE after deploy
-    initial_value          = "{\"GITHUB_TOKEN\":\"PLACEHOLDER_UPDATE_IN_AWS_CONSOLE\"}"
+    # ONE-TIME MANUAL STEP: Update in AWS Console after first deploy
+    # Key must be "token" to match ExternalSecret remoteRef.property
+    # Future: Will be passed from CI via TF_VAR_backstage_github_token
+    initial_value          = "{\"token\":\"PLACEHOLDER_UPDATE_IN_AWS_CONSOLE\"}"
     read_principals        = []
     write_principals       = []
     break_glass_principals = []
