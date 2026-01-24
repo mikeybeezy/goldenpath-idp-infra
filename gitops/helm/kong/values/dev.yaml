@@ -133,12 +133,14 @@ status:
 # -----------------------------------------------------------------------------
 # ServiceMonitor for Prometheus Operator
 # Enables automatic metrics scraping by kube-prometheus-stack
+# NOTE: Must include release label for Prometheus to discover it
 # -----------------------------------------------------------------------------
 serviceMonitor:
   enabled: true
   namespace: kong-system
   interval: 30s
-  labels: {}
+  labels:
+    release: dev-kube-prometheus-stack
 
 # -----------------------------------------------------------------------------
 # Resource Limits for Dev
