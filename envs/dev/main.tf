@@ -366,6 +366,12 @@ module "iam" {
   external_dns_service_account_name      = var.iam_config.external_dns_service_account_name
   external_dns_zone_id                   = var.route53_config.zone_id
 
+  # RDS Provisioner IRSA (ADR-0165)
+  enable_rds_provisioner_role               = var.iam_config.enable_rds_provisioner_role
+  rds_provisioner_role_name                 = "${var.iam_config.rds_provisioner_role_name}${local.role_suffix}"
+  rds_provisioner_service_account_namespace = var.iam_config.rds_provisioner_service_account_namespace
+  rds_provisioner_service_account_name      = var.iam_config.rds_provisioner_service_account_name
+
   environment = local.environment
   tags        = local.common_tags
 
@@ -608,6 +614,55 @@ resource "kubernetes_namespace_v1" "argocd" {
       "goldenpath.idp/component"  = "gitops"
     }
   }
+}
+
+################################################################################
+# Platform System Namespace (ADR-0165 - RDS Provisioning Execution)
+################################################################################
+#
+# Creates the platform-system namespace for platform automation workloads.
+# Primary use case: K8s Jobs for RDS user/database provisioning that require
+# VPC access to reach private RDS endpoints.
+#
+# This namespace is created by Terraform (not ArgoCD) to ensure it exists
+# BEFORE RDS provisioning runs - avoiding chicken-and-egg dependency.
+#
+# See: ADR-0165-rds-user-db-provisioning-automation.md
+################################################################################
+
+resource "kubernetes_namespace_v1" "platform_system" {
+  count = var.eks_config.enabled && var.enable_k8s_resources ? 1 : 0
+
+  metadata {
+    name = "platform-system"
+    labels = {
+      "app.kubernetes.io/part-of" = "goldenpath-platform"
+      "goldenpath.idp/managed-by" = "terraform"
+      "goldenpath.idp/component"  = "platform-automation"
+    }
+  }
+}
+
+resource "kubernetes_service_account_v1" "platform_provisioner" {
+  count = var.eks_config.enabled && var.enable_k8s_resources && var.iam_config.enabled ? 1 : 0
+
+  metadata {
+    name      = "platform-provisioner"
+    namespace = kubernetes_namespace_v1.platform_system[0].metadata[0].name
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam[0].rds_provisioner_role_arn
+    }
+    labels = {
+      "app.kubernetes.io/part-of" = "goldenpath-platform"
+      "goldenpath.idp/managed-by" = "terraform"
+    }
+  }
+
+  depends_on = [
+    module.eks,
+    module.iam,
+    kubernetes_namespace_v1.platform_system
+  ]
 }
 
 ################################################################################

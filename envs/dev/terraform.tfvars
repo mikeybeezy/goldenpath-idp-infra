@@ -150,6 +150,11 @@ iam_config = {
   external_dns_policy_arn                = ""
   external_dns_service_account_namespace = "kube-system"
   external_dns_service_account_name      = "external-dns"
+  # RDS Provisioner IRSA (ADR-0165)
+  enable_rds_provisioner_role               = true
+  rds_provisioner_role_name                 = "goldenpath-idp-rds-provisioner"
+  rds_provisioner_service_account_namespace = "platform-system"
+  rds_provisioner_service_account_name      = "platform-provisioner"
 }
 
 

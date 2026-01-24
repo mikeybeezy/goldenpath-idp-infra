@@ -152,6 +152,30 @@ variable "external_dns_zone_id" {
   }
 }
 
+variable "enable_rds_provisioner_role" {
+  type        = bool
+  description = "Whether to create the RDS Provisioner IRSA role."
+  default     = false
+}
+
+variable "rds_provisioner_role_name" {
+  type        = string
+  description = "Name for the RDS Provisioner IAM role."
+  default     = "goldenpath-idp-rds-provisioner"
+}
+
+variable "rds_provisioner_service_account_namespace" {
+  type        = string
+  description = "Namespace for the RDS provisioner service account."
+  default     = "platform-system"
+}
+
+variable "rds_provisioner_service_account_name" {
+  type        = string
+  description = "Name of the RDS provisioner service account."
+  default     = "platform-provisioner"
+}
+
 variable "oidc_issuer_url" {
   type        = string
   description = "OIDC issuer URL for the EKS cluster."
