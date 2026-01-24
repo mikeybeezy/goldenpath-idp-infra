@@ -89,12 +89,14 @@ grafana:
   additionalDataSources:
     - name: Loki
       type: loki
+      uid: loki
       access: proxy
       url: http://dev-loki.monitoring.svc:3100
       jsonData:
         maxLines: 1000
     - name: Tempo
       type: tempo
+      uid: tempo
       access: proxy
       url: http://tempo.monitoring.svc.cluster.local:3100
       jsonData:
