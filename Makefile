@@ -977,7 +977,7 @@ bootstrap-persistent:
 	@echo "Bootstrapping persistent cluster $(PERSISTENT_CLUSTER_EFFECTIVE)..."
 	@mkdir -p logs/build-timings
 	@bash -c '\
-	log="logs/build-timings/bootstrap-persistent-$(ENV)-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	log="logs/build-timings/bootstrap-persistent-$(ENV)-persistent-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Bootstrap output streaming; full log at $$log"; \
 	SKIP_ARGO_SYNC_WAIT=$(SKIP_ARGO_SYNC_WAIT) \
 	NODE_INSTANCE_TYPE=$(NODE_INSTANCE_TYPE) \
@@ -989,6 +989,7 @@ bootstrap-persistent:
 	bash $(BOOTSTRAP_SCRIPT) $(PERSISTENT_CLUSTER_EFFECTIVE) $(REGION) $(KONG_NAMESPACE) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
+	@bash scripts/record-build-timing.sh $(ENV) persistent bootstrap-persistent || true
 
 # v4 bootstrap requires env vars, not positional args
 # Creates dedicated target that passes TF_DIR, REGION, LIFECYCLE as env vars
@@ -996,7 +997,7 @@ bootstrap-persistent-v4:
 	@echo "Bootstrapping persistent cluster $(PERSISTENT_CLUSTER_EFFECTIVE) using v4 (ArgoCD-first)..."
 	@mkdir -p logs/build-timings
 	@bash -c '\
-	log="logs/build-timings/bootstrap-v4-$(ENV)-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	log="logs/build-timings/bootstrap-persistent-$(ENV)-persistent-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Bootstrap v4 output streaming; full log at $$log"; \
 	TF_DIR=$(ENV_DIR) \
 	REGION=$(REGION) \
@@ -1007,6 +1008,7 @@ bootstrap-persistent-v4:
 	bash $(BOOTSTRAP_SCRIPT) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
+	@bash scripts/record-build-timing.sh $(ENV) persistent bootstrap-persistent || true
 
 # deploy-persistent: Conditional logic based on BOOTSTRAP_VERSION
 # - v4: Skip apply-persistent (v4 runs its own terraform with apply_kubernetes_addons=true)
@@ -1059,7 +1061,7 @@ teardown-persistent:
 	@echo "Tearing down persistent cluster $(PERSISTENT_CLUSTER_EFFECTIVE)..."
 	@mkdir -p logs/build-timings
 	@bash -c '\
-	log="logs/build-timings/teardown-persistent-$(ENV)-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	log="logs/build-timings/teardown-persistent-$(ENV)-persistent-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Teardown output streaming; full log at $$log"; \
 	script="bootstrap/60_tear_down_clean_up/goldenpath-idp-teardown-v4.sh"; \
 	TEARDOWN_CONFIRM=true \
@@ -1073,6 +1075,7 @@ teardown-persistent:
 	bash "$$script" $(PERSISTENT_CLUSTER_EFFECTIVE) $(REGION) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
+	@bash scripts/record-build-timing.sh $(ENV) persistent teardown-persistent || true
 
 ################################################################################
 # Agent Session Management
