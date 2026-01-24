@@ -39,10 +39,10 @@ This means both `phase` AND `build_id` must appear in the log filename for timin
 
 | Makefile Target | Calls `record-build-timing.sh` | Build Type |
 |-----------------|-------------------------------|------------|
-| `apply-persistent` | ❌ No | Persistent |
-| `bootstrap-persistent-v4` (line 995) | ❌ No | Persistent |
-| `deploy-persistent` | ❌ No | Persistent |
-| `teardown-persistent` | ❌ No | Persistent |
+| `apply-persistent` |  No | Persistent |
+| `bootstrap-persistent-v4` (line 995) |  No | Persistent |
+| `deploy-persistent` |  No | Persistent |
+| `teardown-persistent` |  No | Persistent |
 
 ### Why This Happened
 

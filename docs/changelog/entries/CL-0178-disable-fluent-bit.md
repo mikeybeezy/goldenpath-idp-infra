@@ -46,8 +46,8 @@ Warning   Unhealthy   pod/dev-fluent-bit-*   Readiness probe failed: HTTP probe 
 
 | Criteria | Promtail | Fluent Bit |
 |----------|----------|------------|
-| Native to Loki | ✅ Yes | ❌ No |
-| Status | ✅ Working | ❌ Failing |
+| Native to Loki | ✅ Yes |  No |
+| Status | ✅ Working |  Failing |
 | Complexity | Simple | More complex |
 | Use case | Loki-only | Multi-destination |
 
