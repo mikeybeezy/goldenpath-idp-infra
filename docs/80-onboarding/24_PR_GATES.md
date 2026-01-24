@@ -161,6 +161,26 @@ Labels are **validated, not trusted**. If the condition is not met, the check fa
 
 Implemented by: `scripts/pr_guardrails.py`
 
+## Prevention Required Gate
+
+PRs that fix bugs or errors MUST include:
+
+1. The fix itself
+2. A test, guard, or code change that prevents recurrence
+3. Reference to root cause in commit message or PR description
+
+**Exempt:** Pure feature additions, documentation-only changes.
+
+**Rationale:** Hot fixes without prevention are technical debt. See
+`docs/10-governance/07_AI_AGENT_GOVERNANCE.md` Section 10 for the full
+Forward-Thinking Solutions Mandate.
+
+| Acceptable | Not Acceptable |
+| --- | --- |
+| Fix + updated test that catches regression | Fix only, no prevention |
+| Fix + script update that prevents recurrence | "Will fix properly later" |
+| Fix + documentation of root cause + prevention | No root cause identified |
+
 ## Where to look for details
 
 - Guardrails and policy sources: `docs/10-governance/04_PR_GUARDRAILS.md`

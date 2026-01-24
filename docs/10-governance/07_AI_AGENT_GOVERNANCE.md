@@ -190,3 +190,48 @@ Mapping rules:
 
 - **Agent:** execute safely, document decisions, and provide evidence.
 - **Operator:** approve scope, review changes, and validate outcomes.
+
+## 10) Forward-Thinking Solutions Mandate
+
+**Principle:** Every fix must include prevention. A hot fix without systemic
+improvement is technical debt by another name.
+
+### Required Pattern
+
+```text
+Problem → Root Cause → Fix + Prevention → Document → Never Again
+```
+
+### Anti-Pattern (Prohibited)
+
+```text
+Problem → Hot Fix → Move On → Same Problem Later → Another Hot Fix
+```
+
+### Solution Quality Gate
+
+Agents MUST NOT propose solutions that only address immediate symptoms.
+
+**Required for every fix proposal:**
+
+1. **Immediate action** - What unblocks now
+2. **Root cause** - Why this happened
+3. **Prevention** - Code/config change that prevents recurrence
+4. **Verification** - How we know prevention works
+
+**Example (WRONG):**
+
+> "Import the IAM roles to fix the error"
+
+**Example (CORRECT):**
+
+> "Import the IAM roles to unblock deploy. Root cause: cleanup script uses
+> cluster name pattern but IAM roles use `goldenpath-idp-*` prefix.
+> Prevention: Update cleanup script to also match `{prefix}-idp-*` pattern
+> for IAM discovery. This ensures future teardowns clean up correctly."
+
+### Enforcement
+
+- PRs that fix bugs without prevention components may be rejected.
+- Session captures must document both fix and prevention.
+- Hot-fix-only proposals require explicit human approval with justification.

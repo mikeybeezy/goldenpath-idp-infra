@@ -145,6 +145,37 @@ aws secretsmanager list-secrets --region eu-west-2
 - **State lock error**: See `docs/70-operations/runbooks/RB-0007-tf-state-force-unlock.md`.
 - **RDS deletion protection**: Run `make rds-allow-delete ENV=<env> CONFIRM_RDS_DELETE=yes` before destroy.
 - **Leftover resources**: Use `RB-0017-orphan-cleanup.md` to remove orphans.
+- **Persistent cluster orphans**: Use the persistent orphan cleanup script (see below).
+
+### Persistent Cluster Orphan Cleanup
+
+If resources persist after teardown (load balancers, security groups, node groups),
+use the persistent orphan cleanup script. Unlike the standard `cleanup-orphans.sh`
+which requires a `BuildId`, this script works by cluster name pattern:
+
+```bash
+# Dry run first (default) - see what would be deleted
+make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2
+
+# Actually delete orphaned resources
+make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2 DRY_RUN=false
+```
+
+**Important:** VPC resources (NAT gateways, subnets, EIPs) are preserved by default
+since persistent infrastructure is meant to survive cluster rebuilds. To include VPC:
+
+```bash
+# Include VPC deletion (use with caution)
+make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2 DRY_RUN=false DELETE_VPC=true
+```
+
+**Terraform State Cleanup:** To also remove deleted resources from Terraform state
+(prevents state drift requiring manual `terraform state rm` commands):
+
+```bash
+# Full cleanup including VPC and Terraform state sync
+make cleanup-orphans-persistent CLUSTER=goldenpath-dev-eks REGION=eu-west-2 DRY_RUN=false DELETE_VPC=true CLEAN_TF_STATE=true
+```
 
 ### State Lock Recovery
 

@@ -3333,3 +3333,142 @@ Signed: Claude Opus 4.5 (2026-01-23T08:00:00Z)
 - Validation: Pre-commit and governance gates should pass after this commit.
 
 Signed: Claude Opus 4.5 (2026-01-23T18:00:00Z)
+
+---
+
+## 2026-01-24: Persistent Cluster Teardown and v4 Bootstrap Deploy Fix
+
+- **Agent:** Claude Opus 4.5
+- **Timestamp:** 2026-01-24T10:30:00Z
+- **Branch:** development
+- **Status:** In Progress
+
+### Context
+
+Persistent cluster teardown left orphan resources because `cleanup-orphans.sh` requires BuildId tags (ephemeral only). Deploy failed because data sources tried to read non-existent EKS cluster during v4 two-pass bootstrap.
+
+### Issues Diagnosed and Fixed
+
+| Issue | Root Cause | Fix |
+| ----- | ---------- | --- |
+| Persistent orphans not cleaned | No script for clusters without BuildId | Created `cleanup-orphans-persistent.sh` |
+| Security group DependencyViolation | ENIs still attached | Added second-pass cleanup after NAT deletion |
+| State drift after orphan cleanup | Resources deleted outside Terraform | Added `CLEAN_TF_STATE=true` option |
+| v4 bootstrap deploy fails | Data source reads non-existent cluster | Added `enable_k8s_resources` to data source count |
+
+### Design Decisions Made
+
+| Decision | Choice | Rationale |
+| -------- | ------ | --------- |
+| VPC preservation default | DELETE_VPC=false | Persistent VPCs should survive cluster rebuilds |
+| RDS preservation default | DELETE_RDS=false | Standalone RDS lifecycle (ADR-0158) |
+| TF state cleanup | Opt-in flag | Destructive operation needs explicit consent |
+| Data source gating | Use enable_k8s_resources | Aligns with v4 two-pass architecture |
+
+### Artifacts touched (required)
+
+*Modified:*
+
+- `envs/dev/main.tf` — Fixed data source count conditions (lines 416-427)
+- `Makefile` — Added `cleanup-orphans-persistent` target
+- `bootstrap/60_tear_down_clean_up/README.md` — Added persistent cleanup docs
+- `docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md` — Added troubleshooting section
+
+*Added:*
+
+- `bootstrap/60_tear_down_clean_up/cleanup-orphans-persistent.sh` — New script
+- `session_capture/2026-01-24-persistent-cluster-teardown-and-deploy-fix.md` — Session capture
+
+### Outputs produced
+
+- New persistent orphan cleanup script with Terraform state sync
+- Fixed v4 two-pass bootstrap data source issue
+
+### Next actions
+
+- [ ] Run `make deploy-persistent ENV=dev REGION=eu-west-2 BOOTSTRAP_VERSION=v4`
+- [ ] Validate v4 two-pass deploy completes
+- [ ] Deploy RDS after EKS is operational
+
+### Session Report (end-of-session wrap-up)
+
+- Summary: Created persistent cluster orphan cleanup script, fixed v4 bootstrap data source blocking deploy.
+- Decisions: Data sources gated on `enable_k8s_resources` to support two-pass bootstrap.
+- Risks/Follow-ups: Deploy validation pending.
+- Validation: Terraform plan with `enable_k8s_resources=false` no longer attempts EKS data source read.
+
+Signed: Claude Opus 4.5 (2026-01-24T10:30:00Z)
+
+---
+
+## 2026-01-24T11:00:00Z — GOVERNANCE: Forward-Thinking Solutions Mandate
+
+- **Agent:** Claude Opus 4.5
+- **Timestamp:** 2026-01-24T11:00:00Z
+- **Branch:** development
+- **Status:** Complete
+
+### Context
+
+User identified recurring pattern of hot-fix-only proposals from AI agents. Established governance mandate: every fix must include prevention.
+
+### Issues Diagnosed and Fixed
+
+| Issue              | Root Cause                                   | Fix              | Prevention                                  |
+|--------------------|----------------------------------------------|------------------|---------------------------------------------|
+| IAM roles orphaned | Script used `goldenpath-dev-*` not `-idp-*`  | Deleted from AWS | Added `goldenpath-idp-*` pattern discovery  |
+| Hot-fix proposals  | No governance mandate                        | N/A              | Forward-Thinking Solutions Mandate (4 docs) |
+
+### Governance Updates
+
+Propagated Forward-Thinking Solutions Mandate:
+
+| Document                                               | Change                                       |
+|--------------------------------------------------------|----------------------------------------------|
+| `docs/10-governance/07_AI_AGENT_GOVERNANCE.md`         | Added Section 10: Forward-Thinking Solutions |
+| `docs/10-governance/07_1_AI_COLLABORATION_PROTOCOL.md` | Added Solution Quality Gate checklist        |
+| `docs/80-onboarding/24_PR_GATES.md`                    | Added Prevention Required Gate section       |
+| `docs/80-onboarding/23_NEW_JOINERS.md`                 | Added The Prevention Mindset section         |
+
+**Required Pattern:**
+
+```text
+Problem → Root Cause → Fix + Prevention → Document → Never Again
+```
+
+### Artifacts touched (required)
+
+*Modified:*
+
+- `docs/10-governance/07_AI_AGENT_GOVERNANCE.md` — Added Section 10
+- `docs/10-governance/07_1_AI_COLLABORATION_PROTOCOL.md` — Added Solution Quality Gate
+- `docs/80-onboarding/24_PR_GATES.md` — Added Prevention Required Gate
+- `docs/80-onboarding/23_NEW_JOINERS.md` — Added The Prevention Mindset
+- `bootstrap/60_tear_down_clean_up/cleanup-orphans-persistent.sh` — Added IAM pattern discovery
+- `bootstrap/60_tear_down_clean_up/README.md` — Updated IAM cleanup docs
+- `session_capture/2026-01-24-persistent-cluster-teardown-and-deploy-fix.md` — Added Update 3
+
+### Highlights (DNS/ExternalDNS)
+
+- ExternalDNS is healthy and successfully updates Route53 records for `dev.goldenpathidp.io`.
+- Root cause of “missing wildcard” was Route53 API wildcard representation (`\052`) rather than `*`.
+- Added a repeatable verification script and documented the correct Route53 query.
+
+### Artifacts touched (additional)
+
+*Modified:*
+
+- `docs/70-operations/45_DNS_MANAGEMENT.md` — Added wildcard Route53 verification guidance
+- `session_capture/2026-01-23-v1-milestone-ephemeral-deploy-success.md` — Logged DNS verification note
+
+*Added:*
+
+- `scripts/verify_dns_records.sh` — Route53 wildcard + DNS resolution verifier
+
+### Next actions
+
+- [ ] Run deploy: `make deploy-persistent ENV=dev REGION=eu-west-2 BOOTSTRAP_VERSION=v4 CREATE_RDS=false SKIP_ARGO_SYNC_WAIT=true`
+- [ ] Validate IAM roles recreated correctly by Terraform
+- [ ] Deploy RDS after EKS is operational
+
+Signed: Claude Opus 4.5 (2026-01-24T11:00:00Z)

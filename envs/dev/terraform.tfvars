@@ -2,10 +2,10 @@ environment       = "dev"
 aws_region        = "eu-west-2"
 vpc_cidr          = "10.0.0.0/16"
 owner_team        = "platform-team"
-cluster_lifecycle = "ephemeral"
+cluster_lifecycle = "persistent"
 # persistent = long-lived cluster, build_id = "persistent" (no teardown by ID)
 # ephemeral = short-lived, tagged with build_id for teardown
-build_id = "23-01-26-01"
+build_id = "persistent"
 
 # -----------------------------------------------------------------------------
 # CRITICAL CONFIGURATION (Moved to Top)

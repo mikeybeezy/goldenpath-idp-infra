@@ -23,6 +23,10 @@ spec:
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
       targetRevision: development
       ref: values
+    # ClusterIssuers for TLS certificate issuance (letsencrypt-staging, letsencrypt-prod)
+    - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+      targetRevision: development
+      path: gitops/kustomize/bases/cert-manager
   ignoreDifferences:
     - group: admissionregistration.k8s.io
       kind: ValidatingWebhookConfiguration

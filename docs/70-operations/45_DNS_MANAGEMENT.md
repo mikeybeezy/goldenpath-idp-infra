@@ -165,6 +165,24 @@ curl -I https://backstage.dev.goldenpathidp.io
 openssl s_client -connect backstage.dev.goldenpathidp.io:443 -servername backstage.dev.goldenpathidp.io </dev/null 2>/dev/null | openssl x509 -noout -dates
 ```
 
+#### ExternalDNS Wildcard Verification (Route53)
+
+Route53 represents wildcard records as `\052` in the API (not `*`). Use this
+query to confirm the wildcard exists:
+
+```bash
+aws route53 list-resource-record-sets \
+  --hosted-zone-id Z0032802NEMSL43VHH4E \
+  --query "ResourceRecordSets[?Name=='\\052.dev.goldenpathidp.io.']" \
+  --output json
+```
+
+Helper script:
+
+```bash
+scripts/verify_dns_records.sh Z0032802NEMSL43VHH4E dev goldenpathidp.io 1.1.1.1
+```
+
 ---
 
 ## TLS Certificate Management

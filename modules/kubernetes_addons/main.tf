@@ -98,12 +98,14 @@ resource "helm_release" "bootstrap_apps" {
             "      helm:\n        valueFiles:",
             "      helm:\n        parameters:\n          - name: global.hostSuffix\n            value: ${var.bootstrap_values.host_suffix}\n        valueFiles:"
           ) :
-          # external-dns: inject domainFilters and txtOwnerId for DNS scoping (ADR-0178)
-          basename(f) == "external-dns.yaml" && var.bootstrap_values.host_suffix != "" ?
+          # external-dns: inject txtOwnerId for DNS ownership scoping (ADR-0178)
+          # NOTE: domainFilters is NOT injected here - it MUST use the apex domain (goldenpathidp.io)
+          # not the subdomain (dev.goldenpathidp.io). The correct value is in values/dev.yaml.
+          basename(f) == "external-dns.yaml" && var.bootstrap_values.dns_owner_id != "" ?
           replace(
             file("${var.path_to_app_manifests}/${f}"),
             "        valueFiles:",
-            "        parameters:\n          - name: domainFilters[0]\n            value: ${var.bootstrap_values.host_suffix}\n          - name: txtOwnerId\n            value: ${var.bootstrap_values.dns_owner_id}\n        valueFiles:"
+            "        parameters:\n          - name: txtOwnerId\n            value: ${var.bootstrap_values.dns_owner_id}\n        valueFiles:"
           ) :
           file("${var.path_to_app_manifests}/${f}")
         )
