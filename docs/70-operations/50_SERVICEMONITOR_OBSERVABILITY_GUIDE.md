@@ -1,3 +1,14 @@
+---
+id: 50_SERVICEMONITOR_OBSERVABILITY_GUIDE
+title: ServiceMonitor Observability Guide
+type: policy
+value_quantification:
+  vq_class: 🔴 HV/HQ
+  impact_tier: tier-1
+  potential_savings_hours: 2.0
+category: compliance
+---
+
 # ServiceMonitor Observability Guide
 
 > How to instrument custom applications for Prometheus metrics collection

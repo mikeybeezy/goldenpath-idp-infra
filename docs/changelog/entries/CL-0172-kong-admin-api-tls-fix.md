@@ -2,12 +2,28 @@
 id: CL-0172
 title: Kong Admin API TLS Routing Fix
 type: changelog
-date: 2026-01-24
-author: platform-team
-breaking_change: false
+status: active
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
 relates_to:
   - CL-0171-kong-admin-api-ingress
   - 20_TOOLING_APPS_MATRIX
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-24
+author: platform-team
+breaking_change: false
 ---
 
 ## Summary

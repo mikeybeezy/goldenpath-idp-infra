@@ -2,13 +2,29 @@
 id: CL-0176
 title: hello-goldenpath-idp Grafana Dashboard
 type: changelog
-date: 2026-01-24
-author: platform-team
-breaking_change: false
+status: active
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
 relates_to:
   - CL-0175-tooling-dashboards-argocd-app
   - CL-0174-kong-prometheus-metrics
   - 20_TOOLING_APPS_MATRIX
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-24
+author: platform-team
+breaking_change: false
 ---
 
 ## Summary

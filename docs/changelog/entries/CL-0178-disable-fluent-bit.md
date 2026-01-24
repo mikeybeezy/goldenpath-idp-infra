@@ -2,11 +2,27 @@
 id: CL-0178
 title: Disable Fluent Bit (Promtail Preferred)
 type: changelog
+status: active
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
+relates_to:
+  - 20_TOOLING_APPS_MATRIX
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
 date: 2026-01-24
 author: platform-team
 breaking_change: false
-relates_to:
-  - 20_TOOLING_APPS_MATRIX
 ---
 
 ## Summary

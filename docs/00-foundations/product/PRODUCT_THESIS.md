@@ -2,8 +2,6 @@
 id: PRODUCT_THESIS
 title: Product Thesis - Honest Assessment
 type: documentation
-domain: platform-core
-lifecycle: active
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
