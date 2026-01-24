@@ -40,7 +40,7 @@ breaking_change: false
 
 This living document captures the configuration requirements, dependencies, and operational status of all platform tooling applications deployed via Argo CD.
 
-**Last Updated**: 2026-01-21
+**Last Updated**: 2026-01-24
 **Maintainer**: platform-team
 **Signed**: platform-team (2026-01-21)
 
@@ -58,7 +58,7 @@ All platform tooling applications are accessible via Kong Ingress with TLS termi
 |**Keycloak**|`https://keycloak.dev.goldenpathidp.io`|`kubectl port-forward svc/dev-keycloak -n keycloak 8080:8080`|keycloak|
 |**ArgoCD**|`https://argocd.dev.goldenpathidp.io`|`kubectl port-forward svc/argocd-server -n argocd 8080:443`|argocd|
 |**Grafana**|`https://grafana.dev.goldenpathidp.io`|`kubectl port-forward svc/kube-prometheus-stack-grafana -n monitoring 3000:80`|monitoring|
-|**Kong Manager**|`https://kong.dev.goldenpathidp.io`|`kubectl port-forward svc/dev-kong-kong-manager -n kong-system 8002:8002`|kong-system|
+|**Kong Manager**|`https://kong-manager.dev.goldenpathidp.io`|`kubectl port-forward svc/dev-kong-kong-manager -n kong-system 8002:8002`|kong-system|
 |**hello-goldenpath-idp**|`https://hello-goldenpath-idp.dev.goldenpathidp.io`|`kubectl port-forward svc/hello-goldenpath-idp -n apps 8080:80`|apps|
 |**Prometheus**|Internal only|`kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090`|monitoring|
 |**Alertmanager**|Internal only|`kubectl port-forward svc/kube-prometheus-stack-alertmanager -n monitoring 9093:9093`|monitoring|
@@ -71,7 +71,7 @@ All platform tooling applications are accessible via Kong Ingress with TLS termi
 |**Keycloak**|`https://keycloak.staging.goldenpathidp.io`|
 |**ArgoCD**|`https://argocd.staging.goldenpathidp.io`|
 |**Grafana**|`https://grafana.staging.goldenpathidp.io`|
-|**Kong Manager**|`https://kong.staging.goldenpathidp.io`|
+|**Kong Manager**|`https://kong-manager.staging.goldenpathidp.io`|
 |**hello-goldenpath-idp**|`https://hello-goldenpath-idp.staging.goldenpathidp.io`|
 
 ### Production Environment
@@ -82,7 +82,7 @@ All platform tooling applications are accessible via Kong Ingress with TLS termi
 |**Keycloak**|`https://keycloak.goldenpathidp.io`|
 |**ArgoCD**|`https://argocd.goldenpathidp.io`|
 |**Grafana**|`https://grafana.goldenpathidp.io`|
-|**Kong Manager**|`https://kong.goldenpathidp.io`|
+|**Kong Manager**|`https://kong-manager.goldenpathidp.io`|
 |**hello-goldenpath-idp**|`https://hello-goldenpath-idp.goldenpathidp.io`|
 
 ### DNS Requirements
@@ -711,7 +711,7 @@ manager:
   ingress:
     enabled: true
     ingressClassName: kong
-    hostname: kong-admin.dev.goldenpathidp.io
+    hostname: kong-manager.dev.goldenpathidp.io
 
 env:
   database: "off"  # DB-less mode for dev
@@ -1238,6 +1238,7 @@ goldenpath/{env}/{app}/{secret-name}
 |2026-01-21|platform-team|Added EKS managed add-ons: coredns, kube-proxy, vpc-cni, ebs-csi, efs-csi, snapshot-controller|
 |2026-01-21|platform-team|Added infrastructure components: cluster-autoscaler, aws-load-balancer-controller, metrics-server|
 |2026-01-21|platform-team|Added sync-wave ordering to quick reference tables|
+|2026-01-24|platform-team|Updated Kong Manager hostname to `kong-manager.{env}.goldenpathidp.io` (ingress enabled)|
 
 ---
 
