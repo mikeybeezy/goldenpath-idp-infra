@@ -59,6 +59,7 @@ All platform tooling applications are accessible via Kong Ingress with TLS termi
 |**ArgoCD**|`https://argocd.dev.goldenpathidp.io`|`kubectl port-forward svc/argocd-server -n argocd 8080:443`|argocd|
 |**Grafana**|`https://grafana.dev.goldenpathidp.io`|`kubectl port-forward svc/kube-prometheus-stack-grafana -n monitoring 3000:80`|monitoring|
 |**Kong Manager**|`https://kong-manager.dev.goldenpathidp.io`|`kubectl port-forward svc/dev-kong-kong-manager -n kong-system 8002:8002`|kong-system|
+|**Kong Admin API**|`https://kong-admin.dev.goldenpathidp.io`|`kubectl port-forward svc/dev-kong-kong-admin -n kong-system 8001:8001`|kong-system|
 |**hello-goldenpath-idp**|`https://hello-goldenpath-idp.dev.goldenpathidp.io`|`kubectl port-forward svc/hello-goldenpath-idp -n apps 8080:80`|apps|
 |**Prometheus**|Internal only|`kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090`|monitoring|
 |**Alertmanager**|Internal only|`kubectl port-forward svc/kube-prometheus-stack-alertmanager -n monitoring 9093:9093`|monitoring|
