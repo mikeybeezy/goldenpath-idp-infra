@@ -468,3 +468,103 @@ Added third source to ArgoCD Application at `gitops/argocd/apps/dev/cert-manager
 - Kong will route traffic and ingresses will get ADDRESS
 
 Signed: Claude Opus 4.5 (2026-01-24T13:00:00Z)
+
+---
+
+## Update - 2026-01-24T16:00:00Z
+
+### RDS Provisioning VPC Access Fix (ADR-0165 Implementation)
+
+**Problem:** RDS provisioning failed with:
+
+```text
+2026-01-24T15:12:47Z [ERROR] Fatal error: Failed to connect to RDS:
+could not translate host name "goldenpath-dev-platform-dev.cxmcacaams2q.eu-west-2.rds.amazonaws.com"
+to address: nodename nor servname provided, or not known
+```
+
+**Root cause:** `rds_provision.py` was executing locally (developer machine), but RDS is in a private VPC subnet. The private DNS name is only resolvable from within the VPC.
+
+**Fix + Prevention (Permanent Solution):**
+
+Added Terraform-managed infrastructure for K8s Job execution:
+
+1. **platform-system namespace** — Created by Terraform during Pass 2
+2. **platform-provisioner ServiceAccount** — IRSA-enabled for Secrets Manager access
+3. **RDS provisioner IAM role** — Policy for secretsmanager:Get/Put/Create
+
+**Execution Flow:**
+
+```text
+Terraform Pass 2 (enable_k8s_resources=true)
+  └── Creates platform-system namespace
+  └── Creates platform-provisioner ServiceAccount (IRSA)
+
+RDS Provisioning (make rds-provision-auto)
+  └── Creates K8s Job in platform-system namespace
+  └── Job pod has VPC access → reaches RDS
+  └── Job pod has IRSA → reads/writes Secrets Manager
+```
+
+**This prevents recurrence because:** The infrastructure is created by Terraform BEFORE RDS provisioning runs. Both coupled and standalone RDS modes are supported.
+
+### Manual Workaround Executed
+
+While infrastructure changes were committed, executed RDS provisioning manually:
+
+1. Created temporary pod in platform-system namespace
+2. Copied `rds_provision.py` and `terraform.tfvars` to pod
+3. Passed AWS credentials via environment
+4. Executed provisioning successfully
+
+**Result:**
+
+```text
+Success: 9
+- Created role: keycloak_user
+- Created database: keycloak
+- Created role: backstage_user
+- Created database: backstage
+- Created role: test_inventory2_user
+- Created database: test_inventory2
+```
+
+**Secrets created:**
+
+| Secret | Purpose |
+|--------|---------|
+| `goldenpath/dev/keycloak/postgres` | Keycloak DB credentials |
+| `goldenpath/dev/backstage/postgres` | Backstage DB credentials |
+| `goldenpath/dev/test_inventory2/postgres` | Test inventory DB credentials |
+
+### Issues Fixed (Update 8)
+
+| Issue | Root Cause | Fix | Prevention |
+|-------|------------|-----|------------|
+| RDS provision DNS failure | Local execution can't reach private VPC | Manual pod execution | K8s Job infrastructure in Terraform |
+| Empty secrets issue | Secrets created without AWSCURRENT value | Added `initial_value` to aws_secrets_manager module | Placeholder values ensure ExternalSecrets can sync |
+
+### Artifacts Touched (Update 8)
+
+**Committed:**
+
+- `docs/adrs/ADR-0165-rds-user-db-provisioning-automation.md` — Added Execution Architecture section
+- `envs/dev/main.tf` — Added `platform-system` namespace + `platform-provisioner` ServiceAccount
+- `envs/dev/variables.tf` — Added RDS provisioner IRSA config to `iam_config` type
+- `envs/dev/terraform.tfvars` — Enabled `enable_rds_provisioner_role = true`
+- `modules/aws_iam/main.tf` — Added RDS provisioner IAM role + Secrets Manager policy
+- `modules/aws_iam/variables.tf` — Added RDS provisioner input variables
+- `modules/aws_iam/outputs.tf` — Added `rds_provisioner_role_arn` output
+
+**Commits:**
+
+1. `feat(secrets): add initial_value support for deterministic rebuilds` (2a55c46d)
+2. `feat(rds): add K8s Job infrastructure for RDS provisioning (ADR-0165)` (f0385e81)
+
+### Outstanding (Update 8)
+
+- Makefile `rds-provision-auto` update to use K8s Job path (separate PR)
+- ExternalSecrets should now sync with populated postgres secrets
+- Apps (Keycloak, Backstage) can now connect to their databases
+
+Signed: Claude Opus 4.5 (2026-01-24T16:00:00Z)
