@@ -150,3 +150,24 @@ resources:
   limits:
     cpu: 500m
     memory: 512Mi
+
+# -----------------------------------------------------------------------------
+# Extra Deploy - Prometheus Plugin (Global)
+# Enables traffic metrics: kong_http_requests_total, kong_request_latency_ms, etc.
+# Required for RED metrics dashboards to work
+# -----------------------------------------------------------------------------
+extraDeploy:
+  - apiVersion: configuration.konghq.com/v1
+    kind: KongClusterPlugin
+    metadata:
+      name: prometheus
+      labels:
+        global: "true"
+      annotations:
+        kubernetes.io/ingress.class: kong
+    config:
+      status_code_metrics: true
+      latency_metrics: true
+      bandwidth_metrics: true
+      upstream_health_metrics: true
+    plugin: prometheus
