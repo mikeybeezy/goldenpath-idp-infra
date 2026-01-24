@@ -1,0 +1,333 @@
+# hello-goldenpath-idp RED/Golden Signals Dashboard
+# Deploy to apps namespace for Grafana sidecar auto-discovery
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-goldenpath-idp-dashboard
+  namespace: apps
+  labels:
+    grafana_dashboard: "1"
+    app: hello-goldenpath-idp
+  annotations:
+    k8s-sidecar-target-directory: "/tmp/dashboards/tooling"
+    goldenpath.idp/id: TOOLING_DASHBOARDS_HELLO_GOLDENPATH_IDP
+    goldenpath.idp/owner: platform-team
+data:
+  hello-goldenpath-idp.json: |
+    {
+      "title": "hello-goldenpath-idp - Golden Signals",
+      "uid": "hello-goldenpath-idp",
+      "tags": ["tooling", "hello-goldenpath-idp", "golden-signals", "red-metrics", "sample-app"],
+      "timezone": "browser",
+      "schemaVersion": 30,
+      "refresh": "30s",
+      "editable": false,
+      "templating": {
+        "list": [
+          {
+            "name": "datasource",
+            "type": "datasource",
+            "query": "prometheus",
+            "current": { "text": "Prometheus", "value": "Prometheus" }
+          }
+        ]
+      },
+      "panels": [
+        {
+          "type": "row",
+          "title": "Application Health Overview",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+          "collapsed": false
+        },
+        {
+          "title": "Pod Status",
+          "type": "stat",
+          "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(kube_pod_status_phase{namespace=\"apps\", pod=~\"hello-goldenpath-idp.*\", phase=\"Running\"})",
+              "legendFormat": "Running"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "green", "value": 1 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Pod Restarts (24h)",
+          "type": "stat",
+          "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"apps\", pod=~\"hello-goldenpath-idp.*\"}[24h]))",
+              "legendFormat": "Restarts"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1 },
+                  { "color": "red", "value": 5 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Container Ready",
+          "type": "stat",
+          "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(kube_pod_container_status_ready{namespace=\"apps\", pod=~\"hello-goldenpath-idp.*\"})",
+              "legendFormat": "Ready"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "green", "value": 1 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Replicas Available",
+          "type": "stat",
+          "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "kube_deployment_status_replicas_available{namespace=\"apps\", deployment=\"hello-goldenpath-idp\"}",
+              "legendFormat": "Available"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "green", "value": 1 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "RED Metrics - Traffic (via Kong Ingress)",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+          "collapsed": false
+        },
+        {
+          "title": "Request Rate (RPS)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 6 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(kong_http_requests_total{service=~\".*hello-goldenpath-idp.*\"}[2m]))",
+              "legendFormat": "Requests/s"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "title": "Requests by Status Code",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 6 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(kong_http_requests_total{service=~\".*hello-goldenpath-idp.*\"}[2m])) by (code)",
+              "legendFormat": "{{code}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": { "drawStyle": "line", "fillOpacity": 10 }
+            }
+          }
+        },
+        {
+          "title": "Error Rate (%)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 6 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "(sum(rate(kong_http_requests_total{service=~\".*hello-goldenpath-idp.*\", code=~\"5..\"}[2m])) / sum(rate(kong_http_requests_total{service=~\".*hello-goldenpath-idp.*\"}[2m]))) * 100",
+              "legendFormat": "5xx Error Rate"
+            },
+            {
+              "expr": "(sum(rate(kong_http_requests_total{service=~\".*hello-goldenpath-idp.*\", code=~\"4..\"}[2m])) / sum(rate(kong_http_requests_total{service=~\".*hello-goldenpath-idp.*\"}[2m]))) * 100",
+              "legendFormat": "4xx Error Rate"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1 },
+                  { "color": "red", "value": 5 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Duration - Latency",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 14 },
+          "collapsed": false
+        },
+        {
+          "title": "Request Latency P50/P95/P99",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 15 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.50, sum(rate(kong_request_latency_ms_bucket{service=~\".*hello-goldenpath-idp.*\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P50"
+            },
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(kong_request_latency_ms_bucket{service=~\".*hello-goldenpath-idp.*\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P95"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(kong_request_latency_ms_bucket{service=~\".*hello-goldenpath-idp.*\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P99"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "custom": { "drawStyle": "line" }
+            }
+          }
+        },
+        {
+          "title": "Upstream Latency P50/P95/P99",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 15 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.50, sum(rate(kong_upstream_latency_ms_bucket{service=~\".*hello-goldenpath-idp.*\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P50"
+            },
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(kong_upstream_latency_ms_bucket{service=~\".*hello-goldenpath-idp.*\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P95"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(kong_upstream_latency_ms_bucket{service=~\".*hello-goldenpath-idp.*\"}[5m])) by (le)) / 1000",
+              "legendFormat": "P99"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "custom": { "drawStyle": "line" }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Saturation - Resource Usage",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 23 },
+          "collapsed": false
+        },
+        {
+          "title": "CPU Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"apps\", pod=~\"hello-goldenpath-idp.*\", container!=\"\", container!=\"POD\"}[2m])) by (pod)",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "title": "Memory Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            {
+              "expr": "sum(container_memory_usage_bytes{namespace=\"apps\", pod=~\"hello-goldenpath-idp.*\", container!=\"\", container!=\"POD\"}) by (pod)",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes",
+              "custom": { "drawStyle": "line", "fillOpacity": 20 }
+            }
+          }
+        },
+        {
+          "type": "row",
+          "title": "Logs (Loki)",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 32 },
+          "collapsed": false
+        },
+        {
+          "title": "Application Logs",
+          "type": "logs",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 33 },
+          "datasource": { "type": "loki", "uid": "loki" },
+          "targets": [
+            {
+              "expr": "{namespace=\"apps\", app=~\"hello-goldenpath-idp.*\"}",
+              "legendFormat": ""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none",
+            "enableLogDetails": true
+          }
+        }
+      ]
+    }

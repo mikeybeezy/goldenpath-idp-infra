@@ -9,6 +9,7 @@ resources:
   - keycloak-dashboard.yaml
   - argocd-dashboard.yaml
   - kong-dashboard.yaml
+  - hello-goldenpath-idp-dashboard.yaml
 
 commonLabels:
   app.kubernetes.io/part-of: goldenpath-idp
