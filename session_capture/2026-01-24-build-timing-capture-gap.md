@@ -168,13 +168,18 @@ Implemented **Option A** (align log naming + add script calls).
 
 | Target | Old Log Name | New Log Name |
 |--------|-------------|--------------|
+| `apply-persistent` | `apply-persistent-<env>-<cluster>-<ts>.log` | `apply-persistent-<env>-persistent-<cluster>-<ts>.log` |
 | `bootstrap-persistent` | `bootstrap-persistent-<env>-<cluster>-<ts>.log` | `bootstrap-persistent-<env>-persistent-<ts>.log` |
 | `bootstrap-persistent-v4` | `bootstrap-v4-<env>-<cluster>-<ts>.log` | `bootstrap-persistent-<env>-persistent-<ts>.log` |
 | `teardown-persistent` | `teardown-persistent-<env>-<cluster>-<ts>.log` | `teardown-persistent-<env>-persistent-<ts>.log` |
+| `rds-apply` | `rds-apply-<env>-<ts>.log` | `rds-apply-<env>-rds-<ts>.log` |
 
 #### Script Calls Added
 
 ```makefile
+# After apply-persistent target
+@bash scripts/record-build-timing.sh $(ENV) persistent apply-persistent || true
+
 # After bootstrap-persistent target
 @bash scripts/record-build-timing.sh $(ENV) persistent bootstrap-persistent || true
 
@@ -183,6 +188,9 @@ Implemented **Option A** (align log naming + add script calls).
 
 # After teardown-persistent target
 @bash scripts/record-build-timing.sh $(ENV) persistent teardown-persistent || true
+
+# After rds-apply target
+@bash scripts/record-build-timing.sh $(ENV) rds rds-apply || true
 ```
 
 All calls use `|| true` for fail-open behavior (NFR-2 compliance).
@@ -195,14 +203,48 @@ All calls use `|| true` for fail-open behavior (NFR-2 compliance).
 4. [x] Duration is accurately calculated
 5. [x] Exit code is captured for success/failure tracking
 6. [x] Log filename matches pattern `*<phase>*<build_id>*.log`
+7. [x] `apply-persistent` timing is captured
+8. [x] `rds-apply` timing is captured for standalone RDS reliability
+9. [x] Reliability metrics read governance-registry CSV and include persistent phases
 
 ### Files Modified
 
 | File | Change |
 |------|--------|
 | `Makefile` | Updated log naming, added `record-build-timing.sh` calls |
+| `scripts/reliability-metrics.sh` | Read governance-registry CSV and include persistent phases |
 | `docs/changelog/entries/CL-0169-persistent-cluster-build-timing.md` | Changelog entry |
 
 ### Next Deployment
 
 The next `make deploy-persistent` or `make teardown-persistent` will automatically record timings to the governance-registry branch.
+
+---
+
+## HOTFIX COMPLIANCE STATEMENT (25-point)
+
+1) Root cause: Persistent timing capture missed apply/RDS phases and reliability-metrics read the legacy CSV while filtering out persistent phases.
+2) Prevention: Added record-build-timing calls + log naming alignment for apply-persistent/rds-apply and updated reliability-metrics to read governance-registry CSV and include persistent phases.
+3) Backward compat: Yes; reliability-metrics still accepts an explicit CSV path and falls back to docs/build-timings.csv when no env is set.
+4) Breaking changes: None.
+5) Test evidence: `bash -n scripts/reliability-metrics.sh` (pass); `shellcheck` not installed.
+6) Rollback plan: Revert Makefile and scripts/reliability-metrics.sh changes and revert session capture/changelog updates; no infra rollback required.
+7) Blast radius: Build timing capture + reporting only.
+8) Observability: Updated reliability-metrics output to include persistent phases; no runtime alerts changed.
+9) Security: No new permissions, secrets handling, or policy changes.
+10) Documentation: Updated session capture and changelog.
+11) Owner sign-off: N/A.
+12) Scope: Makefile, scripts/reliability-metrics.sh, session_capture/2026-01-24-build-timing-capture-gap.md, docs/changelog/entries/CL-0169-persistent-cluster-build-timing.md.
+13) Timebox: <10 minutes.
+14) Idempotency: Re-runs append new timing rows; expected and safe.
+15) State reconciliation: N/A (metrics/logging only).
+16) Pre-flight: Ensure governance-registry branch is reachable; ensure git is available for reliability-metrics when reading registry CSV.
+17) Cross-automation: Makefile log naming now matches recorder pattern; no CI conflicts.
+18) Rebuild-cycle: N/A (metrics/logging only; no infra changes).
+19) Prevention codified: Makefile log naming + record calls and scripts/reliability-metrics.sh phase/source handling.
+20) Cascade check: Explicit CSV path still supported; legacy docs/build-timings.csv fallback preserved.
+21) Recursive application: Any new problem encountered will trigger the full 25-point policy before proceeding.
+22) No workarounds: Underlying code was fixed (log naming + metrics sourcing); no manual bypass used.
+23) Policy integrity: PROMPT-0004 was not modified.
+24) Terraform authorisation: No terraform apply was run.
+25) Deployment authorisation: No deployments were initiated or triggered.

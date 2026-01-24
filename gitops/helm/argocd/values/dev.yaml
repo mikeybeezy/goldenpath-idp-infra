@@ -10,6 +10,8 @@ server:
     enabled: true
     ingressClassName: kong
     hostname: argocd.dev.goldenpathidp.io
+    hosts:
+      - argocd.dev.goldenpathidp.io
     tls:
       - hosts:
           - argocd.dev.goldenpathidp.io

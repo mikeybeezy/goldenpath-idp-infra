@@ -517,11 +517,12 @@ rds-apply:
 	@echo "      Use rds-destroy-break-glass only when deletion is required (RB-0030)."
 	@mkdir -p logs/build-timings
 	@bash -c '\
-	log="logs/build-timings/rds-apply-$(ENV)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	log="logs/build-timings/rds-apply-$(ENV)-rds-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "RDS apply output streaming; full log at $$log"; \
 	$(TF_BIN) -chdir=$(RDS_ENV_DIR) apply $(TF_APPROVE_FLAG) 2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
+	@bash scripts/record-build-timing.sh $(ENV) rds rds-apply || true
 
 rds-allow-delete:
 	@if [ "$(CONFIRM_RDS_DELETE)" != "yes" ]; then \
@@ -962,7 +963,7 @@ apply-persistent:
 	@echo "State key: envs/$(ENV)/terraform.tfstate"
 	@mkdir -p logs/build-timings
 	@bash -c '\
-	log="logs/build-timings/apply-persistent-$(ENV)-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	log="logs/build-timings/apply-persistent-$(ENV)-persistent-$(PERSISTENT_CLUSTER_EFFECTIVE)-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
 	echo "Terraform apply output streaming; full log at $$log"; \
 	$(TF_BIN) -chdir=$(ENV_DIR) apply \
 		$(TF_APPROVE_FLAG) \
@@ -972,6 +973,7 @@ apply-persistent:
 		2>&1 | tee "$$log"; \
 	exit $${PIPESTATUS[0]}; \
 	'
+	@bash scripts/record-build-timing.sh $(ENV) persistent apply-persistent || true
 
 bootstrap-persistent:
 	@echo "Bootstrapping persistent cluster $(PERSISTENT_CLUSTER_EFFECTIVE)..."
