@@ -48,7 +48,7 @@ relates_to:
 | `scripts/migrate_partial_metadata.py` | `SCRIPT-0024` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/platform_health.py` | `SCRIPT-0025` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/pr_guardrails.py` | `SCRIPT-0026` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
-| `scripts/preflight_secrets_check.sh` | `MISSING` | `MISSING` | 0 | 🚫 | `MISSING` | `MISSING` | `MISSING` |
+| `scripts/preflight_secrets_check.sh` | `SCRIPT-0053` | `platform-team` | ⭐⭐ 2 | 🚫 | `shellcheck` | `declared` | `medium` |
 | `scripts/rds_provision.py` | `SCRIPT-0035` | `platform-team` | ⭐ 1 | ✅ | `pytest` | `declared` | `medium` |
 | `scripts/rds_request_parser.py` | `SCRIPT-0034` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/rds_secrets_preflight.sh` | `SCRIPT-0052` | `platform-team` | ⭐⭐ 2 | 🚫 | `shellcheck` | `declared` | `medium` |

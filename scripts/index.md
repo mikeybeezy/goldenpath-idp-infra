@@ -88,7 +88,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [inject_script_metadata.py](inject_script_metadata.py) | --- |
 | [load-image-to-kind.sh](load-image-to-kind.sh) | --- |
 | [migrate_partial_metadata.py](migrate_partial_metadata.py) | --- |
-| [preflight_secrets_check.sh](preflight_secrets_check.sh) | ----------------------------------------------------------------------------- |
+| [preflight_secrets_check.sh](preflight_secrets_check.sh) | --- |
 | [rds_provision.py](rds_provision.py) | --- |
 | [rds_request_parser.py](rds_request_parser.py) | --- |
 | [rds_secrets_preflight.sh](rds_secrets_preflight.sh) | --- |

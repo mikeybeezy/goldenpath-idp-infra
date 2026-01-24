@@ -3472,3 +3472,46 @@ Problem → Root Cause → Fix + Prevention → Document → Never Again
 - [ ] Deploy RDS after EKS is operational
 
 Signed: Claude Opus 4.5 (2026-01-24T11:00:00Z)
+
+---
+
+## 2026-01-24T23:00:00Z — PR #279: V1 Observability and Platform Stabilization
+
+- **Agent:** Claude Opus 4.5
+- **Timestamp:** 2026-01-24T23:00:00Z
+- **Branch:** development → main
+- **Status:** PR Ready for Human Merge
+
+### Summary
+
+Consolidated development branch work for merge to main: observability stack, CI/CD improvements, and platform stabilization fixes.
+
+### Key Changes
+
+| Category | Changes |
+|----------|---------|
+| Observability | ServiceMonitor configs for Backstage, ArgoCD, Keycloak; Kong Prometheus metrics |
+| CI/CD | IAM policy tightening (ADR-0177); Terraform fixes |
+| Platform | Prometheus CRD sync fixes; ExternalDNS injection fix; RDS CREATEDB privilege |
+| Infrastructure | K8s Job for RDS provisioning; initial_value for deterministic rebuilds |
+
+### Artifacts Touched
+
+*Modified:*
+- `gitops/helm/*/values/dev.yaml` — ServiceMonitor configurations
+- `envs/dev/variables.tf` — Terraform formatting
+- `scripts/preflight_secrets_check.sh` — Added metadata header (SCRIPT-0053)
+
+*Added:*
+- `backstage-helm/charts/backstage/templates/servicemonitor.yaml`
+- `docs/70-operations/50_SERVICEMONITOR_OBSERVABILITY_GUIDE.md`
+- `gitops/helm/tooling-dashboards/hello-goldenpath-idp-servicemonitor.yaml`
+- Changelogs CL-0168 through CL-0182
+
+### PR Gate Compliance
+
+- Terraform formatting fixed
+- Script metadata added for governance
+- Healing scripts executed (ADR index, script index, certification matrix)
+
+Signed: Claude Opus 4.5 (2026-01-24T23:00:00Z)

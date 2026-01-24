@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
+# ---
+# id: SCRIPT-0053
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 2
+# dry_run:
+#   supported: false
+#   command_hint: N/A
+# test:
+#   runner: shellcheck
+#   command: shellcheck scripts/preflight_secrets_check.sh
+#   evidence: declared
+# risk_profile:
+#   production_impact: medium
+#   security_risk: low
+#   coupling_risk: low
+# ---
 # -----------------------------------------------------------------------------
 # Preflight Secrets Check
 # Validates that required secrets exist and have non-placeholder values
