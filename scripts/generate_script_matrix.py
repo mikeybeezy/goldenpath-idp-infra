@@ -68,6 +68,17 @@ def write_maturity_snapshot(rows: list) -> None:
     if "maturity_snapshots" not in ledger:
         ledger["maturity_snapshots"] = []
 
+    # Only append if distribution has changed from last snapshot
+    snapshots = ledger["maturity_snapshots"]
+    if snapshots:
+        last = snapshots[-1]
+        if (
+            last.get("total_scripts") == snapshot["total_scripts"]
+            and last.get("maturity_distribution") == snapshot["maturity_distribution"]
+        ):
+            # No change in distribution, skip writing
+            return
+
     # Append new snapshot (keep last 30)
     ledger["maturity_snapshots"].append(snapshot)
     ledger["maturity_snapshots"] = ledger["maturity_snapshots"][-30:]
