@@ -2,6 +2,7 @@
 id: 2026-01-21-route53-dns-terraform
 title: Route53 DNS Management in Terraform
 type: session-capture
+owner: platform-team
 status: completed
 relates_to:
   - ADR-0162-kong-ingress-dns-strategy
