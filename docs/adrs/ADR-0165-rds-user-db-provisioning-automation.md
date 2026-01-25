@@ -22,10 +22,12 @@ relates_to:
   - ADR-0158-platform-standalone-rds-bounded-context
   - ADR-0165
   - ADR-0166
+  - ADR-0181-rds-createdb-privilege-for-applications
   - CATALOG_INDEX
   - CL-0140
   - CL-0143
   - CL-0147
+  - CL-0183-preflight-secrets-check-metadata
   - PRD-0001-rds-user-db-provisioning
   - PR_GUARDRAILS_INDEX
   - RB-0032
@@ -34,8 +36,10 @@ relates_to:
   - RDS_SESSION_FEEDBACK
   - RDS_USER_DB_PROVISIONING
   - SCRIPT-0035
+  - SCRIPT-0053
   - SESSION_CAPTURE_2026_01_17_01
   - agent_session_summary
+  - preflight_secrets_check.sh
   - session-2026-01-17-eks-backstage-scaffolder
   - session-2026-01-19-build-pipeline-architecture
 supersedes: []
@@ -119,7 +123,10 @@ prod environments.
 
 ## Implementation Details (2026-01-16)
 
-**Script**: `scripts/rds_provision.py` (SCRIPT-0035)
+**Scripts**:
+
+- `scripts/rds_provision.py` (SCRIPT-0035) - Main provisioning script
+- `scripts/preflight_secrets_check.sh` (SCRIPT-0053) - Validates secrets before provisioning
 
 **Trigger**: Makefile targets `rds-provision` and `rds-provision-dry-run`
 
@@ -133,3 +140,66 @@ prod environments.
 - Dry-run mode for safe preview
 
 **Runbook**: RB-0032-rds-user-provision.md
+
+## Execution Architecture (2026-01-24)
+
+### Problem: VPC Access Required
+
+RDS instances are deployed in private VPC subnets. The provisioning script must
+execute from within the VPC to reach the RDS endpoint. Local execution (developer
+machine, GitHub runners) fails with DNS resolution errors because the RDS private
+DNS name is not resolvable outside the VPC.
+
+### Solution: K8s Job Execution
+
+Run `rds_provision.py` as a Kubernetes Job inside the EKS cluster. Pods in the
+cluster have VPC network access and can reach the private RDS endpoint.
+
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│                     Execution Flow                              │
+├─────────────────────────────────────────────────────────────────┤
+│  Terraform Pass 2 (enable_k8s_resources=true)                   │
+│    └── Creates platform-system namespace                        │
+│    └── Creates platform-provisioner ServiceAccount (IRSA)       │
+│                                                                 │
+│  RDS Provisioning (make rds-provision-auto)                     │
+│    └── Detects EKS cluster available                            │
+│    └── Creates K8s Job in platform-system namespace             │
+│    └── Job pod has VPC access → reaches RDS                     │
+│    └── Job pod has IRSA → reads/writes Secrets Manager          │
+│    └── Waits for completion, fetches logs                       │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Terraform-Managed Infrastructure
+
+The `platform-system` namespace and ServiceAccount are created by Terraform
+during Pass 2, following the same pattern as `argocd` and `external-secrets`
+namespaces. This ensures the infrastructure exists BEFORE RDS provisioning runs.
+
+| Resource | Location | Purpose |
+|----------|----------|---------|
+| `kubernetes_namespace_v1.platform_system` | `envs/dev/main.tf` | Namespace for platform automation |
+| `kubernetes_service_account_v1.platform_provisioner` | `envs/dev/main.tf` | IRSA-enabled SA for Secrets Manager |
+| `iam_role.rds_provisioner` | `modules/iam/main.tf` | IAM role for Secrets Manager access |
+
+### RDS Modes Support
+
+| Mode | Trigger | Sequence |
+|------|---------|----------|
+| **Coupled** | `make deploy` with `rds_config.enabled=true` | EKS → platform-system → RDS provision → bootstrap |
+| **Standalone** | `make rds-deploy` | EKS must exist → K8s Job runs in platform-system |
+
+### IRSA Policy
+
+The `platform-provisioner` ServiceAccount requires:
+
+- `secretsmanager:GetSecretValue` - Read RDS master credentials
+- `secretsmanager:PutSecretValue` - Write application credentials
+- `secretsmanager:CreateSecret` - Create new secrets if needed
+
+### Fallback Paths
+
+1. **Port-forward**: For debugging, forward RDS port through cluster
+2. **Lambda** (v2): Future K8s-independent execution path (see Follow-ups)

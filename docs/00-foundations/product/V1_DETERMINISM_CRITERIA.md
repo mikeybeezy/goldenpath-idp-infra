@@ -2,7 +2,6 @@
 id: V1_DETERMINISM_CRITERIA
 title: V1 Determinism Criteria - Synthesized Claude + Codex Recommendations
 type: documentation
-domain: platform-core
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze

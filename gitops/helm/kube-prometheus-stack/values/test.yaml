@@ -1,6 +1,9 @@
 # Managed by scripts/standardize_metadata.py
 prometheus:
   prometheusSpec:
+    # Widen ServiceMonitor selector to discover all ServiceMonitors regardless of release label
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
     retention: 7d
     storageSpec:
       volumeClaimTemplate:

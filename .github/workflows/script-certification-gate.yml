@@ -133,3 +133,20 @@ jobs:
               repo: context.repo.repo,
               body: body
             });
+
+      - name: Record certification metrics
+        if: always() && steps.detect.outputs.no_new_scripts != 'true'
+        env:
+          RESULT: ${{ steps.check.outputs.failed == 'true' && 'fail' || 'pass' }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          # Record pass/fail metrics for tracking certification gate effectiveness
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "::notice::Certification gate result: $RESULT for PR #$PR_NUMBER at $TIMESTAMP"
+
+          # Output metrics summary
+          if [ "$RESULT" = "pass" ]; then
+            echo "::notice title=Certification::All scripts certified successfully"
+          else
+            echo "::warning title=Certification::Scripts require certification remediation"
+          fi

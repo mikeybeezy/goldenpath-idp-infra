@@ -43,3 +43,13 @@ output "external_dns_role_arn" {
   description = "ARN of the ExternalDNS IAM role."
   value       = try(aws_iam_role.external_dns[0].arn, null)
 }
+
+output "rds_provisioner_role_name" {
+  description = "Name of the RDS Provisioner IAM role."
+  value       = try(aws_iam_role.rds_provisioner[0].name, null)
+}
+
+output "rds_provisioner_role_arn" {
+  description = "ARN of the RDS Provisioner IAM role."
+  value       = try(aws_iam_role.rds_provisioner[0].arn, null)
+}

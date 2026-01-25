@@ -96,3 +96,10 @@ variable "adopt_existing" {
   type        = bool
   default     = false
 }
+
+variable "initial_value" {
+  description = "Initial JSON value for new secrets. Set to null to create empty secret shell. Use placeholder values for required keys."
+  type        = string
+  default     = null
+  sensitive   = true
+}

@@ -58,3 +58,14 @@ gateway:
     limits:
       cpu: 100m
       memory: 64Mi
+
+# -----------------------------------------------------------------------------
+# Grafana Datasource Sidecar Configuration
+# Disable datasource creation here - Loki is already configured in
+# kube-prometheus-stack's additionalDataSources with correct settings.
+# This prevents "Only one datasource per organization can be marked as default" error
+# -----------------------------------------------------------------------------
+grafana:
+  sidecar:
+    datasources:
+      enabled: false

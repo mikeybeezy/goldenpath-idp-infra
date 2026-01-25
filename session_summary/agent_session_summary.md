@@ -3472,3 +3472,123 @@ Problem → Root Cause → Fix + Prevention → Document → Never Again
 - [ ] Deploy RDS after EKS is operational
 
 Signed: Claude Opus 4.5 (2026-01-24T11:00:00Z)
+
+---
+
+## 2026-01-24T23:00:00Z — PR #279: V1 Observability and Platform Stabilization
+
+- **Agent:** Claude Opus 4.5
+- **Timestamp:** 2026-01-24T23:00:00Z
+- **Branch:** development → main
+- **Status:** PR Ready for Human Merge
+
+### Summary
+
+Consolidated development branch work for merge to main: observability stack, CI/CD improvements, and platform stabilization fixes.
+
+### Key Changes
+
+| Category | Changes |
+|----------|---------|
+| Observability | ServiceMonitor configs for Backstage, ArgoCD, Keycloak; Kong Prometheus metrics |
+| CI/CD | IAM policy tightening (ADR-0177); Terraform fixes |
+| Platform | Prometheus CRD sync fixes; ExternalDNS injection fix; RDS CREATEDB privilege |
+| Infrastructure | K8s Job for RDS provisioning; initial_value for deterministic rebuilds |
+
+### Artifacts Touched
+
+*Modified:*
+- `gitops/helm/*/values/dev.yaml` — ServiceMonitor configurations
+- `envs/dev/variables.tf` — Terraform formatting
+- `scripts/preflight_secrets_check.sh` — Added metadata header (SCRIPT-0053)
+
+*Added:*
+- `backstage-helm/charts/backstage/templates/servicemonitor.yaml`
+- `docs/70-operations/50_SERVICEMONITOR_OBSERVABILITY_GUIDE.md`
+- `gitops/helm/tooling-dashboards/hello-goldenpath-idp-servicemonitor.yaml`
+- Changelogs CL-0168 through CL-0182
+
+### PR Gate Compliance
+
+- Terraform formatting fixed
+- Script metadata added for governance
+- Healing scripts executed (ADR index, script index, certification matrix)
+
+Signed: Claude Opus 4.5 (2026-01-24T23:00:00Z)
+
+---
+
+## 2026-01-25T07:15:00Z — Governance: Metrics Upgrades & Post-Sprint Consolidation — env=dev build_id=na
+
+Owner: platform-team
+Agent: Claude Opus 4.5
+Goal: Consolidate governance metrics, verify deterministic teardown, fix observability gaps
+
+Environment: AWS `dev`
+Region: eu-west-2
+Objective: Post-sprint cleanup - fix duplicate SCRIPT IDs, add maturity tracking, verify orphan cleanup, fix ServiceMonitor discovery
+
+### Highlights
+
+- **Deterministic teardown validated**: Zero orphan AWS resources from last persistent cluster build; Terraform state clean
+- **Governance metrics consolidated**: Fixed 4 duplicate SCRIPT IDs (SCRIPT-0054 to SCRIPT-0057), added maturity snapshots to value_ledger.json
+- **Platform health dashboard enhanced**: Added build timing metrics from governance-registry branch
+- **ServiceMonitor fix**: Widened Prometheus selector to discover ServiceMonitors across all environments
+- **EC-0013 created**: Universal Agent Context Architecture proposal for cross-agent compatibility
+
+### Issues Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| 4 duplicate SCRIPT IDs | Manual ID assignment conflicts | Assigned SCRIPT-0054 to SCRIPT-0057 |
+| ServiceMonitor not discovered in staging/prod/test | Hardcoded `release: dev-kube-prometheus-stack` | Added `serviceMonitorSelectorNilUsesHelmValues: false` |
+| Platform health missing build timing | No integration with governance-registry | Added `get_build_timing_stats()` function |
+
+### Codex Feedback Review
+
+| Finding | Codex Severity | Assessed | Disposition |
+|---------|---------------|----------|-------------|
+| Hard-coded dev path in platform_health.py | Medium | Low | Deferred - YAGNI |
+| Dual timing entries (rds-apply + rds-deploy) | Low | Non-issue | Keep both - granular + aggregate |
+| reliability-metrics.sh env mapping | Low | Low | Deferred - not running prod metrics |
+
+### Artifacts touched
+
+*Modified:*
+- `scripts/inject_script_metadata.py` — SCRIPT-0054
+- `scripts/sync_backstage_entities.py` — SCRIPT-0055
+- `scripts/sync_ecr_catalog.py` — SCRIPT-0056
+- `scripts/test_hotfix.py` — SCRIPT-0057
+- `scripts/generate_script_matrix.py` — Added maturity snapshot writing
+- `scripts/platform_health.py` — Added build timing stats + maturity metrics
+- `gitops/helm/kube-prometheus-stack/values/{dev,staging,prod,test}.yaml` — ServiceMonitor selector fix
+
+*Added:*
+- `docs/extend-capabilities/EC-0013-agent-context-architecture.md`
+- `docs/changelog/entries/CL-0184-fix-duplicate-script-ids.md`
+- `docs/changelog/entries/CL-0185-maturity-snapshots-value-ledger.md`
+- `docs/changelog/entries/CL-0186-certification-tracking-ci.md`
+- `docs/changelog/entries/CL-0187-rds-deploy-timing-capture.md`
+- `docs/changelog/entries/CL-0188-platform-health-build-timing.md`
+
+### Validation
+
+- `python3 scripts/generate_script_matrix.py` — SUCCESS
+- `DRY_RUN=true cleanup-orphans-persistent.sh` — Zero orphans found
+- `terraform state list` — Clean (4 entries, no orphan resources)
+- Maturity snapshot: M1:4, M2:51, M3:1
+
+### Next actions
+
+- [ ] Commit and push governance metrics changes
+- [ ] Run CI to verify no regressions
+- [ ] ArgoCD sync to apply ServiceMonitor selector fix
+
+### Session Report
+
+- **Summary:** Post-sprint consolidation session; validated deterministic teardown working correctly; fixed governance gaps (duplicate IDs, maturity tracking); fixed cross-env ServiceMonitor discovery; created EC-0013 for agent context architecture
+- **Decisions:** Keep dual rds-apply/rds-deploy timing (granular + aggregate); defer multi-env metrics support (YAGNI)
+- **Risks/Follow-ups:** None critical; cosmetic docstring updates can be done opportunistically
+- **Validation:** Orphan cleanup verified clean; Terraform state verified; governance scripts executed successfully
+
+Signed: Claude Opus 4.5 (2026-01-25T07:15:00Z)

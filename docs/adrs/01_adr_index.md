@@ -386,6 +386,7 @@ relates_to:
   - ADR-0178
   - ADR-0179
   - ADR-0180
+  - ADR-0181
 <!-- ADR_RELATE_END -->
 ---
 
@@ -577,6 +578,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0178](ADR-0178-ephemeral-persistent-dns-and-bootstrap-contract.md) | Platform | Ephemeral vs Persistent DNS Ownership and Bootstrap Contract | Proposed | 2026-01-0? | V1 treats ephemeral and persistent clusters identically during bootstrap. This creates several collision risks: |
 | [ADR-0179](ADR-0179-dynamic-hostname-generation-ephemeral-clusters.md) | Platform | Dynamic Hostname Generation for Ephemeral Clusters | Proposed | 2026-01-0? | ADR-0178 establishes that ephemeral clusters must use the`*.b-{buildid}.{env}.goldenpathidp.io`namespace to prevent DNS collisions. This ADR defines **how** the`buildId`flows through the system to ... |
 | [ADR-0180](ADR-0180-argocd-orchestrator-contract.md) | Platform | ArgoCD Orchestrator Contract | Proposed | 2026-01-0? | V1 bootstrap uses shell scripts with conditional logic to deploy platform components. This approach has several problems: |
+| [ADR-0181](ADR-0181-rds-createdb-privilege-for-applications.md) | Platform | CREATEDB Privilege for Application Database Users | Proposed | 2026-01-24 | The RDS provisioning script (`rds_provision.py`, SCRIPT-0035) creates PostgreSQL roles for application databases. Initially, roles were created with only`LOGIN`privilege: |
 <!-- ADR_TABLE_END -->
 
 ---

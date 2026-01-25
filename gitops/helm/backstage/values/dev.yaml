@@ -17,14 +17,13 @@ global:
 
 # -----------------------------------------------------------------------------
 # Image Configuration
-# TODO: Build custom Backstage image with required plugins and push to ECR
-# Current: Using official Backstage image (may have UI incompatibilities)
+# Custom Backstage image with required plugins from ECR
 # -----------------------------------------------------------------------------
 image:
-  repository: "ghcr.io/backstage/"
-  name: "backstage"
-  tag: "latest"
-  pullPolicy: Always
+  repository: "593517239005.dkr.ecr.eu-west-2.amazonaws.com"
+  name: "goldenpath-backstage"
+  tag: "v0.1.0"
+  pullPolicy: IfNotPresent
 
 # -----------------------------------------------------------------------------
 # External Secrets Configuration
@@ -103,6 +102,19 @@ resources:
   limits:
     cpu: 500m
     memory: 1Gi
+
+# -----------------------------------------------------------------------------
+# ServiceMonitor for Prometheus Operator
+# Enables automatic metrics scraping by kube-prometheus-stack
+# NOTE: Backstage needs prom-client plugin configured to expose /metrics
+# Container metrics (CPU, Memory) work automatically via cAdvisor
+# -----------------------------------------------------------------------------
+serviceMonitor:
+  enabled: true
+  namespace: backstage
+  interval: 30s
+  labels:
+    release: dev-kube-prometheus-stack
 
 # -----------------------------------------------------------------------------
 # Service Account

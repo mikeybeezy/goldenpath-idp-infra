@@ -1,0 +1,26 @@
+# Managed by scripts/standardize_metadata.py
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-tooling-dashboards
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "50"
+    goldenpath.idp/id: APPS_TEST_TOOLING_DASHBOARDS
+    goldenpath.idp/owner: platform-team
+    goldenpath.idp/risk: low
+spec:
+  project: default
+  destination:
+    # Resources define their own namespaces (kong-system, argocd, backstage, keycloak)
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
+    targetRevision: test
+    path: gitops/helm/tooling-dashboards
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

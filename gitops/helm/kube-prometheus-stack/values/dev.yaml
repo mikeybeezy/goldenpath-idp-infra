@@ -8,9 +8,10 @@ governance:
   reliability: null
 
 # -----------------------------------------------------------------------------
-# Image Configuration - Pinned Versions
+# Prometheus Server
 # -----------------------------------------------------------------------------
 prometheus:
+  enabled: true
   prometheusSpec:
     image:
       registry: quay.io
@@ -32,6 +33,10 @@ prometheus:
       limits:
         cpu: 1000m
         memory: 2Gi
+    # Widen ServiceMonitor selector to discover all ServiceMonitors regardless of release label
+    # This allows tooling-dashboards ServiceMonitors to be scraped across all environments
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
 
 # -----------------------------------------------------------------------------
 # Alertmanager
@@ -88,12 +93,14 @@ grafana:
   additionalDataSources:
     - name: Loki
       type: loki
+      uid: loki
       access: proxy
-      url: http://loki-gateway.monitoring.svc:3100
+      url: http://dev-loki.monitoring.svc:3100
       jsonData:
         maxLines: 1000
     - name: Tempo
       type: tempo
+      uid: tempo
       access: proxy
       url: http://tempo.monitoring.svc.cluster.local:3100
       jsonData:
@@ -138,6 +145,13 @@ prometheusOperator:
     registry: quay.io
     repository: prometheus-operator/prometheus-operator
     tag: v0.68.0
+  # Ensure CRDs are managed by the operator
+  manageCrds: true
+  # Disable admission webhooks to prevent PreSync hook conflicts
+  # The admission webhooks create ClusterRole/ClusterRoleBinding resources
+  # that cause "already exists" errors when ArgoCD tries to sync
+  admissionWebhooks:
+    enabled: false
   resources:
     requests:
       cpu: 10m
@@ -145,6 +159,12 @@ prometheusOperator:
     limits:
       cpu: 200m
       memory: 256Mi
+
+# -----------------------------------------------------------------------------
+# CRDs - Must be installed for Prometheus to work
+# -----------------------------------------------------------------------------
+crds:
+  enabled: true
 
 # -----------------------------------------------------------------------------
 # Node Exporter

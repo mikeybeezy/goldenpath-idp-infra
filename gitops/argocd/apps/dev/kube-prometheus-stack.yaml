@@ -13,6 +13,14 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
+  # Ignore PVC spec differences (volumeName/storageClassName are populated by cluster)
+  ignoreDifferences:
+    - group: ""
+      kind: PersistentVolumeClaim
+      jsonPointers:
+        - /spec/volumeName
+        - /spec/storageClassName
+        - /spec/volumeMode
   sources:
     - repoURL: https://prometheus-community.github.io/helm-charts
       chart: kube-prometheus-stack
@@ -29,3 +37,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true

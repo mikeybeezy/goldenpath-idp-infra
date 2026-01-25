@@ -92,6 +92,20 @@ resource "aws_secretsmanager_secret" "this" {
 }
 
 # -----------------------------------------------------------------------------
+# Set initial value for new secrets (placeholder for required keys)
+# -----------------------------------------------------------------------------
+resource "aws_secretsmanager_secret_version" "initial" {
+  count = local.should_create && var.initial_value != null ? 1 : 0
+
+  secret_id     = aws_secretsmanager_secret.this[0].id
+  secret_string = var.initial_value
+
+  lifecycle {
+    ignore_changes = [secret_string]
+  }
+}
+
+# -----------------------------------------------------------------------------
 # Update tags on adopted secret
 # -----------------------------------------------------------------------------
 resource "null_resource" "adopt_tags" {

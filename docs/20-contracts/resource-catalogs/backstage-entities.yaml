@@ -217,3 +217,25 @@ spec:
   owner: platform-team
   lifecycle: pending
   system: container-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: new-wp-reg2
+  title: new-wp-reg2
+  description: ECR Registry for new-wp-reg2
+  value_quantification:
+    vq_class: " \u26AB LV/LQ"
+  annotations:
+    goldenpath-idp.io/risk: low
+    goldenpath-idp.io/environment: dev
+    goldenpath-idp.io/status: pending
+    goldenpath-idp.io/id: REGISTRY_NEW_WP_REG2
+    goldenpath-idp.io/lineage: explicit
+  labels:
+    owner: platform-team
+spec:
+  type: container-registry
+  owner: platform-team
+  lifecycle: pending
+  system: container-infrastructure

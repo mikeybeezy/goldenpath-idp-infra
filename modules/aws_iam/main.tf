@@ -436,3 +436,102 @@ resource "aws_iam_role_policy_attachment" "external_dns" {
   role       = aws_iam_role.external_dns[0].name
   policy_arn = var.external_dns_policy_arn != "" ? var.external_dns_policy_arn : aws_iam_policy.external_dns[0].arn
 }
+
+################################################################################
+# RDS Provisioner IRSA Role (ADR-0165)
+################################################################################
+#
+# Enables K8s Jobs in platform-system namespace to access Secrets Manager
+# for RDS user/database provisioning. Jobs need to:
+# - Read RDS master credentials
+# - Write application database credentials
+#
+# See: ADR-0165-rds-user-db-provisioning-automation.md
+################################################################################
+
+data "aws_iam_policy_document" "rds_provisioner_assume" {
+  count = var.enable_rds_provisioner_role ? 1 : 0
+
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:aud"
+      values   = [var.oidc_audience]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:${var.rds_provisioner_service_account_namespace}:${var.rds_provisioner_service_account_name}"]
+    }
+
+    principals {
+      type        = "Federated"
+      identifiers = [var.oidc_provider_arn]
+    }
+  }
+}
+
+resource "aws_iam_role" "rds_provisioner" {
+  count              = var.enable_rds_provisioner_role ? 1 : 0
+  name               = var.rds_provisioner_role_name
+  assume_role_policy = data.aws_iam_policy_document.rds_provisioner_assume[0].json
+  tags               = merge(var.tags, local.environment_tags)
+}
+
+data "aws_iam_policy_document" "rds_provisioner" {
+  count = var.enable_rds_provisioner_role ? 1 : 0
+
+  # Read RDS master credentials and existing app secrets
+  statement {
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds"
+    ]
+    resources = ["arn:aws:secretsmanager:*:*:secret:goldenpath*"]
+  }
+
+  # Write application database credentials
+  statement {
+    effect = "Allow"
+    actions = [
+      "secretsmanager:PutSecretValue",
+      "secretsmanager:UpdateSecret"
+    ]
+    resources = ["arn:aws:secretsmanager:*:*:secret:goldenpath*"]
+  }
+
+  # Create new secrets if needed
+  statement {
+    effect = "Allow"
+    actions = [
+      "secretsmanager:CreateSecret",
+      "secretsmanager:TagResource"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringLike"
+      variable = "secretsmanager:Name"
+      values   = ["goldenpath/*"]
+    }
+  }
+}
+
+resource "aws_iam_policy" "rds_provisioner" {
+  count       = var.enable_rds_provisioner_role ? 1 : 0
+  name        = "${var.rds_provisioner_role_name}-policy"
+  description = "IAM policy for RDS Provisioner to access Secrets Manager."
+  policy      = data.aws_iam_policy_document.rds_provisioner[0].json
+  tags        = merge(var.tags, local.environment_tags)
+}
+
+resource "aws_iam_role_policy_attachment" "rds_provisioner" {
+  count      = var.enable_rds_provisioner_role ? 1 : 0
+  role       = aws_iam_role.rds_provisioner[0].name
+  policy_arn = aws_iam_policy.rds_provisioner[0].arn
+}

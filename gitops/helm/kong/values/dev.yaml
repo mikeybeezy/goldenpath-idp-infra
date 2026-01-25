@@ -44,7 +44,8 @@ proxy:
     servicePort: 443
 
 # -----------------------------------------------------------------------------
-# Admin API (Internal Only)
+# Admin API (Exposed for Kong Manager - Dev Only)
+# WARNING: In production, protect Admin API with authentication
 # -----------------------------------------------------------------------------
 admin:
   enabled: true
@@ -53,20 +54,39 @@ admin:
     enabled: true
     containerPort: 8001
     servicePort: 8001
+  tls:
+    enabled: false  # Disable TLS on Admin API, ingress handles TLS termination
+  ingress:
+    enabled: true
+    ingressClassName: kong
+    hostname: kong-admin.dev.goldenpathidp.io
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      konghq.com/strip-path: "false"
+      konghq.com/protocols: "https"
+    tls: kong-admin-tls
+    path: /
 
 # -----------------------------------------------------------------------------
 # Kong Manager (UI) - Dev Only
 # -----------------------------------------------------------------------------
 manager:
   enabled: true
-  type: NodePort
+  type: ClusterIP
   http:
     enabled: true
     containerPort: 8002
     servicePort: 8002
-    nodePort: 32002
   tls:
     enabled: false
+  ingress:
+    enabled: true
+    ingressClassName: kong
+    hostname: kong-manager.dev.goldenpathidp.io
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      konghq.com/strip-path: "false"
+    tls: kong-manager-tls
 
 # -----------------------------------------------------------------------------
 # Ingress Controller
@@ -95,9 +115,32 @@ env:
   admin_access_log: /dev/stdout
   proxy_error_log: /dev/stderr
   admin_error_log: /dev/stderr
-  # Kong Manager needs to know where Admin API is
-  admin_gui_url: "http://localhost:8002"
-  admin_gui_api_url: "http://localhost:8001"
+  # Kong Manager needs to know where Admin API is (browser-accessible URL)
+  admin_gui_url: "https://kong-manager.dev.goldenpathidp.io"
+  admin_gui_api_url: "https://kong-admin.dev.goldenpathidp.io"
+
+# -----------------------------------------------------------------------------
+# Status API (Prometheus Metrics Endpoint)
+# Exposes /metrics on port 8100 for Prometheus scraping
+# -----------------------------------------------------------------------------
+status:
+  enabled: true
+  http:
+    enabled: true
+    containerPort: 8100
+    servicePort: 8100
+
+# -----------------------------------------------------------------------------
+# ServiceMonitor for Prometheus Operator
+# Enables automatic metrics scraping by kube-prometheus-stack
+# NOTE: Must include release label for Prometheus to discover it
+# -----------------------------------------------------------------------------
+serviceMonitor:
+  enabled: true
+  namespace: kong-system
+  interval: 30s
+  labels:
+    release: dev-kube-prometheus-stack
 
 # -----------------------------------------------------------------------------
 # Resource Limits for Dev
@@ -109,3 +152,24 @@ resources:
   limits:
     cpu: 500m
     memory: 512Mi
+
+# -----------------------------------------------------------------------------
+# Extra Deploy - Prometheus Plugin (Global)
+# Enables traffic metrics: kong_http_requests_total, kong_request_latency_ms, etc.
+# Required for RED metrics dashboards to work
+# -----------------------------------------------------------------------------
+extraDeploy:
+  - apiVersion: configuration.konghq.com/v1
+    kind: KongClusterPlugin
+    metadata:
+      name: prometheus
+      labels:
+        global: "true"
+      annotations:
+        kubernetes.io/ingress.class: kong
+    config:
+      status_code_metrics: true
+      latency_metrics: true
+      bandwidth_metrics: true
+      upstream_health_metrics: true
+    plugin: prometheus

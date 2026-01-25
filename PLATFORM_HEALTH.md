@@ -5,43 +5,40 @@ type: documentation
 category: governance
 status: active
 owner: platform-team
-version: '2026-01-19'
+version: '2026-01-25'
 relates_to:
-  - 01_adr_index
-  - CAPABILITY_LEDGER
-  - DOCS_CHANGELOG_README
-  - RB-0015-repo-health-and-hygiene
-  - SCRIPT_CERTIFICATION_MATRIX
   - platform_health.py
 ---
+
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-19 05:13:49` | **V1 Readiness**: `91.2%` | **Mean Confidence**: `⭐ (1.3/5.0)`
+**Generated**: `2026-01-25 06:00:46` | **V1 Readiness**: `90.4%` | **Mean Confidence**: `⭐ (1.4/5.0)`
 
-**Realized Value**: `155.4 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
+**Realized Value**: `115.1 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
 ## V1 Platform Readiness Gate
 
 > [!IMPORTANT]
-> The platform is currently **91.2%** ready for V1 production rollout.
+> The platform is currently **90.4%** ready for V1 production rollout.
 
 | Milestone | Status | Readiness |
 | :--- | :--- | :--- |
-| **Metadata Integrity** | ✅ | 99.6% |
-| **Injection Integrity** | ✅ | 97.2% |
-| **Architecture Maturity** | 🚧 | 97/162 Active |
-| **Changelog Activity** | ✅ | 146 Entries |
+| **Metadata Integrity** | ✅ | 97.9% |
+| **Injection Integrity** | ✅ | 97.3% |
+| **Architecture Maturity** | 🚧 | 99/171 Active |
+| **Changelog Activity** | ✅ | 186 Entries |
 
 ## Knowledge Graph Vitality
 
 | Metric | Count | Source |
 | :--- | :--- | :--- |
-| **Architecture Decisions** | 162 | [ADR Index](docs/adrs/01_adr_index.md) |
-| **Automation Scripts** | 52 | [Script Index](scripts/index.md) |
-| **Certified Scripts (M3)** | 1/53 (2%) | [Certification Matrix](docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md) |
-| **CI Workflows** | 60 | [Workflow Index](ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 146 | [Changelog Index](docs/changelog/README.md) |
-| **Tracked Resources** | 671 | Repository Scan |
+| **Architecture Decisions** | 171 | [ADR Index](docs/adrs/01_adr_index.md) |
+| **Automation Scripts** | 55 | [Script Index](scripts/index.md) |
+| **Certified Scripts (M3)** | 1/56 (2%) | [Certification Matrix](docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md) |
+| **Script Maturity Distribution** | M1:4 M2:51 M3:1 | [Value Ledger](.goldenpath/value_ledger.json) |
+| **CI Workflows** | 65 | [Workflow Index](ci-workflows/CI_WORKFLOWS.md) |
+| **Change Logs** | 186 | [Changelog Index](docs/changelog/README.md) |
+| **Tracked Resources** | 767 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -66,29 +63,42 @@ relates_to:
 - **Tagged**: `29` | **Untagged**: `2` | **Tag violations**: `29`
 - **Report**: [`reports/aws-inventory/aws-inventory-2026-01-10.md`](reports/aws-inventory/aws-inventory-2026-01-10.md)
 
+## Build Timing Metrics
+
+- **Last Updated**: `2026-01-24T15:12:39Z`
+- **Source**: `governance-registry:environments/development/latest/build_timings.csv`
+
+| Phase | Avg Duration | Sample Count |
+| :--- | :--- | :--- |
+| `bootstrap` | 3m 0s | 7 |
+| `bootstrap-persistent` | 16m 36s | 1 |
+| `teardown` | 3m 12s | 19 |
+| `teardown-persistent` | 55m 9s | 1 |
+| `terraform-apply` | 8m 56s | 9 |
+
 ## 🛡️ Risk & Maturity Visualization
 
 ```mermaid
 pie title Production Impact distribution
-    "HIGH" : 53
-    "MEDIUM" : 39
-    "LOW" : 471
-    "NONE" : 106
+    "HIGH" : 58
+    "MEDIUM" : 55
+    "LOW" : 515
+    "NONE" : 136
 ```
 
 ## Governance Maturity
 
-- **Metadata Compliance**: `99.6%`
-- **Risk-Weighted Score**: `100.0%`
+- **Metadata Compliance**: `97.9%`
+- **Risk-Weighted Score**: `99.7%`
 
 ## Injection Coverage
 
-- **Sidecar Coverage**: `97.2%` (35/36)
+- **Sidecar Coverage**: `97.3%` (36/37)
 
 ## Project Realized Value (Heartbeat)
 
 > [!TIP]
-> Total realized value reclaimed through automation heartbeats: **155.4 hours**.
+> Total realized value reclaimed through automation heartbeats: **115.1 hours**.
 
 - **ROI Ledger**: [.goldenpath/value_ledger.json](.goldenpath/value_ledger.json)
 
@@ -103,7 +113,7 @@ pie title Production Impact distribution
 
 ## Operational Risks
 
-- **Orphaned (No Owner)**: 0
+- **Orphaned (No Owner)**: 1
 - **Stale (Past Lifecycle)**: 0
 
 ---

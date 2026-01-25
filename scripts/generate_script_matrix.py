@@ -18,8 +18,10 @@ risk_profile:
   coupling_risk: low
 ---
 """
+import json
 import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Add python lib to path
@@ -32,6 +34,61 @@ except ImportError:
 
 SCRIPTS_DIR = Path("scripts")
 OUT = Path("docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md")
+VALUE_LEDGER = Path(".goldenpath/value_ledger.json")
+
+
+def write_maturity_snapshot(rows: list) -> None:
+    """Write maturity distribution snapshot to value_ledger.json."""
+    # Calculate maturity distribution
+    maturity_counts = {"M0": 0, "M1": 0, "M2": 0, "M3": 0}
+    for r in rows:
+        mat = str(r.get("maturity", "0"))
+        key = f"M{mat}" if mat in ("0", "1", "2", "3") else "M0"
+        maturity_counts[key] += 1
+
+    snapshot = {
+        "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "total_scripts": len(rows),
+        "maturity_distribution": maturity_counts,
+        "certification_rate": round(
+            (maturity_counts["M3"] / len(rows) * 100) if rows else 0, 1
+        ),
+    }
+
+    # Read existing ledger
+    if VALUE_LEDGER.exists():
+        try:
+            ledger = json.loads(VALUE_LEDGER.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, IOError):
+            ledger = {}
+    else:
+        ledger = {}
+
+    # Ensure maturity_snapshots array exists
+    if "maturity_snapshots" not in ledger:
+        ledger["maturity_snapshots"] = []
+
+    # Only append if distribution has changed from last snapshot
+    snapshots = ledger["maturity_snapshots"]
+    if snapshots:
+        last = snapshots[-1]
+        if (
+            last.get("total_scripts") == snapshot["total_scripts"]
+            and last.get("maturity_distribution") == snapshot["maturity_distribution"]
+        ):
+            # No change in distribution, skip writing
+            return
+
+    # Append new snapshot (keep last 30)
+    ledger["maturity_snapshots"].append(snapshot)
+    ledger["maturity_snapshots"] = ledger["maturity_snapshots"][-30:]
+
+    # Write back
+    VALUE_LEDGER.parent.mkdir(parents=True, exist_ok=True)
+    VALUE_LEDGER.write_text(
+        json.dumps(ledger, indent=2) + "\n", encoding="utf-8"
+    )
+    print(f"[matrix] wrote maturity snapshot to {VALUE_LEDGER}")
 
 
 def read_existing_frontmatter() -> dict:
@@ -127,6 +184,10 @@ def main() -> int:
 
     OUT.write_text("\n".join(md) + "\n", encoding="utf-8")
     print(f"[matrix] wrote {OUT}")
+
+    # Write maturity snapshot to value ledger
+    write_maturity_snapshot(rows)
+
     return 0
 
 if __name__ == "__main__":

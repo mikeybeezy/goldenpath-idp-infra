@@ -19,14 +19,55 @@
 # ---
 set -euo pipefail
 
-csv_path="${1:-docs/build-timings.csv}"
+csv_path="${1:-}"
+metrics_env="${METRICS_ENV:-${ENV:-}}"
+registry_branch="${GOVERNANCE_REGISTRY_BRANCH:-governance-registry}"
+registry_remote="${GOVERNANCE_REGISTRY_REMOTE:-origin}"
+tmp_csv=""
 
-if [[ ! -f "${csv_path}" ]]; then
-  echo "Missing metrics file: ${csv_path}" >&2
-  exit 1
+if [[ -n "${csv_path}" ]]; then
+  if [[ ! -f "${csv_path}" ]]; then
+    echo "Missing metrics file: ${csv_path}" >&2
+    exit 1
+  fi
+else
+  if [[ -n "${metrics_env}" ]]; then
+    env_folder="${metrics_env}"
+    [[ "${metrics_env}" == "dev" ]] && env_folder="development"
+    csv_path="environments/${env_folder}/latest/build_timings.csv"
+
+    if [[ ! -f "${csv_path}" ]]; then
+      if ! command -v git >/dev/null; then
+        echo "Missing metrics file: ${csv_path} (git not available to fetch ${registry_remote}/${registry_branch})" >&2
+        exit 1
+      fi
+      tmp_csv="$(mktemp)"
+      if git show "${registry_remote}/${registry_branch}:${csv_path}" > "${tmp_csv}" 2>/dev/null; then
+        csv_path="${tmp_csv}"
+      else
+        echo "Missing metrics file: ${csv_path} (not found locally or in ${registry_remote}/${registry_branch})" >&2
+        rm -f "${tmp_csv}"
+        exit 1
+      fi
+    fi
+  else
+    csv_path="docs/build-timings.csv"
+    if [[ ! -f "${csv_path}" ]]; then
+      echo "Missing metrics file: ${csv_path}" >&2
+      exit 1
+    fi
+  fi
 fi
 
-awk -F',' '
+PHASES="${PHASES:-build bootstrap terraform-apply apply-persistent bootstrap-persistent teardown teardown-persistent rds-apply}"
+
+awk -F',' -v phases="${PHASES}" '
+BEGIN {
+  phase_count = split(phases, phase_list, " ")
+  for (i = 1; i <= phase_count; i++) {
+    allowed[phase_list[i]] = 1
+  }
+}
 NR==1 {
   for (i = 1; i <= NF; i++) {
     gsub(/^[[:space:]]+|[[:space:]]+$/, "", $i)
@@ -46,7 +87,7 @@ NR==1 {
     next
   }
   phase = $phase_col
-  if (phase != "build" && phase != "teardown") {
+  if (!(phase in allowed)) {
     next
   }
   duration = $duration_col + 0
@@ -67,10 +108,8 @@ NR==1 {
 }
 END {
   print "phase,count,success,fail,avg_duration_seconds,min_duration_seconds,max_duration_seconds"
-  phases[0] = "build"
-  phases[1] = "teardown"
-  for (i = 0; i < 2; i++) {
-    phase = phases[i]
+  for (i = 1; i <= phase_count; i++) {
+    phase = phase_list[i]
     if (total[phase] > 0) {
       avg = sum[phase] / total[phase]
       printf "%s,%d,%d,%d,%.0f,%d,%d\n", phase, total[phase], ok[phase] + 0, fail[phase] + 0, avg, min[phase], max[phase]
@@ -80,3 +119,7 @@ END {
   }
 }
 ' "${csv_path}"
+
+if [[ -n "${tmp_csv}" ]]; then
+  rm -f "${tmp_csv}"
+fi

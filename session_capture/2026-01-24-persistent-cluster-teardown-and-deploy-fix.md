@@ -468,3 +468,200 @@ Added third source to ArgoCD Application at `gitops/argocd/apps/dev/cert-manager
 - Kong will route traffic and ingresses will get ADDRESS
 
 Signed: Claude Opus 4.5 (2026-01-24T13:00:00Z)
+
+---
+
+## Update - 2026-01-24T16:00:00Z
+
+### RDS Provisioning VPC Access Fix (ADR-0165 Implementation)
+
+**Problem:** RDS provisioning failed with:
+
+```text
+2026-01-24T15:12:47Z [ERROR] Fatal error: Failed to connect to RDS:
+could not translate host name "goldenpath-dev-platform-dev.cxmcacaams2q.eu-west-2.rds.amazonaws.com"
+to address: nodename nor servname provided, or not known
+```
+
+**Root cause:** `rds_provision.py` was executing locally (developer machine), but RDS is in a private VPC subnet. The private DNS name is only resolvable from within the VPC.
+
+**Fix + Prevention (Permanent Solution):**
+
+Added Terraform-managed infrastructure for K8s Job execution:
+
+1. **platform-system namespace** — Created by Terraform during Pass 2
+2. **platform-provisioner ServiceAccount** — IRSA-enabled for Secrets Manager access
+3. **RDS provisioner IAM role** — Policy for secretsmanager:Get/Put/Create
+
+**Execution Flow:**
+
+```text
+Terraform Pass 2 (enable_k8s_resources=true)
+  └── Creates platform-system namespace
+  └── Creates platform-provisioner ServiceAccount (IRSA)
+
+RDS Provisioning (make rds-provision-auto)
+  └── Creates K8s Job in platform-system namespace
+  └── Job pod has VPC access → reaches RDS
+  └── Job pod has IRSA → reads/writes Secrets Manager
+```
+
+**This prevents recurrence because:** The infrastructure is created by Terraform BEFORE RDS provisioning runs. Both coupled and standalone RDS modes are supported.
+
+### Manual Workaround Executed
+
+While infrastructure changes were committed, executed RDS provisioning manually:
+
+1. Created temporary pod in platform-system namespace
+2. Copied `rds_provision.py` and `terraform.tfvars` to pod
+3. Passed AWS credentials via environment
+4. Executed provisioning successfully
+
+**Result:**
+
+```text
+Success: 9
+- Created role: keycloak_user
+- Created database: keycloak
+- Created role: backstage_user
+- Created database: backstage
+- Created role: test_inventory2_user
+- Created database: test_inventory2
+```
+
+**Secrets created:**
+
+| Secret | Purpose |
+|--------|---------|
+| `goldenpath/dev/keycloak/postgres` | Keycloak DB credentials |
+| `goldenpath/dev/backstage/postgres` | Backstage DB credentials |
+| `goldenpath/dev/test_inventory2/postgres` | Test inventory DB credentials |
+
+### Issues Fixed (Update 8)
+
+| Issue | Root Cause | Fix | Prevention |
+|-------|------------|-----|------------|
+| RDS provision DNS failure | Local execution can't reach private VPC | Manual pod execution | K8s Job infrastructure in Terraform |
+| Empty secrets issue | Secrets created without AWSCURRENT value | Added `initial_value` to aws_secrets_manager module | Placeholder values ensure ExternalSecrets can sync |
+
+### Artifacts Touched (Update 8)
+
+**Committed:**
+
+- `docs/adrs/ADR-0165-rds-user-db-provisioning-automation.md` — Added Execution Architecture section
+- `envs/dev/main.tf` — Added `platform-system` namespace + `platform-provisioner` ServiceAccount
+- `envs/dev/variables.tf` — Added RDS provisioner IRSA config to `iam_config` type
+- `envs/dev/terraform.tfvars` — Enabled `enable_rds_provisioner_role = true`
+- `modules/aws_iam/main.tf` — Added RDS provisioner IAM role + Secrets Manager policy
+- `modules/aws_iam/variables.tf` — Added RDS provisioner input variables
+- `modules/aws_iam/outputs.tf` — Added `rds_provisioner_role_arn` output
+
+**Commits:**
+
+1. `feat(secrets): add initial_value support for deterministic rebuilds` (2a55c46d)
+2. `feat(rds): add K8s Job infrastructure for RDS provisioning (ADR-0165)` (f0385e81)
+
+### Outstanding (Update 8)
+
+- Makefile `rds-provision-auto` update to use K8s Job path (separate PR)
+- ExternalSecrets should now sync with populated postgres secrets
+- Apps (Keycloak, Backstage) can now connect to their databases
+
+Signed: Claude Opus 4.5 (2026-01-24T16:00:00Z)
+
+---
+
+## Update 9 - 2026-01-24T16:40:00Z
+
+### Backstage CREATEDB Permission Fix
+
+**Problem:** Backstage pod was in CrashLoopBackOff with:
+
+```text
+error: permission denied to create database "backstage_plugin_app"
+```
+
+Kong returned "failure to get a peer from the ring-balancer" because no healthy backend existed.
+
+**Root cause:** `rds_provision.py` created roles with `LOGIN` privilege but not `CREATEDB`. Backstage dynamically creates plugin databases at startup (e.g., `backstage_plugin_app`, `backstage_plugin_catalog`).
+
+**Fix (Immediate):**
+
+Granted CREATEDB to affected users via psql:
+
+```sql
+ALTER USER backstage_user CREATEDB;
+ALTER USER keycloak_user CREATEDB;
+```
+
+**Result:**
+
+| Component | Before | After |
+|-----------|--------|-------|
+| Backstage pod | 0/1 CrashLoopBackOff | 1/1 Running |
+| Kong routing | ring-balancer error | HTTP 200 |
+| Internal connectivity | N/A | Verified with curl |
+| External DNS | N/A | Resolving to ALB IPs |
+
+**Verification:**
+
+```bash
+# Pod status
+kubectl get pods -n backstage
+# NAME                             READY   STATUS    RESTARTS       AGE
+# dev-backstage-74c88b9674-2bglk   1/1     Running   5 (2m ago)     95m
+
+# Internal connectivity
+kubectl run curl-test -n backstage --rm -i --restart=Never \
+  --image=curlimages/curl:latest \
+  -- curl -s -o /dev/null -w "%{http_code}" http://dev-backstage:7007/
+# 200
+```
+
+**Prevention (Implemented):**
+
+Updated `rds_provision.py` to grant CREATEDB by default for application users. This aligns with how Backstage and other apps expect to manage their own plugin databases.
+
+### Issues Fixed (Update 9)
+
+| Issue | Root Cause | Fix | Prevention |
+|-------|------------|-----|------------|
+| Backstage CREATEDB denied | rds_provision.py doesn't grant CREATEDB | Manual ALTER USER | Script updated to grant CREATEDB by default |
+| Kong ring-balancer error | No healthy backend pods | Backend pod now healthy | N/A (transient error) |
+
+### Artifacts Touched (Update 9)
+
+- PostgreSQL grants applied via psql (immediate fix)
+- `scripts/rds_provision.py` — Updated to include CREATEDB in role creation (permanent fix)
+
+### Code Changes (Update 9)
+
+**scripts/rds_provision.py:**
+
+```python
+# Before (line 372-373)
+cur.execute(
+    "CREATE ROLE %s WITH LOGIN PASSWORD %%s" % username, (password,)
+)
+
+# After
+cur.execute(
+    "CREATE ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username, (password,)
+)
+```
+
+Both CREATE and ALTER statements now include CREATEDB to ensure:
+1. New roles get CREATEDB on creation
+2. Existing roles get CREATEDB on password update (idempotent upgrade)
+
+### Outstanding (Update 9)
+
+- [x] Update `rds_provision.py` to include CREATEDB in role creation SQL
+- [ ] Verify <https://backstage.dev.goldenpathidp.io/> loads in browser
+- [ ] Commit changes to development branch
+
+### Site Status (Update 9)
+
+**Backstage:** <https://backstage.dev.goldenpathidp.io/> — Should be accessible now
+
+Signed: Claude Opus 4.5 (2026-01-24T16:45:00Z)
