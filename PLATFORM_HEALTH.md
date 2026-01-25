@@ -12,7 +12,7 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-25 06:00:46` | **V1 Readiness**: `90.4%` | **Mean Confidence**: `⭐ (1.4/5.0)`
+**Generated**: `2026-01-25 07:11:49` | **V1 Readiness**: `90.4%` | **Mean Confidence**: `⭐ (1.4/5.0)`
 
 **Realized Value**: `115.1 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
@@ -38,7 +38,7 @@ relates_to:
 | **Script Maturity Distribution** | M1:4 M2:51 M3:1 | [Value Ledger](.goldenpath/value_ledger.json) |
 | **CI Workflows** | 65 | [Workflow Index](ci-workflows/CI_WORKFLOWS.md) |
 | **Change Logs** | 186 | [Changelog Index](docs/changelog/README.md) |
-| **Tracked Resources** | 767 | Repository Scan |
+| **Tracked Resources** | 768 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -83,13 +83,13 @@ pie title Production Impact distribution
     "HIGH" : 58
     "MEDIUM" : 55
     "LOW" : 515
-    "NONE" : 136
+    "NONE" : 137
 ```
 
 ## Governance Maturity
 
 - **Metadata Compliance**: `97.9%`
-- **Risk-Weighted Score**: `99.7%`
+- **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
 
@@ -113,7 +113,7 @@ pie title Production Impact distribution
 
 ## Operational Risks
 
-- **Orphaned (No Owner)**: 1
+- **Orphaned (No Owner)**: 0
 - **Stale (Past Lifecycle)**: 0
 
 ---
