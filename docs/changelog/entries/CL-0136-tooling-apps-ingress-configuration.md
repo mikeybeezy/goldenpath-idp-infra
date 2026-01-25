@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0136-tooling-apps-ingress-configuration
 title: Platform Tooling Apps Ingress Configuration

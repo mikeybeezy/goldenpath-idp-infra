@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0072-emoji-usage-policy-and-enforcement
 title: Emoji Usage Policy & Automated Enforcement

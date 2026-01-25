@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0003-kong-backstage-plugin
 title: Kong Self-Service Backstage Plugin

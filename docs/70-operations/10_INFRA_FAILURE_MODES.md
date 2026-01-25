@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 10_INFRA_FAILURE_MODES
 title: Infra Failure Modes and Recovery

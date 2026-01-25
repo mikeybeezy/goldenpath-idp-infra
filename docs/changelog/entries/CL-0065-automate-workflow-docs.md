@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0065-automate-workflow-docs
 title: '[Docs] Automate CI Workflow Index Generation'

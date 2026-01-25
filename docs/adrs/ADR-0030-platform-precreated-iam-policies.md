@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0030-platform-precreated-iam-policies
 title: 'ADR-0030: Pre-create IAM policies for IRSA controllers in V1'

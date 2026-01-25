@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0119
 title: The Great Governance Backfill (Execution)

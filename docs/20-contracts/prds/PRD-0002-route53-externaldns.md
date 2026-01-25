@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PRD-0002-route53-externaldns
 title: 'PRD-0002: Route53 + ExternalDNS Management'

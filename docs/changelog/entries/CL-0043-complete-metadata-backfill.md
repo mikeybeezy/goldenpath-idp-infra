@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0043-complete-metadata-backfill
 title: 'CL-0043: Complete Metadata Backfill with Knowledge Graph'

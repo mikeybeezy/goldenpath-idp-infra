@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PRD-0003-backstage-plugin-scaffold
 title: 'PRD-0003: Backstage Plugin Scaffold (Vanilla Template)'

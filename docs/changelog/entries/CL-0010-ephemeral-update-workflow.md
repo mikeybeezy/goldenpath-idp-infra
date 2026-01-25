@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0010-ephemeral-update-workflow
 title: 'CL-0010: Dev ephemeral update workflow'

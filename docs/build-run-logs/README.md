@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: DOCS_BUILD-RUN-LOGS_README
 title: Build and Teardown Logs Documentation

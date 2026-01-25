@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0007-platform-environment-model
 title: 'ADR-0007: Adopt an environment model that balances cost, iteration speed,

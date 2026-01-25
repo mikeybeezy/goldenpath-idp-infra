@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0010-platform-terraform-lockfile-stability
 title: 'ADR-0010: Enforce Terraform lockfile stability in CI'

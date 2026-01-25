@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0027-app-example-deployments
 title: 'CL-0027: App example deployments'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RDS_USER_DB_PROVISIONING
 title: 'How It Works: RDS User and Database Provisioning'

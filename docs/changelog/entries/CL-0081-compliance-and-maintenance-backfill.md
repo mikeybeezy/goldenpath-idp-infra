@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0081
 title: 'CL-0081: Compliance & Maintenance Backfill'

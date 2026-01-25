@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0066-automate-script-docs
 title: '[Docs] Automate Script Index Generation'

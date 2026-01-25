@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0003-platform-AWS-IAM-bootstrap-IRSA-SSM-
 title: 'ADR-0003: Use AWS IAM for bootstrap access, IRSA for pod-to-AWS access, and

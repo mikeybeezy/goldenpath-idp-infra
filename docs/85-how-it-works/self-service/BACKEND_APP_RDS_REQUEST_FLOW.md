@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: BACKEND_APP_RDS_REQUEST_FLOW
 title: 'How It Works: Backend App + RDS Request Flow'

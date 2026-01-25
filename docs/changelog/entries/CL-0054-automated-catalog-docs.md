@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0054-automated-catalog-docs
 title: 'CL-0054: Automated Registry Catalog Documentation'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0076-metadata-inheritance-active-governance-and-leak-protection
 title: 'CL-0076: Metadata Inheritance, Active Governance, and Leak Protection'

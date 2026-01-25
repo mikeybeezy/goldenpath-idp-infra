@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0009-goldenpath-cli
 title: GoldenPath Platform CLI

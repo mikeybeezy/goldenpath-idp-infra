@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0069-platform-observability-baseline-golden-signals
 title: 'ADR-0069: Observability baseline for golden signals in production'

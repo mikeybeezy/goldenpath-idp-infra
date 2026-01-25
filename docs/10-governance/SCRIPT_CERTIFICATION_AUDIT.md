@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: SCRIPT_CERTIFICATION_AUDIT
 title: Platform Scripts Certification Audit Matrix

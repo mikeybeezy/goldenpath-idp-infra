@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 20_TOOLING_APPS_MATRIX
 title: Platform Tooling Apps Configuration Matrix

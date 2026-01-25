@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CONFIDENCE_MATRIX
 title: Automation Confidence Matrix

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0138-tooling-apps-dashboards
 title: RED/Golden Signals Dashboards for Tooling Applications

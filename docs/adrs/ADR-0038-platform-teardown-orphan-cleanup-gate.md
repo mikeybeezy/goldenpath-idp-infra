@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0038-platform-teardown-orphan-cleanup-gate
 title: 'ADR-0038: Gate Orphan Cleanup in CI Teardown with Explicit Modes'

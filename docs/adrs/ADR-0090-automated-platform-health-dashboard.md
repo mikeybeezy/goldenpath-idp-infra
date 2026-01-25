@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0090-automated-platform-health-dashboard
 title: 'ADR-0090: Automated Platform Health Dashboard'

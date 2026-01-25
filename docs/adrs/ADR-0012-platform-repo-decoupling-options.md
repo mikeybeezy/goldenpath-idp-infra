@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0012-platform-repo-decoupling-options
 title: 'ADR-0012: Repo decoupling options for infra and platform tooling'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0004-platform-datree-policy-as-code-in-ci
 title: 'ADR-0004: Use Datree as Kubernetes policy-as-code gate in CI'

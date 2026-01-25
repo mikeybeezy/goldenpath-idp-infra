@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0186-certification-tracking-ci
 title: 'CL-0186: Add certification tracking to script-certification-gate'

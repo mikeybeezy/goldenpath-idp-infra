@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0022-platform-post-apply-health-checks
 title: 'ADR-0022: Post-apply health checks for platform readiness'

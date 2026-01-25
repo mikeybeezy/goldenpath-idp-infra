@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: BRIDGE_ANALYSIS
 title: 'Bridge Analysis: Infrastructure to Bootstrap'

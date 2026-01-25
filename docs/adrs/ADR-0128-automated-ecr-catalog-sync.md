@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0128
 title: 'ADR-0128: Automated IDP Catalog Mapping for AWS ECR'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0126-eks-end-to-end-milestone
 title: First Successful End-to-End EKS Deployment

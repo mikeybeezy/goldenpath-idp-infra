@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 10_PLATFORM_REQUIREMENTS
 title: Platform Requirements

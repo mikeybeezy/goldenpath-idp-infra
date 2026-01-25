@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0001-eks-access-recovery
 title: EKS Access Recovery (Runbook)

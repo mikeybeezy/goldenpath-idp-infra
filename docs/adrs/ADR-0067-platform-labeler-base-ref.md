@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0067-platform-labeler-base-ref
 title: 'ADR-0067: Use base ref for labeler checkout'

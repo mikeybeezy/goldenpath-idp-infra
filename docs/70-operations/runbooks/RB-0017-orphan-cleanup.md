@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0017-orphan-cleanup
 title: Orphan Cleanup

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0093-automated-policy-enforcement
 title: 'ADR-0093: Automated Policy Enforcement Framework'

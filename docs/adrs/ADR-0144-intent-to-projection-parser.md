@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0144
 title: Architecture of the Intent-to-Projection Parser (The Golden Path Core)

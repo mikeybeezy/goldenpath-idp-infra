@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0031-governed-repo-scaffolder
 title: 'CL-0031: Governance-driven app repo scaffolder'

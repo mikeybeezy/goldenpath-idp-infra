@@ -1,4 +1,3 @@
-# AGENT_CONTEXT: Read .agent/README.md for rules
 """
 AWS Secrets Manager RDS PostgreSQL Single User Rotation Lambda
 

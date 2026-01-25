@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0019-aws-lb-controller-refactor
 title: 'CL-0019: AWS Load Balancer Controller refactor'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0039-platform-tag-scoped-iam-policy-template
 title: 'ADR-0039: Tag-Scoped IAM Policy Template for Destructive Automation'

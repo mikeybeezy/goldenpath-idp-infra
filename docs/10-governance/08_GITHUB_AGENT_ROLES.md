@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 08_GITHUB_AGENT_ROLES
 title: GitHub Agent Roles (Apps and Service Accounts)

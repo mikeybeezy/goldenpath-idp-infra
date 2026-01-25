@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CI_WORKFLOWS
 title: CI Workflows Index (Auto-Generated)

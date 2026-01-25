@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 01_GOVERNANCE
 title: Platform Governance Purpose

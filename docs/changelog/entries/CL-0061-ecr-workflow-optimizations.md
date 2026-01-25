@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0061-ecr-workflow-optimizations
 title: ECR Workflow and Documentation Optimizations

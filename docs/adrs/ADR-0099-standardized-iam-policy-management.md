@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0099-standardized-iam-policy-management
 title: 'ADR-0099: Standardized IAM Policy Management'

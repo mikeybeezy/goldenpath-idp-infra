@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0121-seamless-build-deployment
 title: 'CL-0121: Seamless Build Deployment with Build ID Immutability'

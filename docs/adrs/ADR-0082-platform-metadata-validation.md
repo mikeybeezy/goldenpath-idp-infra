@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0082-platform-metadata-validation
 title: Platform Metadata Validation Strategy

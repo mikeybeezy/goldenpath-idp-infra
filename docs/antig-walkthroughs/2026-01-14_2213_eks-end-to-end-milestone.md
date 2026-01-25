@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 2026-01-14_2213_eks-end-to-end-milestone
 title: 'Walkthrough: First Successful End-to-End EKS Deployment'

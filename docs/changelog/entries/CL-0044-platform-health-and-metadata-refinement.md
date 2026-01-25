@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0044-platform-health-and-metadata-refinement
 title: 'CL-0044: Platform Health Check and Metadata Refinement'

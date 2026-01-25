@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0068-platform-review-cadence-output
 title: 'ADR-0068: Fix review cadence output delimiter'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: VARIABLE_MAPPING_INDEX
 title: IAM Policy-to-Variable Mapping Index

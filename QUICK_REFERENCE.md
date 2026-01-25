@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 # Golden Path IDP - Quick Reference
 
 A quick-access command reference for common operations.

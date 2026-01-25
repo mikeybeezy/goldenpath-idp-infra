@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0070-platform-terraform-aws-lb-controller
 title: 'ADR-0070: Terraform Management of AWS Load Balancer Controller'

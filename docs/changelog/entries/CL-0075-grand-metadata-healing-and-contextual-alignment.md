@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0075-grand-metadata-healing-and-contextual-alignment
 title: 'CL-0075: Grand Metadata Healing and Contextual Alignment'

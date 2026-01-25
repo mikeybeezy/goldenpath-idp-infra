@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 25_PR_TERRAFORM_PLAN
 title: PR Terraform Plan (Living Document)

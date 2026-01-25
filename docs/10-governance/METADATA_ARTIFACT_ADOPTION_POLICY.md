@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: METADATA_ARTIFACT_ADOPTION_POLICY
 title: Metadata Adoption Policy for Configs and Reports

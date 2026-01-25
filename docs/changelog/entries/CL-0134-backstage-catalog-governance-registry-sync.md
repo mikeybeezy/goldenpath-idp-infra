@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0134-backstage-catalog-governance-registry-sync
 title: Backstage Catalog Synced to Governance Registry

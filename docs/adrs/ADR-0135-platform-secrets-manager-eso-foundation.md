@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0135
 title: 'ADR-0135: Secrets Manager + External Secrets Operator foundation'

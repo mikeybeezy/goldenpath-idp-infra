@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 31_EKS_ACCESS_MODEL
 title: EKS Access Model (Living)

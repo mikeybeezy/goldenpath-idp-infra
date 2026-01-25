@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0016-platform-ci-environment-separation
 title: 'ADR-0016: CI environment separation and manual promotion gates'

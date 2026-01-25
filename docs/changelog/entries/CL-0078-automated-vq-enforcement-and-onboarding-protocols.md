@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0078
 title: 'CL-0078: Automated VQ Enforcement and Onboarding Protocols'

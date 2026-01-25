@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 2026-01-06_1020_idp-knowledge-graph-node-architecture
 title: IDP Knowledge Graph Node Architecture

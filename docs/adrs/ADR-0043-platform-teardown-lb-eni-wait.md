@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0043-platform-teardown-lb-eni-wait
 title: 'ADR-0043: Teardown waits for LoadBalancer ENIs before subnet delete'

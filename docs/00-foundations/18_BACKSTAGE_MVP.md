@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 18_BACKSTAGE_MVP
 title: Backstage MVP (First App Through CI/CD)

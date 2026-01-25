@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: AUTO_HEALING_GUIDE
 title: Governance - Documentation Auto-Healing Guide

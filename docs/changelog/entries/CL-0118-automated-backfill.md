@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0118
 title: Automated Governance Backfill & V1 Acceptance Rules

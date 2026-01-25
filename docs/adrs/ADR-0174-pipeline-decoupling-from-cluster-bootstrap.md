@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0174-pipeline-decoupling-from-cluster-bootstrap
 title: 'ADR-0174: Pipeline enablement intentionally decoupled from cluster bootstrap'

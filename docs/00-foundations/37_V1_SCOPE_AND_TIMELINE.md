@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 37_V1_SCOPE_AND_TIMELINE
 title: V1 Scope and Timeline (Backstage + Platform Capabilities)

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0020-golden-signals-dashboard
 title: 'CL-0020: Golden Signals Dashboard Standard'

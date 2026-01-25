@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PLATFORM_PR_GATES_FIX
 title: 'Handled automatically by pre-commit, or run manually:'

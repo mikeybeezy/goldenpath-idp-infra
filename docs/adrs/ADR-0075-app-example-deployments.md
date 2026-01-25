@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0075-app-example-deployments
 title: 'ADR-0075: App example deployments via Argo CD, Helm, and Kustomize'

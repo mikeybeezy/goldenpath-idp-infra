@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: Changelog-template
 title: 'CL-0001: <short title>'

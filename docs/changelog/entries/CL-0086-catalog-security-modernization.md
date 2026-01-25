@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0086-catalog-security-modernization
 title: 'CL-0086: Catalog Security Hardening & Modernization'

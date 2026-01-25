@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0022-backstage-techdocs-setup
 title: Enabling Native TechDocs Rendering

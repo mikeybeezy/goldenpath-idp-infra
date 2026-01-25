@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0167-outcome-driven-ci
 title: 'CL-0167: Outcome-driven CI - workflows call Make targets'

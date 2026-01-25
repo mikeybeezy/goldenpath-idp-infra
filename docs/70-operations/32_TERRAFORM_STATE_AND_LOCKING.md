@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 32_TERRAFORM_STATE_AND_LOCKING
 title: Terraform State and Locking (Living)

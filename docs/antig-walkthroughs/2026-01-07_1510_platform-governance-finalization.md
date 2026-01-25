@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 2026-01-07_1510_platform-governance-finalization
 title: Governance Finalization Walkthrough

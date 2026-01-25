@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0006-lb-eni-orphans
 title: Load Balancer ENIs Block Subnet Deletion

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0037-platform-resource-tagging-policy
 title: 'ADR-0037: Platform resource tagging policy'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: AUTOMATION_CERTIFICATION_MATRIX
 title: Automation Certification Master Record

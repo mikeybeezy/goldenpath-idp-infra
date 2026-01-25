@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0006-loki-single-binary-monitoring-namespace
 title: 'CL-0006: Loki single-binary default and monitoring namespace'

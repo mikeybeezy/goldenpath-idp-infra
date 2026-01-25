@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0159-backstage-catalog-registry-sync
 title: 'ADR-0159: Backstage Catalog Sync to Governance Registry'

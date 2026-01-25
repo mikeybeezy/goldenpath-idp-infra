@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0166
 title: Dual-Mode RDS Automation with Enum-Aligned Requests

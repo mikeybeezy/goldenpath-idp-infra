@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0107
 title: Hygiene Dialect Alignment and Script Idempotency

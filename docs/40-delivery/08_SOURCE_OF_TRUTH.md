@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 08_SOURCE_OF_TRUTH
 title: Source of Truth (Stub)

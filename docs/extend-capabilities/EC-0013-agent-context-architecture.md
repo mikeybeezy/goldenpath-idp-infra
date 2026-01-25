@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0013-agent-context-architecture
 title: 'EC-0013: Universal Agent Context Architecture'

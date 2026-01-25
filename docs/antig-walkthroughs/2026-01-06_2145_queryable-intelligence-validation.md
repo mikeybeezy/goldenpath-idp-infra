@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 2026-01-06_2145_queryable-intelligence-validation
 title: 'Walkthrough: Implementing "Queryable Intelligence" (Enums & Validation)'

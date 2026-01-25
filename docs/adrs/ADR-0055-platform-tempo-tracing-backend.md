@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0055-platform-tempo-tracing-backend
 title: 'ADR-0055: Tempo as the standard tracing backend (V1.1)'

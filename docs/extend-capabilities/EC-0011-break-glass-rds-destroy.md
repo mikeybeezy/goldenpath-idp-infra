@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0011-break-glass-rds-destroy
 title: Break-Glass RDS Destroy - Elegant Friction for Database Teardown

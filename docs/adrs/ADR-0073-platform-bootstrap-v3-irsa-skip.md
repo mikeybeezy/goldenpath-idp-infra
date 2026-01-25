@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0073-platform-bootstrap-v3-irsa-skip
 title: 'ADR-0073: Bootstrap v3 skips Terraform IRSA apply in Stage 3B'

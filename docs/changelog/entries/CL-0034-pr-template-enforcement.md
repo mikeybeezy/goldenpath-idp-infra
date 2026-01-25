@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0034-pr-template-enforcement
 title: 'Changelog: PR template enforcement and CI iteration'

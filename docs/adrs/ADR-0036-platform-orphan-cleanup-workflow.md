@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0036-platform-orphan-cleanup-workflow
 title: 'ADR-0036: Orphan Cleanup Is Manual and Decoupled From Teardown'

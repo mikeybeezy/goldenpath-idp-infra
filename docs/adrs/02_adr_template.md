@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 02_adr_template
 title: 'ADR-XXXX: Template for Architecture Decision Records'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0024-platform-security-floor-v1
 title: 'ADR-0024: Security floor for V1'

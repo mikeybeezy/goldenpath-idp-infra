@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0083-platform-metadata-backfill-protocol
 title: Metadata Backfill Campaign Protocol

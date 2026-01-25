@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0036-repo-wide-linting
 title: 'Changelog: repo-wide linting for knowledge graph hygiene'

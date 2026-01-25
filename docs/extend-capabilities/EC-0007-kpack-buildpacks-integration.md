@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0007-kpack-buildpacks-integration
 title: kpack and Cloud Native Buildpacks Integration

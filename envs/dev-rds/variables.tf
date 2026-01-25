@@ -1,4 +1,3 @@
-# AGENT_CONTEXT: Read .agent/README.md for rules
 ################################################################################
 # Platform RDS Variables
 # Standalone bounded context for persistent data layer

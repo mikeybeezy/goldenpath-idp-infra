@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PR_GUARDRAILS_INDEX
 title: PR Guardrails Index

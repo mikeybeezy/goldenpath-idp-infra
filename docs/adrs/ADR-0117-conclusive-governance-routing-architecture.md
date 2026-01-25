@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0117-conclusive-governance-routing-architecture
 title: Conclusive Governance Routing & Compliance Engine

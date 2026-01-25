@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0018-platform-container-registry-standard
 title: 'ADR-0018: Container registry standard — ECR default, GHCR supported, Docker

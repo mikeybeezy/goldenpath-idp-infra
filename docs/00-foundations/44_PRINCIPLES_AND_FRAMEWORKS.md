@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 44_PRINCIPLES_AND_FRAMEWORKS
 title: Principles and Decision Frameworks

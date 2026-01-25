@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PRD-0000-template
 title: 'PRD-0000: <short title>'

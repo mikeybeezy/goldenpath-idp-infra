@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 04_REPO_STRUCTURE
 title: Repository Structure & Workflow

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 12_GITOPS_AND_CICD
 title: GitOps and CI/CD

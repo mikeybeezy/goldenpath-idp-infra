@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0017-review-cadence-output-delimiter
 title: 'CL-0017: Fix review cadence output delimiter'

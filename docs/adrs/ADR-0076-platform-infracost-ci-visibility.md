@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0076-platform-infracost-ci-visibility
 title: 'ADR-0076: Lightweight CI cost visibility with Infracost'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0139
 title: 'ADR-0139: Portable Secrets Manager Infrastructure Module'

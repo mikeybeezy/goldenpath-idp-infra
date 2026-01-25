@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 06_REBUILD_SEQUENCE
 title: Rebuild Sequence (Stub)

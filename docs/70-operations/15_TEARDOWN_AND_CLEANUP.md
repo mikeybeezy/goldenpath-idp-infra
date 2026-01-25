@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 15_TEARDOWN_AND_CLEANUP
 title: Teardown and Cleanup Commands

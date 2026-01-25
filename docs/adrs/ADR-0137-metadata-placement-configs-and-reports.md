@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0137
 title: 'ADR-0137: Metadata placement for configs and reports'

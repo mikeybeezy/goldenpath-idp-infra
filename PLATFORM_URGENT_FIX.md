@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PLATFORM_URGENT_FIX
 title: Platform Urgent Fix Matrix (V1-Aligned)

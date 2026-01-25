@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0023-platform-ci-image-scanning
 title: 'ADR-0023: CI image scanning standard'

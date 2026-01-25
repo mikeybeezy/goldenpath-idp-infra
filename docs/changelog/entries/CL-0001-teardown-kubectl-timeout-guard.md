@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0001-teardown-kubectl-timeout-guard
 title: 'CL-0001: Teardown kubectl timeout guard'

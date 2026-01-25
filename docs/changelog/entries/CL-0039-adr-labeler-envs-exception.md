@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0039-adr-labeler-envs-exception
 title: Exclude envs from ADR labeler rule

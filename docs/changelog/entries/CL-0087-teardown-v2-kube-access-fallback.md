@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0087-teardown-v2-kube-access-fallback
 title: 'CL-0087: Teardown v2 kube access fallback'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: DECISION_ROUTING_STRATEGY
 title: Decision Routing & Governance Strategy

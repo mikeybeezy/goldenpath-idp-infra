@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0015-repo-health-and-hygiene
 title: Repo Health & Hygiene

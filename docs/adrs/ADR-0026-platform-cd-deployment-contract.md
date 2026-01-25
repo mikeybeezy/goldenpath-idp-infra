@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0026-platform-cd-deployment-contract
 title: 'ADR-0026: CD deployment contract'

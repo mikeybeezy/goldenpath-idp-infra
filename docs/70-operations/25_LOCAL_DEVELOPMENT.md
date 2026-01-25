@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 25_LOCAL_DEVELOPMENT
 title: Local Development Environment

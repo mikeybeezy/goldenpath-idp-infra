@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0053-daily-policy-enforcement-workflow
 title: 'CL-0053: Daily Policy Enforcement Workflow'

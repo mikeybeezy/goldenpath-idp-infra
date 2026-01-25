@@ -1,4 +1,3 @@
-# AGENT_CONTEXT: Read .agent/README.md for rules
 terraform {
   required_version = ">= 1.5.0"
 }

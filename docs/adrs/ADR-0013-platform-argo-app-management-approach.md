@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0013-platform-argo-app-management-approach
 title: 'ADR-0013: Argo CD app management approach for current scale'

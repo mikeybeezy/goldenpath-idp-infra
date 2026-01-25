@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0029-rds-manual-secret-rotation
 title: RDS Manual Secret Rotation (Runbook)

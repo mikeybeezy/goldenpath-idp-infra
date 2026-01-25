@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0121-value-quantification-framework
 title: Value Quantification (VQ) Framework

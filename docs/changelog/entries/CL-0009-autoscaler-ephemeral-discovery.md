@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0009-autoscaler-ephemeral-discovery
 title: 'CL-0009: Autoscaler discovery for ephemeral clusters'

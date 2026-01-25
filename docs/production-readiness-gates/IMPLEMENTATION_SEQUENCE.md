@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: IMPLEMENTATION_SEQUENCE
 title: Golden Path IDP - Implementation Sequence

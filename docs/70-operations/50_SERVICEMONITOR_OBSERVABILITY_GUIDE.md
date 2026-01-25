@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 50_SERVICEMONITOR_OBSERVABILITY_GUIDE
 title: ServiceMonitor Observability Guide

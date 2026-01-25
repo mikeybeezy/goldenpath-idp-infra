@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0078-platform-governed-repo-scaffolder
 title: 'ADR-0078: Governance-driven app repository scaffolder'

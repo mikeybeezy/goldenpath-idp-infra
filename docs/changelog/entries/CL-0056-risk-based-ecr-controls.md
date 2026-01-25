@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0056-risk-based-ecr-controls
 title: 'CL-0056: Risk-Based ECR Security Controls'

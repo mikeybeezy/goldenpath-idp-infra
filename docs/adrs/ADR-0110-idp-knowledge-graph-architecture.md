@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0110-idp-knowledge-graph-architecture
 title: IDP Knowledge Graph Node Architecture

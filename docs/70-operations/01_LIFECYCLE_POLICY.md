@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 01_LIFECYCLE_POLICY
 title: Lifecycle & Upgrade Policy

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: GOVERNANCE_VOCABULARY
 title: Governance Vocabulary & Allowed Values

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0042-metadata-backfill-batch-1
 title: Metadata Backfill Batch 1

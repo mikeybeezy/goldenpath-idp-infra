@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 41_BUILD_RUN_LOG
 title: Build Run Log (Living)

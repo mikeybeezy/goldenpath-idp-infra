@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 16_INFRA_Build_ID_Strategy_Decision
 title: Build ID Strategy Decision

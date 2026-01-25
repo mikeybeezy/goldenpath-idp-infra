@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0022-pr-guardrails-template-copy
 title: 'CL-0022: PR guardrails template copy'

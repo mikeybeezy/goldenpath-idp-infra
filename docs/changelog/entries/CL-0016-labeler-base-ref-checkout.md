@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0016-labeler-base-ref-checkout
 title: 'CL-0016: Labeler uses base ref checkout'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0064-platform-dev-bootstrap-defaults
 title: 'ADR-0064: Dev bootstrap defaults off for k8s resources and storage'

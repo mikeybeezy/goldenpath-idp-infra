@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: APP_BUILD_PIPELINE
 title: 'How It Works: Application Build Pipeline'

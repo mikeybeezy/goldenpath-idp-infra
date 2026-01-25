@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: GITHUB_WORKFLOW_PERMISSIONS
 title: GitHub Workflow Permissions & Setup

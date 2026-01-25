@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 02_GOVERNANCE_MODEL
 title: Governance Model – Golden Path IDP (Deprecated)

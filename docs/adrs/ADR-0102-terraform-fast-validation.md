@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0102
 title: Layer 2 Terraform Validation (Fast Feedback Loop)

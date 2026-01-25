@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0059-platform-ci-workflow-index-and-ownership
 title: 'ADR-0059: CI workflow index, ownership, and UI grouping'

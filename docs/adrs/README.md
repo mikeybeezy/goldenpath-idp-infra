@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: DOCS_ADRS_README
 title: ADR Directory Guide

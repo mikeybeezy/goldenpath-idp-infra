@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0056-platform-loki-deployment-mode
 title: 'ADR-0056: Loki deployment mode for V1'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0103-automated-workflow-docs
 title: Automated CI Workflow Documentation

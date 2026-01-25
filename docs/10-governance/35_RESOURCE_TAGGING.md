@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 35_RESOURCE_TAGGING
 title: Resource Tagging (Living)

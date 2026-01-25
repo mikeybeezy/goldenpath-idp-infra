@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0044-platform-infra-checks-ref-mode
 title: 'ADR-0044: Configurable ref for infra checks dispatch'

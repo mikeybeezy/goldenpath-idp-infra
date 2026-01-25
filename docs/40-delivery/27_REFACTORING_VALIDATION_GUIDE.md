@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 27_REFACTORING_VALIDATION_GUIDE
 title: Refactoring Validation Guide

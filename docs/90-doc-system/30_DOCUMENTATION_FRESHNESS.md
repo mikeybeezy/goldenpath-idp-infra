@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 30_DOCUMENTATION_FRESHNESS
 title: Documentation Freshness Mechanism

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0005-teardown-finalizer-default-on
 title: 'CL-0005: Teardown finalizer removal default-on'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0122
 title: 'ADR-0122: Automated VQ Enforcement and Mission Recovery'

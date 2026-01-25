@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0025-platform-boundaries-contract
 title: 'ADR-0025: Platform boundaries and contract'

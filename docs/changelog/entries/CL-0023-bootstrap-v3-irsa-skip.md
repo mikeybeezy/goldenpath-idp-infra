@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0023-bootstrap-v3-irsa-skip
 title: 'CL-0023: Bootstrap v3 skips IRSA apply'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0118-config-driven-metadata-governance
 title: Config-Driven Metadata Governance Architecture

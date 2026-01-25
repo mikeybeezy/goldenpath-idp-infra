@@ -1,5 +1,0 @@
-# copilot-instructions.md
-# 🛑 STOP
-# This config is deprecated.
-# YOU MUST READ .agent/README.md
-# It contains the Universal Agent Context.

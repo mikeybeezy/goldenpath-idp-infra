@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0071-doc-taxonomy-refactor
 title: 'ADR-0071: Standardized Documentation Taxonomy'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 45_DNS_MANAGEMENT
 title: Platform DNS Management

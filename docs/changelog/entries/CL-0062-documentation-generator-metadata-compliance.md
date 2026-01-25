@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0062-documentation-generator-metadata-compliance
 title: Documentation Generator Metadata Compliance

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0076-metadata-inheritance-and-active-governance
 title: 'CL-0076: Metadata Inheritance, Versioning, and Active Governance'

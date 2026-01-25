@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 13_COLLABORATION_GUIDE
 title: Collaboration Guide

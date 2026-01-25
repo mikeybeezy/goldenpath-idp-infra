@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0057-domain-based-catalogs
 title: 'CL-0057: Domain-Based Resource Catalogs'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0101
 title: 'CL-0101: Doc scaffold + metadata auto-fix'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: HOW_IT_WORKS_INDEX
 title: How It Works Index

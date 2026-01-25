@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0012-backstage-plugin-scaffold
 title: Backstage Plugin Scaffold - Vanilla Template with Pipeline Integration

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0138
 title: 'ADR-0138: Automated Secret Scanning with Gitleaks and TruffleHog'

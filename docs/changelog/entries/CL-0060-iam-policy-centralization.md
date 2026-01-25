@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0060-iam-policy-centralization
 title: 'CL-0060: IAM Policy Centralization'

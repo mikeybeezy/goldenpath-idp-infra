@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0001-platform-argocd-as-gitops-operator
 title: 'ADR-0001: Adopt Argo CD as GitOps controller for platform deployments'

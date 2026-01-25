@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: GOV-0013-devsecops-security-standards
 title: DevSecOps Security Standards

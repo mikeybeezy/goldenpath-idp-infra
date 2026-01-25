@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PLATFORM_SCRIPTS_INDEX
 title: Platform Automation Scripts Index (Auto-Generated)

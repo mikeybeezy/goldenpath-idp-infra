@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 24_PRE_COMMIT_HOOKS
 title: Pre-commit Hooks (Living Document)

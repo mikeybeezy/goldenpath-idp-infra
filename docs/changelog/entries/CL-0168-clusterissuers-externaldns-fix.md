@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0168
 title: ClusterIssuers and ExternalDNS Fixes

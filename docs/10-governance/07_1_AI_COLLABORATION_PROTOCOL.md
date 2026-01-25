@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 07_1_AI_COLLABORATION_PROTOCOL
 title: AI Collaboration Protocol

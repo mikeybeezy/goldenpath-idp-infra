@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0084-platform-enhanced-metadata-schema
 title: 'ADR-0084: Enhanced Metadata Schema for Knowledge Graph'

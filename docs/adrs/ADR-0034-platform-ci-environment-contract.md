@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0034-platform-ci-environment-contract
 title: 'ADR-0034: CI Environment Contract'

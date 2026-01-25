@@ -1,4 +1,3 @@
-# AGENT_CONTEXT: Read .agent/README.md for rules
 variable "environment" {
   type        = string
   description = "Environment identifier (dev/test/staging/prod)."

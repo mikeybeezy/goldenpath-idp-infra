@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0033-github-agent-roles
 title: 'Changelog: GitHub agent roles governance'

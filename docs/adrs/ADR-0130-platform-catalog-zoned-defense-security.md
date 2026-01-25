@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0130
 title: 'ADR-0130: Zoned Defense for Catalog Ingestion Security'

@@ -1,4 +1,3 @@
-# AGENT_CONTEXT: Read .agent/README.md for rules
 terraform {
   backend "s3" {}
 }

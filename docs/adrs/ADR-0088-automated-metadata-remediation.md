@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0088-automated-metadata-remediation
 title: 'ADR-0088: Automated Metadata Remediation over Manual Compliance'

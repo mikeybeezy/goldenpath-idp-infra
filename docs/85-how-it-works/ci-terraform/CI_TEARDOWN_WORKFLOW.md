@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CI_TEARDOWN_WORKFLOW
 title: 'How It Works: CI Teardown Workflow'

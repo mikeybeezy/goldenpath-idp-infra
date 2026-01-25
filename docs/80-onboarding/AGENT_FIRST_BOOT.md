@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: AGENT_FIRST_BOOT
 title: AI Agent First-Boot Protocol

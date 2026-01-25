@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0035-super-linter-reenabled
 title: 'Changelog: re-enable super-linter and require lint checks'

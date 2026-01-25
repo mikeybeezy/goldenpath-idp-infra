@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PR-156-STABILIZATION-CHECKLIST
 title: 'PR #156: Stabilization & Compliance Checklist'

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: GOLDENPATH_IDP_ROOT_README
 title: Golden Path IDP Infra

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0027-platform-design-philosophy
 title: 'ADR-0027: Platform design philosophy and reference implementation'

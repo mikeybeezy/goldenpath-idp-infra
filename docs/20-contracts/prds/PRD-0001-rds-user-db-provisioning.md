@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PRD-0001-rds-user-db-provisioning
 title: 'PRD-0001: Automated RDS User and Database Provisioning'

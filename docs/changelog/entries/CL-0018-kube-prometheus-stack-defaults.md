@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0018-kube-prometheus-stack-defaults
 title: 'CL-0018: Kube-prometheus-stack baseline and storage defaults'

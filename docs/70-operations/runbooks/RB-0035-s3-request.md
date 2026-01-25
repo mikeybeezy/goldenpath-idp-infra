@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0035-s3-request
 title: S3 Bucket Request Operations (Runbook)

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0080
 title: 'CL-0080: Documentation & Visibility Backfill'

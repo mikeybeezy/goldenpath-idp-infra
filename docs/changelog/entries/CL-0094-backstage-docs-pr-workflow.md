@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0094-backstage-docs-pr-workflow
 title: 'CL-0094: Backstage docs PR workflow'

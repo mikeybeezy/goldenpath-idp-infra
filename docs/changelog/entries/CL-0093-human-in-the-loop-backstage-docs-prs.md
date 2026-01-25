@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0093-human-in-the-loop-backstage-docs-prs
 title: 'CL-0093: Human-in-the-loop Backstage docs generation'

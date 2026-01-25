@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: BORN_GOVERNED_LIFECYCLE
 title: Born Governed Lifecycle

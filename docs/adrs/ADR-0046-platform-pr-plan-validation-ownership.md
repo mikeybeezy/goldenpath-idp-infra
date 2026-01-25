@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0046-platform-pr-plan-validation-ownership
 title: 'ADR-0046: PR plan owns validation (no auto infra checks dispatch)'

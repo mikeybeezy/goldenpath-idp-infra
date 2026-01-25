@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0074-platform-ops-workflow-branch-guard
 title: 'ADR-0074: Ops workflow branch guard'

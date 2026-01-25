@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0002-bootstrap-refactor
 title: 'CL-0002: Refactor Bootstrap to Terraform'

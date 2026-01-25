@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0026-day-one-onboarding-checklist
 title: 'CL-0026: Day-one onboarding checklist'

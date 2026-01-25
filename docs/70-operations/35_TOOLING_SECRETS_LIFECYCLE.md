@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 35_TOOLING_SECRETS_LIFECYCLE
 title: Tooling Secrets Lifecycle

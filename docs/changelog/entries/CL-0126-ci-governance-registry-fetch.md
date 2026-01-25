@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0126-ci-governance-registry-fetch
 title: CI Governance Registry Fetch for Build ID Validation

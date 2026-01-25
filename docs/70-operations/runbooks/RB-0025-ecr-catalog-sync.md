@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0025-ecr-catalog-sync
 title: ECR Catalog Sync (AWS Source of Truth)

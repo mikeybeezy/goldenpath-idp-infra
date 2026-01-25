@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0139-teardown-v3-enhanced-reliability
 title: Teardown V3 with Enhanced Reliability and RDS Support

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 10_SECRET_SCANNING_POLICY
 title: Secret Scanning Policy (Gitleaks)

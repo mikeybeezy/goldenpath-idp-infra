@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0127
 title: CI Workflow Refactor and Bootstrap Integration

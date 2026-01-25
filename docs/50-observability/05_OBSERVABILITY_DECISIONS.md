@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 05_OBSERVABILITY_DECISIONS
 title: Observability Tooling Decisions

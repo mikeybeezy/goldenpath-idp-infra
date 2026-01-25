@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0091-platform-health-outcome-metrics
 title: 'CL-0091: Platform health outcome metrics proposal'

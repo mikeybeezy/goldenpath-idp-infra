@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0182
 title: hello-goldenpath-idp ServiceMonitor and Observability Guide

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0009-app-delivery-insights
 title: 'ADR-0009: CI/CD observability via OpenTelemetry ("Delivery Insights")'

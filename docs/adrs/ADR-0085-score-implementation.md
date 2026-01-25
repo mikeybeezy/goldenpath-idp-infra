@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0085-score-implementation
 title: 'ADR-0085: Implementing Score in V1'

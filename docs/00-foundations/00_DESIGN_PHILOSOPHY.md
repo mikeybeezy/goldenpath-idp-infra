@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 00_DESIGN_PHILOSOPHY
 title: GoldenPath Design Philosophy

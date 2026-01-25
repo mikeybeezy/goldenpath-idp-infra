@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0083-automation-confidence-matrix
 title: 'CL-0083: Automation Confidence Matrix (Five-Star Certification)'

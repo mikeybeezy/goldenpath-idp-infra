@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0037
 title: Pipeline Enablement for ArgoCD Image Updater

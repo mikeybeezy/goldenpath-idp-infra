@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0077-platform-ci-build-teardown-log-automation
 title: 'ADR-0077: CI build/teardown log automation'

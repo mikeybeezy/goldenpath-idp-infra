@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0097
 title: 'CL-0097: Tooling config identity sidecars'

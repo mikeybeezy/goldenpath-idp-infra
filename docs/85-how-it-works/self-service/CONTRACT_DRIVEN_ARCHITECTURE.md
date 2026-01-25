@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CONTRACT_DRIVEN_ARCHITECTURE
 title: Contract-Driven Architecture for Self-Service Requests

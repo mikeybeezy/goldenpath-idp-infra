@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0141
 title: 'ADR-0141: Backstage ECR requests use GitHub Actions dispatch'

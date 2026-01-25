@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0067-documentation-auto-healing
 title: 'CL-0067: Automated Documentation Auto-Healing'

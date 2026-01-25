@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0047-platform-teardown-destroy-timeout-retry
 title: 'ADR-0047: Retry Terraform destroy after timeout with cluster-scoped LB cleanup'

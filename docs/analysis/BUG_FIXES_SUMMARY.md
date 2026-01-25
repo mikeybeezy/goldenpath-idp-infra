@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: BUG_FIXES_SUMMARY
 title: 'Bug Fixes Summary: Seamless Build Deployment'

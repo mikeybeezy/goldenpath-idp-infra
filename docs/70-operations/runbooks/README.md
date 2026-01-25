@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: DOCS_RUNBOOKS_README
 title: Runbooks Index

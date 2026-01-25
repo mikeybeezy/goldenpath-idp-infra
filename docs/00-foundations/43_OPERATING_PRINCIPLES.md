@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 43_OPERATING_PRINCIPLES
 title: Platform Operating Principles (Grove + Rumelt)

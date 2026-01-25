@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0017-platform-policy-as-code
 title: 'ADR-0017: Policy as code for infrastructure and application changes'

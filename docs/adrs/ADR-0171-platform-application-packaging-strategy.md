@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0171-platform-application-packaging-strategy
 title: 'ADR-0171: Application Packaging Strategy - Helm vs Kustomize'

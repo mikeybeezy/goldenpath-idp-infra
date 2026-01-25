@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0175-externaldns-wildcard-ownership
 title: 'ADR-0175: ExternalDNS owns wildcard records for env subdomains'

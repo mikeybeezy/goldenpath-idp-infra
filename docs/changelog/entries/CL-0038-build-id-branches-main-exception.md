@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0038-build-id-branches-main-exception
 title: Allow build-id branches to merge to main

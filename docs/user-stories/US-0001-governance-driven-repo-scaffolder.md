@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: US-0001-governance-driven-repo-scaffolder
 title: 'US-0001: Governance-driven repo scaffolder'

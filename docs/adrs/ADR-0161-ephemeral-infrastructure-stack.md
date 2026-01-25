@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0161
 title: 'ADR-0161: Standard Ephemeral Infrastructure Stack'

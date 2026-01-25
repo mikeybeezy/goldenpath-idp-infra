@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: SHARED_RESPONSIBILITY
 title: Shared Responsibility Model

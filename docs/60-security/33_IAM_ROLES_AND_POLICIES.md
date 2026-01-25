@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 33_IAM_ROLES_AND_POLICIES
 title: IAM Roles and Policies Index (Living)

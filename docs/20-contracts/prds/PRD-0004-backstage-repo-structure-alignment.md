@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PRD-0004-backstage-repo-structure-alignment
 title: 'PRD-0004: Backstage Repo Structure Alignment (Spotify-style)'

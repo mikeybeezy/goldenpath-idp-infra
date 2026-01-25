@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0010-dev-branch-apply
 title: 'Runbook: Dev Branch Infra Apply'

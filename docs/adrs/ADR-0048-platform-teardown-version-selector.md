@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0048-platform-teardown-version-selector
 title: 'ADR-0048: Versioned teardown runners with selectable entrypoint'

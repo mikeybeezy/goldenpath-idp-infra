@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0048-automated-platform-health
 title: 'CL-0048: Automated Platform Health Auditing'

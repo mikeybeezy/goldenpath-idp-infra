@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0021-backstage-helm-catalog-visibility
 title: Backstage Helm Catalog Visibility (Runbook)

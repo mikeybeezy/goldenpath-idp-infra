@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: STATELESS_APP_REQUEST_FLOW
 title: 'How It Works: Stateless App Request Flow'

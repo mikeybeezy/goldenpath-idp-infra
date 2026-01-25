@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: METADATA_INHERITANCE_STRATEGY
 title: Metadata Inheritance & Active Governance Strategy

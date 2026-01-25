@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CATALOG_SYSTEMS
 title: 'How It Works: Platform Catalog Systems'

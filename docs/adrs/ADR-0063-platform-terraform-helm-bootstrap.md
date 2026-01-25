@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0063-platform-terraform-helm-bootstrap
 title: 'ADR-0063: Terraform Helm Provider for Bootstrap'

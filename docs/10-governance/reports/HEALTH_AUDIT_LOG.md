@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: HEALTH_AUDIT_LOG
 title: Platform Health Audit Log

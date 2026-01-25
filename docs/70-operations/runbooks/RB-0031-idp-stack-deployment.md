@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0031-idp-stack-deployment
 title: IDP Stack Deployment (Keycloak + Backstage)

@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0173-governance-doc-naming-migration
 title: 'ADR-0173: Governance Doc Naming Migration Strategy'

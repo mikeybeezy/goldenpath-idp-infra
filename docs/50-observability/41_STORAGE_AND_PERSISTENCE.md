@@ -1,4 +1,3 @@
-<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 41_STORAGE_AND_PERSISTENCE
 title: Storage and Persistence (Living)
