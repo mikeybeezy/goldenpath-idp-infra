@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0099
 title: 'CL-0099: AWS inventory in platform health'

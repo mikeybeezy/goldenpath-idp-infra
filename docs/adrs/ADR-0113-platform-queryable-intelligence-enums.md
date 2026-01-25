@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0113-platform-queryable-intelligence-enums
 title: Platform Queryable Intelligence Enums

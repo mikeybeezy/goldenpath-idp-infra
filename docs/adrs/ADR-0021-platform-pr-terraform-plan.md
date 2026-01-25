@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0021-platform-pr-terraform-plan
 title: 'ADR-0021: PR Terraform plan with automated comments'

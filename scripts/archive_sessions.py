@@ -1,3 +1,4 @@
+# AGENT_CONTEXT: Read .agent/README.md for rules
 #!/usr/bin/env python3
 """
 ---

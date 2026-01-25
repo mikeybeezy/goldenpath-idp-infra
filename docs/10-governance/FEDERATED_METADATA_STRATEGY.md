@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: FEDERATED_METADATA_STRATEGY
 title: 'Federated Metadata Strategy: Scaling the Knowledge Graph'

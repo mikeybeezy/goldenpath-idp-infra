@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0146
 title: S3 Self-Service Request System

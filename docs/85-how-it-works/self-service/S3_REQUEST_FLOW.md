@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: S3_REQUEST_FLOW
 title: 'How It Works: S3 Bucket Request Flow'

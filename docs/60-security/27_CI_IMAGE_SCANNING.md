@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 27_CI_IMAGE_SCANNING
 title: CI Image Scanning (Living Document)

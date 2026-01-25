@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0032-ai-agent-governance
 title: 'Changelog: AI agent governance and auditability'

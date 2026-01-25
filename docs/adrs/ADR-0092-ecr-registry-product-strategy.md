@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0092-ecr-registry-product-strategy
 title: 'ADR-0092: ECR Registry Product-Based Strategy & Shared Responsibility Model'

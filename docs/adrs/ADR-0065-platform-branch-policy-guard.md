@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0065-platform-branch-policy-guard
 title: 'ADR-0065: Restore branch policy guard for main'

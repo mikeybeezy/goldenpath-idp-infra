@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0009-ci-teardown-recovery-v2
 title: CI Teardown Recovery (v2)

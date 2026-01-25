@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0021-doc-taxonomy-refactor
 title: 'CL-0021: Documentation Taxonomy Refactor'

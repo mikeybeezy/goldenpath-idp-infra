@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0004-backstage-copilot-plugin
 title: Backstage AI Copilot Plugin

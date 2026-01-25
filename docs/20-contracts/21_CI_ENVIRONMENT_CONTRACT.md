@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 21_CI_ENVIRONMENT_CONTRACT
 title: CI Environment Contract

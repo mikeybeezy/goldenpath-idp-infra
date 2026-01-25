@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 09_GOVERNANCE_TESTING
 title: Governance Testing Doc

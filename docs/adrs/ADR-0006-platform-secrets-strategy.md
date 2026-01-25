@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0006-platform-secrets-strategy
 title: 'ADR-0006: Use AWS Secrets Manager/SSM as system of record for secrets and

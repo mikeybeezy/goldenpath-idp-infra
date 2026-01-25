@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: V1_04_CAPABILITY_MATRIX
 title: Capability Matrix – Golden Path IDP Infra

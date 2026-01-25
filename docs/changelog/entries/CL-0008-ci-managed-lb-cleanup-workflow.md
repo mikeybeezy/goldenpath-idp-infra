@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0008-ci-managed-lb-cleanup-workflow
 title: 'CL-0008: CI managed LB cleanup workflow'

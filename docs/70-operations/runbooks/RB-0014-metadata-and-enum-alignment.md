@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0014-metadata-and-enum-alignment
 title: Metadata & Enum Alignment

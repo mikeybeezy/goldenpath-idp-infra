@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: GOVERNANCE_REGISTRY_MIGRATION
 title: Log Files - Governance Registry Migration Assessment

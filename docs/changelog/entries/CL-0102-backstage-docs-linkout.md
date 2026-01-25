@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0102-backstage-docs-linkout
 title: 'CL-0102: Backstage docs link-out (no TechDocs build)'

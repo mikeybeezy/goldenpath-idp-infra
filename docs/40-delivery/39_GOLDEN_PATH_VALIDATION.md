@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 39_GOLDEN_PATH_VALIDATION
 title: Golden Path Validation (Living)

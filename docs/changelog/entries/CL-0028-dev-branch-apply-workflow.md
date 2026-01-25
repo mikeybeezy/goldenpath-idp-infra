@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0028-dev-branch-apply-workflow
 title: 'CL-0028: Dev-branch apply workflow and changelog exemption'

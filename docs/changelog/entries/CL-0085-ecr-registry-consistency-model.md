@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0085-ecr-registry-consistency-model
 title: 'CL-0085: ECR Registry Consistency Model'

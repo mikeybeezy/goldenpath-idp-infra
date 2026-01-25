@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0035-platform-iam-audit-cadence
 title: 'ADR-0035: IAM Audit Cadence for CI Roles'

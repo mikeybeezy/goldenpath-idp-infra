@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0042-platform-branching-strategy
 title: 'ADR-0042: Branching strategy (development → main)'

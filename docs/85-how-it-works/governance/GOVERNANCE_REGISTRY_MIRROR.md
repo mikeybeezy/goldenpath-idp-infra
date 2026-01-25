@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: GOVERNANCE_REGISTRY_MIRROR
 title: How it Works – Governance Registry Mirror

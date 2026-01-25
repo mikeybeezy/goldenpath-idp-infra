@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0006-competitor-analysis-tap
 title: Competitor Analysis - VMware Tanzu Application Platform

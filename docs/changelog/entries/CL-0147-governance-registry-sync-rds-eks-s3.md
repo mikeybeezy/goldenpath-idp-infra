@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0147
 title: Governance Registry Sync for RDS/EKS/S3

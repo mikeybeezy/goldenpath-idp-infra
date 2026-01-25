@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0029-platform-dev-plan-gate
 title: 'ADR-0029: Dev plan gate before dev apply'

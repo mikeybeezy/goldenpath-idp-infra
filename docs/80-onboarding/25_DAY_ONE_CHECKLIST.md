@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 25_DAY_ONE_CHECKLIST
 title: Day-One Onboarding Checklist

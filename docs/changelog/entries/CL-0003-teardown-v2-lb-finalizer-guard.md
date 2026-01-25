@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0003-teardown-v2-lb-finalizer-guard
 title: 'CL-0003: Teardown v2 LoadBalancer finalizer guard'

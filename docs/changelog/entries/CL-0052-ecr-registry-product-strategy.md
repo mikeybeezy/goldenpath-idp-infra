@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0052-ecr-registry-product-strategy
 title: 'CL-0052: ECR Registry Product-Based Strategy & Shared Responsibility Model'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0187-rds-deploy-timing-capture
 title: 'CL-0187: Add timing capture for rds-deploy target'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: VQ_TAGGING_GUIDE
 title: 'VQ Tagging Guide: Scripts & Workflows'

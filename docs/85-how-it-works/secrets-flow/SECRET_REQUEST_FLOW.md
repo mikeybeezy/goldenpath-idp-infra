@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: SECRET_REQUEST_FLOW
 title: 'How It Works: Secret Request Flow'

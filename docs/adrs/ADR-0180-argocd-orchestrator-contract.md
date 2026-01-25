@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0180-argocd-orchestrator-contract
 title: 'ADR-0180: ArgoCD Orchestrator Contract'

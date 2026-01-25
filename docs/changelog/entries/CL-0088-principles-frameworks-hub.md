@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0088-principles-frameworks-hub
 title: 'CL-0088: Principles and frameworks hub'

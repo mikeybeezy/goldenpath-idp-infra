@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0072-platform-pr-checklist-template
 title: 'ADR-0072: PR checklist template in PR gates guide'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: COMPLIANCE_DATREE_README
 title: Datree Policies

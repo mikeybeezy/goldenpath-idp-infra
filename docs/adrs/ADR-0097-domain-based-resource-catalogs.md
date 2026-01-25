@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0097-domain-based-resource-catalogs
 title: 'ADR-0097: Domain-Based Resource Catalogs'

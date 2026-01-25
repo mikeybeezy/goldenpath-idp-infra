@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PLATFORM_HEALTH_PROPOSED_UPDATES
 title: Platform Health Proposed Updates

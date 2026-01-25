@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR_INDEX_AUTOMATION_SPEC
 title: Technical Spec - ADR Index Automation System

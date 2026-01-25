@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0028-platform-dev-branch-gate
 title: 'ADR-0028: Dev branch gate before main'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0012-backstage-ci-apply-dev-template
 title: 'CL-0012: Backstage template for dev Terraform apply'

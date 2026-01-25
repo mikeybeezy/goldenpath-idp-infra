@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0027
 title: Frictionless PR Gates (Heal-First Workflow)

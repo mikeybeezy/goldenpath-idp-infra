@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 20_CI_ENVIRONMENT_SEPARATION
 title: CI Environment Separation (Living Document)

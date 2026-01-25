@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 2026-01-04_2252_trusted-delivery-pipeline-phase-4
 title: 'Implementation Plan: Phase 4 - Trusted Delivery Pipeline (ECR)'

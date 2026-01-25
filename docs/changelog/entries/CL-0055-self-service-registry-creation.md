@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0055-self-service-registry-creation
 title: 'CL-0055: Self-Service ECR Registry Creation Workflow'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0105
 title: 'CL-0105: Secret Request Parser refinements and security upgrades'

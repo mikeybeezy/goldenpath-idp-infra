@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0054-platform-observability-exporters-otel-split
 title: 'ADR-0054: Exporter vs OpenTelemetry split for platform observability'

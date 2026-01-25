@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CODEOWNERS_POLICY
 title: Policy - Code Ownership & Human-in-the-Loop (HITL)

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0011-app-template-contract
 title: 'CL-0011: App template contract and reference bundle'

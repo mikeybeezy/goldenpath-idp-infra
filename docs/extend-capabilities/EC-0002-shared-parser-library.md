@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0002-shared-parser-library
 title: Shared Parser Library for Contract-Driven Requests

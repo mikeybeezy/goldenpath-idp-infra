@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0053-platform-storage-lifecycle-separation
 title: 'ADR-0053: Separate storage lifecycle from bootstrap and teardown'

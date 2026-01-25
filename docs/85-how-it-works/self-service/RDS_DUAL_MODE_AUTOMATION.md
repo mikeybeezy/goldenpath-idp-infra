@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RDS_DUAL_MODE_AUTOMATION
 title: 'How It Works: Dual-Mode RDS Automation (Coupled + Standalone)'

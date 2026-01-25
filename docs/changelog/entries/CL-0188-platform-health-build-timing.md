@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0188-platform-health-build-timing
 title: 'CL-0188: Add build timing metrics to platform health dashboard'

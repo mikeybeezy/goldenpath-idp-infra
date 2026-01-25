@@ -44,6 +44,11 @@ logs/build-timings/
 metadata_validation_report.txt
 *.log
 
+# Temp output files
+*_output.txt
+plan_output.txt
+pre_commit_output.txt
+
 # Local notes
 chat_fil.txt
 envs/dev/grafana

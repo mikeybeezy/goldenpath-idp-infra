@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 38_BRANCHING_STRATEGY
 title: Branching Strategy (GoldenPath IDP)

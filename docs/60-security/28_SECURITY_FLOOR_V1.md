@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 28_SECURITY_FLOOR_V1
 title: Security Floor V1 (Living Document)

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0013-leak-protection-management
 title: Leak Protection Management

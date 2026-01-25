@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0089-build-log-metrics
 title: 'CL-0089: Add Build Log Metrics and Roadmap Update'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0092-ecr-registry-system-and-sync
 title: 'CL-0092: ECR registry system boundary and sync updates'

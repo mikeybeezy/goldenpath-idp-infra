@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0070-automated-enum-consistency-validation
 title: Automated Enum Consistency Validation

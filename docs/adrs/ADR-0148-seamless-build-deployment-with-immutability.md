@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0148-seamless-build-deployment-with-immutability
 title: 'ADR-0148: Seamless Build Deployment with Build ID Immutability'

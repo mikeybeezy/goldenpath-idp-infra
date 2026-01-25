@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 07_AI_AGENT_GOVERNANCE
 title: AI Agent Governance

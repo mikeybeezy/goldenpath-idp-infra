@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0029-ops-workflow-branch-guard
 title: 'CL-0029: Ops workflow branch guard'

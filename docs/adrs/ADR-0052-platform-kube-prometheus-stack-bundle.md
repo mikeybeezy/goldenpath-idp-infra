@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0052-platform-kube-prometheus-stack-bundle
 title: 'ADR-0052: Use kube-prometheus-stack as the V1 monitoring bundle'

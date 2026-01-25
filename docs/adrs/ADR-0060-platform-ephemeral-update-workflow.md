@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0060-platform-ephemeral-update-workflow
 title: 'ADR-0060: Separate update workflow for existing ephemeral dev clusters'

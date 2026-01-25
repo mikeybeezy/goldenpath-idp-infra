@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 01_TAG_SCOPED_POLICY_TEMPLATE
 title: Tag-Scoped IAM Policy Template (Living)

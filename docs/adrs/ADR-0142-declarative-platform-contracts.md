@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0142
 title: 'ADR-0142: Strategic Adoption of Declarative Platform Contracts'

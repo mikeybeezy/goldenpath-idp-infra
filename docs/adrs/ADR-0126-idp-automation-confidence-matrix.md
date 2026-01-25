@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0126
 title: 'ADR-0126: IDP Automation Confidence Matrix (Five-Star Approval)'

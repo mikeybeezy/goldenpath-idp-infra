@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0068-adr-index-automation
 title: 'CL-0068: Automated ADR Index Generation'

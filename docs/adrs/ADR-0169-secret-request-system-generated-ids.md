@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0169
 title: System-Generated SecretRequest IDs with CI Immutability Guard

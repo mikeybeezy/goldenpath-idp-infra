@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0001-knative-integration
 title: Knative Integration for Serverless Workloads

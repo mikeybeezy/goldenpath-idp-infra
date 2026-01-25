@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0008-app-backstage-portal
 title: 'ADR-0008: Use Backstage as the developer portal and the V1 demo application

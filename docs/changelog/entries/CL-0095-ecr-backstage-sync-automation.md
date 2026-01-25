@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0095-ecr-backstage-sync-automation
 title: 'CL-0095: ECR Backstage sync automation'

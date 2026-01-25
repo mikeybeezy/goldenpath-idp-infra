@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: METADATA_INJECTION_GUIDE
 title: Metadata Injection Guide

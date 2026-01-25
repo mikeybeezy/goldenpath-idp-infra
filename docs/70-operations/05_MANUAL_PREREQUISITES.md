@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 05_MANUAL_PREREQUISITES
 title: Manual Prerequisites & One-Time Setup

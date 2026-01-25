@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 04_PR_GUARDRAILS
 title: PR Guardrails (GoldenPath IDP)

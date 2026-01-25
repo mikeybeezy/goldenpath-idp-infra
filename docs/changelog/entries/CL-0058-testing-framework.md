@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0058-testing-framework
 title: 'CL-0058: Feature Testing Framework'

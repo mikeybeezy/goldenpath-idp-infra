@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0177-ci-iam-comprehensive-permissions
 title: 'ADR-0177: Grant CI role comprehensive IAM permissions with resource scoping'

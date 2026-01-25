@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: GOV-0014-devsecops-implementation-matrix
 title: DevSecOps Implementation Matrix

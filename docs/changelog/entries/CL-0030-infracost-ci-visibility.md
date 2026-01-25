@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0030-infracost-ci-visibility
 title: 'CL-0030: Lightweight CI cost visibility (Infracost)'

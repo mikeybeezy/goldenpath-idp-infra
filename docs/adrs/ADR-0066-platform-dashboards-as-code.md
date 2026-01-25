@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0066-platform-dashboards-as-code
 title: 'ADR-0066: Platform Dashboards as Code'

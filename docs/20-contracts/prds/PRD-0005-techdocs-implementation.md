@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PRD-0005-techdocs-implementation
 title: 'PRD-0005: TechDocs Implementation Path'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0010-agent-pairing-mode
 title: Agent Pairing Mode - Human-Machine Collaboration Protocol

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0051-platform-reliability-metrics-contract-minimums
 title: 'ADR-0051: Minimal reliability metrics and contract minimums'

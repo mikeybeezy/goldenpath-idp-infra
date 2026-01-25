@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 24_PR_GATES
 title: PR Gates and How to Unblock Them

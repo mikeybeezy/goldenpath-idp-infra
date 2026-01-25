@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0077-value-quantification-framework
 title: Value Quantification (VQ) Infrastructure

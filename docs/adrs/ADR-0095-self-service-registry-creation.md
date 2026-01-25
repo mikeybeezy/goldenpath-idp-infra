@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0095-self-service-registry-creation
 title: 'ADR-0095: Self-Service ECR Registry Creation Workflow'

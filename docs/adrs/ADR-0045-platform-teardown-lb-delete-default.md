@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0045-platform-teardown-lb-delete-default
 title: 'ADR-0045: Default LB delete when ENIs persist during teardown'

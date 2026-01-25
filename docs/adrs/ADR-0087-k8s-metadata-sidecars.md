@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0087-k8s-metadata-sidecars
 title: 'ADR-0087: Integration of Governance Metadata with Kubernetes Resources'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: SCRIPT_CERTIFICATION_MATRIX
 title: Script Certification Matrix

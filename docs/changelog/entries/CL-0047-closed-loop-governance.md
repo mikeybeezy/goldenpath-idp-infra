@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0047-closed-loop-governance
 title: 'CL-0047: Closed-Loop Governance & Metadata Injection'

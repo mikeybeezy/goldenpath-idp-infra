@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0184-fix-duplicate-script-ids
 title: 'CL-0184: Fix duplicate SCRIPT IDs in certification matrix'

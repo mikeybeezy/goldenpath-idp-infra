@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0005-app-keycloak-as-identity-provider-for-human-sso
 title: 'ADR-0005: Adopt Keycloak for platform SSO (humans) and keep IRSA for pod-to-AWS

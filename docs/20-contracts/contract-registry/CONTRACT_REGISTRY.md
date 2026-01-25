@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CONTRACT_REGISTRY
 title: Platform Contract Registry

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0020-git-troubleshooting
 title: 'Runbook: Resolving Git Rebase Conflicts (Uncommitted Changes)'

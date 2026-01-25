@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0030-rds-break-glass-deletion
 title: RDS Break-Glass Deletion Procedure (Runbook)

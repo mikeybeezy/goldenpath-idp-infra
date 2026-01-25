@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 40_COST_VISIBILITY
 title: Cost Visibility (CI + Infracost)

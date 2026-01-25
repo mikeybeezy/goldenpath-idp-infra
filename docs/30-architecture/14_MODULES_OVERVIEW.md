@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 14_MODULES_OVERVIEW
 title: Modules Overview

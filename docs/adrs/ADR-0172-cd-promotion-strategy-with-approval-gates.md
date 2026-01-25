@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0172-cd-promotion-strategy-with-approval-gates
 title: 'ADR-0172: CD Promotion Strategy with Approval Gates'

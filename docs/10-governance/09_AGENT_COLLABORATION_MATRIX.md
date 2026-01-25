@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 09_AGENT_COLLABORATION_MATRIX
 title: Agent Collaboration Registry & Responsibility Matrix

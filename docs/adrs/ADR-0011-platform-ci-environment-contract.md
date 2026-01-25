@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0011-platform-ci-environment-contract
 title: 'ADR-0011: CI Environment Contract (Superseded)'

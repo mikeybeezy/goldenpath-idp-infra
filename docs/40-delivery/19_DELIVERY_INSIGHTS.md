@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 19_DELIVERY_INSIGHTS
 title: Delivery Insights (CI/CD Observability)

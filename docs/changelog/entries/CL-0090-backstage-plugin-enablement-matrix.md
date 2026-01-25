@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0090-backstage-plugin-enablement-matrix
 title: 'CL-0090: Backstage plugin enablement matrix'

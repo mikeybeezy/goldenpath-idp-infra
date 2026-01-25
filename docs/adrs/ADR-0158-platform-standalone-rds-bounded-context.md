@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0158-platform-standalone-rds-bounded-context
 title: 'ADR-0158: Standalone RDS as Bounded Context with Deletion Protection'

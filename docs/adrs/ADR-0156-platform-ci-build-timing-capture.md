@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0156-platform-ci-build-timing-capture
 title: 'ADR-0156: CI Build Timing Capture at Source'

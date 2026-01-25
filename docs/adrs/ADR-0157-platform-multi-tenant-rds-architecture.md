@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0157-platform-multi-tenant-rds-architecture
 title: 'ADR-0157: Multi-Tenant RDS for Platform Tooling Applications'

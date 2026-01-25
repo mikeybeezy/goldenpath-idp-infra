@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0036
 title: GitHub App Setup for ArgoCD Image Updater

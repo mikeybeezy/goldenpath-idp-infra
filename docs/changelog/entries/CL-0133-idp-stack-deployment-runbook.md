@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0133-idp-stack-deployment-runbook
 title: IDP Stack Deployment Runbook (RB-0031)

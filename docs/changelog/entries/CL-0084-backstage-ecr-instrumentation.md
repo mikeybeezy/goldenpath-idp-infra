@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0084-backstage-ecr-instrumentation
 title: 'CL-0084: Backstage VQ Alignment and ECR Instrumentation'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0098
 title: 'CL-0098: Metadata placement policy for configs and reports'

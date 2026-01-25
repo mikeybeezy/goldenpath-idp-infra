@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0135-kong-ingress-for-tooling-apps
 title: Kong Ingress for Tooling Apps

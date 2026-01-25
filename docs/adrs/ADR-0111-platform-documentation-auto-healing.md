@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0111-platform-documentation-auto-healing
 title: 'ADR-0111: Automated Documentation Auto-Healing'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0004-deprecate-update-workflow
 title: '[0.0.4] - 2026-01-02'

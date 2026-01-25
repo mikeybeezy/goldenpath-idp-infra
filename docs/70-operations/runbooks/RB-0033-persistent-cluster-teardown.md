@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0033-persistent-cluster-teardown
 title: Persistent Cluster Teardown

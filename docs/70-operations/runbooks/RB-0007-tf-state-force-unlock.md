@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0007-tf-state-force-unlock
 title: Terraform State Force Unlock (Runbook)

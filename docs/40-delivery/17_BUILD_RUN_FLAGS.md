@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 17_BUILD_RUN_FLAGS
 title: Build/Bootstrap/Teardown Flags (One‑Pager)

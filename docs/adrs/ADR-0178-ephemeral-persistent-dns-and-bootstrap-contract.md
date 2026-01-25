@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0178-ephemeral-persistent-dns-and-bootstrap-contract
 title: 'ADR-0178: Ephemeral vs Persistent DNS Ownership and Bootstrap Contract'

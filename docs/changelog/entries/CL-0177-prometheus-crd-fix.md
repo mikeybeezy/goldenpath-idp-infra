@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0177
 title: Prometheus CRD and ArgoCD Sync Fixes

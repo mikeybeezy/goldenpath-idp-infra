@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0164-teardown-v3-enhanced-reliability
 title: 'ADR-0164: Teardown V3 with Enhanced Reliability and RDS Support'

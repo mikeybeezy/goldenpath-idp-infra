@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 01_PLATFORM_SERVICE_AGREEMENT
 title: Platform Service Agreement

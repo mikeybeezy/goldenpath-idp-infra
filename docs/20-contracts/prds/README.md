@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: DOCS_PRDS_README
 title: Product Requirements Docs (PRDs)

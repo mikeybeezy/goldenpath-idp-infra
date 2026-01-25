@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0163
 title: Custom Backstage ECR Image and Session Memory Architecture

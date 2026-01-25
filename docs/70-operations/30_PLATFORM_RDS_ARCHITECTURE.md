@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 30_PLATFORM_RDS_ARCHITECTURE
 title: Platform RDS Architecture

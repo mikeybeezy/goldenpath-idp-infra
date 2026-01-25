@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PLATFORM_HEALTH_GUIDE
 title: Platform Health Dashboard Guide

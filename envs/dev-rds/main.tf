@@ -1,3 +1,4 @@
+# AGENT_CONTEXT: Read .agent/README.md for rules
 ################################################################################
 # Platform RDS - Standalone Bounded Context
 #

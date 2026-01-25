@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PRD-0006-persistent-cluster-build-timing
 title: 'PRD-0006: Persistent Cluster Build Timing Capture'

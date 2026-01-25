@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: GOV-0012-build-pipeline-standards
 title: Build Pipeline Standards

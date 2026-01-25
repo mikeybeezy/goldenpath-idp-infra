@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0183-preflight-secrets-check-metadata
 title: 'CL-0183: Add governance metadata to preflight_secrets_check.sh'

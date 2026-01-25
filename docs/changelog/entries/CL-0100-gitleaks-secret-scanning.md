@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0100
 title: 'CL-0100: Gitleaks secret scanning'

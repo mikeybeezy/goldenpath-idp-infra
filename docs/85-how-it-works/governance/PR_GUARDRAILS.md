@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PR_GUARDRAILS
 title: 'How It Works: PR Guardrails'

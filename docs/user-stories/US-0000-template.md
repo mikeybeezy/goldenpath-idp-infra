@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: US-0000-template
 title: 'US-0000: User Story Template'

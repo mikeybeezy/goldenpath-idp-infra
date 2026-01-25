@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0162
 title: Kong Ingress DNS Strategy for Platform Tooling

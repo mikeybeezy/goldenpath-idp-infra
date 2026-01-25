@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0005-k8s-extensibility-strategy
 title: Harnessing the K8s API (Controllers & Reconciliation)

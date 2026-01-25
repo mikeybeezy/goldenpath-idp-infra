@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 22_CONTAINER_REGISTRY_STANDARD
 title: Container Registry Standard (Living Document)

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0046-k8s-metadata-sidecars
 title: 'CL-0046: K8s Metadata Sidecar Integration'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CI_TERRAFORM_WORKFLOWS
 title: 'How It Works: CI Terraform Workflows'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: V1_DETERMINISM_CRITERIA
 title: V1 Determinism Criteria - Synthesized Claude + Codex Recommendations

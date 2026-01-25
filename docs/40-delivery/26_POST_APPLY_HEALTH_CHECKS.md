@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 26_POST_APPLY_HEALTH_CHECKS
 title: Post-Apply Health Checks (Living Document)

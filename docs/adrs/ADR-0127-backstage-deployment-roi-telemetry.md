@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0127
 title: 'ADR-0127: Backstage Helm Deployment with ROI Telemetry'

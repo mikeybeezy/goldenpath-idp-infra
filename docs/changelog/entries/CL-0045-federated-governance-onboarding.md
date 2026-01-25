@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0045-federated-governance-onboarding
 title: 'CL-0045: Federated Governance Strategy and Runbook'

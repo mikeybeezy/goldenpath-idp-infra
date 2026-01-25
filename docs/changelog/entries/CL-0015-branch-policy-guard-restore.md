@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0015-branch-policy-guard-restore
 title: 'CL-0015: Restore branch policy guard for main'

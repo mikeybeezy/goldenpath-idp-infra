@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: IMPL-0001-tiered-bootstrap-and-hostname-generation
 title: 'Work Order: Tiered Bootstrap and Dynamic Hostname Generation'

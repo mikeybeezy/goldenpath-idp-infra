@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0040-metadata-backfill-runbook
 title: Metadata backfill runbook and protocol

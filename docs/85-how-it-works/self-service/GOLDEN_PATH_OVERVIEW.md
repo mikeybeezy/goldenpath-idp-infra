@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: GOLDEN_PATH_OVERVIEW
 title: 'How It Works: Golden Path Templates Overview'

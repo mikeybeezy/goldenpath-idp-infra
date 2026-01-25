@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0162
 title: Golden Path Templates for Self-Service App Scaffolding

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0041-argocd-app-readiness-runbook
 title: CL-0041-argocd-app-readiness-runbook

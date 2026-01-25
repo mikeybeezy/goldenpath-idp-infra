@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0063-pr-metadata-auto-heal
 title: PR Metadata Auto-Heal and Scoped Validation

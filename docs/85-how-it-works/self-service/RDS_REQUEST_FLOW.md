@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RDS_REQUEST_FLOW
 title: 'How It Works: RDS Database Request Flow'

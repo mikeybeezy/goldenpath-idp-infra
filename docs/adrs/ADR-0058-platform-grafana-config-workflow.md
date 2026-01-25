@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0058-platform-grafana-config-workflow
 title: 'ADR-0058: Separate Grafana config workflow with readiness guard'

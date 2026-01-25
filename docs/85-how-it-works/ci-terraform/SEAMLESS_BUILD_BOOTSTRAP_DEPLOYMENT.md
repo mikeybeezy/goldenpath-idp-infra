@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: SEAMLESS_BUILD_BOOTSTRAP_DEPLOYMENT
 title: 'How It Works: Seamless Build and Bootstrap Deployment'

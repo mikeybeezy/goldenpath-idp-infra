@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: GOV-0015-build-pipeline-testing-matrix
 title: Build Pipeline Testing Matrix

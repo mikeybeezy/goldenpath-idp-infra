@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0086-federated-metadata-validation
 title: 'ADR-0086: Federated Metadata Validation Strategy'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 2026-01-05_1922_ecr-workflow-optimization
 title: 'Implementation Plan: ECR Workflow Optimization'

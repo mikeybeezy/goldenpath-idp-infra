@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0019-relationship-extraction-script
 title: Relationship Extraction Script - Usage & Operations

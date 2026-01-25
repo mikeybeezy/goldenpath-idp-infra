@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: RB-0012-argocd-app-readiness
 title: Argo CD App Readiness Checklist

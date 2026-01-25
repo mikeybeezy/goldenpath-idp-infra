@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0082-value-heartbeat-roi-telemetry
 title: 'CL-0082: Value Heartbeat ROI Telemetry (Realized Value)'

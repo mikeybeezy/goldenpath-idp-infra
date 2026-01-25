@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 35_SECRET_MANAGEMENT
 title: Secret Management Strategy

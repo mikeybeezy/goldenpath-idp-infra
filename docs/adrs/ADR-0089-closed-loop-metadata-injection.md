@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0089-closed-loop-metadata-injection
 title: 'ADR-0089: Closed-Loop Metadata Injection'

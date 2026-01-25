@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0015-platform-aws-oidc-for-github-actions
 title: 'ADR-0015: Use AWS OIDC for GitHub Actions authentication'

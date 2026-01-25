@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: READINESS_CHECKLIST
 title: 'V1_05: Platform Due-Diligence Scorecard'

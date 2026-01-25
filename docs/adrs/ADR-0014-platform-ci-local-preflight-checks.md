@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0014-platform-ci-local-preflight-checks
 title: 'ADR-0014: Local preflight checks before PRs'

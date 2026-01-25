@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: DOC_AUTO_HEALING
 title: 'How It Works: Documentation Auto-Healing'

@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0040-platform-lifecycle-aware-state-keys
 title: 'ADR-0040: Lifecycle-aware Terraform state keys for BuildId isolation'

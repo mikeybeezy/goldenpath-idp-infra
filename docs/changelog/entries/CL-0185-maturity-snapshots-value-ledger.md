@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0185-maturity-snapshots-value-ledger
 title: 'CL-0185: Add maturity snapshots to value ledger'

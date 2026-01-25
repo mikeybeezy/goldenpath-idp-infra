@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0064-terraform-lint-workflow
 title: '[CI] Add Offline Terraform Lint & Validation Gate'

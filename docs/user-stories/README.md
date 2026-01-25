@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: DOCS_USER-STORIES_README
 title: User Stories (Living)

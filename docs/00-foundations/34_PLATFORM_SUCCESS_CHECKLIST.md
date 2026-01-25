@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 34_PLATFORM_SUCCESS_CHECKLIST
 title: Platform v1 Baseline Success Checklist (Living)

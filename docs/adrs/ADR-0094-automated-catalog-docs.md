@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0094-automated-catalog-docs
 title: 'ADR-0094: Automated Registry Catalog Documentation'

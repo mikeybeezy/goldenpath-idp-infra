@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: OB-0001-developer-security-tooling
 title: Developer Security Tooling Onboarding

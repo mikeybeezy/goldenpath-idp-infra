@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 26_AI_AGENT_PROTOCOLS
 title: AI Agent & Operator Protocols

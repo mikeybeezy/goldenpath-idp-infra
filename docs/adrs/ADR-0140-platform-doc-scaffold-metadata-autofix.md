@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0140
 title: 'ADR-0140: Doc scaffolding and metadata auto-fix'

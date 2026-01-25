@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: EC-0005-kubernetes-operator-framework
 title: Kubernetes Operator Framework for GoldenPath

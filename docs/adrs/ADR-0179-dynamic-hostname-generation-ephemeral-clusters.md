@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0179-dynamic-hostname-generation-ephemeral-clusters
 title: 'ADR-0179: Dynamic Hostname Generation for Ephemeral Clusters'

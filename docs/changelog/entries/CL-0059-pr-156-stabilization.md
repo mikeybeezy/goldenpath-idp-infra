@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0059-pr-156-stabilization
 title: 'CL-0059: PR #156 – ECR Pipeline Stabilization and Metadata Compliance'

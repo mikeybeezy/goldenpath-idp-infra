@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0061-platform-observability-provisioning-boundary
 title: 'ADR-0061: Observability provisioning boundary (Helm in-cluster, Terraform

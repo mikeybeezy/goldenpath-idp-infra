@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0165
 title: Terraform Validation Fix for Non-Dev Environments

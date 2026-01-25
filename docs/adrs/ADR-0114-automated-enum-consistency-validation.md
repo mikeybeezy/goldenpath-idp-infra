@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0114-automated-enum-consistency-validation
 title: Automated Enum Consistency Validation

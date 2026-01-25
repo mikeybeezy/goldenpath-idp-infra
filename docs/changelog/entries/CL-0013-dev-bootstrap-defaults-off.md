@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0013-dev-bootstrap-defaults-off
 title: 'CL-0013: Dev bootstrap defaults off'

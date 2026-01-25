@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0104
 title: 'CL-0104: Backstage ECR requests dispatch workflow'

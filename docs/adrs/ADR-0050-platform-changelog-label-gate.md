@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0050-platform-changelog-label-gate
 title: 'ADR-0050: Label-gated changelog entries'

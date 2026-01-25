@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 36_STATE_KEY_STRATEGY
 title: State Key Strategy (Living)

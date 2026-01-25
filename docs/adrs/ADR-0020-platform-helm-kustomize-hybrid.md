@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0020-platform-helm-kustomize-hybrid
 title: 'ADR-0020: Hybrid GitOps approach with Helm and Kustomize'

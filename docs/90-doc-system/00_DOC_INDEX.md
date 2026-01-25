@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 00_DOC_INDEX
 title: Documentation Index (Living)

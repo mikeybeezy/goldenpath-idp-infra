@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0014-pr-gates-onboarding
 title: 'CL-0014: PR gate onboarding guide'

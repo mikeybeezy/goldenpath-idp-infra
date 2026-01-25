@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: PLATFORM_CONTRACT_RATIONALE
 title: Platform Contract Rationale

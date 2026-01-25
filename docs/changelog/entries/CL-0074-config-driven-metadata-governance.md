@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: CL-0074-config-driven-metadata-governance
 title: Transition to Config-Driven Metadata Governance

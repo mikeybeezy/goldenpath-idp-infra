@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ADR-0041-platform-orphan-cleanup-deletion-order
 title: 'ADR-0041: Deterministic orphan cleanup deletion order'

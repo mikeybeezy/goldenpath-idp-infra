@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: 2026-01-04_2339_trusted-delivery-pipeline-phase-4-final
 title: Walkthrough - IDP Productization V2

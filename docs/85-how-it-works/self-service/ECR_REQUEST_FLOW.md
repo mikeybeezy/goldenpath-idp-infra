@@ -1,3 +1,4 @@
+<!-- AGENT_CONTEXT: Read .agent/README.md for rules -->
 ---
 id: ECR_REQUEST_FLOW
 title: 'How It Works: ECR Request Flow'
