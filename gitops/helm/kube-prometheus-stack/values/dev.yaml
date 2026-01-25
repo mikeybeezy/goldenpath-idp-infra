@@ -33,6 +33,10 @@ prometheus:
       limits:
         cpu: 1000m
         memory: 2Gi
+    # Widen ServiceMonitor selector to discover all ServiceMonitors regardless of release label
+    # This allows tooling-dashboards ServiceMonitors to be scraped across all environments
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
 
 # -----------------------------------------------------------------------------
 # Alertmanager

@@ -181,6 +181,24 @@ def get_script_certification_stats():
             stats['certified'] = len(re.findall(r'\| ⭐⭐⭐ 3 \|', content))
     return stats
 
+
+def get_maturity_snapshots():
+    """Get maturity distribution snapshots from value ledger."""
+    stats = {'latest': None, 'trend': []}
+    path = '.goldenpath/value_ledger.json'
+    if os.path.exists(path):
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                ledger = json.load(f)
+                snapshots = ledger.get('maturity_snapshots', [])
+                if snapshots:
+                    stats['latest'] = snapshots[-1]
+                    # Get last 10 certification rates for trend
+                    stats['trend'] = [s.get('certification_rate', 0) for s in snapshots[-10:]]
+        except (json.JSONDecodeError, IOError):
+            pass
+    return stats
+
 def get_workflow_stats():
     stats = {'total': 0}
     path = 'ci-workflows/CI_WORKFLOWS.md'
@@ -271,6 +289,75 @@ def get_compliance_stats():
             return None
     return None
 
+
+def get_build_timing_stats():
+    """Get build timing stats from governance-registry branch."""
+    import subprocess
+    import csv
+    from io import StringIO
+
+    stats = {
+        'available': False,
+        'recent_builds': [],
+        'phase_averages': {},
+        'last_updated': None
+    }
+
+    try:
+        # Fetch latest from governance-registry
+        subprocess.run(
+            ['git', 'fetch', 'origin', 'governance-registry'],
+            capture_output=True, timeout=10
+        )
+
+        # Read CSV from governance-registry branch
+        result = subprocess.run(
+            ['git', 'show', 'origin/governance-registry:environments/development/latest/build_timings.csv'],
+            capture_output=True, text=True, timeout=10
+        )
+
+        if result.returncode != 0:
+            return stats
+
+        # Parse CSV
+        reader = csv.DictReader(StringIO(result.stdout))
+        rows = list(reader)
+
+        if not rows:
+            return stats
+
+        stats['available'] = True
+        stats['last_updated'] = rows[-1].get('start_time_utc', 'unknown')
+
+        # Get last 10 builds
+        stats['recent_builds'] = rows[-10:]
+
+        # Calculate phase averages
+        phase_durations = {}
+        for row in rows:
+            phase = row.get('phase', 'unknown')
+            try:
+                duration = int(row.get('duration_seconds', 0))
+                if duration > 0:
+                    if phase not in phase_durations:
+                        phase_durations[phase] = []
+                    phase_durations[phase].append(duration)
+            except (ValueError, TypeError):
+                pass
+
+        for phase, durations in phase_durations.items():
+            if durations:
+                avg = sum(durations) / len(durations)
+                stats['phase_averages'][phase] = {
+                    'avg_seconds': round(avg),
+                    'count': len(durations)
+                }
+
+    except (subprocess.TimeoutExpired, subprocess.SubprocessError, Exception):
+        pass
+
+    return stats
+
 def calculate_maturity(stats):
     """Calculates a risk-weighted maturity score (0-100)."""
     impact_weights = {'high': 5, 'medium': 2, 'low': 1, 'none': 0, 'unknown': 1}
@@ -316,6 +403,8 @@ def generate_report(target_dir='.'):
     script_stats = get_script_stats()
     workflow_stats = get_workflow_stats()
     script_cert_stats = get_script_certification_stats()
+    maturity_snapshots = get_maturity_snapshots()
+    build_timing_stats = get_build_timing_stats()
     catalog_stats = get_catalog_stats()
     compliance_data = get_compliance_stats()
     trends = get_historical_trends()
@@ -481,6 +570,16 @@ def generate_report(target_dir='.'):
     lines.append(f"| **Architecture Decisions** | {adr_stats['total']} | [ADR Index](docs/adrs/01_adr_index.md) |")
     lines.append(f"| **Automation Scripts** | {script_stats['total']} | [Script Index](scripts/index.md) |")
     lines.append(f"| **Certified Scripts (M3)** | {script_cert_stats['certified']}/{script_cert_stats['total']} ({cert_rate:.0f}%) | [Certification Matrix](docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md) |")
+
+    # Add maturity distribution if available
+    if maturity_snapshots.get('latest'):
+        latest = maturity_snapshots['latest']
+        dist = latest.get('maturity_distribution', {})
+        m1 = dist.get('M1', 0)
+        m2 = dist.get('M2', 0)
+        m3 = dist.get('M3', 0)
+        lines.append(f"| **Script Maturity Distribution** | M1:{m1} M2:{m2} M3:{m3} | [Value Ledger](.goldenpath/value_ledger.json) |")
+
     lines.append(f"| **CI Workflows** | {workflow_stats['total']} | [Workflow Index](ci-workflows/CI_WORKFLOWS.md) |")
     lines.append(f"| **Change Logs** | {changelog_stats['total']} | [Changelog Index](docs/changelog/README.md) |")
     lines.append(f"| **Tracked Resources** | {stats['total_files']} | Repository Scan |")
@@ -517,6 +616,26 @@ def generate_report(target_dir='.'):
         lines.append(f"- **Report**: [`{md_path}`]({md_path})")
     else:
         lines.append("- **Status**: No inventory report found under `reports/aws-inventory`.")
+
+    lines.append("")
+    lines.append("## Build Timing Metrics")
+    lines.append("")
+    if build_timing_stats.get('available'):
+        lines.append(f"- **Last Updated**: `{build_timing_stats.get('last_updated', 'n/a')}`")
+        lines.append(f"- **Source**: `governance-registry:environments/development/latest/build_timings.csv`")
+        lines.append("")
+        lines.append("| Phase | Avg Duration | Sample Count |")
+        lines.append("| :--- | :--- | :--- |")
+        for phase, data in sorted(build_timing_stats.get('phase_averages', {}).items()):
+            avg_sec = data.get('avg_seconds', 0)
+            count = data.get('count', 0)
+            if avg_sec >= 60:
+                duration_str = f"{avg_sec // 60}m {avg_sec % 60}s"
+            else:
+                duration_str = f"{avg_sec}s"
+            lines.append(f"| `{phase}` | {duration_str} | {count} |")
+    else:
+        lines.append("- **Status**: Build timing data not available from governance-registry branch.")
 
     lines.append("")
     lines.append("## 🛡️ Risk & Maturity Visualization")

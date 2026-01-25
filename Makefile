@@ -619,14 +619,23 @@ rds-destroy-break-glass:
 
 rds-deploy:
 	@echo "Deploying standalone RDS for $(ENV)..."
-	@$(MAKE) rds-init ENV=$(ENV)
-	@if [ "$(RESTORE_SECRETS)" = "true" ]; then \
-		bash scripts/rds_secrets_preflight.sh $(ENV); \
-	else \
-		echo "Skipping secrets preflight (RESTORE_SECRETS=$(RESTORE_SECRETS))."; \
-	fi
-	@$(MAKE) rds-apply ENV=$(ENV)
-	@$(MAKE) rds-provision-auto ENV=$(ENV) RDS_MODE=standalone
+	@mkdir -p logs/build-timings
+	@bash -c '\
+	log="logs/build-timings/rds-deploy-$(ENV)-rds-$$(date -u +%Y%m%dT%H%M%SZ).log"; \
+	echo "RDS deploy output streaming; full log at $$log"; \
+	{ \
+		$(MAKE) rds-init ENV=$(ENV); \
+		if [ "$(RESTORE_SECRETS)" = "true" ]; then \
+			bash scripts/rds_secrets_preflight.sh $(ENV); \
+		else \
+			echo "Skipping secrets preflight (RESTORE_SECRETS=$(RESTORE_SECRETS))."; \
+		fi; \
+		$(MAKE) rds-apply ENV=$(ENV); \
+		$(MAKE) rds-provision-auto ENV=$(ENV) RDS_MODE=standalone; \
+	} 2>&1 | tee "$$log"; \
+	exit $${PIPESTATUS[0]}; \
+	'
+	@bash scripts/record-build-timing.sh $(ENV) rds rds-deploy || true
 
 rds-status:
 	@echo "Platform RDS Status for $(ENV)"

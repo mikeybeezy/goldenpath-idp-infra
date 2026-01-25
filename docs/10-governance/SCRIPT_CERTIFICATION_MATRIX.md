@@ -43,7 +43,7 @@ relates_to:
 | `scripts/generate_script_index.py` | `SCRIPT-0022` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/generate_script_matrix.py` | `generate_script_matrix` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `none` |
 | `scripts/generate_workflow_index.py` | `SCRIPT-0023` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
-| `scripts/inject_script_metadata.py` | `SCRIPT-0002` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
+| `scripts/inject_script_metadata.py` | `SCRIPT-0054` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/load-image-to-kind.sh` | `SCRIPT-0051` | `platform-team` | ⭐⭐ 2 | 🚫 | `manual` | `manual` | `low` |
 | `scripts/migrate_partial_metadata.py` | `SCRIPT-0024` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/platform_health.py` | `SCRIPT-0025` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
@@ -64,9 +64,9 @@ relates_to:
 | `scripts/scaffold_test.py` | `SCRIPT-0032` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/secret_request_parser.py` | `SCRIPT-0033` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/standardize_metadata.py` | `standardize_metadata` | `platform-team` | ⭐⭐⭐ 3 | ✅ | `pytest` | `ci` | `high` |
-| `scripts/sync_backstage_entities.py` | `SCRIPT-0035` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
-| `scripts/sync_ecr_catalog.py` | `SCRIPT-0036` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
-| `scripts/test_hotfix.py` | `SCRIPT-0037` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
+| `scripts/sync_backstage_entities.py` | `SCRIPT-0055` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
+| `scripts/sync_ecr_catalog.py` | `SCRIPT-0056` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
+| `scripts/test_hotfix.py` | `SCRIPT-0057` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/test_platform_health.py` | `SCRIPT-0038` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/validate_enums.py` | `SCRIPT-0039` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/validate_govreg.py` | `SCRIPT-0040` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 ---
-id: SCRIPT-0002
+id: SCRIPT-0054
 type: script
 owner: platform-team
 status: active

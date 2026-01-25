@@ -501,5 +501,29 @@
       "script": "standardize_metadata.py",
       "reclaimed_hours": 1.0
     }
+  ],
+  "maturity_snapshots": [
+    {
+      "timestamp": "2026-01-25T05:48:58Z",
+      "total_scripts": 56,
+      "maturity_distribution": {
+        "M0": 0,
+        "M1": 4,
+        "M2": 51,
+        "M3": 1
+      },
+      "certification_rate": 1.8
+    },
+    {
+      "timestamp": "2026-01-25T06:50:40Z",
+      "total_scripts": 56,
+      "maturity_distribution": {
+        "M0": 0,
+        "M1": 4,
+        "M2": 51,
+        "M3": 1
+      },
+      "certification_rate": 1.8
+    }
   ]
 }
