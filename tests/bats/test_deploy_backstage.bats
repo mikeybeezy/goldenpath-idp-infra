@@ -17,9 +17,9 @@ setup() {
   export MOCK_CALLS_FILE="${TEST_TEMP_DIR}/mock_calls.log"
   touch "$MOCK_CALLS_FILE"
 
-  # Create mock backstage-helm directory
-  mkdir -p "${TEST_TEMP_DIR}/backstage-helm/charts/backstage"
-  touch "${TEST_TEMP_DIR}/backstage-helm/charts/backstage/Chart.yaml"
+  # Create mock helm chart directory
+  mkdir -p "${TEST_TEMP_DIR}/gitops/helm/backstage/chart"
+  touch "${TEST_TEMP_DIR}/gitops/helm/backstage/chart/Chart.yaml"
 }
 
 teardown() {

@@ -88,12 +88,12 @@ jobs:
             PR merge.
 
             - Source of truth: AWS ECR (via scripts/sync_ecr_catalog.py)
-            - Output: backstage-helm/backstage-catalog/resources/ecr-registry.yaml
+            - Output: catalog/resources/ecr-registry.yaml
             - Region: ${{ env.AWS_REGION }}
 
             Human review required per HITL policy and CODEOWNERS.
           add-paths: |
-            backstage-helm/backstage-catalog/resources/ecr-registry.yaml
+            catalog/resources/ecr-registry.yaml
             .goldenpath/value_ledger.json
           labels: |
             docs

@@ -34,9 +34,9 @@ DOC_PATH = ROOT / "docs/90-doc-system/PLATFORM_SYSTEM_MAP.md"
 DOC_INDEX = ROOT / "docs/90-doc-system/00_DOC_INDEX.md"
 
 BACKSTAGE_INDEXES = {
-    "governance": ROOT / "backstage-helm/backstage-catalog/docs/governance-index.yaml",
-    "adrs": ROOT / "backstage-helm/backstage-catalog/docs/adrs-index.yaml",
-    "changelogs": ROOT / "backstage-helm/backstage-catalog/docs/changelogs-index.yaml",
+    "governance": ROOT / "catalog/docs/governance-index.yaml",
+    "adrs": ROOT / "catalog/docs/adrs-index.yaml",
+    "changelogs": ROOT / "catalog/docs/changelogs-index.yaml",
 }
 
 def count_living_docs(path: Path) -> int:
@@ -82,9 +82,9 @@ def main() -> None:
         "| Area | Source of Truth | Backstage Index | Count | Validator/Generator | Notes |",
         "| --- | --- | --- | --- | --- | --- |",
         f"| Living docs | docs/90-doc-system/00_DOC_INDEX.md | n/a | {living} | scripts/check-doc-freshness.py | Review cadence enforced here |",
-        f"| Governance docs | docs/10-governance/*.md | backstage-helm/backstage-catalog/docs/governance-index.yaml | {gov} | scripts/validate_metadata.py | TechDocs list for governance |",
-        f"| ADRs | docs/adrs/*.md | backstage-helm/backstage-catalog/docs/adrs-index.yaml | {adrs} | scripts/validate_metadata.py | Backstage ADR list |",
-        f"| Changelogs | docs/changelog/entries/*.md | backstage-helm/backstage-catalog/docs/changelogs-index.yaml | {cls} | scripts/validate_metadata.py | Backstage changelog list |",
+        f"| Governance docs | docs/10-governance/*.md | catalog/docs/governance-index.yaml | {gov} | scripts/validate_metadata.py | TechDocs list for governance |",
+        f"| ADRs | docs/adrs/*.md | catalog/docs/adrs-index.yaml | {adrs} | scripts/validate_metadata.py | Backstage ADR list |",
+        f"| Changelogs | docs/changelog/entries/*.md | catalog/docs/changelogs-index.yaml | {cls} | scripts/validate_metadata.py | Backstage changelog list |",
         f"| Reports | reports/** | n/a | {reports} | scripts/validate_metadata.py | Sidecar metadata required |",
         f"| Generated | {generated} | n/a | n/a | generate_doc_system_map.py | Snapshot only |",
     ])

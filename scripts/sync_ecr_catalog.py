@@ -113,7 +113,7 @@ def sync_catalog(dry_run=True, region=None):
             print(f"   - {o}")
 
     # --- Backstage Integration ---
-    BACKSTAGE_ENTITY_PATH = "backstage-helm/backstage-catalog/resources/ecr-registry.yaml"
+    BACKSTAGE_ENTITY_PATH = "catalog/resources/ecr-registry.yaml"
 
     # Generate repository list for description
     repo_list = "\n".join([
@@ -134,7 +134,7 @@ def sync_catalog(dry_run=True, region=None):
                 }
             ],
             "annotations": {
-                "backstage.io/managed-by-location": "url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/backstage-helm/backstage-catalog/resources/ecr-registry.yaml",
+                "backstage.io/managed-by-location": "url:https://github.com/mikeybeezy/goldenpath-idp-infra/tree/development/catalog/resources/ecr-registry.yaml",
                 "platform/repo-count": str(len(physical_repos)),
                 "platform/last-sync": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }

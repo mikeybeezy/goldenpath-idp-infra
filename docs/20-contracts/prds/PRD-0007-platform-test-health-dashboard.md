@@ -15,6 +15,7 @@ relates_to:
   - GOV-0016-testing-stack-matrix
   - ADR-0066-platform-dashboards-as-code
   - ADR-0090-automated-platform-health-dashboard
+  - ADR-0183-test-health-metrics-schema
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
@@ -247,6 +248,7 @@ When providing feedback, leave a comment and timestamp your comment.
 
 - **Claude Opus 4.5 / 2026-01-26:** Updated PRD to align with TDD Phase 1+2 completion. Added health thresholds, metrics schema, contract validation, certification proofs, and resolved open questions based on recent implementation work.
 - **Codex / 2026-01-26:** What I reviewed: infra repo test outputs (pytest JUnit + coverage in `python-tests.yml`, bats JUnit in `bats-tests.yml`, quality gate/proof generation in `scripts/generate_test_proofs.py` and `Makefile`); Backstage repo test outputs (Jest JUnit + coverage in `goldenpath-idp-backstage/.github/workflows/ci.yml`); latest capture with bespoke schema decision and quality-gate changes in `session_capture/2026-01-26-session-capture-tdd-quality-gate.md`. Recommendations: define a canonical test-metrics schema (single JSON payload) stored in governance-registry for `PLATFORM_HEALTH.md` consumption with fields `framework`, `total`, `passed`, `failed`, `skipped`, `duration`, `coverage.lines`, `coverage.branches`, `coverage.functions`, `coverage.statements`, `last_run`, `repo`, `commit`. Standardize outputs across frameworks so the aggregator is deterministic: Python `junit.xml` + `coverage.xml` (already produced), bats `bats-junit.xml` (already produced), Backstage `junit.xml` + `coverage-summary.json` (already produced), Terraform add `terraform test -json` and convert to JUnit so it flows into the same schema. Add a Test Health section to `PLATFORM_HEALTH.md` sourced from governance-registry (overall pass rate by framework + repo, coverage percent, last run timestamp + commit, flake rate if recorded). Create a dedicated dashboard doc (e.g., `PLATFORM_TEST_HEALTH.md`) and list it in `PLATFORM_DASHBOARDS.md` with trends and a "Top 10 most flaky" section. Wire quality-gate outcomes into the dashboard (test proofs + contract validation status), and explicitly report when contract validation is skipped vs executed. Concrete data sources already available: infra pytest JUnit + coverage (`python-tests.yml`), infra bats JUnit (`bats-tests.yml`), Backstage Jest JUnit + coverage (`ci.yml`).
+- **Codex / 2026-01-26 (Review):** Gaps to address: (1) coverage thresholds are listed but not anchored to the exact workflow/config sources; add references for enforcement locations. (2) Terraform tests are deferred but the schema should include a placeholder entry (`coverage: null`, `threshold_met: false`) to avoid ambiguity. (3) The Implementation Plan should explicitly include the shared schema validator as a Phase 1 deliverable if validation is required for quality-gate integrity.
 
 - **Claude Opus 4.5 / 2026-01-26 (Review):** Reviewed PRD with Codex input. Key findings and resolutions:
 

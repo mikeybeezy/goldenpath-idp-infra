@@ -242,7 +242,7 @@ def get_catalog_stats():
                     except: pass
 
     # 2. Backstage Demo Catalog
-    backstage_dir = 'backstage-helm/backstage-catalog'
+    backstage_dir = 'catalog'
     if os.path.exists(backstage_dir):
         for f in os.listdir(backstage_dir):
             if f.startswith('all-') and f.endswith('.yaml'):

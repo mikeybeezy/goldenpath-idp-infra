@@ -157,7 +157,7 @@ jobs:
         run: |
           # Copy Backstage catalog for stable cross-environment access
           mkdir -p _govreg_repo/backstage-catalog
-          cp -R backstage-helm/backstage-catalog/* _govreg_repo/backstage-catalog/
+          cp -R catalog/* _govreg_repo/backstage-catalog/
 
           # Update catalog URLs to point to registry branch (self-referential)
           # This ensures templates reference the stable registry branch
