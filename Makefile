@@ -248,6 +248,63 @@ validate:
 	$(TF_BIN) -chdir=$(ENV_DIR) validate
 
 ################################################################################
+# Testing Targets (TDD Foundation)
+#
+# Local and CI test runners for enforcing test-driven development.
+# Related: ADR-0182-tdd-philosophy, GOV-0016-testing-stack-matrix
+################################################################################
+
+.PHONY: test test-python test-shell validate-schemas lint
+
+# Run all tests (Python + Shell)
+test: test-python test-shell
+	@echo "All tests complete."
+
+# Run Python tests with pytest
+test-python:
+	@echo "Running Python tests..."
+	@if command -v pytest >/dev/null 2>&1; then \
+		pytest tests/ -q --tb=short; \
+	else \
+		echo "pytest not found. Install with: pip install pytest"; \
+		exit 1; \
+	fi
+
+# Run Shell tests with bats
+test-shell:
+	@echo "Running Shell tests..."
+	@if command -v bats >/dev/null 2>&1; then \
+		bats tests/bats/*.bats; \
+	else \
+		echo "bats not found. Install with: brew install bats-core"; \
+		exit 1; \
+	fi
+
+# Validate YAML schemas against meta-schema
+validate-schemas:
+	@echo "Validating schemas..."
+	@if [ ! -f schemas/meta-schema.yaml ]; then \
+		echo "No meta-schema found at schemas/meta-schema.yaml - skipping validation"; \
+		exit 0; \
+	fi
+	@if command -v check-jsonschema >/dev/null 2>&1; then \
+		find schemas -name '*.schema.yaml' -exec check-jsonschema --schemafile schemas/meta-schema.yaml {} +; \
+	else \
+		echo "check-jsonschema not found. Install with: pip install check-jsonschema"; \
+		exit 1; \
+	fi
+
+# Run all linters (pre-commit hooks)
+lint:
+	@echo "Running linters..."
+	@if command -v pre-commit >/dev/null 2>&1; then \
+		pre-commit run --all-files; \
+	else \
+		echo "pre-commit not found. Install with: pip install pre-commit"; \
+		exit 1; \
+	fi
+
+################################################################################
 # Seamless Deployment (Two-Phase with Single Command)
 ################################################################################
 
@@ -1113,6 +1170,14 @@ session-archive-force:
 
 help:
 	@echo "Targets:"
+	@echo ""
+	@echo "== Testing (TDD Foundation) =="
+	@echo "  make test                       # Run all tests (Python + Shell)"
+	@echo "  make test-python                # Run Python tests with pytest"
+	@echo "  make test-shell                 # Run Shell tests with bats"
+	@echo "  make validate-schemas           # Validate YAML schemas"
+	@echo "  make lint                       # Run all linters (pre-commit)"
+	@echo "  Related: ADR-0182, GOV-0016"
 	@echo ""
 	@echo "== S3 Requests (Contract-Driven) =="
 	@echo "  make s3-validate S3_REQUEST=docs/20-contracts/s3-requests/dev/S3-0001.yaml"
