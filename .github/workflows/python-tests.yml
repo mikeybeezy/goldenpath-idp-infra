@@ -57,14 +57,15 @@ jobs:
           mkdir -p test-results coverage
 
           # Run pytest with junit output and coverage enforcement
-          # V1 target: 50% coverage (will increase to 70% in V1.1)
+          # V1 target: 60% coverage (will increase to 70% in V1.1)
+          # Per TDD adoption plan Phase 2
           pytest tests/ \
             --junitxml=test-results/junit.xml \
             --cov=scripts \
             --cov-report=xml:coverage/coverage.xml \
             --cov-report=html:coverage/html \
             --cov-report=term-missing \
-            --cov-fail-under=50 \
+            --cov-fail-under=60 \
             --tb=short \
             -v \
             2>&1 | tee test-results/pytest-output.log

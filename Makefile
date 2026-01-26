@@ -355,45 +355,17 @@ validate-schemas:
 	fi; \
 	echo "OK: schema structure validated"
 
-# Validate request fixtures against their schemas (contract validation)
+# Validate request fixtures against bespoke GoldenPath schemas (contract validation)
 # This catches contract violations BEFORE parsers run
-# Reference: GOV-0016-testing-stack-matrix
-# Note: Only validates fixtures with JSON Schema-compliant schemas
-# Custom metadata schemas (e.g., SECRET) are skipped until converted
+# Reference: GOV-0016-testing-stack-matrix, EC-0016-bespoke-schema-validator
+# Uses custom validator that understands bespoke schema format (conditional_rules, enum_from, etc.)
 validate-contracts:
-	@echo "Validating request fixtures against schemas..."
-	@if ! command -v check-jsonschema >/dev/null 2>&1; then \
-		echo "check-jsonschema not found. Install with: pip install check-jsonschema"; \
-		exit 1; \
-	fi
-	@ERRORS=0; VALIDATED=0; \
-	if ls tests/golden/fixtures/inputs/S3-*.yaml >/dev/null 2>&1 && [ -f schemas/requests/s3.schema.yaml ]; then \
-		echo "  Checking S3 requests..."; \
-		python3 -m check_jsonschema --schemafile schemas/requests/s3.schema.yaml tests/golden/fixtures/inputs/S3-*.yaml || ERRORS=$$((ERRORS+1)); \
-		VALIDATED=$$((VALIDATED+1)); \
-	fi; \
-	if ls tests/golden/fixtures/inputs/EKS-*.yaml >/dev/null 2>&1 && [ -f schemas/requests/eks.schema.yaml ]; then \
-		echo "  Checking EKS requests..."; \
-		python3 -m check_jsonschema --schemafile schemas/requests/eks.schema.yaml tests/golden/fixtures/inputs/EKS-*.yaml || ERRORS=$$((ERRORS+1)); \
-		VALIDATED=$$((VALIDATED+1)); \
-	fi; \
-	if ls tests/golden/fixtures/inputs/RDS-*.yaml >/dev/null 2>&1 && [ -f schemas/requests/rds.schema.yaml ]; then \
-		echo "  Checking RDS requests..."; \
-		python3 -m check_jsonschema --schemafile schemas/requests/rds.schema.yaml tests/golden/fixtures/inputs/RDS-*.yaml || ERRORS=$$((ERRORS+1)); \
-		VALIDATED=$$((VALIDATED+1)); \
-	fi; \
-	if [ $$VALIDATED -eq 0 ]; then \
-		echo "  WARNING: No fixtures with JSON Schema-compliant schemas found"; \
-		echo "  (SECRET fixtures skipped - schema uses custom metadata format)"; \
-		echo "  See EC-0016 for bespoke schema validator implementation"; \
-		echo "FAILED: Zero contract validations performed (false-green prevention)"; \
-		exit 1; \
-	fi; \
-	if [ $$ERRORS -gt 0 ]; then \
-		echo "FAILED: $$ERRORS contract validation(s) failed"; \
-		exit 1; \
-	fi; \
-	echo "OK: all contracts valid"
+	@echo "Validating request fixtures against bespoke schemas..."
+	@python3 scripts/validate_request.py \
+		--schema-dir schemas/requests \
+		--request-dir tests/golden/fixtures/inputs \
+		--enums schemas/metadata/enums.yaml \
+		--auto-match
 
 # Run all linters (pre-commit hooks)
 lint:
