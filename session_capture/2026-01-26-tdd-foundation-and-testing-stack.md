@@ -1048,3 +1048,71 @@ f9d188de fix: add fallback for terraform test JSON output shape
 **Known issue:** Duplicate test method name in `tests/unit/test_collect_test_metrics.py` (lines 92 and 101 both named `test_parse_terraform_test_json_direct_summary`). Python will only run the second one - should rename first to `test_parse_terraform_test_json_direct_summary_minimal`.
 
 Signed: Claude Opus 4.5 (2026-01-27T03:30:00Z)
+
+---
+
+## Session Continuation (2026-01-27T04:00:00Z)
+
+### Duplicate Test Method Fix
+
+Fixed duplicate test method names in `tests/unit/test_collect_test_metrics.py`:
+- Line 92: Renamed to `test_parse_terraform_test_json_direct_summary_minimal`
+- Line 102: Renamed to `test_parse_terraform_test_json_direct_summary_with_message`
+
+All 8 tests now pass.
+
+### ArgoCD/LBC Webhook Race Condition Fix
+
+**Problem:** `make deploy-persistent` failed with:
+```
+failed calling webhook "mservice.elbv2.k8s.aws": no endpoints available for service "aws-load-balancer-webhook-service"
+```
+
+**Root Cause:** In `modules/kubernetes_addons/main.tf`, ArgoCD and AWS Load Balancer Controller Helm releases were deployed **in parallel** with no dependency between them.
+
+1. LBC installs a MutatingWebhookConfiguration that intercepts Service creation
+2. ArgoCD creates Services (argocd-server, etc.) during install
+3. If LBC pods aren't ready, webhook has no endpoints → Service creation fails
+
+**Fix Applied:**
+```terraform
+resource "helm_release" "argocd" {
+  # ...
+  depends_on = [helm_release.aws_load_balancer_controller]
+}
+```
+
+**Deployment Order (After Fix):**
+1. `helm_release.aws_load_balancer_controller` → LBC deployed first
+2. LBC pods ready, webhook has endpoints
+3. `helm_release.argocd` → ArgoCD creates Services successfully
+4. `helm_release.bootstrap_apps` → depends on both
+
+**Files Modified:**
+- `modules/kubernetes_addons/main.tf` - Added depends_on
+- `docs/changelog/entries/CL-0198-argocd-lbc-webhook-race-fix.md` - Created
+
+**Historical Context:** Similar webhook issue on 2026-01-23 (IngressClass not found) was fixed by adding `kubernetes_ingress_class_v1.kong` dependency. This fix addresses a different race condition with Service creation.
+
+### Persistent Cluster Deployment Workflow Validated
+
+Confirmed correct deployment workflow:
+
+| Step | Command | Purpose |
+|------|---------|---------|
+| 1 | `make deploy-persistent ENV=dev REGION=eu-west-2 BOOTSTRAP_VERSION=v4 CREATE_RDS=false SKIP_ARGO_SYNC_WAIT=true` | EKS + VPC foundation |
+| 2 | `make rds-deploy ENV=dev REGION=eu-west-2` | Create RDS instance + master secret |
+| 3 | `make rds-provision-k8s ENV=dev REGION=eu-west-2` | Provision databases on existing RDS |
+| 4 | `make pipeline-enable ENV=dev REGION=eu-west-2` | Configure Image Updater with GitHub App |
+
+**Key Insight:** `rds-provision-k8s` provisions databases on an EXISTING RDS. It cannot create the RDS instance itself. Step 2 must complete first to create `goldenpath/dev/rds/master` secret.
+
+### Current State
+
+- EKS cluster: Running
+- ArgoCD: Deployed (LBC race condition fixed)
+- RDS: Deployed with master secret
+- Databases: Provisioned (keycloak, backstage)
+- Pipeline: Enabled
+
+Signed: Claude Opus 4.5 (2026-01-27T04:00:00Z)
