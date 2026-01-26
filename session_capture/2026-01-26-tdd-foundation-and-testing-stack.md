@@ -231,6 +231,8 @@ User asked for honest evaluation of the project:
 ## Commits
 
 ```
+2f86560a fix: update stale test assertions and add TDD changelog
+39bf5db7 docs: update session capture with onboarding docs
 1b6dea1d docs: add testing quickstart and update onboarding docs with TDD
 dd986a57 docs: update session capture with determinism guard
 ab156acf feat: add determinism guard workflow and Makefile test targets
