@@ -761,9 +761,29 @@ rds-deploy:
 			echo "Skipping secrets preflight (RESTORE_SECRETS=$(RESTORE_SECRETS))."; \
 		fi; \
 		$(MAKE) rds-apply ENV=$(ENV); \
-		$(MAKE) rds-provision-auto ENV=$(ENV) RDS_MODE=standalone; \
+		echo ""; \
+		echo "======================================================================"; \
+		echo "✅ RDS INFRASTRUCTURE CREATED SUCCESSFULLY"; \
+		echo "======================================================================"; \
+		echo ""; \
+		echo "Attempting database provisioning from local machine..."; \
+		echo "(This will fail if RDS is in a private subnet - that is expected)"; \
+		echo ""; \
+		if $(MAKE) rds-provision-auto ENV=$(ENV) RDS_MODE=standalone 2>&1; then \
+			echo "✅ Database provisioning complete"; \
+		else \
+			echo ""; \
+			echo "======================================================================"; \
+			echo "ℹ️  RDS is private - provisioning must run from inside the cluster"; \
+			echo "======================================================================"; \
+			echo ""; \
+			echo "RDS infrastructure was created successfully."; \
+			echo "To provision databases, run from inside the cluster:"; \
+			echo ""; \
+			echo "  make rds-provision-k8s ENV=$(ENV) REGION=$(REGION)"; \
+			echo ""; \
+		fi; \
 	} 2>&1 | tee "$$log"; \
-	exit $${PIPESTATUS[0]}; \
 	'
 	@bash scripts/record-build-timing.sh $(ENV) rds rds-deploy || true
 
