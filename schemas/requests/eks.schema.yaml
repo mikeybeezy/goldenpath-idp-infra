@@ -14,7 +14,7 @@ status: proposed
 
 metadata:
   description: "Contract for requesting EKS clusters and bootstrap runs"
-  backstage_template: "backstage-helm/backstage-catalog/templates/eks-request.yaml"
+  backstage_template: "catalog/templates/eks-request.yaml"
   parser_module: "scripts/eks_request_parser.py"
   parser_status: "active"
   terraform_root: "envs/{environment}/"

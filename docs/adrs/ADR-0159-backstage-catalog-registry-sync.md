@@ -187,3 +187,9 @@ kubectl logs -n backstage deploy/backstage | grep -i catalog
 - [ADR-0145: Governance Registry Mirror](./ADR-0145-governance-registry-mirror.md)
 - [RDS Request Flow](../85-how-it-works/self-service/RDS_REQUEST_FLOW.md)
 - [ECR Request Flow](../85-how-it-works/self-service/ECR_REQUEST_FLOW.md)
+
+---
+
+**Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

@@ -272,3 +272,9 @@ Signed: Codex (2026-01-17T15:03:17Z)
 - Consider enforcing uniqueness across all secret request IDs (repo-wide)
 
 Signed: Codex (2026-01-17T15:15:20Z)
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

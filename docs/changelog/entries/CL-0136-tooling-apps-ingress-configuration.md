@@ -153,3 +153,9 @@ curl -I https://backstage.dev.goldenpathidp.io
 ## Rollback
 
 To disable ingress for any service, set `ingress.enabled: false` in the respective values file and sync via ArgoCD.
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

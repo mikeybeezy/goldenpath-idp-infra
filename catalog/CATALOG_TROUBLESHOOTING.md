@@ -19,7 +19,7 @@ catalog:
   catalogLocation: "https://github.com/PlatformersCommunity/backstage-helm-chart/blob/main/catalog/all.yaml"
 ```
 
-This loads entities from the PlatformersCommunity demo, **not** your local `backstage-helm/backstage-catalog` with ECR resources.
+This loads entities from the PlatformersCommunity demo, **not** your local `catalog` with ECR resources.
 
 ## Solution
 
@@ -29,16 +29,16 @@ Use the provided `values-local.yaml` override:
 
 ```bash
 # Re-deploy Backstage with local catalog
-helm upgrade backstage ./backstage-helm/charts/backstage \
-  -f backstage-helm/values-local.yaml \
+helm upgrade backstage ./gitops/helm/backstage/chart \
+  -f gitops/helm/backstage/values/local.yaml \
   --namespace backstage
 ```
 
 ### Option 2: Quick CLI Override
 
 ```bash
-helm upgrade backstage ./backstage-helm/charts/backstage \
-  --set catalog.catalogLocation='https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/backstage-helm/backstage-catalog/all.yaml' \
+helm upgrade backstage ./gitops/helm/backstage/chart \
+  --set catalog.catalogLocation='https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/main/catalog/all.yaml' \
   --namespace backstage
 ```
 
@@ -52,7 +52,7 @@ If running Backstage in local dev mode (yarn dev):
 catalog:
   locations:
     - type: file
-      target: /absolute/path/to/goldenpath-idp-infra/backstage-helm/backstage-catalog/all.yaml
+      target: /absolute/path/to/goldenpath-idp-infra/catalog/all.yaml
 ```
 
 ## Verification
@@ -71,6 +71,6 @@ After updating the catalog location:
 ## Current Status
 
 - ✅ ECR catalog bridge created: `scripts/generate_backstage_ecr.py`
-- ✅ Backstage entities generated: `backstage-helm/backstage-catalog/resources/ecr/`
-- ✅ Resource index updated: `backstage-helm/backstage-catalog/all-resources.yaml`
+- ✅ Backstage entities generated: `catalog/resources/ecr/`
+- ✅ Resource index updated: `catalog/all-resources.yaml`
 - ⚠️ **Catalog location needs configuration update**

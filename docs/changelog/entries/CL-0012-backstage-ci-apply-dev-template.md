@@ -59,3 +59,9 @@ Related: `backstage-helm/backstage-catalog/templates/ci-apply-dev/template.yaml`
 ## Validation
 
 - Not run (manual workflow).
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

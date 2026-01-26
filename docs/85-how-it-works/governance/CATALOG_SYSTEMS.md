@@ -21,7 +21,7 @@ The platform uses two complementary catalog systems:
 |System|Location|Purpose|Audience|
 |--------|----------|---------|----------|
 |**Resource Catalogs**|`docs/20-contracts/resource-catalogs/`|Source of truth for governance|Automation, Terraform, CI|
-|**Backstage Catalog**|`backstage-helm/backstage-catalog/`|Developer portal UI|Developers via Backstage|
+|**Backstage Catalog**|`catalog/`|Developer portal UI|Developers via Backstage|
 
 Think of it as:
 
@@ -87,7 +87,7 @@ repositories:
 Backstage-formatted entities that appear in the **developer portal UI**.
 
 ```yaml
-# backstage-helm/backstage-catalog/templates/rds-request.yaml
+# catalog/templates/rds-request.yaml
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
@@ -236,7 +236,7 @@ backstage-helm/
 |Old Name|New Name|Reason|
 |----------|----------|--------|
 |`docs/20-contracts/catalogs/`|`docs/20-contracts/resource-catalogs/`|Clarifies these are **resource governance** catalogs|
-|`backstage-helm/catalog/`|`backstage-helm/backstage-catalog/`|Clarifies this is the **Backstage UI** catalog|
+|`backstage-helm/catalog/`|`catalog/`|Clarifies this is the **Backstage UI** catalog|
 
 ## 5. Quick Reference
 
@@ -249,7 +249,7 @@ backstage-helm/
 |How do I request a new database?|Backstage → "Request Platform RDS Database" template|
 |How do I request a new ECR repo?|Backstage → "Request ECR Registry" template|
 |Who owns a resource?|Check the resource catalog (authoritative)|
-|What templates are available?|`backstage-helm/backstage-catalog/templates/`|
+|What templates are available?|`catalog/templates/`|
 
 ### "What happens when...?"
 

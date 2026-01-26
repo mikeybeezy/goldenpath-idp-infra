@@ -324,10 +324,10 @@ docker push 593517239005.dkr.ecr.eu-west-2.amazonaws.com/backstage:0.0.1
 If you need to build a custom Backstage image with additional plugins:
 
 ```bash
-# Clone backstage-helm repo (contains Dockerfile)
+# Clone backstage repo (contains Dockerfile)
 cd /tmp
-git clone https://github.com/mikeybeezy/goldenpath-idp-infra.git
-cd goldenpath-idp-infra/backstage-helm
+git clone https://github.com/mikeybeezy/goldenpath-idp-backstage.git
+cd goldenpath-idp-backstage
 
 # Build for AMD64 (even on Apple Silicon)
 docker buildx build \
@@ -850,7 +850,7 @@ spec:
       ref: values
     # Source 2: Helm chart with $values reference
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      path: backstage-helm/charts/backstage
+      path: gitops/helm/backstage/chart
       targetRevision: feature/tooling-apps-config
       helm:
         valueFiles:

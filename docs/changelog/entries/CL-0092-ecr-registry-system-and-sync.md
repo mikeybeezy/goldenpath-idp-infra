@@ -76,3 +76,9 @@ Related: docs/adrs/ADR-0132-platform-container-registry-system.md
 ## Validation
 
 - `python3 scripts/sync_ecr_catalog.py --region eu-west-2`
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

@@ -282,7 +282,7 @@ ephemeral_cluster:
 | ArgoCD | 2.10.x | `gitops/helm/argocd/values/dev.yaml` |
 | Kong | 3.6.x | `gitops/helm/kong/values/dev.yaml` |
 | ExternalDNS | 0.14.x | `gitops/helm/external-dns/values/dev.yaml` |
-| Backstage | 1.26.x | `backstage-helm/charts/backstage/values.yaml` |
+| Backstage | 1.26.x | `gitops/helm/backstage/chart/values.yaml` |
 
 **Rule:** No version changes during V1 stabilization without ADR.
 

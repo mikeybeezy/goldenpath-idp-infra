@@ -1295,3 +1295,9 @@ Error: aws-secretsmanager failed to create kubernetes rest client for update of 
 - Observation: ExternalDNS logs show successful UPSERT of `*.dev.goldenpathidp.io` and specific app records.
 - Root cause: Route53 API represents wildcard records as `\052`, so queries for `*.dev.goldenpathidp.io.` return empty even when the record exists.
 - Prevention: Added `scripts/verify_dns_records.sh` and documented the correct Route53 query in `docs/70-operations/45_DNS_MANAGEMENT.md`.
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

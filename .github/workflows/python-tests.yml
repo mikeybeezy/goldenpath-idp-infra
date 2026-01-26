@@ -73,6 +73,27 @@ jobs:
           # Capture exit code
           echo "exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
 
+      - name: Collect Test Metrics
+        if: always()
+        run: |
+          if [ -f test-results/junit.xml ]; then
+            ARGS=(--repo "${{ github.repository }}" \
+                  --branch "${{ github.ref_name }}" \
+                  --commit "${{ github.sha }}" \
+                  --ci-run-id "${{ github.run_id }}" \
+                  --pytest-junit test-results/junit.xml)
+
+            if [ -f coverage/coverage.xml ]; then
+              ARGS+=(--pytest-coverage-xml coverage/coverage.xml --pytest-threshold 60)
+            fi
+
+            python3 scripts/collect_test_metrics.py "${ARGS[@]}" \
+              --output test-results/test-metrics.json || \
+              echo "Warning: failed to collect test metrics"
+          else
+            echo "Warning: junit.xml not found; skipping test metrics collection"
+          fi
+
       - name: Upload Coverage Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -150,6 +171,7 @@ jobs:
           name: test-results
           path: |
             test-results/junit.xml
+            test-results/test-metrics.json
             test-results/pytest-output.log
           retention-days: 30
 
@@ -166,6 +188,42 @@ jobs:
         run: |
           echo "❌ Tests failed with exit code ${{ steps.tests.outputs.exit_code }}"
           exit 1
+
+  record-test-metrics:
+    name: Record Test Metrics
+    runs-on: ubuntu-latest
+    needs: [unit-tests]
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Test Metrics
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results
+          path: test-results
+
+      - name: Record Metrics to Governance Registry
+        env:
+          GOVERNANCE_REGISTRY_BRANCH: governance-registry
+        run: |
+          if [ ! -f test-results/test-metrics.json ]; then
+            echo "No test-metrics.json found; skipping registry write"
+            exit 0
+          fi
+
+          ENV_NAME="dev"
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            ENV_NAME="prod"
+          fi
+
+          bash scripts/record-test-metrics.sh "$ENV_NAME" test-results/test-metrics.json
 
   verify-proofs:
     name: Verify Script Certification

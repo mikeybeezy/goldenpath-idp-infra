@@ -358,6 +358,46 @@ def get_build_timing_stats():
 
     return stats
 
+def get_test_metrics_stats():
+    """Get test metrics from governance-registry branch."""
+    import subprocess
+
+    stats = {
+        'available': False,
+        'repo': None,
+        'branch': None,
+        'commit': None,
+        'last_run': None,
+        'frameworks': [],
+    }
+
+    try:
+        subprocess.run(
+            ['git', 'fetch', 'origin', 'governance-registry'],
+            capture_output=True, timeout=10
+        )
+
+        result = subprocess.run(
+            ['git', 'show', 'origin/governance-registry:environments/development/latest/test_metrics.json'],
+            capture_output=True, text=True, timeout=10
+        )
+
+        if result.returncode != 0:
+            return stats
+
+        data = json.loads(result.stdout)
+        stats['available'] = True
+        stats['repo'] = data.get('repo')
+        stats['branch'] = data.get('branch')
+        stats['commit'] = data.get('commit')
+        stats['last_run'] = data.get('last_run')
+        stats['frameworks'] = data.get('frameworks', [])
+
+    except (subprocess.TimeoutExpired, subprocess.SubprocessError, Exception):
+        pass
+
+    return stats
+
 def calculate_maturity(stats):
     """Calculates a risk-weighted maturity score (0-100)."""
     impact_weights = {'high': 5, 'medium': 2, 'low': 1, 'none': 0, 'unknown': 1}
@@ -405,6 +445,7 @@ def generate_report(target_dir='.'):
     script_cert_stats = get_script_certification_stats()
     maturity_snapshots = get_maturity_snapshots()
     build_timing_stats = get_build_timing_stats()
+    test_metrics_stats = get_test_metrics_stats()
     catalog_stats = get_catalog_stats()
     compliance_data = get_compliance_stats()
     trends = get_historical_trends()
@@ -636,6 +677,30 @@ def generate_report(target_dir='.'):
             lines.append(f"| `{phase}` | {duration_str} | {count} |")
     else:
         lines.append("- **Status**: Build timing data not available from governance-registry branch.")
+
+    lines.append("")
+    lines.append("## Test Health Metrics")
+    lines.append("")
+    if test_metrics_stats.get('available'):
+        lines.append(f"- **Last Run**: `{test_metrics_stats.get('last_run', 'n/a')}`")
+        if test_metrics_stats.get('repo'):
+            lines.append(f"- **Repo**: `{test_metrics_stats.get('repo')}`")
+        if test_metrics_stats.get('branch'):
+            lines.append(f"- **Branch**: `{test_metrics_stats.get('branch')}`")
+        lines.append(f"- **Source**: `governance-registry:environments/development/latest/test_metrics.json`")
+        lines.append("")
+        lines.append("| Framework | Total | Passed | Failed | Skipped | Coverage (lines) | Threshold |")
+        lines.append("| :--- | ---: | ---: | ---: | ---: | ---: | :--- |")
+        for entry in test_metrics_stats.get('frameworks', []):
+            coverage = entry.get('coverage') or {}
+            coverage_lines = coverage.get('lines')
+            coverage_str = f"{coverage_lines:.2f}%" if isinstance(coverage_lines, (int, float)) else "n/a"
+            threshold = "PASS" if entry.get('threshold_met') else "FAIL"
+            lines.append(
+                f"| `{entry.get('framework', 'n/a')}` | {entry.get('total', 0)} | {entry.get('passed', 0)} | {entry.get('failed', 0)} | {entry.get('skipped', 0)} | {coverage_str} | {threshold} |"
+            )
+    else:
+        lines.append("- **Status**: Test metrics not available from governance-registry branch.")
 
     lines.append("")
     lines.append("## 🛡️ Risk & Maturity Visualization")
