@@ -143,6 +143,7 @@ User asked for honest evaluation of the project:
 | `tests/bats/test_example.bats` | Example bats test |
 | `docs/extend-capabilities/EC-0014-agent-scope-registry.md` | Agent role scoping |
 | `.github/workflows/determinism-guard.yml` | Blast radius + critical path enforcement |
+| `docs/80-onboarding/27_TESTING_QUICKSTART.md` | 5-minute testing setup guide |
 
 ### Modified Files
 
@@ -151,6 +152,10 @@ User asked for honest evaluation of the project:
 | `.pre-commit-config.yaml` | Added ruff, shellcheck, shfmt hooks |
 | `PLATFORM_HEALTH.md` | Regenerated |
 | `Makefile` | Added test, test-python, test-shell, validate-schemas, lint |
+| `docs/80-onboarding/24_PR_GATES.md` | Added TDD Gate and Determinism Guard |
+| `docs/80-onboarding/25_DAY_ONE_CHECKLIST.md` | Added testing to first-day steps |
+| `docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md` | Added TDD requirements (section 4a) |
+| `docs/80-onboarding/AGENT_FIRST_BOOT.md` | Added TDD protocol |
 
 ## Key Discussions
 
@@ -226,6 +231,8 @@ User asked for honest evaluation of the project:
 ## Commits
 
 ```
+1b6dea1d docs: add testing quickstart and update onboarding docs with TDD
+dd986a57 docs: update session capture with determinism guard
 ab156acf feat: add determinism guard workflow and Makefile test targets
 391d3132 docs: add EC-0014 Agent Scope Registry
 64d4c06c chore: regenerate platform health report
