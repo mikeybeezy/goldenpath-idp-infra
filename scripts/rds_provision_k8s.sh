@@ -71,14 +71,56 @@ spec:
 EOFYAML
 
 echo "Waiting for job $JOB_NAME to complete (timeout: 5m)..."
-if kubectl wait --for=condition=complete job/$JOB_NAME -n $NAMESPACE --timeout=300s 2>/dev/null; then
-    echo ""
-    echo "=== Job completed successfully ==="
-    kubectl logs job/$JOB_NAME -n $NAMESPACE
-else
-    echo ""
-    echo "=== Job failed or timed out ==="
-    kubectl logs job/$JOB_NAME -n $NAMESPACE || true
-    kubectl describe job/$JOB_NAME -n $NAMESPACE | tail -20
-    exit 1
-fi
+echo ""
+
+# Heartbeat loop with status checking
+TIMEOUT=300
+ELAPSED=0
+INTERVAL=5
+SPINNER=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+SPIN_IDX=0
+
+while [ $ELAPSED -lt $TIMEOUT ]; do
+    # Check job status
+    STATUS=$(kubectl get job/$JOB_NAME -n $NAMESPACE -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}' 2>/dev/null || echo "")
+    FAILED=$(kubectl get job/$JOB_NAME -n $NAMESPACE -o jsonpath='{.status.conditions[?(@.type=="Failed")].status}' 2>/dev/null || echo "")
+
+    if [ "$STATUS" == "True" ]; then
+        echo -e "\r✅ Job completed successfully after ${ELAPSED}s                    "
+        echo ""
+        echo "=== Job Logs ==="
+        kubectl logs job/$JOB_NAME -n $NAMESPACE
+        exit 0
+    fi
+
+    if [ "$FAILED" == "True" ]; then
+        echo -e "\r❌ Job failed after ${ELAPSED}s                    "
+        echo ""
+        echo "=== Job Logs ==="
+        kubectl logs job/$JOB_NAME -n $NAMESPACE 2>/dev/null || true
+        echo ""
+        echo "=== Job Events ==="
+        kubectl describe job/$JOB_NAME -n $NAMESPACE | tail -20
+        exit 1
+    fi
+
+    # Get pod phase for more detail
+    POD_PHASE=$(kubectl get pods -n $NAMESPACE -l job-name=$JOB_NAME -o jsonpath='{.items[0].status.phase}' 2>/dev/null || echo "Pending")
+
+    # Print heartbeat with spinner
+    printf "\r${SPINNER[$SPIN_IDX]} Waiting... [%3ds/%ds] Pod: %-12s" "$ELAPSED" "$TIMEOUT" "$POD_PHASE"
+    SPIN_IDX=$(( (SPIN_IDX + 1) % ${#SPINNER[@]} ))
+
+    sleep $INTERVAL
+    ELAPSED=$((ELAPSED + INTERVAL))
+done
+
+# Timeout reached
+echo -e "\r⏱️  Job timed out after ${TIMEOUT}s                    "
+echo ""
+echo "=== Job Logs ==="
+kubectl logs job/$JOB_NAME -n $NAMESPACE 2>/dev/null || true
+echo ""
+echo "=== Job Events ==="
+kubectl describe job/$JOB_NAME -n $NAMESPACE | tail -20
+exit 1
