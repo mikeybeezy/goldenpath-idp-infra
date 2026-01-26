@@ -69,6 +69,68 @@ def parse_coverage_summary_json(coverage_path: Path) -> Dict[str, float]:
     }
 
 
+def parse_terraform_test_json(terraform_path: Path) -> Dict[str, int]:
+    """Parse terraform test -json output.
+
+    Handles two JSON shapes:
+    1. Event-based: {"type": "test_run", "test_run": {"status": "pass"}}
+    2. Summary-based: {"test_count": 13, "pass_count": 13, "fail_count": 0}
+    """
+    if not terraform_path.exists():
+        raise FileNotFoundError(f"Terraform test JSON not found: {terraform_path}")
+    total = failures = errors = skipped = 0
+    summary_counts = None
+    direct_summary = None
+
+    for raw_line in terraform_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+
+        event_type = event.get("type")
+        if event_type == "test_run":
+            status = (event.get("test_run") or {}).get("status", "")
+            total += 1
+            if status in {"fail", "error"}:
+                failures += 1
+            elif status == "skip":
+                skipped += 1
+        elif event_type == "test_summary":
+            summary = event.get("test_summary") or {}
+            summary_counts = {
+                "total": int(summary.get("total", 0)),
+                "failures": int(summary.get("failures", 0)),
+                "errors": int(summary.get("errors", 0)),
+                "skipped": int(summary.get("skipped", 0)),
+            }
+        # Fallback: direct test_count/pass_count/fail_count shape (no type field)
+        elif "test_count" in event or "pass_count" in event:
+            test_count = int(event.get("test_count", 0))
+            pass_count = int(event.get("pass_count", 0))
+            fail_count = int(event.get("fail_count", 0))
+            skip_count = int(event.get("skip_count", 0))
+            direct_summary = {
+                "total": test_count,
+                "failures": fail_count,
+                "errors": 0,
+                "skipped": skip_count,
+            }
+
+    # Priority: counted events > test_summary > direct summary
+    if total > 0:
+        return {"total": total, "failures": failures, "errors": errors, "skipped": skipped}
+    if summary_counts:
+        return summary_counts
+    if direct_summary:
+        return direct_summary
+
+    return {"total": 0, "failures": 0, "errors": 0, "skipped": 0}
+
+
 def build_framework_entry(
     framework: str,
     junit_counts: Dict[str, int],
@@ -125,6 +187,7 @@ def main() -> int:
     parser.add_argument("--bats-junit", help="Path to bats junit.xml")
     parser.add_argument("--jest-junit", help="Path to jest junit.xml")
     parser.add_argument("--jest-coverage-json", help="Path to jest coverage-summary.json")
+    parser.add_argument("--terraform-json", help="Path to terraform test -json output")
     parser.add_argument("--pytest-threshold", type=float, default=None, help="Line coverage threshold for pytest")
     parser.add_argument("--jest-threshold", type=float, default=None, help="Line coverage threshold for jest")
     parser.add_argument("--output", help="Write JSON payload to file")
@@ -155,6 +218,14 @@ def main() -> int:
                 junit_counts,
                 coverage=coverage,
                 coverage_threshold=args.jest_threshold,
+            )
+        )
+    if args.terraform_json:
+        junit_counts = parse_terraform_test_json(Path(args.terraform_json))
+        frameworks.append(
+            build_framework_entry(
+                "terraform-test",
+                junit_counts,
             )
         )
 

@@ -74,6 +74,50 @@ class TestCollectTestMetrics(unittest.TestCase):
         self.assertEqual(entry["passed"], 4)
         self.assertTrue(entry["threshold_met"])
 
+    def test_parse_terraform_test_json(self):
+        terraform_json = "\n".join(
+            [
+                '{"type":"test_run","test_run":{"name":"case_one","status":"pass"}}',
+                '{"type":"test_run","test_run":{"name":"case_two","status":"fail"}}',
+                '{"type":"test_run","test_run":{"name":"case_three","status":"skip"}}',
+            ]
+        )
+        terraform_path = self._write("terraform-test.jsonl", terraform_json)
+        counts = collect_test_metrics.parse_terraform_test_json(terraform_path)
+        self.assertEqual(counts["total"], 3)
+        self.assertEqual(counts["failures"], 1)
+        self.assertEqual(counts["errors"], 0)
+        self.assertEqual(counts["skipped"], 1)
+
+    def test_parse_terraform_test_json_direct_summary(self):
+        terraform_json = '{"test_count":13,"pass_count":13,"fail_count":0,"skip_count":0}'
+        terraform_path = self._write("terraform-test-summary.jsonl", terraform_json)
+        counts = collect_test_metrics.parse_terraform_test_json(terraform_path)
+        self.assertEqual(counts["total"], 13)
+        self.assertEqual(counts["failures"], 0)
+        self.assertEqual(counts["errors"], 0)
+        self.assertEqual(counts["skipped"], 0)
+
+    def test_parse_terraform_test_json_direct_summary(self):
+        """Test fallback for test_count/pass_count/fail_count shape (no type field)."""
+        terraform_json = '{"@level":"info","@message":"Success! 13 passed, 0 failed.","test_count":13,"pass_count":13,"fail_count":0}'
+        terraform_path = self._write("terraform-test-summary.jsonl", terraform_json)
+        counts = collect_test_metrics.parse_terraform_test_json(terraform_path)
+        self.assertEqual(counts["total"], 13)
+        self.assertEqual(counts["failures"], 0)
+        self.assertEqual(counts["errors"], 0)
+        self.assertEqual(counts["skipped"], 0)
+
+    def test_parse_terraform_test_json_direct_summary_with_failures(self):
+        """Test fallback with failures."""
+        terraform_json = '{"test_count":10,"pass_count":7,"fail_count":2,"skip_count":1}'
+        terraform_path = self._write("terraform-test-fail.jsonl", terraform_json)
+        counts = collect_test_metrics.parse_terraform_test_json(terraform_path)
+        self.assertEqual(counts["total"], 10)
+        self.assertEqual(counts["failures"], 2)
+        self.assertEqual(counts["errors"], 0)
+        self.assertEqual(counts["skipped"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
