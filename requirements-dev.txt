@@ -1,1 +1,21 @@
+# Development dependencies for testing and linting
+# Install with: pip install -r requirements-dev.txt
+
+# Testing
+pytest==8.3.3
+pytest-cov==5.0.0
+pytest-mock==3.14.0
+
+# YAML/JSON processing
 PyYAML==6.0.2
+jsonschema==4.23.0
+
+# Schema validation (CLI tool for meta-schema and contract validation)
+check-jsonschema==0.31.0
+
+# HTTP mocking (for integration tests)
+requests==2.32.3
+responses==0.25.3
+
+# Linting (also in pre-commit, but useful for IDE)
+ruff==0.4.4

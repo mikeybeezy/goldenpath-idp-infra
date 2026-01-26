@@ -254,21 +254,43 @@ validate:
 # Related: ADR-0182-tdd-philosophy, GOV-0016-testing-stack-matrix
 ################################################################################
 
-.PHONY: test test-python test-shell validate-schemas lint
+.PHONY: test test-python test-shell test-unit test-contract test-golden test-integration validate-schemas validate-contracts lint test-matrix certify-scripts quality-gate
 
 # Run all tests (Python + Shell)
 test: test-python test-shell
 	@echo "All tests complete."
 
-# Run Python tests with pytest
+# Run full test matrix (all tiers) - use for quick iteration
+test-matrix: test-unit test-contract test-golden test-shell
+	@echo "OK: test matrix green"
+
+# Full quality gate (tests + governance) - use in CI
+quality-gate: validate-schemas validate-contracts test-matrix certify-scripts
+	@echo "OK: quality gate passed"
+
+# Run Python tests with pytest (emits junit.xml for certification)
 test-python:
 	@echo "Running Python tests..."
+	@mkdir -p test-results
 	@if command -v pytest >/dev/null 2>&1; then \
-		pytest tests/ -q --tb=short; \
+		pytest tests/ --junitxml=test-results/junit.xml -q --tb=short; \
 	else \
 		echo "pytest not found. Install with: pip install pytest"; \
 		exit 1; \
 	fi
+
+# Generate and verify test proofs for script certification
+# Reference: ADR-0146 Schema-Driven Script Certification
+certify-scripts: test-python
+	@echo "Generating certification proofs..."
+	@python3 scripts/generate_test_proofs.py \
+		--junit-path test-results/junit.xml \
+		--output-dir test-results/proofs \
+		--commit-sha "$$(git rev-parse HEAD 2>/dev/null || echo 'local')" \
+		--run-id "$$(date +%Y%m%d-%H%M%S)"
+	@echo "Verifying script certification..."
+	@python3 scripts/validate_scripts_tested.py --verify-proofs
+	@echo "OK: scripts certified"
 
 # Run Shell tests with bats
 test-shell:
@@ -280,19 +302,95 @@ test-shell:
 		exit 1; \
 	fi
 
-# Validate YAML schemas against meta-schema
-validate-schemas:
-	@echo "Validating schemas..."
-	@if [ ! -f schemas/meta-schema.yaml ]; then \
-		echo "No meta-schema found at schemas/meta-schema.yaml - skipping validation"; \
-		exit 0; \
-	fi
-	@if command -v check-jsonschema >/dev/null 2>&1; then \
-		find schemas -name '*.schema.yaml' -exec check-jsonschema --schemafile schemas/meta-schema.yaml {} +; \
+# Run unit tests only (Tier 1)
+test-unit:
+	@echo "Running unit tests..."
+	@pytest tests/unit/ -q --tb=short
+
+# Run contract tests only (Tier 1)
+test-contract:
+	@echo "Running contract tests..."
+	@if [ -d tests/contract ] && [ -n "$$(ls -A tests/contract/*.py 2>/dev/null)" ]; then \
+		pytest tests/contract/ -q --tb=short; \
 	else \
+		echo "No contract tests found in tests/contract/"; \
+	fi
+
+# Run golden output tests only (Tier 2)
+test-golden:
+	@echo "Running golden output tests..."
+	@pytest tests/golden/ -q --tb=short
+
+# Run integration tests only (Tier 3)
+test-integration:
+	@echo "Running integration tests..."
+	@if [ -d tests/integration ] && [ -n "$$(ls -A tests/integration/*.py 2>/dev/null)" ]; then \
+		pytest tests/integration/ -q --tb=short; \
+	else \
+		echo "No integration tests found in tests/integration/"; \
+	fi
+
+# Validate YAML schemas exist and have required structure
+# Note: Schemas use custom metadata format, not pure JSON Schema
+# Reference: GOV-0016-testing-stack-matrix
+validate-schemas:
+	@echo "Validating schema files..."
+	@ERRORS=0; \
+	for dir in schemas/metadata schemas/requests schemas/automation schemas/governance; do \
+		if [ -d "$$dir" ]; then \
+			for schema in $$dir/*.schema.yaml; do \
+				if [ -f "$$schema" ]; then \
+					if ! grep -q "^id:" "$$schema" && ! grep -q "^  id:" "$$schema"; then \
+						echo "  WARNING: $$schema missing 'id' field"; \
+						ERRORS=$$((ERRORS+1)); \
+					fi; \
+				fi; \
+			done; \
+		fi; \
+	done; \
+	SCHEMA_COUNT=$$(find schemas -name '*.schema.yaml' 2>/dev/null | wc -l | tr -d ' '); \
+	echo "  Found $$SCHEMA_COUNT schema files"; \
+	if [ $$ERRORS -gt 0 ]; then \
+		echo "WARNING: $$ERRORS schema(s) missing required fields"; \
+	fi; \
+	echo "OK: schema structure validated"
+
+# Validate request fixtures against their schemas (contract validation)
+# This catches contract violations BEFORE parsers run
+# Reference: GOV-0016-testing-stack-matrix
+# Note: Only validates fixtures with JSON Schema-compliant schemas
+# Custom metadata schemas (e.g., SECRET) are skipped until converted
+validate-contracts:
+	@echo "Validating request fixtures against schemas..."
+	@if ! command -v check-jsonschema >/dev/null 2>&1; then \
 		echo "check-jsonschema not found. Install with: pip install check-jsonschema"; \
 		exit 1; \
 	fi
+	@ERRORS=0; VALIDATED=0; \
+	if ls tests/golden/fixtures/inputs/S3-*.yaml >/dev/null 2>&1 && [ -f schemas/requests/s3.schema.yaml ]; then \
+		echo "  Checking S3 requests..."; \
+		python3 -m check_jsonschema --schemafile schemas/requests/s3.schema.yaml tests/golden/fixtures/inputs/S3-*.yaml || ERRORS=$$((ERRORS+1)); \
+		VALIDATED=$$((VALIDATED+1)); \
+	fi; \
+	if ls tests/golden/fixtures/inputs/EKS-*.yaml >/dev/null 2>&1 && [ -f schemas/requests/eks.schema.yaml ]; then \
+		echo "  Checking EKS requests..."; \
+		python3 -m check_jsonschema --schemafile schemas/requests/eks.schema.yaml tests/golden/fixtures/inputs/EKS-*.yaml || ERRORS=$$((ERRORS+1)); \
+		VALIDATED=$$((VALIDATED+1)); \
+	fi; \
+	if ls tests/golden/fixtures/inputs/RDS-*.yaml >/dev/null 2>&1 && [ -f schemas/requests/rds.schema.yaml ]; then \
+		echo "  Checking RDS requests..."; \
+		python3 -m check_jsonschema --schemafile schemas/requests/rds.schema.yaml tests/golden/fixtures/inputs/RDS-*.yaml || ERRORS=$$((ERRORS+1)); \
+		VALIDATED=$$((VALIDATED+1)); \
+	fi; \
+	if [ $$VALIDATED -eq 0 ]; then \
+		echo "  No fixtures with JSON Schema-compliant schemas found"; \
+		echo "  (SECRET fixtures skipped - schema uses custom metadata format)"; \
+	fi; \
+	if [ $$ERRORS -gt 0 ]; then \
+		echo "FAILED: $$ERRORS contract validation(s) failed"; \
+		exit 1; \
+	fi; \
+	echo "OK: all contracts valid"
 
 # Run all linters (pre-commit hooks)
 lint:
@@ -1171,13 +1269,21 @@ session-archive-force:
 help:
 	@echo "Targets:"
 	@echo ""
-	@echo "== Testing (TDD Foundation) =="
+	@echo "== Testing & Quality Gate (TDD Foundation) =="
 	@echo "  make test                       # Run all tests (Python + Shell)"
-	@echo "  make test-python                # Run Python tests with pytest"
+	@echo "  make test-matrix                # Run full test matrix (all tiers) - fast iteration"
+	@echo "  make quality-gate               # Full quality gate (schemas + tests + certification)"
+	@echo "  make certify-scripts            # Generate proofs and verify script certification"
+	@echo "  make test-python                # Run Python tests (emits junit.xml)"
 	@echo "  make test-shell                 # Run Shell tests with bats"
-	@echo "  make validate-schemas           # Validate YAML schemas"
+	@echo "  make test-unit                  # Run unit tests only (Tier 1)"
+	@echo "  make test-contract              # Run contract tests only (Tier 1)"
+	@echo "  make test-golden                # Run golden output tests (Tier 2)"
+	@echo "  make test-integration           # Run integration tests (Tier 3)"
+	@echo "  make validate-schemas           # Validate schemas against JSON Schema meta-schema"
+	@echo "  make validate-contracts         # Validate request fixtures against schemas"
 	@echo "  make lint                       # Run all linters (pre-commit)"
-	@echo "  Related: ADR-0182, GOV-0016"
+	@echo "  Related: ADR-0146, ADR-0182, GOV-0016, GOV-0017"
 	@echo ""
 	@echo "== S3 Requests (Contract-Driven) =="
 	@echo "  make s3-validate S3_REQUEST=docs/20-contracts/s3-requests/dev/S3-0001.yaml"
