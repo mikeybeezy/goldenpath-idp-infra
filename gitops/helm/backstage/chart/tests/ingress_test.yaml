@@ -1,0 +1,145 @@
+# ---
+# id: HELMTEST-BACKSTAGE-INGRESS
+# type: helm-unittest
+# owner: platform-team
+# ---
+# Helm unit tests for Backstage ingress template
+# Run with: helm unittest gitops/helm/backstage/chart
+
+suite: Ingress Tests
+templates:
+  - templates/ingress.yaml
+
+tests:
+  # Tests using actual values.yaml defaults (prevents drift)
+  - it: should be disabled by default in values.yaml
+    values:
+      - ../values.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should not create Ingress when disabled
+    set:
+      ingress.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should create Ingress when enabled
+    set:
+      ingress.enabled: true
+      ingress.hostname: backstage.example.com
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-backstage
+
+  - it: should set hostname from ingress.hostname
+    set:
+      ingress.enabled: true
+      ingress.hostname: backstage.dev.example.com
+    asserts:
+      - equal:
+          path: spec.rules[0].host
+          value: "backstage.dev.example.com"
+
+  - it: should use global.hostSuffix when set (ADR-0179)
+    set:
+      ingress.enabled: true
+      ingress.hostname: backstage.local
+      global.hostSuffix: dev.goldenpathidp.io
+    asserts:
+      - equal:
+          path: spec.rules[0].host
+          value: "backstage.dev.goldenpathidp.io"
+
+  - it: should set ingressClassName when specified
+    set:
+      ingress.enabled: true
+      ingress.hostname: backstage.example.com
+      ingress.ingressClassName: kong
+    asserts:
+      - equal:
+          path: spec.ingressClassName
+          value: kong
+
+  - it: should configure TLS when enabled
+    set:
+      ingress.enabled: true
+      ingress.hostname: backstage.example.com
+      ingress.tls: true
+    asserts:
+      - isNotEmpty:
+          path: spec.tls
+      - equal:
+          path: spec.tls[0].hosts[0]
+          value: "backstage.example.com"
+      - equal:
+          path: spec.tls[0].secretName
+          value: "backstage-example-com-tls"
+
+  - it: should not include TLS when disabled
+    set:
+      ingress.enabled: true
+      ingress.hostname: backstage.example.com
+      ingress.tls: false
+    asserts:
+      - isNull:
+          path: spec.tls
+
+  - it: should set path and pathType
+    set:
+      ingress.enabled: true
+      ingress.hostname: backstage.example.com
+      ingress.path: /api
+      ingress.pathType: ImplementationSpecific
+    asserts:
+      - equal:
+          path: spec.rules[0].http.paths[0].path
+          value: /api
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: ImplementationSpecific
+
+  - it: should use default path when not specified
+    set:
+      ingress.enabled: true
+      ingress.hostname: backstage.example.com
+    asserts:
+      - equal:
+          path: spec.rules[0].http.paths[0].path
+          value: /
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: Prefix
+
+  - it: should apply annotations when set
+    set:
+      ingress.enabled: true
+      ingress.hostname: backstage.example.com
+      ingress.annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    asserts:
+      - equal:
+          path: metadata.annotations["cert-manager.io/cluster-issuer"]
+          value: letsencrypt-prod
+      - equal:
+          path: metadata.annotations["nginx.ingress.kubernetes.io/ssl-redirect"]
+          value: "true"
+
+  - it: should route to backstage service on correct port
+    set:
+      ingress.enabled: true
+      ingress.hostname: backstage.example.com
+      service.port: 7007
+    asserts:
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.name
+          value: RELEASE-NAME-backstage
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 7007
