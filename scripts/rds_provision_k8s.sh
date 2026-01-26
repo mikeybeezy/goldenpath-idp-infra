@@ -6,8 +6,10 @@ set -euo pipefail
 ENV="${1:-dev}"
 REGION="${2:-eu-west-2}"
 REPO="${3:-mikeybeezy/goldenpath-idp-infra}"
+BRANCH="${4:-main}"
 
 echo "Running RDS provisioning from inside the cluster..."
+echo "Branch: $BRANCH"
 
 if ! kubectl cluster-info >/dev/null 2>&1; then
     echo "ERROR: Cannot connect to Kubernetes cluster."
@@ -52,8 +54,8 @@ spec:
               echo "Installing dependencies..."
               apt-get update && apt-get install -y git >/dev/null 2>&1
               pip install boto3 psycopg2-binary pyyaml >/dev/null 2>&1
-              echo "Cloning repository..."
-              git clone --depth=1 https://github.com/$REPO.git /workspace
+              echo "Cloning repository (branch: $BRANCH)..."
+              git clone --depth=1 --branch $BRANCH https://github.com/$REPO.git /workspace
               cd /workspace
               echo "Running provisioning..."
               python3 scripts/rds_provision.py \\

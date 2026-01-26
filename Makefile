@@ -937,10 +937,12 @@ rds-provision-auto-dry-run:
 
 # Run RDS provisioning from inside the cluster (for private RDS)
 # This creates a K8s Job that runs the provisioning script from within the VPC
+# Usage: make rds-provision-k8s ENV=dev REGION=eu-west-2 BRANCH=feature/tdd-foundation
 RDS_PROVISION_K8S_REPO := mikeybeezy/goldenpath-idp-infra
+RDS_PROVISION_K8S_BRANCH := main
 
 rds-provision-k8s:
-	@bash scripts/rds_provision_k8s.sh $(ENV) $(REGION) $(RDS_PROVISION_K8S_REPO)
+	@bash scripts/rds_provision_k8s.sh $(ENV) $(REGION) $(RDS_PROVISION_K8S_REPO) $(RDS_PROVISION_K8S_BRANCH)
 
 ################################################################################
 # Pipeline Enablement (ArgoCD Image Updater)
