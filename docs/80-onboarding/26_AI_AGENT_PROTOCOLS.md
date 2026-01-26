@@ -16,13 +16,14 @@ relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - 23_NEW_JOINERS
   - 24_PR_GATES
+  - 27_TESTING_QUICKSTART
   - 41_BUILD_RUN_LOG
-  - ADR-####
   - ADR-0079-platform-ai-agent-governance
+  - ADR-0182-tdd-philosophy
   - AI_CHANGELOG
-  - CL-####
   - CL-0078
   - CL-0141
+  - GOV-0016-testing-stack-matrix
   - PR_GUARDRAILS_INDEX
   - ROADMAP
   - SESSION_CAPTURE_2026_01_17_02
@@ -101,6 +102,40 @@ Reference:
 
 - PR checklist template: `.github/pull_request_template.md`
 - PR gate triage: `docs/80-onboarding/24_PR_GATES.md`
+
+## 4a) TDD requirements (ADR-0182)
+
+> "No feature without a test. No merge without green."
+
+All code changes require corresponding tests:
+
+| File Type | Required Test Location |
+| --- | --- |
+| `scripts/*.py` | `tests/unit/test_*.py` or `tests/integration/test_*.py` |
+| `scripts/*.sh` | `tests/bats/test_*.bats` |
+| `modules/**/*.tf` | `modules/*/tests/*.tftest.hcl` (V2) |
+
+### Agent TDD workflow
+
+1. Write/update the test first (or simultaneously with the code).
+2. Run `make test` locally before pushing.
+3. If TDD Gate fails, add the missing test file.
+4. Exception: Add `SKIP-TDD:reason` to PR description only with human approval.
+
+**Test commands:**
+
+```bash
+make test           # Run all tests
+make test-python    # Run pytest only
+make test-shell     # Run bats only
+make lint           # Run all linters
+```
+
+Reference:
+
+- Testing quickstart: `docs/80-onboarding/27_TESTING_QUICKSTART.md`
+- TDD philosophy: `docs/adrs/ADR-0182-tdd-philosophy.md`
+- Testing stack: `docs/10-governance/policies/GOV-0016-testing-stack-matrix.md`
 
 ## 5) Documentation triggers (label-gated)
 

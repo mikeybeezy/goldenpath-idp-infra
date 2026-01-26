@@ -9,8 +9,12 @@ lifecycle: active
 exempt: false
 schema_version: 1
 relates_to:
+  - 26_AI_AGENT_PROTOCOLS
+  - 27_TESTING_QUICKSTART
   - ADR-0122
+  - ADR-0182-tdd-philosophy
   - CL-0078
+  - GOV-0016-testing-stack-matrix
   - ROADMAP
   - agent_session_summary
 supersedes: []
@@ -69,6 +73,25 @@ Every PR you author MUST include:
 1. **VQ Classification**: One of `🔴 HV/HQ`, `🟡 HV/LQ`, `🔵 MV/HQ`, `⚫ LV/LQ`.
 2. **Impact Estimate**: Estimated saved hours (e.g., `savings: 0.5h`).
 3. **Evidence**: Links to validation runs or logs.
+
+### TDD Protocol (ADR-0182)
+
+> "No feature without a test. No merge without green."
+
+Every code change MUST have a corresponding test:
+
+| Code Type | Test Location |
+| --- | --- |
+| `scripts/*.py` | `tests/unit/test_*.py` |
+| `scripts/*.sh` | `tests/bats/test_*.bats` |
+
+Before pushing, always run:
+
+```bash
+make test
+```
+
+See [27_TESTING_QUICKSTART.md](./27_TESTING_QUICKSTART.md) for full details.
 
 ---
 
