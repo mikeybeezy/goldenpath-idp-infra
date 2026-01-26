@@ -151,7 +151,7 @@ health and to surface it inside the existing Platform Health dashboard.
 | Should collection fail if no metrics found? | **Yes** - collection script failure fails the gate | Per false-green prevention principle |
 | Should missing metrics be warning-only for V1? | **Warning-only for V1**, hard-fail in V1.1 | Allows graceful rollout; aligns with "non-blocking for builds" guardrail |
 | Per-branch or default branch only? | **Default branch only** for V1; per-branch in V1.1 if needed | Simplicity for V1 |
-| How to normalize Terraform test outputs? | **Deferred** - Terraform tests not yet implemented | Phase 3 of TDD plan |
+| How to normalize Terraform test outputs? | **Use `terraform test -json`** and parse into canonical schema | No JUnit required; structured JSON works for V1 |
 | Should collector run in infra CI only, or both repos? | **Both repos** - each writes to `governance-registry/test-metrics/{repo}.json` | Decoupled, self-contained; aggregation is a read-time concern |
 
 **Clarification**: "Collection failure" (script crashes) vs "missing metrics" (no tests ran) are distinct:
@@ -226,7 +226,7 @@ Schema fields:
 | Coverage enforcement | Done | 60% Python, 30% Backstage |
 | Contract validation | Done | EC-0016 implemented |
 | Certification proofs | Done | `generate_test_proofs.py` |
-| Terraform tests | Not started | Phase 3 |
+| Terraform tests | In progress | `ci-terraform-lint.yml` runs `terraform test -json` and collects metrics |
 
 ## References
 

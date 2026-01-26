@@ -78,6 +78,34 @@ jobs:
               xargs -I {} cp {} _govreg_out/aws-inventory/ 2>/dev/null || true
           fi
 
+      - name: Checkout Backstage governance-registry (optional)
+        if: ${{ secrets.BACKSTAGE_REPO_TOKEN != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: mikeybeezy/goldenpath-idp-backstage
+          ref: governance-registry
+          path: _backstage_govreg
+          token: ${{ secrets.BACKSTAGE_REPO_TOKEN }}
+
+      - name: Import Backstage test metrics (optional)
+        if: ${{ secrets.BACKSTAGE_REPO_TOKEN != '' }}
+        run: |
+          ENV_NAME="${{ steps.meta.outputs.source_branch }}"
+          if [ "$ENV_NAME" = "dev" ]; then
+            ENV_NAME="development"
+          fi
+
+          SRC="_backstage_govreg/environments/${ENV_NAME}/latest/test_metrics.json"
+          DEST="_govreg_out/backstage/environments/${ENV_NAME}/latest"
+
+          if [ -f "$SRC" ]; then
+            mkdir -p "$DEST"
+            cp "$SRC" "$DEST/test_metrics.json"
+            echo "Imported Backstage test metrics from $SRC"
+          else
+            echo "No Backstage test metrics found at $SRC"
+          fi
+
       - name: Inject metadata headers
         env:
           SOURCE_BRANCH: ${{ steps.meta.outputs.source_branch }}
