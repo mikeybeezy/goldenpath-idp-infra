@@ -9,8 +9,10 @@ lifecycle: active
 exempt: false
 schema_version: 1
 relates_to:
+  - ADR-0162-determinism-protection
   - ADR-0182-tdd-philosophy
   - GOV-0016-testing-stack-matrix
+  - GOV-0017-tdd-and-determinism
   - 24_PR_GATES
   - 25_DAY_ONE_CHECKLIST
   - 26_AI_AGENT_PROTOCOLS
@@ -48,6 +50,8 @@ to enforce "No feature without a test. No merge without green."
 | --- | --- |
 | `docs/adrs/ADR-0182-tdd-philosophy.md` | TDD mandate, coverage targets, enforcement policy |
 | `docs/10-governance/policies/GOV-0016-testing-stack-matrix.md` | Standard testing tools for infra and Backstage |
+| `docs/10-governance/policies/GOV-0017-tdd-and-determinism.md` | Unified TDD + determinism policy with enforcement |
+| `docs/adrs/ADR-0162-determinism-protection.md` | Strategic philosophy: testing as value preservation |
 
 ### New CI Workflows
 

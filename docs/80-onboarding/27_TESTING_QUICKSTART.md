@@ -13,8 +13,10 @@ relates_to:
   - 24_PR_GATES
   - 25_DAY_ONE_CHECKLIST
   - 26_AI_AGENT_PROTOCOLS
+  - ADR-0162-determinism-protection
   - ADR-0182-tdd-philosophy
   - GOV-0016-testing-stack-matrix
+  - GOV-0017-tdd-and-determinism
 supersedes: []
 superseded_by: []
 tags: []
@@ -88,6 +90,10 @@ make test
 | `make test` | Run all tests (Python + Shell) |
 | `make test-python` | Run Python tests with pytest |
 | `make test-shell` | Run Shell tests with bats |
+| `make test-unit` | Run unit tests only (Tier 1) |
+| `make test-contract` | Run contract tests only (Tier 1) |
+| `make test-golden` | Run golden output tests (Tier 2) |
+| `make test-integration` | Run integration tests (Tier 3) |
 | `make validate-schemas` | Validate YAML schemas |
 | `make lint` | Run all linters via pre-commit |
 
@@ -125,20 +131,45 @@ bats tests/bats/test_example.bats
 bats tests/bats/*.bats --verbose-run
 ```
 
-## Test Structure
+## Test Structure (Tiered)
+
+Per [GOV-0017](../10-governance/policies/GOV-0017-tdd-and-determinism.md), tests are organized by tier:
 
 ```text
 tests/
-  conftest.py           # Shared pytest fixtures (auto-loaded)
-  unit/
-    test_*.py           # Python unit tests
-  integration/
-    test_*.py           # Python integration tests
-  bats/
+  conftest.py              # Shared pytest fixtures (auto-loaded)
+
+  unit/                    # Tier 1: Unit tests
+    governance/            # Metadata, validation scripts
+    scripts/               # Numbered script tests
+
+  contract/                # Tier 1: Contract tests
+    test_*_contract.py     # Input/output contract validation
+    fixtures/
+      requests/            # Request fixtures (valid/invalid)
+
+  golden/                  # Tier 2: Golden output tests
+    test_*_golden.py       # Snapshot comparison tests
+    fixtures/
+      inputs/              # Test inputs
+      expected/            # Golden snapshots (immutable)
+
+  integration/             # Tier 3: Integration tests
+    test_*_workflow.py     # End-to-end workflow tests
+
+  bats/                    # Shell tests
     helpers/
-      common.bash       # Shared bats helpers
-    test_*.bats         # Shell tests
+      common.bash          # Shared bats helpers
+    test_*.bats            # Shell tests
 ```
+
+**Tier Requirements:**
+
+| Tier | Tests | When Required |
+|------|-------|---------------|
+| Tier 1 | Unit + Contract | Every code change |
+| Tier 2 | Golden | Code that generates files |
+| Tier 3 | Integration | Multi-component workflows |
 
 ## Writing Tests
 
@@ -311,7 +342,9 @@ pre-commit run --all-files  # Verify hooks work
 
 ## Related Documentation
 
-- [TDD Philosophy (ADR-0182)](../adrs/ADR-0182-tdd-philosophy.md)
-- [Testing Stack Matrix (GOV-0016)](../10-governance/policies/GOV-0016-testing-stack-matrix.md)
+- [Determinism Protection (ADR-0162)](../adrs/ADR-0162-determinism-protection.md) - Strategic philosophy
+- [TDD Philosophy (ADR-0182)](../adrs/ADR-0182-tdd-philosophy.md) - TDD mechanics
+- [TDD and Determinism (GOV-0017)](../10-governance/policies/GOV-0017-tdd-and-determinism.md) - Enforcement policy
+- [Testing Stack Matrix (GOV-0016)](../10-governance/policies/GOV-0016-testing-stack-matrix.md) - Tool definitions
 - [PR Gates](./24_PR_GATES.md)
 - [AI Agent Protocols](./26_AI_AGENT_PROTOCOLS.md)

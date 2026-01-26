@@ -16,8 +16,10 @@ reliability:
   observability_tier: bronze
   maturity: 1
 relates_to:
+  - ADR-0162-determinism-protection
   - ADR-0182-tdd-philosophy
   - GOV-0016-testing-stack-matrix
+  - GOV-0017-tdd-and-determinism
   - GOV-0015-build-pipeline-testing-matrix
   - EC-0014-agent-scope-registry
 ---
@@ -248,10 +250,136 @@ ab156acf feat: add determinism guard workflow and Makefile test targets
 3. **Honest assessment matters**: 90.4% vs 65% readiness shows metric gaps
 4. **AI collaboration is differentiator**: Most projects don't govern AI contributions
 
+---
+
+## Session Continuation (2026-01-26T18:00:00Z)
+
+### ADR-0162: Determinism Protection Philosophy
+
+Created strategic ADR focusing on the **WHY** of determinism protection, complementing ADR-0182 (TDD Philosophy) which covers the **HOW**.
+
+**Key distinction:**
+
+- **ADR-0162** (Strategic): "Nothing that generates infrastructure... may change without tests"
+- **ADR-0182** (Mechanical): Test frameworks, coverage targets, TDD workflow
+
+**Determinism-Critical Components Defined:**
+
+| Component | Risk if Untested |
+|-----------|------------------|
+| Parsers | Silent corruption of generated configs |
+| Generators | Infrastructure drift |
+| Metadata engines | Governance bypass |
+| Schemas | Contract violations |
+| Templates | Broken scaffolds |
+| Bootstrap | Unbootstrappable state |
+
+### Test Directory Scaffolding (Tiered Structure)
+
+Implemented tiered test organization per GOV-0017:
+
+```
+tests/
+  unit/                    # Tier 1: Unit tests
+  contract/                # Tier 1: Contract tests (NEW)
+    README.md              # When to use, patterns
+    fixtures/
+      requests/
+        valid/
+        invalid/
+  golden/                  # Tier 2: Golden output tests (NEW)
+    README.md              # Update protocol
+    conftest.py            # Golden file fixtures
+    test_parser_golden.py  # First golden test example
+    fixtures/
+      inputs/
+        secret-request-basic.yaml
+      expected/
+        secret-request-basic-parsed.json
+  integration/             # Tier 3: Integration tests (NEW)
+    README.md              # When to use, mocking patterns
+    fixtures/
+  bats/                    # Shell tests (existing)
+```
+
+### Golden Test Infrastructure
+
+Created golden test framework with:
+
+1. **conftest.py fixtures:**
+   - `golden_inputs_dir` / `golden_expected_dir` - Path fixtures
+   - `load_input` / `load_golden` - Factory fixtures
+   - `assert_matches_golden` - Comparison with diff output
+
+2. **Trailing whitespace normalization:**
+
+   ```python
+   actual_normalized = actual.rstrip()
+   expected_normalized = expected.rstrip()
+   ```
+
+3. **6 passing tests** validating infrastructure:
+   - Golden file loading
+   - Input file loading
+   - Fixture path resolution
+   - Basic parsing assertion
+
+### Makefile Test Targets (Tiered)
+
+Added new tiered test targets:
+
+| Command | Description | Tier |
+|---------|-------------|------|
+| `make test-unit` | Run unit tests only | Tier 1 |
+| `make test-contract` | Run contract tests only | Tier 1 |
+| `make test-golden` | Run golden output tests | Tier 2 |
+| `make test-integration` | Run integration tests | Tier 3 |
+
+### Documentation Updates
+
+**27_TESTING_QUICKSTART.md:**
+
+- Added tiered test structure explanation
+- Added new test commands table
+- Added relates_to: ADR-0162, ADR-0182, GOV-0016, GOV-0017
+
+## Additional Artifacts Created (Continuation)
+
+### New Files (Continuation)
+
+| File | Purpose |
+|------|---------|
+| `docs/adrs/ADR-0162-determinism-protection.md` | Strategic philosophy for determinism protection |
+| `tests/golden/README.md` | Golden test documentation and update protocol |
+| `tests/golden/conftest.py` | Shared golden test fixtures |
+| `tests/golden/test_parser_golden.py` | First golden test example (6 tests) |
+| `tests/golden/fixtures/inputs/secret-request-basic.yaml` | Sample input fixture |
+| `tests/golden/fixtures/expected/secret-request-basic-parsed.json` | Golden snapshot |
+| `tests/contract/README.md` | Contract test documentation |
+| `tests/integration/README.md` | Integration test documentation |
+
+### Modified Files (Continuation)
+
+| File | Change |
+|------|--------|
+| `docs/adrs/01_adr_index.md` | Added ADR-0162, ADR-0182 entries |
+| `docs/10-governance/policies/GOV-0017-tdd-and-determinism.md` | Added ADR-0162 to relates_to |
+| `docs/changelog/entries/CL-0190-tdd-foundation-and-testing-stack.md` | Added ADR-0162, GOV-0017 |
+| `Makefile` | Added test-unit, test-contract, test-golden, test-integration |
+| `docs/80-onboarding/27_TESTING_QUICKSTART.md` | Added tiered structure, new targets |
+
+## Validation (Continuation)
+
+- [x] ADR-0162 frontmatter valid
+- [x] Golden test fixtures loading correctly
+- [x] Golden test assertions passing (6/6)
+- [x] Makefile targets functional
+- [x] Documentation cross-references valid
+
 ## Related Sessions
 
 - `2026-01-25-governance-metrics-v1-observability.md` - Previous session
 - `2026-01-19-build-pipeline-architecture.md` - Pipeline design
 - `2026-01-24-build-timing-capture-gap.md` - CI timing analysis
 
-Signed: Claude Opus 4.5 (2026-01-26T12:00:00Z)
+Signed: Claude Opus 4.5 (2026-01-26T18:00:00Z)

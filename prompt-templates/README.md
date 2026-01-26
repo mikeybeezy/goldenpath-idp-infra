@@ -56,6 +56,10 @@ Each prompt follows a standard structure (see `PROMPT-0000-template.txt`):
 |----|-------|-----|--------|
 | PROMPT-0000 | Template | N/A | Template |
 | PROMPT-0001 | PRD-0004 Backstage Repo Alignment | PRD-0004 | Ready |
+| PROMPT-0002 | Pre-Commit + Pre-Merge Checks | N/A | Ready |
+| PROMPT-0003 | Recursive PR Gate Compliance | N/A | Ready |
+| PROMPT-0004 | Hotfix Policy - Permanent Fix Required | N/A | Ready |
+| PROMPT-0005 | TDD Governance Enforcement Prompt | N/A | Ready |
 
 ## Adding New Prompts
 

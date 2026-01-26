@@ -248,7 +248,39 @@ repos:
 
 # Quick Reference
 
-## Run Tests Locally
+## Makefile Targets (Recommended)
+
+Use Make targets for consistent, portable execution across local and CI environments.
+
+### Infrastructure Repo
+
+| Command | Description |
+|---------|-------------|
+| `make test` | Run all tests (Python + Shell) |
+| `make test-matrix` | Run full test matrix (all tiers) - fast iteration |
+| `make quality-gate` | Full CI gate (schemas + tests + certification) |
+| `make certify-scripts` | Generate proofs and verify script certification |
+| `make test-python` | Run Python tests (emits junit.xml) |
+| `make test-shell` | Run Shell tests with bats |
+| `make test-unit` | Run unit tests only (Tier 1) |
+| `make test-contract` | Run contract tests only (Tier 1) |
+| `make test-golden` | Run golden output tests (Tier 2) |
+| `make test-integration` | Run integration tests (Tier 3) |
+| `make validate-schemas` | Validate schemas against JSON Schema meta-schema |
+| `make validate-contracts` | Validate request fixtures against their schemas |
+| `make lint` | Run all linters (pre-commit) |
+
+### Application Repo (Backstage)
+
+| Command | Description |
+|---------|-------------|
+| `make ci-all` | Full CI pipeline (lint + test + build) |
+| `make ci-lint` | Run TypeScript, ESLint, Prettier checks |
+| `make ci-test` | Run tests with coverage |
+| `make ci-build` | Build backend artifacts |
+| `make ci-docker` | Build Docker image locally |
+
+## Raw CLI Commands (Without Make)
 
 | Repo | Command | Description |
 |------|---------|-------------|
@@ -269,10 +301,27 @@ repos:
 | `tox -e lint` | Run linters only |
 | `tox -e ci` | Fast CI env |
 
+## CI Usage
+
+In GitHub Actions workflows, use Make targets for portability:
+
+```yaml
+# Infrastructure repo
+- name: Run quality gate
+  run: make quality-gate
+
+# Backstage repo
+- name: Run CI pipeline
+  run: make ci-all
+```
+
+This ensures CI behavior matches local development and enables easy migration between CI platforms.
+
 ---
 
 # Revision History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2026-01-26 | Claude Opus 4.5 | Initial creation |
+| Version | Date       | Author          | Changes                                |
+|---------|------------|-----------------|----------------------------------------|
+| 1.0     | 2026-01-26 | Claude Opus 4.5 | Initial creation                       |
+| 1.1     | 2026-01-26 | Claude Opus 4.5 | Added Makefile targets for portable CI |
