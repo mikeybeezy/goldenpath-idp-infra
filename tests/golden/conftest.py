@@ -134,7 +134,7 @@ def run_parser():
     ) -> subprocess.CompletedProcess:
         out_dir.mkdir(parents=True, exist_ok=True)
         cmd = [
-            "python",
+            "python3",
             str(ROOT_DIR / parser_script),
             "--request",
             str(request_file),

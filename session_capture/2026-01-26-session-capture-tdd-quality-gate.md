@@ -321,3 +321,22 @@ The custom schema format is the platform's "unique sauce" - it captures business
 - Parsers need CLI updates for golden test compatibility
 
 Signed: Claude Opus 4.5 (2026-01-26T15:30:00Z)
+
+---
+
+### Update - 2026-01-26T15:51:30Z
+
+Findings (ordered by severity)
+
+- High: `validate-contracts` still routes through `check-jsonschema` and skips when no JSON Schema-compliant fixtures exist, so `make quality-gate` can pass with zero contract validation. This conflicts with the bespoke-schema decision and creates a false-green gate. `Makefile:363-395`, `schemas/requests/s3.schema.yaml`, `session_capture/2026-01-26-session-capture-tdd-quality-gate.md:284`
+- Medium: Proof attribution can be incorrect because `scripts/generate_test_proofs.py` maps by substring match (`pattern in normalized_module`), which can mis-map similarly named modules and generate wrong proof artifacts. `scripts/generate_test_proofs.py:280-286`
+- Medium: Golden test runner uses `python` (not `python3`), which breaks on systems without a `python` shim (common on macOS). This is now inconsistent with the Makefile changes. `tests/golden/conftest.py:137-150`
+- Low: Older session capture references `secret-request-basic.yaml` even though fixtures are now `SECRET-0001.yaml`, which creates doc drift across captures. `session_capture/2026-01-26-tdd-foundation-and-testing-stack.md:296`, `session_capture/2026-01-26-tdd-foundation-and-testing-stack.md:356`
+
+Open questions / assumptions
+
+- Should `validate-contracts` fail when zero fixtures are validated to prevent false-green quality gates?
+- Do we proceed with a bespoke validator now (`scripts/validate_request.py`) and replace `check-jsonschema` entirely?
+- Should we standardize on `python3` for all test runners (including golden tests) and enforce in CI?
+
+Signed: Codex (2026-01-26T15:51:30Z)

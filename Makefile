@@ -383,8 +383,11 @@ validate-contracts:
 		VALIDATED=$$((VALIDATED+1)); \
 	fi; \
 	if [ $$VALIDATED -eq 0 ]; then \
-		echo "  No fixtures with JSON Schema-compliant schemas found"; \
+		echo "  WARNING: No fixtures with JSON Schema-compliant schemas found"; \
 		echo "  (SECRET fixtures skipped - schema uses custom metadata format)"; \
+		echo "  See EC-0016 for bespoke schema validator implementation"; \
+		echo "FAILED: Zero contract validations performed (false-green prevention)"; \
+		exit 1; \
 	fi; \
 	if [ $$ERRORS -gt 0 ]; then \
 		echo "FAILED: $$ERRORS contract validation(s) failed"; \
