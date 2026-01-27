@@ -396,6 +396,21 @@ class BespokeSchemaValidator:
             value = self._get_value(request, field_path)
 
             if isinstance(requirement, dict):
+                # Handle 'recommended' - generates warning, not error
+                if requirement.get("recommended"):
+                    warning_msg = requirement.get(
+                        "warning",
+                        f"Field '{field_path}' is recommended when {rule_name} applies"
+                    )
+                    # Only warn if the recommended value isn't set
+                    if value is None or value is False:
+                        warnings.append(ValidationError(
+                            path=field_path,
+                            message=warning_msg,
+                            rule=rule_name,
+                        ))
+
+                # Handle 'required' - field must be present
                 if requirement.get("required"):
                     if value is None:
                         error_msg = requirement.get(
@@ -408,6 +423,7 @@ class BespokeSchemaValidator:
                             rule=rule_name,
                         ))
 
+                # Handle 'equals' - value must equal expected
                 if "equals" in requirement:
                     expected = requirement["equals"]
                     if value != expected:
@@ -421,6 +437,67 @@ class BespokeSchemaValidator:
                             rule=rule_name,
                         ))
 
+                # Handle 'minimum' - value must be >= minimum
+                if "minimum" in requirement:
+                    min_val = requirement["minimum"]
+                    if value is not None and isinstance(value, (int, float)):
+                        if value < min_val:
+                            error_msg = requirement.get(
+                                "error",
+                                f"Field '{field_path}' must be >= {min_val} when {rule_name} applies (got {value})"
+                            )
+                            errors.append(ValidationError(
+                                path=field_path,
+                                message=error_msg,
+                                rule=rule_name,
+                            ))
+
+                # Handle 'maximum' - value must be <= maximum
+                if "maximum" in requirement:
+                    max_val = requirement["maximum"]
+                    if value is not None and isinstance(value, (int, float)):
+                        if value > max_val:
+                            error_msg = requirement.get(
+                                "error",
+                                f"Field '{field_path}' must be <= {max_val} when {rule_name} applies (got {value})"
+                            )
+                            errors.append(ValidationError(
+                                path=field_path,
+                                message=error_msg,
+                                rule=rule_name,
+                            ))
+
+                # Handle 'enum' - value must be in allowed list
+                if "enum" in requirement:
+                    allowed = requirement["enum"]
+                    if value is not None and value not in allowed:
+                        error_msg = requirement.get(
+                            "error",
+                            f"Field '{field_path}' must be one of {allowed} when {rule_name} applies (got '{value}')"
+                        )
+                        errors.append(ValidationError(
+                            path=field_path,
+                            message=error_msg,
+                            rule=rule_name,
+                        ))
+
+                # Handle 'greater_than_field' - value must be > another field's value
+                if "greater_than_field" in requirement:
+                    other_field = requirement["greater_than_field"]
+                    other_value = self._get_value(request, other_field)
+                    if value is not None and other_value is not None:
+                        if isinstance(value, (int, float)) and isinstance(other_value, (int, float)):
+                            if value <= other_value:
+                                error_msg = requirement.get(
+                                    "error",
+                                    f"Field '{field_path}' ({value}) must be greater than '{other_field}' ({other_value})"
+                                )
+                                errors.append(ValidationError(
+                                    path=field_path,
+                                    message=error_msg,
+                                    rule=rule_name,
+                                ))
+
         return errors, warnings
 
     def _evaluate_conditions(
@@ -433,6 +510,13 @@ class BespokeSchemaValidator:
             value = self._get_value(request, field_path)
 
             if isinstance(condition, dict):
+                # Check if field is defined (not None)
+                if "defined" in condition:
+                    is_defined = value is not None
+                    if condition["defined"] and not is_defined:
+                        return False
+                    if not condition["defined"] and is_defined:
+                        return False
                 if "in" in condition:
                     if value not in condition["in"]:
                         return False
@@ -441,6 +525,18 @@ class BespokeSchemaValidator:
                         return False
                 if "not_equals" in condition:
                     if value == condition["not_equals"]:
+                        return False
+                # Check greater_than for when conditions
+                if "greater_than" in condition:
+                    if value is None or not isinstance(value, (int, float)):
+                        return False
+                    if value <= condition["greater_than"]:
+                        return False
+                # Check less_than for when conditions
+                if "less_than" in condition:
+                    if value is None or not isinstance(value, (int, float)):
+                        return False
+                    if value >= condition["less_than"]:
                         return False
             else:
                 # Direct value comparison
