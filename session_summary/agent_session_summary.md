@@ -3771,3 +3771,18 @@ Standardized pre-commit config and applied auto-fixes to unblock PR #283:
 - markdownlint.yml: Added MD004:false (mixed list styles)
 - Applied ruff formatting to 74 Python files
 - Applied doc metadata standardization to 29 docs files
+
+## 2026-01-27: Session Capture Pre-commit Exclusion
+
+**Agent:** Claude Opus 4.5
+**Branch:** fix/session-capture-precommit-exclusion
+**PR:** #290
+
+### Summary
+
+Excluded session_capture/ from pre-commit hooks that modify content:
+- trailing-whitespace: was removing trailing spaces from historical content
+- end-of-file-fixer: was modifying EOF markers
+- emoji-enforcer: was converting emojis in historical content
+
+Also added .pre-commit-config.yaml to session-log workflow triggers for branch protection.
