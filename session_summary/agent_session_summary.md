@@ -3845,3 +3845,23 @@ Sync branch to merge main hotfixes into development and prepare for release:
 - Updated session capture with sync details
 
 **Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md (appended)
+
+## 2026-01-27: Test Metrics Flow Activation
+
+**Agent:** Claude Opus 4.5
+**Branch:** fix/trigger-test-metrics-recording
+**PR:** #305
+
+### Work Done
+
+Triggered test metrics workflow to populate governance-registry:
+
+- Bumped `scripts/collect_test_metrics.py` maturity: 1 → 2
+- Added `last_validated` date to script metadata
+- Push to development triggers `python-tests.yml` workflow
+- Workflow runs `record-test-metrics.sh` which writes to governance-registry
+- Enables PLATFORM_HEALTH.md to display test metrics
+
+**Root Cause:** After PR #292 fixed heredoc bug, no Python changes triggered the workflow.
+
+**Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md (appended)

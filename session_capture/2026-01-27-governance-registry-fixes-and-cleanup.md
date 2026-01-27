@@ -222,3 +222,26 @@ Added SKIP-TDD markers to governance registry scripts:
 
 - [ ] Consider adding integration tests for registry scripts in CI with mock git operations
 - [ ] Document manual testing procedure for registry scripts
+
+## Update - 2026-01-27T10:50:00Z
+
+### Test Metrics Flow Activation
+
+Bumped `scripts/collect_test_metrics.py` maturity to trigger `python-tests` workflow.
+
+**Problem:** After PR #292 fixed the `record-test-metrics.sh` heredoc bug, no Python changes had been pushed to trigger the workflow. Result: `test_metrics.json` was never created in governance-registry.
+
+**Solution:** Bump `collect_test_metrics.py` maturity (1 → 2) to trigger workflow.
+
+**Expected Flow:**
+
+1. PR #305 merges → push triggers `python-tests.yml`
+2. `collect_test_metrics.py` produces `test-metrics.json`
+3. `record-test-metrics.sh` writes to governance-registry
+4. `platform_health.py` reads from governance-registry
+5. PLATFORM_HEALTH.md shows test metrics
+
+### Outstanding (Test Metrics)
+
+- [ ] Verify test_metrics.json appears in governance-registry after PR #305 merge
+- [ ] Confirm PLATFORM_HEALTH.md shows test metrics after next regeneration
