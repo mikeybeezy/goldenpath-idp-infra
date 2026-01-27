@@ -597,7 +597,7 @@ Cross-referenced from `session_capture/2026-01-26-session-capture-tdd-quality-ga
 | Severity | Finding | Status |
 | -------- | ------- | ------ |
 | High | `validate-contracts` false-green: passes with zero validated fixtures when no JSON Schema-compliant schemas exist | ✅ Fixed - now fails with zero validations |
-| Medium | Proof attribution substring match can mis-map similarly named modules |  Open - needs stricter matching |
+| Medium | Proof attribution substring match can mis-map similarly named modules | ⚠️ Open - needs stricter matching |
 | Medium | Golden test runner in `conftest.py` uses `python` not `python3` | ✅ Fixed - changed to `python3` |
 | Low | Doc drift: old fixture name `secret-request-basic.yaml` still in captures | ✅ Fixed - updated to `SECRET-0001.yaml` |
 
@@ -871,14 +871,14 @@ Signed: Codex (2026-01-27T02:10:00Z)
 
 ## Update - 2026-01-27T02:30:00Z
 
-**Feedback (verbatim):**
+**Feedback (verbatim):**  
 Yes — reviewed the new additions. Most of it already aligns with what we just implemented (option 2 with `terraform test -json`, CI wiring, PRD update). The only concrete gap I see:
 
-**Potential mismatch in JSON parsing**
-- The capture shows a sample JSON line with keys like `test_count`, `pass_count`, `fail_count` and no `type` field.
+**Potential mismatch in JSON parsing**  
+- The capture shows a sample JSON line with keys like `test_count`, `pass_count`, `fail_count` and no `type` field.  
 - Our parser currently expects `type: test_run` / `type: test_summary`, so if Terraform emits the sample shape it would return 0 counts.
 
-**Recommendation to bring in now**
+**Recommendation to bring in now**  
 - Add a fallback in `parse_terraform_test_json` to handle the `test_count/pass_count/fail_count/skip_count` shape in addition to the `type`-based events. This will make the collector robust regardless of Terraform’s JSON event shape.
 
 ### What changed
@@ -1153,7 +1153,7 @@ This made it look like RDS creation failed.
 ✅ RDS INFRASTRUCTURE CREATED SUCCESSFULLY
 ======================================================================
 
-ℹ  RDS is private - cannot provision from your local machine
+ℹ️  RDS is private - cannot provision from your local machine
 
 NEXT STEP: Run this command from your local machine (requires kubectl access):
 
@@ -1221,7 +1221,7 @@ b4f39940 fix: ArgoCD/LBC webhook race condition - sequential deployment
 | Phase 2: Coverage | ✅ Complete | - |
 | Phase 3: Terraform | ✅ Complete | 52 tests |
 | Phase 4: Helm | ✅ Complete | 34 tests |
-| Phase 5: Chainsaw E2E |  Deferred V2 | - |
+| Phase 5: Chainsaw E2E | ⏳ Deferred V2 | - |
 
 ### Test Count
 
@@ -1285,33 +1285,24 @@ The `_validate_conditional_rule` function only handled `required` and `equals` o
 
 Signed: Claude Opus 4.5 (2026-01-27T06:30:00Z)
 
-## Phase 5: Pre-commit Fixes and Ruff Configuration (2026-01-27)
+## Update - 2026-01-27T06:54:57Z
 
-### Changes Made
+### Phase 5: Pre-commit Fixes and Ruff Configuration
 
-1. **Added pyproject.toml with ruff configuration**
-   - Ignore E402 (imports after docstrings) - intentional pattern for script metadata
-   - Ignore E501 (line too long) - many existing long lines
-   - Ignore E701/E702 (multiple statements) - legacy patterns
-   - Ignore E712 (True/False comparisons) - stylistic
-   - Ignore E722 (bare except) - legacy patterns to fix incrementally
+**Changes Made:**
 
-2. **Fixed real bugs**
-   - F821: Added missing `datetime` import in `sync_ecr_catalog.py`
-   - F401: Removed unused import in `validate_scripts_tested.py`
-   - F841: Prefixed unused variables with `_` in multiple scripts
+1. Added pyproject.toml with ruff configuration
+   * Ignore E402 (imports after docstrings) - intentional pattern
+   * Ignore E501 (line too long), E701/E702, E712, E722
 
-3. **Fixed style issues**
-   - Markdownlint list style (dash to asterisk) in session captures
-   - Auto-fixed formatting (ruff-format, trailing whitespace, end-of-file)
-   - Auto-fixed emoji policy violations
-   - Regenerated indices (ADR, script, workflow)
+2. Fixed real bugs
+   * F821: Added missing datetime import in sync_ecr_catalog.py
+   * F401: Removed unused import in validate_scripts_tested.py
+   * F841: Prefixed unused variables with underscore
 
-### Files Changed
+3. Auto-fixed 119 files via pre-commit hooks
 
-- 119 files modified by pre-commit auto-fixes
-- Created `pyproject.toml` for ruff configuration
+### Outstanding
 
-### PR Created
-
-- PR #286: fix/precommit-ruff-config -> development
+* PR #286 awaiting CI completion
+* Development to main merge (PR #283) depends on PR #286
