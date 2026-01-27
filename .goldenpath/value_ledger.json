@@ -1,6 +1,41 @@
 {
-  "total_reclaimed_hours": 169.1,
+  "total_reclaimed_hours": 162.1,
   "history": [
+    {
+      "timestamp": "2026-01-23T17:30:32Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-23T17:30:32Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-23T17:30:32Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-23T17:30:32Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-23T17:30:32Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-23T17:30:44Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
+    {
+      "timestamp": "2026-01-23T17:30:44Z",
+      "script": "standardize_metadata.py",
+      "reclaimed_hours": 1.0
+    },
     {
       "timestamp": "2026-01-23T17:30:44Z",
       "script": "standardize_metadata.py",
@@ -465,41 +500,6 @@
       "timestamp": "2026-01-27T07:16:43Z",
       "script": "standardize_metadata.py",
       "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-27T10:24:53Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-27T10:24:53Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-27T10:24:53Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-27T10:24:53Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-27T10:24:53Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-27T10:24:53Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
-    },
-    {
-      "timestamp": "2026-01-27T10:24:53Z",
-      "script": "standardize_metadata.py",
-      "reclaimed_hours": 1.0
     }
   ],
   "maturity_snapshots": [
@@ -554,6 +554,17 @@
         "M0": 0,
         "M1": 9,
         "M2": 51,
+        "M3": 1
+      },
+      "certification_rate": 1.6
+    },
+    {
+      "timestamp": "2026-01-27T10:52:12Z",
+      "total_scripts": 61,
+      "maturity_distribution": {
+        "M0": 0,
+        "M1": 8,
+        "M2": 52,
         "M3": 1
       },
       "certification_rate": 1.6
