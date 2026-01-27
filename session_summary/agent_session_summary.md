@@ -3800,3 +3800,15 @@ Formatted unformatted scripts to pass pre-commit on PR #283:
 - scripts/generate_test_proofs.py
 
 Added ADR/CL traceability to allow formatting changes through pr-guardrails.
+
+## 2026-01-27: Record Test Metrics Script Fix
+
+**Agent:** Claude Opus 4.5
+**Branch:** fix/record-test-metrics-argv
+**PR:** #292
+
+### Summary
+
+Fixed heredoc argument passing bug in record-test-metrics.sh:
+- Arguments must come BEFORE heredoc delimiter, not after
+- `python3 - <<'PY' "$arg"` → `python3 - "$arg" <<'PY'`

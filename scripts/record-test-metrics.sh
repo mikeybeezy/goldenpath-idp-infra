@@ -47,7 +47,7 @@ TMP_METRICS="$(mktemp)"
 cp "$ABS_METRICS_PATH" "$TMP_METRICS"
 TMP_MERGED="$(mktemp)"
 
-COMMIT_SHA="$(python3 - <<'PY'
+COMMIT_SHA="$(python3 - "$TMP_METRICS" <<'PY'
 import json, sys
 path = sys.argv[1]
 try:
@@ -56,7 +56,7 @@ try:
 except Exception:
     print("unknown")
 PY
-"$TMP_METRICS")"
+)"
 SHORT_SHA="${COMMIT_SHA:0:7}"
 TS="$(date -u +%Y-%m-%d-%H%MZ)"
 
@@ -85,7 +85,7 @@ mkdir -p "$(dirname "$LATEST_PATH")" "$HIST_DIR"
 
 # Merge with existing latest metrics if present (preserve other frameworks)
 if [[ -f "$LATEST_PATH" ]]; then
-  python3 - <<'PY' "$LATEST_PATH" "$TMP_METRICS" "$TMP_MERGED"
+  python3 - "$LATEST_PATH" "$TMP_METRICS" "$TMP_MERGED" <<'PY'
 import json
 import sys
 

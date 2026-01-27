@@ -1376,3 +1376,21 @@ Added traceability:
 * PR #283 development to main should pass after #291 merges
 
 Signed: Claude Opus 4.5 (2026-01-27T09:50:00Z)
+
+## Update - 2026-01-27T10:10:00Z
+
+### Record Test Metrics Script Fix
+
+Fixed heredoc argument passing bug in `scripts/record-test-metrics.sh`:
+- Line 50-59: Arguments must come BEFORE heredoc, not after
+- Line 88: Same fix for second heredoc
+
+**Root Cause:**
+`python3 - <<'PY' "$arg"` doesn't pass `$arg` to Python. Correct syntax is `python3 - "$arg" <<'PY'`.
+
+### Outstanding
+
+* PR #292 for record-test-metrics fix
+* PR #283 ready for merge
+
+Signed: Claude Opus 4.5 (2026-01-27T10:10:00Z)
