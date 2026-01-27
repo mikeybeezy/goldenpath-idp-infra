@@ -89,7 +89,9 @@ jobs:
           version: v3.14.0
 
       - name: Install helm-unittest plugin
-        run: helm plugin install https://github.com/helm-unittest/helm-unittest.git
+        run: |
+          # Use specific version compatible with Helm 3.14
+          helm plugin install https://github.com/helm-unittest/helm-unittest.git --version 0.5.1
 
       - name: Require tests for all charts
         run: |

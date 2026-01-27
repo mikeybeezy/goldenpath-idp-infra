@@ -1303,3 +1303,16 @@ Minimal fixes to resolve pre-commit CI failures:
 
 * PR #287 created with minimal fixes
 * Avoid triggering TDD gate on scripts without tests
+
+## Update - 2026-01-27T07:03:12Z
+
+### Helm Unit Test CI Fix
+
+Fixed helm-unittest plugin compatibility issue:
+* Pinned plugin to version 0.5.1 for Helm 3.14 compatibility
+* Latest plugin uses platformHooks which Helm 3.14 doesn't support
+
+### Outstanding
+
+* PR #288 for helm fix
+* PR #283 development to main pending
