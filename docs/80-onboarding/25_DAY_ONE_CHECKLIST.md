@@ -12,8 +12,11 @@ relates_to:
   - 00_DOC_INDEX
   - 23_NEW_JOINERS
   - 24_PR_GATES
+  - 27_TESTING_QUICKSTART
+  - ADR-0182-tdd-philosophy
   - CL-0078
   - CL-0141
+  - GOV-0016-testing-stack-matrix
   - SESSION_CAPTURE_2026_01_17_02
   - agent_session_summary
 supersedes: []
@@ -56,6 +59,7 @@ documents, and artifacts you need before you start making changes.
 - docs/00-foundations/product/VQ_TAGGING_GUIDE.md
 - docs/80-onboarding/23_NEW_JOINERS.md
 - docs/80-onboarding/24_PR_GATES.md
+- docs/80-onboarding/27_TESTING_QUICKSTART.md (**TDD is mandatory**)
 - docs/40-delivery/38_BRANCHING_STRATEGY.md
 - docs/40-delivery/12_GITOPS_AND_CICD.md
 - docs/70-operations/32_TERRAFORM_STATE_AND_LOCKING.md
@@ -70,6 +74,7 @@ documents, and artifacts you need before you start making changes.
 - Terraform entry points: `Makefile`, `envs/dev/`, `modules/`
 - Pre-commit rules: `.pre-commit-config.yaml`
 - Doc scaffolding: `scripts/scaffold_doc.py` (creates compliant frontmatter)
+- Testing: `make test`, `tests/conftest.py`, `tests/bats/`
 
 ## Starter artifacts to have on hand
 
@@ -81,7 +86,9 @@ documents, and artifacts you need before you start making changes.
 ## First-day validation steps
 
 1. Initialize your environment: `bin/governance setup`.
-2. Confirm branch flow: create a feature branch from `development`.
-3. Open a draft PR into `development` to validate guardrails and labels (use `.github/pull_request_template.md`).
-4. Create a sample doc with `scripts/scaffold_doc.py` and confirm pre-commit auto-fix runs on save.
-5. Capture any missing access or missing config as issues.
+2. Install testing dependencies: `pip install pytest pytest-cov pyyaml && brew install bats-core`.
+3. Verify tests run: `make test`.
+4. Confirm branch flow: create a feature branch from `development`.
+5. Open a draft PR into `development` to validate guardrails and labels (use `.github/pull_request_template.md`).
+6. Create a sample doc with `scripts/scaffold_doc.py` and confirm pre-commit auto-fix runs on save.
+7. Capture any missing access or missing config as issues.

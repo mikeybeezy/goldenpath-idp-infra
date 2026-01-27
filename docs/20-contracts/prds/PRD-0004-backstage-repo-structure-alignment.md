@@ -114,11 +114,11 @@ assumptions, and complicates integration with platform automation.
 
 ### Related Backstage Assets in goldenpath-idp-infra
 
-- `backstage-helm/backstage-catalog/` - Catalog entities and templates
-- `backstage-helm/backstage-catalog/templates/stateless-app/` - Stateless app Golden Path
-- `backstage-helm/backstage-catalog/templates/stateful-app/` - Stateful app Golden Path
-- `backstage-helm/backstage-catalog/templates/backend-app-rds/` - Backend + RDS Golden Path
-- `backstage-helm/charts/backstage/` - Helm chart for deployment
+- `catalog/` - Catalog entities and templates
+- `catalog/templates/stateless-app/` - Stateless app Golden Path
+- `catalog/templates/stateful-app/` - Stateful app Golden Path
+- `catalog/templates/backend-app-rds/` - Backend + RDS Golden Path
+- `gitops/helm/backstage/chart/` - Helm chart for deployment
 - `gitops/helm/backstage/values/dev.yaml` - Dev environment values
 - `gitops/argocd/applications/backstage.yaml` - ArgoCD application
 - `docs/changelog/entries/CL-0162-golden-path-templates.md` - Golden Path changelog
@@ -204,13 +204,13 @@ Add: "CI pipeline passes on restructured repo within first PR"
 
 ### Integration with goldenpath-idp-infra
 
-- [ ] **Catalog Location** - `backstage-helm/backstage-catalog/all.yaml` resolves correctly
+- [ ] **Catalog Location** - `catalog/all.yaml` resolves correctly
 - [ ] **Templates** - Golden Path templates register in Backstage:
   - `stateless-app/template.yaml`
   - `stateful-app/template.yaml`
   - `backend-app-rds/template.yaml`
 - [ ] **Scaffolder Actions** - Custom actions work (`fetch:plain`, `publish:github:pull-request`, `github:actions:dispatch`)
-- [ ] **Helm Chart** - `backstage-helm/charts/backstage` values paths are compatible
+- [ ] **Helm Chart** - `gitops/helm/backstage/chart` values paths are compatible
 - [ ] **ArgoCD App** - Multi-source app in `gitops/argocd/applications/backstage.yaml` still syncs
 
 ### Backstage Runtime Verification

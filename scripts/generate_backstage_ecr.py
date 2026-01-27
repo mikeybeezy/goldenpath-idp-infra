@@ -35,31 +35,32 @@ import os
 import sys
 import yaml
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
 from metadata_config import platform_yaml_dump
 
 SOURCE_CATALOG = "docs/20-contracts/resource-catalogs/ecr-catalog.yaml"
-TARGET_DIR = "backstage-helm/backstage-catalog/resources/ecr"
-ALL_RESOURCES_PATH = "backstage-helm/backstage-catalog/all-resources.yaml"
+TARGET_DIR = "catalog/resources/ecr"
+ALL_RESOURCES_PATH = "catalog/all-resources.yaml"
 
 
 def dump_yaml(data, path: str) -> None:
     with open(path, "w", encoding="utf-8") as f:
         platform_yaml_dump(data, f)
 
+
 def generate():
     if not os.path.exists(SOURCE_CATALOG):
         print(f"❌ Source catalog not found: {SOURCE_CATALOG}")
         return
 
-    with open(SOURCE_CATALOG, 'r') as f:
+    with open(SOURCE_CATALOG, "r") as f:
         catalog = yaml.safe_load(f)
 
-    repositories = catalog.get('repositories', {})
+    repositories = catalog.get("repositories", {})
     entities = []
 
     for name, data in repositories.items():
-        metadata = data.get('metadata', {})
+        metadata = data.get("metadata", {})
         entity = {
             "apiVersion": "backstage.io/v1alpha1",
             "kind": "Resource",
@@ -68,18 +69,18 @@ def generate():
                 "description": f"ECR Repository for {name}",
                 "tags": [
                     f"env-{metadata.get('environment', 'unknown')}",
-                    f"risk-{metadata.get('risk', 'low')}"
+                    f"risk-{metadata.get('risk', 'low')}",
                 ],
                 "annotations": {
-                    "goldenpath.io/risk": str(metadata.get('risk', 'low')),
-                    "goldenpath.io/id": str(metadata.get('id', 'unknown'))
-                }
+                    "goldenpath.io/risk": str(metadata.get("risk", "low")),
+                    "goldenpath.io/id": str(metadata.get("id", "unknown")),
+                },
             },
             "spec": {
                 "type": "container-repository",
-                "owner": metadata.get('owner', 'platform-team'),
-                "dependencyOf": ["resource:goldenpath-ecr-registry"]
-            }
+                "owner": metadata.get("owner", "platform-team"),
+                "dependencyOf": ["resource:goldenpath-ecr-registry"],
+            },
         }
         entities.append(entity)
 
@@ -93,25 +94,33 @@ def generate():
 
     # Update all-resources.yaml
     if os.path.exists(ALL_RESOURCES_PATH):
-        with open(ALL_RESOURCES_PATH, 'r') as f:
+        with open(ALL_RESOURCES_PATH, "r") as f:
             all_res = yaml.safe_load(f)
 
         # Keep original targets (like artists-db and ecr-registry)
         # but replace/append ECR repos
-        current_targets = all_res.get('spec', {}).get('targets', [])
-        new_targets = [t for t in current_targets if not t.startswith('./resources/ecr/') and t != './resources/ecr-repositories.yaml']
+        current_targets = all_res.get("spec", {}).get("targets", [])
+        new_targets = [
+            t
+            for t in current_targets
+            if not t.startswith("./resources/ecr/")
+            and t != "./resources/ecr-repositories.yaml"
+        ]
 
         # Ensure ecr-registry is there
-        if './resources/ecr-registry.yaml' not in new_targets:
-            new_targets.append('./resources/ecr-registry.yaml')
+        if "./resources/ecr-registry.yaml" not in new_targets:
+            new_targets.append("./resources/ecr-registry.yaml")
 
         new_targets.extend(generated_files)
-        all_res['spec']['targets'] = new_targets
+        all_res["spec"]["targets"] = new_targets
 
         dump_yaml(all_res, ALL_RESOURCES_PATH)
 
-    print(f"✅ Generated {len(entities)} individual Backstage ECR entities in {TARGET_DIR}")
+    print(
+        f"✅ Generated {len(entities)} individual Backstage ECR entities in {TARGET_DIR}"
+    )
     print(f"✅ Updated {ALL_RESOURCES_PATH} with {len(generated_files)} new targets")
+
 
 if __name__ == "__main__":
     generate()

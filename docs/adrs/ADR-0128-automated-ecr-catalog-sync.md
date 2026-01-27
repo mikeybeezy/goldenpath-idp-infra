@@ -58,3 +58,9 @@ We will implement an automated "Catalog Bridge" script (`scripts/generate_backst
 - **Eliminates Drift**: The IDP is always a high-fidelity mirror of the governance catalog.
 - **Granular Ownership**: Every container repository in the IDP is now linked to its specific owner and risk profile.
 - **Reduced Friction**: Developers find registry details directly in the portal they use daily.
+
+---
+
+**Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

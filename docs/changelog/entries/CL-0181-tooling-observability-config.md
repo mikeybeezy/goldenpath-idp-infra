@@ -181,3 +181,9 @@ kubectl exec -n monitoring prometheus-dev-kube-prometheus-stack-prometheus-0 \
 - **Backstage metrics**: Requires Backstage to be configured with `@backstage/plugin-scaffolder-backend-module-prometheus` or custom prom-client integration to expose `/metrics` endpoint. Container-level metrics (CPU, Memory, restarts) work automatically via cAdvisor and kube-state-metrics.
 - **ArgoCD**: Native Prometheus metrics are built-in
 - **Keycloak**: Metrics endpoint enabled via `KC_METRICS_ENABLED=true` environment variable
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

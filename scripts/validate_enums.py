@@ -30,8 +30,8 @@ import os
 import sys
 import yaml
 import argparse
-import re
 from typing import Any, Dict, List, Tuple
+
 
 def load_yaml(path: str) -> Any:
     try:
@@ -40,6 +40,7 @@ def load_yaml(path: str) -> Any:
     except Exception as e:
         print(f"Error loading YAML {path}: {e}")
         return None
+
 
 def get_dot(d: Dict[str, Any], path: str) -> Any:
     """Traverses a dictionary using dot notation (e.g., 'risk_profile.security_risk')."""
@@ -51,6 +52,7 @@ def get_dot(d: Dict[str, Any], path: str) -> Any:
             return None
         cur = cur[part]
     return cur
+
 
 def find_frontmatter(md_text: str) -> Dict[str, Any] | None:
     """Parses YAML frontmatter from markdown."""
@@ -66,7 +68,10 @@ def find_frontmatter(md_text: str) -> Dict[str, Any] | None:
                 return {"__parse_error__": True}
     return None
 
-def validate_value(file_path: str, field_path: str, value: Any, allowed: List[str], errors: List[str]) -> None:
+
+def validate_value(
+    file_path: str, field_path: str, value: Any, allowed: List[str], errors: List[str]
+) -> None:
     if value is None:
         return
     if not allowed:
@@ -75,12 +80,20 @@ def validate_value(file_path: str, field_path: str, value: Any, allowed: List[st
     if isinstance(value, list):
         for idx, item in enumerate(value):
             if item not in allowed:
-                errors.append(f"{file_path}: {field_path}[{idx}]='{item}' not in enum {allowed}")
+                errors.append(
+                    f"{file_path}: {field_path}[{idx}]='{item}' not in enum {allowed}"
+                )
     else:
         if value not in allowed:
             errors.append(f"{file_path}: {field_path}='{value}' not in enum {allowed}")
 
-def scan_file(filepath: str, enums: Dict[str, Any], checks: List[Tuple[str, str, List[str]]], errors: List[str]):
+
+def scan_file(
+    filepath: str,
+    enums: Dict[str, Any],
+    checks: List[Tuple[str, str, List[str]]],
+    errors: List[str],
+):
     kind_ext = "yaml" if filepath.endswith((".yml", ".yaml")) else "mdfm"
 
     try:
@@ -110,12 +123,22 @@ def scan_file(filepath: str, enums: Dict[str, Any], checks: List[Tuple[str, str,
     except Exception as e:
         print(f"Error processing {filepath}: {e}")
 
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--enums", default="schemas/metadata/enums.yaml")
-    ap.add_argument("--roots", nargs="+", default=["docs", "gitops", "envs", "idp-tooling"], help="Roots to scan.")
+    ap.add_argument(
+        "--roots",
+        nargs="+",
+        default=["docs", "gitops", "envs", "idp-tooling"],
+        help="Roots to scan.",
+    )
     ap.add_argument("files", nargs="*", help="Specific files to scan (overrides roots)")
-    ap.add_argument("--soft", action="store_true", help="Report errors but don't fail CI (non-zero exit code 0).")
+    ap.add_argument(
+        "--soft",
+        action="store_true",
+        help="Report errors but don't fail CI (non-zero exit code 0).",
+    )
     args = ap.parse_args()
 
     enums = load_yaml(args.enums)
@@ -139,7 +162,11 @@ def main() -> int:
     checks = [
         ("mdfm", "domain", domain_list),
         ("mdfm", "owner", owner_list),
-        ("mdfm", "kind", type_list), # We use 'kind' in schema, user calls it 'artifact_type'
+        (
+            "mdfm",
+            "kind",
+            type_list,
+        ),  # We use 'kind' in schema, user calls it 'artifact_type'
         ("mdfm", "type", type_list),
         ("mdfm", "category", cat_list),
         ("mdfm", "status", status_list),
@@ -148,7 +175,6 @@ def main() -> int:
         ("mdfm", "risk_profile.production_impact", impact_list),
         ("mdfm", "risk_profile.security_risk", sec_risk_list),
         ("mdfm", "risk_profile.coupling_risk", coupling_list),
-
         ("yaml", "owner", owner_list),
         ("yaml", "domain", domain_list),
         ("yaml", "reliability.observability_tier", tier_list),
@@ -190,13 +216,20 @@ def main() -> int:
             print(f" ... and {len(errors)-50} more", file=sys.stderr)
 
         print("\n💡 ACTION REQUIRED:", file=sys.stderr)
-        print("To resolve this, you can propose a new value by opening a PR for 'schemas/metadata/enums.yaml'.", file=sys.stderr)
-        print("See Runbook: docs/70-operations/runbooks/RB-0015-extending-governance-vocabulary.md", file=sys.stderr)
+        print(
+            "To resolve this, you can propose a new value by opening a PR for 'schemas/metadata/enums.yaml'.",
+            file=sys.stderr,
+        )
+        print(
+            "See Runbook: docs/70-operations/runbooks/RB-0015-extending-governance-vocabulary.md",
+            file=sys.stderr,
+        )
 
         return 0 if args.soft else 1
 
     print("✅ Enum validation passed.")
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

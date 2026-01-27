@@ -102,3 +102,9 @@ avoid missing relations.
 - Update `backstage-helm/backstage-catalog/components/ecr-registry.yaml`.
 - Update `scripts/sync_ecr_catalog.py` output to use the new system.
 - Document the sync process in a runbook.
+
+---
+
+**Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

@@ -29,14 +29,13 @@ Purpose:
 """
 
 import os
-import sys
 import yaml
 import json
 from datetime import datetime
-from pathlib import Path
 from lib.metadata_config import MetadataConfig
 
 cfg = MetadataConfig()
+
 
 def audit_repo(root_dir="."):
     stats = {
@@ -47,10 +46,10 @@ def audit_repo(root_dir="."):
         "explicit_coverage": 0,
         "exempt_files": 0,
         "enum_drift_attempts": 0,
-        "failures": []
+        "failures": [],
     }
 
-    mandated_zones = ['apps', 'docs', 'gitops', 'envs', 'runbooks']
+    mandated_zones = ["apps", "docs", "gitops", "envs", "runbooks"]
 
     for zone in mandated_zones:
         zone_path = os.path.join(root_dir, zone)
@@ -59,20 +58,20 @@ def audit_repo(root_dir="."):
 
         for root, _, files in os.walk(zone_path):
             for f in files:
-                if f.endswith(('.md', '.yaml', '.yml')) and f != 'metadata.yaml':
+                if f.endswith((".md", ".yaml", ".yml")) and f != "metadata.yaml":
                     stats["total_files"] += 1
                     filepath = os.path.join(root, f)
 
                     try:
                         # Extract metadata
-                        with open(filepath, 'r') as file:
+                        with open(filepath, "r") as file:
                             content = file.read()
 
                         # Simplified frontmatter extraction
                         data = {}
-                        if filepath.endswith('.md'):
-                            if content.startswith('---'):
-                                parts = content.split('---', 2)
+                        if filepath.endswith(".md"):
+                            if content.startswith("---"):
+                                parts = content.split("---", 2)
                                 if len(parts) >= 3:
                                     data = yaml.safe_load(parts[1]) or {}
                         else:
@@ -89,7 +88,7 @@ def audit_repo(root_dir="."):
                         parent = cfg.find_parent_metadata(filepath)
                         effective = cfg.get_effective_metadata(filepath, data)
 
-                        if data.get('exempt'):
+                        if data.get("exempt"):
                             stats["exempt_files"] += 1
 
                         # Count explicit vs inherited (simplified: if present in effective but not in local)
@@ -104,15 +103,17 @@ def audit_repo(root_dir="."):
 
     return stats
 
+
 def save_report(stats, output_path="docs/10-governance/reports"):
     os.makedirs(output_path, exist_ok=True)
     date_str = datetime.now().strftime("%Y-%m-%d")
     report_file = os.path.join(output_path, f"compliance_snapshot_{date_str}.json")
 
-    with open(report_file, 'w') as f:
+    with open(report_file, "w") as f:
         json.dump(stats, f, indent=2)
 
     print(f"✅ Audit complete. Snapshot saved to: {report_file}")
+
 
 if __name__ == "__main__":
     results = audit_repo()

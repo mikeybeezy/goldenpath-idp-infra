@@ -3,7 +3,32 @@ repos:
     rev: v4.6.0
     hooks:
       - id: end-of-file-fixer
+        exclude: ^session_capture/
       - id: trailing-whitespace
+        exclude: ^session_capture/
+
+  # Python linting and formatting (ruff - fast, replaces flake8/isort/black)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # Shell script linting
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        args: ["--severity=error"]
+
+  # Shell script formatting
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.8.0-1
+    hooks:
+      - id: shfmt
+        args: ["-i", "2", "-ci", "-bn"]
+
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.91.0
     hooks:
@@ -34,6 +59,7 @@ repos:
         entry: python3 scripts/enforce_emoji_policy.py
         language: python
         files: \.(md|yaml|yml)$
+        exclude: ^session_capture/
         pass_filenames: true
       - id: generate-adr-index
         name: Auto-Heal ADR Index

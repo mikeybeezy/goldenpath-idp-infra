@@ -83,3 +83,9 @@ curl -I https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/govern
 # Check templates listed
 curl -s https://raw.githubusercontent.com/mikeybeezy/goldenpath-idp-infra/governance-registry/backstage-catalog/all.yaml | grep templates
 ```
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

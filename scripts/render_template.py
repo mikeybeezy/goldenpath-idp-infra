@@ -60,7 +60,7 @@ def load_values(path):
 
 def render_text(text, values):
     def replace(match):
-        path = match.group(1).split('.')
+        path = match.group(1).split(".")
         current = values
         try:
             for part in path:

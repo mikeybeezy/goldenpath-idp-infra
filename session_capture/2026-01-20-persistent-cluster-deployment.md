@@ -1223,3 +1223,9 @@ Signed: Codex (2026-01-21T09:45:00Z)
 - Added ADR-0175 + CL-0159 documenting the ownership change.
 
 Signed: Codex (2026-01-21T10:30:00Z)
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

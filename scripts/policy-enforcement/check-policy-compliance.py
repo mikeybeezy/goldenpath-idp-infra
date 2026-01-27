@@ -107,8 +107,12 @@ class PolicyLoader:
             with open(policy_file) as f:
                 try:
                     for policy in yaml.safe_load_all(f):
-                        if policy and isinstance(policy, dict) and 'policy_id' in policy:
-                            policies[policy['policy_id']] = policy
+                        if (
+                            policy
+                            and isinstance(policy, dict)
+                            and "policy_id" in policy
+                        ):
+                            policies[policy["policy_id"]] = policy
                 except yaml.YAMLError:
                     print(f"DEBUG: Skipping {policy_file.name} - YAML error")
 
@@ -119,34 +123,38 @@ class ECRComplianceChecker:
     """Check ECR registries against policies"""
 
     def __init__(self, region: str = "eu-west-2"):
-        self.ecr = boto3.client('ecr', region_name=region)
+        self.ecr = boto3.client("ecr", region_name=region)
         self.region = region
 
     def get_all_registries(self) -> List[Dict[str, Any]]:
         """Get all ECR registries in account"""
         registries = []
-        paginator = self.ecr.get_paginator('describe_repositories')
+        paginator = self.ecr.get_paginator("describe_repositories")
 
         for page in paginator.paginate():
-            registries.extend(page['repositories'])
+            registries.extend(page["repositories"])
 
         return registries
 
     def check_metadata(self, registry: Dict[str, Any]) -> List[Dict[str, str]]:
         """Check POL-ECR-001-R03: Required metadata"""
         violations = []
-        tags = self.ecr.list_tags_for_resource(resourceArn=registry['repositoryArn'])['tags']
+        tags = self.ecr.list_tags_for_resource(resourceArn=registry["repositoryArn"])[
+            "tags"
+        ]
 
-        required_tags = ['metadata.id', 'metadata.owner', 'metadata.risk']
+        required_tags = ["metadata.id", "metadata.owner", "metadata.risk"]
         for tag in required_tags:
-            if not any(t['Key'] == tag for t in tags):
-                violations.append({
-                    "registry": registry['repositoryName'],
-                    "policy_id": "POL-ECR-001-R03",
-                    "rule": f"Missing required tag: {tag}",
-                    "severity": "critical",
-                    "detected": datetime.utcnow().isoformat() + "Z"
-                })
+            if not any(t["Key"] == tag for t in tags):
+                violations.append(
+                    {
+                        "registry": registry["repositoryName"],
+                        "policy_id": "POL-ECR-001-R03",
+                        "rule": f"Missing required tag: {tag}",
+                        "severity": "critical",
+                        "detected": datetime.utcnow().isoformat() + "Z",
+                    }
+                )
 
         return violations
 
@@ -154,14 +162,16 @@ class ECRComplianceChecker:
         """Check POL-ECR-002-R01: Image scanning enabled"""
         violations = []
 
-        if not registry.get('imageScanningConfiguration', {}).get('scanOnPush'):
-            violations.append({
-                "registry": registry['repositoryName'],
-                "policy_id": "POL-ECR-002-R01",
-                "rule": "Image scanning not enabled",
-                "severity": "high",
-                "detected": datetime.utcnow().isoformat() + "Z"
-            })
+        if not registry.get("imageScanningConfiguration", {}).get("scanOnPush"):
+            violations.append(
+                {
+                    "registry": registry["repositoryName"],
+                    "policy_id": "POL-ECR-002-R01",
+                    "rule": "Image scanning not enabled",
+                    "severity": "high",
+                    "detected": datetime.utcnow().isoformat() + "Z",
+                }
+            )
 
         return violations
 
@@ -170,15 +180,17 @@ class ECRComplianceChecker:
         violations = []
 
         try:
-            self.ecr.get_lifecycle_policy(repositoryName=registry['repositoryName'])
+            self.ecr.get_lifecycle_policy(repositoryName=registry["repositoryName"])
         except self.ecr.exceptions.LifecyclePolicyNotFoundException:
-            violations.append({
-                "registry": registry['repositoryName'],
-                "policy_id": "POL-ECR-003-R01",
-                "rule": "Lifecycle policy not configured",
-                "severity": "medium",
-                "detected": datetime.utcnow().isoformat() + "Z"
-            })
+            violations.append(
+                {
+                    "registry": registry["repositoryName"],
+                    "policy_id": "POL-ECR-003-R01",
+                    "rule": "Lifecycle policy not configured",
+                    "severity": "medium",
+                    "detected": datetime.utcnow().isoformat() + "Z",
+                }
+            )
 
         return violations
 
@@ -196,7 +208,7 @@ class ECRComplianceChecker:
 def generate_report(registries: List[Dict], violations: List[Dict]) -> Dict[str, Any]:
     """Generate compliance report"""
     total = len(registries)
-    violation_count = len(set(v['registry'] for v in violations))
+    violation_count = len(set(v["registry"] for v in violations))
     compliant = total - violation_count
 
     return {
@@ -204,14 +216,16 @@ def generate_report(registries: List[Dict], violations: List[Dict]) -> Dict[str,
         "total_registries": total,
         "compliant": compliant,
         "compliance_rate": compliant / total if total > 0 else 1.0,
-        "violations": violations
+        "violations": violations,
     }
 
 
 def main():
     parser = argparse.ArgumentParser(description="Daily Policy Compliance Checker")
     parser.add_argument("--region", default="eu-west-2", help="AWS region")
-    parser.add_argument("--output", default="compliance-report.json", help="Output file")
+    parser.add_argument(
+        "--output", default="compliance-report.json", help="Output file"
+    )
     parser.add_argument("--verbose", action="store_true", help="Verbose logging")
     args = parser.parse_args()
 
@@ -246,11 +260,11 @@ def main():
         report = generate_report(registries, all_violations)
 
         # Write report
-        with open(args.output, 'w') as f:
+        with open(args.output, "w") as f:
             json.dump(report, f, indent=2)
 
         # Print summary
-        print(f"Compliance check complete")
+        print("Compliance check complete")
         print(f"Total registries: {report['total_registries']}")
         print(f"Compliant: {report['compliant']}")
         print(f"Compliance rate: {report['compliance_rate'] * 100:.1f}%")

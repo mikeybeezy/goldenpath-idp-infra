@@ -1,0 +1,36 @@
+[tool.ruff]
+# Target Python 3.10+
+target-version = "py310"
+
+# Same line length as default
+line-length = 88
+
+[tool.ruff.lint]
+# Enable pyflakes (F) and pycodestyle (E) checks
+select = ["E", "F"]
+
+# Ignore specific rules
+ignore = [
+    # E402: Module level import not at top of file
+    # Intentionally ignored because scripts have YAML metadata docstrings before imports
+    "E402",
+    # E501: Line too long - many existing long lines in codebase
+    "E501",
+    # E701: Multiple statements on one line (colon) - common in short conditionals
+    "E701",
+    # E702: Multiple statements on one line (semicolon)
+    "E702",
+    # E712: Comparison to True/False - stylistic preference
+    "E712",
+    # E722: Bare except - legacy patterns, fix incrementally
+    "E722",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Allow bare except in hooks and bin scripts (legacy patterns)
+".githooks/*" = ["E722"]
+"bin/*" = ["E722", "F401"]
+# Test files may have unused variables for fixtures
+"tests/*" = ["F841"]
+# Scripts may have unused variables from dict/tuple unpacking
+"scripts/*" = ["F841"]

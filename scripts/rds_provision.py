@@ -42,6 +42,7 @@ Features:
     - Secure: Uses SSL connections, no password logging
     - Fail-fast: Exits immediately on missing secrets or connection errors
 """
+
 from __future__ import annotations
 
 import argparse
@@ -49,6 +50,7 @@ import json
 import logging
 import os
 import re
+import socket
 import sys
 import time
 from dataclasses import dataclass, field
@@ -167,6 +169,182 @@ class AuditRecord:
                 self.message.replace(",", ";"),  # Escape commas
             ]
         )
+
+
+# =============================================================================
+# Pre-flight Validation Data Classes
+# =============================================================================
+
+
+@dataclass
+class HostnameValidationResult:
+    """Result of hostname DNS validation."""
+
+    success: bool
+    ip_address: Optional[str] = None
+    error_message: str = ""
+    remediation: str = ""
+
+
+@dataclass
+class PreflightCheckResult:
+    """Result of all pre-flight checks."""
+
+    passed: bool
+    failed_checks: List[str] = field(default_factory=list)
+    remediation: str = ""
+
+
+# =============================================================================
+# Pre-flight Validation Functions
+# =============================================================================
+
+
+def validate_rds_hostname(hostname: str, env: str = "dev") -> HostnameValidationResult:
+    """
+    Validate that an RDS hostname can be resolved via DNS.
+
+    This is a pre-flight check to catch the common case where an RDS instance
+    doesn't exist but the provisioning script tries to connect anyway.
+
+    Args:
+        hostname: The RDS endpoint hostname to validate
+        env: Environment name for remediation messaging
+
+    Returns:
+        HostnameValidationResult with success status and error details
+    """
+    try:
+        ip_address = socket.gethostbyname(hostname)
+        return HostnameValidationResult(
+            success=True, ip_address=ip_address, error_message="", remediation=""
+        )
+    except socket.gaierror as e:
+        # Extract the identifier from the hostname for clearer messaging
+        # Format: identifier.random.region.rds.amazonaws.com
+        identifier = hostname.split(".")[0] if "." in hostname else hostname
+
+        error_message = (
+            f"RDS instance does not exist or is not reachable. "
+            f"Hostname '{identifier}' could not be resolved. "
+            f"DNS error: {e}"
+        )
+
+        remediation = (
+            f"The RDS instance may not have been created. To fix:\n"
+            f"  1. Run: make rds-apply ENV={env}\n"
+            f"  2. Or run: cd envs/{env}-rds && terraform apply\n"
+            f"  3. Verify the RDS instance exists in AWS Console\n"
+            f"  4. If the instance was deleted, check Terraform state with: terraform state list"
+        )
+
+        return HostnameValidationResult(
+            success=False,
+            ip_address=None,
+            error_message=error_message,
+            remediation=remediation,
+        )
+
+
+def is_running_in_kubernetes() -> bool:
+    """
+    Detect if we're running inside a Kubernetes pod.
+
+    Returns:
+        True if running inside K8s, False otherwise
+    """
+    # K8s sets these environment variables in pods
+    return os.environ.get("KUBERNETES_SERVICE_HOST") is not None or os.path.exists(
+        "/var/run/secrets/kubernetes.io/serviceaccount/token"
+    )
+
+
+def run_preflight_checks(
+    creds: "RdsCredentials", env: str = "dev", skip_preflight: bool = False
+) -> PreflightCheckResult:
+    """
+    Run all pre-flight checks before attempting to provision.
+
+    Checks:
+    1. Hostname is resolvable (RDS instance exists)
+    2. Port is reachable (network connectivity)
+
+    Note: For private RDS (PubliclyAccessible=false), these checks only pass
+    when running from inside the VPC (e.g., from within the EKS cluster).
+    Use skip_preflight=True or --skip-preflight when running from outside.
+
+    Args:
+        creds: RDS credentials to validate
+        env: Environment name for remediation messaging
+        skip_preflight: Skip all pre-flight checks
+
+    Returns:
+        PreflightCheckResult with overall status and any failures
+    """
+    # Skip preflight if explicitly requested or running inside K8s
+    if skip_preflight:
+        logger.info("Pre-flight checks skipped (--skip-preflight flag)")
+        return PreflightCheckResult(passed=True, failed_checks=[], remediation="")
+
+    if is_running_in_kubernetes():
+        logger.info("Pre-flight checks skipped (running inside Kubernetes)")
+        return PreflightCheckResult(passed=True, failed_checks=[], remediation="")
+
+    failed_checks: List[str] = []
+    remediation_steps: List[str] = []
+
+    # Check 1: Hostname resolution
+    logger.info(f"Pre-flight check: Validating RDS hostname {creds.host}...")
+    hostname_result = validate_rds_hostname(creds.host, env)
+
+    if not hostname_result.success:
+        # For private RDS, provide better guidance
+        error_message = (
+            f"Cannot resolve RDS hostname from this network.\n"
+            f"  Hostname: {creds.host}\n"
+            f"  This is expected if RDS is in a private subnet (PubliclyAccessible=false)."
+        )
+        failed_checks.append(error_message)
+        remediation_steps.append(
+            f"For private RDS, run provisioning from inside the cluster:\n"
+            f"  1. Use: make rds-provision-k8s ENV={env}\n"
+            f"  2. Or create a K8s Job to run provisioning inside the VPC\n"
+            f"  3. Or use --skip-preflight if you know RDS is reachable"
+        )
+        return PreflightCheckResult(
+            passed=False,
+            failed_checks=failed_checks,
+            remediation="\n".join(remediation_steps),
+        )
+
+    logger.info(f"Pre-flight check: Hostname resolved to {hostname_result.ip_address}")
+
+    # Check 2: Port reachability
+    logger.info(f"Pre-flight check: Testing port {creds.port} reachability...")
+    try:
+        conn = socket.create_connection((creds.host, creds.port), timeout=10)
+        conn.close()
+        logger.info("Pre-flight check: Port is reachable")
+    except socket.timeout:
+        failed_checks.append(
+            f"Port {creds.port} not reachable on {creds.host}: Connection timed out"
+        )
+        remediation_steps.append(
+            f"Check security group rules allow inbound traffic on port {creds.port}\n"
+            f"Verify the RDS instance is in an available state"
+        )
+    except socket.error as e:
+        failed_checks.append(f"Port {creds.port} not reachable on {creds.host}: {e}")
+        remediation_steps.append(
+            "Check security group rules and network connectivity\n"
+            "Verify the RDS instance is in an available state"
+        )
+
+    return PreflightCheckResult(
+        passed=len(failed_checks) == 0,
+        failed_checks=failed_checks,
+        remediation="\n".join(remediation_steps) if remediation_steps else "",
+    )
 
 
 # =============================================================================
@@ -346,7 +524,9 @@ def provision_role(
     action = "create_role"
 
     if dry_run:
-        message = f"[DRY-RUN] Would create/update role: {username} (with LOGIN CREATEDB)"
+        message = (
+            f"[DRY-RUN] Would create/update role: {username} (with LOGIN CREATEDB)"
+        )
         logger.info(message)
         return ProvisionResult(
             database="",
@@ -367,7 +547,8 @@ def provision_role(
             if role_exists:
                 # Update password and ensure CREATEDB for existing role
                 cur.execute(
-                    "ALTER ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username, (password,)
+                    "ALTER ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username,
+                    (password,),
                 )
                 message = f"Updated role with CREATEDB: {username}"
                 status = "no_change"
@@ -375,7 +556,8 @@ def provision_role(
                 # Create new role with LOGIN and CREATEDB
                 # CREATEDB required for apps that create plugin databases (e.g., Backstage)
                 cur.execute(
-                    "CREATE ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username, (password,)
+                    "CREATE ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username,
+                    (password,),
                 )
                 message = f"Created role with CREATEDB: {username}"
                 status = "success"
@@ -504,7 +686,11 @@ def provision_database(
 
 
 def apply_grants(
-    conn, db_name: str, username: str, access_level: str = "owner", dry_run: bool = False
+    conn,
+    db_name: str,
+    username: str,
+    access_level: str = "owner",
+    dry_run: bool = False,
 ) -> ProvisionResult:
     """
     Apply grants and default privileges for database access.
@@ -536,7 +722,9 @@ def apply_grants(
     grants = ACCESS_LEVELS[access_level]
 
     if dry_run:
-        message = f"[DRY-RUN] Would grant {access_level} access on {db_name} to {username}"
+        message = (
+            f"[DRY-RUN] Would grant {access_level} access on {db_name} to {username}"
+        )
         logger.info(message)
         return ProvisionResult(
             database=db_name,
@@ -556,19 +744,29 @@ def apply_grants(
 
         with conn.cursor() as cur:
             # Grant on database
-            cur.execute(f'GRANT {grants["database"]} ON DATABASE "{db_name}" TO "{username}"')
+            cur.execute(
+                f'GRANT {grants["database"]} ON DATABASE "{db_name}" TO "{username}"'
+            )
 
             # Grant on schema (requires connecting to the target database)
             # For now, grant on public schema from current connection
             cur.execute(f'GRANT {grants["schema"]} ON SCHEMA public TO "{username}"')
 
             # Grant on existing tables and sequences
-            cur.execute(f'GRANT {grants["tables"]} ON ALL TABLES IN SCHEMA public TO "{username}"')
-            cur.execute(f'GRANT {grants["sequences"]} ON ALL SEQUENCES IN SCHEMA public TO "{username}"')
+            cur.execute(
+                f'GRANT {grants["tables"]} ON ALL TABLES IN SCHEMA public TO "{username}"'
+            )
+            cur.execute(
+                f'GRANT {grants["sequences"]} ON ALL SEQUENCES IN SCHEMA public TO "{username}"'
+            )
 
             # Set default privileges for future objects
-            cur.execute(f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT {grants["default_tables"]} ON TABLES TO "{username}"')
-            cur.execute(f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT {grants["default_sequences"]} ON SEQUENCES TO "{username}"')
+            cur.execute(
+                f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT {grants["default_tables"]} ON TABLES TO "{username}"'
+            )
+            cur.execute(
+                f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT {grants["default_sequences"]} ON SEQUENCES TO "{username}"'
+            )
 
         message = f"Granted {access_level} access on {db_name} to {username} (with default privileges)"
         logger.info(f"[SUCCESS] {message}")
@@ -616,6 +814,7 @@ def provision_all(
     fail_fast: bool = True,
     region: str = "eu-west-2",
     audit_output_path: Optional[str] = None,
+    skip_preflight: bool = False,
 ) -> List[AuditRecord]:
     """
     Provision all application databases.
@@ -630,6 +829,7 @@ def provision_all(
         fail_fast: If True, exit on first error (PRD requirement)
         region: AWS region
         audit_output_path: Optional path to persist audit CSV
+        skip_preflight: If True, skip pre-flight network checks
 
     Returns:
         List of audit records
@@ -655,6 +855,26 @@ def provision_all(
         logger.info(f"Fetching master credentials from: {master_secret_path}")
         master_secret = fetch_secret(master_secret_path, region)
         master_creds = parse_credentials(master_secret)
+
+        # Run pre-flight checks before attempting to connect
+        logger.info("Running pre-flight checks...")
+        preflight_result = run_preflight_checks(master_creds, env, skip_preflight)
+
+        if not preflight_result.passed:
+            logger.error("=" * 70)
+            logger.error("PRE-FLIGHT CHECKS FAILED")
+            logger.error("=" * 70)
+            for check in preflight_result.failed_checks:
+                logger.error(f"  FAILED: {check}")
+            logger.error("")
+            logger.error("REMEDIATION:")
+            logger.error(preflight_result.remediation)
+            logger.error("=" * 70)
+            raise ProvisionError(
+                f"Pre-flight checks failed: {'; '.join(preflight_result.failed_checks)}"
+            )
+
+        logger.info("Pre-flight checks passed")
         logger.info(f"Connecting to RDS: {master_creds.host}:{master_creds.port}")
         conn = connect_rds(master_creds)
     else:
@@ -725,7 +945,9 @@ def provision_all(
             continue  # Only reached if fail_fast=False
 
         # 2. Provision database
-        result = provision_database(conn, app_db.database_name, app_db.username, dry_run)
+        result = provision_database(
+            conn, app_db.database_name, app_db.username, dry_run
+        )
         record_and_check(
             AuditRecord(
                 timestamp_utc=timestamp,
@@ -904,6 +1126,11 @@ Examples:
         action="store_true",
         help="Continue on errors instead of failing fast (not recommended for prod)",
     )
+    parser.add_argument(
+        "--skip-preflight",
+        action="store_true",
+        help="Skip pre-flight checks (use when running from inside the VPC/cluster)",
+    )
 
     return parser.parse_args()
 
@@ -916,9 +1143,7 @@ def main() -> int:
     if args.env != "dev" and args.require_approval:
         allow = os.environ.get("ALLOW_DB_PROVISION", "").lower()
         if allow != "true":
-            logger.error(
-                f"ALLOW_DB_PROVISION=true required for {args.env} environment"
-            )
+            logger.error(f"ALLOW_DB_PROVISION=true required for {args.env} environment")
             return 1
 
     # Fail-fast is default; --no-fail-fast disables it
@@ -935,6 +1160,7 @@ def main() -> int:
     logger.info(f"Region: {args.region}")
     logger.info(f"Dry Run: {args.dry_run}")
     logger.info(f"Fail Fast: {fail_fast}")
+    logger.info(f"Skip Preflight: {args.skip_preflight}")
     logger.info(f"Audit Output: {args.audit_output or '(stdout only)'}")
     logger.info("=" * 70)
 
@@ -949,6 +1175,7 @@ def main() -> int:
             fail_fast=fail_fast,
             region=args.region,
             audit_output_path=args.audit_output,
+            skip_preflight=args.skip_preflight,
         )
 
         return print_audit_summary(records)

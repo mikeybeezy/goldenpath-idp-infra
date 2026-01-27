@@ -29,13 +29,13 @@ Purpose:
 
 import os
 import sys
-import yaml
 
 # Add lib to path for imports
-sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
 from metadata_config import MetadataConfig
 
 cfg = MetadataConfig()
+
 
 def generate_vocab():
     output = "# Governance Vocabulary & Allowed Values\n\n"
@@ -43,7 +43,8 @@ def generate_vocab():
 
     enums = cfg.enums
     for section, values in enums.items():
-        if section == 'version': continue
+        if section == "version":
+            continue
 
         output += f"## {section.replace('_', ' ').title()}\n"
         output += "| Value | Description |\n"
@@ -55,6 +56,7 @@ def generate_vocab():
     with open("docs/10-governance/GOVERNANCE_VOCABULARY.md", "w") as f:
         f.write(output)
     print("✅ Successfully generated docs/10-governance/GOVERNANCE_VOCABULARY.md")
+
 
 if __name__ == "__main__":
     generate_vocab()

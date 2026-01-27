@@ -5,6 +5,7 @@ Achievement: Blocks commits with new scripts that lack tests or dry-run
 Value: Prevents technical debt from accumulating in scripts/
 Relates-To: SCRIPT_CERTIFICATION_AUDIT, ADR-0126
 """
+
 import os
 import sys
 import re
@@ -20,12 +21,14 @@ EXEMPT_PATTERNS = [
     r"^lib/.*",  # Library modules
 ]
 
+
 def is_exempt(script_path: str) -> bool:
     """Check if script is exempt from testing requirements."""
     for pattern in EXEMPT_PATTERNS:
         if re.match(pattern, script_path):
             return True
     return False
+
 
 def get_new_scripts():
     """Get list of newly added Python scripts in this commit."""
@@ -43,26 +46,29 @@ def get_new_scripts():
 
     return new_scripts
 
+
 def has_unit_test(script_path: str) -> bool:
     """Check if a unit test exists for this script."""
     script_name = Path(script_path).stem
     test_file = TESTS_DIR / f"test_{script_name}.py"
     return test_file.exists()
 
+
 def has_dry_run_support(script_path: str) -> bool:
     """Check if script implements dry-run mode."""
     try:
-        with open(script_path, 'r', encoding='utf-8') as f:
+        with open(script_path, "r", encoding="utf-8") as f:
             content = f.read()
             # Look for dry-run/dry_run in arguments or code
-            return bool(re.search(r'(dry.run|dry_run)', content, re.IGNORECASE))
+            return bool(re.search(r"(dry.run|dry_run)", content, re.IGNORECASE))
     except:
         return False
+
 
 def has_docstring(script_path: str) -> bool:
     """Check if script has proper module docstring with metadata."""
     try:
-        with open(script_path, 'r', encoding='utf-8') as f:
+        with open(script_path, "r", encoding="utf-8") as f:
             content = f.read()
             # Look for structured docstring with Purpose, Achievement, Value
             required_fields = ["Purpose:", "Achievement:", "Value:", "Relates-To:"]
@@ -70,13 +76,16 @@ def has_docstring(script_path: str) -> bool:
     except:
         return False
 
+
 def check_script_certification(script_path: str):
     """Validate certification requirements for a script."""
     issues = []
 
     # Check 1: Module docstring
     if not has_docstring(script_path):
-        issues.append("Missing structured docstring (Purpose/Achievement/Value/Relates-To)")
+        issues.append(
+            "Missing structured docstring (Purpose/Achievement/Value/Relates-To)"
+        )
 
     # Check 2: Unit test OR Dry-run (at least one)
     has_test = has_unit_test(script_path)
@@ -86,6 +95,7 @@ def check_script_certification(script_path: str):
         issues.append("Missing BOTH unit test AND dry-run support (need at least one)")
 
     return issues
+
 
 def main():
     """Main pre-commit hook logic."""
@@ -120,7 +130,7 @@ def main():
         print("  python3 scripts/scaffold_test.py --script <script_name>")
         print()
         print("Option 2: Add unit test")
-        print(f"  Create: tests/unit/test_<script_name>.py")
+        print("  Create: tests/unit/test_<script_name>.py")
         print()
         print("Option 3: Add dry-run support")
         print("  Add --dry-run flag to script (see SCRIPT_CERTIFICATION_AUDIT.md)")
@@ -136,6 +146,7 @@ def main():
 
     print("✅ All new scripts meet certification requirements")
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

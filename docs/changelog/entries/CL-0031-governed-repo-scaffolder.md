@@ -80,3 +80,9 @@ Related: docs/adrs/ADR-0078-platform-governed-repo-scaffolder.md
 ## Validation
 
 - Not run (template/workflow change only).
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

@@ -19,11 +19,12 @@ risk_profile:
 ---
 Purpose: Fixes scripts where metadata injection pushed the Shebang down.
 """
-import os
+
 import argparse
 from pathlib import Path
 
 SCRIPTS_DIR = Path("scripts")
+
 
 def repair_file(path: Path, dry_run: bool) -> bool:
     try:
@@ -64,6 +65,7 @@ def repair_file(path: Path, dry_run: bool) -> bool:
 
     return True
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
@@ -75,6 +77,7 @@ def main():
             count += 1
 
     print(f"Repaired {count} files.")
+
 
 if __name__ == "__main__":
     main()

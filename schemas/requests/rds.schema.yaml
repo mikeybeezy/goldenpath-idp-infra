@@ -27,7 +27,7 @@ status: active
 # Schema metadata for governance tracking
 metadata:
   description: "Contract for requesting RDS PostgreSQL databases"
-  backstage_template: "backstage-helm/backstage-catalog/templates/rds-request.yaml"
+  backstage_template: "catalog/templates/rds-request.yaml"
   parser_module: "scripts/rds_request_parser.py"
   parser_status: "deferred"
   implementation_notes: "Parser integration follows after schema enforcement and generated artifacts become canonical."

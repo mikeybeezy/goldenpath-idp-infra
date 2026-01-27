@@ -76,6 +76,7 @@ We will keep both RDS modes and make the automation enum-aligned:
 Applies to:
 - Backstage RDS request template and GitHub workflow inputs.
 - RDS request schema (`schemas/requests/rds.schema.yaml`) and parser.
+- Request validation (`scripts/validate_request.py`) - enforces conditional rules.
 - Provisioning automation (`scripts/rds_provision.py`).
 - Build/deploy targets that optionally include RDS.
 

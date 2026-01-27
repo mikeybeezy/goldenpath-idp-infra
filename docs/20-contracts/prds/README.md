@@ -17,6 +17,9 @@ relates_to:
   - PRD-0002-route53-externaldns
   - PRD-0003-backstage-plugin-scaffold
   - PRD-0004-backstage-repo-structure-alignment
+  - PRD-0005-techdocs-implementation
+  - PRD-0006-persistent-cluster-build-timing
+  - PRD-0007-platform-test-health-dashboard
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

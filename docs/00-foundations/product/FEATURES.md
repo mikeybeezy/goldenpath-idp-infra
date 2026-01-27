@@ -35,6 +35,9 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Policy-as-Code Guardrails**: Automated enforcement of security best-practices (encryption, rotation, retention) at the intent layer.
 - **Heal-First Workflow**: Pass 15+ governance gates on the first pull request with a single remediation command that aligns files with platform standards automatically.
 - **Script Certification**: Verifiable trust for automation scripts through cryptographic proofs and a rigorous "Born Governed" lifecycle.
+- **Test-Driven Development (TDD) Enforcement**: Mandatory test files for every source change, enforced via TDD gate workflow that blocks PRs missing corresponding tests. Acts as a defensive moat in multi-agent environments—preventing autonomous mass changes without verification.
+- **Coverage Enforcement**: Automated coverage thresholds (50% V1, 70% V1.1) that block merges when coverage drops below minimum.
+- **Test Integrity Guard**: Protection against test deletion, coverage regression, and golden file tampering—requiring human approval for any change that weakens test safety.
 
 ## 🚀 Delivery & Self-Service
 
@@ -69,3 +72,6 @@ The Golden Path IDP provides a streamlined, self-service experience for develope
 - **Validation Engines**: High-performance metadata and structural integrity checkers.
 - **Injection Coverage**: Metrics-driven tracking of how well metadata propagates into live cluster resources.
 - **Session Memory Architecture**: Three-tier memory system (working/long-term/archive) for preserving institutional knowledge across AI agent sessions while keeping context windows bounded.
+- **Bespoke Schema Format**: Custom schema language extending JSON Schema with `conditional_rules`, `approval_routing`, `purpose_defaults`, and `enum_from`—preserving platform opinions that standard tooling cannot express.
+- **Golden Test Infrastructure**: Parser output snapshot comparisons that catch drift from expected contracts.
+- **Contract Test Infrastructure**: Request fixture validation against schemas ensuring API contracts hold.

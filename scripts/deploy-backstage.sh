@@ -69,7 +69,7 @@ EOF
 
 # 4. Deploy Backstage via Local Helm Chart
 echo "🏗️  Deploying Backstage Helm Chart..."
-helm upgrade --install backstage ./backstage-helm/charts/backstage \
+helm upgrade --install backstage ./gitops/helm/backstage/chart \
     --namespace backstage \
     --set github.accessToken=${GH_TOKEN:-"none"}
 

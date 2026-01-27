@@ -1,0 +1,206 @@
+# ---
+# id: HELMTEST-BACKSTAGE-DEPLOYMENT
+# type: helm-unittest
+# owner: platform-team
+# ---
+# Helm unit tests for Backstage deployment template
+# Run with: helm unittest gitops/helm/backstage/chart
+
+suite: Deployment Tests
+templates:
+  - templates/deployment.yaml
+
+tests:
+  # Tests using actual values.yaml defaults (prevents drift)
+  - it: should use actual default replica count from values.yaml
+    values:
+      - ../values.yaml
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 1
+
+  - it: should use actual default resources from values.yaml
+    values:
+      - ../values.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 1000m
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 512Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.cpu
+          value: 100m
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.memory
+          value: 128Mi
+
+  - it: should use actual default image from values.yaml
+    values:
+      - ../values.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "593517239005.dkr.ecr.eu-west-2.amazonaws.com/goldenpath-backstage:v0.1.0"
+
+  - it: should create a Deployment with correct name
+    set:
+      image.repository: test-repo
+      image.name: backstage
+      image.tag: v1.0.0
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-backstage
+
+  - it: should set replica count from values
+    set:
+      replicaCount: 3
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 3
+
+  - it: should set correct image
+    set:
+      image.repository: "123456789.dkr.ecr.eu-west-2.amazonaws.com"
+      image.name: "my-backstage"
+      image.tag: "v2.0.0"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "123456789.dkr.ecr.eu-west-2.amazonaws.com/my-backstage:v2.0.0"
+
+  - it: should set imagePullPolicy
+    set:
+      image.pullPolicy: Always
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: Always
+
+  - it: should expose port 7007
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 7007
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].name
+          value: http
+
+  - it: should have liveness probe on root path
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.port
+          value: http
+
+  - it: should have readiness probe on root path
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.port
+          value: http
+
+  - it: should set resource limits and requests
+    set:
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 1Gi
+        requests:
+          cpu: 500m
+          memory: 512Mi
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 2000m
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 1Gi
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.cpu
+          value: 500m
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.memory
+          value: 512Mi
+
+  - it: should mount app-config volume
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: app-config
+            mountPath: /app/app-config.cm.yaml
+            subPath: app-config.cm.yaml
+
+  - it: should reference backstage-secrets
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].envFrom
+          content:
+            secretRef:
+              name: backstage-secrets
+
+  - it: should set serviceAccountName when serviceAccount.create is true
+    set:
+      serviceAccount.create: true
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: backstage-service-account
+
+  - it: should set node command with backend config
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].command
+          value: ["node"]
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value: ["packages/backend", "--config", "app-config.cm.yaml"]
+
+  - it: should apply pod annotations when set
+    set:
+      podAnnotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "7007"
+    asserts:
+      - equal:
+          path: spec.template.metadata.annotations["prometheus.io/scrape"]
+          value: "true"
+      - equal:
+          path: spec.template.metadata.annotations["prometheus.io/port"]
+          value: "7007"
+
+  - it: should apply node selector when set
+    set:
+      nodeSelector:
+        kubernetes.io/os: linux
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeSelector["kubernetes.io/os"]
+          value: linux
+
+  - it: should apply tolerations when set
+    set:
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "backstage"
+          effect: "NoSchedule"
+    asserts:
+      - contains:
+          path: spec.template.spec.tolerations
+          content:
+            key: "dedicated"
+            operator: "Equal"
+            value: "backstage"
+            effect: "NoSchedule"

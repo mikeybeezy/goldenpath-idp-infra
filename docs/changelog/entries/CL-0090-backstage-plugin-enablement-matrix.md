@@ -64,3 +64,9 @@ Related: backstage-helm/PLUGIN_ENABLEMENT_MATRIX.md
 ## Validation
 
 - Not run (documentation update)
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

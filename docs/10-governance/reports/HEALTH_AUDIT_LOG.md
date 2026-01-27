@@ -2,10 +2,6 @@
 id: HEALTH_AUDIT_LOG
 title: Platform Health Audit Log
 type: report
-category: governance
-status: active
-owner: platform-team
-lifecycle: active
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,14 +9,15 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - platform_health.py
+category: governance
 ---
 
 # Platform Health Audit Log
 
-Last updated: `2026-01-25 06:00:46`
+Last updated: `2026-01-25 20:53:31`
 
 - This file keeps only the latest snapshot.
 - Full history can be regenerated from source data if needed.
@@ -41,7 +38,7 @@ relates_to:
 
 ## 🏥 Platform Health Command Center
 
-**Generated**: `2026-01-25 06:00:46` | **V1 Readiness**: `90.4%` | **Mean Confidence**: `⭐ (1.4/5.0)`
+**Generated**: `2026-01-25 20:53:31` | **V1 Readiness**: `90.4%` | **Mean Confidence**: `⭐ (1.4/5.0)`
 
 **Realized Value**: `115.1 Hours` | **Infra Run Rate**: `$1,250.00 USD/mo`
 
@@ -55,7 +52,7 @@ relates_to:
 | **Metadata Integrity** | ✅ | 97.9% |
 | **Injection Integrity** | ✅ | 97.3% |
 | **Architecture Maturity** | 🚧 | 99/171 Active |
-| **Changelog Activity** | ✅ | 186 Entries |
+| **Changelog Activity** | ✅ | 187 Entries |
 
 ## Knowledge Graph Vitality
 
@@ -66,8 +63,8 @@ relates_to:
 | **Certified Scripts (M3)** | 1/56 (2%) | [Certification Matrix](../SCRIPT_CERTIFICATION_MATRIX.md) |
 | **Script Maturity Distribution** | M1:4 M2:51 M3:1 | [Value Ledger](../../../.goldenpath/value_ledger.json) |
 | **CI Workflows** | 65 | [Workflow Index](../../../ci-workflows/CI_WORKFLOWS.md) |
-| **Change Logs** | 186 | [Changelog Index](../../changelog/README.md) |
-| **Tracked Resources** | 767 | Repository Scan |
+| **Change Logs** | 187 | [Changelog Index](../../changelog/README.md) |
+| **Tracked Resources** | 770 | Repository Scan |
 
 ## Catalog Inventory
 
@@ -111,14 +108,14 @@ relates_to:
 pie title Production Impact distribution
     "HIGH" : 58
     "MEDIUM" : 55
-    "LOW" : 515
-    "NONE" : 136
+    "LOW" : 516
+    "NONE" : 138
 ```
 
 ## Governance Maturity
 
 - **Metadata Compliance**: `97.9%`
-- **Risk-Weighted Score**: `99.7%`
+- **Risk-Weighted Score**: `100.0%`
 
 ## Injection Coverage
 
@@ -142,7 +139,7 @@ pie title Production Impact distribution
 
 ## Operational Risks
 
-- **Orphaned (No Owner)**: 1
+- **Orphaned (No Owner)**: 0
 - **Stale (Past Lifecycle)**: 0
 
 ---

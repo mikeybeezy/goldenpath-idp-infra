@@ -17,7 +17,10 @@ relates_to:
   - ADR-0129
   - ADR-0145
   - ADR-0158-platform-standalone-rds-bounded-context
+  - ADR-0164-agent-trust-and-identity
   - FEATURES
+  - GOV-0016-testing-stack-matrix
+  - GOV-0017-tdd-and-determinism
   - HEALTH_AUDIT_LOG
   - PLATFORM_HEALTH
   - PLATFORM_SYSTEM_MAP
@@ -266,6 +269,24 @@ The platform implements a **Three-Tier Memory System** for preserving institutio
 **Honest Assessment**: This is **foundational infrastructure**, not an immediate solution. The archive mechanism is preventive (won't activate until entries age beyond 30 days). The structured tables only add value if populated with discipline. The real benefit is forward-looking: enabling institutional memory to scale without context window overflow.
 
 - **Relates-To**: [ADR-0176](/docs/adrs/ADR-0176-session-memory-management.md), [ADR-0163](/docs/adrs/ADR-0163-agent-collaboration-governance.md)
+
+---
+
+## 25. Test-Driven Development Infrastructure (TDD Foundation)
+
+The platform enforces "No Feature Without a Test" through automated TDD infrastructure that treats tests as executable contracts, catching regressions and documenting intent.
+
+**Strategic Value (Agent Moat)**: In a multi-agent environment, TDD infrastructure serves as a critical defensive moat against uncontrolled autonomous changes. Without this gate, agents can push hundreds of files without human verification—tests act as mandatory checkpoints that agents cannot bypass, ensuring every change is verifiable before it reaches protected branches.
+
+- **Multi-Layer Test Strategy**: Unit tests (function-level), contract tests (schema compliance), golden tests (output snapshots), and integration tests (cross-component) per GOV-0016 Testing Stack Matrix.
+- **Coverage Enforcement**: pytest-cov integration with blocking thresholds (50% V1 → 70% V1.1), preventing coverage regression on every PR.
+- **TDD Gate Workflow**: CI gate that checks every changed source file has a corresponding test file, blocking PRs that add untested code.
+- **Test Integrity Guard**: Protection workflow that requires human approval for test deletions, coverage decreases, or golden file modifications—preventing silent quality erosion.
+- **Test Proof Generation**: Certification artifacts (`proof-*.json`) linking junit.xml results to script IDs, providing cryptographic proof that scripts passed their test suite at a specific commit.
+- **Bespoke Schema Validation**: Custom validator (EC-0016) that understands the platform's extended schema format—enabling validation of `conditional_rules`, `approval_routing`, and `enum_from` that standard JSON Schema cannot express.
+- **Parser CLI Contract**: Standard interface (`--request`, `--out`, `--format stable`, `--dry-run`) enabling deterministic golden tests via subprocess execution.
+
+- **Relates-To**: [GOV-0016](/docs/10-governance/policies/GOV-0016-testing-stack-matrix.md), [GOV-0017](/docs/10-governance/policies/GOV-0017-tdd-and-determinism.md), [ADR-0164](/docs/adrs/ADR-0164-agent-trust-and-identity.md), [EC-0016](/docs/extend-capabilities/EC-0016-bespoke-schema-validator.md)
 
 ---
 

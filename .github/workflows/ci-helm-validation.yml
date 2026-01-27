@@ -1,0 +1,148 @@
+# Owner: platform
+name: Quality - Helm Chart Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "gitops/helm/**"
+      - ".github/workflows/ci-helm-validation.yml"
+  push:
+    branches:
+      - main
+      - development
+    paths:
+      - "gitops/helm/**"
+
+jobs:
+  kubeconform:
+    name: Kubeconform Schema Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.0
+
+      - name: Install kubeconform
+        run: |
+          curl -sL https://github.com/yannh/kubeconform/releases/download/v0.6.4/kubeconform-linux-amd64.tar.gz | tar xz
+          sudo mv kubeconform /usr/local/bin/
+
+      - name: Validate Backstage Chart
+        run: |
+          echo "::group::Rendering Backstage chart"
+          helm template backstage gitops/helm/backstage/chart \
+            --namespace backstage \
+            --set postgres.host=test-db \
+            --set postgres.password=test \
+            --set github.accessToken=test \
+            > /tmp/backstage-rendered.yaml
+          echo "::endgroup::"
+
+          echo "::group::Validating with kubeconform"
+          kubeconform \
+            -summary \
+            -output json \
+            -schema-location default \
+            -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+            -skip ExternalSecret,ServiceMonitor \
+            /tmp/backstage-rendered.yaml | tee /tmp/kubeconform-result.json
+
+          # Check for errors
+          if jq -e '.resources[] | select(.status == "statusInvalid")' /tmp/kubeconform-result.json > /dev/null 2>&1; then
+            echo "::error::Kubeconform found invalid resources"
+            exit 1
+          fi
+          echo "::endgroup::"
+
+      - name: Validation Summary
+        if: always()
+        run: |
+          echo "## Kubeconform Validation" >> "${GITHUB_STEP_SUMMARY}"
+          echo "" >> "${GITHUB_STEP_SUMMARY}"
+          if [ -f /tmp/kubeconform-result.json ]; then
+            VALID=$(jq '[.resources[] | select(.status == "statusValid")] | length' /tmp/kubeconform-result.json)
+            SKIPPED=$(jq '[.resources[] | select(.status == "statusSkipped")] | length' /tmp/kubeconform-result.json)
+            INVALID=$(jq '[.resources[] | select(.status == "statusInvalid")] | length' /tmp/kubeconform-result.json)
+            echo "| Status | Count |" >> "${GITHUB_STEP_SUMMARY}"
+            echo "|--------|-------|" >> "${GITHUB_STEP_SUMMARY}"
+            echo "| Valid | $VALID |" >> "${GITHUB_STEP_SUMMARY}"
+            echo "| Skipped (CRDs) | $SKIPPED |" >> "${GITHUB_STEP_SUMMARY}"
+            echo "| Invalid | $INVALID |" >> "${GITHUB_STEP_SUMMARY}"
+          fi
+
+  helm-unittest:
+    name: Helm Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.0
+
+      - name: Install helm-unittest plugin
+        run: |
+          # Use specific version compatible with Helm 3.14
+          helm plugin install https://github.com/helm-unittest/helm-unittest.git --version 0.5.1
+
+      - name: Require tests for all charts
+        run: |
+          set -e
+          MISSING_TESTS=()
+
+          for chart_dir in gitops/helm/*/chart/; do
+            # Skip if not a valid chart (no Chart.yaml)
+            if [ ! -f "${chart_dir}Chart.yaml" ]; then
+              continue
+            fi
+
+            if [ ! -d "${chart_dir}tests" ] || ! compgen -G "${chart_dir}tests/*_test.yaml" > /dev/null 2>&1; then
+              MISSING_TESTS+=("$chart_dir")
+            fi
+          done
+
+          if [[ ${#MISSING_TESTS[@]} -gt 0 ]]; then
+            echo "::error::Missing tests for Helm charts"
+            echo " The following charts are missing tests:" >> "$GITHUB_STEP_SUMMARY"
+            for chart in "${MISSING_TESTS[@]}"; do
+              echo "  - $chart"
+              echo "  - \`$chart\`" >> "$GITHUB_STEP_SUMMARY"
+            done
+            echo ""
+            echo "TDD requires a tests/*_test.yaml file for each chart."
+            echo "See docs/adrs/ADR-0182-tdd-philosophy.md"
+            exit 1
+          fi
+
+          echo "✅ All Helm charts have tests"
+
+      - name: Run Backstage Chart Tests
+        run: helm unittest gitops/helm/backstage/chart --output-file /tmp/unittest-results.xml --output-type JUnit
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: helm-unittest-results
+          path: /tmp/unittest-results.xml
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## Helm Unit Tests" >> "${GITHUB_STEP_SUMMARY}"
+          echo "" >> "${GITHUB_STEP_SUMMARY}"
+          echo "Run locally with:" >> "${GITHUB_STEP_SUMMARY}"
+          echo "\`\`\`bash" >> "${GITHUB_STEP_SUMMARY}"
+          echo "helm plugin install https://github.com/helm-unittest/helm-unittest.git" >> "${GITHUB_STEP_SUMMARY}"
+          echo "helm unittest gitops/helm/backstage/chart" >> "${GITHUB_STEP_SUMMARY}"
+          echo "\`\`\`" >> "${GITHUB_STEP_SUMMARY}"

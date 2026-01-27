@@ -3,8 +3,8 @@ Tests for SCRIPT-0034: RDS Request Parser
 
 Run with: pytest -q tests/scripts/test_script_0034.py
 """
+
 import json
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -12,10 +12,10 @@ import yaml
 
 # Import from scripts directory
 import sys
+
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
 
 from rds_request_parser import (
-    RdsRequest,
     parse_request,
     validate_enums,
     load_enums,
@@ -27,6 +27,7 @@ from rds_request_parser import (
 
 
 # --- Fixtures ---
+
 
 @pytest.fixture
 def enums_path():
@@ -68,6 +69,7 @@ def valid_request(valid_request_doc):
 
 # --- Parse Request Tests ---
 
+
 class TestParseRequest:
     def test_parses_valid_request(self, valid_request_doc):
         req = parse_request(valid_request_doc, Path("test.yaml"))
@@ -97,7 +99,9 @@ class TestParseRequest:
     def test_missing_spec_field_raises(self, valid_request_doc):
         del valid_request_doc["spec"]["databaseName"]
 
-        with pytest.raises(ValueError, match="missing required fields.*spec.databaseName"):
+        with pytest.raises(
+            ValueError, match="missing required fields.*spec.databaseName"
+        ):
             parse_request(valid_request_doc, Path("test.yaml"))
 
     def test_uses_defaults_for_optional_fields(self, valid_request_doc):
@@ -111,6 +115,7 @@ class TestParseRequest:
 
 
 # --- Enum Validation Tests ---
+
 
 class TestValidateEnums:
     def test_valid_enums_pass(self, valid_request, enums):
@@ -141,6 +146,7 @@ class TestValidateEnums:
 
 # --- Conditional Rule Tests ---
 
+
 class TestConditionalRules:
     def test_dev_only_allows_small_size(self, valid_request_doc, enums):
         valid_request_doc["environment"] = "dev"
@@ -157,7 +163,9 @@ class TestConditionalRules:
         valid_request_doc["spec"]["multiAz"] = True
         req = parse_request(valid_request_doc, Path("test.yaml"))
 
-        with pytest.raises(ValueError, match="Production requires backup_retention_days >= 14"):
+        with pytest.raises(
+            ValueError, match="Production requires backup_retention_days >= 14"
+        ):
             validate_enums(req, enums, Path("test.yaml"))
 
     def test_max_storage_must_exceed_storage(self, valid_request_doc, enums):
@@ -165,11 +173,14 @@ class TestConditionalRules:
         valid_request_doc["spec"]["maxStorageGb"] = 50
         req = parse_request(valid_request_doc, Path("test.yaml"))
 
-        with pytest.raises(ValueError, match="maxStorageGb must be greater than storageGb"):
+        with pytest.raises(
+            ValueError, match="maxStorageGb must be greater than storageGb"
+        ):
             validate_enums(req, enums, Path("test.yaml"))
 
 
 # --- Generation Tests ---
+
 
 class TestGenerateTfvars:
     def test_generates_correct_structure(self, valid_request):
@@ -216,7 +227,9 @@ class TestGenerateExternalSecret:
         assert spec["refreshInterval"] == "1h"
         assert spec["secretStoreRef"]["name"] == "aws-secretsmanager"
         assert spec["target"]["name"] == "test_db-db-credentials"
-        assert spec["dataFrom"][0]["extract"]["key"] == "goldenpath/dev/test_db/postgres"
+        assert (
+            spec["dataFrom"][0]["extract"]["key"] == "goldenpath/dev/test_db/postgres"
+        )
 
 
 class TestDeriveSecretKey:
@@ -226,6 +239,7 @@ class TestDeriveSecretKey:
 
 
 # --- Integration Test ---
+
 
 class TestIntegration:
     def test_full_flow_with_real_enums(self, enums_path):
@@ -256,5 +270,11 @@ class TestIntegration:
         json.dumps(tfvars)
         yaml.safe_dump(es)
 
-        assert tfvars["rds_databases"]["integration_db"]["identifier"] == "dev-integration_db"
-        assert es["spec"]["dataFrom"][0]["extract"]["key"] == "goldenpath/dev/integration_db/postgres"
+        assert (
+            tfvars["rds_databases"]["integration_db"]["identifier"]
+            == "dev-integration_db"
+        )
+        assert (
+            es["spec"]["dataFrom"][0]["extract"]["key"]
+            == "goldenpath/dev/integration_db/postgres"
+        )

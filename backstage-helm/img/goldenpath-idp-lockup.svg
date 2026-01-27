@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title">
-  <title id="title">Goldenpath IDP Lockup</title>
-  <rect width="512" height="512" fill="#0B0B0B"/>
-  <circle cx="256" cy="150" r="72" fill="none" stroke="#F5C542" stroke-width="10"/>
-  <path d="M196 190 L316 110" stroke="#F5C542" stroke-width="12" stroke-linecap="round"/>
-  <circle cx="316" cy="110" r="8" fill="#F5C542"/>
-  <text x="256" y="300" text-anchor="middle" font-family="Space Grotesk, Arial, sans-serif" font-size="48" font-weight="700" fill="#F5C542" letter-spacing="3">GOLDENPATH</text>
-  <text x="256" y="355" text-anchor="middle" font-family="Space Grotesk, Arial, sans-serif" font-size="40" font-weight="600" fill="#C8C8C8" letter-spacing="6">IDP</text>
-</svg>

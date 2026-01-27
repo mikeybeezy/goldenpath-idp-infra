@@ -19,6 +19,7 @@ risk_profile:
   coupling_risk: low
 ---
 """
+
 from __future__ import annotations
 
 # Owner: platform
@@ -126,7 +127,13 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> EksRequest:
     owner = doc.get("owner") or md.get("owner")
     requester = doc.get("requester") or md.get("requester")
     created_date = md.get("created") or md.get("created_date") or md.get("createdDate")
-    cluster_lifecycle = doc.get("clusterLifecycle") or doc.get("cluster_lifecycle") or md.get("clusterLifecycle") or md.get("cluster_lifecycle") or ""
+    cluster_lifecycle = (
+        doc.get("clusterLifecycle")
+        or doc.get("cluster_lifecycle")
+        or md.get("clusterLifecycle")
+        or md.get("cluster_lifecycle")
+        or ""
+    )
 
     mode = spec.get("mode")
     build = spec.get("build", {})
@@ -134,7 +141,9 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> EksRequest:
 
     cluster = spec.get("cluster", {})
     cluster_name = cluster.get("clusterName") or cluster.get("name")
-    kubernetes_version = cluster.get("kubernetesVersion") or cluster.get("kubernetes_version")
+    kubernetes_version = cluster.get("kubernetesVersion") or cluster.get(
+        "kubernetes_version"
+    )
     private_endpoint_only = cluster.get("privateEndpointOnly")
     if private_endpoint_only is None:
         private_endpoint_only = cluster.get("private_endpoint_only", True)
@@ -142,43 +151,77 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> EksRequest:
     irsa_enabled = bool(irsa.get("enabled", False))
 
     access = cluster.get("access", {})
-    ssm_break_glass = bool(access.get("ssmBreakGlass", access.get("ssm_break_glass", True)))
-    ssh_break_glass = bool(access.get("sshBreakGlass", access.get("ssh_break_glass", False)))
+    ssm_break_glass = bool(
+        access.get("ssmBreakGlass", access.get("ssm_break_glass", True))
+    )
+    ssh_break_glass = bool(
+        access.get("sshBreakGlass", access.get("ssh_break_glass", False))
+    )
     ssh_key_name = access.get("sshKeyName") or access.get("ssh_key_name")
-    ssh_source_sg_ids = access.get("sshSourceSgIds") or access.get("ssh_source_sg_ids") or access.get("ssh_source_security_group_ids") or []
+    ssh_source_sg_ids = (
+        access.get("sshSourceSgIds")
+        or access.get("ssh_source_sg_ids")
+        or access.get("ssh_source_security_group_ids")
+        or []
+    )
 
     node_pool = spec.get("nodePool") or spec.get("node_pool") or {}
-    node_tier = node_pool.get("nodeTier") or node_pool.get("node_tier") or node_pool.get("tier") or ""
-    instance_type = node_pool.get("instanceType") or node_pool.get("instance_type") or ""
-    node_min = node_pool.get("nodeMin") or node_pool.get("min") or node_pool.get("min_size")
-    node_desired = node_pool.get("nodeDesired") or node_pool.get("desired") or node_pool.get("desired_size")
-    node_max = node_pool.get("nodeMax") or node_pool.get("max") or node_pool.get("max_size")
-    capacity_type = node_pool.get("capacityType") or node_pool.get("capacity_type") or "ON_DEMAND"
+    node_tier = (
+        node_pool.get("nodeTier")
+        or node_pool.get("node_tier")
+        or node_pool.get("tier")
+        or ""
+    )
+    instance_type = (
+        node_pool.get("instanceType") or node_pool.get("instance_type") or ""
+    )
+    node_min = (
+        node_pool.get("nodeMin") or node_pool.get("min") or node_pool.get("min_size")
+    )
+    node_desired = (
+        node_pool.get("nodeDesired")
+        or node_pool.get("desired")
+        or node_pool.get("desired_size")
+    )
+    node_max = (
+        node_pool.get("nodeMax") or node_pool.get("max") or node_pool.get("max_size")
+    )
+    capacity_type = (
+        node_pool.get("capacityType") or node_pool.get("capacity_type") or "ON_DEMAND"
+    )
     autoscaler = node_pool.get("autoscaler", {})
     autoscaler_enabled = bool(autoscaler.get("enabled", True))
 
     gitops = spec.get("gitops", {})
     gitops_controller = gitops.get("controller", "argocd")
     gitops_install = bool(gitops.get("install", True))
-    bootstrap_profile = gitops.get("bootstrapProfile") or gitops.get("bootstrap_profile") or "core-tooling"
+    bootstrap_profile = (
+        gitops.get("bootstrapProfile")
+        or gitops.get("bootstrap_profile")
+        or "core-tooling"
+    )
 
     ingress = spec.get("ingress", {})
     ingress_provider = ingress.get("provider", "kong")
     aws_lb_type = ingress.get("awsLbType") or ingress.get("aws_lb_type") or "nlb"
     ingress_internal = bool(ingress.get("internal", True))
 
-    missing = [k for k, v in {
-        "id": eks_id,
-        "environment": environment,
-        "region": region,
-        "owner": owner,
-        "requester": requester,
-        "spec.mode": mode,
-        "spec.cluster.clusterName": cluster_name,
-        "spec.cluster.kubernetesVersion": kubernetes_version,
-        "spec.nodePool.nodeDesired": node_desired,
-        "spec.nodePool.nodeMax": node_max,
-    }.items() if not v]
+    missing = [
+        k
+        for k, v in {
+            "id": eks_id,
+            "environment": environment,
+            "region": region,
+            "owner": owner,
+            "requester": requester,
+            "spec.mode": mode,
+            "spec.cluster.clusterName": cluster_name,
+            "spec.cluster.kubernetesVersion": kubernetes_version,
+            "spec.nodePool.nodeDesired": node_desired,
+            "spec.nodePool.nodeMax": node_max,
+        }.items()
+        if not v
+    ]
 
     if mode in ["cluster-only", "cluster+bootstrap"] and not build_id:
         missing.append("spec.build.buildId")
@@ -236,7 +279,9 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> EksRequest:
     )
 
 
-def validate_enums(req: EksRequest, enums: Dict[str, List[str]], src_path: Path) -> None:
+def validate_enums(
+    req: EksRequest, enums: Dict[str, List[str]], src_path: Path
+) -> None:
     def check(field: str, value: str, allowed: List[str]) -> None:
         if value in ("", None):
             return
@@ -297,7 +342,9 @@ def derive_risk(environment: str) -> str:
     return "low"
 
 
-def update_eks_catalog(req: EksRequest, catalog_path: Path, status: str, dry_run: bool) -> None:
+def update_eks_catalog(
+    req: EksRequest, catalog_path: Path, status: str, dry_run: bool
+) -> None:
     catalog = read_catalog(catalog_path)
     catalog.setdefault("clusters", {})
     catalog["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -333,7 +380,9 @@ def update_eks_catalog(req: EksRequest, catalog_path: Path, status: str, dry_run
     write_catalog(catalog_path, catalog, dry_run)
 
 
-def generate_audit_record(req: EksRequest, action: str, status: str, approver: str) -> Dict[str, Any]:
+def generate_audit_record(
+    req: EksRequest, action: str, status: str, approver: str
+) -> Dict[str, Any]:
     return {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "request_id": req.eks_id,
@@ -406,7 +455,9 @@ def generate_tfvars(req: EksRequest) -> Dict[str, Any]:
     }
 
 
-def validate_request(req: EksRequest, enums: Dict[str, List[str]], src_path: Path) -> None:
+def validate_request(
+    req: EksRequest, enums: Dict[str, List[str]], src_path: Path
+) -> None:
     validate_enums(req, enums, src_path)
     if req.cluster_lifecycle and req.cluster_lifecycle != "ephemeral":
         raise ValueError(f"{src_path}: clusterLifecycle must be ephemeral for now")
@@ -464,11 +515,17 @@ def main() -> int:
             print(f"[OK] {path} -> {out_path}")
 
             if args.catalog_path:
-                update_eks_catalog(req, Path(args.catalog_path), args.catalog_status, args.dry_run)
+                update_eks_catalog(
+                    req, Path(args.catalog_path), args.catalog_status, args.dry_run
+                )
 
             if args.audit_path:
-                approver = args.audit_approver or os.environ.get("GITHUB_ACTOR", "unknown")
-                record = generate_audit_record(req, args.audit_action, args.audit_status, approver)
+                approver = args.audit_approver or os.environ.get(
+                    "GITHUB_ACTOR", "unknown"
+                )
+                record = generate_audit_record(
+                    req, args.audit_action, args.audit_status, approver
+                )
                 append_audit_record(Path(args.audit_path), record, args.dry_run)
         else:
             print(f"[OK] {path} validated")

@@ -8,6 +8,7 @@ sys.path.append(os.getcwd())
 # Import the module you're testing
 from scripts.your_module import your_function
 
+
 class TestYourModule(unittest.TestCase):
     """
     Tests for [Module Name]
@@ -176,7 +177,7 @@ class TestYourModule(unittest.TestCase):
 # ========================================================================
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Run tests with verbose output
     unittest.main(verbosity=2)
 
