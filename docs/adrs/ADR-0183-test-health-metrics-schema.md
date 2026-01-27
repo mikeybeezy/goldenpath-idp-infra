@@ -74,7 +74,7 @@ test/coverage outputs used by `PLATFORM_HEALTH.md` and the Test Health dashboard
 - Test metrics payloads produced by `goldenpath-idp-infra` and
   `goldenpath-idp-backstage`.
 - Governance-registry artifacts used to render `PLATFORM_HEALTH.md`.
-- Scripts: `scripts/collect_test_metrics.py`, `scripts/generate_test_proofs.py`.
+- Scripts: `scripts/collect_test_metrics.py`, `scripts/generate_test_proofs.py`, `scripts/record-test-metrics.sh`.
 
 **Does not apply to**
 - Raw framework outputs (JUnit, coverage XML/JSON) before normalization.

@@ -65,6 +65,7 @@ Related: PRD-0007, ADR-0183
 - Test-metrics record step for bats tests.
 - Backstage metrics ingestion into infra governance-registry sync.
 - `scripts/collect_test_metrics.py` - multi-source test metrics collector.
+- `scripts/record-test-metrics.sh` - governance registry metrics writer.
 
 ### Changed
 
