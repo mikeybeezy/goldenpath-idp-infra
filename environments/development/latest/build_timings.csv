@@ -52,3 +52,4 @@ start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,
 2026-01-27T09:07:58Z,2026-01-27T09:24:55Z,bootstrap-persistent,dev,persistent,1017,0,"",0,0,0,logs/build-timings/bootstrap-persistent-dev-persistent-20260127T090758Z.log
 2026-01-27T09:46:59Z,2026-01-27T09:46:59Z,rds-deploy,dev,rds,0,1,"",0,0,0,logs/build-timings/rds-deploy-dev-rds-20260127T093721Z.log
 2026-01-27T10:08:28Z,2026-01-27T10:08:28Z,rds-apply,dev,rds,0,0,"",0,0,0,logs/build-timings/rds-apply-dev-rds-20260127T100821Z.log
+2026-01-27T10:08:37Z,2026-01-27T10:08:37Z,rds-deploy,dev,rds,0,1,"",0,0,0,logs/build-timings/rds-deploy-dev-rds-20260127T100815Z.log
