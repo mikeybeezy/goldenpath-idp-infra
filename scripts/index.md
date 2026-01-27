@@ -95,8 +95,8 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [rds_provision_k8s.sh](rds_provision_k8s.sh) | --- |
 | [rds_request_parser.py](rds_request_parser.py) | --- |
 | [rds_secrets_preflight.sh](rds_secrets_preflight.sh) | --- |
-| [record-build-timing.sh](record-build-timing.sh) | Record build timing to governance-registry branch |
-| [record-test-metrics.sh](record-test-metrics.sh) | Record test metrics JSON to governance-registry branch |
+| [record-build-timing.sh](record-build-timing.sh) | SKIP-TDD: Registry script with git branch operations - manual verification only |
+| [record-test-metrics.sh](record-test-metrics.sh) | SKIP-TDD: Registry script with git branch operations - manual verification only |
 | [refresh-ecr-secret.sh](refresh-ecr-secret.sh) | --- |
 | [reliability-metrics.sh](reliability-metrics.sh) | --- |
 | [repair_shebangs.py](repair_shebangs.py) | --- |
