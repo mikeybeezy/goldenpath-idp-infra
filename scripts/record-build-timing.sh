@@ -131,6 +131,12 @@ if ! git checkout "$REGISTRY_BRANCH" 2>/dev/null; then
   exit 0
 fi
 
+# Sync local branch with remote to prevent divergence
+# This ensures we're always building on top of the latest remote state
+if ! git reset --hard "origin/$REGISTRY_BRANCH" 2>/dev/null; then
+  echo "⚠️  Warning: Could not sync with origin/$REGISTRY_BRANCH. Continuing anyway." >&2
+fi
+
 # Ensure CSV directory exists
 mkdir -p "$(dirname "$CSV_PATH")"
 
