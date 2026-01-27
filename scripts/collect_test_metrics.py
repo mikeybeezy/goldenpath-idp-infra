@@ -5,7 +5,8 @@ id: SCRIPT-0060
 type: script
 owner: platform-team
 status: active
-maturity: 1
+maturity: 2
+last_validated: 2026-01-27
 test:
   runner: pytest
   command: "pytest -q tests/unit/test_collect_test_metrics.py"
