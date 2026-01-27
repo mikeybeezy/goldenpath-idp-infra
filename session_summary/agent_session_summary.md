@@ -3664,3 +3664,31 @@ Objective: Implement TDD testing stack, fix ArgoCD/LBC race condition, improve R
 - **Validation:** Full cluster deployment validated; databases provisioned; all tests passing
 
 Signed: Claude Opus 4.5 (2026-01-27T05:00:00Z)
+
+---
+
+## 2026-01-27 Development Branch Fix
+
+### Context
+
+PR #283 (development → main) blocked by CI failures related to metadata validation and index drift.
+
+### Fix Applied
+
+- ADR-0164-agent-trust-and-identity.md: Fixed invalid applies_to enum values
+- Regenerated scripts/index.md and SCRIPT_CERTIFICATION_MATRIX.md
+
+### Artifacts Touched
+
+*Modified:*
+- `docs/adrs/ADR-0164-agent-trust-and-identity.md` — Fixed applies_to enums
+- `scripts/index.md` — Regenerated
+- `docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md` — Regenerated
+- `.goldenpath/value_ledger.json` — Updated maturity snapshot
+
+### Validation
+
+- Schema validation now passes for ADR-0164
+- Script certification matrix in sync
+
+Signed: Claude Opus 4.5 (2026-01-27T06:20:00Z)

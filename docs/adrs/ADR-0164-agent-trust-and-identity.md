@@ -4,9 +4,9 @@ title: Agent Trust and Identity Architecture
 type: adr
 domain: platform-core
 applies_to:
-  - ai-agents
-  - ci-cd
-  - governance
+  - agents
+  - ci
+  - policies
 owner: platform-team
 lifecycle: active
 exempt: false
