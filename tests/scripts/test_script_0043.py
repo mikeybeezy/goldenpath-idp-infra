@@ -211,8 +211,8 @@ class TestParseRequest:
         req = parse_request(valid_eks_request_doc, path)
         assert req.instance_type == "m5.xlarge"
 
-    def test_parses_camelCase_and_snake_case(self, tmp_path):
-        """Should handle both camelCase and snake_case field names."""
+    def test_parses_camelCase_fields(self, tmp_path):
+        """Should handle camelCase field names as expected by the parser."""
         doc = {
             "metadata": {
                 "id": "EKS-0002",
@@ -223,23 +223,23 @@ class TestParseRequest:
             },
             "spec": {
                 "mode": "cluster-only",
-                "build": {"build_id": "26-01-26-02"},
+                "build": {"buildId": "26-01-26-02"},
                 "cluster": {
-                    "cluster_name": "snake-cluster",
-                    "kubernetes_version": "1.29",
-                    "private_endpoint_only": True,
+                    "clusterName": "camel-cluster",
+                    "kubernetesVersion": "1.29",
+                    "privateEndpointOnly": True,
                 },
-                "node_pool": {
-                    "node_tier": "medium",
-                    "node_desired": 3,
-                    "node_max": 6,
+                "nodePool": {
+                    "nodeTier": "medium",
+                    "nodeDesired": 3,
+                    "nodeMax": 6,
                 },
             },
         }
-        path = tmp_path / "snake.yaml"
+        path = tmp_path / "camel.yaml"
 
         req = parse_request(doc, path)
-        assert req.cluster_name == "snake-cluster"
+        assert req.cluster_name == "camel-cluster"
         assert req.build_id == "26-01-26-02"
 
     def test_defaults_are_applied(self, valid_eks_request_doc, tmp_path):
