@@ -111,7 +111,7 @@ jobs:
 
           if [[ ${#MISSING_TESTS[@]} -gt 0 ]]; then
             echo "::error::Missing tests for Helm charts"
-            echo "❌ The following charts are missing tests:" >> "$GITHUB_STEP_SUMMARY"
+            echo " The following charts are missing tests:" >> "$GITHUB_STEP_SUMMARY"
             for chart in "${MISSING_TESTS[@]}"; do
               echo "  - $chart"
               echo "  - \`$chart\`" >> "$GITHUB_STEP_SUMMARY"

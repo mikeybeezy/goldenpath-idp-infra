@@ -3,14 +3,29 @@ id: CL-0189
 title: Development Branch Full Lockdown Protection
 type: changelog
 status: active
-date: 2026-01-25
-author: platform-team
-change_type: security
-impact: high
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
+schema_version: 1
 relates_to:
   - 07_AI_AGENT_GOVERNANCE
   - PROMPT-0003
   - agent-merge-guard.yml
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
+date: 2026-01-25
+author: platform-team
+change_type: security
+impact: high
 ---
 
 # CL-0189: Development Branch Full Lockdown Protection

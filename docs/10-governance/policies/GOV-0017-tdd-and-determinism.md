@@ -5,7 +5,13 @@ type: governance
 owner: platform-team
 status: active
 domain: platform-core
+applies_to: []
 lifecycle: active
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
 relates_to:
   - ADR-0162-determinism-protection
@@ -14,6 +20,11 @@ relates_to:
   - 26_AI_AGENT_PROTOCOLS
   - 27_TESTING_QUICKSTART
   - CL-0190-tdd-foundation-and-testing-stack
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
 effective_date: 2026-01-26
 review_date: 2026-07-26
 ---

@@ -3,8 +3,9 @@ id: CL-0188-platform-health-build-timing
 title: 'CL-0188: Add build timing metrics to platform health dashboard'
 type: changelog
 status: active
-domain: platform-core
 owner: platform-team
+domain: platform-core
+applies_to: []
 lifecycle: active
 exempt: false
 risk_profile:
@@ -20,11 +21,11 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
+supported_until: 2028-01-01
 value_quantification:
   vq_class: MV/MQ
   impact_tier: medium
   potential_savings_hours: 1.0
-supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---

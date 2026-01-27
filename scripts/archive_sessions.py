@@ -19,6 +19,7 @@ risk_profile:
   coupling_risk: low
 ---
 """
+
 from __future__ import annotations
 
 """
@@ -35,12 +36,11 @@ Usage:
 """
 
 import argparse
-import os
 import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import List, Tuple, Optional
+from typing import List, Tuple
 
 
 # Configuration
@@ -69,13 +69,13 @@ def parse_session_entries(content: str) -> List[Tuple[str, datetime, str]]:
 
     # Split by session headers (## followed by date pattern)
     # Matches: ## 2026-01-20T13:34Z or ## Session: 2026-01-20
-    pattern = r'^(## (?:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}Z|Session: \d{4}-\d{2}-\d{2}).*?)(?=^## |\Z)'
+    pattern = r"^(## (?:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}Z|Session: \d{4}-\d{2}-\d{2}).*?)(?=^## |\Z)"
 
     matches = re.findall(pattern, content, re.MULTILINE | re.DOTALL)
 
     for match in matches:
         # Extract date from the header
-        date_match = re.search(r'(\d{4}-\d{2}-\d{2})', match)
+        date_match = re.search(r"(\d{4}-\d{2}-\d{2})", match)
         if date_match:
             date_str = date_match.group(1)
             try:
@@ -95,12 +95,12 @@ def split_frontmatter_and_content(content: str) -> Tuple[str, str]:
     Frontmatter ends at the first session header (## YYYY-MM-DD or ## Session:).
     """
     # Find the first session entry header
-    pattern = r'^## (?:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}Z|Session: \d{4}-\d{2}-\d{2})'
+    pattern = r"^## (?:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}Z|Session: \d{4}-\d{2}-\d{2})"
     match = re.search(pattern, content, re.MULTILINE)
 
     if match:
-        frontmatter = content[:match.start()].rstrip() + "\n\n"
-        entries_content = content[match.start():]
+        frontmatter = content[: match.start()].rstrip() + "\n\n"
+        entries_content = content[match.start() :]
         return frontmatter, entries_content
 
     return content, ""
@@ -145,8 +145,12 @@ def archive_old_entries(
         return 0, []
 
     # Separate old and recent entries
-    old_entries = [(eid, date, cont) for eid, date, cont in entries if date < cutoff_date]
-    recent_entries = [(eid, date, cont) for eid, date, cont in entries if date >= cutoff_date]
+    old_entries = [
+        (eid, date, cont) for eid, date, cont in entries if date < cutoff_date
+    ]
+    recent_entries = [
+        (eid, date, cont) for eid, date, cont in entries if date >= cutoff_date
+    ]
 
     if not old_entries:
         print(f"No entries older than {retention_days} days to archive.")
@@ -158,11 +162,15 @@ def archive_old_entries(
     archive_files = []
 
     if dry_run:
-        print(f"[DRY RUN] Would archive {len(old_entries)} entries to {len(grouped)} monthly files:")
+        print(
+            f"[DRY RUN] Would archive {len(old_entries)} entries to {len(grouped)} monthly files:"
+        )
         for month, month_entries in sorted(grouped.items()):
             archive_path = archive_dir / f"{month}.md"
             print(f"  - {archive_path}: {len(month_entries)} entries")
-        print(f"[DRY RUN] Would keep {len(recent_entries)} recent entries in main file.")
+        print(
+            f"[DRY RUN] Would keep {len(recent_entries)} recent entries in main file."
+        )
         return len(old_entries), list(grouped.keys())
 
     # Create archive directory
@@ -194,7 +202,9 @@ def archive_old_entries(
         print(f"  Archived {len(month_entries)} entries to {archive_path}")
 
     # Rebuild main file with only recent entries
-    recent_content = "\n\n".join(cont.strip() for _, _, cont in sorted(recent_entries, key=lambda x: x[1]))
+    recent_content = "\n\n".join(
+        cont.strip() for _, _, cont in sorted(recent_entries, key=lambda x: x[1])
+    )
 
     with open(summary_file, "w", encoding="utf-8") as f:
         f.write(frontmatter)
@@ -261,7 +271,7 @@ def main():
     print(f"Session summary: {line_count} lines (threshold: {args.threshold})")
 
     if line_count <= args.threshold and not args.force:
-        print(f"Below threshold. No archive needed.")
+        print("Below threshold. No archive needed.")
         sys.exit(0)
 
     # Archive old entries

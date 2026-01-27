@@ -2,11 +2,16 @@
 id: CL-0195-codex-review-fixes
 title: Codex Review Findings Resolution
 type: changelog
+status: active
+owner: platform-team
 domain: platform-core
 applies_to: []
-owner: platform-team
 lifecycle: active
 exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
 relates_to:
   - CL-0191-coverage-enforcement-and-tdd-parity
@@ -20,8 +25,6 @@ tags:
   - fixes
   - quality
 inheritance: {}
-status: active
-category: platform
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

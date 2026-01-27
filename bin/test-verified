@@ -21,6 +21,7 @@ Achievement: Executes the test command declared in a script's metadata header an
              upon success, generates a cryptographically verifiable proof artifact.
 Value: bridges the gap between "running tests" and "proving compliance".
 """
+
 import os
 import sys
 import json
@@ -32,7 +33,7 @@ import yaml
 from pathlib import Path
 
 # Add lib to path
-LIB_PATH = os.path.join(os.path.dirname(__file__), '..', 'scripts', 'lib')
+LIB_PATH = os.path.join(os.path.dirname(__file__), "..", "scripts", "lib")
 sys.path.append(LIB_PATH)
 
 try:
@@ -43,12 +44,14 @@ except ImportError:
 
 PROOF_DIR = Path("test-results/proofs")
 
+
 def get_git_info():
     try:
         sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
         return sha
     except:
         return "unknown"
+
 
 def generate_proof(script_id, script_path, runner, outcome, summary={}):
     PROOF_DIR.mkdir(parents=True, exist_ok=True)
@@ -62,21 +65,22 @@ def generate_proof(script_id, script_path, runner, outcome, summary={}):
         "run_id": os.environ.get("GITHUB_RUN_ID", "local"),
         "runner": runner,
         "outcome": outcome,
-        "summary": summary
+        "summary": summary,
     }
 
     proof_path = PROOF_DIR / f"proof-{script_id}.json"
-    with open(proof_path, 'w') as f:
+    with open(proof_path, "w") as f:
         json.dump(proof, f, indent=2)
 
     print(f"🧾 Proof generated: {proof_path}")
+
 
 def run_test(script_path, dry_run=False):
     if not os.path.exists(script_path):
         print(f"❌ Script not found: {script_path}")
         return False
 
-    with open(script_path, 'r') as f:
+    with open(script_path, "r") as f:
         content = f.read()
 
     fm = extract_frontmatter(content)
@@ -90,9 +94,9 @@ def run_test(script_path, dry_run=False):
         print(f"❌ Invalid YAML header in {script_path}")
         return False
 
-    test_config = data.get('test', {})
-    command = test_config.get('command')
-    script_id = data.get('id')
+    test_config = data.get("test", {})
+    command = test_config.get("command")
+    script_id = data.get("id")
 
     if not command:
         print(f"❌ No test command declared for {script_path}")
@@ -115,8 +119,8 @@ def run_test(script_path, dry_run=False):
         outcome = "passed" if result.returncode == 0 else "failed"
 
         if outcome == "passed":
-            print(f"\n✅ Tests Passed!")
-            generate_proof(script_id, script_path, test_config.get('runner'), outcome)
+            print("\n✅ Tests Passed!")
+            generate_proof(script_id, script_path, test_config.get("runner"), outcome)
             return True
         else:
             print(f"\n❌ Tests Failed (Exit Code: {result.returncode})")
@@ -125,6 +129,7 @@ def run_test(script_path, dry_run=False):
     except Exception as e:
         print(f"❌ Execution error: {e}")
         return False
+
 
 def main():
     parser = argparse.ArgumentParser(description="Run verified tests for scripts")
@@ -140,6 +145,7 @@ def main():
 
     success = run_test(args.script, args.dry_run)
     sys.exit(0 if success else 1)
+
 
 if __name__ == "__main__":
     main()

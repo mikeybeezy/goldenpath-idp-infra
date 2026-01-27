@@ -170,7 +170,11 @@ def compare_directories():
 
         # Compare file sets
         exp_files = sorted(
-            [p.relative_to(expected_dir) for p in expected_dir.rglob("*") if p.is_file()]
+            [
+                p.relative_to(expected_dir)
+                for p in expected_dir.rglob("*")
+                if p.is_file()
+            ]
         )
         act_files = sorted(
             [p.relative_to(actual_dir) for p in actual_dir.rglob("*") if p.is_file()]

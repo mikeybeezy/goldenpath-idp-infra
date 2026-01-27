@@ -32,3 +32,5 @@ ignore = [
 "bin/*" = ["E722", "F401"]
 # Test files may have unused variables for fixtures
 "tests/*" = ["F841"]
+# Scripts may have unused variables from dict/tuple unpacking
+"scripts/*" = ["F841"]

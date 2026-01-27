@@ -181,7 +181,6 @@ tests/
 import pytest
 from scripts.my_module import my_function
 
-
 class TestMyFunction:
     """Tests for my_function."""
 
@@ -246,12 +245,10 @@ def test_with_temp_dir(temp_dir):
     test_file.write_text("hello")
     assert test_file.exists()
 
-
 def test_with_yaml_file(create_yaml_file):
     """Factory fixture for creating YAML files."""
     yaml_file = create_yaml_file("config.yaml", {"key": "value"})
     assert yaml_file.exists()
-
 
 def test_with_mock_aws(mock_aws_credentials):
     """AWS credentials are mocked for this test."""

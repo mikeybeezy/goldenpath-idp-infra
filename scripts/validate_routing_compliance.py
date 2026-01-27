@@ -30,7 +30,8 @@ import os
 import sys
 import yaml
 import argparse
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, Set
+
 
 def load_yaml(path: str) -> Any:
     try:
@@ -39,6 +40,7 @@ def load_yaml(path: str) -> Any:
     except Exception as e:
         print(f"Error loading YAML {path}: {e}")
         return None
+
 
 def find_frontmatter(md_text: str) -> Dict[str, Any] | None:
     lines = md_text.splitlines()
@@ -53,6 +55,7 @@ def find_frontmatter(md_text: str) -> Dict[str, Any] | None:
                 return None
     return None
 
+
 def get_file_metadata(filepath: str) -> Dict[str, Any]:
     """Extract domain and owner from MD frontmatter or YAML sidecars."""
     if not os.path.exists(filepath):
@@ -66,10 +69,12 @@ def get_file_metadata(filepath: str) -> Dict[str, Any]:
         try:
             with open(filepath, "r", encoding="utf-8", errors="replace") as f:
                 fm = find_frontmatter(f.read())
-                if fm: return fm
+                if fm:
+                    return fm
         except Exception:
             pass
     return {}
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -99,14 +104,20 @@ def main():
         meta = get_file_metadata(f)
         domain = meta.get("domain")
         component = meta.get("component")
-        if domain: impacted_domains.add(domain)
-        if component: impacted_components.add(component)
+        if domain:
+            impacted_domains.add(domain)
+        if component:
+            impacted_components.add(component)
 
         # Heuristic for component detection based on path
-        if "gitops/argocd" in f: impacted_components.add("argo")
-        if "gitops/" in f: impacted_components.add("gitops")
-        if "ci/" in f or ".github/workflows" in f: impacted_components.add("ci")
-        if "infra/" in f: impacted_components.add("infra")
+        if "gitops/argocd" in f:
+            impacted_components.add("argo")
+        if "gitops/" in f:
+            impacted_components.add("gitops")
+        if "ci/" in f or ".github/workflows" in f:
+            impacted_components.add("ci")
+        if "infra/" in f:
+            impacted_components.add("infra")
 
     # 2. Determine required artifacts and reviewers
     required_artifacts: Set[str] = set()
@@ -128,7 +139,9 @@ def main():
     errors = []
     for art in required_artifacts:
         if art not in present_artifacts:
-            errors.append(f"Missing mandatory artifact: {art.upper()} (required by domain/component impact)")
+            errors.append(
+                f"Missing mandatory artifact: {art.upper()} (required by domain/component impact)"
+            )
 
     print("🛡️ Governance Routing Compliance")
     print(f"Impacted Domains: {list(impacted_domains)}")
@@ -143,6 +156,7 @@ def main():
 
     print("✅ Governance compliance verified.")
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

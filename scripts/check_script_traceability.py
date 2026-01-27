@@ -33,7 +33,6 @@ Usage:
 import os
 import sys
 import glob
-import re
 
 SCRIPTS_DIR = "scripts"
 ADRS_DIR = "docs/adrs"
@@ -42,8 +41,9 @@ CLS_DIR = "docs/changelog/entries"
 # Scripts that are exempted from traceability (e.g., helpers, templates)
 EXEMPT_SCRIPTS = [
     "__init__.py",
-    "check_script_traceability.py", # Self-exempt
+    "check_script_traceability.py",  # Self-exempt
 ]
+
 
 def search_in_dir(query, directory):
     """Search for a query string in all markdown files in a directory."""
@@ -53,12 +53,13 @@ def search_in_dir(query, directory):
 
     for file_path in glob.glob(os.path.join(directory, "*.md")):
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 if query in f.read():
                     matches.append(file_path)
         except Exception:
             continue
     return matches
+
 
 def check_script(script_path):
     """Check a single script for ADR and CL traceability."""
@@ -72,6 +73,7 @@ def check_script(script_path):
     is_compliant = len(adr_matches) > 0 and len(cl_matches) > 0
     return is_compliant, adr_matches, cl_matches
 
+
 def main():
     validate_mode = "--validate" in sys.argv
     target_script = None
@@ -84,10 +86,13 @@ def main():
     if target_script:
         scripts_to_check = [os.path.join(SCRIPTS_DIR, target_script)]
     else:
-        scripts_to_check = glob.glob(os.path.join(SCRIPTS_DIR, "*.py")) + \
-                           glob.glob(os.path.join(SCRIPTS_DIR, "*.sh"))
+        scripts_to_check = glob.glob(os.path.join(SCRIPTS_DIR, "*.py")) + glob.glob(
+            os.path.join(SCRIPTS_DIR, "*.sh")
+        )
 
-    scripts_to_check = [s for s in scripts_to_check if os.path.basename(s) not in EXEMPT_SCRIPTS]
+    scripts_to_check = [
+        s for s in scripts_to_check if os.path.basename(s) not in EXEMPT_SCRIPTS
+    ]
     scripts_to_check.sort()
 
     total = 0
@@ -109,8 +114,10 @@ def main():
             compliant += 1
         else:
             issues = []
-            if not adrs: issues.append("Missing ADR")
-            if not cls: issues.append("Missing CL")
+            if not adrs:
+                issues.append("Missing ADR")
+            if not cls:
+                issues.append("Missing CL")
             failures.append(f"{name}: {', '.join(issues)}")
 
     print("-" * 60)
@@ -126,6 +133,7 @@ def main():
     else:
         print("\n✅ All scripts are traceable.")
         sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

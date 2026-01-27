@@ -10,6 +10,10 @@ applies_to:
 owner: platform-team
 lifecycle: active
 exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
 schema_version: 1
 relates_to:
   - ADR-0162-determinism-protection
@@ -25,8 +29,6 @@ tags:
   - ai-governance
   - trust
 inheritance: {}
-status: accepted
-category: architecture
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

@@ -3,8 +3,9 @@ id: CL-0185-maturity-snapshots-value-ledger
 title: 'CL-0185: Add maturity snapshots to value ledger'
 type: changelog
 status: active
-domain: platform-core
 owner: platform-team
+domain: platform-core
+applies_to: []
 lifecycle: active
 exempt: false
 risk_profile:
@@ -20,11 +21,11 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
+supported_until: 2028-01-01
 value_quantification:
   vq_class: MV/MQ
   impact_tier: medium
   potential_savings_hours: 2.0
-supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---

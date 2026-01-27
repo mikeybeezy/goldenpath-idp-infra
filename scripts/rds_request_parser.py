@@ -19,6 +19,7 @@ risk_profile:
   coupling_risk: low
 ---
 """
+
 from __future__ import annotations
 
 # Owner: platform
@@ -40,10 +41,9 @@ Modes:
 
 import argparse
 import json
-import os
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import yaml
 
@@ -60,6 +60,7 @@ SIZE_TO_INSTANCE = {
 @dataclass(frozen=True)
 class RdsRequest:
     """RDS database request contract fields."""
+
     rds_id: str
     service: str
     environment: str
@@ -133,15 +134,19 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> RdsRequest:
     performance_insights = spec.get("performanceInsights", True)
 
     # Required field validation
-    missing = [k for k, v in {
-        "id": rds_id,
-        "environment": environment,
-        "owner": owner,
-        "requester": requester,
-        "spec.databaseName": database_name,
-        "spec.username": username,
-        "spec.domain": domain,
-    }.items() if not v]
+    missing = [
+        k
+        for k, v in {
+            "id": rds_id,
+            "environment": environment,
+            "owner": owner,
+            "requester": requester,
+            "spec.databaseName": database_name,
+            "spec.username": username,
+            "spec.domain": domain,
+        }.items()
+        if not v
+    ]
 
     if missing:
         raise ValueError(f"{src_path}: missing required fields: {', '.join(missing)}")
@@ -165,8 +170,11 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> RdsRequest:
     )
 
 
-def validate_enums(req: RdsRequest, enums: Dict[str, List[str]], src_path: Path) -> None:
+def validate_enums(
+    req: RdsRequest, enums: Dict[str, List[str]], src_path: Path
+) -> None:
     """Validate enum fields against allowed values."""
+
     def check(field: str, value: str, allowed: List[str]) -> None:
         if value not in allowed:
             raise ValueError(
@@ -181,7 +189,9 @@ def validate_enums(req: RdsRequest, enums: Dict[str, List[str]], src_path: Path)
 
     # Conditional validation rules
     if req.environment == "prod" and not req.multiAz:
-        print(f"[WARN] {src_path}: Production database without Multi-AZ may have availability gaps")
+        print(
+            f"[WARN] {src_path}: Production database without Multi-AZ may have availability gaps"
+        )
 
     if req.environment == "prod" and req.backupRetentionDays < 14:
         raise ValueError(f"{src_path}: Production requires backup_retention_days >= 14")
@@ -200,7 +210,12 @@ def derive_secret_key(req: RdsRequest) -> str:
 
 def tfvars_output_path(tfvars_out_root: Path, req: RdsRequest) -> Path:
     """Generate tfvars output path."""
-    return tfvars_out_root / f"{req.environment}-rds" / "generated" / f"{req.rds_id}.auto.tfvars.json"
+    return (
+        tfvars_out_root
+        / f"{req.environment}-rds"
+        / "generated"
+        / f"{req.rds_id}.auto.tfvars.json"
+    )
 
 
 def externalsecret_output_path(externalsecret_out_root: Path, req: RdsRequest) -> Path:
@@ -268,9 +283,7 @@ def generate_externalsecret(req: RdsRequest) -> Dict[str, Any]:
                 "name": f"{req.databaseName}-db-credentials",
                 "creationPolicy": "Owner",
             },
-            "dataFrom": [
-                {"extract": {"key": derive_secret_key(req)}}
-            ],
+            "dataFrom": [{"extract": {"key": derive_secret_key(req)}}],
         },
     }
 
@@ -289,14 +302,34 @@ def write_json(path: Path, obj: Dict[str, Any]) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="RDS Request Parser - Generate Terraform and ExternalSecret artifacts")
-    p.add_argument("--mode", choices=["validate", "generate"], required=True,
-                   help="validate: check schema; generate: create output files")
+    p = argparse.ArgumentParser(
+        description="RDS Request Parser - Generate Terraform and ExternalSecret artifacts"
+    )
+    p.add_argument(
+        "--mode",
+        choices=["validate", "generate"],
+        required=True,
+        help="validate: check schema; generate: create output files",
+    )
     p.add_argument("--enums", required=True, help="Path to schemas/metadata/enums.yaml")
-    p.add_argument("--input-files", nargs="+", required=True, help="RDS request YAML files")
-    p.add_argument("--tfvars-out-root", default="envs", help="Root for tfvars outputs (default: envs)")
-    p.add_argument("--externalsecret-out-root", default="gitops", help="Root for ExternalSecret outputs (default: gitops)")
-    p.add_argument("--dry-run", action="store_true", help="Print what would be generated without writing files")
+    p.add_argument(
+        "--input-files", nargs="+", required=True, help="RDS request YAML files"
+    )
+    p.add_argument(
+        "--tfvars-out-root",
+        default="envs",
+        help="Root for tfvars outputs (default: envs)",
+    )
+    p.add_argument(
+        "--externalsecret-out-root",
+        default="gitops",
+        help="Root for ExternalSecret outputs (default: gitops)",
+    )
+    p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print what would be generated without writing files",
+    )
     return p.parse_args()
 
 
