@@ -2,29 +2,20 @@
 id: EC-0015-backstage-tdd-parity-plan
 title: Backstage TDD Parity Plan
 type: extend-capability
-domain: platform-core
+status: proposed
 applies_to:
   - goldenpath-idp-backstage
-owner: platform-team
-lifecycle: active
-exempt: false
-schema_version: 1
 relates_to:
   - ADR-0162-determinism-protection
   - ADR-0164-agent-trust-and-identity
   - ADR-0182-tdd-philosophy
   - GOV-0016-testing-stack-matrix
   - GOV-0017-tdd-and-determinism
-supersedes: []
-superseded_by: []
 tags:
   - testing
   - tdd
   - backstage
   - parity
-inheritance: {}
-status: proposed
-category: platform
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
@@ -170,7 +161,7 @@ jobs:
           done
 
           if [[ ${#MISSING_TESTS[@]} -gt 0 ]]; then
-            echo "❌ Missing tests for:"
+            echo " Missing tests for:"
             printf '  - %s\n' "${MISSING_TESTS[@]}"
             echo ""
             echo "TDD requires a test file for each source file."

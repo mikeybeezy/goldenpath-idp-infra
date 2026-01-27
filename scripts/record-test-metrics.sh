@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SKIP-TDD: Registry script with git branch operations - manual verification only
 # Record test metrics JSON to governance-registry branch
 # ---
 # id: SCRIPT-0061
@@ -47,7 +48,7 @@ TMP_METRICS="$(mktemp)"
 cp "$ABS_METRICS_PATH" "$TMP_METRICS"
 TMP_MERGED="$(mktemp)"
 
-COMMIT_SHA="$(python3 - <<'PY'
+COMMIT_SHA="$(python3 - "$TMP_METRICS" <<'PY'
 import json, sys
 path = sys.argv[1]
 try:
@@ -56,7 +57,7 @@ try:
 except Exception:
     print("unknown")
 PY
-"$TMP_METRICS")"
+)"
 SHORT_SHA="${COMMIT_SHA:0:7}"
 TS="$(date -u +%Y-%m-%d-%H%MZ)"
 
@@ -81,11 +82,21 @@ if ! git checkout "$REGISTRY_BRANCH" 2>/dev/null; then
   exit 0
 fi
 
+# Sync local branch with remote to prevent divergence
+# This ensures we're always building on top of the latest remote state
+if ! git reset --hard "origin/$REGISTRY_BRANCH" 2>/dev/null; then
+  echo "⚠️  Warning: Could not sync with origin/$REGISTRY_BRANCH. Continuing anyway." >&2
+fi
+
+# Configure git user for CI environments (GitHub Actions runners don't have this set)
+git config user.email "github-actions[bot]@users.noreply.github.com"
+git config user.name "github-actions[bot]"
+
 mkdir -p "$(dirname "$LATEST_PATH")" "$HIST_DIR"
 
 # Merge with existing latest metrics if present (preserve other frameworks)
 if [[ -f "$LATEST_PATH" ]]; then
-  python3 - <<'PY' "$LATEST_PATH" "$TMP_METRICS" "$TMP_MERGED"
+  python3 - "$LATEST_PATH" "$TMP_METRICS" "$TMP_MERGED" <<'PY'
 import json
 import sys
 

@@ -36,18 +36,18 @@ What it does:
 Usage:
     python3 scripts/fix_yaml_syntax.py [DIRECTORY]
 """
-import re
 import os
+
 
 def fix_yaml_templates(directory):
     for root, _, files in os.walk(directory):
-        if 'node_modules' in root or '.git' in root:
+        if "node_modules" in root or ".git" in root:
             continue
         for f in files:
-            if f.endswith(('.yaml', '.yml')):
+            if f.endswith((".yaml", ".yml")):
                 path = os.path.join(root, f)
                 try:
-                    with open(path, 'r', encoding='utf-8') as stream:
+                    with open(path, "r", encoding="utf-8") as stream:
                         lines = stream.readlines()
 
                     new_lines = []
@@ -55,35 +55,38 @@ def fix_yaml_templates(directory):
                         # 1. Handle value: key: {{ template }}
                         # Match something like '  name: {{ values.name }}'
                         # but skip if already quoted or if it's a multiline marker | or >
-                        if ':' in line and not any(c in line for c in ['"', "'", '|', '>']):
-                            parts = line.split(':', 1)
+                        if ":" in line and not any(
+                            c in line for c in ['"', "'", "|", ">"]
+                        ):
+                            parts = line.split(":", 1)
                             key = parts[0]
                             val = parts[1].strip()
-                            if '{{' in val and '}}' in val:
+                            if "{{" in val and "}}" in val:
                                 line = f'{key}: "{val}"\n'
 
                         # 2. Handle key: {{ template }}: value
                         # Match something like '  {{ template }}-foo: value'
-                        if ':' in line and not any(c in line for c in ['"', "'"]):
-                            parts = line.split(':', 1)
+                        if ":" in line and not any(c in line for c in ['"', "'"]):
+                            parts = line.split(":", 1)
                             key = parts[0]
-                            if '{{' in key and '}}' in key:
+                            if "{{" in key and "}}" in key:
                                 indent = len(key) - len(key.lstrip())
                                 line = f'{" " * indent}"{key.lstrip()}":{parts[1]}'
 
                         new_lines.append(line)
 
                     new_content = "".join(new_lines)
-                    with open(path, 'r', encoding='utf-8') as stream:
+                    with open(path, "r", encoding="utf-8") as stream:
                         old_content = stream.read()
 
                     if new_content != old_content:
-                        with open(path, 'w', encoding='utf-8') as stream:
+                        with open(path, "w", encoding="utf-8") as stream:
                             stream.write(new_content)
                         print(f"Fixed: {path}")
                 except Exception as e:
                     print(f"Error processing {path}: {e}")
 
+
 if __name__ == "__main__":
-    fix_yaml_templates('apps')
-    fix_yaml_templates('gitops/helm')
+    fix_yaml_templates("apps")
+    fix_yaml_templates("gitops/helm")

@@ -64,6 +64,7 @@ import yaml
 @dataclass
 class ValidationError:
     """A single validation error."""
+
     path: str
     message: str
     rule: Optional[str] = None
@@ -78,6 +79,7 @@ class ValidationError:
 @dataclass
 class ValidationResult:
     """Result of validating a request against a schema."""
+
     request_file: str
     schema_file: str
     valid: bool
@@ -162,18 +164,18 @@ class BespokeSchemaValidator:
         # Validate required fields
         for field_name in required:
             if not self._get_value(flat_request, field_name):
-                errors.append(ValidationError(
-                    path=field_name,
-                    message=f"Required field '{field_name}' is missing",
-                ))
+                errors.append(
+                    ValidationError(
+                        path=field_name,
+                        message=f"Required field '{field_name}' is missing",
+                    )
+                )
 
         # Validate each property
         for prop_name, prop_schema in properties.items():
             value = self._get_value(flat_request, prop_name)
             if value is not None:
-                prop_errors = self._validate_property(
-                    value, prop_schema, prop_name
-                )
+                prop_errors = self._validate_property(value, prop_schema, prop_name)
                 errors.extend(prop_errors)
 
         # Validate conditional rules
@@ -244,58 +246,72 @@ class BespokeSchemaValidator:
         pattern = prop_schema.get("pattern")
         if pattern and isinstance(value, str):
             if not re.match(pattern, value):
-                errors.append(ValidationError(
-                    path=path,
-                    message=f"Value '{value}' does not match pattern '{pattern}'",
-                ))
+                errors.append(
+                    ValidationError(
+                        path=path,
+                        message=f"Value '{value}' does not match pattern '{pattern}'",
+                    )
+                )
 
         # Enum validation
         enum_values = prop_schema.get("enum")
         if enum_values and value not in enum_values:
-            errors.append(ValidationError(
-                path=path,
-                message=f"Value '{value}' not in allowed values: {enum_values}",
-            ))
+            errors.append(
+                ValidationError(
+                    path=path,
+                    message=f"Value '{value}' not in allowed values: {enum_values}",
+                )
+            )
 
         # enum_from validation
         enum_from = prop_schema.get("enum_from")
         if enum_from and self.enum_resolver:
             allowed = self.enum_resolver.resolve(enum_from)
             if allowed and value not in allowed:
-                errors.append(ValidationError(
-                    path=path,
-                    message=f"Value '{value}' not in enum '{enum_from}': {allowed}",
-                ))
+                errors.append(
+                    ValidationError(
+                        path=path,
+                        message=f"Value '{value}' not in enum '{enum_from}': {allowed}",
+                    )
+                )
 
         # Numeric constraints
         if isinstance(value, (int, float)):
             minimum = prop_schema.get("minimum")
             maximum = prop_schema.get("maximum")
             if minimum is not None and value < minimum:
-                errors.append(ValidationError(
-                    path=path,
-                    message=f"Value {value} is less than minimum {minimum}",
-                ))
+                errors.append(
+                    ValidationError(
+                        path=path,
+                        message=f"Value {value} is less than minimum {minimum}",
+                    )
+                )
             if maximum is not None and value > maximum:
-                errors.append(ValidationError(
-                    path=path,
-                    message=f"Value {value} is greater than maximum {maximum}",
-                ))
+                errors.append(
+                    ValidationError(
+                        path=path,
+                        message=f"Value {value} is greater than maximum {maximum}",
+                    )
+                )
 
         # String length constraints
         if isinstance(value, str):
             min_length = prop_schema.get("minLength")
             max_length = prop_schema.get("maxLength")
             if min_length is not None and len(value) < min_length:
-                errors.append(ValidationError(
-                    path=path,
-                    message=f"String length {len(value)} is less than minLength {min_length}",
-                ))
+                errors.append(
+                    ValidationError(
+                        path=path,
+                        message=f"String length {len(value)} is less than minLength {min_length}",
+                    )
+                )
             if max_length is not None and len(value) > max_length:
-                errors.append(ValidationError(
-                    path=path,
-                    message=f"String length {len(value)} is greater than maxLength {max_length}",
-                ))
+                errors.append(
+                    ValidationError(
+                        path=path,
+                        message=f"String length {len(value)} is greater than maxLength {max_length}",
+                    )
+                )
 
         # Nested object validation
         if prop_type == "object" and isinstance(value, dict):
@@ -304,10 +320,12 @@ class BespokeSchemaValidator:
 
             for req_field in nested_required:
                 if req_field not in value:
-                    errors.append(ValidationError(
-                        path=f"{path}.{req_field}",
-                        message=f"Required field '{req_field}' is missing in '{path}'",
-                    ))
+                    errors.append(
+                        ValidationError(
+                            path=f"{path}.{req_field}",
+                            message=f"Required field '{req_field}' is missing in '{path}'",
+                        )
+                    )
 
             for nested_name, nested_schema in nested_props.items():
                 nested_value = value.get(nested_name)
@@ -379,47 +397,144 @@ class BespokeSchemaValidator:
                 warning_msg = requirement.get("warning")
                 error_msg = requirement.get("error")
                 if warning_msg:
-                    warnings.append(ValidationError(
-                        path="approval_required",
-                        message=warning_msg,
-                        rule=rule_name,
-                    ))
+                    warnings.append(
+                        ValidationError(
+                            path="approval_required",
+                            message=warning_msg,
+                            rule=rule_name,
+                        )
+                    )
                 if error_msg:
                     # This is informational for CI, not a validation error
-                    warnings.append(ValidationError(
-                        path="approval_required",
-                        message=error_msg,
-                        rule=rule_name,
-                    ))
+                    warnings.append(
+                        ValidationError(
+                            path="approval_required",
+                            message=error_msg,
+                            rule=rule_name,
+                        )
+                    )
                 continue
 
             value = self._get_value(request, field_path)
 
             if isinstance(requirement, dict):
+                # Handle 'recommended' - generates warning, not error
+                if requirement.get("recommended"):
+                    warning_msg = requirement.get(
+                        "warning",
+                        f"Field '{field_path}' is recommended when {rule_name} applies",
+                    )
+                    # Only warn if the recommended value isn't set
+                    if value is None or value is False:
+                        warnings.append(
+                            ValidationError(
+                                path=field_path,
+                                message=warning_msg,
+                                rule=rule_name,
+                            )
+                        )
+
+                # Handle 'required' - field must be present
                 if requirement.get("required"):
                     if value is None:
                         error_msg = requirement.get(
                             "error",
-                            f"Field '{field_path}' is required when {rule_name} applies"
+                            f"Field '{field_path}' is required when {rule_name} applies",
                         )
-                        errors.append(ValidationError(
-                            path=field_path,
-                            message=error_msg,
-                            rule=rule_name,
-                        ))
+                        errors.append(
+                            ValidationError(
+                                path=field_path,
+                                message=error_msg,
+                                rule=rule_name,
+                            )
+                        )
 
+                # Handle 'equals' - value must equal expected
                 if "equals" in requirement:
                     expected = requirement["equals"]
                     if value != expected:
                         error_msg = requirement.get(
                             "error",
-                            f"Field '{field_path}' must equal '{expected}' when {rule_name} applies"
+                            f"Field '{field_path}' must equal '{expected}' when {rule_name} applies",
                         )
-                        errors.append(ValidationError(
-                            path=field_path,
-                            message=error_msg,
-                            rule=rule_name,
-                        ))
+                        errors.append(
+                            ValidationError(
+                                path=field_path,
+                                message=error_msg,
+                                rule=rule_name,
+                            )
+                        )
+
+                # Handle 'minimum' - value must be >= minimum
+                if "minimum" in requirement:
+                    min_val = requirement["minimum"]
+                    if value is not None and isinstance(value, (int, float)):
+                        if value < min_val:
+                            error_msg = requirement.get(
+                                "error",
+                                f"Field '{field_path}' must be >= {min_val} when {rule_name} applies (got {value})",
+                            )
+                            errors.append(
+                                ValidationError(
+                                    path=field_path,
+                                    message=error_msg,
+                                    rule=rule_name,
+                                )
+                            )
+
+                # Handle 'maximum' - value must be <= maximum
+                if "maximum" in requirement:
+                    max_val = requirement["maximum"]
+                    if value is not None and isinstance(value, (int, float)):
+                        if value > max_val:
+                            error_msg = requirement.get(
+                                "error",
+                                f"Field '{field_path}' must be <= {max_val} when {rule_name} applies (got {value})",
+                            )
+                            errors.append(
+                                ValidationError(
+                                    path=field_path,
+                                    message=error_msg,
+                                    rule=rule_name,
+                                )
+                            )
+
+                # Handle 'enum' - value must be in allowed list
+                if "enum" in requirement:
+                    allowed = requirement["enum"]
+                    if value is not None and value not in allowed:
+                        error_msg = requirement.get(
+                            "error",
+                            f"Field '{field_path}' must be one of {allowed} when {rule_name} applies (got '{value}')",
+                        )
+                        errors.append(
+                            ValidationError(
+                                path=field_path,
+                                message=error_msg,
+                                rule=rule_name,
+                            )
+                        )
+
+                # Handle 'greater_than_field' - value must be > another field's value
+                if "greater_than_field" in requirement:
+                    other_field = requirement["greater_than_field"]
+                    other_value = self._get_value(request, other_field)
+                    if value is not None and other_value is not None:
+                        if isinstance(value, (int, float)) and isinstance(
+                            other_value, (int, float)
+                        ):
+                            if value <= other_value:
+                                error_msg = requirement.get(
+                                    "error",
+                                    f"Field '{field_path}' ({value}) must be greater than '{other_field}' ({other_value})",
+                                )
+                                errors.append(
+                                    ValidationError(
+                                        path=field_path,
+                                        message=error_msg,
+                                        rule=rule_name,
+                                    )
+                                )
 
         return errors, warnings
 
@@ -433,6 +548,13 @@ class BespokeSchemaValidator:
             value = self._get_value(request, field_path)
 
             if isinstance(condition, dict):
+                # Check if field is defined (not None)
+                if "defined" in condition:
+                    is_defined = value is not None
+                    if condition["defined"] and not is_defined:
+                        return False
+                    if not condition["defined"] and is_defined:
+                        return False
                 if "in" in condition:
                     if value not in condition["in"]:
                         return False
@@ -441,6 +563,18 @@ class BespokeSchemaValidator:
                         return False
                 if "not_equals" in condition:
                     if value == condition["not_equals"]:
+                        return False
+                # Check greater_than for when conditions
+                if "greater_than" in condition:
+                    if value is None or not isinstance(value, (int, float)):
+                        return False
+                    if value <= condition["greater_than"]:
+                        return False
+                # Check less_than for when conditions
+                if "less_than" in condition:
+                    if value is None or not isinstance(value, (int, float)):
+                        return False
+                    if value >= condition["less_than"]:
                         return False
             else:
                 # Direct value comparison
@@ -517,15 +651,19 @@ def validate_all(
             skipped += 1
             continue
         elif not schema_path:
-            results.append(ValidationResult(
-                request_file=str(request_file),
-                schema_file="",
-                valid=False,
-                errors=[ValidationError(
-                    path="",
-                    message=f"No schema found for request {request_file.name}",
-                )],
-            ))
+            results.append(
+                ValidationResult(
+                    request_file=str(request_file),
+                    schema_file="",
+                    valid=False,
+                    errors=[
+                        ValidationError(
+                            path="",
+                            message=f"No schema found for request {request_file.name}",
+                        )
+                    ],
+                )
+            )
             continue
 
         with open(request_file) as f:
@@ -619,7 +757,7 @@ def main():
             "total": len(results),
             "valid": sum(1 for r in results if r.valid),
             "invalid": sum(1 for r in results if not r.valid),
-            "skipped": skipped if 'skipped' in dir() else 0,
+            "skipped": skipped if "skipped" in dir() else 0,
             "results": [r.to_dict() for r in results],
         }
         print(json.dumps(output, indent=2))

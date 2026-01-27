@@ -10,7 +10,6 @@ This catches:
 
 import importlib
 import importlib.util
-import sys
 from pathlib import Path
 
 import pytest
@@ -78,4 +77,4 @@ class TestScriptSyntax:
                 errors.append(f"{py_file.name}: {e}")
 
         if errors:
-            pytest.fail(f"Syntax errors found:\n" + "\n".join(errors))
+            pytest.fail("Syntax errors found:\n" + "\n".join(errors))

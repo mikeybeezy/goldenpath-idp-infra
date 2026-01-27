@@ -3,22 +3,20 @@ id: EC-0013-agent-context-architecture
 title: 'EC-0013: Universal Agent Context Architecture'
 type: enhancement-concept
 status: draft
-domain: platform-core
-owner: platform-team
 lifecycle: proposed
-exempt: false
 risk_profile:
   production_impact: none
   security_risk: none
   coupling_risk: low
-schema_version: 1
 relates_to:
   - CLAUDE.md
   - .cursorrules
   - session_capture
-supersedes: []
-superseded_by: []
-tags: [ai, agents, dx, context]
+tags:
+  - ai
+  - agents
+  - dx
+  - context
 version: '1.0'
 ---
 

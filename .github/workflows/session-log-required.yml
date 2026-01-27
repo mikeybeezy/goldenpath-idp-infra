@@ -1,11 +1,13 @@
 # Owner: platform-team
 # Relates-To: 07_AI_AGENT_GOVERNANCE, 26_AI_AGENT_PROTOCOLS, session_capture_template, session_summary_template
+# Last-Validated: 2026-01-27
 name: Session Log Requirement
 
 on:
   pull_request:
     paths:
       - ".github/workflows/**"
+      - ".pre-commit-config.yaml"
       - "gitops/**"
       - "bootstrap/**"
       - "modules/**"

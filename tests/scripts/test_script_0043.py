@@ -11,18 +11,16 @@ Test Categories:
 
 import json
 import pytest
-import tempfile
 from pathlib import Path
-from unittest.mock import patch
 
 import yaml
 
 # Import the module under test
 import sys
+
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
 
 from eks_request_parser import (
-    EksRequest,
     load_yaml,
     load_enums,
     parse_request,
@@ -38,6 +36,7 @@ from eks_request_parser import (
 # ============================================================================
 # Fixtures
 # ============================================================================
+
 
 @pytest.fixture
 def valid_eks_request_doc():
@@ -101,6 +100,7 @@ def request_file(valid_eks_request_doc, tmp_path):
 # Test: load_yaml
 # ============================================================================
 
+
 class TestLoadYaml:
     def test_loads_valid_yaml(self, tmp_path):
         """Should load a valid YAML file."""
@@ -128,6 +128,7 @@ class TestLoadYaml:
 # Test: load_enums
 # ============================================================================
 
+
 class TestLoadEnums:
     def test_loads_enum_mappings(self, enums_file, valid_enums):
         """Should load and map enums correctly."""
@@ -149,6 +150,7 @@ class TestLoadEnums:
 # ============================================================================
 # Test: parse_request
 # ============================================================================
+
 
 class TestParseRequest:
     def test_parses_minimal_valid_request(self, valid_eks_request_doc, tmp_path):
@@ -174,7 +176,9 @@ class TestParseRequest:
 
         assert "missing required fields" in str(exc_info.value)
 
-    def test_raises_on_missing_build_id_for_cluster_only(self, valid_eks_request_doc, tmp_path):
+    def test_raises_on_missing_build_id_for_cluster_only(
+        self, valid_eks_request_doc, tmp_path
+    ):
         """Should raise when build_id missing for cluster-only mode."""
         del valid_eks_request_doc["spec"]["build"]["buildId"]
         path = tmp_path / "req.yaml"
@@ -203,7 +207,9 @@ class TestParseRequest:
         req = parse_request(valid_eks_request_doc, path)
         assert req.instance_type == "t3.large"
 
-    def test_uses_explicit_instance_type_over_tier(self, valid_eks_request_doc, tmp_path):
+    def test_uses_explicit_instance_type_over_tier(
+        self, valid_eks_request_doc, tmp_path
+    ):
         """Should prefer explicit instance_type over node_tier."""
         valid_eks_request_doc["spec"]["nodePool"]["instanceType"] = "m5.xlarge"
         path = tmp_path / "req.yaml"
@@ -259,8 +265,11 @@ class TestParseRequest:
 # Test: validate_enums
 # ============================================================================
 
+
 class TestValidateEnums:
-    def test_passes_for_valid_values(self, valid_eks_request_doc, valid_enums, tmp_path):
+    def test_passes_for_valid_values(
+        self, valid_eks_request_doc, valid_enums, tmp_path
+    ):
         """Should pass validation for valid enum values."""
         path = tmp_path / "req.yaml"
         req = parse_request(valid_eks_request_doc, path)
@@ -280,7 +289,9 @@ class TestValidateEnums:
         # Should not raise
         validate_enums(req, loaded_enums, path)
 
-    def test_raises_for_invalid_environment(self, valid_eks_request_doc, valid_enums, tmp_path):
+    def test_raises_for_invalid_environment(
+        self, valid_eks_request_doc, valid_enums, tmp_path
+    ):
         """Should raise for invalid environment value."""
         valid_eks_request_doc["environment"] = "invalid-env"
         path = tmp_path / "req.yaml"
@@ -307,10 +318,21 @@ class TestValidateEnums:
         """Should skip validation when enum list is empty."""
         path = tmp_path / "req.yaml"
         req = parse_request(valid_eks_request_doc, path)
-        empty_enums = {k: [] for k in ["environment", "mode", "node_tier",
-                                        "kubernetes_version", "capacity_type",
-                                        "gitops_controller", "bootstrap_profile",
-                                        "ingress_provider", "aws_lb_type", "owner"]}
+        empty_enums = {
+            k: []
+            for k in [
+                "environment",
+                "mode",
+                "node_tier",
+                "kubernetes_version",
+                "capacity_type",
+                "gitops_controller",
+                "bootstrap_profile",
+                "ingress_provider",
+                "aws_lb_type",
+                "owner",
+            ]
+        }
 
         # Should not raise
         validate_enums(req, empty_enums, path)
@@ -319,6 +341,7 @@ class TestValidateEnums:
 # ============================================================================
 # Test: generate_tfvars
 # ============================================================================
+
 
 class TestGenerateTfvars:
     def test_generates_valid_tfvars(self, valid_eks_request_doc, tmp_path):
@@ -349,7 +372,9 @@ class TestGenerateTfvars:
         assert node_group["instance_types"] == ["t3.small"]
         assert node_group["capacity_type"] == "ON_DEMAND"
 
-    def test_cluster_lifecycle_persistent_without_build_id(self, valid_eks_request_doc, tmp_path):
+    def test_cluster_lifecycle_persistent_without_build_id(
+        self, valid_eks_request_doc, tmp_path
+    ):
         """Should set cluster_lifecycle to persistent when no build_id."""
         valid_eks_request_doc["spec"]["mode"] = "bootstrap-only"
         valid_eks_request_doc["spec"]["build"]["buildId"] = ""
@@ -359,7 +384,9 @@ class TestGenerateTfvars:
         tfvars = generate_tfvars(req)
         assert tfvars["cluster_lifecycle"] == "persistent"
 
-    def test_bootstrap_mode_enables_k8s_resources(self, valid_eks_request_doc, tmp_path):
+    def test_bootstrap_mode_enables_k8s_resources(
+        self, valid_eks_request_doc, tmp_path
+    ):
         """Should enable k8s resources for bootstrap modes."""
         valid_eks_request_doc["spec"]["mode"] = "cluster+bootstrap"
         path = tmp_path / "req.yaml"
@@ -373,6 +400,7 @@ class TestGenerateTfvars:
 # ============================================================================
 # Test: tfvars_output_path
 # ============================================================================
+
 
 class TestTfvarsOutputPath:
     def test_generates_correct_path(self, valid_eks_request_doc, tmp_path):
@@ -388,6 +416,7 @@ class TestTfvarsOutputPath:
 # ============================================================================
 # Test: derive_risk
 # ============================================================================
+
 
 class TestDeriveRisk:
     def test_prod_is_high(self):
@@ -407,6 +436,7 @@ class TestDeriveRisk:
 # Test: NODE_TIER_TO_INSTANCE mapping
 # ============================================================================
 
+
 class TestNodeTierMapping:
     def test_all_tiers_mapped(self):
         """Should have all expected tier mappings."""
@@ -423,6 +453,7 @@ class TestNodeTierMapping:
 # ============================================================================
 # Test: Integration - Full flow
 # ============================================================================
+
 
 class TestIntegrationFlow:
     def test_validate_mode_full_flow(self, request_file, enums_file, valid_enums):

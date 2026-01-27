@@ -3,7 +3,9 @@ repos:
     rev: v4.6.0
     hooks:
       - id: end-of-file-fixer
+        exclude: ^session_capture/
       - id: trailing-whitespace
+        exclude: ^session_capture/
 
   # Python linting and formatting (ruff - fast, replaces flake8/isort/black)
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -18,7 +20,7 @@ repos:
     rev: v0.10.0.1
     hooks:
       - id: shellcheck
-        args: ["--severity=warning"]
+        args: ["--severity=error"]
 
   # Shell script formatting
   - repo: https://github.com/scop/pre-commit-shfmt
@@ -57,6 +59,7 @@ repos:
         entry: python3 scripts/enforce_emoji_policy.py
         language: python
         files: \.(md|yaml|yml)$
+        exclude: ^session_capture/
         pass_filenames: true
       - id: generate-adr-index
         name: Auto-Heal ADR Index

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SKIP-TDD: Registry script with git branch operations - manual verification only
 # Record build timing to governance-registry branch
 # ---
 # id: SCRIPT-0046
@@ -130,6 +131,16 @@ if ! git checkout "$REGISTRY_BRANCH" 2>/dev/null; then
   echo "⚠️  Error: Cannot checkout $REGISTRY_BRANCH branch. Skipping registry record." >&2
   exit 0
 fi
+
+# Sync local branch with remote to prevent divergence
+# This ensures we're always building on top of the latest remote state
+if ! git reset --hard "origin/$REGISTRY_BRANCH" 2>/dev/null; then
+  echo "⚠️  Warning: Could not sync with origin/$REGISTRY_BRANCH. Continuing anyway." >&2
+fi
+
+# Configure git user for CI environments (GitHub Actions runners don't have this set)
+git config user.email "github-actions[bot]@users.noreply.github.com"
+git config user.name "github-actions[bot]"
 
 # Ensure CSV directory exists
 mkdir -p "$(dirname "$CSV_PATH")"

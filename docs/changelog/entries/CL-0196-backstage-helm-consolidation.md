@@ -1,12 +1,13 @@
 ---
 id: CL-0196-backstage-helm-consolidation
 title: 'CL-0196: Backstage Helm Chart Consolidation'
-type: documentation
-domain: platform-core
-owner: platform-team
-lifecycle: active
+type: changelog
 status: active
-schema_version: 1
+owner: platform-team
+domain: platform-core
+applies_to: []
+lifecycle: active
+exempt: false
 risk_profile:
   production_impact: medium
   security_risk: none
@@ -15,9 +16,14 @@ reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
   maturity: 1
+schema_version: 1
 relates_to:
   - ADR-0066-platform-dashboards-as-code
   - APPS_DEV_BACKSTAGE
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
 supported_until: 2027-01-01
 version: '1.0'
 breaking_change: true
