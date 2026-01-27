@@ -245,3 +245,18 @@ Bumped `scripts/collect_test_metrics.py` maturity to trigger `python-tests` work
 
 - [ ] Verify test_metrics.json appears in governance-registry after PR #305 merge
 - [ ] Confirm PLATFORM_HEALTH.md shows test metrics after next regeneration
+
+## Update - 2026-01-27T11:05:00Z
+
+### Git Config Fix for CI Registry Scripts
+
+**Problem:** PR #305 merged but `record-test-metrics` job failed silently because GitHub Actions runners don't have `git user.name/user.email` configured, causing `git commit` to fail.
+
+**Solution:** Added git config for `github-actions[bot]` user before commits in:
+- `scripts/record-test-metrics.sh`
+- `scripts/record-build-timing.sh`
+
+### Outstanding (Git Config Fix)
+
+- [ ] Verify test_metrics.json appears in governance-registry after PR #306 merge
+- [ ] Confirm both registry scripts work in CI after fix
