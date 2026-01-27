@@ -3,20 +3,7 @@ domain: platform-core
 owner: platform-team
 last_updated: "2026-01-16"
 managed_by: platform-team
-databases:
-  test_inventory2:
-    metadata:
-      id: DATABASE_TEST_INVENTORY2
-      owner: app-team
-      requested_by: daniel-deans
-      domain: application
-      risk: medium
-      environment: dev
-      status: pending
-      created_date: "2026-01-16"
-    configuration:
-      username: test_inventory2_user
-      secret_path: goldenpath/dev/test_inventory2/postgres
+databases: {}
 # Example structure:
 # wordpress-db:
 # metadata:
