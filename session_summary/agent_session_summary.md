@@ -3744,3 +3744,15 @@ Minimal fixes to resolve pre-commit CI failures without triggering TDD gate:
 ### Artifacts
 
 - pyproject.toml - Ruff configuration
+
+## 2026-01-27: Helm Unit Test CI Fix
+
+**Agent:** Claude Opus 4.5
+**Branch:** fix/helm-unittest-version
+**PR:** #288
+
+### Summary
+
+Fixed helm-unittest plugin compatibility:
+- Pinned plugin to version 0.5.1 for Helm 3.14 compatibility
+- Latest plugin uses platformHooks not supported by Helm 3.14
