@@ -1477,3 +1477,9 @@ Implemented full persistent mode support in the Makefile, providing equivalent t
 - Consider adding `init-persistent` target for explicit state initialization
 
 Signed: Claude Opus 4.5 (2026-01-17T18:45:00Z)
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

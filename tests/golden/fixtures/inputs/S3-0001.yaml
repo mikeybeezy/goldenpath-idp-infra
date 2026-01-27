@@ -1,0 +1,39 @@
+# S3 Bucket Request Fixture for Contract Validation
+# Tests the bespoke schema validator against s3.schema.yaml
+---
+apiVersion: goldenpath.io/v1
+kind: S3BucketRequest
+id: S3-0001
+environment: dev
+owner: platform-team
+application: test-app
+requester: test-user
+
+metadata:
+  title: "Test Logs Bucket"
+  description: "Test bucket for golden tests"
+  created: "2026-01-26"
+
+spec:
+  bucketName: goldenpath-dev-test-logs
+  purpose:
+    type: logs
+    description: "Test bucket for validating schema contract enforcement"
+  storageClass: standard
+  encryption:
+    type: sse-s3
+  versioning: false
+  publicAccess: blocked
+  retentionPolicy:
+    type: time-bounded
+    rationale: "Test retention for contract validation"
+  lifecycle:
+    expireDays: 90
+    transitionToIaDays: 30
+  accessLogging:
+    enabled: false
+  costAlertGb: 50
+  corsEnabled: false
+  tags:
+    costCenter: test
+    purpose: testing

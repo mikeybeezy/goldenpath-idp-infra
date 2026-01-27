@@ -1,13 +1,45 @@
 # Owner: platform-team
 # Purpose: Ensure human oversight for critical infrastructure and automation
+#
+# AGENT TRUST ARCHITECTURE (ADR-0164)
+# ===================================
+# This file defines resources that require HUMAN approval.
+# AI agents cannot approve changes to these paths - they can only propose.
+# This prevents agents from gaming the system by weakening their own constraints.
 
 # Global owners for everything that isn't specifically claimed
 *       @mikeybeezy
 
-# Automation & Governance
+# ============================================================================
+# PROTECTED RESOURCES - Agent Trust Boundaries (ADR-0164)
+# ============================================================================
+# These paths define the "rules of the game" for agents.
+# Changes here require human review to prevent privilege escalation.
+
+# This file itself - agents cannot modify approval authority
+.github/CODEOWNERS    @mikeybeezy
+
+# CI/CD workflows - agents cannot modify enforcement mechanisms
 .github/workflows/    @mikeybeezy
+
+# Golden files - agents cannot change expected behavior without human approval
+tests/golden/fixtures/expected/  @mikeybeezy
+
+# Trust and governance policies
+docs/adrs/ADR-0164-*             @mikeybeezy
+docs/adrs/ADR-0163-*             @mikeybeezy
+docs/adrs/ADR-0162-*             @mikeybeezy
+docs/10-governance/policies/     @mikeybeezy
+
+# Agent protocols - agents cannot modify their own rules
+docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md  @mikeybeezy
+
+# ============================================================================
+# STANDARD GOVERNANCE
+# ============================================================================
+
+# Automation & Governance
 scripts/              @mikeybeezy
-docs/10-governance/      @mikeybeezy
 docs/adrs/            @mikeybeezy
 
 # Infrastructure

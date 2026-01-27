@@ -22,7 +22,7 @@ status: active
 
 metadata:
   description: "Contract for requesting S3 buckets"
-  backstage_template: "backstage-helm/backstage-catalog/templates/s3-request.yaml"
+  backstage_template: "catalog/templates/s3-request.yaml"
   parser_module: "scripts/s3_request_parser.py"
   parser_id: "SCRIPT-0037"
   parser_status: "active"

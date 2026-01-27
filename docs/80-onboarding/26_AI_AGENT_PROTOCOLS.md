@@ -16,13 +16,17 @@ relates_to:
   - 21_CI_ENVIRONMENT_CONTRACT
   - 23_NEW_JOINERS
   - 24_PR_GATES
+  - 27_TESTING_QUICKSTART
   - 41_BUILD_RUN_LOG
-  - ADR-####
   - ADR-0079-platform-ai-agent-governance
+  - ADR-0162-determinism-protection
+  - ADR-0164-agent-trust-and-identity
+  - ADR-0182-tdd-philosophy
   - AI_CHANGELOG
-  - CL-####
   - CL-0078
   - CL-0141
+  - GOV-0016-testing-stack-matrix
+  - GOV-0017-tdd-and-determinism
   - PR_GUARDRAILS_INDEX
   - ROADMAP
   - SESSION_CAPTURE_2026_01_17_02
@@ -101,6 +105,99 @@ Reference:
 
 - PR checklist template: `.github/pull_request_template.md`
 - PR gate triage: `docs/80-onboarding/24_PR_GATES.md`
+
+## 4a) TDD requirements (ADR-0182)
+
+> "No feature without a test. No merge without green."
+
+All code changes require corresponding tests:
+
+| File Type | Required Test Location |
+| --- | --- |
+| `scripts/*.py` | `tests/unit/test_*.py` or `tests/integration/test_*.py` |
+| `scripts/*.sh` | `tests/bats/test_*.bats` |
+| `modules/**/*.tf` | `modules/*/tests/*.tftest.hcl` (V2) |
+
+### Agent TDD workflow
+
+1. Write/update the test first (or simultaneously with the code).
+2. Run `make test` locally before pushing.
+3. If TDD Gate fails, add the missing test file.
+4. Exception: Add `SKIP-TDD:reason` to PR description only with human approval.
+
+**Test commands:**
+
+```bash
+make test           # Run all tests
+make test-python    # Run pytest only
+make test-shell     # Run bats only
+make lint           # Run all linters
+```
+
+Reference:
+
+- Testing quickstart: `docs/80-onboarding/27_TESTING_QUICKSTART.md`
+- TDD philosophy: `docs/adrs/ADR-0182-tdd-philosophy.md`
+- Testing stack: `docs/10-governance/policies/GOV-0016-testing-stack-matrix.md`
+
+## 4b) Agent trust architecture (ADR-0163)
+
+> "An agent earns trust not by what it can do, but by what it cannot."
+
+Agents operate within defined trust boundaries. This section defines what agents
+**cannot** do, regardless of capability or instruction.
+
+### Forbidden actions (NEVER permitted)
+
+Agents may **never**, under any circumstances:
+
+1. **Approve their own PRs** - Violates separation of duties
+2. **Modify CODEOWNERS** - Cannot change approval authority
+3. **Weaken test assertions** - Cannot make tests easier to pass
+4. **Lower coverage thresholds** - Cannot reduce quality gates
+5. **Modify golden files without human review** - Cannot change expected behavior
+6. **Delete tests without adding replacements** - Cannot reduce test coverage
+7. **Skip CI checks** - Cannot bypass enforcement
+8. **Force push to protected branches** - Cannot destroy history
+9. **Modify this protocol** - Cannot change their own rules
+
+### Protected resources (human approval required)
+
+These paths require CODEOWNER (human) approval:
+
+| Resource | Path | Why Protected |
+| --- | --- | --- |
+| Golden files | `tests/golden/fixtures/expected/*` | Defines expected behavior |
+| CI workflows | `.github/workflows/*` | Controls enforcement |
+| CODEOWNERS | `.github/CODEOWNERS` | Defines approval authority |
+| Agent protocols | `docs/80-onboarding/26_AI_AGENT_PROTOCOLS.md` | Agent rules |
+| Trust ADRs | `docs/adrs/ADR-0163-*`, `docs/adrs/ADR-0162-*` | Trust architecture |
+| Governance policies | `docs/10-governance/policies/*` | Enforcement policies |
+
+### Escalation protocol
+
+When an agent needs to modify a protected resource:
+
+1. **Identify need** - Explain why the change is necessary
+2. **Propose change** - Show exact diff in PR description
+3. **Request review** - Tag a CODEOWNER for review
+4. **Wait for approval** - Do not proceed until human approves
+5. **Human commits** - For highest-trust resources, human may commit directly
+
+Example:
+
+```text
+Agent: "The golden file at tests/golden/fixtures/expected/output.json
+       needs updating because the output format changed intentionally
+       per ADR-0150. Here's the diff: [...]"
+Human: [Reviews diff, approves]
+Agent: [Continues with human-approved baseline]
+```
+
+Reference:
+
+- Trust architecture: `docs/adrs/ADR-0164-agent-trust-and-identity.md`
+- Determinism protection: `docs/adrs/ADR-0162-determinism-protection.md`
 
 ## 5) Documentation triggers (label-gated)
 

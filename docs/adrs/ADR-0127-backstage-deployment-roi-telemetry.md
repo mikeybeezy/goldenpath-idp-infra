@@ -51,3 +51,9 @@ We will use a dedicated bash script (`scripts/deploy-backstage.sh`) that encapsu
 - **Automation Advantage**: Reclaims approximately 15 minutes of manual labor per deployment attempt.
 - **Reporting Fidelity**: Provides real-time ROI data to the platform leadership dashboard.
 - **Governance Alignment**: Every deployment is "Born Governed" with correct metadata and configuration.
+
+---
+
+**Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

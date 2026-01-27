@@ -98,3 +98,9 @@ workflow will not auto-merge changes.
 
 - Implement the PR-based workflow for doc generation.
 - Confirm CODEOWNERS coverage for generated catalog docs.
+
+---
+
+**Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

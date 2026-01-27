@@ -290,7 +290,7 @@ open https://backstage.dev.goldenpathidp.io
 **File to Create**:
 
 ```yaml
-# backstage-helm/backstage-catalog/templates/stateful-app-template.yaml
+# catalog/templates/stateful-app-template.yaml
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:

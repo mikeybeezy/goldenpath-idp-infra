@@ -39,8 +39,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from metadata_config import platform_yaml_dump
 
 SOURCE_CATALOG = "docs/20-contracts/resource-catalogs/ecr-catalog.yaml"
-TARGET_DIR = "backstage-helm/backstage-catalog/resources/ecr"
-ALL_RESOURCES_PATH = "backstage-helm/backstage-catalog/all-resources.yaml"
+TARGET_DIR = "catalog/resources/ecr"
+ALL_RESOURCES_PATH = "catalog/all-resources.yaml"
 
 
 def dump_yaml(data, path: str) -> None:

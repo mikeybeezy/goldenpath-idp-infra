@@ -159,3 +159,9 @@ grep "_build-and-release.yml" backstage-helm/backstage-catalog/templates/*/skele
 - [Stateful App Request Flow](../../85-how-it-works/self-service/STATEFUL_APP_REQUEST_FLOW.md)
 - [Backend App + RDS Request Flow](../../85-how-it-works/self-service/BACKEND_APP_RDS_REQUEST_FLOW.md)
 - [GOV-0012 Build Pipeline Standards](../../10-governance/policies/GOV-0012-build-pipeline-standards.md)
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

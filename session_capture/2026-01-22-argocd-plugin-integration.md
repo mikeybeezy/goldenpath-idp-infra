@@ -162,3 +162,9 @@ Signed: Claude Opus 4.5 (2026-01-22T15:30:00Z)
 | Community Support | Strong | Growing | Growing |
 
 **Decision**: Roadie selected for standalone architecture and proven stability.
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

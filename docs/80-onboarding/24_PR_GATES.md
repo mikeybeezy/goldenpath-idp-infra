@@ -14,13 +14,16 @@ relates_to:
   - 04_PR_GUARDRAILS
   - 23_NEW_JOINERS
   - 26_AI_AGENT_PROTOCOLS
+  - 27_TESTING_QUICKSTART
   - 30_DOCUMENTATION_FRESHNESS
   - ADR-0072-platform-pr-checklist-template
   - ADR-0101-pr-metadata-auto-heal
+  - ADR-0182-tdd-philosophy
   - CL-0014-pr-gates-onboarding
   - CL-0022-pr-guardrails-template-copy
   - CONTRIBUTING
   - DOCS_CHANGELOG_README
+  - GOV-0016-testing-stack-matrix
   - RB-0027
   - agent_session_summary
 supersedes: []
@@ -130,6 +133,9 @@ git push
 | `Branch Policy Guard` | PR targets `main` from non-`development` | Open PR into `development` |
 | `Labeler` | Invalid `.github/labeler.yml` or stale base | Fix config or update base branch |
 | Merge conflicts | Base branch moved since branch creation | Rebase on base and resolve conflicts |
+| `TDD Gate: Missing tests` | New `.py`/`.sh` without test file | Add `test_*.py` or `test_*.bats` file |
+| `Blast Radius Exceeded` | PR changes >80 files | Add `blast-radius-approved` label or split PR |
+| `pytest/bats failures` | Tests fail on critical paths | Fix failing tests, run `make test` locally |
 
 | Gate | Target Branch | Trigger | What it checks |
 | :--- | :--- | :--- | :--- |
@@ -143,8 +149,14 @@ git push
 | Quality - YAML/Markdown | **All** | YAML/MD files | Basic syntax linting |
 | Quality - Doc Freshness | `main` | Living docs | Doc appears in index and is current |
 | Plan - PR Terraform Plan | `main`* | Infra paths | Terraform fmt/validate/plan |
+| **TDD Gate** | **All** | `.py`, `.sh` files | Corresponding test file exists |
+| **Determinism Guard - Blast Radius** | **All** | >80 files changed | Requires `blast-radius-approved` label |
+| **Determinism Guard - Tests** | **All** | Critical paths** | Runs pytest + bats tests |
+| **Determinism Guard - Schemas** | **All** | `schemas/` changes | YAML schema validation |
 
 *Note: Infrastructure plans are optional for `development` but recommended for validation.*
+
+**Critical paths: modules/, scripts/, bootstrap/, .github/workflows/, envs/*.tf
 
 ## Conditional Bypass Labels (ADR-0101)
 

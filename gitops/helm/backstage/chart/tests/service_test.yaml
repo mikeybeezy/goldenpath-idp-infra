@@ -1,0 +1,85 @@
+# ---
+# id: HELMTEST-BACKSTAGE-SERVICE
+# type: helm-unittest
+# owner: platform-team
+# ---
+# Helm unit tests for Backstage service template
+# Run with: helm unittest gitops/helm/backstage/chart
+
+suite: Service Tests
+templates:
+  - templates/service.yaml
+
+tests:
+  # Tests using actual values.yaml defaults (prevents drift)
+  - it: should use actual default service type from values.yaml
+    values:
+      - ../values.yaml
+    asserts:
+      - equal:
+          path: spec.type
+          value: ClusterIP
+
+  - it: should use actual default port from values.yaml
+    values:
+      - ../values.yaml
+    asserts:
+      - equal:
+          path: spec.ports[0].port
+          value: 7007
+
+  - it: should create a Service with correct name
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-backstage
+
+  - it: should use ClusterIP type by default
+    asserts:
+      - equal:
+          path: spec.type
+          value: ClusterIP
+
+  - it: should use custom service type when set
+    set:
+      service.type: LoadBalancer
+    asserts:
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+
+  - it: should expose port 7007 by default
+    asserts:
+      - equal:
+          path: spec.ports[0].port
+          value: 7007
+      - equal:
+          path: spec.ports[0].targetPort
+          value: 7007
+
+  - it: should use custom port when set
+    set:
+      service.port: 8080
+    asserts:
+      - equal:
+          path: spec.ports[0].port
+          value: 8080
+
+  - it: should have http port name
+    asserts:
+      - equal:
+          path: spec.ports[0].name
+          value: http
+      - equal:
+          path: spec.ports[0].protocol
+          value: TCP
+
+  - it: should have correct selector labels
+    asserts:
+      - isNotEmpty:
+          path: spec.selector
+      - matchRegex:
+          path: spec.selector["app.kubernetes.io/name"]
+          pattern: backstage

@@ -27,7 +27,10 @@ resource "helm_release" "argocd" {
     value = "ClusterIP"
   }
 
-  # Add common tags to the deployment if supported by the chart, or just track via Terraform state.
+  # ArgoCD creates Services/Ingresses that get intercepted by the LBC webhook.
+  # LBC must be fully deployed first or the webhook has no endpoints.
+  # See: session_capture/2026-01-23-v1-milestone-ephemeral-deploy-success.md
+  depends_on = [helm_release.aws_load_balancer_controller]
 }
 
 resource "helm_release" "aws_load_balancer_controller" {

@@ -26,7 +26,7 @@ spec:
       ref: values
     # Source 2: Helm chart with values reference
     - repoURL: https://github.com/mikeybeezy/goldenpath-idp-infra.git
-      path: backstage-helm/charts/backstage
+      path: gitops/helm/backstage/chart
       targetRevision: development
       helm:
         valueFiles:

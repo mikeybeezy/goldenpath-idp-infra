@@ -1,5 +1,5 @@
 # Backstage Helm Values - Dev Environment
-# Chart: backstage-helm/charts/backstage (local chart)
+# Chart: gitops/helm/backstage/chart
 governance:
   id: HELM_BACKSTAGE_METADATA
   owner: null

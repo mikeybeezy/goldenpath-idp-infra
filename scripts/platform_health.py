@@ -242,7 +242,7 @@ def get_catalog_stats():
                     except: pass
 
     # 2. Backstage Demo Catalog
-    backstage_dir = 'backstage-helm/backstage-catalog'
+    backstage_dir = 'catalog'
     if os.path.exists(backstage_dir):
         for f in os.listdir(backstage_dir):
             if f.startswith('all-') and f.endswith('.yaml'):
@@ -358,6 +358,49 @@ def get_build_timing_stats():
 
     return stats
 
+def get_test_metrics_stats():
+    """Get test metrics from governance-registry branch."""
+    import subprocess
+
+    stats = {
+        'available': False,
+        'sources': [],
+    }
+
+    def load_metrics(path, label):
+        result = subprocess.run(
+            ['git', 'show', f'origin/governance-registry:{path}'],
+            capture_output=True, text=True, timeout=10
+        )
+        if result.returncode != 0:
+            return
+        try:
+            data = json.loads(result.stdout)
+        except Exception:
+            return
+        if isinstance(data, dict):
+            stats['sources'].append({
+                'label': label,
+                'path': path,
+                'data': data,
+            })
+
+    try:
+        subprocess.run(
+            ['git', 'fetch', 'origin', 'governance-registry'],
+            capture_output=True, timeout=10
+        )
+
+        load_metrics('environments/development/latest/test_metrics.json', 'infra')
+        load_metrics('backstage/environments/development/latest/test_metrics.json', 'backstage')
+
+        if stats['sources']:
+            stats['available'] = True
+    except (subprocess.TimeoutExpired, subprocess.SubprocessError, Exception):
+        pass
+
+    return stats
+
 def calculate_maturity(stats):
     """Calculates a risk-weighted maturity score (0-100)."""
     impact_weights = {'high': 5, 'medium': 2, 'low': 1, 'none': 0, 'unknown': 1}
@@ -405,6 +448,7 @@ def generate_report(target_dir='.'):
     script_cert_stats = get_script_certification_stats()
     maturity_snapshots = get_maturity_snapshots()
     build_timing_stats = get_build_timing_stats()
+    test_metrics_stats = get_test_metrics_stats()
     catalog_stats = get_catalog_stats()
     compliance_data = get_compliance_stats()
     trends = get_historical_trends()
@@ -636,6 +680,30 @@ def generate_report(target_dir='.'):
             lines.append(f"| `{phase}` | {duration_str} | {count} |")
     else:
         lines.append("- **Status**: Build timing data not available from governance-registry branch.")
+
+    lines.append("")
+    lines.append("## Test Health Metrics")
+    lines.append("")
+    if test_metrics_stats.get('available'):
+        lines.append("| Repo | Framework | Total | Passed | Failed | Skipped | Coverage (lines) | Threshold |")
+        lines.append("| :--- | :--- | ---: | ---: | ---: | ---: | ---: | :--- |")
+        for source in test_metrics_stats.get('sources', []):
+            data = source.get('data', {})
+            repo = data.get('repo') or source.get('label', 'n/a')
+            for entry in data.get('frameworks', []):
+                coverage = entry.get('coverage') or {}
+                coverage_lines = coverage.get('lines')
+                coverage_str = f"{coverage_lines:.2f}%" if isinstance(coverage_lines, (int, float)) else "n/a"
+                threshold = "PASS" if entry.get('threshold_met') else "FAIL"
+                lines.append(
+                    f"| `{repo}` | `{entry.get('framework', 'n/a')}` | {entry.get('total', 0)} | {entry.get('passed', 0)} | {entry.get('failed', 0)} | {entry.get('skipped', 0)} | {coverage_str} | {threshold} |"
+                )
+        lines.append("")
+        lines.append("- **Sources**:")
+        for source in test_metrics_stats.get('sources', []):
+            lines.append(f"  - `governance-registry:{source.get('path')}`")
+    else:
+        lines.append("- **Status**: Test metrics not available from governance-registry branch.")
 
     lines.append("")
     lines.append("## 🛡️ Risk & Maturity Visualization")

@@ -102,3 +102,9 @@ make session-archive-dry-run
 - [ADR-0176: Session Memory Management](../../adrs/ADR-0176-session-memory-management.md)
 - [AI Agent Governance](../../10-governance/07_AI_AGENT_GOVERNANCE.md)
 - [Capability Ledger Section 24](../../00-foundations/product/CAPABILITY_LEDGER.md)
+
+---
+
+**Historical Note (2026-01-26):** References to `backstage-helm/` paths in this document are historical. Per CL-0196, the directory structure was consolidated:
+- `backstage-helm/charts/backstage/` → `gitops/helm/backstage/chart/`
+- `backstage-helm/backstage-catalog/` → `catalog/`

@@ -75,6 +75,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [aws_inventory.py](aws_inventory.py) | --- |
 | [backfill_metadata.py](backfill_metadata.py) | --- |
 | [check_script_traceability.py](check_script_traceability.py) | --- |
+| [collect_test_metrics.py](collect_test_metrics.py) | --- |
 | [deploy-backstage.sh](deploy-backstage.sh) | --- |
 | [eks_request_parser.py](eks_request_parser.py) | --- |
 | [enforce_emoji_policy.py](enforce_emoji_policy.py) | --- |
@@ -85,14 +86,17 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [generate_doc_system_map.py](generate_doc_system_map.py) | --- |
 | [generate_governance_vocab.py](generate_governance_vocab.py) | --- |
 | [generate_script_matrix.py](generate_script_matrix.py) | --- |
+| [generate_test_proofs.py](generate_test_proofs.py) | --- |
 | [inject_script_metadata.py](inject_script_metadata.py) | --- |
 | [load-image-to-kind.sh](load-image-to-kind.sh) | --- |
 | [migrate_partial_metadata.py](migrate_partial_metadata.py) | --- |
 | [preflight_secrets_check.sh](preflight_secrets_check.sh) | --- |
 | [rds_provision.py](rds_provision.py) | --- |
+| [rds_provision_k8s.sh](rds_provision_k8s.sh) | RDS Provisioning via K8s Job |
 | [rds_request_parser.py](rds_request_parser.py) | --- |
 | [rds_secrets_preflight.sh](rds_secrets_preflight.sh) | --- |
 | [record-build-timing.sh](record-build-timing.sh) | Record build timing to governance-registry branch |
+| [record-test-metrics.sh](record-test-metrics.sh) | Record test metrics JSON to governance-registry branch |
 | [refresh-ecr-secret.sh](refresh-ecr-secret.sh) | --- |
 | [reliability-metrics.sh](reliability-metrics.sh) | --- |
 | [repair_shebangs.py](repair_shebangs.py) | --- |
@@ -105,6 +109,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [test_hotfix.py](test_hotfix.py) | --- |
 | [validate_enums.py](validate_enums.py) | --- |
 | [validate_govreg.py](validate_govreg.py) | --- |
+| [validate_request.py](validate_request.py) | Bespoke Schema Validator for GoldenPath Request Contracts. |
 | [validate_routing_compliance.py](validate_routing_compliance.py) | --- |
 | [validate_scripts_tested.py](validate_scripts_tested.py) | --- |
 <!-- SCRIPTS_TABLE_END -->
