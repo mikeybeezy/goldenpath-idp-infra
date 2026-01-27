@@ -6,7 +6,7 @@ Run with: pytest -q tests/scripts/test_script_0035.py
 Note: Integration tests require a PostgreSQL database (Docker or real).
 Unit tests use mocking and can run anywhere.
 """
-import json
+
 import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -19,9 +19,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
 
 from rds_provision import (
-    AppDatabase,
     RdsCredentials,
-    ProvisionResult,
     AuditRecord,
     parse_tfvars,
     parse_credentials,
@@ -58,9 +56,7 @@ application_databases = {
 @pytest.fixture
 def sample_tfvars_file(sample_tfvars_content):
     """Create a temporary tfvars file for testing."""
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".tfvars", delete=False
-    ) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".tfvars", delete=False) as f:
         f.write(sample_tfvars_content)
         return Path(f.name)
 
@@ -108,9 +104,7 @@ class TestParseTfvars:
         assert backstage.username == "backstage_user"
 
     def test_returns_empty_if_no_databases(self):
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".tfvars", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".tfvars", delete=False) as f:
             f.write("environment = 'dev'\n")
             path = f.name
 
@@ -361,7 +355,6 @@ class TestApprovalGates:
     @patch.dict("os.environ", {}, clear=True)
     def test_non_dev_requires_approval(self):
         """Test that non-dev environments require ALLOW_DB_PROVISION=true."""
-        import os
         from rds_provision import main
 
         # Simulate calling with --require-approval for prod
@@ -387,13 +380,9 @@ class TestApprovalGates:
         """Test that non-dev with ALLOW_DB_PROVISION=true proceeds."""
         mock_provision.return_value = []
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".tfvars", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".tfvars", delete=False) as f:
             f.write("# empty\n")
             tfvars_path = f.name
-
-        from rds_provision import main
 
         with patch(
             "sys.argv",
@@ -514,7 +503,9 @@ class TestIntegration:
 
         # Verify databases exist
         with pg_connection.cursor() as cur:
-            cur.execute("SELECT datname FROM pg_database WHERE datname IN ('keycloak', 'backstage')")
+            cur.execute(
+                "SELECT datname FROM pg_database WHERE datname IN ('keycloak', 'backstage')"
+            )
             dbs = [row[0] for row in cur.fetchall()]
             assert "keycloak" in dbs
             assert "backstage" in dbs

@@ -91,7 +91,7 @@ jobs:
 
           if [[ ${#MISSING_TESTS[@]} -gt 0 ]]; then
             echo "::error::Missing tests for Terraform modules"
-            echo "❌ The following modules are missing tests:" >> "$GITHUB_STEP_SUMMARY"
+            echo " The following modules are missing tests:" >> "$GITHUB_STEP_SUMMARY"
             for module in "${MISSING_TESTS[@]}"; do
               echo "  - $module"
               echo "  - \`$module\`" >> "$GITHUB_STEP_SUMMARY"

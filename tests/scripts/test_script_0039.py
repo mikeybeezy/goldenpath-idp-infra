@@ -12,14 +12,13 @@ Test Categories:
 """
 
 import pytest
-import tempfile
 from pathlib import Path
-from typing import Dict, Any, List
 
 import yaml
 
 # Import the module under test
 import sys
+
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
 
 from validate_enums import (
@@ -34,6 +33,7 @@ from validate_enums import (
 # ============================================================================
 # Fixtures
 # ============================================================================
+
 
 @pytest.fixture
 def valid_enums():
@@ -64,6 +64,7 @@ def enums_file(valid_enums, tmp_path):
 # Test: load_yaml
 # ============================================================================
 
+
 class TestLoadYaml:
     def test_loads_valid_yaml(self, tmp_path):
         """Should load a valid YAML file."""
@@ -90,6 +91,7 @@ class TestLoadYaml:
 # ============================================================================
 # Test: get_dot
 # ============================================================================
+
 
 class TestGetDot:
     def test_simple_path(self):
@@ -123,6 +125,7 @@ class TestGetDot:
 # ============================================================================
 # Test: find_frontmatter
 # ============================================================================
+
 
 class TestFindFrontmatter:
     def test_parses_valid_frontmatter(self):
@@ -183,6 +186,7 @@ Content
 # Test: validate_value
 # ============================================================================
 
+
 class TestValidateValue:
     def test_valid_value_no_error(self):
         """Should not add error for valid value."""
@@ -228,6 +232,7 @@ class TestValidateValue:
 # Test: scan_file (YAML)
 # ============================================================================
 
+
 class TestScanFileYaml:
     def test_scans_valid_yaml(self, tmp_path, valid_enums):
         """Should scan YAML file without errors for valid values."""
@@ -242,7 +247,11 @@ class TestScanFileYaml:
         checks = [
             ("yaml", "owner", valid_enums["owners"]),
             ("yaml", "domain", valid_enums["domains"]),
-            ("yaml", "reliability.observability_tier", valid_enums["observability_tier"]),
+            (
+                "yaml",
+                "reliability.observability_tier",
+                valid_enums["observability_tier"],
+            ),
         ]
         errors = []
 
@@ -294,6 +303,7 @@ domain: application
 # Test: scan_file (Markdown frontmatter)
 # ============================================================================
 
+
 class TestScanFileMarkdown:
     def test_scans_valid_markdown(self, tmp_path, valid_enums):
         """Should scan markdown frontmatter without errors for valid values."""
@@ -317,7 +327,11 @@ Content here.
             ("mdfm", "owner", valid_enums["owners"]),
             ("mdfm", "domain", valid_enums["domains"]),
             ("mdfm", "status", valid_enums["lifecycle"]),
-            ("mdfm", "risk_profile.production_impact", valid_enums["risk_profile_production_impact"]),
+            (
+                "mdfm",
+                "risk_profile.production_impact",
+                valid_enums["risk_profile_production_impact"],
+            ),
         ]
         errors = []
 
@@ -381,6 +395,7 @@ invalid: [unbalanced
 # Test: Nested field validation
 # ============================================================================
 
+
 class TestNestedFieldValidation:
     def test_validates_nested_risk_profile(self, tmp_path, valid_enums):
         """Should validate nested risk_profile fields."""
@@ -395,9 +410,21 @@ class TestNestedFieldValidation:
         path.write_text(yaml.safe_dump(yaml_content))
 
         checks = [
-            ("yaml", "risk_profile.production_impact", valid_enums["risk_profile_production_impact"]),
-            ("yaml", "risk_profile.security_risk", valid_enums["risk_profile_security_risk"]),
-            ("yaml", "risk_profile.coupling_risk", valid_enums["risk_profile_coupling_risk"]),
+            (
+                "yaml",
+                "risk_profile.production_impact",
+                valid_enums["risk_profile_production_impact"],
+            ),
+            (
+                "yaml",
+                "risk_profile.security_risk",
+                valid_enums["risk_profile_security_risk"],
+            ),
+            (
+                "yaml",
+                "risk_profile.coupling_risk",
+                valid_enums["risk_profile_coupling_risk"],
+            ),
         ]
         errors = []
 
@@ -416,7 +443,11 @@ class TestNestedFieldValidation:
         path.write_text(yaml.safe_dump(yaml_content))
 
         checks = [
-            ("yaml", "reliability.observability_tier", valid_enums["observability_tier"]),
+            (
+                "yaml",
+                "reliability.observability_tier",
+                valid_enums["observability_tier"],
+            ),
             ("yaml", "reliability.rollback_strategy", valid_enums["rollback_strategy"]),
         ]
         errors = []
@@ -435,7 +466,11 @@ class TestNestedFieldValidation:
         path.write_text(yaml.safe_dump(yaml_content))
 
         checks = [
-            ("yaml", "risk_profile.production_impact", valid_enums["risk_profile_production_impact"]),
+            (
+                "yaml",
+                "risk_profile.production_impact",
+                valid_enums["risk_profile_production_impact"],
+            ),
         ]
         errors = []
 

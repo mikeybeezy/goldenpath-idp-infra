@@ -3,8 +3,9 @@ id: CL-0186-certification-tracking-ci
 title: 'CL-0186: Add certification tracking to script-certification-gate'
 type: changelog
 status: active
-domain: platform-core
 owner: platform-team
+domain: platform-core
+applies_to: []
 lifecycle: active
 exempt: false
 risk_profile:
@@ -19,11 +20,11 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
+supported_until: 2028-01-01
 value_quantification:
   vq_class: MV/LQ
   impact_tier: low
   potential_savings_hours: 1.0
-supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---

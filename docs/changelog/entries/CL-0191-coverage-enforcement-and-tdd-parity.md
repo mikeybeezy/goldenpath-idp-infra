@@ -2,11 +2,16 @@
 id: CL-0191-coverage-enforcement-and-tdd-parity
 title: Coverage Enforcement and TDD Parity with Backstage
 type: changelog
+status: active
+owner: platform-team
 domain: platform-core
 applies_to: []
-owner: platform-team
 lifecycle: active
 exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
 relates_to:
   - ADR-0182-tdd-philosophy
@@ -23,8 +28,6 @@ tags:
   - coverage
   - parity
 inheritance: {}
-status: active
-category: platform
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
@@ -78,8 +81,8 @@ Confirmed infra already has TDD gate workflow (`.github/workflows/tdd-gate.yml`)
 | Test integrity guard | ✅ | ✅ | Parity |
 | Coverage enforcement | ✅ 50% | ✅ 30% | Infra higher |
 | Test count | 108 | 2 | Gap |
-| Golden tests | ✅ | ❌ | Gap |
-| Contract tests | ⚠️ | ❌ | Gap |
+| Golden tests | ✅ |  | Gap |
+| Contract tests | ⚠️ |  | Gap |
 
 ### Architectural Decision: Bespoke Schema Format
 

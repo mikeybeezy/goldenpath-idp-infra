@@ -2,10 +2,11 @@
 id: CL-0199-validate-request-conditional-operators
 title: Fix missing conditional rule operators in bespoke schema validator
 type: changelog
+status: active
+owner: platform-team
 domain: governance
 applies_to:
   - policies
-owner: platform-team
 lifecycle: active
 exempt: false
 risk_profile:
@@ -27,7 +28,6 @@ tags:
   - governance
   - validation
 inheritance: {}
-status: active
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

@@ -19,6 +19,7 @@ risk_profile:
   coupling_risk: low
 ---
 """
+
 from __future__ import annotations
 
 # Owner: platform
@@ -173,21 +174,25 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> S3Request:
     cors_enabled = spec.get("corsEnabled", False)
 
     # Validate required fields
-    missing = [k for k, v in {
-        "id": s3_id,
-        "environment": environment,
-        "owner": owner,
-        "application": application,
-        "requester": requester,
-        "spec.bucketName": bucket_name,
-        "spec.purpose.type": purpose_type,
-        "spec.purpose.description": purpose_description,
-        "spec.encryption.type": encryption_type,
-        "spec.retentionPolicy.type": retention_type,
-        "spec.retentionPolicy.rationale": retention_rationale,
-        "spec.costAlertGb": cost_alert_gb,
-        "spec.tags.costCenter": cost_center,
-    }.items() if not v]
+    missing = [
+        k
+        for k, v in {
+            "id": s3_id,
+            "environment": environment,
+            "owner": owner,
+            "application": application,
+            "requester": requester,
+            "spec.bucketName": bucket_name,
+            "spec.purpose.type": purpose_type,
+            "spec.purpose.description": purpose_description,
+            "spec.encryption.type": encryption_type,
+            "spec.retentionPolicy.type": retention_type,
+            "spec.retentionPolicy.rationale": retention_rationale,
+            "spec.costAlertGb": cost_alert_gb,
+            "spec.tags.costCenter": cost_center,
+        }.items()
+        if not v
+    ]
 
     if missing:
         raise ValueError(f"{src_path}: missing required fields: {', '.join(missing)}")
@@ -209,11 +214,19 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> S3Request:
         public_access=str(public_access),
         retention_type=str(retention_type),
         retention_rationale=str(retention_rationale),
-        lifecycle_expire_days=int(lifecycle_expire_days) if lifecycle_expire_days else None,
-        lifecycle_transition_ia_days=int(lifecycle_transition_ia_days) if lifecycle_transition_ia_days else None,
-        lifecycle_transition_glacier_days=int(lifecycle_transition_glacier_days) if lifecycle_transition_glacier_days else None,
+        lifecycle_expire_days=int(lifecycle_expire_days)
+        if lifecycle_expire_days
+        else None,
+        lifecycle_transition_ia_days=int(lifecycle_transition_ia_days)
+        if lifecycle_transition_ia_days
+        else None,
+        lifecycle_transition_glacier_days=int(lifecycle_transition_glacier_days)
+        if lifecycle_transition_glacier_days
+        else None,
         access_logging_enabled=bool(access_logging_enabled),
-        access_logging_target=str(access_logging_target) if access_logging_target else None,
+        access_logging_target=str(access_logging_target)
+        if access_logging_target
+        else None,
         cost_alert_gb=int(cost_alert_gb),
         cost_center=str(cost_center),
         cors_enabled=bool(cors_enabled),
@@ -231,16 +244,24 @@ def validate_enums(req: S3Request, src_path: Path) -> None:
         errors.append(f"purpose.type='{req.purpose_type}' not in {VALID_PURPOSE_TYPES}")
 
     if req.storage_class not in VALID_STORAGE_CLASSES:
-        errors.append(f"storageClass='{req.storage_class}' not in {VALID_STORAGE_CLASSES}")
+        errors.append(
+            f"storageClass='{req.storage_class}' not in {VALID_STORAGE_CLASSES}"
+        )
 
     if req.encryption_type not in VALID_ENCRYPTION_TYPES:
-        errors.append(f"encryption.type='{req.encryption_type}' not in {VALID_ENCRYPTION_TYPES}")
+        errors.append(
+            f"encryption.type='{req.encryption_type}' not in {VALID_ENCRYPTION_TYPES}"
+        )
 
     if req.public_access not in VALID_PUBLIC_ACCESS:
-        errors.append(f"publicAccess='{req.public_access}' not in {VALID_PUBLIC_ACCESS}")
+        errors.append(
+            f"publicAccess='{req.public_access}' not in {VALID_PUBLIC_ACCESS}"
+        )
 
     if req.retention_type not in VALID_RETENTION_TYPES:
-        errors.append(f"retentionPolicy.type='{req.retention_type}' not in {VALID_RETENTION_TYPES}")
+        errors.append(
+            f"retentionPolicy.type='{req.retention_type}' not in {VALID_RETENTION_TYPES}"
+        )
 
     if errors:
         raise ValueError(f"{src_path}: invalid enum values: {'; '.join(errors)}")
@@ -265,14 +286,26 @@ def validate_guardrails(req: S3Request, src_path: Path) -> List[str]:
     if req.environment in ("staging", "prod") and not req.access_logging_enabled:
         errors.append(f"accessLogging required for {req.environment} environment")
     if req.access_logging_enabled and not req.access_logging_target:
-        errors.append("accessLogging.targetBucket required when accessLogging.enabled is true")
-    if req.access_logging_target and not LOGGING_TARGET_PATTERN.match(req.access_logging_target):
-        errors.append("accessLogging.targetBucket must match goldenpath-<env>-logs pattern")
+        errors.append(
+            "accessLogging.targetBucket required when accessLogging.enabled is true"
+        )
+    if req.access_logging_target and not LOGGING_TARGET_PATTERN.match(
+        req.access_logging_target
+    ):
+        errors.append(
+            "accessLogging.targetBucket must match goldenpath-<env>-logs pattern"
+        )
 
     # Lifecycle required for time-bounded/compliance-driven retention
     if req.retention_type in ("time-bounded", "compliance-driven"):
-        if not req.lifecycle_expire_days and not req.lifecycle_transition_ia_days and not req.lifecycle_transition_glacier_days:
-            errors.append("lifecycle rules required when retentionPolicy.type is not 'indefinite'")
+        if (
+            not req.lifecycle_expire_days
+            and not req.lifecycle_transition_ia_days
+            and not req.lifecycle_transition_glacier_days
+        ):
+            errors.append(
+                "lifecycle rules required when retentionPolicy.type is not 'indefinite'"
+            )
 
     # Bucket naming convention
     if not BUCKET_PATTERN.match(req.bucket_name):
@@ -292,11 +325,15 @@ def validate_guardrails(req: S3Request, src_path: Path) -> List[str]:
 
     # Public access exception warning
     if req.public_access == "exception-approved":
-        warnings.append("Public access exception requires platform-approval label on PR")
+        warnings.append(
+            "Public access exception requires platform-approval label on PR"
+        )
 
     # Static assets warning
     if req.purpose_type == "static-assets":
-        warnings.append("Static asset buckets require platform review for CDN/public access")
+        warnings.append(
+            "Static asset buckets require platform review for CDN/public access"
+        )
 
     if errors:
         raise ValueError(f"{src_path}: guardrail violations: {'; '.join(errors)}")
@@ -315,31 +352,41 @@ def generate_tfvars(req: S3Request) -> Dict[str, Any]:
     lifecycle_rules = []
 
     if req.lifecycle_expire_days:
-        lifecycle_rules.append({
-            "id": "expire-objects",
-            "enabled": True,
-            "expiration": {"days": req.lifecycle_expire_days},
-        })
+        lifecycle_rules.append(
+            {
+                "id": "expire-objects",
+                "enabled": True,
+                "expiration": {"days": req.lifecycle_expire_days},
+            }
+        )
 
     if req.lifecycle_transition_ia_days:
-        lifecycle_rules.append({
-            "id": "transition-to-ia",
-            "enabled": True,
-            "transition": [{
-                "days": req.lifecycle_transition_ia_days,
-                "storage_class": "STANDARD_IA",
-            }],
-        })
+        lifecycle_rules.append(
+            {
+                "id": "transition-to-ia",
+                "enabled": True,
+                "transition": [
+                    {
+                        "days": req.lifecycle_transition_ia_days,
+                        "storage_class": "STANDARD_IA",
+                    }
+                ],
+            }
+        )
 
     if req.lifecycle_transition_glacier_days:
-        lifecycle_rules.append({
-            "id": "transition-to-glacier",
-            "enabled": True,
-            "transition": [{
-                "days": req.lifecycle_transition_glacier_days,
-                "storage_class": "GLACIER",
-            }],
-        })
+        lifecycle_rules.append(
+            {
+                "id": "transition-to-glacier",
+                "enabled": True,
+                "transition": [
+                    {
+                        "days": req.lifecycle_transition_glacier_days,
+                        "storage_class": "GLACIER",
+                    }
+                ],
+            }
+        )
 
     return {
         "s3_bucket": {
@@ -359,7 +406,9 @@ def generate_tfvars(req: S3Request) -> Dict[str, Any]:
             "logging": {
                 "enabled": req.access_logging_enabled,
                 "target_bucket": req.access_logging_target,
-            } if req.access_logging_enabled else None,
+            }
+            if req.access_logging_enabled
+            else None,
             "tags": {
                 "Environment": req.environment,
                 "Owner": req.owner,
@@ -426,7 +475,9 @@ def generate_iam_policy(req: S3Request) -> Dict[str, Any]:
     }
 
 
-def generate_audit_record(req: S3Request, action: str, status: str, approver: str) -> Dict[str, Any]:
+def generate_audit_record(
+    req: S3Request, action: str, status: str, approver: str
+) -> Dict[str, Any]:
     """Generate audit record for governance registry."""
     return {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
@@ -461,7 +512,9 @@ def read_catalog_documents(path: Path) -> tuple[Dict[str, Any], Dict[str, Any]]:
     return frontmatter, body
 
 
-def write_catalog_documents(path: Path, frontmatter: Dict[str, Any], body: Dict[str, Any], dry_run: bool) -> None:
+def write_catalog_documents(
+    path: Path, frontmatter: Dict[str, Any], body: Dict[str, Any], dry_run: bool
+) -> None:
     """Write catalog YAML, preserving frontmatter as a separate document."""
     payload = [frontmatter, body] if frontmatter else [body]
     if dry_run:
@@ -555,7 +608,13 @@ def append_audit_record(path: Path, record: Dict[str, Any], dry_run: bool) -> No
 
 def tfvars_output_path(output_root: Path, req: S3Request) -> Path:
     """Get output path for tfvars file."""
-    return output_root / req.environment / "s3" / "generated" / f"{req.s3_id}.auto.tfvars.json"
+    return (
+        output_root
+        / req.environment
+        / "s3"
+        / "generated"
+        / f"{req.s3_id}.auto.tfvars.json"
+    )
 
 
 def iam_policy_output_path(output_root: Path, req: S3Request) -> Path:
@@ -679,8 +738,12 @@ def main() -> int:
                     )
 
                 if args.audit_path:
-                    approver = args.audit_approver or os.environ.get("GITHUB_ACTOR", "unknown")
-                    record = generate_audit_record(req, args.audit_action, args.audit_status, approver)
+                    approver = args.audit_approver or os.environ.get(
+                        "GITHUB_ACTOR", "unknown"
+                    )
+                    record = generate_audit_record(
+                        req, args.audit_action, args.audit_status, approver
+                    )
                     append_audit_record(Path(args.audit_path), record, args.dry_run)
             else:
                 print(f"[OK] {path} validated")

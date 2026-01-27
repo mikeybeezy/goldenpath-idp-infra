@@ -2,12 +2,17 @@
 id: CL-0198-argocd-lbc-webhook-race-fix
 title: ArgoCD/LBC Webhook Race Condition Fix
 type: changelog
+status: active
+owner: platform-team
 domain: platform-core
 applies_to:
   - modules/kubernetes_addons
-owner: platform-team
 lifecycle: active
 exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
 relates_to:
   - session_capture/2026-01-23-v1-milestone-ephemeral-deploy-success
@@ -21,8 +26,6 @@ tags:
   - race-condition
   - hotfix
 inheritance: {}
-status: active
-category: platform
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

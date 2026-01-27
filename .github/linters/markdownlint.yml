@@ -1,6 +1,9 @@
 # Markdownlint Configuration for Platform Documentation
 # Disables rules that conflict with our metadata schema or provide low value
 
+# MD004: List style - disabled to allow mixed styles (session captures are append-only)
+MD004: false
+
 # MD025: Allow multiple top-level headings (title in frontmatter + H1 in body)
 MD025: false
 

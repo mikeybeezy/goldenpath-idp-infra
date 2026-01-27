@@ -91,7 +91,9 @@ class TestCollectTestMetrics(unittest.TestCase):
 
     def test_parse_terraform_test_json_direct_summary_minimal(self):
         """Test fallback for minimal summary shape with skip_count."""
-        terraform_json = '{"test_count":13,"pass_count":13,"fail_count":0,"skip_count":0}'
+        terraform_json = (
+            '{"test_count":13,"pass_count":13,"fail_count":0,"skip_count":0}'
+        )
         terraform_path = self._write("terraform-test-summary.jsonl", terraform_json)
         counts = collect_test_metrics.parse_terraform_test_json(terraform_path)
         self.assertEqual(counts["total"], 13)
@@ -111,7 +113,9 @@ class TestCollectTestMetrics(unittest.TestCase):
 
     def test_parse_terraform_test_json_direct_summary_with_failures(self):
         """Test fallback with failures."""
-        terraform_json = '{"test_count":10,"pass_count":7,"fail_count":2,"skip_count":1}'
+        terraform_json = (
+            '{"test_count":10,"pass_count":7,"fail_count":2,"skip_count":1}'
+        )
         terraform_path = self._write("terraform-test-fail.jsonl", terraform_json)
         counts = collect_test_metrics.parse_terraform_test_json(terraform_path)
         self.assertEqual(counts["total"], 10)

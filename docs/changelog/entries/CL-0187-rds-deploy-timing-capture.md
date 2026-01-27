@@ -3,8 +3,9 @@ id: CL-0187-rds-deploy-timing-capture
 title: 'CL-0187: Add timing capture for rds-deploy target'
 type: changelog
 status: active
-domain: platform-core
 owner: platform-team
+domain: platform-core
+applies_to: []
 lifecycle: active
 exempt: false
 risk_profile:
@@ -20,11 +21,11 @@ supersedes: []
 superseded_by: []
 tags: []
 inheritance: {}
+supported_until: 2028-01-01
 value_quantification:
   vq_class: LV/LQ
   impact_tier: low
   potential_savings_hours: 0.5
-supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---

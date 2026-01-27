@@ -12,7 +12,7 @@ dependencies:
   - Stable schema format definition
   - At least one parser using standard CLI contract
 priority: medium
-vq_class: "\U0001F7E2 HV/HQ"
+vq_class: 🟢 HV/HQ
 estimated_roi: Enables contract validation for all request types
 effort_estimate: 3-5 days
 ---

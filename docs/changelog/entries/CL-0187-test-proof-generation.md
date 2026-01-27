@@ -3,8 +3,9 @@ id: CL-0187-test-proof-generation
 title: 'CL-0187: Add test proof generation for script certification'
 type: changelog
 status: active
-domain: platform-core
 owner: platform-team
+domain: platform-core
+applies_to: []
 lifecycle: active
 exempt: false
 risk_profile:
@@ -24,11 +25,11 @@ tags:
   - certification
   - governance
 inheritance: {}
+supported_until: 2028-01-01
 value_quantification:
   vq_class: HV/LQ
   impact_tier: medium
   potential_savings_hours: 4.0
-supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
 ---
@@ -44,8 +45,8 @@ Closes the gap between "tests declared" and "tests actually ran and passed" in t
 Previously, the script certification system could verify:
 - ✅ Metadata structure is valid
 - ✅ Test file exists
-- ❓ Tests actually ran (unknown)
-- ❓ Tests passed (unknown)
+-  Tests actually ran (unknown)
+-  Tests passed (unknown)
 
 This gap meant `evidence: declared` was effectively the same as `evidence: ci` - neither verified actual test execution.
 

@@ -32,7 +32,7 @@ tags:
 inheritance: {}
 supported_until: 2028-01-01
 value_quantification:
-  vq_class: ⚪ MV/LQ
+  vq_class: MV/LQ
   impact_tier: medium
   potential_savings_hours: 6.0
 version: '1.0'
@@ -41,9 +41,9 @@ breaking_change: false
 
 # CL-0197: Multi-source test health metrics capture
 
-Date: 2026-01-26  
-Owner: platform-team  
-Scope: CI test metrics, governance-registry sync, Platform Health dashboard  
+Date: 2026-01-26
+Owner: platform-team
+Scope: CI test metrics, governance-registry sync, Platform Health dashboard
 Related: PRD-0007, ADR-0183
 
 ## Summary

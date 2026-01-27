@@ -19,6 +19,7 @@ risk_profile:
   coupling_risk: low
 ---
 """
+
 from __future__ import annotations
 
 # Owner: platform
@@ -38,13 +39,11 @@ Modes:
 """
 
 
-
 import argparse
 import json
-import os
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 import yaml
 
@@ -81,9 +80,11 @@ def load_enums(enums_path: Path) -> Dict[str, List[str]]:
     data = load_yaml(enums_path)
     # Existing structure: security: { secret_types: {values: [...]}, ... }
     security = data.get("security", {})
+
     def values(key: str) -> List[str]:
         node = security.get(key, {})
         return list(node.get("values", []))
+
     return {
         "secretType": values("secret_types"),
         "riskTier": values("risk_tiers"),
@@ -108,9 +109,9 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> SecretRequest:
     secretType = spec.get("secretType")
 
     # Nested mapping for risk/rotation/lifecycle (Restoring camelCase structure)
-    riskTier = ((spec.get("risk") or {}).get("tier"))
-    rotationClass = ((spec.get("rotation") or {}).get("rotationClass"))
-    lifecycleStatus = ((spec.get("lifecycle") or {}).get("status"))
+    riskTier = (spec.get("risk") or {}).get("tier")
+    rotationClass = (spec.get("rotation") or {}).get("rotationClass")
+    lifecycleStatus = (spec.get("lifecycle") or {}).get("status")
 
     access = spec.get("access") or {}
     namespace = access.get("namespace")
@@ -121,20 +122,24 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> SecretRequest:
     write_principals = access.get("writePrincipals", [])
     break_glass_principals = access.get("breakGlassPrincipals", [])
 
-    missing = [k for k, v in {
-        "id": secret_id,
-        "name": name,
-        "service": service,
-        "environment": environment,
-        "owner": owner,
-        "spec.provider": provider,
-        "spec.secretType": secretType,
-        "spec.risk.tier": riskTier,
-        "spec.rotation.rotationClass": rotationClass,
-        "spec.lifecycle.status": lifecycleStatus,
-        "spec.access.namespace": namespace,
-        "spec.access.k8sSecretName": k8sSecretName,
-    }.items() if not v]
+    missing = [
+        k
+        for k, v in {
+            "id": secret_id,
+            "name": name,
+            "service": service,
+            "environment": environment,
+            "owner": owner,
+            "spec.provider": provider,
+            "spec.secretType": secretType,
+            "spec.risk.tier": riskTier,
+            "spec.rotation.rotationClass": rotationClass,
+            "spec.lifecycle.status": lifecycleStatus,
+            "spec.access.namespace": namespace,
+            "spec.access.k8sSecretName": k8sSecretName,
+        }.items()
+        if not v
+    ]
 
     if missing:
         raise ValueError(f"{src_path}: missing required fields: {', '.join(missing)}")
@@ -158,7 +163,9 @@ def parse_request(doc: Dict[str, Any], src_path: Path) -> SecretRequest:
     )
 
 
-def validate_enums(req: SecretRequest, enums: Dict[str, List[str]], src_path: Path) -> None:
+def validate_enums(
+    req: SecretRequest, enums: Dict[str, List[str]], src_path: Path
+) -> None:
     def check(field: str, value: str, allowed: List[str]) -> None:
         if value not in allowed:
             raise ValueError(
@@ -182,10 +189,19 @@ def derive_secret_key(req: SecretRequest) -> str:
 
 def tfvars_output_path(tfvars_out_root: Path, req: SecretRequest) -> Path:
     # Writes into envs/<env>/secrets/generated/<service>/<id>.auto.tfvars.json
-    return tfvars_out_root / req.environment / "secrets" / "generated" / req.service / f"{req.secret_id}.auto.tfvars.json"
+    return (
+        tfvars_out_root
+        / req.environment
+        / "secrets"
+        / "generated"
+        / req.service
+        / f"{req.secret_id}.auto.tfvars.json"
+    )
 
 
-def externalsecret_output_path(externalsecret_out_root: Path, req: SecretRequest) -> Path:
+def externalsecret_output_path(
+    externalsecret_out_root: Path, req: SecretRequest
+) -> Path:
     # Writes into gitops/kustomize/overlays/<env>/apps/<service>/externalsecrets/<id>.yaml
     return (
         externalsecret_out_root
@@ -241,9 +257,7 @@ def generate_externalsecret(req: SecretRequest) -> Dict[str, Any]:
                 "name": req.k8sSecretName,
                 "creationPolicy": "Owner",
             },
-            "dataFrom": [
-                {"extract": {"key": derive_secret_key(req)}}
-            ],
+            "dataFrom": [{"extract": {"key": derive_secret_key(req)}}],
         },
     }
 
@@ -265,9 +279,19 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--mode", choices=["validate", "generate"], required=True)
     p.add_argument("--enums", required=True, help="Path to schemas/metadata/enums.yaml")
-    p.add_argument("--input-files", nargs="+", required=True, help="SecretRequest YAML files")
-    p.add_argument("--tfvars-out-root", default="envs", help="Root for tfvars outputs (default: envs)")
-    p.add_argument("--externalsecret-out-root", default="gitops", help="Root for ExternalSecret outputs (default: gitops)")
+    p.add_argument(
+        "--input-files", nargs="+", required=True, help="SecretRequest YAML files"
+    )
+    p.add_argument(
+        "--tfvars-out-root",
+        default="envs",
+        help="Root for tfvars outputs (default: envs)",
+    )
+    p.add_argument(
+        "--externalsecret-out-root",
+        default="gitops",
+        help="Root for ExternalSecret outputs (default: gitops)",
+    )
     return p.parse_args()
 
 

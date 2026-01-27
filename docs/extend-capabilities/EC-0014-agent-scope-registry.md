@@ -3,10 +3,7 @@ id: EC-0014-agent-scope-registry
 title: 'EC-0014: Agent Scope Registry'
 type: enhancement-concept
 status: draft
-domain: platform-core
-owner: platform-team
 lifecycle: proposed
-schema_version: 1
 risk_profile:
   production_impact: low
   security_risk: medium

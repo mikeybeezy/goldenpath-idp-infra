@@ -2,10 +2,6 @@
 id: HEALTH_AUDIT_LOG
 title: Platform Health Audit Log
 type: report
-category: governance
-status: active
-owner: platform-team
-lifecycle: active
 risk_profile:
   production_impact: low
   security_risk: none
@@ -13,9 +9,10 @@ risk_profile:
 reliability:
   rollback_strategy: git-revert
   observability_tier: bronze
-schema_version: 1
+  maturity: 1
 relates_to:
   - platform_health.py
+category: governance
 ---
 
 # Platform Health Audit Log

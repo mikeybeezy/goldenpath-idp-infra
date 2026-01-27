@@ -24,7 +24,7 @@ Shared utilities for parsing and validating script metadata headers.
 """
 import re
 import yaml
-from pathlib import Path
+
 
 def extract_frontmatter(content: str) -> str:
     """
@@ -54,14 +54,14 @@ def extract_frontmatter(content: str) -> str:
         # Robustly handle indentation:
         # Match optional leading whitespace, then '#', then optional single space
         # Capture strictly the rest of the line (which contains YAML indent)
-        match = re.match(r'^\s*# ?(.*)', line)
+        match = re.match(r"^\s*# ?(.*)", line)
         if not match:
             continue
 
         cleaned = match.group(1).rstrip()
 
         # Detect separator (---)
-        if cleaned == '---':
+        if cleaned == "---":
             if in_block:
                 in_block = False
                 break
@@ -76,6 +76,7 @@ def extract_frontmatter(content: str) -> str:
         return "\n".join(yaml_lines)
 
     return None
+
 
 def parse_header(content: str) -> dict:
     """Extracts and parses the metadata header."""
