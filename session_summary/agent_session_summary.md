@@ -3882,3 +3882,22 @@ Fixed git commit failures in CI for registry scripts:
 **Root Cause:** GitHub Actions runners don't have git user configured by default.
 
 **Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md (appended)
+
+## 2026-01-27: Feature Branch Sync and Pre-Merge Healing
+
+**Agent:** Claude Opus 4.5
+**Branch:** feature/tdd-foundation
+**PR:** #309
+
+### Work Done
+
+Synced feature branch with development and applied pre-merge healing:
+
+- Merged origin/development into feature/tdd-foundation
+- Resolved session_capture conflict (kept development updates)
+- Regenerated scripts/index.md with SKIP-TDD descriptions
+- Updated .goldenpath/value_ledger.json with reclaimed hours
+
+**Changes:** Documentation/index healing only - no code changes.
+
+**Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md (updated)
