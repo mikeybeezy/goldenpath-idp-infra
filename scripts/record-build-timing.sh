@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SKIP-TDD: Registry script with git branch operations - manual verification only
 # Record build timing to governance-registry branch
 # ---
 # id: SCRIPT-0046
