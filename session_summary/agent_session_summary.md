@@ -3812,3 +3812,36 @@ Added ADR/CL traceability to allow formatting changes through pr-guardrails.
 Fixed heredoc argument passing bug in record-test-metrics.sh:
 - Arguments must come BEFORE heredoc delimiter, not after
 - `python3 - <<'PY' "$arg"` → `python3 - "$arg" <<'PY'`
+
+## 2026-01-27: Governance Registry Fixes and Catalog Cleanup
+
+**Agent:** Claude Opus 4.5
+**Branch:** fix/catalog-cleanup-and-session
+**PR:** #298
+
+### Summary
+
+Session covering multiple governance and operational fixes:
+- Governance-registry branch divergence fix (PR #294) - added git reset after checkout
+- Pipeline-enable jq syntax fix (PR #295) - bracket notation for hyphenated keys
+- Removed stale test_inventory2 from rds-catalog.yaml
+- Added pr_body.txt to .gitignore (workflow temp file)
+- Created session capture documenting all fixes
+
+**Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md
+
+## 2026-01-27: Branch Sync main → development
+
+**Agent:** Claude Opus 4.5
+**Branch:** sync/main-to-development
+**PR:** #301
+
+### Work Done
+
+Sync branch to merge main hotfixes into development and prepare for release:
+
+- Added SKIP-TDD markers to registry scripts (git branch operations)
+- Resolved merge conflicts between main and development
+- Updated session capture with sync details
+
+**Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md (appended)
