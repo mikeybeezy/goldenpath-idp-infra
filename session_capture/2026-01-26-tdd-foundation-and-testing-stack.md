@@ -1338,3 +1338,22 @@ Fixed remaining pre-commit failures to unblock PR #283:
 
 * PR #289 for pre-commit standardization
 * PR #283 development to main should pass after #289 merges
+## Update - 2026-01-27T09:40:00Z
+
+### Session Capture Pre-commit Exclusion
+
+Fixed pre-commit hooks modifying append-only session_capture files:
+
+**Pre-commit Config Changes:**
+* Excluded session_capture/ from: trailing-whitespace, end-of-file-fixer, emoji-enforcer
+* Added .pre-commit-config.yaml to session-log workflow triggers (required for branch protection)
+
+**Root Cause:**
+The emoji enforcer and trailing-whitespace hooks were modifying historical content in session captures, violating the append-only policy and causing CI failures.
+
+### Outstanding
+
+* PR #290 for pre-commit exclusions
+* PR #283 development to main should pass after #290 merges
+
+Signed: Claude Opus 4.5 (2026-01-27T09:40:00Z)
