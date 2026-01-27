@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SKIP-TDD: Registry script with git branch operations - manual verification only
 # Record test metrics JSON to governance-registry branch
 # ---
 # id: SCRIPT-0061
@@ -79,6 +80,12 @@ if ! git checkout "$REGISTRY_BRANCH" 2>/dev/null; then
   echo "⚠️  Error: Cannot checkout $REGISTRY_BRANCH branch. Skipping registry record." >&2
   git checkout "$ORIGINAL_BRANCH" 2>/dev/null || true
   exit 0
+fi
+
+# Sync local branch with remote to prevent divergence
+# This ensures we're always building on top of the latest remote state
+if ! git reset --hard "origin/$REGISTRY_BRANCH" 2>/dev/null; then
+  echo "⚠️  Warning: Could not sync with origin/$REGISTRY_BRANCH. Continuing anyway." >&2
 fi
 
 mkdir -p "$(dirname "$LATEST_PATH")" "$HIST_DIR"

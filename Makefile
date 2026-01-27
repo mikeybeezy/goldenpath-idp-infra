@@ -1006,13 +1006,18 @@ pipeline-enable:
 	@echo "  Found: $(PIPELINE_SECRET_NAME)"
 	@echo ""
 	@echo "[2/5] Fetching credentials from Secrets Manager..."
-	@SECRET_JSON=$$(aws secretsmanager get-secret-value \
+	@APP_ID=$$(aws secretsmanager get-secret-value \
 		--secret-id "$(PIPELINE_SECRET_NAME)" \
 		--query SecretString --output text \
-		--region $(REGION)); \
-	APP_ID=$$(echo "$$SECRET_JSON" | jq -r '.appID // .app_id // .app-id'); \
-	INSTALLATION_ID=$$(echo "$$SECRET_JSON" | jq -r '.installationID // .installation_id // .installation-id'); \
-	PRIVATE_KEY=$$(echo "$$SECRET_JSON" | jq -r '.privateKey // .private_key // .["private-key"]'); \
+		--region $(REGION) | jq -r '.appID // .app_id // .["app-id"]'); \
+	INSTALLATION_ID=$$(aws secretsmanager get-secret-value \
+		--secret-id "$(PIPELINE_SECRET_NAME)" \
+		--query SecretString --output text \
+		--region $(REGION) | jq -r '.installationID // .installation_id // .["installation-id"]'); \
+	PRIVATE_KEY=$$(aws secretsmanager get-secret-value \
+		--secret-id "$(PIPELINE_SECRET_NAME)" \
+		--query SecretString --output text \
+		--region $(REGION) | jq -r '.privateKey // .private_key // .["private-key"]'); \
 	if [ "$$APP_ID" = "null" ] || [ -z "$$APP_ID" ]; then \
 		echo "ERROR: appID not found in secret"; \
 		exit 1; \

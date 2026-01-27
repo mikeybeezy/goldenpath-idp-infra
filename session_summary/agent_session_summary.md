@@ -3829,3 +3829,19 @@ Session covering multiple governance and operational fixes:
 - Created session capture documenting all fixes
 
 **Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md
+
+## 2026-01-27: Branch Sync main → development
+
+**Agent:** Claude Opus 4.5
+**Branch:** sync/main-to-development
+**PR:** #301
+
+### Work Done
+
+Sync branch to merge main hotfixes into development and prepare for release:
+
+- Added SKIP-TDD markers to registry scripts (git branch operations)
+- Resolved merge conflicts between main and development
+- Updated session capture with sync details
+
+**Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md (appended)

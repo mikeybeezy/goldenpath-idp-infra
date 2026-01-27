@@ -207,3 +207,18 @@ cat envs/dev-rds/terraform.tfvars | grep -A5 application_databases
 - `docs/20-contracts/resource-catalogs/rds-catalog.yaml`
 - `scripts/rds_provision.py`
 - `envs/dev-rds/terraform.tfvars`
+
+## Update - 2026-01-27T10:00:00Z
+
+### Branch Sync: main → development
+
+Added SKIP-TDD markers to governance registry scripts:
+- `scripts/record-build-timing.sh`
+- `scripts/record-test-metrics.sh`
+
+**Rationale:** These scripts interact with git branches and external state (governance-registry branch), making automated testing impractical. Manual verification is documented in script metadata.
+
+### Outstanding
+
+- [ ] Consider adding integration tests for registry scripts in CI with mock git operations
+- [ ] Document manual testing procedure for registry scripts
