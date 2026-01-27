@@ -71,3 +71,6 @@ coverage/
 htmlcov/
 .coverage
 *.cover
+
+# Workflow artifacts
+pr_body.txt
