@@ -104,6 +104,15 @@ jobs:
                 TEST_FOUND=true
               fi
 
+              # Pattern 5: Check metadata for SCRIPT-XXXX ID and test_script_XXXX.py
+              # This is the GoldenPath convention: scripts have IDs like SCRIPT-0034
+              SCRIPT_ID=$(grep -E 'id:\s*SCRIPT-[0-9]+' "$file" 2>/dev/null | head -1 | sed 's/.*SCRIPT-//' | grep -o '[0-9]*' | head -1 || true)
+              if [[ -n "$SCRIPT_ID" ]]; then
+                if [[ -f "tests/scripts/test_script_${SCRIPT_ID}.py" ]]; then
+                  TEST_FOUND=true
+                fi
+              fi
+
               if [[ "$TEST_FOUND" == "false" ]]; then
                 MISSING_TESTS+=("$file")
               fi
@@ -121,6 +130,14 @@ jobs:
               # Pattern 2: tests/bats/<name>.bats
               if [[ -f "tests/bats/${base}.bats" ]]; then
                 TEST_FOUND=true
+              fi
+
+              # Pattern 3: Check metadata for SCRIPT-XXXX ID and test_script_XXXX.bats
+              SCRIPT_ID=$(grep -E 'id:\s*SCRIPT-[0-9]+' "$file" 2>/dev/null | head -1 | sed 's/.*SCRIPT-//' | grep -o '[0-9]*' | head -1 || true)
+              if [[ -n "$SCRIPT_ID" ]]; then
+                if [[ -f "tests/bats/test_script_${SCRIPT_ID}.bats" ]]; then
+                  TEST_FOUND=true
+                fi
               fi
 
               if [[ "$TEST_FOUND" == "false" ]]; then

@@ -1,5 +1,24 @@
 #!/usr/bin/env python3
 """
+---
+id: SCRIPT-0062
+type: script
+owner: platform-team
+status: active
+maturity: 1
+dry_run:
+  supported: true
+  command_hint: --output json
+test:
+  runner: pytest
+  command: pytest -q tests/scripts/test_validate_request.py
+  evidence: declared
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+---
+
 Bespoke Schema Validator for GoldenPath Request Contracts.
 
 Validates request fixtures against bespoke GoldenPath schemas that include:

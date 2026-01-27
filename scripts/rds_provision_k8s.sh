@@ -1,4 +1,22 @@
 #!/bin/bash
+# ---
+# id: SCRIPT-0063
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 1
+# dry_run:
+#   supported: false
+#   command_hint: ""
+# test:
+#   runner: bats
+#   command: bats tests/bats/test_rds_provision_k8s.bats
+#   evidence: declared
+# risk_profile:
+#   production_impact: medium
+#   security_risk: low
+#   coupling_risk: medium
+# ---
 # RDS Provisioning via K8s Job
 # Runs rds_provision.py from inside the cluster where it can reach private RDS
 set -euo pipefail
