@@ -30,7 +30,7 @@ from pathlib import Path
 # Add python lib to path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 try:
-    from script_metadata import extract_frontmatter, parse_header
+    from script_metadata import parse_header
 except ImportError:
     print("❌ Failed to import script_metadata from lib/")
     sys.exit(1)
