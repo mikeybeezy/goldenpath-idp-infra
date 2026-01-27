@@ -25,7 +25,7 @@ relates_to:
 | `scripts/check_doc_freshness.py` | `SCRIPT-0005` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/check_doc_index_contract.py` | `SCRIPT-0006` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/check_script_traceability.py` | `SCRIPT-0007` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
-| `scripts/collect_test_metrics.py` | `SCRIPT-0060` | `platform-team` | ⭐ 1 | ✅ | `pytest` | `declared` | `low` |
+| `scripts/collect_test_metrics.py` | `SCRIPT-0060` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/deploy-backstage.sh` | `SCRIPT-0008` | `platform-team` | ⭐⭐ 2 | ✅ | `shellcheck` | `declared` | `low` |
 | `scripts/ecr-build-push.sh` | `SCRIPT-0009` | `platform-team` | ⭐⭐ 2 | ✅ | `shellcheck` | `declared` | `low` |
 | `scripts/eks_request_parser.py` | `SCRIPT-0043` | `platform-team` | ⭐ 1 | ✅ | `pytest` | `declared` | `low` |

@@ -557,6 +557,17 @@
         "M3": 1
       },
       "certification_rate": 1.6
+    },
+    {
+      "timestamp": "2026-01-27T10:52:12Z",
+      "total_scripts": 61,
+      "maturity_distribution": {
+        "M0": 0,
+        "M1": 8,
+        "M2": 52,
+        "M3": 1
+      },
+      "certification_rate": 1.6
     }
   ]
 }
