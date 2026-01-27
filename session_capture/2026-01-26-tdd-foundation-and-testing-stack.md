@@ -1116,3 +1116,115 @@ Confirmed correct deployment workflow:
 - Pipeline: Enabled
 
 Signed: Claude Opus 4.5 (2026-01-27T04:00:00Z)
+
+---
+
+## Session Continuation (2026-01-27T05:00:00Z) - FINAL
+
+### RDS Provisioning UX Improvements
+
+After successful RDS deployment and database provisioning, addressed multiple UX issues:
+
+#### 1. Silent K8s Job Wait → Heartbeat Spinner
+
+**Problem:** `make rds-provision-k8s` showed no progress during 5-minute timeout.
+
+**Fix:** Added animated spinner with status updates:
+
+```bash
+⠋ Waiting... [45s/300s] Pod: Running
+```
+
+**File:** `scripts/rds_provision_k8s.sh`
+
+#### 2. Confusing "RDS Failed" Error Message
+
+**Problem:** After `make rds-deploy` successfully created RDS, it showed scary error:
+```
+PRE-FLIGHT CHECKS FAILED
+Cannot resolve RDS hostname from this network...
+```
+
+This made it look like RDS creation failed.
+
+**Fix:** Clear success message + guidance:
+```
+======================================================================
+✅ RDS INFRASTRUCTURE CREATED SUCCESSFULLY
+======================================================================
+
+ℹ️  RDS is private - cannot provision from your local machine
+
+NEXT STEP: Run this command from your local machine (requires kubectl access):
+
+  make rds-provision-k8s ENV=dev REGION=eu-west-2
+
+This creates a K8s Job that provisions databases from inside the VPC
+where it can reach the private RDS endpoint.
+```
+
+**File:** `Makefile` (rds-deploy target)
+
+#### 3. "Run from cluster" Confusion
+
+**Problem:** Instructions said "run from inside the cluster" which confused junior developers.
+
+**Fix:** Clarified that command runs from local machine but creates K8s Job inside cluster.
+
+#### 4. Added Git Branch Parameter
+
+**Problem:** K8s Job cloned from default branch (main), couldn't test changes on feature branches.
+
+**Fix:** Added `RDS_PROVISION_K8S_BRANCH` parameter:
+
+```bash
+make rds-provision-k8s ENV=dev RDS_PROVISION_K8S_BRANCH=feature/tdd-foundation
+```
+
+**Files:** `scripts/rds_provision_k8s.sh`, `Makefile`
+
+#### 5. Removed Stale test_inventory2 Entry
+
+Removed `test_inventory2` from `envs/dev-rds/terraform.tfvars` - secret was deleted.
+
+#### 6. Set Missing backstage/postgres Secret Value
+
+Secret existed (created by Terraform) but had no password value. Set it manually via AWS CLI.
+
+### Commits (This Session)
+
+```text
+1c79f5a3 fix: clarify rds-provision-k8s runs from local machine
+287393cd fix: improve rds-deploy UX for private RDS
+de2e5c0a feat: add branch parameter to rds-provision-k8s
+9e5502a5 fix: improve rds-provision-k8s UX with heartbeat spinner
+b4f39940 fix: ArgoCD/LBC webhook race condition - sequential deployment
+8bca65af fix: rename duplicate test method names in test_collect_test_metrics.py
+```
+
+### Final State
+
+| Component | Status |
+|-----------|--------|
+| EKS cluster | ✅ Running |
+| ArgoCD | ✅ Deployed (LBC race fixed) |
+| Load Balancer Controller | ✅ Deployed |
+| RDS | ✅ Available |
+| Databases (keycloak, backstage) | ✅ Provisioned |
+| TDD Foundation | ✅ Complete |
+
+### TDD Phase Summary
+
+| Phase | Status | Tests |
+|-------|--------|-------|
+| Phase 1: Foundation | ✅ Complete | - |
+| Phase 2: Coverage | ✅ Complete | - |
+| Phase 3: Terraform | ✅ Complete | 52 tests |
+| Phase 4: Helm | ✅ Complete | 34 tests |
+| Phase 5: Chainsaw E2E | ⏳ Deferred V2 | - |
+
+### Test Count
+
+Total tests added: ~285 across Python, Shell, Terraform, Helm
+
+Signed: Claude Opus 4.5 (2026-01-27T05:00:00Z)

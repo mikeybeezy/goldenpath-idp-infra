@@ -3592,3 +3592,75 @@ Objective: Post-sprint cleanup - fix duplicate SCRIPT IDs, add maturity tracking
 - **Validation:** Orphan cleanup verified clean; Terraform state verified; governance scripts executed successfully
 
 Signed: Claude Opus 4.5 (2026-01-25T07:15:00Z)
+
+---
+
+## 2026-01-27T05:00:00Z — TDD Foundation + Operational Fixes — env=dev build_id=na
+
+Owner: platform-team
+Agent: Claude Opus 4.5
+Goal: Complete TDD foundation and fix operational deployment issues
+
+Environment: AWS `dev`
+Region: eu-west-2
+Objective: Implement TDD testing stack, fix ArgoCD/LBC race condition, improve RDS provisioning UX
+
+### Highlights
+
+- **TDD Foundation Complete:** ~285 tests across Python (166), Shell (33), Terraform (52), Helm (34)
+- **ArgoCD/LBC Race Condition Fixed:** Added `depends_on` to sequence LBC before ArgoCD
+- **RDS Provisioning UX Overhaul:** Heartbeat spinner, clear success messages, branch parameter
+- **Drift Prevention Gates:** CI now fails if modules/charts lack tests
+- **Multi-source Test Metrics:** Collector handles Terraform JSON, pytest, bats, Jest
+
+### Issues Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| ArgoCD webhook failure | LBC and ArgoCD deployed in parallel | Added `depends_on` in kubernetes_addons |
+| Silent K8s job wait | `kubectl wait` shows nothing | Heartbeat spinner with pod status |
+| Confusing "RDS failed" error | Preflight failure looked like deploy failure | Clear success message + guidance |
+| "Run from cluster" confusion | Ambiguous instructions | Clarified local machine + K8s Job |
+| test_inventory2 failure | Secret was deleted | Removed from tfvars |
+| Terraform JSON false-green | Parser expected specific `type` field | Added fallback for direct summary |
+
+### Artifacts Touched
+
+*Modified:*
+- `modules/kubernetes_addons/main.tf` — ArgoCD depends_on LBC
+- `scripts/rds_provision_k8s.sh` — Heartbeat spinner, branch parameter
+- `Makefile` — RDS deploy UX, branch parameter
+- `envs/dev-rds/terraform.tfvars` — Removed test_inventory2
+- `scripts/collect_test_metrics.py` — Terraform JSON fallback
+- `.github/workflows/ci-terraform-lint.yml` — Test requirement gate
+- `.github/workflows/ci-helm-validation.yml` — Test requirement gate
+
+*Added:*
+- `docs/changelog/entries/CL-0198-argocd-lbc-webhook-race-fix.md`
+- `modules/aws_eks/tests/eks.tftest.hcl` — 13 tests
+- `modules/aws_rds/tests/rds.tftest.hcl` — 16 tests
+- `modules/aws_ecr/tests/ecr.tftest.hcl` — 11 tests
+- `modules/vpc/tests/vpc.tftest.hcl` — 12 tests
+- `gitops/helm/backstage/chart/tests/*.yaml` — 34 Helm tests
+
+### Validation
+
+- `terraform test` — 52 passed across 4 modules
+- `pytest` — All tests passing including new collector tests
+- RDS provisioning — keycloak and backstage databases created successfully
+- ArgoCD — Deployed without webhook errors after fix
+
+### Next Actions
+
+- [ ] Merge feature/tdd-foundation to main
+- [ ] Run `make pipeline-enable` to complete setup
+- [ ] V2: Chainsaw E2E tests (VQ-0042)
+
+### Session Report
+
+- **Summary:** TDD foundation complete with 285 tests; ArgoCD/LBC race condition fixed; RDS provisioning UX significantly improved; drift prevention gates added to CI
+- **Decisions:** Defer Chainsaw E2E to V2 (requires kind cluster); use native terraform test over Terratest
+- **Risks/Follow-ups:** Feature branch needs merge to main for default provisioning to work
+- **Validation:** Full cluster deployment validated; databases provisioned; all tests passing
+
+Signed: Claude Opus 4.5 (2026-01-27T05:00:00Z)
