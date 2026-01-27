@@ -3865,3 +3865,20 @@ Triggered test metrics workflow to populate governance-registry:
 **Root Cause:** After PR #292 fixed heredoc bug, no Python changes triggered the workflow.
 
 **Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md (appended)
+
+## 2026-01-27: Registry Scripts Git Config Fix
+
+**Agent:** Claude Opus 4.5
+**Branch:** fix/registry-git-config
+**PR:** #306
+
+### Work Done
+
+Fixed git commit failures in CI for registry scripts:
+
+- Added `git config user.email/name` for `github-actions[bot]` before commits
+- Applied to both `record-test-metrics.sh` and `record-build-timing.sh`
+
+**Root Cause:** GitHub Actions runners don't have git user configured by default.
+
+**Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md (appended)

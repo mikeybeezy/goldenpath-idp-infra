@@ -138,6 +138,10 @@ if ! git reset --hard "origin/$REGISTRY_BRANCH" 2>/dev/null; then
   echo "⚠️  Warning: Could not sync with origin/$REGISTRY_BRANCH. Continuing anyway." >&2
 fi
 
+# Configure git user for CI environments (GitHub Actions runners don't have this set)
+git config user.email "github-actions[bot]@users.noreply.github.com"
+git config user.name "github-actions[bot]"
+
 # Ensure CSV directory exists
 mkdir -p "$(dirname "$CSV_PATH")"
 
