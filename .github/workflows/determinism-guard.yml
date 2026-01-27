@@ -94,7 +94,7 @@ jobs:
           echo "See [ADR-0182: TDD Philosophy](docs/adrs/ADR-0182-tdd-philosophy.md) for guidance." >> $GITHUB_STEP_SUMMARY
 
           echo ""
-          echo "❌ Blast radius exceeded: ${{ needs.detect-changes.outputs.file_count }} files (limit: 80)"
+          echo " Blast radius exceeded: ${{ needs.detect-changes.outputs.file_count }} files (limit: 80)"
           echo ""
           echo "Add label 'blast-radius-approved' if this change is intentional."
           exit 1

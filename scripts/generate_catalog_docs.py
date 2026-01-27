@@ -50,12 +50,17 @@ import sys
 import yaml
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, Any
+
 
 class CatalogGenerator:
     """Generate markdown documentation from YAML catalog"""
 
-    def __init__(self, catalog_path: str, policy_path: str = "docs/10-governance/policies/ecr-risk-settings.yaml"):
+    def __init__(
+        self,
+        catalog_path: str,
+        policy_path: str = "docs/10-governance/policies/ecr-risk-settings.yaml",
+    ):
         self.catalog_path = Path(catalog_path)
         self.policy_path = Path(policy_path)
         self.catalog = None
@@ -70,32 +75,32 @@ class CatalogGenerator:
             self.catalog = yaml.safe_load(f)
 
         # Domain-based configuration
-        self.domain = self.catalog.get('domain', 'resources')
+        self.domain = self.catalog.get("domain", "resources")
         # Map domain to the key used for resources in the YAML
         self.resource_key = {
-            'container-registries': 'registries',
-            'delivery': 'repositories', # Aligned with new hierarchical ECR catalog
-            's3-buckets': 'buckets',
-            'rds-instances': 'instances'
-        }.get(self.domain, 'resources')
+            "container-registries": "registries",
+            "delivery": "repositories",  # Aligned with new hierarchical ECR catalog
+            "s3-buckets": "buckets",
+            "rds-instances": "instances",
+        }.get(self.domain, "resources")
 
         # Domain display name labels
-        self.domain_label = self.domain.replace('-', ' ').title()
+        self.domain_label = self.domain.replace("-", " ").title()
 
         # Singularize resource key for labels
-        if self.resource_key.endswith('ies'):
-            self.resource_label = self.resource_key.replace('-', ' ').title()[:-3] + 'y'
-        elif self.resource_key.endswith('s'):
-            self.resource_label = self.resource_key.replace('-', ' ').title()[:-1]
+        if self.resource_key.endswith("ies"):
+            self.resource_label = self.resource_key.replace("-", " ").title()[:-3] + "y"
+        elif self.resource_key.endswith("s"):
+            self.resource_label = self.resource_key.replace("-", " ").title()[:-1]
         else:
-            self.resource_label = self.resource_key.replace('-', ' ').title()
+            self.resource_label = self.resource_key.replace("-", " ").title()
 
         if self.policy_path.exists():
             with open(self.policy_path) as f:
                 docs = list(yaml.safe_load_all(f))
                 for doc in docs:
-                    if doc and isinstance(doc, dict) and 'policies' in doc:
-                        self.policies = doc['policies']
+                    if doc and isinstance(doc, dict) and "policies" in doc:
+                        self.policies = doc["policies"]
                         break
 
         return self.catalog
@@ -106,31 +111,46 @@ class CatalogGenerator:
         total = len(resources)
 
         # Count by status
-        active = sum(1 for r in resources.values()
-                    if r.get('metadata', {}).get('status') == 'active')
-        deprecated = sum(1 for r in resources.values()
-                        if r.get('metadata', {}).get('status') == 'deprecated')
+        active = sum(
+            1
+            for r in resources.values()
+            if r.get("metadata", {}).get("status") == "active"
+        )
+        deprecated = sum(
+            1
+            for r in resources.values()
+            if r.get("metadata", {}).get("status") == "deprecated"
+        )
 
         # Count by risk
-        low = sum(1 for r in resources.values()
-                 if r.get('metadata', {}).get('risk') == 'low')
-        medium = sum(1 for r in resources.values()
-                    if r.get('metadata', {}).get('risk') == 'medium')
-        high = sum(1 for r in resources.values()
-                  if r.get('metadata', {}).get('risk') == 'high')
+        low = sum(
+            1 for r in resources.values() if r.get("metadata", {}).get("risk") == "low"
+        )
+        medium = sum(
+            1
+            for r in resources.values()
+            if r.get("metadata", {}).get("risk") == "medium"
+        )
+        high = sum(
+            1 for r in resources.values() if r.get("metadata", {}).get("risk") == "high"
+        )
 
         summary = f"**Total {self.resource_key.title()}:** {total}\n"
         summary += f"**Active:** {active} | **Deprecated:** {deprecated}\n\n"
 
-        if 'physical_registry' in self.catalog:
-             summary += f"⚓ **Physical Registry:** `{self.catalog['physical_registry']}`\n\n"
+        if "physical_registry" in self.catalog:
+            summary += (
+                f"⚓ **Physical Registry:** `{self.catalog['physical_registry']}`\n\n"
+            )
 
         summary += "**Risk Distribution:**\n"
         summary += f"- 🟢 Low: {low}\n"
         summary += f"- 🟡 Medium: {medium}\n"
         summary += f"- 🔴 High: {high}\n\n"
         summary += f"**Last Updated:** {self.catalog.get('last_updated', 'Unknown')}\n"
-        summary += f"**Managed By:** {self.catalog.get('managed_by', 'platform-team')}\n"
+        summary += (
+            f"**Managed By:** {self.catalog.get('managed_by', 'platform-team')}\n"
+        )
 
         return f"## Summary\n\n{summary}"
 
@@ -143,7 +163,7 @@ class CatalogGenerator:
 
         table = f"## {self.resource_label} Inventory\n\n"
 
-        if self.domain == 'container-registries':
+        if self.domain == "container-registries":
             table += "| Registry | Owner | Risk | Status | Scanning | Lifecycle |\n"
             table += "|----------|-------|------|--------|----------|-----------|\n"
         else:
@@ -151,19 +171,23 @@ class CatalogGenerator:
             table += "|----------|-------|------|--------|\n"
 
         for name, res in sorted(resources.items()):
-            metadata = res.get('metadata', {})
-            governance = res.get('governance', {})
+            metadata = res.get("metadata", {})
+            governance = res.get("governance", {})
 
-            owner = metadata.get('owner', 'unknown')
-            risk = metadata.get('risk', 'unknown')
-            status = metadata.get('status', 'unknown')
+            owner = metadata.get("owner", "unknown")
+            risk = metadata.get("risk", "unknown")
+            status = metadata.get("status", "unknown")
 
             # Risk emoji
-            risk_emoji = {'low': '🟢', 'medium': '🟡', 'high': '🔴'}.get(risk, '⚪')
+            risk_emoji = {"low": "🟢", "medium": "🟡", "high": "🔴"}.get(risk, "⚪")
 
-            if self.domain == 'container-registries':
-                scanning = '✅' if governance.get('image_scanning') else '❌'
-                lifecycle = '✅' if governance.get('lifecycle_policy', {}).get('enabled') else '❌'
+            if self.domain == "container-registries":
+                scanning = "✅" if governance.get("image_scanning") else "❌"
+                lifecycle = (
+                    "✅"
+                    if governance.get("lifecycle_policy", {}).get("enabled")
+                    else "❌"
+                )
                 table += f"| `{name}` | {owner} | {risk_emoji} {risk} | {status} | {scanning} | {lifecycle} |\n"
             else:
                 table += f"| `{name}` | {owner} | {risk_emoji} {risk} | {status} |\n"
@@ -172,15 +196,17 @@ class CatalogGenerator:
 
     def generate_resource_card(self, name: str, resource: Dict[str, Any]) -> str:
         """Generate detailed resource card"""
-        metadata = resource.get('metadata', {})
-        aws = resource.get('aws', {})
-        governance = resource.get('governance', {})
-        access = resource.get('access', {})
-        images = resource.get('images', []) if self.domain == 'container-registries' else []
-        docs = resource.get('documentation', {})
+        metadata = resource.get("metadata", {})
+        aws = resource.get("aws", {})
+        _governance = resource.get("governance", {})  # Reserved for future use
+        _access = resource.get("access", {})  # Reserved for future use
+        images = (
+            resource.get("images", []) if self.domain == "container-registries" else []
+        )
+        docs = resource.get("documentation", {})
 
-        risk = metadata.get('risk', 'unknown')
-        risk_emoji = {'low': '🟢', 'medium': '🟡', 'high': '🔴'}.get(risk, '⚪')
+        risk = metadata.get("risk", "unknown")
+        risk_emoji = {"low": "🟢", "medium": "🟡", "high": "🔴"}.get(risk, "⚪")
 
         # Risk-based policy mapping
         policy = self.policies.get(risk, {})
@@ -188,10 +214,10 @@ class CatalogGenerator:
         # Fallback values if policy not found
         if not policy:
             policy = {
-                'encryption': 'Unknown',
-                'mutability': 'Unknown',
-                'retention': 'Unknown',
-                'use_for': 'Unknown'
+                "encryption": "Unknown",
+                "mutability": "Unknown",
+                "retention": "Unknown",
+                "use_for": "Unknown",
             }
 
         card = f"### {name}\n\n"
@@ -204,8 +230,8 @@ class CatalogGenerator:
         if aws:
             card += "**AWS Details:**\n"
             for k, v in aws.items():
-                label = k.replace('_', ' ').title()
-                if 'url' in k.lower() or 'arn' in k.lower():
+                label = k.replace("_", " ").title()
+                if "url" in k.lower() or "arn" in k.lower():
                     card += f"- **{label}:** `{v}`\n"
                 else:
                     card += f"- **{label}:** {v}\n"
@@ -215,7 +241,7 @@ class CatalogGenerator:
         card += f"- **Encryption:** {policy.get('encryption', 'N/A')}\n"
         card += f"- **Tag Mutability:** {policy.get('mutability', 'N/A')}\n"
         card += f"- **Image Retention:** {policy.get('retention', 'N/A')}\n"
-        if self.domain == 'container-registries':
+        if self.domain == "container-registries":
             card += "- **Image Scanning:** ✅ Enabled on push\n"
         card += f"- **Use For:** {policy.get('use_for', 'N/A')}\n"
 
@@ -227,9 +253,9 @@ class CatalogGenerator:
 
         if docs:
             card += "\n**Documentation:**\n"
-            if docs.get('adr'):
+            if docs.get("adr"):
                 card += f"- [ADR]({docs['adr']})\n"
-            if docs.get('runbook'):
+            if docs.get("runbook"):
                 card += f"- [Runbook]({docs['runbook']})\n"
 
         card += "\n---\n"
@@ -242,11 +268,11 @@ class CatalogGenerator:
 
         # 1. Generate Platform Frontmatter
         md = "---\n"
-        md += f"id: REGISTRY_CATALOG\n"
+        md += "id: REGISTRY_CATALOG\n"
         md += f"title: {self.domain_label} Catalog\n"
         md += "type: documentation\n"
         md += "category: catalog\n"
-        md += f"status: active\n"
+        md += "status: active\n"
         md += f"owner: {self.catalog.get('owner', 'platform-team')}\n"
         md += "version: '1.0'\n"
         md += "risk_profile:\n"
@@ -257,18 +283,20 @@ class CatalogGenerator:
         md += "  rollback_strategy: git-revert\n"
         md += "  observability_tier: silver\n"
         md += "lifecycle: active\n"
-        md += f"supported_until: 2028-01-01\n"
+        md += "supported_until: 2028-01-01\n"
         md += "breaking_change: false\n"
         md += "relates_to:\n"
-        md += f"  - ADR-0097\n"
-        md += f"  - ADR-0100\n"
+        md += "  - ADR-0097\n"
+        md += "  - ADR-0100\n"
         md += f"  - {Path(__file__).name}\n"
         md += "---\n\n"
 
         # 2. Add Main Header and Meta
         md += f"# {self.domain_label} Catalog\n\n"
         md += f"> **Auto-generated from `{self.catalog_path}`**\n"
-        md += f"> **Generated:** {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC\n"
+        md += (
+            f"> **Generated:** {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC\n"
+        )
         md += "> **Do not edit this file manually - changes will be overwritten**\n\n"
 
         md += self.generate_summary()
@@ -278,12 +306,15 @@ class CatalogGenerator:
         md += f"## {self.resource_label} Details\n\n"
 
         # Group by risk level
-        for risk_level in ['high', 'medium', 'low']:
-            risk_resources = {name: res for name, res in resources.items()
-                             if res.get('metadata', {}).get('risk') == risk_level}
+        for risk_level in ["high", "medium", "low"]:
+            risk_resources = {
+                name: res
+                for name, res in resources.items()
+                if res.get("metadata", {}).get("risk") == risk_level
+            }
 
             if risk_resources:
-                risk_emoji = {'low': '🟢', 'medium': '🟡', 'high': '🔴'}[risk_level]
+                risk_emoji = {"low": "🟢", "medium": "🟡", "high": "🔴"}[risk_level]
                 md += f"## {risk_emoji} {risk_level.capitalize()} Risk {self.resource_key.title()}\n\n"
 
                 for name, res in sorted(risk_resources.items()):
@@ -305,14 +336,24 @@ class CatalogGenerator:
 
         return md
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Generate platform catalog documentation")
-    parser.add_argument("--catalog", default="docs/20-contracts/resource-catalogs/ecr-catalog.yaml",
-                       help="Path to YAML catalog")
-    parser.add_argument("--output", default="docs/REGISTRY_CATALOG.md",
-                       help="Output markdown file")
-    parser.add_argument("--policies", default="docs/10-governance/policies/ecr-risk-settings.yaml",
-                       help="Path to YAML policies")
+    parser = argparse.ArgumentParser(
+        description="Generate platform catalog documentation"
+    )
+    parser.add_argument(
+        "--catalog",
+        default="docs/20-contracts/resource-catalogs/ecr-catalog.yaml",
+        help="Path to YAML catalog",
+    )
+    parser.add_argument(
+        "--output", default="docs/REGISTRY_CATALOG.md", help="Output markdown file"
+    )
+    parser.add_argument(
+        "--policies",
+        default="docs/10-governance/policies/ecr-risk-settings.yaml",
+        help="Path to YAML policies",
+    )
     parser.add_argument("--verbose", action="store_true", help="Verbose logging")
     args = parser.parse_args()
 
@@ -332,12 +373,14 @@ def main():
         output_path = Path(args.output)
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(output_path, 'w') as f:
+        with open(output_path, "w") as f:
             f.write(markdown)
 
         print(f"✅ Generated {generator.domain_label} documentation: {args.output}")
         print(f"   Resource type: {generator.resource_key}")
-        print(f"   Total items: {len(generator.catalog.get(generator.resource_key, {}))}")
+        print(
+            f"   Total items: {len(generator.catalog.get(generator.resource_key, {}))}"
+        )
 
         sys.exit(0)
 
@@ -350,6 +393,7 @@ def main():
     except Exception as e:
         print(f"❌ Error: {e}", file=sys.stderr)
         sys.exit(3)
+
 
 if __name__ == "__main__":
     main()

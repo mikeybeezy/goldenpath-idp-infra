@@ -2,11 +2,16 @@
 id: CL-0194-coverage-threshold-enforcement
 title: Coverage Threshold Enforcement in CI
 type: changelog
+status: active
+owner: platform-team
 domain: platform-core
 applies_to: []
-owner: platform-team
 lifecycle: active
 exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
 relates_to:
   - ADR-0182-tdd-philosophy
@@ -22,8 +27,6 @@ tags:
   - ci
   - enforcement
 inheritance: {}
-status: active
-category: platform
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

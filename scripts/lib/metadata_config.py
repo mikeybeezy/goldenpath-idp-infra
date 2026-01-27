@@ -23,49 +23,61 @@ import os
 import yaml
 from typing import Any, Dict, List, Optional
 
+
 class PlatformYamlDumper(yaml.SafeDumper):
     """
     Standardized YAML dumper for the Golden Path IDP.
     Ensures consistent indentation (especially for lists) to match yamllint and pre-commit.
     """
+
     def increase_indent(self, flow=False, indentless=False):
         return super(PlatformYamlDumper, self).increase_indent(flow, False)
+
 
 def platform_yaml_dump(data: Any, stream=None, **kwargs) -> Optional[str]:
     """
     Helper function to dump YAML using the PlatformYamlDumper with standardized settings.
     """
     settings = {
-        'sort_keys': False,
-        'default_flow_style': False,
-        'allow_unicode': True,
-        'indent': 2,
-        'Dumper': PlatformYamlDumper
+        "sort_keys": False,
+        "default_flow_style": False,
+        "allow_unicode": True,
+        "indent": 2,
+        "Dumper": PlatformYamlDumper,
     }
     settings.update(kwargs)
     return yaml.dump(data, stream, **settings)
 
-def platform_yaml_dump_all(documents: List[Any], stream=None, **kwargs) -> Optional[str]:
+
+def platform_yaml_dump_all(
+    documents: List[Any], stream=None, **kwargs
+) -> Optional[str]:
     """
     Helper function to dump multiple YAML documents using the PlatformYamlDumper.
     """
     settings = {
-        'sort_keys': False,
-        'default_flow_style': False,
-        'allow_unicode': True,
-        'indent': 2,
-        'Dumper': PlatformYamlDumper,
-        'explicit_start': True
+        "sort_keys": False,
+        "default_flow_style": False,
+        "allow_unicode": True,
+        "indent": 2,
+        "Dumper": PlatformYamlDumper,
+        "explicit_start": True,
     }
     settings.update(kwargs)
     return yaml.dump_all(documents, stream, **settings)
+
 
 class MetadataConfig:
     """
     Central configuration manager for metadata governance.
     Loads enums and schemas to provide a config-driven interface for scripts.
     """
-    def __init__(self, schemas_dir: str = "schemas/metadata", enums_file: str = "schemas/metadata/enums.yaml"):
+
+    def __init__(
+        self,
+        schemas_dir: str = "schemas/metadata",
+        enums_file: str = "schemas/metadata/enums.yaml",
+    ):
         self.schemas_dir = schemas_dir
         self.enums_file = enums_file
         self.enums = self._load_enums()
@@ -132,7 +144,7 @@ class MetadataConfig:
 
         props = schema.get("properties", {})
         if field not in props:
-            return errors # Field not defined in schema, skipping deep validation
+            return errors  # Field not defined in schema, skipping deep validation
 
         field_schema = props[field]
 
@@ -141,7 +153,9 @@ class MetadataConfig:
         if enum_name:
             allowed = self.get_enum_values(enum_name)
             if value not in allowed:
-                errors.append(f"Value '{value}' for field '{field}' is not in allowed enums for '{enum_name}'")
+                errors.append(
+                    f"Value '{value}' for field '{field}' is not in allowed enums for '{enum_name}'"
+                )
 
         # Check type constraint for arrays
         if field_schema.get("type") == "array" and isinstance(value, list):
@@ -151,7 +165,9 @@ class MetadataConfig:
                 allowed = self.get_enum_values(item_enum_name)
                 for item in value:
                     if item not in allowed:
-                        errors.append(f"Item '{item}' in field '{field}' is not in allowed enums for '{item_enum_name}'")
+                        errors.append(
+                            f"Item '{item}' in field '{field}' is not in allowed enums for '{item_enum_name}'"
+                        )
 
         return errors
 
@@ -172,7 +188,15 @@ class MetadataConfig:
                 skeleton[field] = []
             elif details.get("type") == "object":
                 skeleton[field] = {}
-            elif field in ['id', 'title', 'type', 'owner', 'risk_profile', 'reliability', 'value_quantification']:
+            elif field in [
+                "id",
+                "title",
+                "type",
+                "owner",
+                "risk_profile",
+                "reliability",
+                "value_quantification",
+            ]:
                 # Mandatory identity/ownership fields and specific object fields should be present even if empty
                 if details.get("type") == "object":
                     skeleton[field] = {}
@@ -193,7 +217,9 @@ class MetadataConfig:
         # Collect all parents
         while current_dir.startswith(root_dir):
             parent_metadata_file = os.path.join(current_dir, "metadata.yaml")
-            if parent_metadata_file != abs_filepath and os.path.exists(parent_metadata_file):
+            if parent_metadata_file != abs_filepath and os.path.exists(
+                parent_metadata_file
+            ):
                 try:
                     with open(parent_metadata_file, "r") as f:
                         data = yaml.safe_load(f)
@@ -219,14 +245,16 @@ class MetadataConfig:
         parents = self.find_all_parents_metadata(filepath)
         return parents[-1] if parents else None
 
-    def get_effective_metadata(self, filepath: str, local_data: Dict[str, Any]) -> Dict[str, Any]:
+    def get_effective_metadata(
+        self, filepath: str, local_data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """
         Merges local metadata with inherited parent defaults recursively (root -> leaf -> local).
         """
         parents_data = self.find_all_parents_metadata(filepath)
 
         # Identity (ID/Title) should NEVER be inherited
-        identity_fields = ['id', 'title']
+        identity_fields = ["id", "title"]
 
         effective = {}
         # Merge all parents starting from root-most

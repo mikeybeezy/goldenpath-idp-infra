@@ -294,11 +294,11 @@ The custom schema format is the platform's "unique sauce" - it captures business
 | Capability | JSON Schema | Our Bespoke Format |
 |------------|-------------|-------------------|
 | Structure validation | ✅ | ✅ |
-| Conditional business rules | ❌ Limited `if/then` | ✅ `conditional_rules` |
-| Approval routing logic | ❌ | ✅ `approval_routing` |
-| Purpose-based defaults | ❌ | ✅ `purpose_defaults` |
-| Output artifact mapping | ❌ | ✅ `generates` |
-| External enum references | ❌ | ✅ `enum_from` |
+| Conditional business rules |  Limited `if/then` | ✅ `conditional_rules` |
+| Approval routing logic |  | ✅ `approval_routing` |
+| Purpose-based defaults |  | ✅ `purpose_defaults` |
+| Output artifact mapping |  | ✅ `generates` |
+| External enum references |  | ✅ `enum_from` |
 
 **Decision:** Being opinionated is a feature. The platform should do what we want, how we want. Portability to generic tools is secondary to expressiveness.
 

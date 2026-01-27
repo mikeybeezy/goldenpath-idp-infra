@@ -36,7 +36,7 @@ import yaml
 import argparse
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
 from metadata_config import platform_yaml_dump
 from collections import defaultdict
 
@@ -49,14 +49,14 @@ def extract_doc_id_from_path(file_path):
     basename = os.path.basename(file_path)
     filename_base = os.path.splitext(basename)[0]
 
-    if filename_base == 'README':
+    if filename_base == "README":
         # Path-based ID for READMEs
         dirname = os.path.dirname(file_path)
-        if not dirname or dirname == '.':
-            return 'GOLDENPATH_IDP_ROOT_README'
+        if not dirname or dirname == ".":
+            return "GOLDENPATH_IDP_ROOT_README"
         else:
-            rel_dir = os.path.relpath(dirname, '.')
-            return rel_dir.replace(os.sep, '_').upper() + '_README'
+            rel_dir = os.path.relpath(dirname, ".")
+            return rel_dir.replace(os.sep, "_").upper() + "_README"
 
     # For others, ID matches filename base
     return filename_base
@@ -68,42 +68,46 @@ def extract_metadata_fields(content, current_file):
     dependencies = set()
 
     # Pattern 1: Inline `docs/...` references
-    inline_refs = re.findall(r'`(docs/[^`]+\.md)`', content)
+    inline_refs = re.findall(r"`(docs/[^`]+\.md)`", content)
     relationships.update(inline_refs)
 
     # Pattern 2: ADR/CL/RB/PRD/EC/US mentions (e.g. ADR-0026, CL-0042, RB-0031)
     for prefix in SHORT_ID_PREFIXES:
-        mentions = re.findall(rf'\b({prefix}-\d{{4}})\b', content)
+        mentions = re.findall(rf"\b({prefix}-\d{{4}})\b", content)
         relationships.update(mentions)
 
     # Pattern 3: Markdown links to local files
-    md_links = re.findall(r'\]\(([^)]+\.md)\)', content)
+    md_links = re.findall(r"\]\(([^)]+\.md)\)", content)
     for link in md_links:
-        if link.startswith('../') or link.startswith('./'):
+        if link.startswith("../") or link.startswith("./"):
             current_dir = os.path.dirname(current_file)
             resolved = os.path.normpath(os.path.join(current_dir, link))
             relationships.add(resolved)
-        elif link.startswith('docs/') or link.startswith('apps/') or link.startswith('envs/'):
+        elif (
+            link.startswith("docs/")
+            or link.startswith("apps/")
+            or link.startswith("envs/")
+        ):
             relationships.add(link)
 
     # Pattern 4: Dependencies in content
     # Look for "depends on: <name>", "module: <name>", or "service: <name>"
     dep_patterns = [
-        r'(?:depends on|dependency):\s*`?(module:[^`\s,]+)`?',
-        r'(?:depends on|dependency):\s*`?(service:[^`\s,]+)`?',
-        r'(?:depends on|dependency):\s*`?(chart:[^`\s,]+)`?',
-        r'- (module:[^\s,]+)',
-        r'- (service:[^\s,]+)',
-        r'- (chart:[^\s,]+)',
+        r"(?:depends on|dependency):\s*`?(module:[^`\s,]+)`?",
+        r"(?:depends on|dependency):\s*`?(service:[^`\s,]+)`?",
+        r"(?:depends on|dependency):\s*`?(chart:[^`\s,]+)`?",
+        r"- (module:[^\s,]+)",
+        r"- (service:[^\s,]+)",
+        r"- (chart:[^\s,]+)",
     ]
     for pattern in dep_patterns:
         found = re.findall(pattern, content, re.IGNORECASE)
         dependencies.update(found)
 
     # Pattern 5: Path-based references in docs
-    paths_to_scan = ['gitops/', 'idp-tooling/', 'bootstrap/', 'modules/']
+    paths_to_scan = ["gitops/", "idp-tooling/", "bootstrap/", "modules/"]
     for p_dir in paths_to_scan:
-        found_paths = re.findall(rf'`({p_dir}[^`]+\.md)`', content)
+        found_paths = re.findall(rf"`({p_dir}[^`]+\.md)`", content)
         relationships.update(found_paths)
 
     return relationships, list(dependencies)
@@ -112,15 +116,15 @@ def extract_metadata_fields(content, current_file):
 def read_metadata(file_path):
     """Read YAML frontmatter from markdown file"""
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
 
         # Check if file has frontmatter
-        if not content.startswith('---'):
+        if not content.startswith("---"):
             return None, content
 
         # Split frontmatter and content
-        parts = content.split('---', 2)
+        parts = content.split("---", 2)
         if len(parts) < 3:
             return None, content
 
@@ -141,10 +145,10 @@ def write_metadata(file_path, metadata, content):
         yaml_str = platform_yaml_dump(metadata)
 
         # Write file
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write('---\n')
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write("---\n")
             f.write(yaml_str)
-            f.write('---\n')
+            f.write("---\n")
             f.write(content.lstrip())
 
         return True
@@ -231,7 +235,9 @@ def normalize_relates(relates, all_doc_ids, short_id_map, file_id_map):
                 normalized.add(ref)
             continue
         if "/" in ref or ref.endswith(".md"):
-            normalized.update(normalize_reference(ref, all_doc_ids, short_id_map, file_id_map))
+            normalized.update(
+                normalize_reference(ref, all_doc_ids, short_id_map, file_id_map)
+            )
             continue
         if ref in all_doc_ids:
             normalized.add(ref)
@@ -247,12 +253,12 @@ def extract_file_references(file_path, all_doc_ids, short_id_map, file_id_map):
     if metadata is None:
         return None
 
-    current_id = metadata.get('id')
+    current_id = metadata.get("id")
     if not current_id:
         return None
 
     # Extract relationships and dependencies from content
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         full_content = f.read()
 
     found_rels, found_deps = extract_metadata_fields(full_content, file_path)
@@ -260,7 +266,9 @@ def extract_file_references(file_path, all_doc_ids, short_id_map, file_id_map):
     # Convert relative paths/doc mentions to IDs
     related_ids = set()
     for rel in found_rels:
-        related_ids.update(normalize_reference(rel, all_doc_ids, short_id_map, file_id_map))
+        related_ids.update(
+            normalize_reference(rel, all_doc_ids, short_id_map, file_id_map)
+        )
 
     # Skip self-reference
     if current_id in related_ids:
@@ -269,20 +277,27 @@ def extract_file_references(file_path, all_doc_ids, short_id_map, file_id_map):
     return (current_id, related_ids, found_deps, metadata, rest_of_file)
 
 
-def process_file_with_backlinks(file_path, all_doc_ids, short_id_map, file_id_map, reverse_graph,
-                                 dry_run=False, verbose=False):
+def process_file_with_backlinks(
+    file_path,
+    all_doc_ids,
+    short_id_map,
+    file_id_map,
+    reverse_graph,
+    dry_run=False,
+    verbose=False,
+):
     """Process a single file with both forward refs and backlinks from reverse_graph."""
     metadata, rest_of_file = read_metadata(file_path)
 
     if metadata is None:
         return False
 
-    current_id = metadata.get('id')
+    current_id = metadata.get("id")
     if not current_id:
         return False
 
     # Extract forward relationships and dependencies
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         full_content = f.read()
 
     found_rels, found_deps = extract_metadata_fields(full_content, file_path)
@@ -290,7 +305,9 @@ def process_file_with_backlinks(file_path, all_doc_ids, short_id_map, file_id_ma
     # Convert relative paths/doc mentions to IDs (forward refs)
     forward_ids = set()
     for rel in found_rels:
-        forward_ids.update(normalize_reference(rel, all_doc_ids, short_id_map, file_id_map))
+        forward_ids.update(
+            normalize_reference(rel, all_doc_ids, short_id_map, file_id_map)
+        )
 
     # Skip self-reference
     if current_id in forward_ids:
@@ -303,26 +320,28 @@ def process_file_with_backlinks(file_path, all_doc_ids, short_id_map, file_id_ma
     all_related_ids = forward_ids | backlink_ids
 
     # Merge Dependencies
-    current_deps = metadata.get('dependencies', [])
+    current_deps = metadata.get("dependencies", [])
     if not isinstance(current_deps, list):
         current_deps = []
     updated_deps = sorted(list(set(current_deps + found_deps)))
 
     # Merge Relationships (normalize existing + add new)
-    current_relates = metadata.get('relates_to', [])
+    current_relates = metadata.get("relates_to", [])
     if not isinstance(current_relates, list):
         current_relates = []
-    normalized_relates = normalize_relates(current_relates, all_doc_ids, short_id_map, file_id_map)
+    normalized_relates = normalize_relates(
+        current_relates, all_doc_ids, short_id_map, file_id_map
+    )
     updated_relates = sorted(list(set(normalized_relates | all_related_ids)))
 
     # Check for changes
     changed = False
     if set(current_deps) != set(updated_deps):
-        metadata['dependencies'] = updated_deps
+        metadata["dependencies"] = updated_deps
         changed = True
 
     if set(current_relates) != set(updated_relates):
-        metadata['relates_to'] = updated_relates
+        metadata["relates_to"] = updated_relates
         changed = True
 
     if not changed:
@@ -348,17 +367,40 @@ def process_file_with_backlinks(file_path, all_doc_ids, short_id_map, file_id_ma
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Extract and populate document relationships (bidirectional)')
-    parser.add_argument('--dry-run', action='store_true', help='Show what would be done without making changes')
-    parser.add_argument('--verbose', action='store_true', help='Show all files including skipped ones')
-    parser.add_argument('--no-backlinks', action='store_true', help='Skip bidirectional backlink population')
+    parser = argparse.ArgumentParser(
+        description="Extract and populate document relationships (bidirectional)"
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show what would be done without making changes",
+    )
+    parser.add_argument(
+        "--verbose", action="store_true", help="Show all files including skipped ones"
+    )
+    parser.add_argument(
+        "--no-backlinks",
+        action="store_true",
+        help="Skip bidirectional backlink population",
+    )
     args = parser.parse_args()
 
     # Find all markdown files
     all_md_files = []
-    for pattern in ['docs/**/*.md', 'ci-workflows/**/*.md', 'apps/**/*.md', 'bootstrap/**/*.md',
-                    'modules/**/*.md', 'gitops/**/*.md', 'idp-tooling/**/*.md', 'envs/**/*.md',
-                    'compliance/**/*.md', 'session_summary/**/*.md', 'session_capture/**/*.md', '*.md']:
+    for pattern in [
+        "docs/**/*.md",
+        "ci-workflows/**/*.md",
+        "apps/**/*.md",
+        "bootstrap/**/*.md",
+        "modules/**/*.md",
+        "gitops/**/*.md",
+        "idp-tooling/**/*.md",
+        "envs/**/*.md",
+        "compliance/**/*.md",
+        "session_summary/**/*.md",
+        "session_capture/**/*.md",
+        "*.md",
+    ]:
         all_md_files.extend(glob.glob(pattern, recursive=True))
 
     # Remove duplicates
@@ -371,8 +413,8 @@ def main():
     for f in all_md_files:
         metadata, _ = read_metadata(f)
         doc_id = None
-        if metadata and metadata.get('id'):
-            doc_id = str(metadata.get('id')).strip()
+        if metadata and metadata.get("id"):
+            doc_id = str(metadata.get("id")).strip()
         if not doc_id:
             doc_id = extract_doc_id_from_path(f)
         file_id_map[os.path.normpath(f)] = doc_id
@@ -391,7 +433,9 @@ def main():
     forward_graph = {}  # doc_id -> set of referenced doc_ids
 
     for filepath in all_md_files:
-        result = extract_file_references(filepath, all_doc_ids, short_id_map, file_id_map)
+        result = extract_file_references(
+            filepath, all_doc_ids, short_id_map, file_id_map
+        )
         if result:
             doc_id, related_ids, _, _, _ = result
             # Only include references to docs that actually exist
@@ -428,8 +472,15 @@ def main():
     skipped_count = 0
 
     for filepath in all_md_files:
-        if process_file_with_backlinks(filepath, all_doc_ids, short_id_map, file_id_map, reverse_graph,
-                                       dry_run=args.dry_run, verbose=args.verbose):
+        if process_file_with_backlinks(
+            filepath,
+            all_doc_ids,
+            short_id_map,
+            file_id_map,
+            reverse_graph,
+            dry_run=args.dry_run,
+            verbose=args.verbose,
+        ):
             updated_count += 1
         else:
             skipped_count += 1
@@ -446,8 +497,10 @@ def main():
         print("   Next steps:")
         print("   1. Review changes: git diff")
         print("   2. Validate: python3 scripts/validate_metadata.py docs")
-        print("   3. Commit: git add . && git commit -m 'docs: add bidirectional document relationships'")
+        print(
+            "   3. Commit: git add . && git commit -m 'docs: add bidirectional document relationships'"
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

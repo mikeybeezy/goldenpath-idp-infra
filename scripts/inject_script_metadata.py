@@ -18,6 +18,7 @@ risk_profile:
   coupling_risk: low
 ---
 """
+
 from __future__ import annotations
 import re
 import argparse
@@ -28,16 +29,19 @@ SCRIPTS_DIR = Path("scripts")
 ID_REGISTRY = Path("schemas/automation/script_ids.yaml")
 
 PY_META_RE = re.compile(r'"""[\s\S]*?^---[\s\S]*?^---[\s\S]*?"""', re.MULTILINE)
-SH_META_RE = re.compile(r'(?m)^\s*#\s*---\s*$')
+SH_META_RE = re.compile(r"(?m)^\s*#\s*---\s*$")
+
 
 def load_id_registry() -> dict:
     if ID_REGISTRY.exists():
         return yaml.safe_load(ID_REGISTRY.read_text()) or {}
     return {"next": 1, "map": {}}
 
+
 def save_id_registry(reg: dict) -> None:
     ID_REGISTRY.parent.mkdir(parents=True, exist_ok=True)
     ID_REGISTRY.write_text(yaml.safe_dump(reg, sort_keys=False))
+
 
 def alloc_id(reg: dict, script_path: str) -> str:
     if script_path in reg["map"]:
@@ -47,6 +51,7 @@ def alloc_id(reg: dict, script_path: str) -> str:
     reg["map"][script_path] = sid
     reg["next"] = n + 1
     return sid
+
 
 def build_meta(sid: str, ext: str) -> dict:
     if ext == ".py":
@@ -67,12 +72,17 @@ def build_meta(sid: str, ext: str) -> dict:
         "maturity": 2,
         "dry_run": {"supported": True, "command_hint": "--dry-run"},
         "test": {"runner": runner, "command": cmd, "evidence": "declared"},
-        "risk_profile": {"production_impact": "low", "security_risk": "low", "coupling_risk": "low"},
+        "risk_profile": {
+            "production_impact": "low",
+            "security_risk": "low",
+            "coupling_risk": "low",
+        },
     }
+
 
 def inject_py(path: Path, meta: dict, dry_run: bool = False) -> bool:
     txt = path.read_text(encoding="utf-8", errors="replace")
-    if '---\n' in txt[:400] and PY_META_RE.search(txt[:800]):  # already has block
+    if "---\n" in txt[:400] and PY_META_RE.search(txt[:800]):  # already has block
         return False
 
     block = '"""\n---\n' + yaml.safe_dump(meta, sort_keys=False) + '---\n"""\n\n'
@@ -89,6 +99,7 @@ def inject_py(path: Path, meta: dict, dry_run: bool = False) -> bool:
     else:
         path.write_text(new_txt, encoding="utf-8")
     return True
+
 
 def inject_sh(path: Path, meta: dict, dry_run: bool = False) -> bool:
     txt = path.read_text(encoding="utf-8", errors="replace")
@@ -109,6 +120,7 @@ def inject_sh(path: Path, meta: dict, dry_run: bool = False) -> bool:
     else:
         path.write_text(new_txt, encoding="utf-8")
     return True
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Inject metadata backfill")
@@ -141,6 +153,7 @@ def main() -> int:
 
     print(f"[inject] updated {changed} scripts")
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -2,11 +2,16 @@
 id: CL-0193-ec0016-bespoke-schema-validator
 title: EC-0016 Bespoke Schema Validator Implementation
 type: changelog
+status: active
+owner: platform-team
 domain: platform-core
 applies_to: []
-owner: platform-team
 lifecycle: active
 exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
 relates_to:
   - EC-0016-bespoke-schema-validator
@@ -21,8 +26,6 @@ tags:
   - schema
   - contracts
 inheritance: {}
-status: active
-category: platform
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
@@ -99,7 +102,7 @@ validate-contracts:
 # Validate all fixtures
 $ make validate-contracts
 ✅ tests/golden/fixtures/inputs/S3-0001.yaml
-ℹ️  Skipped 1 file(s) without bespoke schemas
+ℹ  Skipped 1 file(s) without bespoke schemas
 OK: 1 request(s) validated successfully
 
 # Validate single request

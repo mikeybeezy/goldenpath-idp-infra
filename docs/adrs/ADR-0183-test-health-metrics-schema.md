@@ -2,7 +2,6 @@
 id: ADR-0183-test-health-metrics-schema
 title: 'ADR-0183: Test Health Metrics Schema Contract'
 type: adr
-status: accepted
 domain: platform-core
 value_quantification:
   vq_class: ⚫ LV/LQ

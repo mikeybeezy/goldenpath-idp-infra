@@ -5,10 +5,10 @@ Run with: pytest -q tests/scripts/test_script_0037.py
 
 Reference: ADR-0170, schemas/requests/s3.schema.yaml
 """
+
 import json
 import tempfile
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 import yaml
@@ -19,7 +19,6 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
 
 from s3_request_parser import (
-    S3Request,
     parse_request,
     validate_enums,
     validate_guardrails,
@@ -28,9 +27,6 @@ from s3_request_parser import (
     generate_iam_policy,
     tfvars_output_path,
     iam_policy_output_path,
-    VALID_ENVIRONMENTS,
-    VALID_PURPOSE_TYPES,
-    VALID_ENCRYPTION_TYPES,
 )
 
 
@@ -53,40 +49,38 @@ def valid_s3_request_doc():
             "description": "User uploads for payments",
             "created": "2026-01-17",
         },
-            "spec": {
-                "bucketName": "goldenpath-dev-payments-api-uploads",
-                "purpose": {
-                    "type": "uploads",
-                    "description": "User-uploaded documents for payment verification",
-                },
-                "storageClass": "standard",
-                "encryption": {
-                    "type": "sse-s3",
-                },
-                "versioning": True,
-                "publicAccess": "blocked",
-                "retentionPolicy": {
-                    "type": "indefinite",
-                    "rationale": "User documents retained for compliance",
-                },
-                "accessLogging": {
-                    "enabled": False,
-                },
-                "costAlertGb": 50,
-                "corsEnabled": False,
-                "tags": {
-                    "costCenter": "payments",
-                },
+        "spec": {
+            "bucketName": "goldenpath-dev-payments-api-uploads",
+            "purpose": {
+                "type": "uploads",
+                "description": "User-uploaded documents for payment verification",
             },
-        }
+            "storageClass": "standard",
+            "encryption": {
+                "type": "sse-s3",
+            },
+            "versioning": True,
+            "publicAccess": "blocked",
+            "retentionPolicy": {
+                "type": "indefinite",
+                "rationale": "User documents retained for compliance",
+            },
+            "accessLogging": {
+                "enabled": False,
+            },
+            "costAlertGb": 50,
+            "corsEnabled": False,
+            "tags": {
+                "costCenter": "payments",
+            },
+        },
+    }
 
 
 @pytest.fixture
 def valid_s3_request_file(valid_s3_request_doc):
     """Create temporary YAML file with valid request."""
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".yaml", delete=False
-    ) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
         yaml.dump(valid_s3_request_doc, f)
         return Path(f.name)
 
@@ -424,4 +418,6 @@ class TestIdempotence:
         tfvars1 = generate_tfvars(req1)
         tfvars2 = generate_tfvars(req2)
 
-        assert json.dumps(tfvars1, sort_keys=True) == json.dumps(tfvars2, sort_keys=True)
+        assert json.dumps(tfvars1, sort_keys=True) == json.dumps(
+            tfvars2, sort_keys=True
+        )

@@ -47,7 +47,7 @@ jobs:
           echo "**Requirements:**" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ All CI checks must pass" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ At least 1 human approval required" >> $GITHUB_STEP_SUMMARY
-          echo "- ❌ Agent cannot self-approve or self-merge" >> $GITHUB_STEP_SUMMARY
+          echo "-  Agent cannot self-approve or self-merge" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Please request review from a human team member." >> $GITHUB_STEP_SUMMARY
 

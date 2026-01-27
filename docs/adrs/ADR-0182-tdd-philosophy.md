@@ -2,14 +2,23 @@
 id: ADR-0182-tdd-philosophy
 title: Test-Driven Development Philosophy
 type: adr
-owner: platform-team
-status: accepted
 domain: platform-core
+owner: platform-team
 lifecycle: active
+exempt: false
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 2
 schema_version: 1
 relates_to:
   - GOV-0016-testing-stack-matrix
   - GOV-0015-build-pipeline-testing-matrix
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
 effective_date: 2026-01-26
 review_date: 2026-07-26
 ---

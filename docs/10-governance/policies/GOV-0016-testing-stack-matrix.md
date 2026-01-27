@@ -5,11 +5,22 @@ type: governance
 owner: platform-team
 status: draft
 domain: platform-core
+applies_to: []
 lifecycle: draft
+exempt: false
+risk_profile:
+  production_impact: none
+  security_risk: none
+  coupling_risk: none
 schema_version: 1
 relates_to:
   - GOV-0015-build-pipeline-testing-matrix
   - ADR-0180-tdd-philosophy
+supersedes: []
+superseded_by: []
+tags: []
+inheritance: {}
+supported_until: '2028-01-01'
 effective_date: 2026-01-26
 review_date: 2026-07-26
 ---

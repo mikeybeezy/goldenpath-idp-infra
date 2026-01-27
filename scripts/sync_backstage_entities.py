@@ -34,10 +34,10 @@ Usage:
 import argparse
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 import yaml
-from datetime import datetime
 from lib.metadata_config import MetadataConfig
+
 
 class BackstageSync:
     def __init__(self, catalog_path: str):
@@ -55,52 +55,56 @@ class BackstageSync:
 
     def _get_vq_class(self, risk: str) -> str:
         """Simple mapping of risk to VQ class indicators"""
-        mapping = {
-            'high': ' 🔴 HV/HQ',
-            'medium': ' 🔵 MV/HQ',
-            'low': ' ⚫ LV/LQ'
-        }
-        return mapping.get(risk.lower(), 'Unknown')
+        mapping = {"high": " 🔴 HV/HQ", "medium": " 🔵 MV/HQ", "low": " ⚫ LV/LQ"}
+        return mapping.get(risk.lower(), "Unknown")
 
     def generate_entities(self) -> List[Dict[str, Any]]:
-        resources = self.catalog.get('repositories', {}) # Changed from 'registries' to 'repositories' to match ecr-catalog.yaml
+        resources = self.catalog.get(
+            "repositories", {}
+        )  # Changed from 'registries' to 'repositories' to match ecr-catalog.yaml
         entities = []
 
         for name, res in resources.items():
-            metadata = res.get('metadata', {})
-            entity_name = name.lower().replace('_', '-')
+            metadata = res.get("metadata", {})
+            entity_name = name.lower().replace("_", "-")
 
             # Resolve effective metadata (Inheritance Support)
-            effective_metadata = self.cfg.get_effective_metadata(str(self.catalog_path), metadata)
-            risk = effective_metadata.get('risk', 'unknown')
+            effective_metadata = self.cfg.get_effective_metadata(
+                str(self.catalog_path), metadata
+            )
+            risk = effective_metadata.get("risk", "unknown")
 
             entity = {
-                'apiVersion': 'backstage.io/v1alpha1',
-                'kind': 'Resource',
-                'metadata': {
-                    'name': entity_name,
-                    'title': name,
-                    'description': f"ECR Registry for {name}",
-                    'value_quantification': {
-                        'vq_class': self._get_vq_class(risk)
+                "apiVersion": "backstage.io/v1alpha1",
+                "kind": "Resource",
+                "metadata": {
+                    "name": entity_name,
+                    "title": name,
+                    "description": f"ECR Registry for {name}",
+                    "value_quantification": {"vq_class": self._get_vq_class(risk)},
+                    "annotations": {
+                        "goldenpath-idp.io/risk": risk,
+                        "goldenpath-idp.io/environment": effective_metadata.get(
+                            "environment", "unknown"
+                        ),
+                        "goldenpath-idp.io/status": effective_metadata.get(
+                            "status", "unknown"
+                        ),
+                        "goldenpath-idp.io/id": effective_metadata.get("id", "N/A"),
+                        "goldenpath-idp.io/lineage": "inherited"
+                        if "owner" not in metadata
+                        else "explicit",
                     },
-                    'annotations': {
-                        'goldenpath-idp.io/risk': risk,
-                        'goldenpath-idp.io/environment': effective_metadata.get('environment', 'unknown'),
-                        'goldenpath-idp.io/status': effective_metadata.get('status', 'unknown'),
-                        'goldenpath-idp.io/id': effective_metadata.get('id', 'N/A'),
-                        'goldenpath-idp.io/lineage': 'inherited' if 'owner' not in metadata else 'explicit'
+                    "labels": {
+                        "owner": effective_metadata.get("owner", "unknown"),
                     },
-                    'labels': {
-                        'owner': effective_metadata.get('owner', 'unknown'),
-                    }
                 },
-                'spec': {
-                    'type': 'container-registry',
-                    'owner': effective_metadata.get('owner', 'platform-team'),
-                    'lifecycle': effective_metadata.get('status', 'active'),
-                    'system': 'container-infrastructure'
-                }
+                "spec": {
+                    "type": "container-registry",
+                    "owner": effective_metadata.get("owner", "platform-team"),
+                    "lifecycle": effective_metadata.get("status", "active"),
+                    "system": "container-infrastructure",
+                },
             }
             entities.append(entity)
 
@@ -110,14 +114,25 @@ class BackstageSync:
         output_file = Path(output_path)
         output_file.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(output_file, 'w') as f:
+        with open(output_file, "w") as f:
             # Use yaml.dump_all for multiple documents
             yaml.dump_all(entities, f, sort_keys=False, default_flow_style=False)
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Sync ECR catalog to Backstage entities")
-    parser.add_argument("--catalog", default="docs/20-contracts/resource-catalogs/ecr-catalog.yaml", help="Path to ECR catalog")
-    parser.add_argument("--output", default="docs/20-contracts/resource-catalogs/backstage-entities.yaml", help="Output path for Backstage entities")
+    parser = argparse.ArgumentParser(
+        description="Sync ECR catalog to Backstage entities"
+    )
+    parser.add_argument(
+        "--catalog",
+        default="docs/20-contracts/resource-catalogs/ecr-catalog.yaml",
+        help="Path to ECR catalog",
+    )
+    parser.add_argument(
+        "--output",
+        default="docs/20-contracts/resource-catalogs/backstage-entities.yaml",
+        help="Output path for Backstage entities",
+    )
     args = parser.parse_args()
 
     try:
@@ -125,10 +140,13 @@ def main():
         sync.load_catalog()
         entities = sync.generate_entities()
         sync.write_entities(args.output, entities)
-        print(f"✅ Successfully generated {len(entities)} Backstage entities in {args.output}")
+        print(
+            f"✅ Successfully generated {len(entities)} Backstage entities in {args.output}"
+        )
     except Exception as e:
         print(f"❌ Error: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

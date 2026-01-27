@@ -42,6 +42,7 @@ Features:
     - Secure: Uses SSL connections, no password logging
     - Fail-fast: Exits immediately on missing secrets or connection errors
 """
+
 from __future__ import annotations
 
 import argparse
@@ -216,10 +217,7 @@ def validate_rds_hostname(hostname: str, env: str = "dev") -> HostnameValidation
     try:
         ip_address = socket.gethostbyname(hostname)
         return HostnameValidationResult(
-            success=True,
-            ip_address=ip_address,
-            error_message="",
-            remediation=""
+            success=True, ip_address=ip_address, error_message="", remediation=""
         )
     except socket.gaierror as e:
         # Extract the identifier from the hostname for clearer messaging
@@ -244,7 +242,7 @@ def validate_rds_hostname(hostname: str, env: str = "dev") -> HostnameValidation
             success=False,
             ip_address=None,
             error_message=error_message,
-            remediation=remediation
+            remediation=remediation,
         )
 
 
@@ -256,16 +254,13 @@ def is_running_in_kubernetes() -> bool:
         True if running inside K8s, False otherwise
     """
     # K8s sets these environment variables in pods
-    return (
-        os.environ.get("KUBERNETES_SERVICE_HOST") is not None
-        or os.path.exists("/var/run/secrets/kubernetes.io/serviceaccount/token")
+    return os.environ.get("KUBERNETES_SERVICE_HOST") is not None or os.path.exists(
+        "/var/run/secrets/kubernetes.io/serviceaccount/token"
     )
 
 
 def run_preflight_checks(
-    creds: "RdsCredentials",
-    env: str = "dev",
-    skip_preflight: bool = False
+    creds: "RdsCredentials", env: str = "dev", skip_preflight: bool = False
 ) -> PreflightCheckResult:
     """
     Run all pre-flight checks before attempting to provision.
@@ -319,7 +314,7 @@ def run_preflight_checks(
         return PreflightCheckResult(
             passed=False,
             failed_checks=failed_checks,
-            remediation="\n".join(remediation_steps)
+            remediation="\n".join(remediation_steps),
         )
 
     logger.info(f"Pre-flight check: Hostname resolved to {hostname_result.ip_address}")
@@ -327,10 +322,7 @@ def run_preflight_checks(
     # Check 2: Port reachability
     logger.info(f"Pre-flight check: Testing port {creds.port} reachability...")
     try:
-        conn = socket.create_connection(
-            (creds.host, creds.port),
-            timeout=10
-        )
+        conn = socket.create_connection((creds.host, creds.port), timeout=10)
         conn.close()
         logger.info("Pre-flight check: Port is reachable")
     except socket.timeout:
@@ -342,18 +334,16 @@ def run_preflight_checks(
             f"Verify the RDS instance is in an available state"
         )
     except socket.error as e:
-        failed_checks.append(
-            f"Port {creds.port} not reachable on {creds.host}: {e}"
-        )
+        failed_checks.append(f"Port {creds.port} not reachable on {creds.host}: {e}")
         remediation_steps.append(
-            f"Check security group rules and network connectivity\n"
-            f"Verify the RDS instance is in an available state"
+            "Check security group rules and network connectivity\n"
+            "Verify the RDS instance is in an available state"
         )
 
     return PreflightCheckResult(
         passed=len(failed_checks) == 0,
         failed_checks=failed_checks,
-        remediation="\n".join(remediation_steps) if remediation_steps else ""
+        remediation="\n".join(remediation_steps) if remediation_steps else "",
     )
 
 
@@ -534,7 +524,9 @@ def provision_role(
     action = "create_role"
 
     if dry_run:
-        message = f"[DRY-RUN] Would create/update role: {username} (with LOGIN CREATEDB)"
+        message = (
+            f"[DRY-RUN] Would create/update role: {username} (with LOGIN CREATEDB)"
+        )
         logger.info(message)
         return ProvisionResult(
             database="",
@@ -555,7 +547,8 @@ def provision_role(
             if role_exists:
                 # Update password and ensure CREATEDB for existing role
                 cur.execute(
-                    "ALTER ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username, (password,)
+                    "ALTER ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username,
+                    (password,),
                 )
                 message = f"Updated role with CREATEDB: {username}"
                 status = "no_change"
@@ -563,7 +556,8 @@ def provision_role(
                 # Create new role with LOGIN and CREATEDB
                 # CREATEDB required for apps that create plugin databases (e.g., Backstage)
                 cur.execute(
-                    "CREATE ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username, (password,)
+                    "CREATE ROLE %s WITH LOGIN CREATEDB PASSWORD %%s" % username,
+                    (password,),
                 )
                 message = f"Created role with CREATEDB: {username}"
                 status = "success"
@@ -692,7 +686,11 @@ def provision_database(
 
 
 def apply_grants(
-    conn, db_name: str, username: str, access_level: str = "owner", dry_run: bool = False
+    conn,
+    db_name: str,
+    username: str,
+    access_level: str = "owner",
+    dry_run: bool = False,
 ) -> ProvisionResult:
     """
     Apply grants and default privileges for database access.
@@ -724,7 +722,9 @@ def apply_grants(
     grants = ACCESS_LEVELS[access_level]
 
     if dry_run:
-        message = f"[DRY-RUN] Would grant {access_level} access on {db_name} to {username}"
+        message = (
+            f"[DRY-RUN] Would grant {access_level} access on {db_name} to {username}"
+        )
         logger.info(message)
         return ProvisionResult(
             database=db_name,
@@ -744,19 +744,29 @@ def apply_grants(
 
         with conn.cursor() as cur:
             # Grant on database
-            cur.execute(f'GRANT {grants["database"]} ON DATABASE "{db_name}" TO "{username}"')
+            cur.execute(
+                f'GRANT {grants["database"]} ON DATABASE "{db_name}" TO "{username}"'
+            )
 
             # Grant on schema (requires connecting to the target database)
             # For now, grant on public schema from current connection
             cur.execute(f'GRANT {grants["schema"]} ON SCHEMA public TO "{username}"')
 
             # Grant on existing tables and sequences
-            cur.execute(f'GRANT {grants["tables"]} ON ALL TABLES IN SCHEMA public TO "{username}"')
-            cur.execute(f'GRANT {grants["sequences"]} ON ALL SEQUENCES IN SCHEMA public TO "{username}"')
+            cur.execute(
+                f'GRANT {grants["tables"]} ON ALL TABLES IN SCHEMA public TO "{username}"'
+            )
+            cur.execute(
+                f'GRANT {grants["sequences"]} ON ALL SEQUENCES IN SCHEMA public TO "{username}"'
+            )
 
             # Set default privileges for future objects
-            cur.execute(f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT {grants["default_tables"]} ON TABLES TO "{username}"')
-            cur.execute(f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT {grants["default_sequences"]} ON SEQUENCES TO "{username}"')
+            cur.execute(
+                f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT {grants["default_tables"]} ON TABLES TO "{username}"'
+            )
+            cur.execute(
+                f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT {grants["default_sequences"]} ON SEQUENCES TO "{username}"'
+            )
 
         message = f"Granted {access_level} access on {db_name} to {username} (with default privileges)"
         logger.info(f"[SUCCESS] {message}")
@@ -935,7 +945,9 @@ def provision_all(
             continue  # Only reached if fail_fast=False
 
         # 2. Provision database
-        result = provision_database(conn, app_db.database_name, app_db.username, dry_run)
+        result = provision_database(
+            conn, app_db.database_name, app_db.username, dry_run
+        )
         record_and_check(
             AuditRecord(
                 timestamp_utc=timestamp,
@@ -1131,9 +1143,7 @@ def main() -> int:
     if args.env != "dev" and args.require_approval:
         allow = os.environ.get("ALLOW_DB_PROVISION", "").lower()
         if allow != "true":
-            logger.error(
-                f"ALLOW_DB_PROVISION=true required for {args.env} environment"
-            )
+            logger.error(f"ALLOW_DB_PROVISION=true required for {args.env} environment")
             return 1
 
     # Fail-fast is default; --no-fail-fast disables it

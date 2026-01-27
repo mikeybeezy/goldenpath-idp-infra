@@ -25,8 +25,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
 from validate_request import (
     BespokeSchemaValidator,
     EnumResolver,
-    ValidationError,
-    ValidationResult,
     find_schema_for_request,
 )
 
@@ -66,7 +64,9 @@ security:
         resolver = EnumResolver(enums_file)
 
         assert resolver.resolve("security.secret_types") == [
-            "database-credentials", "api-key", "generic"
+            "database-credentials",
+            "api-key",
+            "generic",
         ]
 
     def test_resolve_missing_enum(self, tmp_path):

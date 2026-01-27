@@ -5,7 +5,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 # Add scripts dir to path to import the script under test
 ROOT_DIR = Path(__file__).resolve().parents[2]
@@ -15,8 +15,8 @@ sys.path.append(str(SCRIPTS_DIR))
 # Import the script module
 import standardize_metadata
 
-class TestStandardizeMetadata(unittest.TestCase):
 
+class TestStandardizeMetadata(unittest.TestCase):
     def setUp(self):
         # Create a temporary directory for test files
         self.test_dir = tempfile.mkdtemp()
@@ -25,13 +25,13 @@ class TestStandardizeMetadata(unittest.TestCase):
     def create_file(self, filename, content):
         path = os.path.join(self.test_dir, filename)
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             f.write(content)
         return path
 
     def read_file(self, filename):
         path = os.path.join(self.test_dir, filename)
-        with open(path, 'r') as f:
+        with open(path, "r") as f:
             return f.read()
 
     def test_dry_run_does_not_modify_file(self):
@@ -43,7 +43,7 @@ class TestStandardizeMetadata(unittest.TestCase):
         abs_path = os.path.join(self.test_dir, filename)
 
         # Run with dry_run=True using context manager to capture print output
-        with patch('builtins.print') as mock_print:
+        with patch("builtins.print") as mock_print:
             standardize_metadata.standardize_file(abs_path, dry_run=True)
             # Verify "Would" message printed
             # mock_print.assert_any_call(f"[DRY-RUN] Would standardize: {abs_path}")
@@ -59,14 +59,14 @@ class TestStandardizeMetadata(unittest.TestCase):
         abs_path = os.path.join(self.test_dir, filename)
 
         # Run Actual (dry_run=False)
-        with patch('builtins.print'): # Suppress output
+        with patch("builtins.print"):  # Suppress output
             standardize_metadata.standardize_file(abs_path, dry_run=False)
 
         # Verify content now has frontmatter
         new_content = self.read_file(filename)
         self.assertIn("---", new_content)
         self.assertIn("id: test_doc_2", new_content)
-        self.assertIn("owner: platform-team", new_content) # Default owner
+        self.assertIn("owner: platform-team", new_content)  # Default owner
 
     def test_mandated_zone_sidecar_creation(self):
         """Test that mandated zones get a metadata.yaml sidecar."""
@@ -83,6 +83,7 @@ class TestStandardizeMetadata(unittest.TestCase):
         # Let's trust the unit tests on standardize_file cover the core logic
         # and leave integration testing of directory crawling for later.
         pass
+
 
 if __name__ == "__main__":
     unittest.main()

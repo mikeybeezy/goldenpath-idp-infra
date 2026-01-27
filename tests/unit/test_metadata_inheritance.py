@@ -9,6 +9,7 @@ import yaml
 sys.path.append(os.getcwd())
 from scripts.lib.metadata_config import MetadataConfig
 
+
 class TestMetadataInheritance(unittest.TestCase):
     def setUp(self):
         self.test_dir = tempfile.mkdtemp()
@@ -18,18 +19,29 @@ class TestMetadataInheritance(unittest.TestCase):
         # Setup mock schemas and enums
         os.makedirs("schemas/metadata")
         with open("schemas/metadata/enums.yaml", "w") as f:
-            yaml.dump({"owners": ["platform-team", "app-team"], "domains": ["delivery", "security"]}, f)
+            yaml.dump(
+                {
+                    "owners": ["platform-team", "app-team"],
+                    "domains": ["delivery", "security"],
+                },
+                f,
+            )
 
         with open("schemas/metadata/metadata.schema.yaml", "w") as f:
-            yaml.dump({
-                "properties": {
-                    "owner": {"enum_from": "owners"},
-                    "domain": {"enum_from": "domains"},
-                    "exempt": {"type": "boolean"}
-                }
-            }, f)
+            yaml.dump(
+                {
+                    "properties": {
+                        "owner": {"enum_from": "owners"},
+                        "domain": {"enum_from": "domains"},
+                        "exempt": {"type": "boolean"},
+                    }
+                },
+                f,
+            )
 
-        self.cfg = MetadataConfig(schemas_dir="schemas/metadata", enums_file="schemas/metadata/enums.yaml")
+        self.cfg = MetadataConfig(
+            schemas_dir="schemas/metadata", enums_file="schemas/metadata/enums.yaml"
+        )
 
     def tearDown(self):
         os.chdir(self.old_cwd)
@@ -59,11 +71,13 @@ class TestMetadataInheritance(unittest.TestCase):
         os.makedirs("apps/my-service")
         local_data = {"id": "MY_SERVICE", "domain": "security"}
 
-        effective = self.cfg.get_effective_metadata("apps/my-service/metadata.yaml", local_data)
+        effective = self.cfg.get_effective_metadata(
+            "apps/my-service/metadata.yaml", local_data
+        )
 
-        self.assertEqual(effective["owner"], "platform-team") # Inherited
-        self.assertEqual(effective["domain"], "security")     # Local Override
-        self.assertEqual(effective["id"], "MY_SERVICE")      # Local Identity
+        self.assertEqual(effective["owner"], "platform-team")  # Inherited
+        self.assertEqual(effective["domain"], "security")  # Local Override
+        self.assertEqual(effective["id"], "MY_SERVICE")  # Local Identity
 
     def test_id_never_inherited(self):
         # Parent with ID (bad practice but should be handled)
@@ -74,10 +88,13 @@ class TestMetadataInheritance(unittest.TestCase):
         os.makedirs("apps/my-service")
         local_data = {"owner": "app-team"}
 
-        effective = self.cfg.get_effective_metadata("apps/my-service/metadata.yaml", local_data)
+        effective = self.cfg.get_effective_metadata(
+            "apps/my-service/metadata.yaml", local_data
+        )
 
         self.assertEqual(effective["owner"], "app-team")
-        self.assertNotIn("id", effective) # ID should be stripped if not in local
+        self.assertNotIn("id", effective)  # ID should be stripped if not in local
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -230,9 +230,7 @@ def create_json_file(temp_dir: Path):
 def create_markdown_file(temp_dir: Path):
     """Factory fixture to create Markdown files with frontmatter."""
 
-    def _create(
-        filename: str, frontmatter: Dict[str, Any], body: str = ""
-    ) -> Path:
+    def _create(filename: str, frontmatter: Dict[str, Any], body: str = "") -> Path:
         filepath = temp_dir / filename
         filepath.parent.mkdir(parents=True, exist_ok=True)
         with open(filepath, "w") as f:
@@ -268,9 +266,7 @@ def pytest_configure(config):
 def pytest_collection_modifyitems(config, items):
     """Skip tests based on markers and environment."""
     skip_slow = pytest.mark.skip(reason="need --runslow option to run")
-    skip_integration = pytest.mark.skip(
-        reason="need --runintegration option to run"
-    )
+    skip_integration = pytest.mark.skip(reason="need --runintegration option to run")
     skip_aws = pytest.mark.skip(reason="AWS credentials not configured")
 
     for item in items:

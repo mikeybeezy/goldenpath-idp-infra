@@ -191,7 +191,7 @@ jobs:
             echo "To skip TDD for a file, add a comment: \`# SKIP-TDD: <reason>\`" >> $GITHUB_STEP_SUMMARY
 
             echo ""
-            echo "❌ TDD Gate Failed: Missing tests for ${#MISSING_TESTS[@]} file(s)"
+            echo " TDD Gate Failed: Missing tests for ${#MISSING_TESTS[@]} file(s)"
             echo ""
             printf '  - %s\n' "${MISSING_TESTS[@]}"
             exit 1
