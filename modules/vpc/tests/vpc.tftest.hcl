@@ -21,10 +21,10 @@ variables {
   vpc_tag     = "test-vpc"
   environment = "test"
 
-  create_internet_gateway = true
+  create_internet_gateway   = true
   create_public_route_table = true
-  public_route_cidr_block = "0.0.0.0/0"
-  public_route_table_name = "test-public-rt"
+  public_route_cidr_block   = "0.0.0.0/0"
+  public_route_table_name   = "test-public-rt"
 
   tags = {
     Project   = "goldenpath-idp"

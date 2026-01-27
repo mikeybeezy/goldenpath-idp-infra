@@ -368,7 +368,9 @@ relates_to:
   - ADR-0160
   - ADR-0161
   - ADR-0162
+  - ADR-0162
   - ADR-0163
+  - ADR-0164
   - ADR-0164
   - ADR-0165
   - ADR-0166
@@ -561,8 +563,10 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0159](ADR-0159-backstage-catalog-registry-sync.md) | Platform | Backstage Catalog Sync to Governance Registry | Proposed | 2026-01-0? | The Backstage Software Catalog provides self-service templates for developers to provision resources (ECR registries, RDS databases, etc.). Previously, the catalog URL in Backstage configuration po... |
 | [ADR-0160](ADR-0160-rds-optional-toggle-integration.md) | Platform | RDS Optional Toggle Integration | Proposed | 2026-01-15 | ADR-0158 introduced RDS as a standalone bounded context (`envs/dev-rds/`) to ensure data persistence across cluster rebuilds. This works well for users who need decoupled lifecycle management and i... |
 | [ADR-0161](ADR-0161-ephemeral-infrastructure-stack.md) | Platform | Standard Ephemeral Infrastructure Stack | Proposed | 2026-01-15 | Our platform supports multiple deployment contexts: |
+| [ADR-0162](ADR-0162-determinism-protection.md) | Platform | Determinism Protection via Test-Driven Platform Evolution | Accepted | 2026-01-0? | The Golden Path IDP has reached a point where: |
 | [ADR-0162](ADR-0162-kong-ingress-dns-strategy.md) | Platform | Kong Ingress DNS Strategy for Platform Tooling | Proposed | 2026-01-16 | Platform tooling applications (Backstage, Keycloak, ArgoCD, Grafana) are deployed on EKS clusters and need to be accessible to developers and operators. Previously, access required kubectl port-for... |
 | [ADR-0163](ADR-0163-agent-collaboration-governance.md) | Platform | Agent Collaboration Governance and Living Registry | Proposed | 2026-01-16 | The platform now relies on multiple AI agents running locally and in CI. We already have policy guardrails for agents, but we lack a single, living source of truth that defines who each agent is, w... |
+| [ADR-0164](ADR-0164-agent-trust-and-identity.md) | Architecture | Agent Trust and Identity Architecture | Accepted | 2026-01-0? | We are building a platform where AI agents collaborate with humans on infrastructure code. The promise is significant: agents can handle routine work autonomously, freeing humans for higher-level d... |
 | [ADR-0164](ADR-0164-teardown-v3-enhanced-reliability.md) | Platform | Teardown V3 with Enhanced Reliability and RDS Support | Active | 2026-01-0? | ### Problem Statement |
 | [ADR-0165](ADR-0165-rds-user-db-provisioning-automation.md) | Platform | Automated RDS User and Database Provisioning | Proposed | 2026-01-16 | Terraform currently creates Secrets Manager entries for database credentials but does not create the corresponding Postgres roles or databases. This leaves a manual gap (psql access) and introduces... |
 | [ADR-0166](ADR-0166-rds-dual-mode-automation-and-enum-alignment.md) | Platform | Dual-Mode RDS Automation with Enum-Aligned Requests | Proposed | 2026-01-16 | The platform intentionally supports two RDS deployment modes: |
@@ -583,9 +587,8 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0179](ADR-0179-dynamic-hostname-generation-ephemeral-clusters.md) | Platform | Dynamic Hostname Generation for Ephemeral Clusters | Proposed | 2026-01-0? | ADR-0178 establishes that ephemeral clusters must use the`*.b-{buildid}.{env}.goldenpathidp.io`namespace to prevent DNS collisions. This ADR defines **how** the`buildId`flows through the system to ... |
 | [ADR-0180](ADR-0180-argocd-orchestrator-contract.md) | Platform | ArgoCD Orchestrator Contract | Proposed | 2026-01-0? | V1 bootstrap uses shell scripts with conditional logic to deploy platform components. This approach has several problems: |
 | [ADR-0181](ADR-0181-rds-createdb-privilege-for-applications.md) | Platform | CREATEDB Privilege for Application Database Users | Proposed | 2026-01-24 | The RDS provisioning script (`rds_provision.py`, SCRIPT-0035) creates PostgreSQL roles for application databases. Initially, roles were created with only`LOGIN`privilege: |
-| [ADR-0182](ADR-0182-tdd-philosophy.md) | Platform | Test-Driven Development Philosophy | Accepted | 2026-01-26 | Adopt TDD as core philosophy: "No feature without a test. No merge without green." Defines coverage targets, enforcement mechanisms, and test co-location patterns. |
-| [ADR-0183](ADR-0183-test-health-metrics-schema.md) | Platform | Test Health Metrics Schema Contract | Accepted | 2026-01-26 | Define and enforce a schema contract for test health metrics to prevent drift and false-green dashboards. |
-| [ADR-0162](ADR-0162-determinism-protection.md) | Platform | Determinism Protection via Test-Driven Platform Evolution | Accepted | 2026-01-26 | Elevate testing from quality assurance to value preservation. Protect determinism under high automation velocity by requiring tests for all determinism-critical paths. |
+| [ADR-0182](ADR-0182-tdd-philosophy.md) | Platform | Test-Driven Development Philosophy | Accepted | 2026-01-0? | The GoldenPath IDP has strong governance and architecture but weak test coverage: |
+| [ADR-0183](ADR-0183-test-health-metrics-schema.md) | Platform | Test Health Metrics Schema Contract | Accepted | 2026-01-0? | Test results and coverage are emitted by multiple frameworks across multiple repos. Without a stable contract, dashboards can drift, silently drop fields, or report false-green states. A schema con... |
 <!-- ADR_TABLE_END -->
 
 ---

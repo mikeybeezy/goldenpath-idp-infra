@@ -53,7 +53,9 @@ CI Workflows (GitHub Actions)
 │   └─ Scaffold App Repository
 │
 ├─ Guardrails / Policy (PR)
+│   ├─ Agent Merge Guard
 │   ├─ Daily Policy Enforcement
+│   ├─ Determinism Guard
 │   ├─ EKS Size Approval Guard
 │   ├─ Ops - Secret Rotation Compliance Check
 │   ├─ Plan - Infra Terraform Checks
@@ -67,19 +69,21 @@ CI Workflows (GitHub Actions)
 │   ├─ Quality - Doc Freshness Check
 │   ├─ Quality - Docs & Config Linter
 │   ├─ Quality - EKS Request Validation
+│   ├─ Quality - Helm Chart Validation
 │   ├─ Quality - Metadata Validation
 │   ├─ Quality - Platform Health Check
 │   ├─ Quality - Pre-commit checks
 │   ├─ Quality - RDS Request Validation
 │   ├─ Quality - S3 Request Validation
-│   ├─ Quality - Terraform Lint
+│   ├─ Quality - Terraform Lint & Test
 │   ├─ Quality - YAML Lint
 │   ├─ RDS Prevent Destroy Guard
 │   ├─ RDS Size Approval Guard
 │   ├─ RDS tfvars Drift Guard
 │   ├─ S3 Approval Guard
 │   ├─ Secret Approval Guard
-│   └─ Session Capture Guardrail
+│   ├─ Session Capture Guardrail
+│   └─ Test Integrity Guard
 │
 ├─ Teardown / Recovery
 │   ├─ Ops - CI Force Unlock
@@ -108,13 +112,15 @@ CI Workflows (GitHub Actions)
     ├─ PR Gates
     ├─ PR Governance Gates
     ├─ Promote Image
-    ├─ Python Unit Tests
+    ├─ Python Tests & Certification Proofs
     ├─ Quality - Documentation Auto-Healing
     ├─ Request App Secret
     ├─ Script Certification Gate
     ├─ Secret Requests (PR)
     ├─ Security - Gitleaks
     ├─ Session Log Requirement
+    ├─ Shell Script Tests (bats)
+    ├─ TDD Gate
     ├─ _build-and-release
     └─ _deploy
 ```
@@ -172,8 +178,18 @@ CI Workflows (GitHub Actions)
 
 ## Guardrails / Policy (PR)
 
+### Agent Merge Guard
+- **File**: `agent-merge-guard.yml`
+- **Owner**: platform-team
+- **Triggers**:
+
 ### Daily Policy Enforcement
 - **File**: `policy-enforcement.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### Determinism Guard
+- **File**: `determinism-guard.yml`
 - **Owner**: platform
 - **Triggers**:
 
@@ -242,6 +258,11 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
+### Quality - Helm Chart Validation
+- **File**: `ci-helm-validation.yml`
+- **Owner**: platform
+- **Triggers**:
+
 ### Quality - Metadata Validation
 - **File**: `ci-metadata-validation.yml`
 - **Owner**: platform
@@ -267,7 +288,7 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
-### Quality - Terraform Lint
+### Quality - Terraform Lint & Test
 - **File**: `ci-terraform-lint.yml`
 - **Owner**: platform
 - **Triggers**:
@@ -305,6 +326,11 @@ CI Workflows (GitHub Actions)
 ### Session Capture Guardrail
 - **File**: `session-capture-guard.yml`
 - **Owner**: platform-team
+- **Triggers**:
+
+### Test Integrity Guard
+- **File**: `test-integrity-guard.yml`
+- **Owner**: platform
 - **Triggers**:
 
 ## Teardown / Recovery
@@ -415,9 +441,9 @@ CI Workflows (GitHub Actions)
 - **Owner**: platform
 - **Triggers**:
 
-### Python Unit Tests
+### Python Tests & Certification Proofs
 - **File**: `python-tests.yml`
-- **Owner**: platform
+- **Owner**: platform-team
 - **Triggers**:
 
 ### Quality - Documentation Auto-Healing
@@ -448,6 +474,16 @@ CI Workflows (GitHub Actions)
 ### Session Log Requirement
 - **File**: `session-log-required.yml`
 - **Owner**: platform-team
+- **Triggers**:
+
+### Shell Script Tests (bats)
+- **File**: `bats-tests.yml`
+- **Owner**: platform
+- **Triggers**:
+
+### TDD Gate
+- **File**: `tdd-gate.yml`
+- **Owner**: platform
 - **Triggers**:
 
 ### _build-and-release
