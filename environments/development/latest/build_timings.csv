@@ -45,3 +45,4 @@ start_time_utc,end_time_utc,phase,env,build_id,duration_seconds,exit_code,flags,
 2026-01-26T18:13:23Z,2026-01-26T18:13:23Z,rds-apply,dev,rds,0,0,"",0,0,0,logs/build-timings/rds-apply-dev-rds-20260126T181318Z.log
 2026-01-26T20:47:16Z,2026-01-26T21:38:06Z,teardown-persistent,dev,persistent,3050,1,"",0,0,0,logs/build-timings/teardown-persistent-dev-persistent-20260126T204716Z.log
 2026-01-27T00:09:58Z,2026-01-27T01:01:13Z,teardown-persistent,dev,persistent,3075,1,"",0,0,0,logs/build-timings/teardown-persistent-dev-persistent-20260127T000958Z.log
+2026-01-27T06:19:26Z,2026-01-27T06:20:24Z,teardown-persistent,dev,persistent,58,1,"",0,0,0,logs/build-timings/teardown-persistent-dev-persistent-20260127T061926Z.log
