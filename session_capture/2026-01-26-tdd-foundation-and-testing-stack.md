@@ -1258,3 +1258,29 @@ Fixed metadata validation issues in development branch via fix PR #284:
 - [ ] Human merge PR #283 to main
 
 Signed: Claude Opus 4.5 (2026-01-27T06:20:00Z)
+
+## Update - 2026-01-27T06:30:00Z
+
+### Context
+
+Found and fixed bug in `scripts/validate_request.py` where conditional rule operators were silently ignored.
+
+### What Changed
+
+The `_validate_conditional_rule` function only handled `required` and `equals` operators. Added support for:
+- `minimum` - enforces `backupRetentionDays >= 14` for prod
+- `enum` - restricts `size` to `['small']` for dev
+- `greater_than_field` - enforces `maxStorageGb > storageGb`
+- `defined` - checks if optional field exists
+- `recommended` - generates warnings instead of errors
+
+### Tests Added
+
+13 new tests covering all operators plus RDS schema integration test.
+
+### Outstanding
+
+- [ ] PR #285 CI checks
+- [ ] Merge PR #285 to development
+
+Signed: Claude Opus 4.5 (2026-01-27T06:30:00Z)

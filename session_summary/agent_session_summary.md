@@ -3692,3 +3692,38 @@ PR #283 (development → main) blocked by CI failures related to metadata valida
 - Script certification matrix in sync
 
 Signed: Claude Opus 4.5 (2026-01-27T06:20:00Z)
+
+---
+
+## 2026-01-27 Conditional Rule Operators Fix
+
+### Context
+
+Found bug in bespoke schema validator where conditional rule operators (minimum, enum, greater_than_field, defined, recommended) were silently ignored, allowing invalid requests through.
+
+### Fix Applied
+
+Added implementations for all operators in `_validate_conditional_rule` and `_evaluate_conditions` methods.
+
+### Tests Added
+
+13 new tests covering all operators plus RDS schema integration test.
+
+### Artifacts Touched
+
+*Modified:*
+- `scripts/validate_request.py` — Added operator implementations
+- `tests/scripts/test_validate_request.py` — Added 13 new tests
+
+*Added:*
+- `docs/changelog/entries/CL-0199-validate-request-conditional-operators.md`
+
+### Validation
+
+All 41 tests passing. RDS governance constraints now enforced:
+- `prod_requires_backup`: backupRetentionDays >= 14 for prod
+- `dev_max_size`: size must be 'small' for dev
+- `storage_max_must_exceed_allocated`: maxStorageGb > storageGb
+- `prod_requires_multi_az`: warning when multiAz=false in prod
+
+Signed: Claude Opus 4.5 (2026-01-27T06:30:00Z)
