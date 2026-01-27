@@ -1284,3 +1284,34 @@ The `_validate_conditional_rule` function only handled `required` and `equals` o
 - [ ] Merge PR #285 to development
 
 Signed: Claude Opus 4.5 (2026-01-27T06:30:00Z)
+
+## Phase 5: Pre-commit Fixes and Ruff Configuration (2026-01-27)
+
+### Changes Made
+
+1. **Added pyproject.toml with ruff configuration**
+   - Ignore E402 (imports after docstrings) - intentional pattern for script metadata
+   - Ignore E501 (line too long) - many existing long lines
+   - Ignore E701/E702 (multiple statements) - legacy patterns
+   - Ignore E712 (True/False comparisons) - stylistic
+   - Ignore E722 (bare except) - legacy patterns to fix incrementally
+
+2. **Fixed real bugs**
+   - F821: Added missing `datetime` import in `sync_ecr_catalog.py`
+   - F401: Removed unused import in `validate_scripts_tested.py`
+   - F841: Prefixed unused variables with `_` in multiple scripts
+
+3. **Fixed style issues**
+   - Markdownlint list style (dash to asterisk) in session captures
+   - Auto-fixed formatting (ruff-format, trailing whitespace, end-of-file)
+   - Auto-fixed emoji policy violations
+   - Regenerated indices (ADR, script, workflow)
+
+### Files Changed
+
+- 119 files modified by pre-commit auto-fixes
+- Created `pyproject.toml` for ruff configuration
+
+### PR Created
+
+- PR #286: fix/precommit-ruff-config -> development
