@@ -774,13 +774,17 @@ rds-deploy:
 		else \
 			echo ""; \
 			echo "======================================================================"; \
-			echo "ℹ️  RDS is private - provisioning must run from inside the cluster"; \
+			echo "ℹ️  RDS is private - cannot provision from your local machine"; \
 			echo "======================================================================"; \
 			echo ""; \
 			echo "RDS infrastructure was created successfully."; \
-			echo "To provision databases, run from inside the cluster:"; \
+			echo ""; \
+			echo "NEXT STEP: Run this command from your local machine (requires kubectl access):"; \
 			echo ""; \
 			echo "  make rds-provision-k8s ENV=$(ENV) REGION=$(REGION)"; \
+			echo ""; \
+			echo "This creates a K8s Job that provisions databases from inside the VPC"; \
+			echo "where it can reach the private RDS endpoint."; \
 			echo ""; \
 		fi; \
 	} 2>&1 | tee "$$log"; \
