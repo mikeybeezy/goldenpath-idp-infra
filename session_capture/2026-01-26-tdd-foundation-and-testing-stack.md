@@ -1228,3 +1228,33 @@ b4f39940 fix: ArgoCD/LBC webhook race condition - sequential deployment
 Total tests added: ~285 across Python, Shell, Terraform, Helm
 
 Signed: Claude Opus 4.5 (2026-01-27T05:00:00Z)
+
+## Update - 2026-01-27T06:20:00Z
+
+### Context
+
+PR #283 (development → main) blocked by CI failures:
+- ADR-0164 metadata validation failing (invalid applies_to enum values)
+- scripts/index.md drift from development branch
+- SCRIPT_CERTIFICATION_MATRIX.md out of sync
+
+### What Changed
+
+Fixed metadata validation issues in development branch via fix PR #284:
+
+1. **ADR-0164-agent-trust-and-identity.md** - Fixed applies_to enum values:
+   - `ai-agents` → `agents` (valid component enum)
+   - `ci-cd` → `ci` (valid component enum)
+   - `governance` → `policies` (valid component enum)
+
+2. **scripts/index.md** - Regenerated via `generate_script_index.py`
+
+3. **SCRIPT_CERTIFICATION_MATRIX.md** - Regenerated via `generate_script_matrix.py`
+
+### Outstanding
+
+- [ ] Merge fix PR #284 to development
+- [ ] Re-check PR #283 (development → main) CI status
+- [ ] Human merge PR #283 to main
+
+Signed: Claude Opus 4.5 (2026-01-27T06:20:00Z)
