@@ -52,7 +52,7 @@ relates_to:
 | `scripts/pr_guardrails.py` | `SCRIPT-0026` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/preflight_secrets_check.sh` | `SCRIPT-0053` | `platform-team` | ⭐⭐ 2 | 🚫 | `shellcheck` | `declared` | `medium` |
 | `scripts/rds_provision.py` | `SCRIPT-0035` | `platform-team` | ⭐ 1 | ✅ | `pytest` | `declared` | `medium` |
-| `scripts/rds_provision_k8s.sh` | `MISSING` | `MISSING` | 0 | 🚫 | `MISSING` | `MISSING` | `MISSING` |
+| `scripts/rds_provision_k8s.sh` | `SCRIPT-0063` | `platform-team` | ⭐ 1 | 🚫 | `bats` | `declared` | `medium` |
 | `scripts/rds_request_parser.py` | `SCRIPT-0034` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/rds_secrets_preflight.sh` | `SCRIPT-0052` | `platform-team` | ⭐⭐ 2 | 🚫 | `shellcheck` | `declared` | `medium` |
 | `scripts/record-build-timing.sh` | `SCRIPT-0046` | `platform-team` | ⭐⭐ 2 | 🚫 | `bash` | `manual` | `low` |
@@ -75,7 +75,7 @@ relates_to:
 | `scripts/validate_enums.py` | `SCRIPT-0039` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/validate_govreg.py` | `SCRIPT-0040` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/validate_metadata.py` | `SCRIPT-0041` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
-| `scripts/validate_request.py` | `MISSING` | `MISSING` | 0 | 🚫 | `MISSING` | `MISSING` | `MISSING` |
+| `scripts/validate_request.py` | `SCRIPT-0062` | `platform-team` | ⭐ 1 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/validate_routing_compliance.py` | `SCRIPT-0042` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `low` |
 | `scripts/validate_scripts_tested.py` | `validate_scripts_tested` | `platform-team` | ⭐⭐ 2 | ✅ | `pytest` | `declared` | `none` |
 

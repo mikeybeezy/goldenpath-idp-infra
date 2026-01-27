@@ -92,7 +92,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [migrate_partial_metadata.py](migrate_partial_metadata.py) | --- |
 | [preflight_secrets_check.sh](preflight_secrets_check.sh) | --- |
 | [rds_provision.py](rds_provision.py) | --- |
-| [rds_provision_k8s.sh](rds_provision_k8s.sh) | RDS Provisioning via K8s Job |
+| [rds_provision_k8s.sh](rds_provision_k8s.sh) | --- |
 | [rds_request_parser.py](rds_request_parser.py) | --- |
 | [rds_secrets_preflight.sh](rds_secrets_preflight.sh) | --- |
 | [record-build-timing.sh](record-build-timing.sh) | Record build timing to governance-registry branch |
@@ -109,7 +109,7 @@ This directory contains the automation engine powering the GoldenPath IDP.
 | [test_hotfix.py](test_hotfix.py) | --- |
 | [validate_enums.py](validate_enums.py) | --- |
 | [validate_govreg.py](validate_govreg.py) | --- |
-| [validate_request.py](validate_request.py) | Bespoke Schema Validator for GoldenPath Request Contracts. |
+| [validate_request.py](validate_request.py) | --- |
 | [validate_routing_compliance.py](validate_routing_compliance.py) | --- |
 | [validate_scripts_tested.py](validate_scripts_tested.py) | --- |
 <!-- SCRIPTS_TABLE_END -->
