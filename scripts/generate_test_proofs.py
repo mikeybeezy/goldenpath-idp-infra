@@ -23,6 +23,7 @@ Achievement: Closes the gap between "tests exist" and "tests passed"
 Value: Enables evidence='ci' certification for scripts with passing tests
 Relates-To: ADR-0146-schema-driven-script-certification, validate_scripts_tested.py
 """
+
 import os
 import sys
 import json
@@ -53,7 +54,10 @@ def extract_script_id(script_path: Path) -> str | None:
                 return meta.get("id")
         # Fallback: simple regex
         import re
-        match = re.search(r'^id:\s*["\']?([A-Z]+-\d+|[\w_-]+)["\']?\s*$', content, re.MULTILINE)
+
+        match = re.search(
+            r'^id:\s*["\']?([A-Z]+-\d+|[\w_-]+)["\']?\s*$', content, re.MULTILINE
+        )
         if match:
             return match.group(1)
     except Exception:
@@ -147,12 +151,14 @@ def parse_junit_xml(junit_path: Path) -> dict:
                         "tests": [],
                     }
 
-                results[classname]["tests"].append({
-                    "name": name,
-                    "status": status,
-                    "time": time_taken,
-                    "message": message,
-                })
+                results[classname]["tests"].append(
+                    {
+                        "name": name,
+                        "status": status,
+                        "time": time_taken,
+                        "message": message,
+                    }
+                )
 
                 if status == "passed":
                     results[classname]["passed"] += 1
@@ -189,7 +195,9 @@ def normalize_classname(classname: str) -> str:
     return classname
 
 
-def generate_proof(script_id: str, test_results: dict, commit_sha: str, run_id: str) -> dict:
+def generate_proof(
+    script_id: str, test_results: dict, commit_sha: str, run_id: str
+) -> dict:
     """Generate a proof artifact for a script."""
     total_tests = len(test_results.get("tests", []))
     passed = test_results.get("passed", 0)
@@ -287,7 +295,9 @@ def main():
                 break
 
         if not script_id:
-            print(f"⚠️  No script mapping for test module: {test_module} (normalized: {normalized_module})")
+            print(
+                f"⚠️  No script mapping for test module: {test_module} (normalized: {normalized_module})"
+            )
             continue
 
         # Generate proof
@@ -299,7 +309,9 @@ def main():
 
         verdict = proof["verdict"]
         emoji = "✅" if verdict == "PASS" else "❌"
-        print(f"{emoji} {script_id}: {verdict} ({results['passed']}/{len(results['tests'])} passed) -> {proof_path}")
+        print(
+            f"{emoji} {script_id}: {verdict} ({results['passed']}/{len(results['tests'])} passed) -> {proof_path}"
+        )
 
         proofs_generated += 1
         if verdict == "PASS":

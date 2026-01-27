@@ -3786,3 +3786,17 @@ Excluded session_capture/ from pre-commit hooks that modify content:
 - emoji-enforcer: was converting emojis in historical content
 
 Also added .pre-commit-config.yaml to session-log workflow triggers for branch protection.
+
+## 2026-01-27: Test Metric Scripts Formatting
+
+**Agent:** Claude Opus 4.5
+**Branch:** fix/format-test-metric-scripts
+**PR:** #291
+
+### Summary
+
+Formatted unformatted scripts to pass pre-commit on PR #283:
+- scripts/collect_test_metrics.py
+- scripts/generate_test_proofs.py
+
+Added ADR/CL traceability to allow formatting changes through pr-guardrails.

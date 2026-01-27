@@ -1357,3 +1357,22 @@ The emoji enforcer and trailing-whitespace hooks were modifying historical conte
 * PR #283 development to main should pass after #290 merges
 
 Signed: Claude Opus 4.5 (2026-01-27T09:40:00Z)
+
+## Update - 2026-01-27T09:50:00Z
+
+### Test Metric Scripts Formatting
+
+Formatted remaining unformatted scripts to pass pre-commit on PR #283:
+- `scripts/collect_test_metrics.py`
+- `scripts/generate_test_proofs.py`
+
+Added traceability:
+- ADR-0183: Added script references to Scope section
+- CL-0197: Added `collect_test_metrics.py` to Added section
+
+### Outstanding
+
+* PR #291 for script formatting
+* PR #283 development to main should pass after #291 merges
+
+Signed: Claude Opus 4.5 (2026-01-27T09:50:00Z)

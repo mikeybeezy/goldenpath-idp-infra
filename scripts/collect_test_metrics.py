@@ -20,6 +20,7 @@ risk_profile:
 ---
 Purpose: Normalize test and coverage outputs into a single JSON payload.
 """
+
 import argparse
 import json
 import sys
@@ -122,7 +123,12 @@ def parse_terraform_test_json(terraform_path: Path) -> Dict[str, int]:
 
     # Priority: counted events > test_summary > direct summary
     if total > 0:
-        return {"total": total, "failures": failures, "errors": errors, "skipped": skipped}
+        return {
+            "total": total,
+            "failures": failures,
+            "errors": errors,
+            "skipped": skipped,
+        }
     if summary_counts:
         return summary_counts
     if direct_summary:
@@ -143,9 +149,11 @@ def build_framework_entry(
     errors = junit_counts.get("errors", 0)
     skipped = junit_counts.get("skipped", 0)
     passed = max(total - failures - errors - skipped, 0)
-    threshold_met = (failures == 0 and errors == 0)
+    threshold_met = failures == 0 and errors == 0
     if coverage_threshold is not None and coverage is not None:
-        threshold_met = threshold_met and coverage.get("lines", 0.0) >= coverage_threshold
+        threshold_met = (
+            threshold_met and coverage.get("lines", 0.0) >= coverage_threshold
+        )
     return {
         "framework": framework,
         "total": total,
@@ -177,7 +185,9 @@ def build_payload(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Collect test metrics into a JSON payload.")
+    parser = argparse.ArgumentParser(
+        description="Collect test metrics into a JSON payload."
+    )
     parser.add_argument("--repo", required=True, help="Repository name")
     parser.add_argument("--branch", required=True, help="Branch name")
     parser.add_argument("--commit", required=True, help="Commit SHA")
@@ -186,18 +196,36 @@ def main() -> int:
     parser.add_argument("--pytest-coverage-xml", help="Path to coverage.xml")
     parser.add_argument("--bats-junit", help="Path to bats junit.xml")
     parser.add_argument("--jest-junit", help="Path to jest junit.xml")
-    parser.add_argument("--jest-coverage-json", help="Path to jest coverage-summary.json")
+    parser.add_argument(
+        "--jest-coverage-json", help="Path to jest coverage-summary.json"
+    )
     parser.add_argument("--terraform-json", help="Path to terraform test -json output")
-    parser.add_argument("--pytest-threshold", type=float, default=None, help="Line coverage threshold for pytest")
-    parser.add_argument("--jest-threshold", type=float, default=None, help="Line coverage threshold for jest")
+    parser.add_argument(
+        "--pytest-threshold",
+        type=float,
+        default=None,
+        help="Line coverage threshold for pytest",
+    )
+    parser.add_argument(
+        "--jest-threshold",
+        type=float,
+        default=None,
+        help="Line coverage threshold for jest",
+    )
     parser.add_argument("--output", help="Write JSON payload to file")
-    parser.add_argument("--dry-run", action="store_true", help="Print payload to stdout only")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Print payload to stdout only"
+    )
     args = parser.parse_args()
 
     frameworks = []
     if args.pytest_junit:
         junit_counts = parse_junit_counts(Path(args.pytest_junit))
-        coverage = parse_coverage_xml(Path(args.pytest_coverage_xml)) if args.pytest_coverage_xml else None
+        coverage = (
+            parse_coverage_xml(Path(args.pytest_coverage_xml))
+            if args.pytest_coverage_xml
+            else None
+        )
         frameworks.append(
             build_framework_entry(
                 "pytest",
@@ -211,7 +239,11 @@ def main() -> int:
         frameworks.append(build_framework_entry("bats", junit_counts))
     if args.jest_junit:
         junit_counts = parse_junit_counts(Path(args.jest_junit))
-        coverage = parse_coverage_summary_json(Path(args.jest_coverage_json)) if args.jest_coverage_json else None
+        coverage = (
+            parse_coverage_summary_json(Path(args.jest_coverage_json))
+            if args.jest_coverage_json
+            else None
+        )
         frameworks.append(
             build_framework_entry(
                 "jest",
