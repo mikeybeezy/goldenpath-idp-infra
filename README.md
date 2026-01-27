@@ -237,3 +237,4 @@ For a detailed guide, see [**RB-0027: Frictionless PR Gates**](docs/70-operation
 - Use separate AWS accounts or isolated VPC CIDRs for `dev`, `test`, `staging`, and `prod` so they never conflict.
 
 You now have a reproducible foundation for the Golden Path IDP. Expand it by adding more modules (EKS, RDS, Argo CD) as the platform evolves.
+
