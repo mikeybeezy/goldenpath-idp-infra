@@ -349,3 +349,87 @@ Successfully implemented ChromaDB indexer with TDD approach:
 | `indexer.py`     | ✅ Complete (SCRIPT-0072) |
 | `retriever.py`   | ⬜ Next                   |
 | Jupyter notebook | ⬜ After retriever        |
+
+---
+
+## Update - 2026-01-28T15:00:00Z
+
+### Session Summary: Full Phase 0 Implementation Batch
+
+This update captures the complete batch of work from the afternoon session.
+
+### Commits (Chronological)
+
+| Commit     | Description                                           |
+|------------|-------------------------------------------------------|
+| `68f9f047` | feat(rag): add Phase 0 loader and chunker with TDD    |
+| `2bf56596` | docs: append TDD implementation completion            |
+| `a2295e8b` | feat(rag): add golden tests and fenced-code guard     |
+| `6dc699d2` | feat(rag): add ChromaDB indexer with TDD tests        |
+| `3be90d46` | docs: update session capture with indexer completion  |
+
+### Golden Test Philosophy Documentation
+
+Extended GOV-0017 with a "Philosophy: Why Golden Tests Matter" section covering:
+
+1. **Deterministic Serialization** - Why `sort_keys=True`, no timestamps
+2. **Human-Approved Blessing** - Trust model where humans verify correctness
+3. **Output Drift Detection** - Catching "helpful" changes that slip through
+4. **The Blessing Ceremony** - What it means to bless a golden file
+
+This was added to GOV-0017 rather than creating a separate document to avoid documentation fragmentation.
+
+### Chunker Hardening
+
+- Added fenced-code guard (`in_fence` toggle) to ignore `##` inside code blocks
+- Added unit test `test_ignores_h2_inside_fenced_code_blocks`
+- Added golden test `test_gov_0017_chunks_match_golden`
+- Blessed outputs in `tests/golden/fixtures/expected/chunks/GOV-0017/chunks.json`
+
+### Indexer Implementation (TDD)
+
+**SCRIPT-0072** - ChromaDB vector indexer with:
+
+- `create_collection()` - Create/get ChromaDB collections
+- `get_collection()` - Get existing collection
+- `delete_collection()` - Delete collection
+- `index_chunks()` - Index chunks with text and metadata
+- `GovernanceIndex` - High-level class for governance docs
+- Metadata flattening for ChromaDB compatibility (lists → JSON strings)
+- Unique ID generation format: `{doc_id}_{chunk_index}`
+
+### Test Coverage Summary
+
+| Test File               | Tests | Status |
+|-------------------------|-------|--------|
+| `test_loader.py`        | 15    | ✅     |
+| `test_chunker.py`       | 19    | ✅     |
+| `test_indexer.py`       | 20    | ✅     |
+| `test_chunker_golden.py`| 1     | ✅     |
+| **Total RAG tests**     | **55**| ✅     |
+
+### Dependencies
+
+- `chromadb` added to `requirements.txt`
+
+### Architecture: RAG Pipeline Flow
+
+```text
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   loader    │────▶│   chunker   │────▶│   indexer   │
+│ (SCRIPT-0070)│     │ (SCRIPT-0071)│     │ (SCRIPT-0072)│
+└─────────────┘     └─────────────┘     └─────────────┘
+      │                    │                    │
+      ▼                    ▼                    ▼
+  Load docs         Split on H2          Store in
+  + extract         headers              ChromaDB
+  frontmatter
+```
+
+### Next: Retriever Implementation
+
+The retriever will:
+
+- Query ChromaDB for similar chunks
+- Return ranked results with metadata
+- Support filtering by doc_type, doc_id, etc.
