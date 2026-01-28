@@ -108,8 +108,8 @@ RAG components are **determinism-critical**:
 - `test_chunker.py` - H2 splitting, metadata preservation
 
 **Tier 2: Golden Output Tests (Required for Chunker)**
-- Chunker generates files, so must have golden output tests
-- Blessed outputs in `tests/golden/fixtures/expected/`
+- Chunker generates deterministic chunk payloads; golden tests serialize chunks to JSON
+- Blessed outputs in `tests/golden/fixtures/expected/chunks/`
 - Golden files require human approval before blessing
 
 ### Test-First Workflow
@@ -160,8 +160,8 @@ RAG components are **determinism-critical**:
 | `tests/unit/test_loader.py` | Loader unit tests |
 | `tests/unit/test_chunker.py` | Chunker unit tests |
 | `tests/golden/fixtures/inputs/GOV-0017-sample.md` | Golden test input |
-| `tests/golden/fixtures/expected/chunks/GOV-0017/` | Blessed chunk outputs |
 | `tests/golden/test_chunker_golden.py` | Golden output tests |
+| `tests/golden/fixtures/expected/chunks/GOV-0017/chunks.json` | Blessed chunk outputs |
 
 ## Architecture Diagram (Final)
 
@@ -206,11 +206,33 @@ RAG components are **determinism-critical**:
 
 ## Next Steps
 
-1. Implement loader.py and chunker.py with TDD
-2. Create golden fixtures and bless outputs
-3. Add indexer.py for ChromaDB integration
-4. Add retriever.py for query interface
-5. Create first Jupyter notebook for experimentation
+1. Add indexer.py for ChromaDB integration
+2. Add retriever.py for query interface
+3. Create first Jupyter notebook for experimentation
+
+## Follow-Up Work Completed (Post-Session)
+
+**Date:** 2026-01-28
+
+### Hardening
+
+- Added a fenced-code guard so `##` inside ```/~~~ blocks does not create new chunks.
+- Added a unit test to lock the fenced-code behavior.
+
+### Golden Tests
+
+- Added `tests/golden/test_chunker_golden.py` for deterministic chunk payload snapshots.
+- Added blessed outputs for GOV-0017 in `tests/golden/fixtures/expected/chunks/GOV-0017/chunks.json`.
+
+### Tests Run
+
+- `pytest tests/golden/test_chunker_golden.py -q` (PASS)
+- `pytest tests/unit/test_chunker.py -q` (PASS)
+- `pytest tests/unit -q` (PASS)
+
+### Review Request
+
+Please have Claude review the fenced-code guard logic and the golden snapshot for GOV-0017.
 
 ## References
 

@@ -64,7 +64,9 @@ class Chunk:
 
 
 # Regex pattern for H2 headers (## Header Text)
-H2_PATTERN = re.compile(r"^(##\s+.+)$", re.MULTILINE)
+H2_PATTERN = re.compile(r"^(##\s+.+)$")
+# Regex pattern for fenced code blocks (``` or ~~~)
+FENCE_PATTERN = re.compile(r"^\s*(```|~~~)")
 
 
 def extract_section_name(header_line: str) -> str:
@@ -104,8 +106,20 @@ def split_on_h2(content: str) -> List[tuple[Optional[str], str]]:
     if not content or not content.strip():
         return []
 
-    # Find all H2 header positions
-    matches = list(H2_PATTERN.finditer(content))
+    # Find all H2 header positions, ignoring fenced code blocks
+    matches = []
+    in_fence = False
+    cursor = 0
+
+    for line in content.splitlines(keepends=True):
+        if FENCE_PATTERN.match(line):
+            in_fence = not in_fence
+        if not in_fence:
+            header_match = H2_PATTERN.match(line)
+            if header_match:
+                header_line = header_match.group(1).rstrip("\n")
+                matches.append((cursor, header_line))
+        cursor += len(line)
 
     if not matches:
         # No H2 headers - return entire content as single section
@@ -114,24 +128,23 @@ def split_on_h2(content: str) -> List[tuple[Optional[str], str]]:
     sections = []
 
     # Handle content before first H2 (if any)
-    first_match = matches[0]
-    if first_match.start() > 0:
-        intro_content = content[: first_match.start()].strip()
+    first_match_pos, _ = matches[0]
+    if first_match_pos > 0:
+        intro_content = content[:first_match_pos].strip()
         if intro_content:
             sections.append((None, intro_content))
 
     # Process each H2 section
-    for i, match in enumerate(matches):
-        header = match.group(1)
+    for i, (start_pos, header) in enumerate(matches):
 
         # Determine end of this section
         if i + 1 < len(matches):
-            end_pos = matches[i + 1].start()
+            end_pos = matches[i + 1][0]
         else:
             end_pos = len(content)
 
         # Extract section content (including header)
-        section_content = content[match.start() : end_pos].strip()
+        section_content = content[start_pos:end_pos].strip()
         sections.append((header, section_content))
 
     return sections

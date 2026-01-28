@@ -1,0 +1,98 @@
+[
+  {
+    "metadata": {
+      "chunk_index": 0,
+      "doc_id": "GOV-0017-tdd-and-determinism",
+      "doc_title": "TDD and Determinism Policy",
+      "doc_type": "governance",
+      "file_path": "tests/golden/fixtures/inputs/GOV-0017-sample.md",
+      "header_level": 1,
+      "relates_to": [
+        "ADR-0182-tdd-philosophy",
+        "GOV-0016-testing-stack-matrix"
+      ],
+      "section": "Introduction"
+    },
+    "text": "# GOV-0017: TDD and Determinism Policy"
+  },
+  {
+    "metadata": {
+      "chunk_index": 1,
+      "doc_id": "GOV-0017-tdd-and-determinism",
+      "doc_title": "TDD and Determinism Policy",
+      "doc_type": "governance",
+      "file_path": "tests/golden/fixtures/inputs/GOV-0017-sample.md",
+      "header_level": 2,
+      "relates_to": [
+        "ADR-0182-tdd-philosophy",
+        "GOV-0016-testing-stack-matrix"
+      ],
+      "section": "Purpose"
+    },
+    "text": "## Purpose\n\nThis policy defines the testing and determinism requirements for all code changes in the GoldenPath IDP."
+  },
+  {
+    "metadata": {
+      "chunk_index": 2,
+      "doc_id": "GOV-0017-tdd-and-determinism",
+      "doc_title": "TDD and Determinism Policy",
+      "doc_type": "governance",
+      "file_path": "tests/golden/fixtures/inputs/GOV-0017-sample.md",
+      "header_level": 2,
+      "relates_to": [
+        "ADR-0182-tdd-philosophy",
+        "GOV-0016-testing-stack-matrix"
+      ],
+      "section": "Core Principle"
+    },
+    "text": "## Core Principle\n\n> \"Nothing that generates infrastructure, parses config, or emits scaffolds may change without tests.\"\n\nTests are not documentation. Tests are **executable contracts** that:\n1. Define expected behavior before implementation\n2. Catch regressions immediately\n3. Enable safe refactoring\n4. Preserve determinism across agent and human contributors"
+  },
+  {
+    "metadata": {
+      "chunk_index": 3,
+      "doc_id": "GOV-0017-tdd-and-determinism",
+      "doc_title": "TDD and Determinism Policy",
+      "doc_type": "governance",
+      "file_path": "tests/golden/fixtures/inputs/GOV-0017-sample.md",
+      "header_level": 2,
+      "relates_to": [
+        "ADR-0182-tdd-philosophy",
+        "GOV-0016-testing-stack-matrix"
+      ],
+      "section": "Scope of Determinism"
+    },
+    "text": "## Scope of Determinism\n\nThe following components are **determinism-critical** and require test coverage:\n\n| Component | Examples | Why Critical |\n|-----------|----------|--------------|\n| **Parsers** | YAML frontmatter, config loaders | Incorrect parsing corrupts downstream state |\n| **Generators** | Doc scaffolds, template renderers | Output drift breaks consumers |\n| **Metadata Engines** | standardize_metadata.py | Metadata is the source of truth |"
+  },
+  {
+    "metadata": {
+      "chunk_index": 4,
+      "doc_id": "GOV-0017-tdd-and-determinism",
+      "doc_title": "TDD and Determinism Policy",
+      "doc_type": "governance",
+      "file_path": "tests/golden/fixtures/inputs/GOV-0017-sample.md",
+      "header_level": 2,
+      "relates_to": [
+        "ADR-0182-tdd-philosophy",
+        "GOV-0016-testing-stack-matrix"
+      ],
+      "section": "Coverage Targets"
+    },
+    "text": "## Coverage Targets\n\n| Layer | V1 Target | V1.1 Target |\n|-------|-----------|-------------|\n| Python scripts | 60% | 80% |\n| Shell scripts | 40% | 60% |"
+  },
+  {
+    "metadata": {
+      "chunk_index": 5,
+      "doc_id": "GOV-0017-tdd-and-determinism",
+      "doc_title": "TDD and Determinism Policy",
+      "doc_type": "governance",
+      "file_path": "tests/golden/fixtures/inputs/GOV-0017-sample.md",
+      "header_level": 2,
+      "relates_to": [
+        "ADR-0182-tdd-philosophy",
+        "GOV-0016-testing-stack-matrix"
+      ],
+      "section": "References"
+    },
+    "text": "## References\n\n- ADR-0182: TDD Philosophy\n- GOV-0016: Testing Stack Matrix"
+  }
+]

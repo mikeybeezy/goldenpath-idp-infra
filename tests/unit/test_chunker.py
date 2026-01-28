@@ -271,6 +271,27 @@ More text after code.
         assert "```python" in code_chunk.text
         assert 'print("Hello, world!")' in code_chunk.text
 
+    def test_ignores_h2_inside_fenced_code_blocks(self):
+        """H2 markers inside fenced code blocks should not create new chunks."""
+        content = """# Document Title
+
+## Section A
+
+```python
+## Not a header
+print("Inside code fence")
+```
+
+## Section B
+
+More content here.
+"""
+        chunks = chunk_markdown(content, {})
+        assert len(chunks) == 3
+        section_a = next((c for c in chunks if "## Section A" in c.text), None)
+        assert section_a is not None
+        assert "## Not a header" in section_a.text
+
 
 # ---------------------------------------------------------------------------
 # Tests: Chunk Dataclass
