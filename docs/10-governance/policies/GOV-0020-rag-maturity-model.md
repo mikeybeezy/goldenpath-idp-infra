@@ -1,6 +1,6 @@
 ---
 id: GOV-0020-rag-maturity-model
-title: RAG Maturity Model
+title: Agentic Graph RAG Maturity Model
 type: governance
 owner: platform-team
 status: active
@@ -35,11 +35,27 @@ effective_date: 2026-01-28
 review_date: 2026-07-28
 ---
 
-# GOV-0020: RAG Maturity Model
+# GOV-0020: Agentic Graph RAG Maturity Model
 
 ## Purpose
 
-This policy defines the maturity model for Retrieval-Augmented Generation (RAG) systems within the GoldenPath IDP. It establishes progression levels, requirements for advancement, governance controls, and the roadmap for achieving an autonomous, AI-native platform.
+This policy defines the maturity model for **Agentic Graph RAG** systems within the GoldenPath IDP. Unlike basic RAG implementations, this architecture integrates:
+
+* **Knowledge Graph (Neo4j)** - Entity relationships from Phase 0, not a later add-on
+* **Agentic Capabilities** - Progression toward autonomous tool orchestration
+* **Governance-Aware Automation** - Self-correcting agents with human approval workflows
+
+The model establishes progression levels, requirements for advancement, governance controls, and the roadmap for achieving an autonomous, AI-native platform.
+
+### Why "Agentic Graph RAG"?
+
+| Component    | Role                                     | Without It                                        |
+| ------------ | ---------------------------------------- | ------------------------------------------------- |
+| **Graph**    | Captures relationships between entities  | "What depends on GOV-0017?" is unanswerable       |
+| **Agentic**  | Orchestrates tools, self-corrects        | Static Q&A only, no multi-step reasoning          |
+| **RAG**      | Grounds responses in real documents      | Hallucination risk, no citations                  |
+
+This is not RAG with optional enhancements—it's a unified architecture where graph traversal and agent orchestration are foundational, not aspirational.
 
 ---
 
