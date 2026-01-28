@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-policies-gov-0020-rag-maturity-model
+  title: 'GOV-0020: Agentic Graph RAG Maturity Model'
+  description: 'This policy defines the maturity model for **Agentic Graph RAG** systems
+    within the GoldenPath IDP. Unlike basic RAG implementations, this architecture
+    integrates:'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/GOV-0020-rag-maturity-model.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/policies/GOV-0020-rag-maturity-model.md
+  tags:
+    - gove
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/GOV-0020-rag-maturity-model.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation
