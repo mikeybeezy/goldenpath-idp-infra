@@ -3901,3 +3901,23 @@ Synced feature branch with development and applied pre-merge healing:
 **Changes:** Documentation/index healing only - no code changes.
 
 **Session Capture:** session_capture/2026-01-27-governance-registry-fixes-and-cleanup.md (updated)
+
+## 2026-01-28: RAG Governance Framework and Maturity Model
+
+**Agent:** Claude Opus 4.5
+**Branch:** sync/main-to-development-307
+**PR:** #310
+
+### Work Done
+
+Created comprehensive RAG governance documentation:
+
+- **GOV-0020:** RAG Maturity Model (L0-L4 progression with VQ classifications)
+- **PRD-0008:** Governance RAG Pipeline technical specification
+- **EC-0013 Update:** Documented EC-0013 as mandatory RAG prerequisite
+
+Key insight: EC-0013 (Agent Context Architecture) provides mandatory bootstrap context that agents must read BEFORE relying on RAG for search. Without it, agents don't know what they don't know.
+
+**VQ Classification:** Proper use of 🔴 HV/HQ, 🟡 HV/LQ, 🔵 MV/HQ, ⚫ LV/LQ framework.
+
+**Session Capture:** session_capture/2026-01-27-governance-rag-prd.md
