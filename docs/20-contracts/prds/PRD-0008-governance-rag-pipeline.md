@@ -21,8 +21,8 @@ breaking_change: false
 
 # PRD-0008: Governance RAG Pipeline
 
-Status: draft  
-Owner: platform-team  
+Status: draft
+Owner: platform-team
 Date: 2026-01-27
 
 ## Problem Statement
@@ -88,11 +88,11 @@ knowledge layer that always reflects the governance-registry branch.
 
 ### Hybrid risks + mitigations
 
-- **Risk: Drift between infra and app repos**  
+- **Risk: Drift between infra and app repos**
   **Mitigation:** Maintain a repo source registry (YAML) and enforce sync in CI.
-- **Risk: Ambiguous ownership of imported artifacts**  
+- **Risk: Ambiguous ownership of imported artifacts**
   **Mitigation:** Require `repo`, `domain`, `owner` metadata on imported artifacts.
-- **Risk: Missing critical governance docs in app repos**  
+- **Risk: Missing critical governance docs in app repos**
   **Mitigation:** Keep ADRs/PRDs in infra; only auto‑generated artifacts live in app repos.
 
 ## Guardrails
@@ -128,17 +128,17 @@ knowledge layer that always reflects the governance-registry branch.
 
 ## Implementation Plan (Phased)
 
-**Phase 0 — Local CLI (1–2 days)**  
-1) Build a local indexer script (chunk + embed + write index).  
+**Phase 0 — Local CLI (1–2 days)**
+1) Build a local indexer script (chunk + embed + write index).
 2) Provide a CLI query tool that returns top N chunks with citations.
 3) Write a minimal usage log (query + timestamp) to establish baseline.
 
-**Phase 1 — CI Sync (0.5–1 day)**  
-3) Add a workflow triggered by governance-registry updates.  
+**Phase 1 — CI Sync (0.5–1 day)**
+3) Add a workflow triggered by governance-registry updates.
 4) Publish index artifact (`rag-index` branch or CI artifact).
 5) Enforce freshness check (index age ≤ 48h).
 
-**Phase 2 — Optional Service (2–4 days)**  
+**Phase 2 — Optional Service (2–4 days)**
 5) Minimal API wrapper that reads the index and answers queries.
 
 ## Open Questions
@@ -441,7 +441,7 @@ When providing feedback, leave a comment and timestamp your comment.
 
 - User / 2026-01-27: **Discovery - LlamaHub Ecosystem**
 
-  Found https://llamahub.ai/?tab=embeddings - excited about what the IDP could become with this ecosystem.
+  Found <https://llamahub.ai/?tab=embeddings> - excited about what the IDP could become with this ecosystem.
 
 - Claude Opus 4.5 / 2026-01-27: **Response - LlamaIndex Vision for the IDP**
 
@@ -997,6 +997,7 @@ When providing feedback, leave a comment and timestamp your comment.
 
   **Makefile Targets**
 
+  <!-- markdownlint-disable MD010 -->
   ```makefile
   rag-setup:    ## Setup RAG infrastructure
   	@./scripts/setup-rag.sh
@@ -1010,6 +1011,7 @@ When providing feedback, leave a comment and timestamp your comment.
   rag-status:   ## Check RAG system status
   	@source .venv-rag/bin/activate && python scripts/rag/cli.py status
   ```
+  <!-- markdownlint-enable MD010 -->
 
   **Example Usage**
 
@@ -1191,10 +1193,10 @@ When providing feedback, leave a comment and timestamp your comment.
   └─────────────────────────────────────────────────────────┘
 
   Now the embedding captures:
-  ✓ Document identity (GOV-0017)
-  ✓ Document purpose (TDD governance)
-  ✓ Section context (Requirements)
-  ✓ The actual content
+   Document identity (GOV-0017)
+   Document purpose (TDD governance)
+   Section context (Requirements)
+   The actual content
   ```
 
   **How It Works**
@@ -1840,9 +1842,9 @@ When providing feedback, leave a comment and timestamp your comment.
   | Scenario | Standard | Agentic |
   |----------|----------|---------|
   | Simple lookups | ✅ | Overkill |
-  | Multi-part questions | ❌ | ✅ |
+  | Multi-part questions |  | ✅ |
   | High accuracy needed | ⚠️ | ✅ |
-  | Speed critical | ✅ | ❌ |
+  | Speed critical | ✅ |  |
   | Multiple sources | ⚠️ | ✅ |
 
   **Phase Recommendation**
@@ -2110,8 +2112,8 @@ When providing feedback, leave a comment and timestamp your comment.
   | Setup | `pip install jupyter` | Zero (browser) |
   | GPU access | Only if you have one | Free T4 (limited hours) |
   | Cost | Free (your hardware) | Free tier available |
-  | Ollama integration | ✅ Direct localhost | ❌ Complex |
-  | Neo4j/ChromaDB | ✅ Docker Compose | ❌ Complex setup |
+  | Ollama integration | ✅ Direct localhost |  Complex |
+  | Neo4j/ChromaDB | ✅ Docker Compose |  Complex setup |
   | File access | ✅ Direct filesystem | Google Drive mount |
   | Persistence | ✅ Persistent | Session resets |
   | Sharing | Export required | ✅ Easy link sharing |
