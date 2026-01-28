@@ -21,6 +21,7 @@ relates_to:
   - PRD-0005-techdocs-implementation
   - PRD-0006-persistent-cluster-build-timing
   - PRD-0007-platform-test-health-dashboard
+  - PRD-0008-governance-rag-pipeline
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
@@ -38,3 +39,4 @@ breaking_change: false
 | PRD-0005 | TechDocs Implementation Path | draft | 2026-01-22 | docs/20-contracts/prds/PRD-0005-techdocs-implementation.md |
 | PRD-0006 | Persistent Cluster Build Timing Capture | draft | 2026-01-24 | docs/20-contracts/prds/PRD-0006-persistent-cluster-build-timing.md |
 | PRD-0007 | Platform Test Health Dashboard | draft | 2026-01-26 | docs/20-contracts/prds/PRD-0007-platform-test-health-dashboard.md |
+| PRD-0008 | Governance RAG Pipeline | draft | 2026-01-27 | docs/20-contracts/prds/PRD-0008-governance-rag-pipeline.md |

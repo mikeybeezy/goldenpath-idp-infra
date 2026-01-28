@@ -164,3 +164,95 @@ context: Read .agent/README.md first for project conventions.
 
 Proposed by: platform-team
 Date: 2026-01-25
+
+---
+
+## Addendum: Relationship to RAG Pipeline (GOV-0020)
+
+*Added: 2026-01-28*
+
+### The Problem EC-0013 Solves That RAG Cannot
+
+During a session building [GOV-0020-rag-maturity-model](../10-governance/policies/GOV-0020-rag-maturity-model.md), an agent made a critical error: inventing fake "VQ-0050" style IDs instead of using the actual VQ classification framework defined in [VQ_PRINCIPLES.MD](../00-foundations/product/VQ_PRINCIPLES.MD).
+
+**Root Cause Analysis:**
+
+```
+What happened:
+  1. Agent needed to tag deliverables with VQ
+  2. Agent didn't know VQ_PRINCIPLES.md existed
+  3. Agent didn't know to ask "how does VQ work?"
+  4. Agent invented fake VQ IDs
+
+What EC-0013 would have prevented:
+  1. Session starts → agent reads .agent/README.md
+  2. README says: "For value tracking, read VQ_PRINCIPLES.md first"
+  3. Agent would have known the VQ framework BEFORE touching GOV-0020
+  4. No fake IDs
+```
+
+### EC-0013 is a Prerequisite for RAG, Not a Complement
+
+| Layer | Purpose | Enforcement |
+|-------|---------|-------------|
+| **EC-0013** | "Read these BEFORE doing anything" | Mandatory bootstrap |
+| **RAG** | "Search these WHEN you need answers" | On-demand lookup |
+
+**RAG requires the agent to *know to ask*.** An agent won't query RAG for "how does VQ work?" if it doesn't know VQ exists. EC-0013 forces awareness of core frameworks before any work begins.
+
+### Revised Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    AGENT KNOWLEDGE FLOW                      │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Session Start                                              │
+│       │                                                     │
+│       ▼                                                     │
+│  .agent/README.md (MANDATORY - EC-0013)                     │
+│  ├── "Read VQ_PRINCIPLES.md for value tracking"             │
+│  ├── "Read GOV-0017 for TDD requirements"                   │
+│  ├── "Read CLAUDE.md for agent protocols"                   │
+│  └── "Use RAG for everything else"                          │
+│       │                                                     │
+│       ▼                                                     │
+│  During Task                                                │
+│       │                                                     │
+│       ├── Agent knows core docs exist (EC-0013)             │
+│       │                                                     │
+│       └── Agent queries RAG for specifics (GOV-0020)        │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Key Insight
+
+**EC-0013 = Guardrails (what agents MUST know)**
+**RAG = Search (what agents CAN find)**
+
+Without EC-0013, agents don't know what they don't know. RAG helps find answers, but only if agents know to ask the right questions.
+
+### Updated Relates To
+
+This EC now relates to:
+- [GOV-0020-rag-maturity-model](../10-governance/policies/GOV-0020-rag-maturity-model.md) - RAG maturity framework
+- [PRD-0008-governance-rag-pipeline](../20-contracts/prds/PRD-0008-governance-rag-pipeline.md) - RAG implementation PRD
+
+### Recommendation
+
+Implement EC-0013 **before** or **in parallel with** RAG Phase 0. The `.agent/README.md` should include:
+
+```markdown
+## Before Any Task
+
+1. **Value Tracking:** Read [VQ_PRINCIPLES.md](../00-foundations/product/VQ_PRINCIPLES.MD)
+2. **Testing Policy:** Read [GOV-0017](../10-governance/policies/GOV-0017-tdd-and-determinism.md)
+3. **Agent Protocols:** Read [CLAUDE.md](../../CLAUDE.md)
+
+## During Task
+
+For governance questions, use RAG: `gov-rag ask "your question"`
+```
+
+This ensures agents have foundational context before relying on RAG for dynamic lookup.
