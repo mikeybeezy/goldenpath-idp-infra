@@ -3921,3 +3921,23 @@ Key insight: EC-0013 (Agent Context Architecture) provides mandatory bootstrap c
 **VQ Classification:** Proper use of 🔴 HV/HQ, 🟡 HV/LQ, 🔵 MV/HQ, ⚫ LV/LQ framework.
 
 **Session Capture:** session_capture/2026-01-27-governance-rag-prd.md
+
+## 2026-01-28: Agentic Graph RAG Documentation Reframing
+
+**Agent:** Claude Opus 4.5
+**Branch:** feature/agentic-graph-rag-docs
+**PR:** #311
+
+### Work Done
+
+Reframed RAG documentation to properly emphasize **Agentic Graph RAG** architecture:
+
+- **GOV-0020:** Title changed to "Agentic Graph RAG Maturity Model", enhanced Purpose section
+- **PRD-0008:** Title changed to "Agentic Graph RAG Pipeline", added Vision section, CI/CD workflows, and metrics capture strategy
+- **EC-0017 (NEW):** GoldenPath Platform Distribution Framework - white-label strategy with layered distribution model
+
+Key insight: The architecture is Agentic Graph RAG from day one - the knowledge graph (Neo4j) and agentic capabilities are foundational, not Phase 1 add-ons. RAGAS metrics capture is now a prerequisite to Definition of Done.
+
+**Platform Value Assessment:** GoldenPath has evolved organically to solve real problems of AI collaboration: TDD for trust, session capture for continuity, ADRs for reasoning, RAG for knowledge, Agentic Graph RAG for traversal. Conservative annual value: $300-500K per organization.
+
+**Session Capture:** session_capture/2026-01-28-agentic-graph-rag-reframing.md
