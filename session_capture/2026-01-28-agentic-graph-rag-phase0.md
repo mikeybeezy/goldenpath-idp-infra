@@ -220,3 +220,58 @@ RAG components are **determinism-critical**:
 - [ADR-0185: Graphiti Agent Memory Framework](../docs/adrs/ADR-0185-graphiti-agent-memory-framework.md)
 - [GOV-0017: TDD and Determinism Policy](../docs/10-governance/policies/GOV-0017-tdd-and-determinism.md)
 - [Graphiti: Building Temporal Knowledge Graphs](https://neo4j.com/blog/developer/graphiti-knowledge-graph-memory/)
+
+---
+
+## Update - 2026-01-28T10:30:00Z
+
+### TDD Implementation Complete
+
+Successfully implemented loader and chunker with test-first approach:
+
+**Test Results:**
+
+```text
+33 tests passed in 0.08s
+- tests/unit/test_loader.py: 15 passed
+- tests/unit/test_chunker.py: 18 passed
+```
+
+**Files Created:**
+
+| File | SCRIPT ID | Purpose |
+|------|-----------|---------|
+| `scripts/rag/__init__.py` | - | Package init |
+| `scripts/rag/loader.py` | SCRIPT-0070 | Document loading + frontmatter extraction |
+| `scripts/rag/chunker.py` | SCRIPT-0071 | Markdown H2 header chunking |
+| `tests/unit/test_loader.py` | - | 15 unit tests for loader |
+| `tests/unit/test_chunker.py` | - | 18 unit tests for chunker |
+| `tests/golden/fixtures/inputs/GOV-0017-sample.md` | - | Golden test input fixture |
+
+**Commit:**
+
+```text
+68f9f047 feat(rag): add Phase 0 loader and chunker with TDD tests
+```
+
+**Branch:** `feature/phase0-rag-implementation`
+
+### TDD Compliance Verified
+
+Per GOV-0017 requirements:
+
+| Requirement                        | Status                     |
+| ---------------------------------- | -------------------------- |
+| Tests written before implementation | ✅ RED → GREEN workflow    |
+| Loader tests (parser)              | ✅ 15 tests                |
+| Chunker tests (generator)          | ✅ 18 tests                |
+| Pre-commit hooks pass              | ✅ All hooks passed        |
+| Script metadata headers            | ✅ SCRIPT-0070, SCRIPT-0071 |
+
+### Outstanding (Phase 0 Continuation)
+
+- [ ] Add `indexer.py` with ChromaDB integration (TDD)
+- [ ] Add `retriever.py` with query interface (TDD)
+- [ ] Bless golden output fixtures for chunker
+- [ ] Add `chromadb` and `llama-index` to requirements.txt
+- [ ] Create first Jupyter notebook after core scripts complete
