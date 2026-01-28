@@ -292,8 +292,60 @@ Per GOV-0017 requirements:
 
 ### Outstanding (Phase 0 Continuation)
 
-- [ ] Add `indexer.py` with ChromaDB integration (TDD)
+- [x] Add `indexer.py` with ChromaDB integration (TDD)
 - [ ] Add `retriever.py` with query interface (TDD)
-- [ ] Bless golden output fixtures for chunker
-- [ ] Add `chromadb` and `llama-index` to requirements.txt
+- [x] Bless golden output fixtures for chunker
+- [x] Add `chromadb` to requirements.txt
 - [ ] Create first Jupyter notebook after core scripts complete
+
+---
+
+## Update - 2026-01-28T14:00:00Z
+
+### Indexer Implementation Complete
+
+Successfully implemented ChromaDB indexer with TDD approach:
+
+**Test Results:**
+
+```text
+102 unit tests passed
+- tests/unit/test_loader.py: 15 passed
+- tests/unit/test_chunker.py: 19 passed
+- tests/unit/test_indexer.py: 20 passed
+```
+
+**Files Created:**
+
+| File                         | SCRIPT ID   | Purpose                     |
+|------------------------------|-------------|-----------------------------|
+| `scripts/rag/indexer.py`     | SCRIPT-0072 | ChromaDB vector indexing    |
+| `tests/unit/test_indexer.py` | -           | 20 unit tests for indexer   |
+
+**Indexer Features:**
+
+- `create_collection()` - Create/get ChromaDB collections
+- `index_chunks()` - Index chunks with text and metadata
+- `GovernanceIndex` - High-level class for governance docs
+- Metadata flattening for ChromaDB compatibility
+- Unique ID generation (`{doc_id}_{chunk_index}`)
+
+**Commit:**
+
+```text
+6dc699d2 feat(rag): add ChromaDB indexer with TDD tests
+```
+
+### Dependencies Added
+
+- `chromadb` added to requirements.txt
+
+### Phase 0 Progress
+
+| Component        | Status                    |
+|------------------|---------------------------|
+| `loader.py`      | ✅ Complete (SCRIPT-0070) |
+| `chunker.py`     | ✅ Complete (SCRIPT-0071) |
+| `indexer.py`     | ✅ Complete (SCRIPT-0072) |
+| `retriever.py`   | ⬜ Next                   |
+| Jupyter notebook | ⬜ After retriever        |
