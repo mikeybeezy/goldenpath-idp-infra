@@ -433,3 +433,76 @@ The retriever will:
 - Query ChromaDB for similar chunks
 - Return ranked results with metadata
 - Support filtering by doc_type, doc_id, etc.
+
+---
+
+## Update - 2026-01-28T16:00:00Z
+
+### ADR-0186: LlamaIndex as Retrieval Layer
+
+Created architectural decision record to capture the decision on LlamaIndex usage.
+
+**Key Decision:** Use LlamaIndex **only for retrieval**, keep custom loader/chunker.
+
+**Rationale:**
+
+| Component      | Decision       | Reason                                            |
+|----------------|----------------|---------------------------------------------------|
+| `loader.py`    | Keep custom    | Extracts YAML frontmatter as structured metadata  |
+| `chunker.py`   | Keep custom    | H2 splitting with 19 tests + golden tests         |
+| `retriever.py` | Use LlamaIndex | Hybrid search, query rewriting, reranking         |
+
+**Architecture:**
+
+```text
+Custom Code                    LlamaIndex
+───────────                    ──────────
+loader.py  ──┐
+             ├──► Chunks ──► VectorStoreIndex ──► QueryEngine
+chunker.py ──┘              (ChromaDB backend)   (hybrid search)
+```
+
+**Dependencies Added:**
+
+```text
+llama-index
+llama-index-vector-stores-chroma
+```
+
+**Commit:**
+
+```text
+b74ed3b4 docs: add ADR-0186 LlamaIndex as retrieval layer
+```
+
+### Search Capabilities Discussion
+
+Clarified search capabilities in the current stack:
+
+| Capability            | ChromaDB Direct | With LlamaIndex |
+|-----------------------|-----------------|-----------------|
+| Semantic search       | ✅              | ✅              |
+| Metadata filtering    | ✅              | ✅              |
+| Keyword search (BM25) | ⚠️ Limited      | ✅ Hybrid       |
+| Query rewriting       | ❌              | ✅              |
+| Response synthesis    | ❌              | ✅              |
+
+### Updated Phase 0 Architecture
+
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│                    PHASE 0 RAG STACK                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   loader.py ──► chunker.py ──► indexer.py ──► retriever.py     │
+│   (custom)      (custom)       (ChromaDB)     (LlamaIndex)     │
+│                                                                 │
+│   SCRIPT-0070   SCRIPT-0071    SCRIPT-0072    SCRIPT-0073      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Outstanding
+
+- [ ] Implement `retriever.py` with LlamaIndex QueryEngine (TDD)
+- [ ] Create first Jupyter notebook for experimentation
