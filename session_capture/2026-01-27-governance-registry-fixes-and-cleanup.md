@@ -260,3 +260,18 @@ Bumped `scripts/collect_test_metrics.py` maturity to trigger `python-tests` work
 
 - [ ] Verify test_metrics.json appears in governance-registry after PR #306 merge
 - [ ] Confirm both registry scripts work in CI after fix
+
+## Update - 2026-01-27T11:48:00Z
+
+### Feature Branch Sync and Pre-Merge Healing
+
+Synced feature/tdd-foundation with development branch for PR #309:
+
+- Merged origin/development into feature/tdd-foundation
+- Resolved session_capture merge conflict (kept development's appended updates)
+- Pre-commit healing regenerated scripts/index.md and value_ledger.json
+- No code changes - documentation/index healing only
+
+### Outstanding (Branch Sync)
+
+- [ ] PR #309 to merge feature/tdd-foundation → development
