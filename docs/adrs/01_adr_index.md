@@ -394,6 +394,7 @@ relates_to:
   - ADR-0182
   - ADR-0183
   - ADR-0184
+  - ADR-0185
 <!-- ADR_RELATE_END -->
 ---
 
@@ -591,6 +592,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0182](ADR-0182-tdd-philosophy.md) | Platform | Test-Driven Development Philosophy | Proposed | 2026-01-0? | The GoldenPath IDP has strong governance and architecture but weak test coverage: |
 | [ADR-0183](ADR-0183-test-health-metrics-schema.md) | Platform | Test Health Metrics Schema Contract | Proposed | 2026-01-0? | Test results and coverage are emitted by multiple frameworks across multiple repos. Without a stable contract, dashboards can drift, silently drop fields, or report false-green states. A schema con... |
 | [ADR-0184](ADR-0184-rag-markdown-header-chunking.md) | Platform | RAG Markdown Header Chunking Strategy | Proposed | 2026-01-0? | The Agentic Graph RAG pipeline (PRD-0008) requires a chunking strategy to split governance documents into embeddable units. The choice of chunking strategy significantly impacts: |
+| [ADR-0185](ADR-0185-graphiti-agent-memory-framework.md) | Platform | Graphiti as Agent Memory Framework on Neo4j | Proposed | 2026-01-0? | The Agentic Graph RAG pipeline (PRD-0008) requires persistent agent memory across sessions. Without memory preservation: |
 <!-- ADR_TABLE_END -->
 
 ---
