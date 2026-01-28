@@ -393,6 +393,7 @@ relates_to:
   - ADR-0181
   - ADR-0182
   - ADR-0183
+  - ADR-0184
 <!-- ADR_RELATE_END -->
 ---
 
@@ -589,6 +590,7 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0181](ADR-0181-rds-createdb-privilege-for-applications.md) | Platform | CREATEDB Privilege for Application Database Users | Proposed | 2026-01-24 | The RDS provisioning script (`rds_provision.py`, SCRIPT-0035) creates PostgreSQL roles for application databases. Initially, roles were created with only`LOGIN`privilege: |
 | [ADR-0182](ADR-0182-tdd-philosophy.md) | Platform | Test-Driven Development Philosophy | Proposed | 2026-01-0? | The GoldenPath IDP has strong governance and architecture but weak test coverage: |
 | [ADR-0183](ADR-0183-test-health-metrics-schema.md) | Platform | Test Health Metrics Schema Contract | Proposed | 2026-01-0? | Test results and coverage are emitted by multiple frameworks across multiple repos. Without a stable contract, dashboards can drift, silently drop fields, or report false-green states. A schema con... |
+| [ADR-0184](ADR-0184-rag-markdown-header-chunking.md) | Platform | RAG Markdown Header Chunking Strategy | Proposed | 2026-01-0? | The Agentic Graph RAG pipeline (PRD-0008) requires a chunking strategy to split governance documents into embeddable units. The choice of chunking strategy significantly impacts: |
 <!-- ADR_TABLE_END -->
 
 ---
