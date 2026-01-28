@@ -229,7 +229,7 @@ resource "aws_db_instance" "platform" {
   maintenance_window        = var.maintenance_window
   copy_tags_to_snapshot     = true
   delete_automated_backups  = false
-  skip_final_snapshot       = true
+  skip_final_snapshot       = false
   final_snapshot_identifier = "${local.identifier}-final-snapshot"
 
   # CRITICAL: Deletion Protection
@@ -249,7 +249,7 @@ resource "aws_db_instance" "platform" {
 
   # CRITICAL: Prevent accidental destruction
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
     ignore_changes = [
       final_snapshot_identifier
     ]

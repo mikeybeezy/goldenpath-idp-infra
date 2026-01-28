@@ -1,6 +1,6 @@
 ---
 id: PRD-0008-governance-rag-pipeline
-title: 'PRD-0008: Governance RAG Pipeline'
+title: 'PRD-0008: Agentic Graph RAG Pipeline'
 type: documentation
 risk_profile:
   production_impact: low
@@ -19,11 +19,39 @@ version: '1.0'
 breaking_change: false
 ---
 
-# PRD-0008: Governance RAG Pipeline
+# PRD-0008: Agentic Graph RAG Pipeline
 
 Status: draft
 Owner: platform-team
 Date: 2026-01-27
+
+## Vision: Agentic Graph RAG
+
+This is not a basic RAG system with optional enhancements. We are building **Agentic Graph RAG** from the start:
+
+### Graph-First Architecture
+
+* **Knowledge Graph (Neo4j)** captures entity relationships from day one
+* Documents aren't just vectors—they're nodes with typed edges
+* Graph traversal enables "What depends on X?" queries that pure vector RAG cannot answer
+
+### Agentic End-State
+
+* L3/L4 agents orchestrate tools, not just retrieve text
+* Self-correction through confidence scoring and re-retrieval
+* Autonomous proposals with governance approval workflows
+
+### Why This Matters
+
+| Approach              | Query Support                                     | Relationship Awareness |
+| --------------------- | ------------------------------------------------- | ---------------------- |
+| Basic RAG             | "What is GOV-0017?"                               | None                   |
+| Graph RAG             | "What depends on GOV-0017?"                       | Full                   |
+| Agentic Graph RAG     | "Audit all modules for GOV-0017 compliance"       | Full + Action          |
+
+See [GOV-0020: Agentic Graph RAG Maturity Model](../../10-governance/policies/GOV-0020-rag-maturity-model.md) for the progression framework.
+
+---
 
 ## Problem Statement
 
@@ -108,17 +136,25 @@ knowledge layer that always reflects the governance-registry branch.
 
 ## Acceptance Criteria
 
-- **Phase 0 Gate (CLI spike)**:
-  - Local index builds from governance-registry with version metadata.
-  - Query returns results with citations to exact files/sections.
-  - No secrets or non-governed sources are indexed.
-- **Phase 1 Gate (CI sync)**:
-  - Usage log exists and shows sustained usage (≥ 10 queries/week for 2 weeks).
-  - governance-registry freshness check passes (index built within last 48 hours).
-  - Index artifact published to `rag-index` branch or CI artifacts with source SHA.
-- **Phase 2 Gate (Service)**:
-  - Demonstrated ROI from Phase 1 (≥ 5 distinct users or ≥ 20 queries/week).
-  - Support owner identified for service uptime and model upgrades.
+> **Prerequisite for all gates:** RAGAS metrics must be captured and recorded. No phase is complete without quantified quality metrics.
+
+* **Phase 0 Gate (CLI spike)**:
+  * Local index builds from governance-registry with version metadata.
+  * Query returns results with citations to exact files/sections.
+  * No secrets or non-governed sources are indexed.
+  * **RAGAS baseline established** with 20+ test questions scored.
+  * Metrics artifact generated: `context_precision`, `faithfulness` baseline values.
+* **Phase 1 Gate (CI sync)**:
+  * Usage log exists and shows sustained usage (≥ 10 queries/week for 2 weeks).
+  * governance-registry freshness check passes (index built within last 48 hours).
+  * Index artifact published to `rag-index` branch or CI artifacts with source SHA.
+  * **RAGAS CI workflow active** - scores tracked per commit.
+  * **Quality gate enforced:** context precision ≥ 0.75.
+* **Phase 2 Gate (Service)**:
+  * Demonstrated ROI from Phase 1 (≥ 5 distinct users or ≥ 20 queries/week).
+  * Support owner identified for service uptime and model upgrades.
+  * **RAGAS precision ≥ 0.85, faithfulness ≥ 0.85.**
+  * Confidence scoring active with uncertainty flagging.
 
 ## Success Metrics
 
@@ -2478,3 +2514,237 @@ When providing feedback, leave a comment and timestamp your comment.
   Skip standalone React - go straight to Backstage plugin if you need a UI. That's where your users already are.
 
   **Decision:** Phase 0 uses CLI only (sync with streaming output). Phase 1 adds FastAPI with Server-Sent Events for streaming. Phase 2 integrates as Backstage plugin rather than standalone React app.
+
+---
+
+## CI/CD Workflows and Metrics Capture
+
+RAG CI follows the same conceptual patterns as existing governance workflows but produces RAG-specific outputs.
+
+### Workflow Matrix
+
+| Workflow | Trigger | Purpose | Phase |
+|----------|---------|---------|-------|
+| `ci-rag-index.yml` | Push to `docs/**` | Rebuild vector index | L0+ |
+| `ci-rag-quality.yml` | PR to `docs/**` | RAGAS quality gate | L0+ |
+| `ci-rag-graph.yml` | Push to governance docs | Sync knowledge graph | L1+ |
+| `ci-rag-agent-eval.yml` | Weekly schedule | Agent task completion tests | L3+ |
+
+### 1. Index Rebuild Workflow (L0+)
+
+```yaml
+# .github/workflows/ci-rag-index.yml
+name: RAG Index Build
+
+on:
+  push:
+    paths:
+      - 'docs/**/*.md'
+      - 'session_capture/**/*.md'
+    branches: [main, development]
+
+jobs:
+  build-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r rag/requirements.txt
+
+      - name: Build vector index
+        run: |
+          python3 -m gov_rag.indexer \
+            --source docs/ \
+            --output .rag-index/
+
+      - name: Generate index metadata
+        run: |
+          echo "source_sha: ${{ github.sha }}" > .rag-index/metadata.yaml
+          echo "generated_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> .rag-index/metadata.yaml
+          echo "document_count: $(find docs -name '*.md' | wc -l)" >> .rag-index/metadata.yaml
+
+      - name: Upload index artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rag-index-${{ github.sha }}
+          path: .rag-index/
+          retention-days: 30
+```
+
+### 2. RAGAS Quality Gate Workflow (L0+)
+
+```yaml
+# .github/workflows/ci-rag-quality.yml
+name: RAG Quality Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**/*.md'
+
+jobs:
+  ragas-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r rag/requirements.txt
+
+      - name: Run RAGAS evaluation
+        run: |
+          python3 -m gov_rag.evaluate \
+            --test-set tests/rag/questions.yaml \
+            --output .rag-metrics/ragas-report.yaml
+
+      - name: Check quality thresholds
+        run: |
+          python3 scripts/check_ragas_thresholds.py \
+            --report .rag-metrics/ragas-report.yaml \
+            --min-precision 0.75 \
+            --min-faithfulness 0.80
+
+      - name: Upload metrics artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ragas-metrics-${{ github.sha }}
+          path: .rag-metrics/
+```
+
+### 3. Knowledge Graph Sync Workflow (L1+)
+
+```yaml
+# .github/workflows/ci-rag-graph.yml
+name: Knowledge Graph Sync
+
+on:
+  push:
+    paths:
+      - 'docs/10-governance/**'
+      - 'docs/adrs/**'
+      - 'docs/20-contracts/prds/**'
+    branches: [main]
+
+jobs:
+  sync-graph:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract entities from docs
+        run: python3 -m gov_rag.graph.extract --source docs/
+
+      - name: Sync to Neo4j
+        env:
+          NEO4J_URI: ${{ secrets.NEO4J_URI }}
+          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+        run: python3 -m gov_rag.graph.sync
+```
+
+---
+
+## Metrics Capture Strategy
+
+### RAGAS Metrics (L0-L2)
+
+| Metric | What It Measures | Gate Threshold |
+|--------|------------------|----------------|
+| **Context Precision** | Retrieved chunks are relevant | L0: baseline, L1: ≥0.75, L2: ≥0.85 |
+| **Context Recall** | All relevant chunks retrieved | L1: ≥0.70 |
+| **Faithfulness** | Answer grounded in retrieved context | L2: ≥0.85 |
+| **Answer Relevancy** | Answer addresses the question | L2: ≥0.80 |
+
+### Agent Metrics (L3-L4)
+
+| Metric | What It Measures | Gate Threshold |
+|--------|------------------|----------------|
+| **Task Completion** | Agent finishes multi-step tasks | L3: ≥85% |
+| **Tool Accuracy** | Correct tool called with correct params | L3: ≥90% |
+| **Proposal Acceptance** | Human approves agent proposals | L4: ≥70% |
+| **False Positive Rate** | Incorrect compliance flags | L4: <10% |
+
+### Metrics Output Format
+
+```yaml
+# .rag-metrics/ragas-report.yaml (generated by CI)
+run_id: "ci-rag-quality-1234"
+commit: "abc123"
+timestamp: "2026-01-28T10:30:00Z"
+branch: "development"
+
+metrics:
+  context_precision: 0.82
+  context_recall: 0.78
+  faithfulness: 0.91
+  answer_relevancy: 0.85
+
+thresholds:
+  context_precision: { required: 0.75, passed: true }
+  faithfulness: { required: 0.80, passed: true }
+
+test_set:
+  total_questions: 20
+  passed: 18
+  failed: 2
+
+failed_questions:
+  - id: "q-015"
+    question: "What are the rollback steps for RDS?"
+    expected_source: "docs/70-operations/runbooks/RDS-rollback.md"
+    actual_source: null
+    reason: "Document not indexed"
+```
+
+### Metrics Artifact Structure
+
+```
+.rag-metrics/
+  latest.yaml           # Most recent run
+  history/
+    2026-01-28.yaml     # Daily snapshots
+  trends.json           # Aggregated for dashboards
+```
+
+### Integration with Platform Health Dashboard (PRD-0007)
+
+RAG metrics feed into the existing Platform Health Dashboard:
+
+| Dashboard Panel | RAG Metric Source |
+|-----------------|-------------------|
+| Test Coverage | RAGAS precision/recall |
+| Build Health | Index build time, success rate |
+| Quality Trends | RAGAS scores over time |
+| Value Metrics | Hours saved per query × query count |
+
+---
+
+## Definition of Done
+
+A phase is **not complete** until:
+
+1. **Code deliverables** are merged to development
+2. **RAGAS metrics** are captured and meet threshold for that phase
+3. **CI workflows** are active and enforcing quality gates
+4. **Metrics artifacts** are being generated and stored
+5. **Trend data** shows stability (no regression over 1 week)
+
+| Phase | Required Metrics | CI Workflow |
+|-------|------------------|-------------|
+| L0 | Baseline scores recorded | `ci-rag-index.yml` active |
+| L1 | Precision ≥ 0.75 in CI | `ci-rag-quality.yml` blocking PRs |
+| L2 | Precision ≥ 0.85, faithfulness ≥ 0.85 | Quality gate enforced |
+| L3 | Task completion ≥ 85% | `ci-rag-agent-eval.yml` active |
+| L4 | Proposal acceptance ≥ 70% | Full metrics dashboard |
+
+> **No phase advancement without quantified metrics. Trust is earned through measurement.**
