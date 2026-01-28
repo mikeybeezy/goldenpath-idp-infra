@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-policies-gov-0016-testing-stack-matrix
+  title: 'GOV-0016: Testing Stack Matrix'
+  description: Define the standard testing tools, frameworks, and practices for all
+    code in the GoldenPath IDP. This matrix ensures consistency, reproducibility,
+    and determinism across the platform and application l...
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/GOV-0016-testing-stack-matrix.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/policies/GOV-0016-testing-stack-matrix.md
+  tags:
+    - gove
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/GOV-0016-testing-stack-matrix.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: draft
+  owner: platform-team
+  subcomponentOf: governance-documentation

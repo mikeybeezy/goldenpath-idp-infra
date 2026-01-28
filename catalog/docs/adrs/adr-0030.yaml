@@ -3,9 +3,11 @@ kind: Component
 metadata:
   name: adr-0030
   title: 'ADR-0030: Pre-create IAM policies for IRSA controllers in V1'
-  description: '- **Status:** Accepted
+  description: '- **Status:** Superseded by ADR-0177
 
     - **Date:** 2025-12-28
+
+    - **Superseded:** 2026-01-22
 
     - **Owners:** Platform (GoldenPath IDP)
 
@@ -13,7 +15,7 @@ metadata:
 
     - **Decision type:** Security | Operations
 
-    - **Related:** docs/20-contracts/21_CI_ENVIRONME...'
+    - **R...'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0030-platform-precreated-iam-policies.md
@@ -28,6 +30,6 @@ metadata:
       icon: github
 spec:
   type: documentation
-  lifecycle: active
+  lifecycle: superseded
   owner: platform-team
   subcomponentOf: architecture-decision-records

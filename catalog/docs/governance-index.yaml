@@ -41,6 +41,9 @@ spec:
     - ./governance/governance-policies-gov-0013-devsecops-security-standards.yaml
     - ./governance/governance-policies-gov-0014-devsecops-implementation-matrix.yaml
     - ./governance/governance-policies-gov-0015-build-pipeline-testing-matrix.yaml
+    - ./governance/governance-policies-gov-0016-testing-stack-matrix.yaml
+    - ./governance/governance-policies-gov-0017-tdd-and-determinism.yaml
+    - ./governance/governance-policies-gov-0020-rag-maturity-model.yaml
     - ./governance/governance-policies-readme.yaml
     - ./governance/governance-policies-datree-readme.yaml
     - ./governance/governance-policies-iam-variable-mapping-index.yaml

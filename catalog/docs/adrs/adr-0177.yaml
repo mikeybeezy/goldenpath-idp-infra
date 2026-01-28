@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: adr-0177
+  title: 'ADR-0177: Grant CI role comprehensive IAM permissions with resource scoping'
+  description: '- **Status:** Accepted
+
+    - **Date:** 2026-01-22
+
+    - **Owners:** Platform (GoldenPath IDP)
+
+    - **Domain:** Platform
+
+    - **Decision type:** Security | Operations
+
+    - **Supersedes:** ADR-0030-platform-precreated-i...'
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0177-ci-iam-comprehensive-permissions.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/adrs/ADR-0177-ci-iam-comprehensive-permissions.md
+  tags:
+    - adr
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/adrs/ADR-0177-ci-iam-comprehensive-permissions.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: architecture-decision-records
