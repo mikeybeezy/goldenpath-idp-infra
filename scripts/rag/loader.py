@@ -1,0 +1,176 @@
+#!/usr/bin/env python3
+"""
+---
+id: SCRIPT-0070
+type: script
+owner: platform-team
+status: active
+maturity: 1
+last_validated: 2026-01-28
+test:
+  runner: pytest
+  command: "pytest -q tests/unit/test_loader.py"
+  evidence: declared
+dry_run:
+  supported: false
+risk_profile:
+  production_impact: low
+  security_risk: low
+  coupling_risk: low
+relates_to:
+  - GOV-0017-tdd-and-determinism
+  - ADR-0184-rag-markdown-header-chunking
+  - PRD-0008-governance-rag-pipeline
+---
+Purpose: RAG Document Loader for GoldenPath governance documents.
+
+Loads markdown documents and extracts YAML frontmatter as metadata.
+This module handles the first stage of the RAG pipeline: document ingestion.
+
+Per GOV-0017: Parsers are determinism-critical and require test coverage.
+
+Example:
+    >>> from scripts.rag.loader import load_governance_document
+    >>> doc = load_governance_document("docs/10-governance/policies/GOV-0017.md")
+    >>> print(doc.metadata["id"])
+    'GOV-0017-tdd-and-determinism'
+"""
+
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Dict, Any, Union
+import re
+
+import yaml
+
+
+@dataclass
+class GovernanceDocument:
+    """
+    Represents a loaded governance document with separated metadata and content.
+
+    Attributes:
+        content: The markdown content without YAML frontmatter.
+        metadata: Dictionary of metadata extracted from YAML frontmatter.
+        source_path: Path to the original source file.
+    """
+
+    content: str
+    metadata: Dict[str, Any] = field(default_factory=dict)
+    source_path: Union[str, Path] = ""
+
+
+# Regex pattern for YAML frontmatter (between --- delimiters)
+FRONTMATTER_PATTERN = re.compile(r"^---\s*\n(.*?)\n---\s*\n?", re.DOTALL | re.MULTILINE)
+
+
+def extract_frontmatter(content: str) -> tuple[Dict[str, Any], str]:
+    """
+    Extract YAML frontmatter from markdown content.
+
+    Args:
+        content: Raw markdown content potentially containing YAML frontmatter.
+
+    Returns:
+        Tuple of (metadata_dict, remaining_content).
+        If no frontmatter is found, returns (empty_dict, original_content).
+
+    Example:
+        >>> content = "---\\nid: DOC-001\\n---\\n# Title"
+        >>> metadata, body = extract_frontmatter(content)
+        >>> metadata["id"]
+        'DOC-001'
+    """
+    if not content:
+        return {}, ""
+
+    match = FRONTMATTER_PATTERN.match(content)
+
+    if not match:
+        return {}, content
+
+    frontmatter_yaml = match.group(1)
+    remaining_content = content[match.end() :]
+
+    try:
+        metadata = yaml.safe_load(frontmatter_yaml)
+        if metadata is None:
+            metadata = {}
+    except yaml.YAMLError:
+        # If YAML parsing fails, return empty metadata but preserve content
+        metadata = {}
+
+    return metadata, remaining_content
+
+
+def load_governance_document(path: Union[str, Path]) -> GovernanceDocument:
+    """
+    Load a governance document from the filesystem.
+
+    Reads the file, extracts YAML frontmatter as metadata, and returns
+    a GovernanceDocument with separated content and metadata.
+
+    Args:
+        path: Path to the markdown file to load.
+
+    Returns:
+        GovernanceDocument with content, metadata, and source_path.
+
+    Raises:
+        FileNotFoundError: If the specified file does not exist.
+
+    Example:
+        >>> doc = load_governance_document("docs/GOV-0017.md")
+        >>> doc.metadata["title"]
+        'TDD and Determinism Policy'
+    """
+    path = Path(path)
+
+    if not path.exists():
+        raise FileNotFoundError(f"Document not found: {path}")
+
+    raw_content = path.read_text(encoding="utf-8")
+
+    metadata, content = extract_frontmatter(raw_content)
+
+    # Always include file_path in metadata for traceability
+    metadata["file_path"] = str(path)
+
+    return GovernanceDocument(
+        content=content,
+        metadata=metadata,
+        source_path=str(path),
+    )
+
+
+def load_governance_documents(
+    directory: Union[str, Path], pattern: str = "*.md"
+) -> list[GovernanceDocument]:
+    """
+    Load all governance documents from a directory.
+
+    Args:
+        directory: Directory to search for documents.
+        pattern: Glob pattern for matching files (default: "*.md").
+
+    Returns:
+        List of GovernanceDocument objects.
+
+    Example:
+        >>> docs = load_governance_documents("docs/10-governance/policies/")
+        >>> len(docs) > 0
+        True
+    """
+    directory = Path(directory)
+    documents = []
+
+    for file_path in sorted(directory.glob(pattern)):
+        if file_path.is_file():
+            try:
+                doc = load_governance_document(file_path)
+                documents.append(doc)
+            except Exception:
+                # Skip files that can't be loaded
+                continue
+
+    return documents
