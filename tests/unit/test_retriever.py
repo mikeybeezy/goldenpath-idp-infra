@@ -505,3 +505,115 @@ class TestUsageLogging:
         content = log_path.read_text().strip()
         assert "test query" in content
         assert "2026-01-28T22:45:00Z" in content
+
+    def test_log_usage_appends_multiple_entries(self, tmp_path):
+        """log_usage must append entries, not overwrite."""
+        log_path = tmp_path / "usage.jsonl"
+
+        log_usage(
+            query="first query",
+            top_k=3,
+            path=log_path,
+            timestamp="2026-01-28T22:45:00Z",
+        )
+        log_usage(
+            query="second query",
+            top_k=5,
+            path=log_path,
+            timestamp="2026-01-28T22:46:00Z",
+        )
+
+        lines = log_path.read_text().strip().split("\n")
+        assert len(lines) == 2
+        assert "first query" in lines[0]
+        assert "second query" in lines[1]
+
+    def test_log_usage_creates_parent_directories(self, tmp_path):
+        """log_usage must create parent directories if missing."""
+        log_path = tmp_path / "nested" / "dir" / "usage.jsonl"
+
+        log_usage(
+            query="test query",
+            top_k=3,
+            path=log_path,
+            timestamp="2026-01-28T22:45:00Z",
+        )
+
+        assert log_path.exists()
+        assert "test query" in log_path.read_text()
+
+    def test_log_usage_skips_when_path_is_none(self, tmp_path):
+        """log_usage must do nothing when path is None."""
+        # Should not raise any errors
+        log_usage(
+            query="test query",
+            top_k=3,
+            path=None,
+        )
+
+    def test_log_usage_includes_filters(self, tmp_path):
+        """log_usage must include filters in output."""
+        log_path = tmp_path / "usage.jsonl"
+
+        log_usage(
+            query="test query",
+            top_k=3,
+            filters={"doc_type": "governance", "status": "active"},
+            path=log_path,
+            timestamp="2026-01-28T22:45:00Z",
+        )
+
+        import json
+        entry = json.loads(log_path.read_text().strip())
+        assert entry["filters"]["doc_type"] == "governance"
+        assert entry["filters"]["status"] == "active"
+
+    def test_log_usage_includes_graph_flag(self, tmp_path):
+        """log_usage must include use_graph flag in output."""
+        log_path = tmp_path / "usage.jsonl"
+
+        log_usage(
+            query="test query",
+            top_k=3,
+            use_graph=True,
+            path=log_path,
+            timestamp="2026-01-28T22:45:00Z",
+        )
+
+        import json
+        entry = json.loads(log_path.read_text().strip())
+        assert entry["use_graph"] is True
+
+    def test_log_usage_produces_valid_json(self, tmp_path):
+        """log_usage must produce valid JSON entries."""
+        log_path = tmp_path / "usage.jsonl"
+
+        log_usage(
+            query="query with 'quotes' and \"double quotes\"",
+            top_k=3,
+            filters={"key": "value with\nnewline"},
+            path=log_path,
+            timestamp="2026-01-28T22:45:00Z",
+        )
+
+        import json
+        entry = json.loads(log_path.read_text().strip())
+        assert entry["query"] == "query with 'quotes' and \"double quotes\""
+        assert "newline" in entry["filters"]["key"]
+
+    def test_log_usage_sorts_keys_for_determinism(self, tmp_path):
+        """log_usage must sort keys for deterministic output."""
+        log_path = tmp_path / "usage.jsonl"
+
+        log_usage(
+            query="test query",
+            top_k=3,
+            filters={"z_key": "z", "a_key": "a"},
+            path=log_path,
+            timestamp="2026-01-28T22:45:00Z",
+        )
+
+        content = log_path.read_text().strip()
+        # Keys should be sorted: filters, query, top_k, ts, use_graph
+        assert content.index('"filters"') < content.index('"query"')
+        assert content.index('"query"') < content.index('"top_k"')

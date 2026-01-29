@@ -32,9 +32,9 @@ class TestGraphIngest:
         client = MagicMock()
         docs = [_make_doc("DOC-001"), _make_doc("DOC-002")]
 
-        count = ingest_documents(docs, client)
+        counts = ingest_documents(docs, client)
 
-        assert count == 2
+        assert counts["documents"] == 2
         assert client.upsert_document.call_count == 2
 
     def test_ingest_creates_relationships(self):
@@ -59,7 +59,7 @@ class TestGraphIngest:
         client = MagicMock()
         docs = [_make_doc(None), _make_doc("DOC-002")]
 
-        count = ingest_documents(docs, client)
+        counts = ingest_documents(docs, client)
 
-        assert count == 1
+        assert counts["documents"] == 1
         client.upsert_document.assert_called_once()

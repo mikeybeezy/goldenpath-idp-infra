@@ -118,6 +118,29 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         action="store_true",
         help="Exclude citations from output",
     )
+    query_parser.add_argument(
+        "--hybrid",
+        action="store_true",
+        help="Use hybrid retrieval (vector + graph expansion)",
+    )
+    query_parser.add_argument(
+        "--synthesize",
+        action="store_true",
+        help="Generate LLM-synthesized answer",
+    )
+    query_parser.add_argument(
+        "--provider",
+        type=str,
+        choices=["ollama", "claude", "openai"],
+        default=None,
+        help="LLM provider for synthesis (default: ollama)",
+    )
+    query_parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Model name for synthesis (provider-specific)",
+    )
 
     return parser.parse_args(args)
 
@@ -255,35 +278,121 @@ def main(args: Optional[List[str]] = None) -> int:
         print(f"Error: Invalid format '{parsed.format}'.", file=sys.stderr)
         return 1
 
-    # Create retriever
-    try:
-        retriever_kwargs = {"usage_log_path": None}
-        if parsed.collection:
-            retriever_kwargs["collection_name"] = parsed.collection
-        retriever = GovernanceRetriever(**retriever_kwargs)
-    except Exception as e:
-        print(f"Error: Failed to initialize retriever: {e}", file=sys.stderr)
-        return 1
-
     # Parse filters
     filters = parse_filter_string(parsed.filter)
 
-    # Execute query
-    try:
-        results = run_query(
-            query=parsed.query,
-            retriever=retriever,
-            top_k=parsed.top_k,
-            filters=filters,
-        )
-    except Exception as e:
-        print(f"Error: Query failed: {e}", file=sys.stderr)
-        return 1
+    # Handle synthesize mode (includes hybrid by default)
+    if parsed.synthesize:
+        try:
+            from scripts.rag.llm_synthesis import RAGSynthesizer, check_provider_status
 
-    # Format output
+            # Determine provider
+            provider = parsed.provider or "ollama"
+
+            # Check provider status
+            status = check_provider_status(provider)
+            provider_info = status["providers"].get(provider, {})
+
+            if not provider_info.get("available"):
+                error = provider_info.get("error", "unknown")
+                print(f"Warning: {provider} not available: {error}", file=sys.stderr)
+                print("Falling back to raw retrieval...", file=sys.stderr)
+                parsed.synthesize = False
+            else:
+                model = parsed.model or provider_info.get("default_model")
+                synthesizer = RAGSynthesizer(provider=provider, model=model)
+
+                result = synthesizer.synthesize(
+                    question=parsed.query,
+                    top_k=parsed.top_k,
+                    expand_graph=True,  # Always use graph with synthesis
+                )
+                synthesizer.close()
+
+                if output_format == OutputFormat.JSON:
+                    output = json.dumps({
+                        "answer": result.answer,
+                        "citations": result.citations,
+                        "model": result.model,
+                        "context_chunks": result.context_chunks,
+                        "source_docs": result.source_docs,
+                    }, indent=2)
+                else:
+                    output = f"{result.answer}\n\n---\nSources ({result.context_chunks} chunks from {len(result.source_docs)} docs):\n"
+                    for citation in result.citations[:5]:  # Limit citations shown
+                        output += f"  - {citation}\n"
+                    output += f"\nModel: {result.model}"
+
+                if parsed.verbose:
+                    print(f"Query: {parsed.query}", file=sys.stderr)
+                    print(f"Model: {result.model}", file=sys.stderr)
+                    print(f"Context chunks: {result.context_chunks}", file=sys.stderr)
+                    print("---", file=sys.stderr)
+
+                print(output)
+                return 0
+
+        except ImportError as e:
+            print(f"Warning: LLM synthesis not available: {e}", file=sys.stderr)
+            print("Falling back to raw retrieval...", file=sys.stderr)
+            parsed.synthesize = False
+
+    # Handle hybrid mode
+    if parsed.hybrid:
+        try:
+            from scripts.rag.hybrid_retriever import HybridRetriever
+
+            retriever = HybridRetriever()
+            results = retriever.query(
+                query_text=parsed.query,
+                top_k=parsed.top_k,
+                filters=filters,
+                expand_graph=True,
+            )
+            retriever.close()
+
+            # Convert HybridResult to RetrievalResult for formatting
+            converted_results = [
+                RetrievalResult(
+                    id=r.id,
+                    text=r.text,
+                    metadata=r.metadata,
+                    score=r.score,
+                )
+                for r in results
+            ]
+
+        except ImportError as e:
+            print(f"Warning: Hybrid retrieval not available: {e}", file=sys.stderr)
+            print("Falling back to vector-only retrieval...", file=sys.stderr)
+            parsed.hybrid = False
+
+    # Standard vector-only retrieval
+    if not parsed.hybrid and not parsed.synthesize:
+        try:
+            retriever_kwargs = {"usage_log_path": None}
+            if parsed.collection:
+                retriever_kwargs["collection_name"] = parsed.collection
+            retriever = GovernanceRetriever(**retriever_kwargs)
+        except Exception as e:
+            print(f"Error: Failed to initialize retriever: {e}", file=sys.stderr)
+            return 1
+
+        try:
+            converted_results = run_query(
+                query=parsed.query,
+                retriever=retriever,
+                top_k=parsed.top_k,
+                filters=filters,
+            )
+        except Exception as e:
+            print(f"Error: Query failed: {e}", file=sys.stderr)
+            return 1
+
+    # Format output for non-synthesis modes
     include_citations = not parsed.no_citations
     output = format_results(
-        results, format_type=output_format, include_citations=include_citations
+        converted_results, format_type=output_format, include_citations=include_citations
     )
 
     # Print verbose info if requested
@@ -292,7 +401,7 @@ def main(args: Optional[List[str]] = None) -> int:
         print(f"Top-K: {parsed.top_k}", file=sys.stderr)
         if filters:
             print(f"Filters: {filters}", file=sys.stderr)
-        print(f"Results: {len(results)}", file=sys.stderr)
+        print(f"Results: {len(converted_results)}", file=sys.stderr)
         print("---", file=sys.stderr)
 
     print(output)
