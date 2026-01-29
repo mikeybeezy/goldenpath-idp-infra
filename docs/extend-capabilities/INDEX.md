@@ -11,6 +11,7 @@ relates_to:
   - EC-0006-competitor-analysis-tap
   - EC-0007-kpack-buildpacks-integration
   - EC-0012-backstage-plugin-scaffold
+  - EC-0018-claude-skills-integration
   - agent_session_summary
 ---
 
@@ -99,6 +100,7 @@ relates_to: [ADRs, roadmap items]
 |[EC-0006](EC-0006-competitor-analysis-tap.md)|Competitor Analysis - VMware TAP|validated|medium|Strategic positioning|platform-team|
 |[EC-0007](EC-0007-kpack-buildpacks-integration.md)|kpack and Cloud Native Buildpacks|proposed|high|$20K/year|platform-team|
 |[EC-0012](EC-0012-backstage-plugin-scaffold.md)|Backstage Plugin Scaffold Template|proposed|medium|Time-to-demo acceleration|platform-team|
+|[EC-0018](EC-0018-claude-skills-integration.md)|Claude Skills Integration|proposed|high|Developer productivity|platform-team|
 
 ## Implemented Capabilities
 
@@ -191,5 +193,5 @@ python3 scripts/generate_ec_index.py
 
 ---
 
-**Last Updated**: 2026-01-18
-**Total ECs**: 6 proposed, 1 validated, 0 accepted, 0 rejected, 0 implemented
+**Last Updated**: 2026-01-29
+**Total ECs**: 7 proposed, 1 validated, 0 accepted, 0 rejected, 0 implemented
