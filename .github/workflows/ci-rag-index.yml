@@ -1,0 +1,195 @@
+# Owner: platform-team
+# Reference: PRD-0008-governance-rag-pipeline
+# Purpose: Build and validate RAG index on documentation changes
+#
+# This workflow:
+#   1. Builds ChromaDB vector index from governance documents
+#   2. Validates index integrity and document count
+#   3. Uploads index metadata for tracking
+#
+# NOTE: Index is rebuilt on docs/ changes per PRD-0008
+
+name: RAG Index Build & Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+    paths:
+      - 'docs/**/*.md'
+      - 'session_capture/**/*.md'
+      - 'scripts/rag/**/*.py'
+      - '.github/workflows/ci-rag-index.yml'
+  push:
+    branches:
+      - main
+      - development
+    paths:
+      - 'docs/**/*.md'
+      - 'session_capture/**/*.md'
+      - 'scripts/rag/**/*.py'
+  workflow_dispatch:
+    inputs:
+      force_rebuild:
+        description: 'Force full index rebuild'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  build-index:
+    name: Build RAG Index
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build Vector Index
+        id: build
+        run: |
+          mkdir -p reports
+
+          # Build the index
+          echo "Building RAG index..."
+          python -m scripts.rag.index_build \
+            --persist-dir .chroma \
+            --output reports/index_metadata.json
+
+          # Capture index stats
+          DOC_COUNT=$(jq -r '.document_count' reports/index_metadata.json)
+          echo "doc_count=${DOC_COUNT}" >> $GITHUB_OUTPUT
+
+      - name: Validate Index
+        run: |
+          echo "Validating index integrity..."
+
+          # Check document count
+          DOC_COUNT=$(jq -r '.document_count' reports/index_metadata.json)
+
+          if [ "$DOC_COUNT" -lt 100 ]; then
+            echo "::error::Index has fewer than 100 documents (found ${DOC_COUNT})"
+            exit 1
+          fi
+
+          echo "Index contains ${DOC_COUNT} documents"
+
+      - name: Run Basic Retrieval Test
+        run: |
+          echo "Running basic retrieval test..."
+
+          # Test query to verify index works
+          python -c "
+          from scripts.rag.retriever import GovernanceRetriever
+          retriever = GovernanceRetriever()
+          results = retriever.query('What is TDD?', top_k=3)
+          print(f'Retrieved {len(results)} results')
+          assert len(results) > 0, 'No results returned for test query'
+          print('Basic retrieval test passed')
+          "
+
+      - name: Generate Index Summary
+        if: always()
+        run: |
+          echo "## RAG Index Build Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f reports/index_metadata.json ]; then
+            DOC_COUNT=$(jq -r '.document_count' reports/index_metadata.json)
+            GEN_TIME=$(jq -r '.generated_at' reports/index_metadata.json)
+            SRC_SHA=$(jq -r '.source_sha' reports/index_metadata.json)
+
+            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Documents Indexed | ${DOC_COUNT} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Generated At | ${GEN_TIME} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Source SHA | \`${SRC_SHA:0:8}\` |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo ":warning: Index metadata not found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Reference:** [PRD-0008 Governance RAG Pipeline](docs/20-contracts/prds/PRD-0008-governance-rag-pipeline.md)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Index Metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rag-index-metadata
+          path: reports/index_metadata.json
+          retention-days: 30
+
+  ragas-eval:
+    name: RAGAS Evaluation (Baseline)
+    runs-on: ubuntu-latest
+    needs: [build-index]
+    if: github.event_name == 'push' || github.event.inputs.force_rebuild == 'true'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run RAGAS Baseline (No LLM)
+        run: |
+          mkdir -p reports
+
+          # Run baseline evaluation without LLM metrics
+          python -m scripts.rag.ragas_baseline \
+            --output reports/ragas_baseline.json
+
+      - name: Generate RAGAS Summary
+        if: always()
+        run: |
+          echo "## RAGAS Baseline Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f reports/ragas_baseline.json ]; then
+            Q_COUNT=$(jq -r '.question_count' reports/ragas_baseline.json)
+            AVG_CTX=$(jq -r '.basic_metrics.avg_contexts_per_query' reports/ragas_baseline.json)
+            COVERAGE=$(jq -r '.basic_metrics.queries_with_results_pct' reports/ragas_baseline.json)
+
+            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Questions Tested | ${Q_COUNT} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Avg Contexts/Query | ${AVG_CTX} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Query Coverage | ${COVERAGE}% |" >> $GITHUB_STEP_SUMMARY
+
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> Note: Full RAGAS metrics require LLM provider (Ollama/Claude/OpenAI)." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload RAGAS Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ragas-baseline
+          path: reports/ragas_baseline.json
+          retention-days: 30
