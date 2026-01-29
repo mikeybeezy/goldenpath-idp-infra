@@ -1514,3 +1514,180 @@ $ python -m scripts.rag.cli query "What are the TDD requirements?" --top-k 3
 2. Add LlamaIndex QueryEngine for hybrid search
 3. Implement Graphiti temporal memory (ADR-0185)
 4. Add response generator with LLM synthesis
+
+## Update - 2026-01-29T14:30:00Z - Neo4j Graph Layer Operational
+
+### Graph Database Setup
+
+Successfully configured local Neo4j instance for governance document relationships:
+
+| Component | Status |
+|-----------|--------|
+| Neo4j Desktop | Installed |
+| Instance | `governance-graph` running |
+| Version | Neo4j/2025.12.1 |
+| Connection | `bolt://localhost:7687` |
+
+### Graph Ingestion
+
+Loaded governance documents into Neo4j graph:
+
+| Metric | Value |
+|--------|-------|
+| Documents ingested | 654 |
+| RELATES_TO edges | 4,062 |
+| Unique targets | 1,050 |
+
+### Code Changes
+
+| File | Change |
+|------|--------|
+| `scripts/rag/graph_client.py` | Added `health_check()`, `create_client_from_env()`, CLI |
+| `scripts/rag/graph_ingest.py` | Added `run_ingestion()` CLI for document ingestion |
+| `docs/70-operations/runbooks/RB-0038-neo4j-graph-rag-setup.md` | NEW - Neo4j setup runbook |
+
+### PRDs Created
+
+| PRD | Title |
+|-----|-------|
+| PRD-0010 | Governance RAG MCP Server |
+
+### Graph Queries Now Possible
+
+```cypher
+// Find documents related to GOV-0017
+MATCH (d:Document {id: 'GOV-0017-tdd-and-determinism'})-[:RELATES_TO]->(related)
+RETURN d.id, related.id
+
+// Find all PRDs and their dependencies
+MATCH (p:Document)-[:RELATES_TO]->(dep)
+WHERE p.id STARTS WITH 'PRD-'
+RETURN p.id, collect(dep.id) AS dependencies
+```
+
+### Architecture Status
+
+| Layer | Technology | Status |
+|-------|------------|--------|
+| Vector Store | ChromaDB | ✅ 9,193 chunks |
+| Graph Store | Neo4j | ✅ 654 nodes, 4,062 edges |
+| Retriever | Direct ChromaDB | ✅ Operational |
+| Graph Queries | Direct Cypher | ✅ Operational |
+| MCP Server | Pending | PRD-0010 drafted |
+| LLM Synthesis | Pending | Phase 1 |
+
+### Phase 0 → Phase 1 Transition
+
+Phase 0 is now **fully complete** with both vector and graph layers operational:
+
+- ✅ Vector search (ChromaDB): 690 docs → 9,193 chunks
+- ✅ Graph search (Neo4j): 654 nodes → 4,062 relationships
+- ✅ CLI interfaces for both layers
+- ✅ RAGAS evaluation harness
+- ⏳ MCP server (PRD-0010) - implementation pending
+- ⏳ Hybrid query (vector + graph) - Phase 1
+
+---
+
+## Update - 2026-01-29T22:00:00Z - Phase 1 TDD Hardening & Multi-Provider Support
+
+### Test Fixes (3 Failures Resolved)
+
+| Test | Issue | Fix |
+|------|-------|-----|
+| `test_ingest_upserts_documents` | Expected `int`, got `dict` | Use `counts["documents"]` |
+| `test_ingest_skips_missing_id` | Expected `int`, got `dict` | Use `counts["documents"]` |
+| `test_main_verbose_output` | `UnboundLocalError: results` | Use `converted_results` |
+
+### New Test Files (TDD Compliance)
+
+| File | Tests | Purpose |
+|------|-------|---------|
+| `tests/unit/test_hybrid_retriever.py` | 28 | Hybrid vector + graph retrieval |
+| `tests/unit/test_llm_synthesis.py` | 44 | Multi-provider LLM synthesis |
+| `tests/unit/test_ragas_evaluate.py` | 21 | RAGAS evaluation harness |
+
+### Multi-Provider LLM Synthesis
+
+Added support for Ollama, Claude, and OpenAI as LLM providers for both synthesis and RAGAS evaluation:
+
+```bash
+# Ollama (local, free)
+python -m scripts.rag.cli query "TDD requirements?" --synthesize --provider ollama
+
+# Claude API
+export ANTHROPIC_API_KEY="sk-ant-..."
+python -m scripts.rag.cli query "TDD requirements?" --synthesize --provider claude
+
+# OpenAI API
+export OPENAI_API_KEY="sk-..."
+python -m scripts.rag.cli query "TDD requirements?" --synthesize --provider openai
+```
+
+### RAGAS Evaluation with Ollama
+
+Enhanced `ragas_evaluate.py` to support local LLM evaluation:
+
+```bash
+# Run RAGAS with Ollama
+python -m scripts.rag.ragas_evaluate --provider ollama
+
+# Run RAGAS with Claude
+python -m scripts.rag.ragas_evaluate --provider claude
+```
+
+### CI Pipeline for Index Builds
+
+Created `.github/workflows/ci-rag-index.yml`:
+
+- Triggers on `docs/**/*.md` and `scripts/rag/**/*.py` changes
+- Builds ChromaDB vector index
+- Validates index integrity (>100 documents)
+- Runs basic retrieval test
+- RAGAS baseline evaluation on push
+
+### Usage Logging Validation
+
+Enhanced usage logging tests (8 tests total):
+
+| Test | Purpose |
+|------|---------|
+| `test_log_usage_appends_multiple_entries` | No overwrite |
+| `test_log_usage_creates_parent_directories` | Nested paths |
+| `test_log_usage_skips_when_path_is_none` | None handling |
+| `test_log_usage_includes_filters` | Filter persistence |
+| `test_log_usage_includes_graph_flag` | Graph flag tracking |
+| `test_log_usage_produces_valid_json` | Special char escaping |
+| `test_log_usage_sorts_keys_for_determinism` | Key ordering |
+
+### Test Summary
+
+| Category | Count |
+|----------|-------|
+| Total unit tests | 296 |
+| New tests added | 100+ |
+| All tests passing | ✅ |
+
+### Files Created/Modified
+
+| File | Change |
+|------|--------|
+| `scripts/rag/hybrid_retriever.py` | NEW - Hybrid vector + graph retrieval |
+| `scripts/rag/llm_synthesis.py` | Modified - Multi-provider support |
+| `scripts/rag/ragas_evaluate.py` | Modified - Provider parameter |
+| `scripts/rag/cli.py` | Modified - `--provider` flag |
+| `requirements.txt` | Added langchain-anthropic, langchain-openai |
+| `.github/workflows/ci-rag-index.yml` | NEW - CI pipeline |
+| `tests/unit/test_hybrid_retriever.py` | NEW - 28 tests |
+| `tests/unit/test_llm_synthesis.py` | NEW - 44 tests |
+| `tests/unit/test_ragas_evaluate.py` | NEW - 21 tests |
+
+### Phase 1 Progress
+
+| Component | Status |
+|-----------|--------|
+| Hybrid Retriever | ✅ Complete |
+| LLM Synthesis | ✅ Complete |
+| Multi-Provider | ✅ Ollama, Claude, OpenAI |
+| CI Pipeline | ✅ Created |
+| TDD Compliance | ✅ All tests passing |
