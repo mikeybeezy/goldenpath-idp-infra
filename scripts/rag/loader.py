@@ -38,10 +38,17 @@ Example:
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, Any, Union
+from typing import Dict, Any, Union, List
 import re
 
 import yaml
+
+try:
+    from llama_index.core import Document as LlamaDocument
+    LLAMA_INDEX_AVAILABLE = True
+except ImportError:
+    LLAMA_INDEX_AVAILABLE = False
+    LlamaDocument = None
 
 
 @dataclass
@@ -141,6 +148,80 @@ def load_governance_document(path: Union[str, Path]) -> GovernanceDocument:
         metadata=metadata,
         source_path=str(path),
     )
+
+
+def to_llama_document(doc: GovernanceDocument) -> "LlamaDocument":
+    """
+    Convert a GovernanceDocument to a LlamaIndex Document.
+
+    Flattens list metadata (like relates_to) to strings for compatibility
+    with vector stores that don't support list types.
+
+    Args:
+        doc: GovernanceDocument to convert.
+
+    Returns:
+        LlamaIndex Document with metadata preserved.
+
+    Raises:
+        ImportError: If llama-index is not installed.
+
+    Example:
+        >>> gov_doc = load_governance_document("docs/GOV-0017.md")
+        >>> llama_doc = to_llama_document(gov_doc)
+        >>> llama_doc.metadata["doc_id"]
+        'GOV-0017-tdd-and-determinism'
+    """
+    if not LLAMA_INDEX_AVAILABLE:
+        raise ImportError(
+            "llama-index is not installed. Install with: pip install llama-index"
+        )
+
+    # Flatten metadata for vector store compatibility
+    flat_metadata = {}
+    for key, value in doc.metadata.items():
+        if isinstance(value, list):
+            flat_metadata[key] = str(value)
+        elif value is None:
+            flat_metadata[key] = ""
+        else:
+            flat_metadata[key] = value
+
+    # Add standard fields expected by downstream components
+    flat_metadata["doc_id"] = doc.metadata.get("id", "")
+    flat_metadata["doc_title"] = doc.metadata.get("title", "")
+    flat_metadata["doc_type"] = doc.metadata.get("type", "")
+
+    return LlamaDocument(
+        text=doc.content,
+        metadata=flat_metadata,
+        doc_id=doc.metadata.get("id", str(doc.source_path)),
+    )
+
+
+def load_as_llama_documents(
+    directory: Union[str, Path], pattern: str = "*.md"
+) -> List["LlamaDocument"]:
+    """
+    Load governance documents as LlamaIndex Documents.
+
+    Convenience function that combines load_governance_documents
+    and to_llama_document for direct LlamaIndex integration.
+
+    Args:
+        directory: Directory to search for documents.
+        pattern: Glob pattern for matching files (default: "*.md").
+
+    Returns:
+        List of LlamaIndex Document objects.
+
+    Example:
+        >>> docs = load_as_llama_documents("docs/10-governance/policies/")
+        >>> len(docs) > 0
+        True
+    """
+    gov_docs = load_governance_documents(directory, pattern)
+    return [to_llama_document(doc) for doc in gov_docs]
 
 
 def load_governance_documents(

@@ -201,6 +201,7 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 |100|P2|**🔴 HV/HQ**|GitOps|Hard Guard: ArgoCD PreSync hooks for tier-aware preflight|platform|Open|M|Q2|Implement PreSync hook Jobs that validate tier prerequisites (RDS reachable, secrets exist, StorageClass ready)|ADR-0180 Phase 7b. V1 uses CI/Terraform checks; V2 adds in-cluster enforcement that blocks sync on missing prerequisites.|
 |101|P2|**🔵 MV/HQ**|Security|Hard Guard: OCI artifact signatures + policy enforcement for version pinning|platform|Open|L|Q3|Implement Sigstore/Cosign signing for container images; add admission controller policy (Kyverno/OPA) to reject unsigned images|Currently Helm chart versions pinned but targetRevision: development allows config drift. No digest pinning for container images. OCI signatures provide cryptographic verification.|
 |102|P2|**🔵 MV/HQ**|CI|Outcome-driven CI: workflows call Make targets|platform|In-Progress|M|Q2|Dev workflow done (CL-0167). Next: staging/prod workflows|CLI first, CI mirrors. CI says WHAT (inputs/outcomes), Make says HOW (terraform/kubectl). Enables local reproducibility and CI portability.|
+|103|P2|**🔵 MV/HQ**|RAG|HierarchicalNodeParser for complex governance documents|VQ|Open|M|Q2|Design ADR for hierarchical chunking strategy|ADR-0186 Amendment. Enable parent-child chunk relationships with AutoMergingRetriever for smarter context aggregation. Creates tiered chunks (2048→512→128 tokens) for multi-level policy documents.|
 
 ## Rules
 

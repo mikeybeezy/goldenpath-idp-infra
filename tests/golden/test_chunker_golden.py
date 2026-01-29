@@ -8,9 +8,19 @@ To update golden files (with human approval):
 """
 
 import json
+from datetime import date, datetime
 
 from scripts.rag.chunker import chunk_document
 from scripts.rag.loader import load_governance_document
+
+
+class DateTimeEncoder(json.JSONEncoder):
+    """JSON encoder that handles date and datetime objects."""
+
+    def default(self, obj):
+        if isinstance(obj, (date, datetime)):
+            return obj.isoformat()
+        return super().default(obj)
 
 
 def test_gov_0017_chunks_match_golden(assert_matches_golden):
@@ -20,6 +30,6 @@ def test_gov_0017_chunks_match_golden(assert_matches_golden):
     chunks = chunk_document(doc)
 
     payload = [{"text": c.text, "metadata": c.metadata} for c in chunks]
-    actual = json.dumps(payload, indent=2, sort_keys=True)
+    actual = json.dumps(payload, indent=2, sort_keys=True, cls=DateTimeEncoder)
 
     assert_matches_golden(actual, "chunks/GOV-0017/chunks.json")

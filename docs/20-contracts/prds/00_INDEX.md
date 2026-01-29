@@ -22,6 +22,8 @@ relates_to:
   - PRD-0006-persistent-cluster-build-timing
   - PRD-0007-platform-test-health-dashboard
   - PRD-0008-governance-rag-pipeline
+  - PRD-0009-integration-test-gap-closure
+  - PRD-0010-governance-rag-mcp-server
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false
@@ -40,3 +42,5 @@ breaking_change: false
 | PRD-0006 | Persistent Cluster Build Timing Capture | draft | 2026-01-24 | docs/20-contracts/prds/PRD-0006-persistent-cluster-build-timing.md |
 | PRD-0007 | Platform Test Health Dashboard | draft | 2026-01-26 | docs/20-contracts/prds/PRD-0007-platform-test-health-dashboard.md |
 | PRD-0008 | Agentic Graph RAG Pipeline | draft | 2026-01-27 | docs/20-contracts/prds/PRD-0008-governance-rag-pipeline.md |
+| PRD-0009 | Integration Test Gap Closure | draft | 2026-01-29 | docs/20-contracts/prds/PRD-0009-integration-test-gap-closure.md |
+| PRD-0010 | Governance RAG MCP Server | draft | 2026-01-29 | docs/20-contracts/prds/PRD-0010-governance-rag-mcp-server.md |

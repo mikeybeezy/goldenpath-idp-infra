@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-01-29T13:44:21.268036+00:00",
+  "question_count": 25,
+  "basic_metrics": {
+    "total_questions": 25,
+    "avg_contexts_per_query": 5.0,
+    "queries_with_results": 25,
+    "queries_with_results_pct": 100.0
+  },
+  "ragas_metrics": {
+    "context_precision": null,
+    "faithfulness": null,
+    "answer_relevancy": null,
+    "note": "LLM-based metrics require OPENAI_API_KEY in CI environment"
+  },
+  "index_stats": {
+    "document_count": 690,
+    "chunk_count": 9193
+  },
+  "status": "phase0_complete",
+  "next_steps": [
+    "Configure OPENAI_API_KEY in CI",
+    "Run full RAGAS evaluation in CI pipeline"
+  ]
+}

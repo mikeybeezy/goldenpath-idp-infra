@@ -20,11 +20,13 @@ from unittest.mock import MagicMock, patch
 
 # Import will fail until indexer.py is implemented (RED phase)
 from scripts.rag.indexer import (
+    _get_embedding_function,
     create_collection,
     index_chunks,
     get_collection,
     delete_collection,
     GovernanceIndex,
+    DEFAULT_EMBEDDING_MODEL,
 )
 from scripts.rag.chunker import Chunk
 
@@ -124,6 +126,26 @@ class TestCollectionManagement:
 
         call_args = mock_chroma_client.get_or_create_collection.call_args
         assert call_args[1]["name"] == "governance_docs"
+
+    def test_create_collection_uses_embedding_model(self, mock_chroma_client):
+        """create_collection should pass embedding function when model is set."""
+        mock_collection = MagicMock()
+        mock_chroma_client.get_or_create_collection.return_value = mock_collection
+
+        with patch("scripts.rag.indexer._get_embedding_function") as mock_get_ef:
+            mock_get_ef.return_value = object()
+            create_collection("test_collection", embedding_model=DEFAULT_EMBEDDING_MODEL)
+
+        call_args = mock_chroma_client.get_or_create_collection.call_args
+        assert "embedding_function" in call_args[1]
+
+    def test_mock_embedding_function(self):
+        """_get_embedding_function should return mock embedder for tests."""
+        embedder = _get_embedding_function("mock")
+        assert embedder is not None
+        vectors = embedder(["hello", "world"])
+        assert len(vectors) == 2
+        assert len(vectors[0]) > 0
 
     def test_get_collection_returns_existing(self, mock_chroma_client):
         """get_collection must return an existing collection."""
@@ -260,6 +282,18 @@ class TestGovernanceIndex:
         call_args = mock_chroma_client.get_or_create_collection.call_args
         assert call_args[1]["name"] == "custom_index"
 
+    def test_governance_index_uses_embedding_model(self, mock_chroma_client):
+        """GovernanceIndex should pass embedding function when model is set."""
+        mock_collection = MagicMock()
+        mock_chroma_client.get_or_create_collection.return_value = mock_collection
+
+        with patch("scripts.rag.indexer._get_embedding_function") as mock_get_ef:
+            mock_get_ef.return_value = object()
+            GovernanceIndex(embedding_model=DEFAULT_EMBEDDING_MODEL)
+
+        call_args = mock_chroma_client.get_or_create_collection.call_args
+        assert "embedding_function" in call_args[1]
+
     def test_governance_index_add_chunks(
         self, mock_chroma_client, mock_collection, sample_chunks
     ):
@@ -362,3 +396,25 @@ class TestMetadataHandling:
         metadatas = call_args[1]["metadatas"]
         assert metadatas[0]["chunk_index"] == 5
         assert metadatas[0]["header_level"] == 2
+
+    def test_flattens_date_metadata(self, mock_chroma_client, mock_collection):
+        """Indexer must serialize date metadata values."""
+        from datetime import date
+
+        chunks = [
+            Chunk(
+                text="Test content",
+                metadata={
+                    "doc_id": "DOC-001",
+                    "effective_date": date(2028, 1, 1),
+                    "chunk_index": 0,
+                },
+            )
+        ]
+        mock_chroma_client.get_or_create_collection.return_value = mock_collection
+
+        index_chunks(chunks, collection=mock_collection)
+
+        call_args = mock_collection.add.call_args
+        metadatas = call_args[1]["metadatas"]
+        assert metadatas[0]["effective_date"] == "2028-01-01"

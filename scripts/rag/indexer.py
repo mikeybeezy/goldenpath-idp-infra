@@ -27,7 +27,7 @@ Purpose: RAG ChromaDB Indexer for GoldenPath governance documents.
 Indexes document chunks into ChromaDB for vector similarity search.
 This module handles the indexing stage of the RAG pipeline.
 
-Phase 0 uses ChromaDB's default embedding function (all-MiniLM-L6-v2).
+Phase 0 uses the explicit embedding model all-MiniLM-L6-v2 (open source).
 Phase 1+ will support custom embedding models.
 
 Per GOV-0017: Metadata engines are determinism-critical and require test coverage.
@@ -45,6 +45,7 @@ Example:
 
 from dataclasses import dataclass, field
 from typing import List, Optional, Any, Dict
+from datetime import date, datetime
 import json
 
 try:
@@ -60,6 +61,89 @@ DEFAULT_COLLECTION_NAME = "governance_docs"
 
 # Default persist directory for ChromaDB
 DEFAULT_PERSIST_DIR = ".chroma"
+
+# Default embedding model (explicit for Phase 0 alignment)
+DEFAULT_EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+
+class _MockEmbeddingFunction:
+    """
+    Deterministic, dependency-free embedding function for tests.
+
+    Produces a small fixed-length vector based on byte sums to avoid
+    external model downloads during integration tests.
+    """
+
+    def __init__(self, dim: int = 16):
+        self.dim = dim
+
+    @staticmethod
+    def name() -> str:
+        return "mock"
+
+    def is_legacy(self) -> bool:
+        return False
+
+    def default_space(self) -> str:
+        return "cosine"
+
+    def supported_spaces(self) -> set[str]:
+        return {"cosine", "l2", "ip"}
+
+    def get_config(self) -> dict:
+        return {"model_name": "mock", "dim": self.dim}
+
+    @classmethod
+    def build_from_config(cls, config):
+        if not isinstance(config, dict):
+            return cls()
+        return cls(dim=config.get("dim", 16))
+
+    def __call__(self, input):
+        embeddings = []
+        for text in input:
+            if not isinstance(text, str):
+                text = str(text)
+            vec = [0.0] * self.dim
+            for idx, byte in enumerate(text.encode("utf-8")):
+                vec[idx % self.dim] += float(byte)
+            # Normalize to keep magnitudes bounded
+            norm = sum(v * v for v in vec) ** 0.5
+            if norm:
+                vec = [v / norm for v in vec]
+            embeddings.append(vec)
+        return embeddings
+
+    def embed_documents(self, texts):
+        return self.__call__(texts)
+
+    def embed_query(self, input):
+        if isinstance(input, list):
+            if not input:
+                return [[0.0] * self.dim]
+            return self.__call__([input[0]])
+        return self.__call__([input])
+
+
+def _get_embedding_function(model_name: Optional[str]):
+    """
+    Build a ChromaDB embedding function if a model name is provided.
+
+    Returns None to use ChromaDB defaults.
+    """
+    if not model_name:
+        return None
+    if model_name == "mock":
+        return _MockEmbeddingFunction()
+    try:
+        from chromadb.utils import embedding_functions
+    except Exception:
+        return None
+    try:
+        return embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name=model_name
+        )
+    except Exception:
+        return None
 
 
 def _get_client(persist_dir: Optional[str] = None, in_memory: bool = False):
@@ -85,6 +169,15 @@ def _get_client(persist_dir: Optional[str] = None, in_memory: bool = False):
     return chromadb.PersistentClient(path=persist_path)
 
 
+class _DateTimeEncoder(json.JSONEncoder):
+    """JSON encoder that handles date and datetime objects."""
+
+    def default(self, obj):
+        if isinstance(obj, (date, datetime)):
+            return obj.isoformat()
+        return super().default(obj)
+
+
 def _flatten_metadata(metadata: Dict[str, Any]) -> Dict[str, Any]:
     """
     Flatten metadata for ChromaDB compatibility.
@@ -101,7 +194,9 @@ def _flatten_metadata(metadata: Dict[str, Any]) -> Dict[str, Any]:
     flattened = {}
     for key, value in metadata.items():
         if isinstance(value, (list, dict)):
-            flattened[key] = json.dumps(value)
+            flattened[key] = json.dumps(value, cls=_DateTimeEncoder)
+        elif isinstance(value, (date, datetime)):
+            flattened[key] = value.isoformat()
         elif value is None:
             flattened[key] = ""
         else:
@@ -131,6 +226,7 @@ def create_collection(
     name: str = DEFAULT_COLLECTION_NAME,
     persist_dir: Optional[str] = None,
     in_memory: bool = False,
+    embedding_model: Optional[str] = DEFAULT_EMBEDDING_MODEL,
 ):
     """
     Create or get a ChromaDB collection.
@@ -149,7 +245,12 @@ def create_collection(
         'my_docs'
     """
     client = _get_client(persist_dir=persist_dir, in_memory=in_memory)
-    return client.get_or_create_collection(name=name)
+    embedding_function = _get_embedding_function(embedding_model)
+    if embedding_function is None:
+        return client.get_or_create_collection(name=name)
+    return client.get_or_create_collection(
+        name=name, embedding_function=embedding_function
+    )
 
 
 def get_collection(
@@ -198,6 +299,7 @@ def index_chunks(
     collection_name: str = DEFAULT_COLLECTION_NAME,
     persist_dir: Optional[str] = None,
     in_memory: bool = False,
+    embedding_model: Optional[str] = DEFAULT_EMBEDDING_MODEL,
 ) -> int:
     """
     Index chunks into a ChromaDB collection.
@@ -227,6 +329,7 @@ def index_chunks(
             name=collection_name,
             persist_dir=persist_dir,
             in_memory=in_memory,
+            embedding_model=embedding_model,
         )
 
     # Prepare data for ChromaDB
@@ -274,6 +377,7 @@ class GovernanceIndex:
     collection_name: str = DEFAULT_COLLECTION_NAME
     persist_dir: Optional[str] = None
     in_memory: bool = False
+    embedding_model: Optional[str] = DEFAULT_EMBEDDING_MODEL
     collection: Any = field(default=None, init=False)
     _client: Any = field(default=None, init=False, repr=False)
 
@@ -283,9 +387,15 @@ class GovernanceIndex:
             persist_dir=self.persist_dir,
             in_memory=self.in_memory,
         )
-        self.collection = self._client.get_or_create_collection(
-            name=self.collection_name
-        )
+        embedding_function = _get_embedding_function(self.embedding_model)
+        if embedding_function is None:
+            self.collection = self._client.get_or_create_collection(
+                name=self.collection_name
+            )
+        else:
+            self.collection = self._client.get_or_create_collection(
+                name=self.collection_name, embedding_function=embedding_function
+            )
 
     def add(self, chunks: List[Chunk]) -> int:
         """
@@ -297,7 +407,11 @@ class GovernanceIndex:
         Returns:
             Number of chunks added.
         """
-        return index_chunks(chunks, collection=self.collection)
+        return index_chunks(
+            chunks,
+            collection=self.collection,
+            embedding_model=self.embedding_model,
+        )
 
     def count(self) -> int:
         """

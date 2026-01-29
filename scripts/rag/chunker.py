@@ -20,33 +20,96 @@ risk_profile:
 relates_to:
   - GOV-0017-tdd-and-determinism
   - ADR-0184-rag-markdown-header-chunking
+  - ADR-0186-llamaindex-retrieval-layer
   - PRD-0008-governance-rag-pipeline
 ---
 Purpose: RAG Markdown Chunker for GoldenPath governance documents.
 
-Splits markdown documents on H2 (##) header boundaries per ADR-0184.
-Each section becomes a chunk with preserved document metadata.
+Uses LlamaIndex MarkdownNodeParser for robust markdown chunking.
+Maintains backward-compatible interface while leveraging battle-tested library.
 
-Chunking Parameters (from ADR-0184):
-- Split boundary: ## (H2 headers)
-- Include header: Yes
-- Max chunk size: 1024 tokens (not enforced in Phase 0)
-- Min chunk size: 50 tokens (not enforced in Phase 0)
-- Overlap: 0 tokens (sections are self-contained)
+Per ADR-0186: Use LlamaIndex for chunking to avoid custom brittleness.
+Per PRD-0008: Use MarkdownNodeParser for GOV-*, ADR-*, PRD-* documents.
+
+Features:
+- MarkdownNodeParser: Header-based chunking for structured documents
+- SentenceWindowNodeParser: Context-preserving chunks with surrounding sentences
+- Parser instance reuse for performance optimization
 
 Example:
-    >>> from scripts.rag.chunker import chunk_markdown
-    >>> content = "## Section A\\nContent A\\n\\n## Section B\\nContent B"
-    >>> chunks = chunk_markdown(content, {"doc_id": "DOC-001"})
-    >>> len(chunks)
-    2
+    >>> from scripts.rag.chunker import chunk_document
+    >>> from scripts.rag.loader import load_governance_document
+    >>> doc = load_governance_document("docs/GOV-0017.md")
+    >>> chunks = chunk_document(doc)
+    >>> len(chunks) > 0
+    True
 """
 
 from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional
-import re
 
-from scripts.rag.loader import GovernanceDocument
+from scripts.rag.loader import GovernanceDocument, to_llama_document, LLAMA_INDEX_AVAILABLE
+
+if LLAMA_INDEX_AVAILABLE:
+    from llama_index.core import Document as LlamaDocument
+    from llama_index.core.node_parser import MarkdownNodeParser, SentenceWindowNodeParser
+    from llama_index.core.schema import TextNode
+
+
+# ---------------------------------------------------------------------------
+# Parser Singletons (Performance Optimization)
+# ---------------------------------------------------------------------------
+
+_MARKDOWN_PARSER: Optional["MarkdownNodeParser"] = None
+_SENTENCE_WINDOW_PARSER: Optional["SentenceWindowNodeParser"] = None
+
+# Default configuration for SentenceWindowNodeParser
+DEFAULT_WINDOW_SIZE = 3  # Sentences before and after
+DEFAULT_WINDOW_METADATA_KEY = "surrounding_context"
+
+
+def _get_markdown_parser() -> "MarkdownNodeParser":
+    """
+    Get or create the singleton MarkdownNodeParser instance.
+
+    Returns:
+        Configured MarkdownNodeParser for reuse across calls.
+    """
+    global _MARKDOWN_PARSER
+    if _MARKDOWN_PARSER is None:
+        _MARKDOWN_PARSER = MarkdownNodeParser.from_defaults(
+            include_metadata=True,
+            include_prev_next_rel=True,
+        )
+    return _MARKDOWN_PARSER
+
+
+def _get_sentence_window_parser(
+    window_size: int = DEFAULT_WINDOW_SIZE,
+) -> "SentenceWindowNodeParser":
+    """
+    Get or create the singleton SentenceWindowNodeParser instance.
+
+    Note: If window_size differs from cached parser, creates new instance.
+
+    Args:
+        window_size: Number of sentences to include before/after each chunk.
+
+    Returns:
+        Configured SentenceWindowNodeParser for reuse.
+    """
+    global _SENTENCE_WINDOW_PARSER
+    if (
+        _SENTENCE_WINDOW_PARSER is None
+        or _SENTENCE_WINDOW_PARSER.window_size != window_size
+    ):
+        _SENTENCE_WINDOW_PARSER = SentenceWindowNodeParser.from_defaults(
+            window_size=window_size,
+            window_metadata_key=DEFAULT_WINDOW_METADATA_KEY,
+            include_metadata=True,
+            include_prev_next_rel=True,
+        )
+    return _SENTENCE_WINDOW_PARSER
 
 
 @dataclass
@@ -63,147 +126,170 @@ class Chunk:
     metadata: Dict[str, Any] = field(default_factory=dict)
 
 
-# Regex pattern for H2 headers (## Header Text)
-H2_PATTERN = re.compile(r"^(##\s+.+)$")
-# Regex pattern for fenced code blocks (``` or ~~~)
-FENCE_PATTERN = re.compile(r"^\s*(```|~~~)")
-
-
-def extract_section_name(header_line: str) -> str:
+def _node_to_chunk(node: "TextNode", chunk_index: int) -> Chunk:
     """
-    Extract the section name from an H2 header line.
+    Convert a LlamaIndex TextNode to our Chunk dataclass.
+
+    Handles metadata from both MarkdownNodeParser (header_path) and
+    SentenceWindowNodeParser (surrounding_context).
 
     Args:
-        header_line: Line starting with "## " (e.g., "## Purpose").
+        node: LlamaIndex TextNode from any node parser.
+        chunk_index: Sequential index for this chunk.
 
     Returns:
-        The section name without the ## prefix.
-
-    Example:
-        >>> extract_section_name("## Core Principle")
-        'Core Principle'
+        Chunk with text and metadata.
     """
-    # Remove ## prefix and strip whitespace
-    return header_line.lstrip("#").strip()
+    metadata = dict(node.metadata)
+    metadata["chunk_index"] = chunk_index
 
+    # Extract section name from the text content's first line
+    # LlamaIndex's header_path shows parent hierarchy, not current section
+    text = node.text.strip()
+    first_line = text.split("\n")[0] if text else ""
 
-def split_on_h2(content: str) -> List[tuple[Optional[str], str]]:
-    """
-    Split content on H2 (##) headers.
-
-    Args:
-        content: Markdown content to split.
-
-    Returns:
-        List of (header, content) tuples. First item may have header=None
-        if content starts before any H2 header.
-
-    Example:
-        >>> parts = split_on_h2("Intro\\n\\n## A\\nContent A\\n\\n## B\\nContent B")
-        >>> len(parts)
-        3
-    """
-    if not content or not content.strip():
-        return []
-
-    # Find all H2 header positions, ignoring fenced code blocks
-    matches = []
-    in_fence = False
-    cursor = 0
-
-    for line in content.splitlines(keepends=True):
-        if FENCE_PATTERN.match(line):
-            in_fence = not in_fence
-        if not in_fence:
-            header_match = H2_PATTERN.match(line)
-            if header_match:
-                header_line = header_match.group(1).rstrip("\n")
-                matches.append((cursor, header_line))
-        cursor += len(line)
-
-    if not matches:
-        # No H2 headers - return entire content as single section
-        return [(None, content)]
-
-    sections = []
-
-    # Handle content before first H2 (if any)
-    first_match_pos, _ = matches[0]
-    if first_match_pos > 0:
-        intro_content = content[:first_match_pos].strip()
-        if intro_content:
-            sections.append((None, intro_content))
-
-    # Process each H2 section
-    for i, (start_pos, header) in enumerate(matches):
-
-        # Determine end of this section
-        if i + 1 < len(matches):
-            end_pos = matches[i + 1][0]
+    # Determine header level and section name from text content
+    if first_line.startswith("### "):
+        metadata["header_level"] = 3
+        metadata["section"] = first_line[4:].strip()
+    elif first_line.startswith("## "):
+        metadata["header_level"] = 2
+        metadata["section"] = first_line[3:].strip()
+    elif first_line.startswith("# "):
+        metadata["header_level"] = 1
+        metadata["section"] = first_line[2:].strip()
+    else:
+        # No header in text, fall back to header_path or mark as sentence chunk
+        metadata["header_level"] = 0
+        header_path = metadata.get("header_path", "/")
+        if header_path and header_path != "/":
+            parts = [p for p in header_path.split("/") if p]
+            metadata["section"] = parts[-1] if parts else "Content"
         else:
-            end_pos = len(content)
+            # Likely a SentenceWindowNodeParser chunk
+            metadata["section"] = "Content"
 
-        # Extract section content (including header)
-        section_content = content[start_pos:end_pos].strip()
-        sections.append((header, section_content))
+    # Mark if this chunk has surrounding context (from SentenceWindowNodeParser)
+    if DEFAULT_WINDOW_METADATA_KEY in metadata:
+        metadata["has_context_window"] = True
 
-    return sections
+    return Chunk(text=node.text, metadata=metadata)
+
+
+def chunk_with_llamaindex(doc: "LlamaDocument") -> List[Chunk]:
+    """
+    Chunk a LlamaIndex Document using MarkdownNodeParser.
+
+    This is the recommended chunking method per ADR-0186 and PRD-0008.
+    Uses singleton parser instance for performance.
+
+    Args:
+        doc: LlamaIndex Document to chunk.
+
+    Returns:
+        List of Chunk objects with inherited metadata.
+
+    Example:
+        >>> from scripts.rag.loader import load_governance_document, to_llama_document
+        >>> gov_doc = load_governance_document("docs/GOV-0017.md")
+        >>> llama_doc = to_llama_document(gov_doc)
+        >>> chunks = chunk_with_llamaindex(llama_doc)
+        >>> len(chunks) > 0
+        True
+    """
+    if not LLAMA_INDEX_AVAILABLE:
+        raise ImportError(
+            "llama-index is not installed. Install with: pip install llama-index"
+        )
+
+    parser = _get_markdown_parser()
+    nodes = parser.get_nodes_from_documents([doc])
+
+    return [_node_to_chunk(node, idx) for idx, node in enumerate(nodes)]
+
+
+def chunk_with_sentence_window(
+    doc: "LlamaDocument",
+    window_size: int = DEFAULT_WINDOW_SIZE,
+) -> List[Chunk]:
+    """
+    Chunk a LlamaIndex Document using SentenceWindowNodeParser.
+
+    Creates sentence-level chunks with surrounding context preserved in metadata.
+    This enables better retrieval by providing context during synthesis.
+
+    The 'surrounding_context' metadata field contains sentences before and after
+    each chunk, allowing the retriever to use expanded context for answers.
+
+    Args:
+        doc: LlamaIndex Document to chunk.
+        window_size: Number of sentences to include before/after (default: 3).
+
+    Returns:
+        List of Chunk objects with context window metadata.
+
+    Example:
+        >>> from scripts.rag.loader import load_governance_document, to_llama_document
+        >>> gov_doc = load_governance_document("docs/GOV-0017.md")
+        >>> llama_doc = to_llama_document(gov_doc)
+        >>> chunks = chunk_with_sentence_window(llama_doc, window_size=3)
+        >>> chunks[0].metadata.get("has_context_window")
+        True
+    """
+    if not LLAMA_INDEX_AVAILABLE:
+        raise ImportError(
+            "llama-index is not installed. Install with: pip install llama-index"
+        )
+
+    parser = _get_sentence_window_parser(window_size)
+    nodes = parser.get_nodes_from_documents([doc])
+
+    return [_node_to_chunk(node, idx) for idx, node in enumerate(nodes)]
 
 
 def chunk_markdown(content: str, base_metadata: Dict[str, Any]) -> List[Chunk]:
     """
-    Split markdown content into chunks on H2 header boundaries.
+    Split markdown content into chunks using LlamaIndex MarkdownNodeParser.
 
-    Per ADR-0184, each H2 section becomes a separate chunk with:
-    - Section content (including the header)
-    - Document metadata (inherited)
-    - Section-specific metadata (section name, header level, chunk index)
+    Backward-compatible interface that uses LlamaIndex under the hood.
+    Uses singleton parser instance for performance.
 
     Args:
         content: Markdown content to chunk.
-        base_metadata: Metadata to inherit for all chunks (from document).
+        base_metadata: Metadata to inherit for all chunks.
 
     Returns:
         List of Chunk objects.
 
     Example:
         >>> chunks = chunk_markdown("## A\\nContent A\\n\\n## B\\nContent B", {})
-        >>> len(chunks)
-        2
+        >>> len(chunks) >= 2
+        True
     """
     if not content or not content.strip():
         return []
 
-    sections = split_on_h2(content)
-    chunks = []
-
-    for idx, (header, section_content) in enumerate(sections):
-        # Build chunk metadata
-        chunk_metadata = dict(base_metadata)  # Copy base metadata
-        chunk_metadata["chunk_index"] = idx
-        chunk_metadata["header_level"] = 2 if header else 1
-
-        if header:
-            chunk_metadata["section"] = extract_section_name(header)
-        else:
-            chunk_metadata["section"] = "Introduction"
-
-        chunks.append(
-            Chunk(
-                text=section_content,
-                metadata=chunk_metadata,
-            )
+    if not LLAMA_INDEX_AVAILABLE:
+        raise ImportError(
+            "llama-index is not installed. Install with: pip install llama-index"
         )
 
-    return chunks
+    # Create a LlamaIndex Document with the base metadata
+    doc = LlamaDocument(text=content, metadata=base_metadata)
+
+    # Use singleton MarkdownNodeParser
+    parser = _get_markdown_parser()
+    nodes = parser.get_nodes_from_documents([doc])
+
+    return [_node_to_chunk(node, idx) for idx, node in enumerate(nodes)]
 
 
 def chunk_document(doc: GovernanceDocument) -> List[Chunk]:
     """
-    Chunk a GovernanceDocument into sections.
+    Chunk a GovernanceDocument into sections using LlamaIndex.
 
-    Convenience function that extracts metadata from the document
-    and passes it to chunk_markdown.
+    Converts to LlamaIndex Document, chunks with MarkdownNodeParser,
+    and returns Chunk objects with inherited metadata.
 
     Args:
         doc: GovernanceDocument to chunk.
@@ -215,19 +301,82 @@ def chunk_document(doc: GovernanceDocument) -> List[Chunk]:
         >>> from scripts.rag.loader import load_governance_document
         >>> doc = load_governance_document("docs/GOV-0017.md")
         >>> chunks = chunk_document(doc)
-        >>> chunks[0].metadata["doc_id"]
-        'GOV-0017-tdd-and-determinism'
+        >>> chunks[0].metadata.get("doc_id") is not None
+        True
     """
-    # Build base metadata for chunks
-    base_metadata = {
-        "doc_id": doc.metadata.get("id"),
-        "doc_title": doc.metadata.get("title"),
-        "doc_type": doc.metadata.get("type"),
-        "file_path": doc.metadata.get("file_path") or str(doc.source_path),
-    }
+    if not LLAMA_INDEX_AVAILABLE:
+        raise ImportError(
+            "llama-index is not installed. Install with: pip install llama-index"
+        )
 
-    # Add relates_to if present
-    if "relates_to" in doc.metadata:
-        base_metadata["relates_to"] = doc.metadata["relates_to"]
+    # Convert to LlamaIndex Document (handles frontmatter flattening)
+    llama_doc = to_llama_document(doc)
 
-    return chunk_markdown(doc.content, base_metadata)
+    # Chunk with MarkdownNodeParser
+    return chunk_with_llamaindex(llama_doc)
+
+
+def get_nodes_from_documents(docs: List["LlamaDocument"]) -> List["TextNode"]:
+    """
+    Get LlamaIndex TextNodes directly from Documents.
+
+    Use this when you want to work with LlamaIndex nodes directly
+    instead of our Chunk dataclass. Uses singleton parser for performance.
+
+    Args:
+        docs: List of LlamaIndex Documents.
+
+    Returns:
+        List of LlamaIndex TextNode objects.
+
+    Example:
+        >>> from scripts.rag.loader import load_as_llama_documents
+        >>> docs = load_as_llama_documents("docs/10-governance/policies/")
+        >>> nodes = get_nodes_from_documents(docs)
+        >>> len(nodes) > 0
+        True
+    """
+    if not LLAMA_INDEX_AVAILABLE:
+        raise ImportError(
+            "llama-index is not installed. Install with: pip install llama-index"
+        )
+
+    parser = _get_markdown_parser()
+    return parser.get_nodes_from_documents(docs)
+
+
+def chunk_document_with_context(
+    doc: GovernanceDocument,
+    window_size: int = DEFAULT_WINDOW_SIZE,
+) -> List[Chunk]:
+    """
+    Chunk a GovernanceDocument with surrounding sentence context.
+
+    Use this when you need enhanced retrieval with context windows.
+    Each chunk will have 'surrounding_context' metadata containing
+    neighboring sentences for better answer synthesis.
+
+    Args:
+        doc: GovernanceDocument to chunk.
+        window_size: Number of sentences to include before/after (default: 3).
+
+    Returns:
+        List of Chunk objects with context window metadata.
+
+    Example:
+        >>> from scripts.rag.loader import load_governance_document
+        >>> doc = load_governance_document("docs/GOV-0017.md")
+        >>> chunks = chunk_document_with_context(doc, window_size=3)
+        >>> any(c.metadata.get("has_context_window") for c in chunks)
+        True
+    """
+    if not LLAMA_INDEX_AVAILABLE:
+        raise ImportError(
+            "llama-index is not installed. Install with: pip install llama-index"
+        )
+
+    # Convert to LlamaIndex Document
+    llama_doc = to_llama_document(doc)
+
+    # Chunk with SentenceWindowNodeParser
+    return chunk_with_sentence_window(llama_doc, window_size)

@@ -189,6 +189,7 @@ knowledge layer that always reflects the governance-registry branch.
 - ADR-0090: Automated Platform Health Dashboard
 - EC-0014: Agent Scope Registry
 - docs/70-operations/20_TOOLING_APPS_MATRIX.md
+- PRD-0008 Phase 0 Retriever Spec (Graph-Enabled): docs/20-contracts/prds/PRD-0008-phase0-retriever-spec.md
 
 ---
 

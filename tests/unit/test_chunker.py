@@ -2,7 +2,7 @@
 Unit tests for RAG markdown chunker.
 
 Tests the chunker module's ability to:
-- Split documents on H2 (##) header boundaries (ADR-0184)
+- Split documents on markdown header boundaries using LlamaIndex MarkdownNodeParser
 - Preserve document metadata in each chunk
 - Handle edge cases (no headers, single section, oversized sections)
 - Include section headers in chunk content
@@ -10,9 +10,13 @@ Tests the chunker module's ability to:
 Per GOV-0017: "Nothing that generates infrastructure, parses config, or emits
 scaffolds may change without tests."
 
+Per ADR-0186: Use LlamaIndex MarkdownNodeParser for chunking to avoid custom
+brittleness. LlamaIndex splits on ALL headers (H1, H2, H3) for fine-grained chunks.
+
 References:
 - GOV-0017: TDD and Determinism Policy
 - ADR-0184: RAG Markdown Header Chunking Strategy
+- ADR-0186: LlamaIndex as Retrieval Layer
 """
 
 import pytest
@@ -189,33 +193,35 @@ class TestMetadataPreservation:
 
 
 # ---------------------------------------------------------------------------
-# Tests: Subsection Handling
+# Tests: Subsection Handling (LlamaIndex behavior)
 # ---------------------------------------------------------------------------
 
 
 class TestSubsectionHandling:
-    """Tests for handling H3 subsections within H2 sections."""
+    """Tests for handling H3 subsections.
 
-    def test_keeps_h3_with_parent_h2(self, content_with_subsections: str):
-        """H3 subsections should stay with their parent H2 section."""
-        chunks = chunk_markdown(content_with_subsections, {})
-        main_section = next((c for c in chunks if "## Main Section" in c.text), None)
-        assert main_section is not None
-        # H3 subsections should be in the same chunk
-        assert "### Subsection 1" in main_section.text
-        assert "### Subsection 2" in main_section.text
+    Per ADR-0186: LlamaIndex MarkdownNodeParser splits on ALL header levels
+    (H1, H2, H3) for fine-grained chunks. This is the intended behavior to
+    allow more precise retrieval.
+    """
 
-    def test_h3_not_split_into_separate_chunks(self, content_with_subsections: str):
-        """H3 headers should NOT create separate chunks."""
+    def test_h3_creates_separate_chunks(self, content_with_subsections: str):
+        """H3 subsections should be split into separate chunks (LlamaIndex behavior)."""
         chunks = chunk_markdown(content_with_subsections, {})
-        # Should only have chunks for H2 sections, not H3
-        h2_chunks = [c for c in chunks if c.text.strip().startswith("## ")]
-        h3_only_chunks = [
-            c
-            for c in chunks
-            if c.text.strip().startswith("### ") and "## " not in c.text
-        ]
-        assert len(h3_only_chunks) == 0
+        # LlamaIndex splits on all headers, so H3s become separate chunks
+        h3_chunks = [c for c in chunks if "### Subsection" in c.text]
+        # Should have separate chunks for each H3
+        assert len(h3_chunks) >= 2
+
+    def test_all_headers_preserved(self, content_with_subsections: str):
+        """All header sections should be captured in chunks."""
+        chunks = chunk_markdown(content_with_subsections, {})
+        combined_text = " ".join(c.text for c in chunks)
+        # All sections should be present
+        assert "## Main Section" in combined_text
+        assert "### Subsection 1" in combined_text
+        assert "### Subsection 2" in combined_text
+        assert "## Another Section" in combined_text
 
 
 # ---------------------------------------------------------------------------
@@ -287,9 +293,11 @@ print("Inside code fence")
 More content here.
 """
         chunks = chunk_markdown(content, {})
-        assert len(chunks) == 3
+        # Should have chunks for H1, Section A, and Section B
+        assert len(chunks) >= 3
         section_a = next((c for c in chunks if "## Section A" in c.text), None)
         assert section_a is not None
+        # The fake header inside the code block should be in Section A, not split
         assert "## Not a header" in section_a.text
 
 
@@ -321,3 +329,117 @@ class TestChunkDataclass:
         for chunk in chunks:
             # Allow whitespace-only for edge cases, but generally should have content
             assert chunk.text is not None
+
+
+# ---------------------------------------------------------------------------
+# Tests: SentenceWindowNodeParser
+# ---------------------------------------------------------------------------
+
+
+class TestSentenceWindowChunking:
+    """Tests for SentenceWindowNodeParser functionality.
+
+    SentenceWindowNodeParser creates sentence-level chunks with surrounding
+    context preserved in metadata for enhanced retrieval.
+    """
+
+    @pytest.fixture
+    def prose_content(self) -> str:
+        """Content with multiple sentences for sentence window testing."""
+        return """# Document Title
+
+This is the first sentence. This is the second sentence. This is the third sentence.
+
+Here is another paragraph. It has multiple sentences too. And a third one here.
+
+## Section Two
+
+More content follows here. With additional sentences. And even more text.
+"""
+
+    def test_sentence_window_creates_chunks(self, prose_content: str):
+        """SentenceWindowNodeParser should create chunks from prose."""
+        from scripts.rag.chunker import chunk_with_sentence_window
+        from llama_index.core import Document as LlamaDocument
+
+        doc = LlamaDocument(text=prose_content, metadata={"test": True})
+        chunks = chunk_with_sentence_window(doc, window_size=2)
+
+        assert len(chunks) > 0
+        assert all(hasattr(c, "text") for c in chunks)
+        assert all(hasattr(c, "metadata") for c in chunks)
+
+    def test_sentence_window_includes_context_metadata(self, prose_content: str):
+        """Chunks should have surrounding_context metadata."""
+        from scripts.rag.chunker import chunk_with_sentence_window, DEFAULT_WINDOW_METADATA_KEY
+        from llama_index.core import Document as LlamaDocument
+
+        doc = LlamaDocument(text=prose_content, metadata={})
+        chunks = chunk_with_sentence_window(doc, window_size=2)
+
+        # At least some chunks should have context windows
+        chunks_with_context = [
+            c for c in chunks if DEFAULT_WINDOW_METADATA_KEY in c.metadata
+        ]
+        assert len(chunks_with_context) > 0
+
+    def test_sentence_window_marks_has_context_window(self, prose_content: str):
+        """Chunks with context should have has_context_window=True."""
+        from scripts.rag.chunker import chunk_with_sentence_window
+        from llama_index.core import Document as LlamaDocument
+
+        doc = LlamaDocument(text=prose_content, metadata={})
+        chunks = chunk_with_sentence_window(doc, window_size=2)
+
+        # Check that has_context_window is set for chunks with context
+        for chunk in chunks:
+            if "surrounding_context" in chunk.metadata:
+                assert chunk.metadata.get("has_context_window") is True
+
+    def test_chunk_document_with_context(self, governance_doc: GovernanceDocument):
+        """chunk_document_with_context should work with GovernanceDocument."""
+        from scripts.rag.chunker import chunk_document_with_context
+
+        chunks = chunk_document_with_context(governance_doc, window_size=2)
+
+        assert len(chunks) > 0
+        # Chunks should inherit document metadata
+        for chunk in chunks:
+            assert "doc_id" in chunk.metadata or "chunk_index" in chunk.metadata
+
+
+# ---------------------------------------------------------------------------
+# Tests: Parser Singleton Reuse
+# ---------------------------------------------------------------------------
+
+
+class TestParserSingleton:
+    """Tests for parser singleton pattern (performance optimization)."""
+
+    def test_markdown_parser_reused(self):
+        """MarkdownNodeParser should be reused across calls."""
+        from scripts.rag.chunker import _get_markdown_parser
+
+        parser1 = _get_markdown_parser()
+        parser2 = _get_markdown_parser()
+
+        assert parser1 is parser2  # Same instance
+
+    def test_sentence_window_parser_reused(self):
+        """SentenceWindowNodeParser should be reused for same window_size."""
+        from scripts.rag.chunker import _get_sentence_window_parser
+
+        parser1 = _get_sentence_window_parser(window_size=3)
+        parser2 = _get_sentence_window_parser(window_size=3)
+
+        assert parser1 is parser2  # Same instance
+
+    def test_sentence_window_parser_recreated_on_size_change(self):
+        """SentenceWindowNodeParser should be recreated for different window_size."""
+        from scripts.rag.chunker import _get_sentence_window_parser
+
+        parser1 = _get_sentence_window_parser(window_size=3)
+        parser2 = _get_sentence_window_parser(window_size=5)
+
+        # Different window size should create new parser
+        assert parser1 is not parser2

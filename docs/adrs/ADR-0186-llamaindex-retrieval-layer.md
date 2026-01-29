@@ -33,7 +33,16 @@ review_date: 2026-07-28
 
 ## Status
 
-**Accepted**
+**Accepted** (Amended 2026-01-28)
+
+## Implementation Correction (2026-01-28)
+
+Phase 0 currently uses:
+
+- **LlamaIndex MarkdownNodeParser** for chunking
+- **Direct ChromaDB retrieval** (no LlamaIndex QueryEngine yet)
+
+LlamaIndex retrieval remains planned but is not implemented in Phase 0 as of this update.
 
 ## Context
 
@@ -181,7 +190,60 @@ Use LangChain for retrieval layer.
 
 **Rejected because:** LlamaIndex has better native ChromaDB integration and simpler API for our use case. LangChain adds more abstraction than needed.
 
-## References
+## Amendment (2026-01-28): Extend LlamaIndex to Chunking
+
+### Context
+
+During Phase 0 implementation review, we identified a deviation from PRD-0008 which specified using `MarkdownNodeParser` for chunking. The original decision to keep custom chunking was reconsidered given:
+
+1. PRD-0008 explicitly specified MarkdownNodeParser for GOV-*, ADR-*, PRD-* documents
+2. Custom chunking increases maintenance burden and brittleness risk
+3. LlamaIndex's MarkdownNodeParser is battle-tested and handles edge cases
+
+### Amended Decision
+
+**Use LlamaIndex for both chunking AND retrieval**, keeping only custom frontmatter extraction.
+
+### Updated Architecture
+
+```text
+Custom Code                    LlamaIndex
+───────────                    ──────────
+loader.py  ──► GovernanceDocument ──► to_llama_document() ──┐
+           (frontmatter extraction)                         │
+                                                            ▼
+                                          MarkdownNodeParser ──► Chunks
+                                                                   │
+                                                                   ▼
+                                          VectorStoreIndex ──► QueryEngine
+                                          (ChromaDB backend)   (hybrid search)
+```
+
+### Changes Made
+
+| Component      | Before                         | After                                           |
+| -------------- | ------------------------------ | ----------------------------------------------- |
+| **loader.py**  | Custom frontmatter extraction  | Same + `to_llama_document()` converter          |
+| **chunker.py** | Custom H2 header splitting     | LlamaIndex `MarkdownNodeParser`                 |
+| **Tests**      | 19 chunker tests               | 19 tests updated for LlamaIndex behavior        |
+
+### Rationale for Amendment
+
+1. **Align with PRD-0008**: The PRD specified MarkdownNodeParser; custom implementation was a deviation
+2. **Reduce brittleness**: LlamaIndex handles markdown edge cases (code blocks, nested headers) better than custom regex
+3. **Fine-grained chunks**: LlamaIndex splits on ALL headers (H1, H2, H3) enabling more precise retrieval
+4. **Maintain frontmatter extraction**: Custom loader still extracts YAML frontmatter since LlamaIndex doesn't support this
+
+### Test Coverage
+
+All 55 RAG tests pass after the amendment:
+
+- 15 loader tests (unchanged)
+- 19 chunker tests (updated for LlamaIndex behavior)
+- 20 indexer tests (unchanged)
+- 1 golden test (re-blessed for new output format)
+
+## References (Updated)
 
 - [PRD-0008: Agentic Graph RAG Pipeline](../20-contracts/prds/PRD-0008-governance-rag-pipeline.md)
 - [ADR-0184: RAG Markdown Header Chunking](./ADR-0184-rag-markdown-header-chunking.md)
