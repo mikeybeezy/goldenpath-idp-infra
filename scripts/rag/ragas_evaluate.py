@@ -82,11 +82,62 @@ def generate_answers_simple(
     return answers
 
 
+def _create_llm_for_ragas(provider: str = "openai", model: Optional[str] = None):
+    """
+    Create an LLM wrapper for RAGAS evaluation.
+
+    Args:
+        provider: One of "openai", "ollama", "claude".
+        model: Model name. Defaults based on provider.
+
+    Returns:
+        LangChain LLM instance or None.
+    """
+    if provider == "ollama":
+        try:
+            from langchain_ollama import ChatOllama
+            return ChatOllama(
+                model=model or os.getenv("OLLAMA_MODEL", "llama3.2"),
+                base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+                temperature=0.1,
+            )
+        except ImportError:
+            return None
+    elif provider == "claude":
+        try:
+            from langchain_anthropic import ChatAnthropic
+            api_key = os.getenv("ANTHROPIC_API_KEY")
+            if not api_key:
+                return None
+            return ChatAnthropic(
+                model=model or os.getenv("CLAUDE_MODEL", "claude-3-haiku-20240307"),
+                temperature=0.1,
+                api_key=api_key,
+            )
+        except ImportError:
+            return None
+    elif provider == "openai":
+        try:
+            from langchain_openai import ChatOpenAI
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                return None
+            return ChatOpenAI(
+                model=model or os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+                temperature=0.1,
+                api_key=api_key,
+            )
+        except ImportError:
+            return None
+    return None
+
+
 def evaluate_with_ragas(
     questions: List[str],
     answers: List[str],
     contexts: List[List[str]],
-    use_openai: bool = True,
+    provider: str = "openai",
+    model: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Run RAGAS evaluation on the retrieval results.
@@ -95,7 +146,8 @@ def evaluate_with_ragas(
         questions: List of test questions.
         answers: Generated answers for each question.
         contexts: Retrieved contexts for each question.
-        use_openai: If True, use OpenAI for evaluation. Otherwise skip LLM metrics.
+        provider: LLM provider ("openai", "ollama", "claude").
+        model: Model name (uses provider default if not specified).
 
     Returns:
         Dictionary with RAGAS metrics.
@@ -113,6 +165,14 @@ def evaluate_with_ragas(
             "metrics": {},
         }
 
+    # Create LLM for RAGAS
+    llm = _create_llm_for_ragas(provider, model)
+    if llm is None:
+        return {
+            "error": f"Could not create LLM for provider: {provider}",
+            "metrics": {},
+        }
+
     # Build RAGAS dataset
     data = {
         "user_input": questions,
@@ -125,10 +185,12 @@ def evaluate_with_ragas(
     metrics = [faithfulness, answer_relevancy]
 
     try:
-        # Run evaluation
-        result = evaluate(dataset, metrics=metrics)
+        # Run evaluation with custom LLM
+        result = evaluate(dataset, metrics=metrics, llm=llm)
 
         return {
+            "provider": provider,
+            "model": model or f"{provider}_default",
             "faithfulness": float(result["faithfulness"]) if "faithfulness" in result else None,
             "answer_relevancy": float(result["answer_relevancy"]) if "answer_relevancy" in result else None,
         }
@@ -165,6 +227,8 @@ def run_evaluation(
     output_path: Path = Path("reports/ragas_metrics.json"),
     top_k: int = 5,
     skip_llm: bool = False,
+    provider: str = "openai",
+    model: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Run full RAGAS evaluation pipeline.
@@ -174,6 +238,8 @@ def run_evaluation(
         output_path: Path to write results.
         top_k: Number of contexts to retrieve per question.
         skip_llm: If True, skip LLM-based metrics (faster, cheaper).
+        provider: LLM provider for RAGAS ("openai", "ollama", "claude").
+        model: Model name (uses provider default if not specified).
 
     Returns:
         Evaluation results dictionary.
@@ -200,8 +266,10 @@ def run_evaluation(
     # Run RAGAS evaluation (if not skipped)
     ragas_metrics = {}
     if not skip_llm:
-        print("Running RAGAS evaluation (this may take a few minutes)...")
-        ragas_metrics = evaluate_with_ragas(questions, answers, contexts)
+        print(f"Running RAGAS evaluation with {provider}...")
+        ragas_metrics = evaluate_with_ragas(
+            questions, answers, contexts, provider=provider, model=model
+        )
         print(f"RAGAS metrics: {ragas_metrics}")
     else:
         print("Skipping LLM-based RAGAS metrics")
@@ -211,6 +279,8 @@ def run_evaluation(
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "question_count": len(questions),
         "top_k": top_k,
+        "provider": provider if not skip_llm else None,
+        "model": model if not skip_llm else None,
         "basic_metrics": basic_metrics,
         "ragas_metrics": ragas_metrics,
         "status": "completed" if not ragas_metrics.get("error") else "partial",
@@ -251,6 +321,19 @@ if __name__ == "__main__":
         action="store_true",
         help="Skip LLM-based metrics (faster, cheaper)",
     )
+    parser.add_argument(
+        "--provider",
+        type=str,
+        choices=["openai", "ollama", "claude"],
+        default="openai",
+        help="LLM provider for RAGAS evaluation (default: openai)",
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Model name for evaluation (uses provider default if not specified)",
+    )
 
     args = parser.parse_args()
     run_evaluation(
@@ -258,4 +341,6 @@ if __name__ == "__main__":
         output_path=args.output,
         top_k=args.top_k,
         skip_llm=args.skip_llm,
+        provider=args.provider,
+        model=args.model,
     )
