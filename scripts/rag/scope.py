@@ -35,6 +35,11 @@ ALLOWLIST_PREFIXES = {
     Path("docs"),
     Path("session_capture"),
     Path("docs/changelog/entries"),
+    Path("bootstrap"),
+    Path("catalog"),
+    Path("gitops"),
+    Path("idp-tooling"),
+    Path("tests"),
 }
 
 ALLOWLIST_FILES = {

@@ -117,3 +117,57 @@ class Neo4jGraphClient:
         else:
             with self._driver.session() as session:
                 session.run(query, params)
+
+    def health_check(self) -> Dict[str, Any]:
+        """Check connection to Neo4j and return server info."""
+        try:
+            with self._driver.session() as session:
+                result = session.run("RETURN 1 AS ok")
+                result.single()
+            info = self._driver.get_server_info()
+            return {
+                "status": "healthy",
+                "server_version": info.agent if info else "unknown",
+                "address": str(info.address) if info else self._config.uri,
+            }
+        except Exception as e:
+            return {"status": "unhealthy", "error": str(e)}
+
+
+def create_client_from_env() -> Neo4jGraphClient:
+    """
+    Create a Neo4jGraphClient from environment variables.
+
+    Environment variables:
+        NEO4J_URI: Bolt URI (default: bolt://localhost:7687)
+        NEO4J_USER: Username (default: neo4j)
+        NEO4J_PASSWORD: Password (required)
+        NEO4J_DATABASE: Database name (optional)
+    """
+    import os
+
+    uri = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
+    user = os.environ.get("NEO4J_USER", "neo4j")
+    password = os.environ.get("NEO4J_PASSWORD")
+    database = os.environ.get("NEO4J_DATABASE")
+
+    if not password:
+        raise ValueError("NEO4J_PASSWORD environment variable is required")
+
+    config = GraphClientConfig(uri=uri, user=user, password=password, database=database)
+    return Neo4jGraphClient(config)
+
+
+# Alias for convenience
+Neo4jClient = Neo4jGraphClient
+
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) > 1 and sys.argv[1] == "health":
+        client = create_client_from_env()
+        print(client.health_check())
+        client.close()
+    else:
+        print("Usage: python -m scripts.rag.graph_client health")

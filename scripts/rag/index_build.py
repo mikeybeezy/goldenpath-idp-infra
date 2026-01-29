@@ -116,3 +116,66 @@ def build_index(root: Optional[Path] = None, metadata_path: Optional[Path] = Non
     write_index_metadata(meta_path, build_index_metadata(document_count=len(docs)))
 
     return chunk_count
+
+
+if __name__ == "__main__":
+    from collections import Counter
+
+    print("Building governance RAG index...")
+    print("Collecting markdown files...")
+
+    root = _repo_root()
+    paths = collect_markdown_paths(root)
+
+    # Show directory breakdown
+    dirs = Counter()
+    for p in paths:
+        try:
+            rel = p.relative_to(root)
+            top = rel.parts[0] if rel.parts else "root"
+            dirs[top] += 1
+        except ValueError:
+            dirs["unknown"] += 1
+
+    print(f"\nScope breakdown ({len(paths)} files):")
+    print("-" * 30)
+    for d, c in sorted(dirs.items(), key=lambda x: -x[1]):
+        print(f"  {d}: {c}")
+    print("-" * 30)
+
+    print("\nLoading and chunking documents...")
+    docs, errors = load_documents(paths)
+
+    index = GovernanceIndex()
+    chunk_count = 0
+    for doc in docs:
+        chunks = chunk_document(doc)
+        chunk_count += index.add(chunks)
+
+    print(f"Indexed {len(docs)} documents → {chunk_count} chunks")
+
+    graph_client = _graph_client_from_env()
+    graph_count = 0
+    if graph_client is not None:
+        print("Ingesting into Neo4j graph...")
+        graph_count = ingest_documents(docs, graph_client)
+        graph_client.close()
+        print(f"Graph: {graph_count} documents ingested")
+    else:
+        print("Graph: skipped (NEO4J_* env vars not set)")
+
+    if errors:
+        error_path = root / "reports" / "index_errors.json"
+        write_index_errors(error_path, errors)
+        print(f"Errors: {len(errors)} (see reports/index_errors.json)")
+
+    meta_path = root / "reports" / "index_metadata.json"
+    write_index_metadata(meta_path, build_index_metadata(document_count=len(docs)))
+
+    print("\n" + json.dumps({
+        "status": "success",
+        "documents": len(docs),
+        "chunks": chunk_count,
+        "graph_documents": graph_count,
+        "errors": len(errors),
+    }, indent=2))
