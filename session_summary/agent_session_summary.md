@@ -4038,3 +4038,33 @@ The governance enforcement is unchanged:
 The fix only ensures the check runs (so it can report pass/fail) instead of being absent.
 
 **Session Capture:** session_capture/2026-01-30-session-log-workflow-fix.md
+
+---
+
+## 2026-01-30 - CI Lightweight Dependencies Fix
+
+**Agent:** Claude Opus 4.5
+**Branch:** fix/ci-lightweight-deps
+**PR:** #321
+
+### Problem
+
+`python-tests.yml` was hanging for 5+ hours on dependency install due to heavy ML packages in `requirements-dev.txt` (PyTorch, CUDA libs via sentence-transformers, chromadb, llama-index).
+
+### Solution
+
+- Created `requirements-ci.txt` with lightweight deps (no ML packages)
+- Updated workflow to use lightweight deps
+- Added `tests/unit/conftest.py` to auto-skip RAG tests when ML deps missing
+
+### Expected Improvement
+
+| Before | After |
+|--------|-------|
+| 5+ hours (hanging) | ~3 min |
+
+### RAG Tests
+
+Still work locally with `pip install -r requirements-dev.txt`. Auto-skipped in CI with clear message.
+
+**Session Capture:** session_capture/2026-01-30-ci-lightweight-deps.md
