@@ -4,12 +4,23 @@ title: Integration Test Gap Closure
 type: prd
 status: draft
 lifecycle: planning
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
 relates_to:
   - GOV-0017-tdd-and-determinism
   - PRD-0008-governance-rag-pipeline
   - ADR-0182-tdd-philosophy
 priority: P1
 created: 2026-01-29
+supported_until: 2028-01-01
+version: '1.0'
+breaking_change: false
 ---
 
 # PRD-0009: Integration Test Gap Closure
