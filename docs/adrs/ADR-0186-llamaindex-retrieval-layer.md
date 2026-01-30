@@ -243,6 +243,27 @@ All 55 RAG tests pass after the amendment:
 - 20 indexer tests (unchanged)
 - 1 golden test (re-blessed for new output format)
 
+## Implementation Scripts
+
+The following scripts implement the RAG pipeline per this ADR:
+
+| Script | Purpose |
+|--------|---------|
+| loader.py | Document loading with frontmatter extraction |
+| chunker.py | LlamaIndex MarkdownNodeParser integration |
+| indexer.py | ChromaDB vector index management |
+| retriever.py | Vector similarity retrieval |
+| scope.py | Document path filtering |
+| hybrid_retriever.py | Vector + graph hybrid search |
+| graph_client.py | Neo4j connection wrapper |
+| graph_ingest.py | Graph relationship ingestion |
+| llm_synthesis.py | Multi-provider LLM answer synthesis |
+| ragas_evaluate.py | RAGAS evaluation metrics |
+| ragas_baseline.py | RAGAS baseline evaluation |
+| index_build.py | End-to-end build orchestration |
+| index_metadata.py | Index metadata artifact writer |
+| cli.py | CLI interface for queries |
+
 ## References (Updated)
 
 - [PRD-0008: Agentic Graph RAG Pipeline](../20-contracts/prds/PRD-0008-governance-rag-pipeline.md)
