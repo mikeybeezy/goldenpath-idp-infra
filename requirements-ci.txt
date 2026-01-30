@@ -1,0 +1,13 @@
+# Lightweight CI dependencies (no ML/RAG)
+# Used by python-tests.yml for fast CI runs
+# RAG tests are skipped when these deps are missing
+
+PyYAML
+pytest
+pytest-mock
+pytest-cov
+requests
+responses
+jsonschema
+check-jsonschema
+ruff
