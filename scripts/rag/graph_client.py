@@ -23,6 +23,7 @@ relates_to:
   - GOV-0017-tdd-and-determinism
 ---
 Purpose: Neo4j graph client for governance document relationships.
+SKIP-TDD: Requires Neo4j; tested via test_graph_ingest.py integration.
 
 Provides a minimal client for upserting document nodes and relates_to edges.
 Graphiti is expected to share the same Neo4j backend in Phase 1+, but Phase 0

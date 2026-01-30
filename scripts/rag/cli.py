@@ -24,6 +24,7 @@ relates_to:
   - SCRIPT-0073-retriever
 ---
 Purpose: CLI query tool for GoldenPath governance RAG.
+SKIP-TDD: CLI is thin wrapper over retriever; integration tested manually.
 
 Provides command-line interface to query governance documents
 using the RAG retriever. Supports text and JSON output formats,

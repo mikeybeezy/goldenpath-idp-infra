@@ -18,6 +18,7 @@
 #   coupling_risk: low
 # ---
 # scripts/rag-data-sync.sh - Sync ChromaDB to/from MinIO (local S3)
+# SKIP-TDD: Shell utility for local dev; manually tested with MinIO
 set -euo pipefail
 
 # Configuration
