@@ -1,0 +1,18 @@
+{
+  "answer": "VQ is calculated from tagged automation events and telemetry.",
+  "evidence": [
+    {
+      "graph_ids": [
+        "graphiti:node:VQ-001",
+        "graphiti:edge:VQ-REL-001"
+      ],
+      "file_paths": [
+        "docs/adrs/ADR-0121-value-quantification-framework.md"
+      ],
+      "excerpt": "Value Quantification (VQ) measures the realized value of automation."
+    }
+  ],
+  "timestamp": "2026-01-29T03:35:00Z",
+  "limitations": "This answer is based on the current VQ framework documents.",
+  "next_step": "Verify telemetry sources for the specific pipeline."
+}

@@ -8,6 +8,7 @@ llama-index
 llama-index-vector-stores-chroma
 sentence-transformers
 ragas
+jsonschema
 
 # LangChain + LLM providers (Phase 1 LLM synthesis)
 langchain-core

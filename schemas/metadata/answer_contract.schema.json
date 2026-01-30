@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RAG Answer Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "answer",
+    "evidence",
+    "timestamp",
+    "limitations",
+    "next_step"
+  ],
+  "properties": {
+    "answer": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/evidenceItem"
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "limitations": {
+      "type": "string"
+    },
+    "next_step": {
+      "type": "string"
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "evidence": {
+          "minItems": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "answer": {
+          "const": "unknown"
+        },
+        "evidence": {
+          "maxItems": 0
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "evidenceItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "graph_ids",
+        "file_paths"
+      ],
+      "properties": {
+        "graph_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "file_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "excerpt": {
+          "type": "string"
+        },
+        "source_sha": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
