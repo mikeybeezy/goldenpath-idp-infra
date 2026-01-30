@@ -4025,7 +4025,7 @@ Removed the path filter from `session-log-required.yml` so the workflow runs on 
 
 - `.github/workflows/session-log-required.yml` - Removed path filter
 - `docs/20-contracts/prds/PRD-0008-phase0-user-test-queries.md` - Added metadata
-- `docs/20-contracts/prds/PRD-0008-phase0-retriever-spec.md` - Added metadata  
+- `docs/20-contracts/prds/PRD-0008-phase0-retriever-spec.md` - Added metadata
 - `docs/20-contracts/prds/PRD-0009-integration-test-gap-closure.md` - Added metadata
 - `session_capture/2026-01-30-session-log-workflow-fix.md` - New
 
