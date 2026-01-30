@@ -102,6 +102,7 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 |045|P2|**🟡 HV/LQ**|Cost|Implement Infracost + Backstage Integration|platform|Open|M|Q2|Add CI step|Surface cost leading indicators|
 |065|P2|**🔵 MV/HQ**|GitOps|Automate PR Merge Apply (VPC/IAM)|platform|Done|M|Q2|Expand pattern|Eliminate manual ClickOps|
 |073|P1|**🔵 MV/HQ**|Governance|Field Test: Automated Governance & VQ Enforcement in Onboarding|platform|Open|S|Q1|Conduct live onboarding drill|Validate friction vs. value of hard-gates|
+|074|P1|**🟡 HV/LQ**|RAG|RAG V1 usefulness checklist + answer contract schema + golden tests|platform|Done|S|Q1|Publish roadmap + schema + tests|Deterministic answer contract|
 |002|P3|**⚫ LV/LQ**|Security|SBOM generation for production releases|platform|Open|M||Define approach|Future supply-chain hardening|
 |003|P2|CI|Add CI environment contract validator (hard-fail)|platform|Open|S||Define required vars and gating point|docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0034-platform-ci-environment-contract.md|Enforce required inputs before apply|
 |004|P2|GitOps|Configure Argo Rollouts in bootstrap (install + health checks)|platform|Open|M||Decide install path and add Argo health checks|docs/20-contracts/29_CD_DEPLOYMENT_CONTRACT.md|Optional rollout safety for V1+|
@@ -201,6 +202,7 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 |100|P2|**🔴 HV/HQ**|GitOps|Hard Guard: ArgoCD PreSync hooks for tier-aware preflight|platform|Open|M|Q2|Implement PreSync hook Jobs that validate tier prerequisites (RDS reachable, secrets exist, StorageClass ready)|ADR-0180 Phase 7b. V1 uses CI/Terraform checks; V2 adds in-cluster enforcement that blocks sync on missing prerequisites.|
 |101|P2|**🔵 MV/HQ**|Security|Hard Guard: OCI artifact signatures + policy enforcement for version pinning|platform|Open|L|Q3|Implement Sigstore/Cosign signing for container images; add admission controller policy (Kyverno/OPA) to reject unsigned images|Currently Helm chart versions pinned but targetRevision: development allows config drift. No digest pinning for container images. OCI signatures provide cryptographic verification.|
 |102|P2|**🔵 MV/HQ**|CI|Outcome-driven CI: workflows call Make targets|platform|In-Progress|M|Q2|Dev workflow done (CL-0167). Next: staging/prod workflows|CLI first, CI mirrors. CI says WHAT (inputs/outcomes), Make says HOW (terraform/kubectl). Enables local reproducibility and CI portability.|
+|103|P2|**🔵 MV/HQ**|RAG|HierarchicalNodeParser for complex governance documents|VQ|Open|M|Q2|Design ADR for hierarchical chunking strategy|ADR-0186 Amendment. Enable parent-child chunk relationships with AutoMergingRetriever for smarter context aggregation. Creates tiered chunks (2048→512→128 tokens) for multi-level policy documents.|
 
 ## Rules
 

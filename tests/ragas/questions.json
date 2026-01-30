@@ -1,0 +1,29 @@
+{
+  "questions": [
+    "What are the testing requirements in GOV-0017?",
+    "What does ADR-0184 decide about chunking?",
+    "Which documents relate to GOV-0017?",
+    "What is the rollback strategy for PRD-0008?",
+    "What is the scope of determinism in GOV-0017?",
+    "What are the coverage targets in GOV-0017?",
+    "What is the purpose of the Agentic Graph RAG pipeline?",
+    "Which governance documents are included in the indexing scope?",
+    "What is excluded from indexing in PRD-0008?",
+    "What are the Phase 0 acceptance criteria in PRD-0008?",
+    "What are the Phase 1 acceptance criteria in PRD-0008?",
+    "What is the Phase 2 gate in PRD-0008?",
+    "What is the recommended chunk size in ADR-0184?",
+    "What is the recommended embedding model in PRD-0008?",
+    "What is the role of ChromaDB in Phase 0?",
+    "What is the purpose of Graphiti in ADR-0185?",
+    "What are the non-goals of PRD-0008?",
+    "What is the intended source of truth branch for indexing?",
+    "What metadata fields are expected in chunk outputs?",
+    "What does the retriever return in Phase 0?",
+    "What is the requirement for citations in responses?",
+    "What is the expected index rebuild time?",
+    "What is the expected observability tier for PRD-0008?",
+    "What is the maturity level listed for PRD-0008?",
+    "What are the risks of the hybrid repo federation model?"
+  ]
+}

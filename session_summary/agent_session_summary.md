@@ -3941,3 +3941,60 @@ Key insight: The architecture is Agentic Graph RAG from day one - the knowledge 
 **Platform Value Assessment:** GoldenPath has evolved organically to solve real problems of AI collaboration: TDD for trust, session capture for continuity, ADRs for reasoning, RAG for knowledge, Agentic Graph RAG for traversal. Conservative annual value: $300-500K per organization.
 
 **Session Capture:** session_capture/2026-01-28-agentic-graph-rag-reframing.md
+
+## 2026-01-30: Backstage Branch Governance and OpenTelemetry CI Integration
+
+**Agent:** Claude Opus 4.5
+**Repos:** goldenpath-idp-backstage, goldenpath-idp-infra
+**PRs:** backstage #7 (ready for human merge), backstage #8 (merged)
+
+### Work Done
+
+Implemented comprehensive branch governance and CI observability:
+
+- **Branch Protection:** All 3 backstage branches (main, development, governance-registry) now protected
+- **Agent Trust Boundaries:** Per ADR-0164:
+  - Agents **cannot** merge to main (never, under any circumstances)
+  - Agents **can** merge to development (discretionary)
+  - Agents **need permission** for governance-registry (`agent-merge-approved` label required)
+- **Guard Workflows Created:**
+  - `main-branch-guard.yml` - Blocks agent/bot actors, enforces development→main flow
+  - `governance-registry-guard.yml` - Requires explicit human permission label for agents
+- **Docker Path Filter:** CI now skips Docker validation unless Dockerfile/backend files change
+- **OpenTelemetry CI Tracing:** Integrated otel-cli for build observability
+  - Traces: pipeline start, yarn build, docker build, pipeline complete
+  - Graceful degradation if endpoint not configured
+
+### Key Highlights
+
+| Achievement              | Impact                                            |
+| ------------------------ | ------------------------------------------------- |
+| Agent blocked from main  | Production deployment safety                      |
+| Docker path filter       | Faster CI on non-Docker PRs                       |
+| OTel CI tracing          | Build observability (Planned → Implemented)       |
+| Branch protection fix    | Status check name mismatch resolved               |
+
+### Technical Fixes
+
+- **validate-source pending:** Branch protection required job ID (`validate-source`) but workflow reported job name (`Validate Source Branch`). Fixed via API update.
+
+### Files Changed
+
+**goldenpath-idp-backstage:**
+
+- `.github/workflows/ci.yml` (otel-cli + path filter)
+- `.github/workflows/main-branch-guard.yml` (new)
+- `.github/workflows/governance-registry-guard.yml` (new)
+
+**goldenpath-idp-infra:**
+
+- `docs/changelog/entries/CL-0200-backstage-branch-protection-governance.md`
+- `session_capture/2026-01-30-backstage-governance-and-otel-ci.md`
+
+### Next Steps
+
+- [ ] Human merge PR #7 to main (backstage)
+- [ ] Configure `OTEL_EXPORTER_OTLP_ENDPOINT` repo variable when Tempo ingress ready
+- [ ] Verify traces in Grafana after first traced build
+
+**Session Capture:** session_capture/2026-01-30-backstage-governance-and-otel-ci.md

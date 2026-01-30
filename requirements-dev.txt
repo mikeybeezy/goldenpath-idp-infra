@@ -19,3 +19,17 @@ responses==0.25.3
 
 # Linting (also in pre-commit, but useful for IDE)
 ruff==0.4.4
+
+# RAG dependencies (needed for tests/unit/test_*.py)
+chromadb
+llama-index
+llama-index-vector-stores-chroma
+sentence-transformers
+ragas
+
+# LLM providers (used in RAG synthesis tests)
+langchain-core
+langchain-ollama
+langchain-anthropic
+langchain-openai
+httpx

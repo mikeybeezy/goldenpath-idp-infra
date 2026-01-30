@@ -91,6 +91,27 @@ For any code that **generates files**, assert the output matches a known-good sn
 
 **Purpose:** Golden output tests are the primary guardrail against "agent helpfulness" - the tendency of AI agents to make well-intentioned but unauthorized improvements to generated outputs.
 
+#### Philosophy: Why Golden Tests Matter
+
+Golden tests embody a trust model where **humans are the source of truth** for generated output correctness. The philosophy rests on three pillars:
+
+1. **Deterministic Serialization**: Generators must produce byte-identical output across runs:
+   - Sorted keys (`sort_keys=True` in JSON, alphabetical YAML)
+   - No timestamps, random IDs, or environment-dependent values
+   - Consistent whitespace and formatting
+
+2. **Human-Approved Blessing**: Golden files are "blessed" artifacts that represent human-verified correct output:
+   - A human reviews the generated output and judges it correct
+   - The blessed file becomes the contract - any deviation is a regression
+   - Updates require explicit human approval with documented rationale
+
+3. **Output Drift Detection**: Golden tests catch "helpful" changes that would otherwise slip through:
+   - AI agents adding "improvements" to templates
+   - Refactoring that subtly changes output format
+   - Dependency updates that alter generation behavior
+
+**The Blessing Ceremony:** When you bless a golden file, you're making a statement: "This output is correct. Any future deviation from this exact output is a bug until proven otherwise."
+
 #### Standard Parser CLI Contract
 
 All parsers that generate output files MUST support this interface for golden testing:
@@ -313,7 +334,8 @@ make validate-schemas  # Validate YAML schemas
 
 ## Revision History
 
-| Version | Date       | Author          | Changes                                             |
-|---------|------------|-----------------|-----------------------------------------------------|
-| 1.0     | 2026-01-26 | Claude Opus 4.5 | Initial creation                                    |
-| 1.1     | 2026-01-26 | Claude Opus 4.5 | Added standard parser CLI contract for golden tests |
+| Version | Date       | Author          | Changes                                                              |
+|---------|------------|-----------------|----------------------------------------------------------------------|
+| 1.0     | 2026-01-26 | Claude Opus 4.5 | Initial creation                                                     |
+| 1.1     | 2026-01-26 | Claude Opus 4.5 | Added standard parser CLI contract for golden tests                  |
+| 1.2     | 2026-01-28 | Claude Opus 4.5 | Added golden test philosophy section (determinism, blessing, drift)  |

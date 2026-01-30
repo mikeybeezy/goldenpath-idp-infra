@@ -1,0 +1,16 @@
+{
+  "basic_metrics": {
+    "avg_contexts_per_query": 5.0,
+    "queries_with_results": 25,
+    "queries_with_results_pct": 100.0,
+    "total_questions": 25
+  },
+  "generated_at": "2026-01-29T13:44:21.268036+00:00",
+  "question_count": 25,
+  "ragas_metrics": {
+    "error": "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable",
+    "metrics": {}
+  },
+  "status": "partial",
+  "top_k": 5
+}

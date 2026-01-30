@@ -54,6 +54,7 @@ relates_to:
   - RB-0031-idp-stack-deployment
   - RB-0033-persistent-cluster-teardown
   - RB-0034-persistent-cluster-deployment
+  - RB-0038-neo4j-graph-rag-setup
   - agent_session_summary
   - session-2026-01-17-eks-backstage-scaffolder
 supersedes: []
@@ -99,6 +100,7 @@ breaking_change: false
 - [docs/70-operations/runbooks/RB-0031-idp-stack-deployment.md](RB-0031-idp-stack-deployment.md) — Deploy Keycloak and Backstage IDP stack with ECR images and RDS.
 - [docs/70-operations/runbooks/RB-0033-persistent-cluster-teardown.md](RB-0033-persistent-cluster-teardown.md) — Destroy persistent clusters using root state.
 - [docs/70-operations/runbooks/RB-0034-persistent-cluster-deployment.md](RB-0034-persistent-cluster-deployment.md) — Deploy persistent clusters with coupled RDS support.
+- [docs/70-operations/runbooks/RB-0038-neo4j-graph-rag-setup.md](RB-0038-neo4j-graph-rag-setup.md) — Set up local Neo4j for Governance Graph RAG.
 
 ### App Team Runbooks
 
