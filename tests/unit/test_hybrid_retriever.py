@@ -6,8 +6,7 @@ Per GOV-0017: TDD-first implementation.
 """
 
 import pytest
-from unittest.mock import MagicMock, patch
-from dataclasses import asdict
+from unittest.mock import MagicMock
 
 from scripts.rag.hybrid_retriever import (
     HybridResult,
@@ -216,7 +215,9 @@ class TestFetchChunksForDocs:
         result = fetch_chunks_for_docs([], mock_vector_retriever)
         assert result == []
 
-    def test_fetch_chunks_queries_each_doc_id(self, mock_vector_retriever, sample_vector_results):
+    def test_fetch_chunks_queries_each_doc_id(
+        self, mock_vector_retriever, sample_vector_results
+    ):
         """fetch_chunks_for_docs must query for each document ID."""
         mock_vector_retriever.query.return_value = [sample_vector_results[0]]
 
@@ -265,7 +266,9 @@ class TestHybridRetrieverInit:
         )
         assert retriever.vector_retriever == mock_vector_retriever
 
-    def test_hybrid_retriever_accepts_graph_client(self, mock_vector_retriever, mock_graph_client):
+    def test_hybrid_retriever_accepts_graph_client(
+        self, mock_vector_retriever, mock_graph_client
+    ):
         """HybridRetriever must accept custom graph client."""
         retriever = HybridRetriever(
             vector_retriever=mock_vector_retriever,
@@ -281,7 +284,9 @@ class TestHybridRetrieverInit:
         )
         assert retriever.expand_depth == 1
 
-    def test_hybrid_retriever_close_closes_auto_created_client(self, mock_vector_retriever, mock_graph_client):
+    def test_hybrid_retriever_close_closes_auto_created_client(
+        self, mock_vector_retriever, mock_graph_client
+    ):
         """HybridRetriever.close must close auto-created graph client."""
         retriever = HybridRetriever(
             vector_retriever=mock_vector_retriever,
@@ -302,7 +307,9 @@ class TestHybridRetrieverInit:
 class TestHybridRetrieverQuery:
     """Tests for HybridRetriever.query method."""
 
-    def test_query_returns_hybrid_results(self, mock_vector_retriever, sample_vector_results):
+    def test_query_returns_hybrid_results(
+        self, mock_vector_retriever, sample_vector_results
+    ):
         """query must return list of HybridResult objects."""
         mock_vector_retriever.query.return_value = sample_vector_results
 

@@ -271,7 +271,7 @@ class HybridRetriever:
             # Fetch chunks for new related documents
             if new_doc_ids:
                 graph_chunks = fetch_chunks_for_docs(
-                    doc_ids=list(new_doc_ids)[:graph_top_k * len(doc_ids)],
+                    doc_ids=list(new_doc_ids)[: graph_top_k * len(doc_ids)],
                     retriever=self.vector_retriever,
                     top_k_per_doc=2,
                 )
@@ -285,7 +285,8 @@ class HybridRetriever:
                                 id=chunk.id,
                                 text=chunk.text,
                                 metadata=chunk.metadata,
-                                score=chunk.score + 0.5,  # Slight penalty for graph-only
+                                score=chunk.score
+                                + 0.5,  # Slight penalty for graph-only
                                 source="graph",
                                 related_docs=[],
                             )

@@ -46,6 +46,7 @@ from typing import List, Optional, Dict, Any, Union
 # LangChain imports
 try:
     from langchain_core.prompts import ChatPromptTemplate
+
     LANGCHAIN_CORE_AVAILABLE = True
 except ImportError:
     LANGCHAIN_CORE_AVAILABLE = False
@@ -54,6 +55,7 @@ except ImportError:
 # Ollama
 try:
     from langchain_ollama import ChatOllama
+
     OLLAMA_AVAILABLE = True
 except ImportError:
     OLLAMA_AVAILABLE = False
@@ -62,6 +64,7 @@ except ImportError:
 # Claude/Anthropic
 try:
     from langchain_anthropic import ChatAnthropic
+
     ANTHROPIC_AVAILABLE = True
 except ImportError:
     ANTHROPIC_AVAILABLE = False
@@ -70,6 +73,7 @@ except ImportError:
 # OpenAI
 try:
     from langchain_openai import ChatOpenAI
+
     OPENAI_AVAILABLE = True
 except ImportError:
     OPENAI_AVAILABLE = False
@@ -81,6 +85,7 @@ from scripts.rag.retriever import RetrievalResult, format_citation
 
 class LLMProvider(Enum):
     """Supported LLM providers."""
+
     OLLAMA = "ollama"
     CLAUDE = "claude"
     OPENAI = "openai"
@@ -126,6 +131,7 @@ def _check_ollama_available() -> bool:
         return False
     try:
         import httpx
+
         response = httpx.get(f"{DEFAULT_BASE_URL}/api/tags", timeout=5.0)
         return response.status_code == 200
     except Exception:
@@ -199,7 +205,9 @@ class SynthesisResult:
     source_docs: List[str]
 
 
-def _create_llm(provider: str, model: str, temperature: float = 0.1, base_url: Optional[str] = None):
+def _create_llm(
+    provider: str, model: str, temperature: float = 0.1, base_url: Optional[str] = None
+):
     """
     Create an LLM instance for the specified provider.
 
@@ -362,27 +370,36 @@ class RAGSynthesizer:
         if not self.is_available():
             return SynthesisResult(
                 answer=f"[LLM not available - raw context]\n\n{context}",
-                citations=[format_citation(
-                    RetrievalResult(id=r.id, text=r.text, metadata=r.metadata, score=r.score)
-                ) for r in results],
+                citations=[
+                    format_citation(
+                        RetrievalResult(
+                            id=r.id, text=r.text, metadata=r.metadata, score=r.score
+                        )
+                    )
+                    for r in results
+                ],
                 model="none",
                 context_chunks=len(results),
                 source_docs=source_docs,
             )
 
         # Build prompt
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", SYSTEM_PROMPT),
-            ("human", RAG_PROMPT_TEMPLATE),
-        ])
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                ("system", SYSTEM_PROMPT),
+                ("human", RAG_PROMPT_TEMPLATE),
+            ]
+        )
 
         # Generate response
         try:
             chain = prompt | self._llm
-            response = chain.invoke({
-                "context": context,
-                "question": question,
-            })
+            response = chain.invoke(
+                {
+                    "context": context,
+                    "question": question,
+                }
+            )
             answer = response.content
         except Exception as e:
             answer = f"Error generating response: {e}\n\nContext:\n{context}"
@@ -390,7 +407,9 @@ class RAGSynthesizer:
         # Extract citations
         citations = []
         for r in results:
-            rr = RetrievalResult(id=r.id, text=r.text, metadata=r.metadata, score=r.score)
+            rr = RetrievalResult(
+                id=r.id, text=r.text, metadata=r.metadata, score=r.score
+            )
             citations.append(format_citation(rr))
 
         return SynthesisResult(
@@ -463,6 +482,7 @@ def check_ollama_status() -> Dict[str, Any]:
 
     try:
         import httpx
+
         response = httpx.get(f"{DEFAULT_OLLAMA_URL}/api/tags", timeout=5.0)
         if response.status_code == 200:
             status["available"] = True
@@ -513,7 +533,9 @@ def check_provider_status(provider: str = None) -> Dict[str, Any]:
             "installed": ANTHROPIC_AVAILABLE,
             "default_model": DEFAULT_CLAUDE_MODEL,
             "api_key_set": bool(api_key),
-            "error": None if ANTHROPIC_AVAILABLE else "langchain-anthropic not installed",
+            "error": None
+            if ANTHROPIC_AVAILABLE
+            else "langchain-anthropic not installed",
         }
         if ANTHROPIC_AVAILABLE and not api_key:
             status["providers"]["claude"]["error"] = "ANTHROPIC_API_KEY not set"

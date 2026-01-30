@@ -179,13 +179,13 @@ Simply exclude `.chroma/` and rebuild on fresh clone.
 
 | Criterion | Git LFS | DVC | AWS S3 | Chroma Server | MinIO |
 |-----------|---------|-----|--------|---------------|-------|
-| No internet required | ❌ | ⚠️ | ❌ | ✅ | ✅ |
-| No cost | ⚠️ | ✅ | ❌ | ✅ | ✅ |
-| S3 API compatible | ❌ | ✅ | ✅ | ❌ | ✅ |
-| Simple setup | ⚠️ | ⚠️ | ✅ | ⚠️ | ✅ |
-| Production parity | ❌ | ✅ | ✅ | ⚠️ | ✅ |
-| Team sharing | ✅ | ✅ | ✅ | ✅ | ⚠️ |
-| No git bloat | ⚠️ | ✅ | ✅ | ✅ | ✅ |
+| No internet required |  |  |  |  |  |
+| No cost |  |  |  |  |  |
+| S3 API compatible |  |  |  |  |  |
+| Simple setup |  |  |  |  |  |
+| Production parity |  |  |  |  |  |
+| Team sharing |  |  |  |  |  |
+| No git bloat |  |  |  |  |  |
 
 **MinIO selected** for best balance of: local-first development, S3 API compatibility (production parity), zero cost, and minimal complexity.
 

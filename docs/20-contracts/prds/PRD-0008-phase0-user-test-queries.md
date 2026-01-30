@@ -1,13 +1,11 @@
 ---
 id: PRD-0008-phase0-user-test-queries
-title: "PRD-0008 Phase 0 User Test Queries"
+title: PRD-0008 Phase 0 User Test Queries
 type: documentation
-owner: platform-team
-status: draft
-schema_version: 1
 relates_to:
   - PRD-0008-governance-rag-pipeline
   - PRD-0008-phase0-retriever-spec
+status: draft
 ---
 
 # PRD-0008 Phase 0 User Test Queries

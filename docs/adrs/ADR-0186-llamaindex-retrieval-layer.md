@@ -67,12 +67,12 @@ The question arose: should we also use LlamaIndex for document loading and chunk
 
 | Capability | ChromaDB Direct | LlamaIndex |
 |------------|-----------------|------------|
-| Semantic search (vector similarity) | ✅ | ✅ |
-| Metadata filtering | ✅ | ✅ |
-| Keyword search (BM25) | ⚠️ Limited | ✅ Built-in hybrid |
-| Query rewriting | ❌ | ✅ |
-| Response synthesis | ❌ | ✅ |
-| Reranking | ❌ | ✅ |
+| Semantic search (vector similarity) |  |  |
+| Metadata filtering |  |  |
+| Keyword search (BM25) |  Limited |  Built-in hybrid |
+| Query rewriting |  |  |
+| Response synthesis |  |  |
+| Reranking |  |  |
 
 ## Decision
 

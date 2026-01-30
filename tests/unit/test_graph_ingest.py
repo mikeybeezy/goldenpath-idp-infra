@@ -53,7 +53,9 @@ class TestGraphIngest:
 
         ingest_documents(docs, client)
 
-        client.relate_documents.assert_called_once_with("DOC-001", "DOC-002", "RELATES_TO")
+        client.relate_documents.assert_called_once_with(
+            "DOC-001", "DOC-002", "RELATES_TO"
+        )
 
     def test_ingest_skips_missing_id(self):
         client = MagicMock()

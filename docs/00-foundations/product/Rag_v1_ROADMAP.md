@@ -1,3 +1,9 @@
+---
+id: Rag_v1_ROADMAP
+title: Rag_v1_ROADMAP
+type: documentation
+---
+
 # Rag_v1_ROADMAP
 
 ## V1 Usefulness Checklist (Graphiti + Agentic GraphRAG)

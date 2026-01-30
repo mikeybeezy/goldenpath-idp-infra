@@ -169,7 +169,9 @@ class TestRAGPipelineIntegration:
         # Verify retrieval
         assert len(results) > 0
         # Check that we got relevant content
-        found_coverage = any("60%" in r.text or "coverage" in r.text.lower() for r in results)
+        found_coverage = any(
+            "60%" in r.text or "coverage" in r.text.lower() for r in results
+        )
         assert found_coverage, "Should retrieve coverage-related content"
 
     def test_load_chunk_index_retrieve_multiple_docs(
@@ -294,9 +296,7 @@ class TestCLIIntegration:
         assert len(output) > 0
         assert "coverage" in output.lower() or "60%" in output
 
-    def test_cli_json_output_valid(
-        self, sample_governance_doc: Path, in_memory_index
-    ):
+    def test_cli_json_output_valid(self, sample_governance_doc: Path, in_memory_index):
         """CLI JSON output is valid and parseable."""
         import json
         from scripts.rag.loader import load_governance_document
@@ -344,9 +344,7 @@ class TestPipelineErrorHandling:
         results = retriever.query("anything")
         assert results == [] or len(results) == 0
 
-    def test_invalid_filter_handled(
-        self, sample_governance_doc: Path, in_memory_index
-    ):
+    def test_invalid_filter_handled(self, sample_governance_doc: Path, in_memory_index):
         """Invalid filters are handled gracefully."""
         from scripts.rag.loader import load_governance_document
         from scripts.rag.chunker import chunk_document

@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
+# ---
+# id: SCRIPT-0064
+# type: script
+# owner: platform-team
+# status: active
+# maturity: 1
+# dry_run:
+#   supported: false
+#   command_hint: none
+# test:
+#   runner: bash
+#   command: bash scripts/rag-data-sync.sh status
+#   evidence: manual
+# risk_profile:
+#   production_impact: low
+#   security_risk: none
+#   coupling_risk: low
+# ---
 # scripts/rag-data-sync.sh - Sync ChromaDB to/from MinIO (local S3)
 set -euo pipefail
 

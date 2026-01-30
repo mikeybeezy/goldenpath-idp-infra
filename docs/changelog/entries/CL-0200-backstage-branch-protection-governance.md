@@ -82,7 +82,7 @@ Added workflow to enforce source branch policy and **block agents from merging t
 
 - PRs to `main` from `development` → ✅ Allowed
 - PRs to `main` with `hotfix` label → ✅ Allowed (requires CODEOWNER approval)
-- PRs to `main` from any other branch → ❌ Blocked
+- PRs to `main` from any other branch →  Blocked
 
 #### Agent/Bot Blocking (Strict Enforcement)
 
@@ -123,7 +123,7 @@ Added workflow to enforce permission-based agent control for `governance-registr
 
 1. Workflow detects if PR actor is an agent/bot
 2. If agent, checks for `agent-merge-approved` label
-3. If label missing → ❌ Block merge
+3. If label missing →  Block merge
 4. If label present → ✅ Allow merge (human granted permission)
 
 #### Granting Permission
@@ -138,7 +138,7 @@ A CODEOWNER must:
 
 | Target Branch         | Source Restriction                | Agent Can Merge?                    | Agent Can Create PR? |
 | --------------------- | --------------------------------- | ----------------------------------- | -------------------- |
-| `main`                | `development` or `hotfix` label   | ❌ **NO** (never)                   | ✅ Yes               |
+| `main`                | `development` or `hotfix` label   |  **NO** (never)                   | ✅ Yes               |
 | `development`         | Any (discretionary)               | ✅ Yes                              | ✅ Yes               |
 | `governance-registry` | Any                               | ⚠️ **Only with permission label**  | ✅ Yes               |
 

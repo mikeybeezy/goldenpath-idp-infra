@@ -45,6 +45,7 @@ import yaml
 
 try:
     from llama_index.core import Document as LlamaDocument
+
     LLAMA_INDEX_AVAILABLE = True
 except ImportError:
     LLAMA_INDEX_AVAILABLE = False

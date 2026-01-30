@@ -20,7 +20,6 @@ References:
 
 import pytest
 from unittest.mock import MagicMock, patch
-from dataclasses import dataclass
 
 # Import will fail until retriever.py is implemented (RED phase)
 from scripts.rag.retriever import (
@@ -238,7 +237,9 @@ class TestMetadataFiltering:
         assert where_clause is not None
         assert where_clause.get("doc_id") == "GOV-0017"
 
-    def test_filter_by_doc_type(self, mock_chroma_client, mock_collection, sample_query):
+    def test_filter_by_doc_type(
+        self, mock_chroma_client, mock_collection, sample_query
+    ):
         """retrieve must support filtering by doc_type."""
         mock_chroma_client.get_collection.return_value = mock_collection
 
@@ -564,6 +565,7 @@ class TestUsageLogging:
         )
 
         import json
+
         entry = json.loads(log_path.read_text().strip())
         assert entry["filters"]["doc_type"] == "governance"
         assert entry["filters"]["status"] == "active"
@@ -581,6 +583,7 @@ class TestUsageLogging:
         )
 
         import json
+
         entry = json.loads(log_path.read_text().strip())
         assert entry["use_graph"] is True
 
@@ -597,6 +600,7 @@ class TestUsageLogging:
         )
 
         import json
+
         entry = json.loads(log_path.read_text().strip())
         assert entry["query"] == "query with 'quotes' and \"double quotes\""
         assert "newline" in entry["filters"]["key"]

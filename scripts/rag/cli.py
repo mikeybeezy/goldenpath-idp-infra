@@ -310,13 +310,16 @@ def main(args: Optional[List[str]] = None) -> int:
                 synthesizer.close()
 
                 if output_format == OutputFormat.JSON:
-                    output = json.dumps({
-                        "answer": result.answer,
-                        "citations": result.citations,
-                        "model": result.model,
-                        "context_chunks": result.context_chunks,
-                        "source_docs": result.source_docs,
-                    }, indent=2)
+                    output = json.dumps(
+                        {
+                            "answer": result.answer,
+                            "citations": result.citations,
+                            "model": result.model,
+                            "context_chunks": result.context_chunks,
+                            "source_docs": result.source_docs,
+                        },
+                        indent=2,
+                    )
                 else:
                     output = f"{result.answer}\n\n---\nSources ({result.context_chunks} chunks from {len(result.source_docs)} docs):\n"
                     for citation in result.citations[:5]:  # Limit citations shown
@@ -392,7 +395,9 @@ def main(args: Optional[List[str]] = None) -> int:
     # Format output for non-synthesis modes
     include_citations = not parsed.no_citations
     output = format_results(
-        converted_results, format_type=output_format, include_citations=include_citations
+        converted_results,
+        format_type=output_format,
+        include_citations=include_citations,
     )
 
     # Print verbose info if requested

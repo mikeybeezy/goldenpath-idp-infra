@@ -65,6 +65,7 @@ DEFAULT_PERSIST_DIR = ".chroma"
 # Default embedding model (explicit for Phase 0 alignment)
 DEFAULT_EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
+
 class _MockEmbeddingFunction:
     """
     Deterministic, dependency-free embedding function for tests.

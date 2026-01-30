@@ -3,14 +3,13 @@ id: PRD-0009
 title: Integration Test Gap Closure
 type: prd
 status: draft
-priority: P1
-owner: platform-team
 lifecycle: planning
-created: 2026-01-29
 relates_to:
   - GOV-0017-tdd-and-determinism
   - PRD-0008-governance-rag-pipeline
   - ADR-0182-tdd-philosophy
+priority: P1
+created: 2026-01-29
 ---
 
 # PRD-0009: Integration Test Gap Closure

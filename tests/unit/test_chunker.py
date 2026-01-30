@@ -371,7 +371,10 @@ More content follows here. With additional sentences. And even more text.
 
     def test_sentence_window_includes_context_metadata(self, prose_content: str):
         """Chunks should have surrounding_context metadata."""
-        from scripts.rag.chunker import chunk_with_sentence_window, DEFAULT_WINDOW_METADATA_KEY
+        from scripts.rag.chunker import (
+            chunk_with_sentence_window,
+            DEFAULT_WINDOW_METADATA_KEY,
+        )
         from llama_index.core import Document as LlamaDocument
 
         doc = LlamaDocument(text=prose_content, metadata={})

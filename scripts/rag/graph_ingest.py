@@ -65,7 +65,9 @@ def _normalize_list(value: Any) -> List[str]:
     return [str(value)]
 
 
-def ingest_documents(documents: Iterable[GovernanceDocument], graph_client) -> Dict[str, int]:
+def ingest_documents(
+    documents: Iterable[GovernanceDocument], graph_client
+) -> Dict[str, int]:
     """
     Ingest governance documents into the graph.
 
@@ -142,7 +144,9 @@ def run_ingestion(source_dirs: List[str] = None) -> Dict[str, Any]:
     print("Connecting to Neo4j...")
     client = create_client_from_env()
     health = client.health_check()
-    print(f"Neo4j status: {health['status']} ({health.get('server_version', 'unknown')})")
+    print(
+        f"Neo4j status: {health['status']} ({health.get('server_version', 'unknown')})"
+    )
 
     if health["status"] != "healthy":
         client.close()
@@ -162,7 +166,9 @@ def run_ingestion(source_dirs: List[str] = None) -> Dict[str, Any]:
 
     # Verify counts from database
     with client._driver.session() as session:
-        result = session.run("MATCH ()-[r]->() RETURN type(r) AS type, count(r) AS count")
+        result = session.run(
+            "MATCH ()-[r]->() RETURN type(r) AS type, count(r) AS count"
+        )
         db_counts = {record["type"]: record["count"] for record in result}
 
     client.close()

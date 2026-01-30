@@ -102,7 +102,7 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 |045|P2|**🟡 HV/LQ**|Cost|Implement Infracost + Backstage Integration|platform|Open|M|Q2|Add CI step|Surface cost leading indicators|
 |065|P2|**🔵 MV/HQ**|GitOps|Automate PR Merge Apply (VPC/IAM)|platform|Done|M|Q2|Expand pattern|Eliminate manual ClickOps|
 |073|P1|**🔵 MV/HQ**|Governance|Field Test: Automated Governance & VQ Enforcement in Onboarding|platform|Open|S|Q1|Conduct live onboarding drill|Validate friction vs. value of hard-gates|
-|074|P1|**🟡 HV/LQ**|RAG|RAG V1 usefulness checklist + answer contract schema + golden tests|platform|Done|S|Q1|Publish roadmap + schema + tests|docs/00-foundations/product/Rag_v1_ROADMAP.md|Deterministic answer contract|
+|074|P1|**🟡 HV/LQ**|RAG|RAG V1 usefulness checklist + answer contract schema + golden tests|platform|Done|S|Q1|Publish roadmap + schema + tests|Deterministic answer contract|
 |002|P3|**⚫ LV/LQ**|Security|SBOM generation for production releases|platform|Open|M||Define approach|Future supply-chain hardening|
 |003|P2|CI|Add CI environment contract validator (hard-fail)|platform|Open|S||Define required vars and gating point|docs/20-contracts/21_CI_ENVIRONMENT_CONTRACT.md, docs/adrs/ADR-0034-platform-ci-environment-contract.md|Enforce required inputs before apply|
 |004|P2|GitOps|Configure Argo Rollouts in bootstrap (install + health checks)|platform|Open|M||Decide install path and add Argo health checks|docs/20-contracts/29_CD_DEPLOYMENT_CONTRACT.md|Optional rollout safety for V1+|

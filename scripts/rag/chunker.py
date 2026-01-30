@@ -48,11 +48,18 @@ Example:
 from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional
 
-from scripts.rag.loader import GovernanceDocument, to_llama_document, LLAMA_INDEX_AVAILABLE
+from scripts.rag.loader import (
+    GovernanceDocument,
+    to_llama_document,
+    LLAMA_INDEX_AVAILABLE,
+)
 
 if LLAMA_INDEX_AVAILABLE:
     from llama_index.core import Document as LlamaDocument
-    from llama_index.core.node_parser import MarkdownNodeParser, SentenceWindowNodeParser
+    from llama_index.core.node_parser import (
+        MarkdownNodeParser,
+        SentenceWindowNodeParser,
+    )
     from llama_index.core.schema import TextNode
 
 

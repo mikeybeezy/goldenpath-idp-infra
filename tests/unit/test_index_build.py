@@ -3,24 +3,24 @@ Unit tests for index build flow.
 """
 
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from scripts.rag.index_build import build_index
 from scripts.rag.loader import GovernanceDocument
 
 
 def test_build_index_writes_metadata(tmp_path: Path):
-    doc = GovernanceDocument(content="# Title", metadata={"id": "DOC-1"}, source_path="")
+    doc = GovernanceDocument(
+        content="# Title", metadata={"id": "DOC-1"}, source_path=""
+    )
 
-    with patch("scripts.rag.index_build.collect_markdown_paths") as mock_collect, patch(
-        "scripts.rag.index_build.load_documents"
-    ) as mock_load, patch(
-        "scripts.rag.index_build.GovernanceIndex"
-    ) as mock_index, patch(
-        "scripts.rag.index_build.ingest_documents"
-    ) as mock_ingest, patch(
-        "scripts.rag.index_build.write_index_metadata"
-    ) as mock_write:
+    with (
+        patch("scripts.rag.index_build.collect_markdown_paths") as mock_collect,
+        patch("scripts.rag.index_build.load_documents") as mock_load,
+        patch("scripts.rag.index_build.GovernanceIndex") as mock_index,
+        patch("scripts.rag.index_build.ingest_documents") as mock_ingest,
+        patch("scripts.rag.index_build.write_index_metadata") as mock_write,
+    ):
         mock_collect.return_value = [tmp_path / "docs/test.md"]
         mock_load.return_value = ([doc], [])
         mock_index.return_value.add.return_value = 1
@@ -62,8 +62,9 @@ def test_collect_and_build_index_respects_scope(tmp_path: Path):
         def add(self, chunks):
             return len(chunks)
 
-    with patch.object(index_build, "GovernanceIndex", return_value=FakeIndex()), patch.object(
-        index_build, "_graph_client_from_env", return_value=None
+    with (
+        patch.object(index_build, "GovernanceIndex", return_value=FakeIndex()),
+        patch.object(index_build, "_graph_client_from_env", return_value=None),
     ):
         count = index_build.build_index(
             root=tmp_path, metadata_path=tmp_path / "reports/index_metadata.json"
@@ -84,11 +85,13 @@ def test_build_index_writes_error_report(tmp_path: Path):
         def add(self, chunks):
             return len(chunks)
 
-    with patch.object(index_build, "collect_markdown_paths", return_value=[error_path]), patch.object(
-        index_build, "load_documents", return_value=([], [error_entry])
-    ), patch.object(index_build, "GovernanceIndex", return_value=FakeIndex()), patch.object(
-        index_build, "_graph_client_from_env", return_value=None
-    ), patch.object(index_build, "write_index_metadata"):
+    with (
+        patch.object(index_build, "collect_markdown_paths", return_value=[error_path]),
+        patch.object(index_build, "load_documents", return_value=([], [error_entry])),
+        patch.object(index_build, "GovernanceIndex", return_value=FakeIndex()),
+        patch.object(index_build, "_graph_client_from_env", return_value=None),
+        patch.object(index_build, "write_index_metadata"),
+    ):
         index_build.build_index(root=tmp_path)
 
     report_path = tmp_path / "reports/index_errors.json"

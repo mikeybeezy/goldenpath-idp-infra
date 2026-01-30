@@ -395,6 +395,8 @@ relates_to:
   - ADR-0183
   - ADR-0184
   - ADR-0185
+  - ADR-0186
+  - ADR-0187
 <!-- ADR_RELATE_END -->
 ---
 
@@ -593,6 +595,8 @@ This index lists Architecture Decision Records (ADRs) for GoldenPath IDP.
 | [ADR-0183](ADR-0183-test-health-metrics-schema.md) | Platform | Test Health Metrics Schema Contract | Proposed | 2026-01-0? | Test results and coverage are emitted by multiple frameworks across multiple repos. Without a stable contract, dashboards can drift, silently drop fields, or report false-green states. A schema con... |
 | [ADR-0184](ADR-0184-rag-markdown-header-chunking.md) | Platform | RAG Markdown Header Chunking Strategy | Proposed | 2026-01-0? | The Agentic Graph RAG pipeline (PRD-0008) requires a chunking strategy to split governance documents into embeddable units. The choice of chunking strategy significantly impacts: |
 | [ADR-0185](ADR-0185-graphiti-agent-memory-framework.md) | Platform | Graphiti as Agent Memory Framework on Neo4j | Proposed | 2026-01-0? | The Agentic Graph RAG pipeline (PRD-0008) requires persistent agent memory across sessions. Without memory preservation: |
+| [ADR-0186](ADR-0186-llamaindex-retrieval-layer.md) | Platform | LlamaIndex as Retrieval Layer for RAG Pipeline | Proposed | 2026-01-0? | The Agentic Graph RAG pipeline (PRD-0008) requires a retrieval layer to query indexed governance documents. During Phase 0 implementation, we built: |
+| [ADR-0187](ADR-0187-minio-rag-data-persistence.md) | Platform | MinIO for Local RAG Vector Database Persistence | Proposed | 2026-01-0? | The RAG pipeline uses ChromaDB as the vector database for storing document embeddings. During development, ChromaDB creates a local`.chroma/`directory containing: |
 <!-- ADR_TABLE_END -->
 
 ---

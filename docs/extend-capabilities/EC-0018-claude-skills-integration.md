@@ -3,11 +3,6 @@ id: EC-0018-claude-skills-integration
 title: 'EC-0018: Claude Skills Integration for GoldenPath Platform'
 type: enhancement-concept
 status: proposed
-priority: high
-vq_class: HV/HQ
-estimated_roi: Developer productivity + governance compliance
-effort_estimate: 2-4 weeks
-owner: platform-team
 lifecycle: proposed
 risk_profile:
   production_impact: none
@@ -24,6 +19,10 @@ tags:
   - developer-experience
   - ai-assistance
   - terraform
+priority: high
+vq_class: HV/HQ
+estimated_roi: Developer productivity + governance compliance
+effort_estimate: 2-4 weeks
 version: '1.0'
 ---
 

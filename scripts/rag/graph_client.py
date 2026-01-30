@@ -59,9 +59,7 @@ class Neo4jGraphClient:
 
     def __init__(self, config: GraphClientConfig):
         if GraphDatabase is None:
-            raise ImportError(
-                "neo4j is not installed. Install with: pip install neo4j"
-            )
+            raise ImportError("neo4j is not installed. Install with: pip install neo4j")
         self._config = config
         self._driver = GraphDatabase.driver(
             config.uri, auth=(config.user, config.password)
@@ -82,11 +80,7 @@ class Neo4jGraphClient:
         """
         if not doc_id:
             return
-        query = (
-            "MERGE (d:Document {id: $id}) "
-            "SET d += $props "
-            "RETURN d.id"
-        )
+        query = "MERGE (d:Document {id: $id}) " "SET d += $props " "RETURN d.id"
         params = {"id": doc_id, "props": props}
         self._run(query, params)
 

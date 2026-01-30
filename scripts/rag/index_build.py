@@ -52,7 +52,9 @@ def collect_markdown_paths(root: Optional[Path] = None) -> List[Path]:
     return sorted(allowed)
 
 
-def load_documents(paths: List[Path]) -> Tuple[List[GovernanceDocument], List[Dict[str, Any]]]:
+def load_documents(
+    paths: List[Path],
+) -> Tuple[List[GovernanceDocument], List[Dict[str, Any]]]:
     docs: List[GovernanceDocument] = []
     errors: List[Dict[str, Any]] = []
     for path in paths:
@@ -86,7 +88,9 @@ def _graph_client_from_env() -> Optional[Neo4jGraphClient]:
     return Neo4jGraphClient(config)
 
 
-def build_index(root: Optional[Path] = None, metadata_path: Optional[Path] = None) -> int:
+def build_index(
+    root: Optional[Path] = None, metadata_path: Optional[Path] = None
+) -> int:
     """
     Build vector index and ingest graph edges from governance docs.
 
@@ -172,10 +176,16 @@ if __name__ == "__main__":
     meta_path = root / "reports" / "index_metadata.json"
     write_index_metadata(meta_path, build_index_metadata(document_count=len(docs)))
 
-    print("\n" + json.dumps({
-        "status": "success",
-        "documents": len(docs),
-        "chunks": chunk_count,
-        "graph_documents": graph_count,
-        "errors": len(errors),
-    }, indent=2))
+    print(
+        "\n"
+        + json.dumps(
+            {
+                "status": "success",
+                "documents": len(docs),
+                "chunks": chunk_count,
+                "graph_documents": graph_count,
+                "errors": len(errors),
+            },
+            indent=2,
+        )
+    )

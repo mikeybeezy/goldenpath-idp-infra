@@ -12,12 +12,16 @@ def test_allows_docs_tree():
 
 def test_allows_session_capture():
     assert is_allowed_path("session_capture/2026-01-28-agentic-graph-rag-phase0.md")
-    assert is_allowed_path("/Users/test/repo/session_capture/2026-01-28-agentic-graph-rag-phase0.md")
+    assert is_allowed_path(
+        "/Users/test/repo/session_capture/2026-01-28-agentic-graph-rag-phase0.md"
+    )
 
 
 def test_allows_changelog_entries():
     assert is_allowed_path("docs/changelog/entries/2026-01-01-change.md")
-    assert is_allowed_path("/Users/test/repo/docs/changelog/entries/2026-01-01-change.md")
+    assert is_allowed_path(
+        "/Users/test/repo/docs/changelog/entries/2026-01-01-change.md"
+    )
 
 
 def test_allows_platform_health_files():

@@ -53,11 +53,15 @@ def _get_source_sha() -> str:
         return "unknown"
 
 
-def build_index_metadata(document_count: int, source_sha: Optional[str] = None) -> IndexMetadata:
+def build_index_metadata(
+    document_count: int, source_sha: Optional[str] = None
+) -> IndexMetadata:
     """Create index metadata with current timestamp."""
     sha = source_sha or _get_source_sha()
     generated_at = datetime.now(timezone.utc).isoformat()
-    return IndexMetadata(source_sha=sha, generated_at=generated_at, document_count=document_count)
+    return IndexMetadata(
+        source_sha=sha, generated_at=generated_at, document_count=document_count
+    )
 
 
 def write_index_metadata(path: Path, metadata: IndexMetadata) -> None:

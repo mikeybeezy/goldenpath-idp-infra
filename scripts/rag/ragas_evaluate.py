@@ -96,6 +96,7 @@ def _create_llm_for_ragas(provider: str = "openai", model: Optional[str] = None)
     if provider == "ollama":
         try:
             from langchain_ollama import ChatOllama
+
             return ChatOllama(
                 model=model or os.getenv("OLLAMA_MODEL", "llama3.2"),
                 base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
@@ -106,6 +107,7 @@ def _create_llm_for_ragas(provider: str = "openai", model: Optional[str] = None)
     elif provider == "claude":
         try:
             from langchain_anthropic import ChatAnthropic
+
             api_key = os.getenv("ANTHROPIC_API_KEY")
             if not api_key:
                 return None
@@ -119,6 +121,7 @@ def _create_llm_for_ragas(provider: str = "openai", model: Optional[str] = None)
     elif provider == "openai":
         try:
             from langchain_openai import ChatOpenAI
+
             api_key = os.getenv("OPENAI_API_KEY")
             if not api_key:
                 return None
@@ -191,8 +194,12 @@ def evaluate_with_ragas(
         return {
             "provider": provider,
             "model": model or f"{provider}_default",
-            "faithfulness": float(result["faithfulness"]) if "faithfulness" in result else None,
-            "answer_relevancy": float(result["answer_relevancy"]) if "answer_relevancy" in result else None,
+            "faithfulness": float(result["faithfulness"])
+            if "faithfulness" in result
+            else None,
+            "answer_relevancy": float(result["answer_relevancy"])
+            if "answer_relevancy" in result
+            else None,
         }
     except Exception as e:
         return {
@@ -218,7 +225,9 @@ def compute_retrieval_metrics(
         "total_questions": len(questions),
         "avg_contexts_per_query": total_contexts / len(questions) if questions else 0,
         "queries_with_results": queries_with_results,
-        "queries_with_results_pct": queries_with_results / len(questions) * 100 if questions else 0,
+        "queries_with_results_pct": queries_with_results / len(questions) * 100
+        if questions
+        else 0,
     }
 
 

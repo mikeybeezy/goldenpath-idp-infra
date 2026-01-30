@@ -22,7 +22,6 @@ from scripts.rag.llm_synthesis import (
     DEFAULT_OLLAMA_MODEL,
     DEFAULT_CLAUDE_MODEL,
     DEFAULT_OPENAI_MODEL,
-    DEFAULT_PROVIDER,
 )
 from scripts.rag.retriever import RetrievalResult
 
@@ -395,9 +394,7 @@ class TestRAGSynthesizerSynthesize:
         assert "couldn't find" in result.answer.lower() or result.answer != ""
         assert result.context_chunks == 0
 
-    def test_synthesize_includes_citations(
-        self, mock_retriever, mock_hybrid_results
-    ):
+    def test_synthesize_includes_citations(self, mock_retriever, mock_hybrid_results):
         """synthesize must include citations in result."""
         with patch("scripts.rag.llm_synthesis._create_llm", return_value=None):
             synth = RAGSynthesizer(
@@ -409,9 +406,7 @@ class TestRAGSynthesizerSynthesize:
         assert isinstance(result.citations, list)
         assert len(result.citations) > 0
 
-    def test_synthesize_includes_source_docs(
-        self, mock_retriever, mock_hybrid_results
-    ):
+    def test_synthesize_includes_source_docs(self, mock_retriever, mock_hybrid_results):
         """synthesize must include source document IDs."""
         with patch("scripts.rag.llm_synthesis._create_llm", return_value=None):
             synth = RAGSynthesizer(

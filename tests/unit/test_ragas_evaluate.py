@@ -8,7 +8,6 @@ Per GOV-0017: TDD-first implementation.
 import json
 import os
 import pytest
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from scripts.rag.ragas_evaluate import (
@@ -145,7 +144,9 @@ class TestGenerateAnswersSimple:
         assert isinstance(answers, list)
         assert len(answers) == len(sample_questions)
 
-    def test_generate_answers_uses_first_context(self, sample_questions, sample_contexts):
+    def test_generate_answers_uses_first_context(
+        self, sample_questions, sample_contexts
+    ):
         """generate_answers_simple must use first context as answer."""
         answers = generate_answers_simple(sample_questions, sample_contexts)
         # First answer should come from first context
@@ -278,9 +279,7 @@ class TestEvaluateWithRAGAS:
 class TestRunEvaluation:
     """Tests for run_evaluation function."""
 
-    def test_run_evaluation_returns_dict(
-        self, tmp_path, questions_json_file
-    ):
+    def test_run_evaluation_returns_dict(self, tmp_path, questions_json_file):
         """run_evaluation must return a dictionary."""
         output_path = tmp_path / "output.json"
 
@@ -300,9 +299,7 @@ class TestRunEvaluation:
 
         assert isinstance(result, dict)
 
-    def test_run_evaluation_writes_output_file(
-        self, tmp_path, questions_json_file
-    ):
+    def test_run_evaluation_writes_output_file(self, tmp_path, questions_json_file):
         """run_evaluation must write results to output file."""
         output_path = tmp_path / "output.json"
 

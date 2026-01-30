@@ -134,7 +134,9 @@ class TestCollectionManagement:
 
         with patch("scripts.rag.indexer._get_embedding_function") as mock_get_ef:
             mock_get_ef.return_value = object()
-            create_collection("test_collection", embedding_model=DEFAULT_EMBEDDING_MODEL)
+            create_collection(
+                "test_collection", embedding_model=DEFAULT_EMBEDDING_MODEL
+            )
 
         call_args = mock_chroma_client.get_or_create_collection.call_args
         assert "embedding_function" in call_args[1]
@@ -245,9 +247,7 @@ class TestIndexingChunks:
 
         assert result == 3
 
-    def test_index_empty_chunks_returns_zero(
-        self, mock_chroma_client, mock_collection
-    ):
+    def test_index_empty_chunks_returns_zero(self, mock_chroma_client, mock_collection):
         """index_chunks must return 0 for empty chunk list."""
         result = index_chunks([], collection=mock_collection)
 
