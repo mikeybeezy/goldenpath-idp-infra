@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: governance-policies-gov-0017-tdd-and-determinism
+  title: 'GOV-0017: TDD and Determinism Policy'
+  description: This policy defines the testing and determinism requirements for all
+    code changes in the GoldenPath IDP. It establishes what must be tested, how tests
+    are structured, and how determinism is preserved ...
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/GOV-0017-tdd-and-determinism.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/10-governance/policies/GOV-0017-tdd-and-determinism.md
+  tags:
+    - gove
+    - governance
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/policies/GOV-0017-tdd-and-determinism.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: active
+  owner: platform-team
+  subcomponentOf: governance-documentation

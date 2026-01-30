@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0166
+  title: CI IAM Comprehensive Permissions with Resource Scoping
+  description: Resolved CI pipeline failures by creating comprehensive IAM permissions
+    for the `github-actions-terraform` role with proper resource scoping. Created
+    ADR-0177 superseding ADR-0030's restrictive approa...
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0166-ci-iam-comprehensive-permissions.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0166-ci-iam-comprehensive-permissions.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0166-ci-iam-comprehensive-permissions.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation
