@@ -7,7 +7,7 @@ metadata:
 
     # Script Certification Matrix
 
-    **Total Scripts**: 55'
+    **Total Scripts**: 62'
   annotations:
     github.com/project-slug: mikeybeezy/goldenpath-idp-infra
     backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/10-governance/SCRIPT_CERTIFICATION_MATRIX.md

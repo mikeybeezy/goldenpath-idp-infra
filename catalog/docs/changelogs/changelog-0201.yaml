@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: changelog-0201
+  title: 'CL-0201: OpenTelemetry CLI Integration for CI Build Tracing'
+  description: Implemented OpenTelemetry CLI (otel-cli) integration in the Backstage
+    CI workflow to enable distributed tracing for build pipelines. This moves the
+    "CI Build Tracing" capability from **Planned** to **...
+  annotations:
+    github.com/project-slug: mikeybeezy/goldenpath-idp-infra
+    backstage.io/view-url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0201-otel-cli-ci-build-tracing.md
+    backstage.io/edit-url: https://github.com/mikeybeezy/goldenpath-idp-infra/edit/main/docs/changelog/entries/CL-0201-otel-cli-ci-build-tracing.md
+  tags:
+    - cl
+    - changelog
+    - release-notes
+    - documentation
+  links:
+    - url: https://github.com/mikeybeezy/goldenpath-idp-infra/blob/main/docs/changelog/entries/CL-0201-otel-cli-ci-build-tracing.md
+      title: View on GitHub
+      icon: github
+spec:
+  type: documentation
+  lifecycle: production
+  owner: platform-team
+  subcomponentOf: changelog-documentation
