@@ -2,10 +2,20 @@
 id: PRD-0008-phase0-user-test-queries
 title: PRD-0008 Phase 0 User Test Queries
 type: documentation
+risk_profile:
+  production_impact: low
+  security_risk: none
+  coupling_risk: low
+reliability:
+  rollback_strategy: git-revert
+  observability_tier: bronze
+  maturity: 1
 relates_to:
   - PRD-0008-governance-rag-pipeline
   - PRD-0008-phase0-retriever-spec
-status: draft
+supported_until: 2028-01-01
+version: '1.0'
+breaking_change: false
 ---
 
 # PRD-0008 Phase 0 User Test Queries

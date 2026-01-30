@@ -3998,3 +3998,43 @@ Implemented comprehensive branch governance and CI observability:
 - [ ] Verify traces in Grafana after first traced build
 
 **Session Capture:** session_capture/2026-01-30-backstage-governance-and-otel-ci.md
+
+---
+
+## 2026-01-30 - Session Log Workflow Branch Protection Fix
+
+**Agent:** Claude Opus 4.5
+**Branch:** fix/prd-metadata-governance
+**PRs:** #319 (fix/prd-metadata-governance → development), #318 (development → main)
+
+### Problem
+
+PRs to development were blocked when they didn't touch critical paths because the `require-session-logs` workflow only triggered on specific paths (scripts/, docs/adrs/, etc.). If the workflow didn't run, GitHub couldn't satisfy the required status check.
+
+### Solution
+
+Removed the path filter from `session-log-required.yml` so the workflow runs on ALL PRs. The Python validation logic inside the workflow remains unchanged - it still requires session documentation when critical paths are touched, and skips gracefully otherwise.
+
+### Work Done
+
+- Fixed 3 PRD files with missing metadata (risk_profile, reliability, supported_until, version, breaking_change)
+- Fixed session-log-required.yml to run on all PRs
+- Created session capture for this workflow change
+
+### Files Changed
+
+- `.github/workflows/session-log-required.yml` - Removed path filter
+- `docs/20-contracts/prds/PRD-0008-phase0-user-test-queries.md` - Added metadata
+- `docs/20-contracts/prds/PRD-0008-phase0-retriever-spec.md` - Added metadata  
+- `docs/20-contracts/prds/PRD-0009-integration-test-gap-closure.md` - Added metadata
+- `session_capture/2026-01-30-session-log-workflow-fix.md` - New
+
+### Key Clarification
+
+The governance enforcement is unchanged:
+- Critical path changes → session docs **still required**
+- Non-critical path changes → check passes with skip message
+
+The fix only ensures the check runs (so it can report pass/fail) instead of being absent.
+
+**Session Capture:** session_capture/2026-01-30-session-log-workflow-fix.md

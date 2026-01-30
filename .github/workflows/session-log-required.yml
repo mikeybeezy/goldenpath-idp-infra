@@ -5,16 +5,8 @@ name: Session Log Requirement
 
 on:
   pull_request:
-    paths:
-      - ".github/workflows/**"
-      - ".pre-commit-config.yaml"
-      - "gitops/**"
-      - "bootstrap/**"
-      - "modules/**"
-      - "scripts/**"
-      - "docs/10-governance/**"
-      - "docs/adrs/**"
-      - "docs/70-operations/runbooks/**"
+    # No path filter - runs on all PRs. The Python script below
+    # skips gracefully when non-critical paths are changed.
   workflow_dispatch:  # Manual testing
 
 jobs:
