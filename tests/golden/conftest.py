@@ -16,15 +16,20 @@ Where:
     --dry-run = generate files only, no apply/side-effects
 """
 
+import difflib
+import importlib.util
+import shutil
 import subprocess
+from pathlib import Path
+from typing import List
 
-# Check for RAG dependencies availability
-try:
-    import chromadb
-    import llama_index
-    HAS_RAG_DEPS = True
-except ImportError:
-    HAS_RAG_DEPS = False
+import pytest
+
+# Check for RAG dependencies availability using find_spec (avoids F401 lint warning)
+HAS_RAG_DEPS = (
+    importlib.util.find_spec("chromadb") is not None
+    and importlib.util.find_spec("llama_index") is not None
+)
 
 # Golden test files that require ML dependencies
 RAG_TEST_FILES = {
@@ -34,21 +39,22 @@ RAG_TEST_FILES = {
 
 def pytest_collection_modifyitems(config, items):
     """Skip RAG golden tests when dependencies are not installed."""
-    import pytest as _pytest
     if HAS_RAG_DEPS:
         return
 
-    skip_rag = _pytest.mark.skip(reason="RAG dependencies not installed (chromadb, llama-index)")
+    skip_rag = pytest.mark.skip(
+        reason="RAG dependencies not installed (chromadb, llama-index)"
+    )
 
     for item in items:
-        test_file = item.fspath.basename if hasattr(item.fspath, 'basename') else str(item.fspath).split('/')[-1]
+        test_file = (
+            item.fspath.basename
+            if hasattr(item.fspath, "basename")
+            else str(item.fspath).split("/")[-1]
+        )
         if test_file in RAG_TEST_FILES:
             item.add_marker(skip_rag)
-import shutil
-import difflib
-import pytest
-from pathlib import Path
-from typing import List
+
 
 ROOT_DIR = Path(__file__).resolve().parents[2]  # repo root
 FIXTURES_DIR = Path(__file__).parent / "fixtures"

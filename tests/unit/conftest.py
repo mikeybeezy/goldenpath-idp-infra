@@ -6,15 +6,15 @@ This allows CI to run fast with lightweight deps while still
 supporting full test runs locally with requirements-dev.txt.
 """
 
+import importlib.util
+
 import pytest
 
-# Check for RAG dependencies availability
-try:
-    import chromadb
-    import llama_index
-    HAS_RAG_DEPS = True
-except ImportError:
-    HAS_RAG_DEPS = False
+# Check for RAG dependencies availability using find_spec (avoids F401 lint warning)
+HAS_RAG_DEPS = (
+    importlib.util.find_spec("chromadb") is not None
+    and importlib.util.find_spec("llama_index") is not None
+)
 
 # RAG test files that require ML dependencies
 RAG_TEST_FILES = {
@@ -39,11 +39,17 @@ def pytest_collection_modifyitems(config, items):
     if HAS_RAG_DEPS:
         return  # All deps available, run everything
 
-    skip_rag = pytest.mark.skip(reason="RAG dependencies not installed (chromadb, llama-index)")
+    skip_rag = pytest.mark.skip(
+        reason="RAG dependencies not installed (chromadb, llama-index)"
+    )
 
     for item in items:
         # Get the test file name
-        test_file = item.fspath.basename if hasattr(item.fspath, 'basename') else str(item.fspath).split('/')[-1]
+        test_file = (
+            item.fspath.basename
+            if hasattr(item.fspath, "basename")
+            else str(item.fspath).split("/")[-1]
+        )
 
         if test_file in RAG_TEST_FILES:
             item.add_marker(skip_rag)
