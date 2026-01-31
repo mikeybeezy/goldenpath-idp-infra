@@ -1,0 +1,22 @@
+{
+  "repo": "mikeybeezy/goldenpath-idp-infra",
+  "branch": "main",
+  "commit": "3750d69d855e6b3202f5673a1784fdd740902589",
+  "ci_run_id": "21545760010",
+  "last_run": "2026-01-31T14:15:39.973811+00:00",
+  "frameworks": [
+    {
+      "framework": "pytest",
+      "total": 488,
+      "passed": 228,
+      "failed": 0,
+      "skipped": 260,
+      "duration_seconds": null,
+      "coverage": {
+        "lines": 21.4,
+        "branches": 0.0
+      },
+      "threshold_met": true
+    }
+  ]
+}
