@@ -70,7 +70,8 @@ jobs:
       - name: Install dependencies
         if: steps.exempt.outputs.skip != 'true' && steps.changed.outputs.files != ''
         run: |
-          pip install -r requirements-dev.txt
+          # Use lightweight CI deps (no ML packages needed for validation)
+          pip install -r requirements-ci.txt
 
       - name: Run Metadata Validator (Changed Files Only)
         id: validate

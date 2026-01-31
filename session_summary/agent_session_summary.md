@@ -4068,3 +4068,21 @@ The fix only ensures the check runs (so it can report pass/fail) instead of bein
 Still work locally with `pip install -r requirements-dev.txt`. Auto-skipped in CI with clear message.
 
 **Session Capture:** session_capture/2026-01-30-ci-lightweight-deps.md
+
+---
+
+## 2026-01-31T14:00:00Z | CI Validation Workflows Fix
+
+**Agent:** Claude Opus 4.5
+**Branch:** fix/metadata-validation-deps
+**PR:** #323
+
+### Summary
+Fixed 4 CI validation workflows that were using heavy ML dependencies when only PyYAML is needed. Metadata Validation was hanging 5+ hours due to PyTorch/CUDA installation.
+
+### Changes
+- Updated `ci-metadata-validation.yml`, `ci-eks-request-validation.yml`, `ci-rds-request-validation.yml`, `ci-s3-request-validation.yml` to use `requirements-ci.txt` instead of `requirements-dev.txt`
+
+### Impact
+- Metadata Validation completes in seconds instead of hanging
+- Unblocks PR #318 (development → main)
