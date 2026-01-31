@@ -17,6 +17,33 @@ Where:
 """
 
 import subprocess
+
+# Check for RAG dependencies availability
+try:
+    import chromadb
+    import llama_index
+    HAS_RAG_DEPS = True
+except ImportError:
+    HAS_RAG_DEPS = False
+
+# Golden test files that require ML dependencies
+RAG_TEST_FILES = {
+    "test_chunker_golden.py",
+}
+
+
+def pytest_collection_modifyitems(config, items):
+    """Skip RAG golden tests when dependencies are not installed."""
+    import pytest as _pytest
+    if HAS_RAG_DEPS:
+        return
+
+    skip_rag = _pytest.mark.skip(reason="RAG dependencies not installed (chromadb, llama-index)")
+
+    for item in items:
+        test_file = item.fspath.basename if hasattr(item.fspath, 'basename') else str(item.fspath).split('/')[-1]
+        if test_file in RAG_TEST_FILES:
+            item.add_marker(skip_rag)
 import shutil
 import difflib
 import pytest
