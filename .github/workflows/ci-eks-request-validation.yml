@@ -97,7 +97,8 @@ jobs:
       - name: Install dependencies
         if: steps.inputs.outputs.inputs != ''
         run: |
-          pip install -r requirements-dev.txt
+          # Use lightweight CI deps (no ML packages needed for validation)
+          pip install -r requirements-ci.txt
 
       - name: Validate EKS request files
         if: steps.inputs.outputs.inputs != ''
