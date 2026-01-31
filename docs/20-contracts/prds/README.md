@@ -20,6 +20,9 @@ relates_to:
   - PRD-0005-techdocs-implementation
   - PRD-0006-persistent-cluster-build-timing
   - PRD-0007-platform-test-health-dashboard
+  - PRD-0008-governance-rag-pipeline
+  - PRD-0009-integration-test-gap-closure
+  - PRD-0010-governance-rag-mcp-server
 supported_until: 2028-01-01
 version: '1.0'
 breaking_change: false

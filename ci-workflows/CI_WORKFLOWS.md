@@ -77,6 +77,7 @@ CI Workflows (GitHub Actions)
 │   ├─ Quality - S3 Request Validation
 │   ├─ Quality - Terraform Lint & Test
 │   ├─ Quality - YAML Lint
+│   ├─ RAG Index Build & Validation
 │   ├─ RDS Prevent Destroy Guard
 │   ├─ RDS Size Approval Guard
 │   ├─ RDS tfvars Drift Guard
@@ -296,6 +297,11 @@ CI Workflows (GitHub Actions)
 ### Quality - YAML Lint
 - **File**: `yamllint.yml`
 - **Owner**: platform
+- **Triggers**:
+
+### RAG Index Build & Validation
+- **File**: `ci-rag-index.yml`
+- **Owner**: platform-team
 - **Triggers**:
 
 ### RDS Prevent Destroy Guard

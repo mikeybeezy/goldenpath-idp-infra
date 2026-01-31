@@ -74,3 +74,7 @@ htmlcov/
 
 # Workflow artifacts
 pr_body.txt
+
+# RAG vector database (sync via MinIO)
+.chroma/
+reports/usage_log.jsonl
