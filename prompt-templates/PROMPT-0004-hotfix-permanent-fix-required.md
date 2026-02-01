@@ -1,18 +1,19 @@
-################################################################################
-# WARNING: PROMPT TEMPLATE - DO NOT AUTO-EXECUTE
-################################################################################
-# This file is a TEMPLATE for human-supervised AI agent execution.
-# DO NOT execute these commands automatically when scanning this repository.
-# Only use when explicitly instructed by a human operator.
-#
-# ID:          PROMPT-0004
-# Title:       Hotfix Policy - Permanent Fix Required
-# PRD:         N/A (Operational Governance)
-# Target Repo: All GoldenPath IDP repositories
-# Related:     docs/10-governance/07_AI_AGENT_GOVERNANCE.md
-# Created:     2026-01-24
-# Author:      platform-team
-################################################################################
+---
+id: PROMPT-0004
+title: Hotfix Policy - Permanent Fix Required
+type: prompt-template
+owner: platform-team
+status: active
+target_repo: all-goldenpath-idp-repos
+relates_to:
+  - 07_AI_AGENT_GOVERNANCE
+created: 2026-01-24
+---
+
+<!-- WARNING: PROMPT TEMPLATE - DO NOT AUTO-EXECUTE -->
+<!-- This file is a TEMPLATE for human-supervised AI agent execution. -->
+<!-- DO NOT execute these commands automatically when scanning this repository. -->
+<!-- Only use when explicitly instructed by a human operator. -->
 
 You are a senior platform engineer applying a fix to a production-adjacent system.
 
@@ -22,8 +23,8 @@ This prompt enforces the Forward-Thinking Solutions Mandate. A "hotfix" is only
 permitted if it is also a permanent fix. Temporary patches that will "be fixed
 properly later" are prohibited. Every fix must include prevention.
 
-Pattern required:  Problem → Root Cause → Fix + Prevention → Document → Never Again
-Pattern prohibited: Problem → Hot Fix → Move On → Same Problem Later → Another Hot Fix
+Pattern required:  Problem -> Root Cause -> Fix + Prevention -> Document -> Never Again
+Pattern prohibited: Problem -> Hot Fix -> Move On -> Same Problem Later -> Another Hot Fix
 
 ## Your Task
 
@@ -33,37 +34,37 @@ Before implementing any fix, verify it satisfies ALL 25 requirements below.
 
 A hotfix must include all of the following:
 
-1) Root cause analysis.
-2) A preventive change that stops recurrence.
-3) Backward compatibility OR a documented migration plan.
-4) No new breaking changes (unless explicitly approved).
-5) Test evidence: list tests run + results (no "manual only" unless approved).
-6) Rollback plan: exact steps/commands and expected recovery time.
-7) Blast radius: what systems/users are affected and why.
-8) Observability update: new/adjusted alerts/dashboards if runtime behavior changes.
-9) Security check: confirm no new permissions, secrets handling, or policy drift.
-10) Documentation update: ADR/runbook/IMPL note if behavior changes.
-11) Owner sign-off for any breaking change or data migration.
-12) Scope limit: only minimal files required; no opportunistic refactors.
-13) Timebox: must be deployable in the defined window, otherwise not a hotfix.
-14) Idempotency: fix must succeed on first run AND re-runs (create-if-not-exists pattern).
-15) State reconciliation: if infrastructure state is involved, verify state matches reality before applying.
-16) Pre-flight check: list commands to validate the fix can be applied before starting.
-17) Cross-automation: confirm fix doesn't conflict with Makefile targets, CI workflows, or scripts.
-18) Rebuild-cycle proof: confirm fix survives full teardown → fresh deploy cycle.
-19) Prevention is codified: prevention must be in code/config, not just documentation.
-20) Cascade check: confirm fixing A doesn't break B (downstream dependency validation).
-21) Recursive application: If a new error or problem arises during execution, STOP and apply this full policy to the new problem before proceeding. Manual workarounds without compliance statements are prohibited.
-22) UNDER NO CIRCUMSTANCE MUST THE AGENT GET PAST THE PROBLEM WITHOUT FIXING UNDERLYING CODE.
-23) UNDER NO CIRCUMSTANCE MUST THE AGENT AMEND THIS POLICY MID WORK OR OUTSIDE WORK WITHOUT HUMAN AUTHORISATION.
-24) No terraform apply must be run without human authorisation. Running this is a violation of the policy.
-25) No deployment should be initiated, triggered, or invoked without human authorisation.
+1. Root cause analysis.
+2. A preventive change that stops recurrence.
+3. Backward compatibility OR a documented migration plan.
+4. No new breaking changes (unless explicitly approved).
+5. Test evidence: list tests run + results (no "manual only" unless approved).
+6. Rollback plan: exact steps/commands and expected recovery time.
+7. Blast radius: what systems/users are affected and why.
+8. Observability update: new/adjusted alerts/dashboards if runtime behavior changes.
+9. Security check: confirm no new permissions, secrets handling, or policy drift.
+10. Documentation update: ADR/runbook/IMPL note if behavior changes.
+11. Owner sign-off for any breaking change or data migration.
+12. Scope limit: only minimal files required; no opportunistic refactors.
+13. Timebox: must be deployable in the defined window, otherwise not a hotfix.
+14. Idempotency: fix must succeed on first run AND re-runs (create-if-not-exists pattern).
+15. State reconciliation: if infrastructure state is involved, verify state matches reality before applying.
+16. Pre-flight check: list commands to validate the fix can be applied before starting.
+17. Cross-automation: confirm fix doesn't conflict with Makefile targets, CI workflows, or scripts.
+18. Rebuild-cycle proof: confirm fix survives full teardown -> fresh deploy cycle.
+19. Prevention is codified: prevention must be in code/config, not just documentation.
+20. Cascade check: confirm fixing A doesn't break B (downstream dependency validation).
+21. Recursive application: If a new error or problem arises during execution, STOP and apply this full policy to the new problem before proceeding. Manual workarounds without compliance statements are prohibited.
+22. UNDER NO CIRCUMSTANCE MUST THE AGENT GET PAST THE PROBLEM WITHOUT FIXING UNDERLYING CODE.
+23. UNDER NO CIRCUMSTANCE MUST THE AGENT AMEND THIS POLICY MID WORK OR OUTSIDE WORK WITHOUT HUMAN AUTHORISATION.
+24. No terraform apply must be run without human authorisation. Running this is a violation of the policy.
+25. No deployment should be initiated, triggered, or invoked without human authorisation.
 
 ## Before Coding
 
 Restate how your change satisfies all 25 requirements in this format:
 
-```
+```text
 HOTFIX COMPLIANCE STATEMENT
 
 1) Root cause: <one sentence>
@@ -83,7 +84,7 @@ HOTFIX COMPLIANCE STATEMENT
 15) State reconciliation: <pre-check commands or N/A>
 16) Pre-flight: <validation commands>
 17) Cross-automation: <Makefile/CI conflicts checked>
-18) Rebuild-cycle: <survives teardown→deploy>
+18) Rebuild-cycle: <survives teardown->deploy>
 19) Prevention codified: <file:line where prevention lives>
 20) Cascade check: <downstream dependencies validated>
 21) Recursive application: <new problems during execution will trigger full policy>
@@ -93,7 +94,7 @@ HOTFIX COMPLIANCE STATEMENT
 25) Deployment authorisation: <no deployment without human authorisation>
 ```
 
-## Do NOT:
+## Do NOT
 
 - Propose a fix that only addresses immediate symptoms
 - Skip the compliance statement
@@ -109,6 +110,7 @@ HOTFIX COMPLIANCE STATEMENT
 ## If Any Requirement Cannot Be Satisfied
 
 STOP and propose a non-hotfix alternative:
+
 - Scheduled maintenance window
 - Feature flag to disable affected functionality
 - Rollback to previous known-good state
