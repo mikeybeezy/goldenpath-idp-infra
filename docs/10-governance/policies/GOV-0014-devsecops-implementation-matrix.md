@@ -205,14 +205,14 @@ CMD ["app.py"]
 
 | Item | Tool/Tech | Integration Point | Status | Owner |
 |------|-----------|-------------------|--------|-------|
-| Canonical workflow | GitHub Actions | `.github/workflows/_build-and-release.yml` | Pending | platform-team |
-| Trivy blocking gates | Trivy | Build job, `exit-code: 1` | Pending | platform-team |
-| SARIF upload | GitHub Security | `codeql-action/upload-sarif` | Pending | platform-team |
-| Concurrency groups | GitHub Actions | `concurrency: deploy-${{ env }}` | Pending | platform-team |
-| SBOM generation | Syft | Build job, artifact upload | Pending | platform-team |
-| Gitleaks CI | Gitleaks | PR check job | Pending | platform-team |
-| Pre-commit config | pre-commit | `.pre-commit-config.yaml` template | Pending | platform-team |
-| Thin caller workflow | GitHub Actions | App repos `delivery.yml` | Pending | platform-team |
+| Canonical workflow | GitHub Actions | `.github/workflows/_build-and-release.yml` | Done | platform-team |
+| Trivy blocking gates | Trivy | Build job, `exit-code: 1` | Done | platform-team |
+| SARIF upload | GitHub Security | `codeql-action/upload-sarif` | Done | platform-team |
+| Concurrency groups | GitHub Actions | `concurrency: deploy-${{ env }}` | Done | platform-team |
+| SBOM generation | Syft | Build job, artifact upload | Done | platform-team |
+| Gitleaks CI | Gitleaks | PR check job | Done | platform-team |
+| Pre-commit config | pre-commit | `.pre-commit-config.yaml` template | Done | platform-team |
+| Thin caller workflow | GitHub Actions | App repos `delivery.yml` | Done | platform-team |
 
 **Phase 1 Workflow Structure:**
 
@@ -393,13 +393,20 @@ repos:
 
 ### 9.1 Phase 1 Complete When
 
-- [ ] Canonical workflow deployed and tested
-- [ ] Trivy blocking gates active for test/staging/prod
-- [ ] SARIF uploads to GitHub Security tab
-- [ ] SBOM generated for every build
-- [ ] Gitleaks in PR checks
-- [ ] Pre-commit template available
-- [ ] `hello-goldenpath-idp` using thin caller
+- [x] Canonical workflow deployed and tested
+      Evidence: `.github/workflows/_build-and-release.yml`
+- [x] Trivy blocking gates active for test/staging/prod
+      Evidence: `_build-and-release.yml` (exit-code: 1 for test/staging/prod)
+- [x] SARIF uploads to GitHub Security tab
+      Evidence: `_build-and-release.yml` (upload-sarif step)
+- [x] SBOM generated for every build
+      Evidence: Syft step in `_build-and-release.yml`
+- [x] Gitleaks in PR checks
+      Evidence: `.github/workflows/gitleaks.yml` + build job integration
+- [x] Pre-commit template available
+      Evidence: `.pre-commit-config.yaml`
+- [x] `hello-goldenpath-idp` using thin caller
+      Evidence: `hello-goldenpath-idp/.github/workflows/delivery.yml`
 
 ### 9.2 Phase 2 Complete When
 
@@ -430,9 +437,10 @@ repos:
 
 ## Changelog
 
-| Date | Change | Author |
-|------|--------|--------|
-| 2026-01-19 | Initial version | platform-team |
+| Date       | Change                                       | Author        |
+|------------|----------------------------------------------|---------------|
+| 2026-02-01 | Phase 1 marked complete with evidence links  | platform-team |
+| 2026-01-19 | Initial version                              | platform-team |
 
 ---
 

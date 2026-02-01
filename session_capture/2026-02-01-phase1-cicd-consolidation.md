@@ -108,6 +108,7 @@ During Phase 1 completion review, user identified that `ecr-build-push.sh` and t
 - `docs/production-readiness-gates/PHASE1_CICD_IMPLEMENTATION_STRATEGY.md` - Removed ecr-build-push.sh task
 - `scripts/ecr-build-push.sh` - Added deprecation notice
 - `docs/guides/standardized-image-delivery.md` - Rewrote for canonical workflow
+- `docs/10-governance/policies/GOV-0014-devsecops-implementation-matrix.md` - Phase 1 checkboxes marked complete with evidence
 
 ### Added
 
@@ -132,13 +133,17 @@ During Phase 1 completion review, user identified that `ecr-build-push.sh` and t
 | Gitleaks CI | Done | `gitleaks.yml` + workflow job |
 | Pre-commit config | Done | `.pre-commit-config.yaml` |
 | Thin caller template | Done | `docs/templates/workflows/delivery.yml` |
-| hello-goldenpath-idp onboard | Pending | Next task |
+| hello-goldenpath-idp onboard | Done | `hello-goldenpath-idp/.github/workflows/delivery.yml` |
+| GOV-0014 checkboxes updated | Done | Section 9.1 with evidence links |
 
 ## Current State / Follow-ups
 
 - **Done:** Pipeline consolidation and documentation complete
-- **Pending:** Onboard `hello-goldenpath-idp` to canonical workflow
-- **Pending:** Update GOV-0014 checkboxes with evidence links
+- **Done:** `hello-goldenpath-idp` has `delivery.yml` thin caller
+- **Done:** GOV-0014 Phase 1 checkboxes updated with evidence links
+- **Decision:** Single workflow model - `_build-and-release.yml` is the one source of truth for all CI/CD
+- **Note:** `hello-goldenpath-idp` Delivery workflow had startup_failure on last run (2026-01-21) - may need OIDC/secrets configuration review
+- **Next:** Backstage must adopt `_build-and-release.yml` to get security gates (no separate security workflow)
 
 ---
 
