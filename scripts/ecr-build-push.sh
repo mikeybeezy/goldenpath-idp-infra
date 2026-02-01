@@ -3,8 +3,10 @@
 # id: SCRIPT-0009
 # type: script
 # owner: platform-team
-# status: active
+# status: deprecated
 # maturity: 2
+# deprecated_by: _build-and-release.yml
+# deprecation_reason: CI use consolidated into canonical workflow with inline build/push + security gates
 # dry_run:
 #   supported: true
 #   command_hint: --dry-run
@@ -19,6 +21,14 @@
 # ---
 # -----------------------------------------------------------------------------
 # ECR Build & Push Utility
+#
+# DEPRECATED: 2026-02-01
+# This script is deprecated for CI use. The canonical workflow
+# _build-and-release.yml contains inline build/push with security gates
+# (Trivy, SBOM, Gitleaks). Use the thin caller template instead:
+#   docs/templates/workflows/delivery.yml
+#
+# This script is retained for LOCAL DEVELOPMENT use only.
 #
 # Purpose:
 #   Standardizes the image build and push process across the platform.

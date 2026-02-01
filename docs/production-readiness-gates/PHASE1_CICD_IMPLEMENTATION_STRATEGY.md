@@ -58,42 +58,19 @@ Phase 1 establishes the foundational CI/CD pipeline with security scanning, arti
 
 | Component | Gap Description | Effort |
 |-----------|-----------------|--------|
-| OIDC ecr-build-push.sh | Script exists but not validated end-to-end | S |
-| Thin caller workflow | No `delivery.yml` template for app repos | S |
+| Thin caller workflow | ~~No `delivery.yml` template for app repos~~ **DONE** | S |
 | hello-goldenpath-idp | Sample app not using canonical workflow | M |
 | Phase 1 status update | GOV-0014 checkboxes still show "Pending" | S |
+
+### Consolidation Note
+
+The `_build-and-release.yml` workflow contains **inline** docker build/push logic with full security scanning (Trivy, SBOM, Gitleaks). The standalone `ecr-build-push.sh` script is **deprecated for CI use** - it duplicates functionality without the security gates. Retained only for local development scenarios.
 
 ---
 
 ## Implementation Tasks
 
-### Task 1: Validate OIDC ECR Build/Push Script
-
-**Objective:** Confirm `scripts/ecr-build-push.sh` works end-to-end with OIDC authentication.
-
-**Acceptance Criteria:**
-- [ ] Script authenticates via OIDC (no static credentials)
-- [ ] Dual-tagging works (SHA + semantic version)
-- [ ] Image pushed to ECR successfully
-- [ ] Script exits non-zero on failure
-
-**Steps:**
-1. Create test branch with sample Dockerfile
-2. Run `ecr-build-push.sh` manually with test inputs
-3. Verify image appears in ECR with correct tags
-4. Document any issues in session capture
-
-**Definition of Done:**
-```bash
-# Successful run produces:
-ECR_REPO=<account>.dkr.ecr.<region>.amazonaws.com/test-app
-docker pull $ECR_REPO:abc123   # SHA tag
-docker pull $ECR_REPO:v1.0.0   # Semantic tag
-```
-
----
-
-### Task 2: Create Thin Caller Workflow Template
+### Task 1: Create Thin Caller Workflow Template (DONE)
 
 **Objective:** Provide a minimal `delivery.yml` that app repos use to call the canonical workflow.
 
@@ -132,13 +109,14 @@ jobs:
 ```
 
 **Definition of Done:**
-- Template file created
-- README updated with usage instructions
-- Scaffolder template updated to include `delivery.yml`
+
+- [x] Template file created (`docs/templates/workflows/delivery.yml`)
+- [ ] README updated with usage instructions
+- [ ] Scaffolder template updated to include `delivery.yml`
 
 ---
 
-### Task 3: Onboard hello-goldenpath-idp to Canonical Workflow
+### Task 2: Onboard hello-goldenpath-idp to Canonical Workflow
 
 **Objective:** Demonstrate the canonical workflow with a real sample application.
 
@@ -164,7 +142,7 @@ jobs:
 
 ---
 
-### Task 4: Update GOV-0014 Status
+### Task 3: Update GOV-0014 Status
 
 **Objective:** Mark Phase 1 items as complete with evidence links.
 
@@ -198,13 +176,12 @@ jobs:
 ## Execution Order
 
 ```
-Week 1:
-├── Task 1: Validate ecr-build-push.sh (2-3 hours)
-└── Task 2: Create thin caller template (1-2 hours)
+Completed:
+└── Task 1: Create thin caller template (DONE)
 
-Week 2:
-├── Task 3: Onboard hello-goldenpath-idp (2-4 hours)
-└── Task 4: Update GOV-0014 status (30 min)
+Remaining:
+├── Task 2: Onboard hello-goldenpath-idp (2-4 hours)
+└── Task 3: Update GOV-0014 status (30 min)
 ```
 
 ---
@@ -253,9 +230,10 @@ Once Phase 1 is complete:
 
 ## Changelog
 
-| Date | Change | Author |
-|------|--------|--------|
-| 2026-02-01 | Initial version | platform-team |
+| Date       | Change                                                                    | Author        |
+|------------|---------------------------------------------------------------------------|---------------|
+| 2026-02-01 | Removed ecr-build-push.sh task (consolidated into _build-and-release.yml) | platform-team |
+| 2026-02-01 | Initial version                                                           | platform-team |
 
 ---
 
