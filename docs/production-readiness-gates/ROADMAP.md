@@ -65,12 +65,21 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 
 ## 90-Day Evolution Plan
 
-### Phase 1: Stabilize the Core (🔴 HV/HQ)
+### Phase 1: Stabilize the Core (🔴 HV/HQ) - COMPLETE
 
-- **Phase 2 (Make Power Legible)**: Focus on **🟡 HV/LQ**. Build scaffolds and visibility.
-- **Phase 3 (Multipliers)**: Focus on **🔵 MV/HQ**. Build quiet scaling levers.
-- **Maintenance**: Focus on **⚫ LV/LQ**. Pruning and hygiene.
-- **Focus**: Metadata inheritance, approval routing, deterministic teardown, immutable audit trails.
+**Status**: Done (2026-02-01)
+**Evidence**: GOV-0014 Section 9.1, `session_capture/2026-02-01-phase1-cicd-consolidation.md`
+
+**Delivered**:
+- Canonical `_build-and-release.yml` workflow (single source of truth)
+- Gitleaks secret scanning (environment-aware gating)
+- Trivy container scanning with SARIF upload
+- Syft SBOM generation
+- Thin caller template (`docs/templates/workflows/delivery.yml`)
+- `hello-goldenpath-idp` onboarded
+- Pre-commit config with Gitleaks hook
+
+**Next**: Phase 2 - GitHub App Authentication (ADR-0188)
 
 ### Phase 2: Make Power Legible (🟡 HV/LQ)
 
@@ -162,7 +171,7 @@ This roadmap is driven by **Value-Led Prioritization**. Every item is classified
 |060|P3|Governance|Track time-to-ready for new repos|platform|Open|S|Q1|Measure repo creation → first CI green|docs/10-governance/05_REPOSITORY_LIFECYCLE.md|End-to-end onboarding signal|
 |061|P3|Governance|Track policy compliance coverage|platform|Open|S|Q1|% repos with metadata + branch protection|docs/10-governance/05_REPOSITORY_LIFECYCLE.md|Ensures governance-by-default|
 |062|P3|Governance|Track stale repo count and archive rate|platform|Open|S|Q1|Count stale repos flagged vs archived|docs/10-governance/05_REPOSITORY_LIFECYCLE.md|Confirms controlled exit path|
-|063|P2|Governance|Explore GitHub App agent roles|platform|Open|S|Q1|Define minimal permissions and installation flow|docs/10-governance/08_GITHUB_AGENT_ROLES.md|Avoid new human accounts while preserving auditability|
+|063|P2|Governance|Explore GitHub App agent roles|platform|In-Progress|S|Q1|ADR-0188 drafted; create GitHub App|ADR-0188-phase2-github-app-authentication|Phase 2 kickoff - enable git write-back and cross-repo operations|
 |064|P2|ECR|Test OIDC-based ecr-build-push.sh script|platform|Open|S|Q1|Run end-to-end test with sample app and verify dual-tagging|scripts/ecr-build-push.sh, docs/guides/standardized-image-delivery.md, ADR-0100|Validate OIDC authentication, multi-tagging (SHA + version), and push reliability before app team adoption|
 |065|P2|GitOps|Automate "Terraform Apply" on Pull Request Merge|platform|Done|M|Q2|Expand pattern to other core modules (IAM, VPC)|.github/workflows/ecr-auto-apply.yml|Eliminate manual "ClickOps" step after merging config changes|
 |066|P2|Docs|Test & Harden Doc Index Generators (Removal logic)|platform|Done|S|Q1|Monitor for drift in future additions|scripts/generate_workflow_index.py, scripts/generate_script_index.py|Ensure documentation self-heals when tools or workflows are deprecated/deleted|

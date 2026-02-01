@@ -96,7 +96,7 @@ The RAG pipeline uses ChromaDB as the vector database for storing document embed
 
 ```bash
 # 1. Start MinIO (one-time or after reboot)
-docker compose -f docker-compose.minio.yml up -d
+docker compose -f docker/docker-compose.minio.yml up -d
 
 # 2. After building/updating RAG index
 ./scripts/rag-data-sync.sh push
@@ -222,7 +222,7 @@ Simply exclude `.chroma/` and rebuild on fresh clone.
 
 | File | Purpose |
 |------|---------|
-| `docker-compose.minio.yml` | MinIO service configuration |
+| `docker/docker-compose.minio.yml` | MinIO service configuration |
 | `scripts/rag-data-sync.sh` | Push/pull sync script |
 | `.gitignore` (updated) | Excludes `.chroma/` and `reports/usage_log.jsonl` |
 

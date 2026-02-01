@@ -121,7 +121,7 @@ Markdown Files → Loader → Chunker → ChromaDB Index
 
 ### Supporting Infrastructure
 
-- `docker-compose.minio.yml` - MinIO service configuration
+- `docker/docker-compose.minio.yml` - MinIO service configuration
 - `.github/workflows/ci-rag-index.yml` - CI workflow for RAG validation
 
 ### Tests

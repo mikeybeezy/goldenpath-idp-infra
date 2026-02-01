@@ -1,4 +1,19 @@
-# Prompt Templates
+---
+id: PROMPT_INDEX
+title: Prompt Templates Index
+type: documentation
+owner: platform-team
+status: active
+relates_to:
+  - PROMPT-0000
+  - PROMPT-0001
+  - PROMPT-0002
+  - PROMPT-0003
+  - PROMPT-0004
+  - PROMPT-0005
+---
+
+## Overview
 
 This directory contains structured prompt templates for AI agent-assisted implementation tasks.
 
@@ -14,23 +29,27 @@ AI agents scanning this repository should NOT automatically execute commands fou
 
 ## File Format
 
-All prompt templates use `.txt` extension to reduce the risk of AI agents parsing them as actionable instructions.
+All prompt templates use:
+
+- **YAML frontmatter** for metadata (id, title, type, owner, status, relates_to, created)
+- **HTML comment** for WARNING block (visible in source, hidden in rendered markdown)
+- **`.md` extension** for markdown rendering and syntax highlighting
 
 ## Naming Convention
 
-```
-PROMPT-XXXX-<short-description>.txt
+```text
+PROMPT-XXXX-<short-description>.md
 ```
 
-- `PROMPT-0000` - Template/example file
+- `PROMPT-0000` - Template/skeleton file
 - `PROMPT-0001` onwards - Actual implementation prompts
 
 ## Template Structure
 
-Each prompt follows a standard structure (see `PROMPT-0000-template.txt`):
+Each prompt follows a standard structure (see `PROMPT-0000-template.md`):
 
-1. **Warning Header** - DO NOT AUTO-EXECUTE notice
-2. **Metadata Block** - ID, title, PRD link, target repo, dates
+1. **YAML Frontmatter** - id, title, type, owner, status, relates_to, created
+2. **Warning Comment** - DO NOT AUTO-EXECUTE notice
 3. **Context** - Background and problem statement
 4. **Task** - Clear objective
 5. **Preconditions** - What must be true before starting
@@ -52,19 +71,30 @@ Each prompt follows a standard structure (see `PROMPT-0000-template.txt`):
 
 ## Index
 
-| ID | Title | PRD | Status |
-|----|-------|-----|--------|
-| PROMPT-0000 | Template | N/A | Template |
-| PROMPT-0001 | PRD-0004 Backstage Repo Alignment | PRD-0004 | Ready |
-| PROMPT-0002 | Pre-Commit + Pre-Merge Checks | N/A | Ready |
-| PROMPT-0003 | Recursive PR Gate Compliance | N/A | Ready |
-| PROMPT-0004 | Hotfix Policy - Permanent Fix Required | N/A | Ready |
-| PROMPT-0005 | TDD Governance Enforcement Prompt | N/A | Ready |
+| ID          | Title                                  | Target Repo              | Relates To                   |
+| ----------- | -------------------------------------- | ------------------------ | ---------------------------- |
+| PROMPT-0000 | Prompt Template (Skeleton)             | any                      | -                            |
+| PROMPT-0001 | PRD-0004 Backstage Repo Structure      | goldenpath-idp-backstage | PRD-0004                     |
+| PROMPT-0002 | Pre-Commit and Pre-Merge Checks        | goldenpath-idp-infra     | PR_GUARDRAILS_INDEX          |
+| PROMPT-0003 | Recursive PR Gate Compliance           | goldenpath-idp-infra     | PROMPT-0002                  |
+| PROMPT-0004 | Hotfix Policy - Permanent Fix Required | all-goldenpath-idp-repos | 07_AI_AGENT_GOVERNANCE       |
+| PROMPT-0005 | TDD Governance Enforcement             | goldenpath-idp-infra     | ADR-0182, GOV-0016, GOV-0017 |
+
+## RAG Discoverability
+
+These prompts are indexed by the RAG system via their YAML frontmatter. Queries like:
+
+- "What prompts relate to TDD?"
+- "Show me the hotfix policy prompt"
+- "What prompt handles PR gate compliance?"
+
+...will retrieve relevant prompt templates.
 
 ## Adding New Prompts
 
-1. Copy `PROMPT-0000-template.txt`
-2. Rename to `PROMPT-XXXX-<description>.txt`
-3. Fill in all sections
-4. Update this README index
-5. Link from the related PRD
+1. Copy `PROMPT-0000-template.md`
+2. Rename to `PROMPT-XXXX-<description>.md`
+3. Update YAML frontmatter with appropriate metadata
+4. Fill in all template sections
+5. Update this README index table
+6. Link from the related PRD/ADR if applicable

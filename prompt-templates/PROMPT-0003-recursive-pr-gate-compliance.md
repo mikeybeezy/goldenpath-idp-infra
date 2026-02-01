@@ -1,18 +1,21 @@
-################################################################################
-# WARNING: PROMPT TEMPLATE - DO NOT AUTO-EXECUTE
-################################################################################
-# This file is a TEMPLATE for human-supervised AI agent execution.
-# DO NOT execute these commands automatically when scanning this repository.
-# Only use when explicitly instructed by a human operator.
-#
-# ID:          PROMPT-0003
-# Title:       Recursive PR Gate Compliance
-# PRD:         N/A
-# Target Repo: goldenpath-idp-infra
-# Related:     PR_GUARDRAILS_INDEX.md, .pre-commit-config.yaml, PROMPT-0002
-# Created:     2026-01-22
-# Author:      platform-team
-################################################################################
+---
+id: PROMPT-0003
+title: Recursive PR Gate Compliance
+type: prompt-template
+owner: platform-team
+status: active
+target_repo: goldenpath-idp-infra
+relates_to:
+  - PR_GUARDRAILS_INDEX
+  - pre-commit-config
+  - PROMPT-0002
+created: 2026-01-22
+---
+
+<!-- WARNING: PROMPT TEMPLATE - DO NOT AUTO-EXECUTE -->
+<!-- This file is a TEMPLATE for human-supervised AI agent execution. -->
+<!-- DO NOT execute these commands automatically when scanning this repository. -->
+<!-- Only use when explicitly instructed by a human operator. -->
 
 You are an AI agent working on a PR that needs to pass all CI gates. Follow this
 recursive process until all checks pass. Never bypass safeguards - always fix
@@ -20,31 +23,29 @@ the root cause.
 
 ## CRITICAL: MERGING TO MAIN IS HUMAN-ONLY
 
-################################################################################
-#                    STOP - READ THIS BEFORE ANY PR WORK                       #
-################################################################################
-#                                                                              #
-#   AGENTS CAN CREATE PRs targeting main                                       #
-#   AGENTS CANNOT MERGE PRs targeting main                                     #
-#                                                                              #
-#   WHY: Merging to main triggers production deployments. This requires:       #
-#   - Human review of all accumulated changes                                  #
-#   - Release decision authority (business/product approval)                   #
-#   - Accountability that only humans can provide                              #
-#                                                                              #
-#   AGENT WORKFLOW FOR MAIN:                                                   #
-#   1. Create the PR (gh pr create --base main --head development)             #
-#   2. Ensure all CI gates pass (fix failures recursively)                     #
-#   3. STOP and notify human: "PR is ready for human merge"                    #
-#   4. DO NOT run: gh pr merge                                                 #
-#                                                                              #
-#   WHAT AGENTS CAN MERGE:                                                     #
-#   - PRs targeting development (after CI passes)                              #
-#                                                                              #
-#   WHAT ONLY HUMANS CAN MERGE:                                                #
-#   - Any PR targeting main (regardless of CI status)                          #
-#                                                                              #
-################################################################################
+**AGENTS CAN CREATE PRs targeting main**
+**AGENTS CANNOT MERGE PRs targeting main**
+
+WHY: Merging to main triggers production deployments. This requires:
+
+- Human review of all accumulated changes
+- Release decision authority (business/product approval)
+- Accountability that only humans can provide
+
+AGENT WORKFLOW FOR MAIN:
+
+1. Create the PR (gh pr create --base main --head development)
+2. Ensure all CI gates pass (fix failures recursively)
+3. STOP and notify human: "PR is ready for human merge"
+4. DO NOT run: gh pr merge
+
+WHAT AGENTS CAN MERGE:
+
+- PRs targeting development (after CI passes)
+
+WHAT ONLY HUMANS CAN MERGE:
+
+- Any PR targeting main (regardless of CI status)
 
 ## PHASE 1: DIAGNOSE FAILURES
 
@@ -66,6 +67,7 @@ git diff
 For each failure type, apply the fix:
 
 ### markdownlint (MD004, MD007, etc.)
+
 ```bash
 # Check config for expected style
 cat .github/linters/markdownlint.yml
@@ -73,6 +75,7 @@ cat .github/linters/markdownlint.yml
 ```
 
 ### trailing-whitespace / end-of-file-fixer
+
 ```bash
 # Let pre-commit auto-fix
 pre-commit run trailing-whitespace --all-files
@@ -81,12 +84,14 @@ git add -u
 ```
 
 ### terraform_fmt
+
 ```bash
 terraform fmt -recursive
 git add -u
 ```
 
 ### gitleaks (secrets detected)
+
 ```bash
 # NEVER commit secrets. Remove the credential and use env var instead.
 # Check what was flagged:
@@ -94,6 +99,7 @@ gitleaks detect --redact --verbose
 ```
 
 ### doc-metadata-autofix
+
 ```bash
 # Let it auto-fix, then stage changes
 python3 scripts/standardize_metadata.py docs/
@@ -101,6 +107,7 @@ git add docs/
 ```
 
 ### generate-*-index hooks
+
 ```bash
 # These auto-regenerate indexes. Stage the changes:
 python3 scripts/generate_adr_index.py
@@ -116,7 +123,9 @@ git add docs/50-scripts/SCRIPT_CERTIFICATION_MATRIX.md
 ## PHASE 3: FIX CI WORKFLOW FAILURES
 
 ### pr-guardrails.yml - Checklist incomplete
+
 Ensure PR body contains ALL checkboxes marked:
+
 ```markdown
 ## Change Type
 - [x] Feature  (or Bug Fix / Documentation / Refactor)
@@ -133,6 +142,7 @@ Ensure PR body contains ALL checkboxes marked:
 ```
 
 ### changelog-policy.yml - Missing changelog
+
 ```bash
 # Create changelog entry (get next number from existing files)
 ls docs/changelog/entries/ | tail -5
@@ -140,7 +150,9 @@ ls docs/changelog/entries/ | tail -5
 ```
 
 ### session-log-required.yml - Session docs missing
+
 If you modified critical paths, you MUST update:
+
 ```bash
 # 1. Create or update session capture
 # session_capture/YYYY-MM-DD-description.md
@@ -177,11 +189,13 @@ gh pr checks
 ## PHASE 5: RECURSIVE CHECK
 
 After push, wait for CI and check results:
+
 ```bash
 gh pr checks --watch
 ```
 
 If ANY check fails:
+
 1. Read the failure message carefully
 2. Return to the appropriate PHASE above
 3. Fix the specific issue
@@ -203,30 +217,31 @@ If ANY check fails:
 
 ## BRANCH WORKFLOW FOR AGENTS
 
-```
+```text
 PRs TO DEVELOPMENT (Agent can create AND merge):
-  feature/*  ──► development    ✓ Create PR ✓ Merge after CI green
-  bugfix/*   ──► development    ✓ Create PR ✓ Merge after CI green
-  docs/*     ──► development    ✓ Create PR ✓ Merge after CI green
+  feature/*  --> development    Create PR, Merge after CI green
+  bugfix/*   --> development    Create PR, Merge after CI green
+  docs/*     --> development    Create PR, Merge after CI green
 
 PRs TO MAIN (Agent can create, HUMAN must merge):
-  development ──► main          ✓ Create PR ✗ STOP - Human merges
-  build-*     ──► main          ✓ Create PR ✗ STOP - Human merges
-  hotfix/*    ──► main          ✓ Create PR ✗ STOP - Human merges
+  development --> main          Create PR, STOP - Human merges
+  build-*     --> main          Create PR, STOP - Human merges
+  hotfix/*    --> main          Create PR, STOP - Human merges
 ```
 
 ## BYPASS LABELS - USE ONLY WHEN LEGITIMATE
 
-| Label            | Use ONLY when...                                    |
-|------------------|-----------------------------------------------------|
-| docs-only        | PR contains ONLY documentation, no code             |
-| typo-fix         | PR fixes ONLY typos, no functional changes          |
-| hotfix           | Critical production fix requiring immediate merge   |
-| changelog-exempt | Truly trivial change (whitespace, comments only)    |
+| Label            | Use ONLY when...                                  |
+| ---------------- | ------------------------------------------------- |
+| docs-only        | PR contains ONLY documentation, no code           |
+| typo-fix         | PR fixes ONLY typos, no functional changes        |
+| hotfix           | Critical production fix requiring immediate merge |
+| changelog-exempt | Truly trivial change (whitespace, comments only)  |
 
 ## SUCCESS CRITERIA
 
-### For PRs to development:
+### For PRs to development
+
 - [ ] pre-commit run --all-files passes locally
 - [ ] All CI checks show green
 - [ ] PR checklist is honestly completed
@@ -234,7 +249,8 @@ PRs TO MAIN (Agent can create, HUMAN must merge):
 - [ ] Changelog entry exists (if non-trivial change)
 - [ ] Agent can merge with: `gh pr merge --squash`
 
-### For PRs to main:
+### For PRs to main
+
 - [ ] pre-commit run --all-files passes locally
 - [ ] All CI checks show green
 - [ ] PR checklist is honestly completed
@@ -246,7 +262,7 @@ PRs TO MAIN (Agent can create, HUMAN must merge):
 
 Once all CI gates are green on a PR targeting main:
 
-```
+```text
 PR #{number} is ready for human merge.
 
 URL: {pr_url}
@@ -266,6 +282,7 @@ THEN STOP. Do not attempt to merge.
 ## IF STUCK
 
 If you cannot resolve a failure after 3 attempts:
+
 1. Document what you tried in the PR comments
 2. Tag @platform-team for assistance
 3. Do NOT work around the safeguard

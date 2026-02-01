@@ -63,5 +63,5 @@ Related: scripts/aws_inventory.py, PLATFORM_HEALTH.md
 
 ## Validation
 
-- Run `python3 scripts/aws_inventory.py --config inventory-config.yaml` and
+- Run `python3 scripts/aws_inventory.py --config config/inventory-config.yaml` and
   `python3 scripts/platform_health.py`.

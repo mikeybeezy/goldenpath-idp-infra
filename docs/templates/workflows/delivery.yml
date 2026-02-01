@@ -1,0 +1,108 @@
+# =============================================================================
+# Thin Caller Workflow Template
+# =============================================================================
+# This is the standard delivery workflow for application repositories.
+# It calls the canonical _build-and-release.yml workflow from goldenpath-idp-infra.
+#
+# Usage:
+#   1. Copy this file to your app repo: .github/workflows/delivery.yml
+#   2. Update the ecr_repository to match your app name
+#   3. Adjust dockerfile_path if your Dockerfile is not in root
+#
+# Reference: GOV-0014, ADR-0174
+# =============================================================================
+
+name: Delivery Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - development
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.gitignore'
+
+  pull_request:
+    branches:
+      - main
+      - development
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - test
+          - staging
+          - prod
+
+# Prevent concurrent deployments to the same environment
+concurrency:
+  group: delivery-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ===========================================================================
+  # Determine environment based on branch or manual input
+  # ===========================================================================
+  resolve-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.env.outputs.environment }}
+    steps:
+      - name: Resolve Environment
+        id: env
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "environment=prod" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/development" ]; then
+            echo "environment=dev" >> $GITHUB_OUTPUT
+          else
+            echo "environment=dev" >> $GITHUB_OUTPUT
+          fi
+
+  # ===========================================================================
+  # Call canonical build-and-release workflow
+  # ===========================================================================
+  build-and-release:
+    needs: resolve-environment
+    uses: mikeybeezy/goldenpath-idp-infra/.github/workflows/_build-and-release.yml@main
+    with:
+      # Required inputs
+      environment: ${{ needs.resolve-environment.outputs.environment }}
+      ecr_repository: ${{ github.event.repository.name }}
+
+      # Build configuration
+      build_context: '.'
+      dockerfile_path: './Dockerfile'
+
+      # Testing (optional - set to false if no tests)
+      test_enabled: true
+      test_command: 'make test'
+
+      # Security gates (use defaults from canonical workflow)
+      # trivy_exit_code: ''  # Empty = use env-based default
+
+    secrets: inherit
+
+  # ===========================================================================
+  # Post-deployment verification (optional)
+  # ===========================================================================
+  verify:
+    needs: [resolve-environment, build-and-release]
+    if: needs.resolve-environment.outputs.environment != 'prod'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Health Check
+        run: |
+          echo "Deployment complete to ${{ needs.resolve-environment.outputs.environment }}"
+          echo "Add your health check commands here"
+          # Example: curl -f https://app.${{ needs.resolve-environment.outputs.environment }}.example.com/health
