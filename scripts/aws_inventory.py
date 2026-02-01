@@ -40,7 +40,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
 from metadata_config import platform_yaml_dump
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CONFIG = ROOT / "inventory-config.yaml"
+DEFAULT_CONFIG = ROOT / "config" / "inventory-config.yaml"
 ENUMS_PATH = ROOT / "schemas/metadata/enums.yaml"
 COST_CENTER_KEYS = ["CostCenter", "cost_center", "cost-center", "Cost-Center"]
 

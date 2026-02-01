@@ -136,15 +136,69 @@ During Phase 1 completion review, user identified that `ecr-build-push.sh` and t
 | hello-goldenpath-idp onboard | Done | `hello-goldenpath-idp/.github/workflows/delivery.yml` |
 | GOV-0014 checkboxes updated | Done | Section 9.1 with evidence links |
 
+## Phase 2 Kickoff
+
+### ADR-0188: GitHub App Authentication Strategy
+
+Created Phase 2 kickoff ADR documenting:
+
+| Topic              | Decision                                                       |
+| ------------------ | -------------------------------------------------------------- |
+| App Name           | GoldenPath IDP Bot                                             |
+| Permissions        | Contents (R/W), Pull Requests (R/W), Actions (R), Metadata (R) |
+| Installation       | Org-wide with explicit repo list                               |
+| Token TTL          | 1-hour auto-expiring                                           |
+| Credential Storage | GitHub org secrets                                             |
+
+### ROADMAP.md Updates
+
+- Phase 1 marked as **COMPLETE** with evidence links
+- Item 063 updated: "Explore GitHub App agent roles" → In-Progress
+
+## Root Folder Cleanup
+
+### Analysis Performed
+
+Investigated Backstage file placement patterns per [Backstage documentation](https://backstage.io/docs/features/software-catalog/configuration/).
+
+**Findings:**
+
+| File                        | Analysis                                              | Action             |
+| --------------------------- | ----------------------------------------------------- | ------------------ |
+| `catalog-info.yaml`         | Self-describing entry (Backstage convention)          | Keep at root       |
+| `mkdocs.yml`                | TechDocs colocation requirement                       | Keep at root       |
+| `cluster-secret-store.yaml` | Orphaned duplicate of gitops/kustomize version        | Deleted            |
+| `inventory-config.yaml`     | Platform tooling config                               | Moved to `config/` |
+| `docker-compose.minio.yml`  | Local dev tooling                                     | Moved to `docker/` |
+
+### Files Reorganized
+
+| Original Location                | New Location                             | Breaking Change Mitigation         |
+| -------------------------------- | ---------------------------------------- | ---------------------------------- |
+| `cluster-secret-store.yaml`      | (deleted)                                | None - orphaned duplicate          |
+| `inventory-config.yaml`          | `config/inventory-config.yaml`           | Updated `scripts/aws_inventory.py` |
+| `inventory-config.metadata.yaml` | `config/inventory-config.metadata.yaml`  | Moved with parent                  |
+| `docker-compose.minio.yml`       | `docker/docker-compose.minio.yml`        | Updated docs                       |
+
+### Documentation Updated
+
+- `docs/changelog/entries/CL-0099-aws-inventory-platform-health.md` - Config path
+- `docs/adrs/ADR-0187-minio-rag-data-persistence.md` - Docker compose path
+- `docs/changelog/entries/CL-0202-phase0-rag-implementation.md` - Docker compose path
+
 ## Current State / Follow-ups
 
 - **Done:** Pipeline consolidation and documentation complete
 - **Done:** `hello-goldenpath-idp` has `delivery.yml` thin caller
 - **Done:** GOV-0014 Phase 1 checkboxes updated with evidence links
+- **Done:** Phase 2 ADR-0188 created for GitHub App authentication
+- **Done:** ROADMAP.md Phase 1 marked complete
+- **Done:** Root folder cleanup - orphaned files removed, tooling configs organized
 - **Decision:** Single workflow model - `_build-and-release.yml` is the one source of truth for all CI/CD
 - **Note:** `hello-goldenpath-idp` Delivery workflow had startup_failure on last run (2026-01-21) - may need OIDC/secrets configuration review
 - **Next:** Backstage must adopt `_build-and-release.yml` to get security gates (no separate security workflow)
+- **Next:** Create GitHub App per ADR-0188 milestones
 
 ---
 
-Signed: Claude Opus 4.5 (2026-02-01T14:00:00Z)
+Signed: Claude Opus 4.5 (2026-02-01T16:00:00Z)
